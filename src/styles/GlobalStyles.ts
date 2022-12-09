@@ -8,7 +8,7 @@ export const GlobalStyles = createGlobalStyle`
 }
 
 /* Handle */
-::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb { 
   background-color:  ${({ theme }) => theme.colors.primary};
   border-radius: 9999px;
 }
