@@ -1,5 +1,13 @@
-const App = () => {
-  return <div>Aaron</div>;
-};
+import { HomeContainer } from '../containers/Dash/Home/HomeContainer'
+import { GlobalStyles } from '../styles/GlobalStyles'
 
-export default App;
+const App = () => {
+  return (
+    <>
+      <GlobalStyles />
+      <HomeContainer />
+    </>
+  )
+}
+
+export default App
