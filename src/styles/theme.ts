@@ -1,5 +1,5 @@
 // theme.ts
-import { ThemeType } from './theme.type'
+import { ThemeType } from '../types/theme.type'
 
 const colors = {
   primary: '#273469',
