@@ -26,7 +26,7 @@ export const HomeContainer = () => {
         iconRight='ri-shape-line'
         iconLeft='ri-shape-line'
       />
-      <Button link content='Link' />
+      <Button link to='/dash' content='Link' />
       <Button link content='Link' state='danger' />
       <Button link content='Link' state='warning' />
       <Button link content='Link' state='warning' isDisabled />
