@@ -1,8 +1,19 @@
+export type ColorsType =
+  | 'primary'
+  | 'secondary'
+  | 'ghost-white'
+  | 'purple'
+  | 'sapce-cadet'
+  | 'independence'
+  | 'black-coral'
+  | 'blue-yonder'
+  | 'cadet-blue-crayola'
+  | 'queen-blue'
 export interface Colors {
   primary: string
   secondary: string
   'ghost-white': string
-  'lavender-blue': string
+  purple: string
   'sapce-cadet': string
   independence: string
   'black-coral': string
