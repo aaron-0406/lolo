@@ -3,13 +3,10 @@ import { ColorsType } from '../../types/theme.type'
 export interface ButtonProps {
   content: string
   state?: string
-  iconLeft?: React.ReactNode
-  iconRight?: React.ReactNode
+  iconLeft?: string
+  iconRight?: string
+  isLoading?: boolean
+  isDisabled?: boolean
   onClick?: () => void
-  bgColor?: ColorsType
-}
-
-export interface IconProps {
-  iconLeft?: React.ReactNode
-  iconRight?: React.ReactNode
+  onChange?: React.FormEventHandler<HTMLButtonElement>
 }

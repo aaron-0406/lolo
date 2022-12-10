@@ -1,15 +1,23 @@
 import styled from 'styled-components'
 
-import { ButtonProps, IconProps } from './button.interface'
+import { ButtonProps } from './button.interface'
 
 const Button: React.FC<ButtonProps> = props => {
-  const Icon: React.FC<IconProps> = props => {
-    return <i>{props.iconRight || props.iconLeft}</i>
-  }
   const button = (
-    <StyledButton {...props}>
-      <Icon {...props} />
-      <span> {props.content}</span>
+    <StyledButton
+      {...props}
+      onChange={props.onChange}
+      disabled={props.isDisabled || props.isLoading}
+    >
+      {props.iconRight && (
+        <i
+          className={
+            props.isLoading ? 'ri-loader-4-line' : `${props.iconRight}`
+          }
+        ></i>
+      )}
+      <span>{props.content}</span>
+      {props.iconLeft && <i className={`${props.iconLeft}`}></i>}
     </StyledButton>
   )
   return button
@@ -17,29 +25,31 @@ const Button: React.FC<ButtonProps> = props => {
 
 export default Button
 
-export const StyledButton = styled.a<ButtonProps>`
+export const StyledButton = styled.button<Omit<ButtonProps, 'onChange'>>`
   display: flex;
-  padding: 10px 20px;
+  gap: 6px;
+  padding: 6px 12px;
   font-size: 14px;
   border-radius: 999px;
-  background-color: ${({ theme, bgColor }) =>
-    bgColor ? theme.colors[bgColor] : theme.colors.primary};
-  span {
-    color: ${({ theme }) => theme.colors['ghost-white']};
-  }
-  svg {
-    fill: ${({ theme }) => theme.colors['ghost-white']};
-  }
+  background-color: ${({ theme, isLoading }) =>
+    isLoading ? `rgba(${theme.rgbColors.primary},0.7)` : theme.colors.primary};
+  color: ${({ theme }) => theme.colors['ghost-white']};
 
   &:hover {
-    background-color: ${({ theme }) => theme.colors['sapce-cadet']};
+    background-color: ${({ theme }) => `rgba(${theme.rgbColors.primary},0.7)`};
+  }
+
+  &:active {
+    background-color: ${({ theme, isLoading }) =>
+      !isLoading && theme.colors['sapce-cadet']};
   }
 
   &:disabled {
-    span {
-      color: ${({ theme }) => theme.colors['black-coral']};
-    }
-    background-color: ${({ theme }) =>
-      `rgba(${theme.rgbColors['black-coral']},0.3)`};
+    cursor: not-allowed;
+    opacity: ${({ isLoading }) => !isLoading && 0.7};
+    color: ${({ theme, isLoading }) =>
+      !isLoading && theme.colors['black-coral']};
+    background-color: ${({ theme, isLoading }) =>
+      !isLoading && `rgba(${theme.rgbColors['black-coral']},0.3)`};
   }
 `
