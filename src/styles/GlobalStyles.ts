@@ -40,7 +40,7 @@ html {
 body {
   margin: 0;
   line-height: inherit;
-  font-family: "Inter", sans-serif;
+  font-family: "DMSans", 'Open Sans';
   background-color: ${({ theme }) => theme.colors['ghost-white']};
 
   #__next {

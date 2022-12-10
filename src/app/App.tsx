@@ -1,5 +1,6 @@
-import { HomeContainer } from '../containers/Dash/Home/HomeContainer'
+import '../styles/font_family.css'
 import { GlobalStyles } from '../styles/GlobalStyles'
+import { HomeContainer } from '../containers/Dash/Home/HomeContainer'
 
 const App = () => {
   return (

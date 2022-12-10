@@ -9,6 +9,7 @@ export type ColorsType =
   | 'blue-yonder'
   | 'cadet-blue-crayola'
   | 'queen-blue'
+
 export interface Colors {
   primary: string
   secondary: string
