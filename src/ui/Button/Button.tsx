@@ -10,5 +10,5 @@ export default Button
 
 export const StyledButton = styled.button<ButtonProps>`
   display: flex;
-  background-color: red;
+  background-color: ${({ theme, bgColor }) => bgColor && theme.colors[bgColor]};
 `
