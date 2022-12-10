@@ -20,6 +20,9 @@ export interface Colors {
   'blue-yonder': string
   'cadet-blue-crayola': string
   'queen-blue': string
+  warning: string
+  success: string
+  danger: string
 }
 
 export interface Breakpoints {

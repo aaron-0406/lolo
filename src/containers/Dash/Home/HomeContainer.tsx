@@ -12,7 +12,6 @@ export const HomeContainer = () => {
         helperText='Helper Text'
         inputID='label'
         onChange={e => console.log(e.target.value)}
-        state='warning'
       />
     </Container>
   )

@@ -1,7 +1,9 @@
 import styled, { css } from 'styled-components'
 
+type InputState = 'danger' | 'warning' | 'success'
+
 interface InputProps {
-  state?: 'danger' | 'warning' | 'success'
+  state?: InputState
   size?: 'small' | 'medium' | 'large'
   fullWidth?: boolean
   type?: string
@@ -17,6 +19,15 @@ interface InputProps {
 }
 
 export const Input: React.FC<InputProps> = props => {
+  const getIconClass = (state: InputState) => {
+    const options = {
+      success: 'ri-checkbox-circle-line',
+      warning: 'ri-alert-line',
+      danger: 'ri-error-warning-line'
+    }
+    return options[state]
+  }
+
   return (
     <StyledInput {...props}>
       {!props.hiddenLabel && (
@@ -37,20 +48,9 @@ export const Input: React.FC<InputProps> = props => {
           disabled={props.isDisabled}
           onChange={props.onChange}
         />
-        {props.state === 'danger' && (
-          <span className='stateIcon stateIcon__error'>
-            <i className='ri-error-warning-line'></i>
-          </span>
-        )}
-
-        {props.state === 'success' && (
-          <span className='stateIcon stateIcon__success'>
-            <i className='ri-checkbox-circle-line'></i>
-          </span>
-        )}
-        {props.state === 'warning' && (
-          <span className='stateIcon stateIcon__warning'>
-            <i className='ri-alert-line'></i>
+        {props.state && !props.isDisabled && (
+          <span className='icon icon__state'>
+            <i className={getIconClass(props.state)}></i>
           </span>
         )}
       </div>
@@ -74,39 +74,15 @@ const StyledInput = styled.div<Omit<InputProps, 'onChange'>>`
       color: ${({ theme }) => theme.colors.primary};
     }
 
-    ${({ state }) =>
-      state === 'danger' &&
+    ${({ theme, state }) =>
+      state &&
       css`
         .inputWrapper {
-          border: 2px solid #ff1e32;
+          border: 2px solid ${theme.colors[state]};
         }
 
         .helperText {
-          color: #ff1e32;
-        }
-      `}
-
-    ${({ state }) =>
-      state === 'success' &&
-      css`
-        .inputWrapper {
-          border: 2px solid #28e146;
-        }
-
-        .helperText {
-          color: #28e146;
-        }
-      `}
-    
-    ${({ state }) =>
-      state === 'warning' &&
-      css`
-        .inputWrapper {
-          border: 2px solid #ffdf00;
-        }
-
-        .helperText {
-          color: #ffdf00;
+          color: ${theme.colors[state]};
         }
       `}
   }
@@ -121,7 +97,12 @@ const StyledInput = styled.div<Omit<InputProps, 'onChange'>>`
     }
 
     .inputWrapper {
+      border: 2px solid ${({ theme }) => theme.colors['black-coral']};
       background-color: ${({ theme }) => theme.colors.purple};
+    }
+
+    .helperText {
+      color: inherit;
     }
   }
 
@@ -152,25 +133,11 @@ const StyledInput = styled.div<Omit<InputProps, 'onChange'>>`
     height: ${({ size }) =>
       size === 'large' ? '52px' : size === 'small' ? '36px' : '44px'};
 
-    ${({ state }) =>
-      state === 'danger' &&
+    ${({ theme, state }) =>
+      state &&
       css`
-        background-color: #ff0a0a26;
-        border: 2px solid #ff1e32d9;
-      `}
-
-    ${({ state }) =>
-      state === 'success' &&
-      css`
-        background-color: #28e14626;
-        border: 2px solid #28e146d9;
-      `}
-    
-    ${({ state }) =>
-      state === 'warning' &&
-      css`
-        background-color: #ffdf0026;
-        border: 2px solid #ffdf00d9;
+        background-color: ${theme.colors[state]}26;
+        border: 2px solid ${theme.colors[state]}D9;
       `}
 
     input {
@@ -181,45 +148,20 @@ const StyledInput = styled.div<Omit<InputProps, 'onChange'>>`
       background-color: transparent;
     }
 
-    .stateIcon {
+    .icon {
       display: inline-flex;
       justify-content: center;
       align-items: center;
       font-size: 20px;
 
-      &__error {
-        color: #ff1e32;
-      }
-
-      &__success {
-        color: #28e146;
-      }
-
-      &__warning {
-        color: #ffdf00;
+      &__state {
+        color: ${({ theme, state }) => state && theme.colors[state]};
       }
     }
   }
 
   .helperText {
     font-size: ${({ size }) => (size === 'small' ? '12px' : '14px')};
-
-    ${({ state }) =>
-      state === 'danger' &&
-      css`
-        color: #ff1e32d9;
-      `}
-
-    ${({ state }) =>
-      state === 'success' &&
-      css`
-        color: #28e146d9;
-      `}
-    
-    ${({ state }) =>
-      state === 'warning' &&
-      css`
-        color: #ffdf00d9;
-      `}
+    color: ${({ theme, state }) => state && `${theme.colors[state]}D9`};
   }
 `
