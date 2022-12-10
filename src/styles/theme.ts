@@ -11,7 +11,10 @@ const colors = {
   'black-coral': '#596377',
   'blue-yonder': '#5C708F',
   'cadet-blue-crayola': '#9FAFC3',
-  'queen-blue': '#586987'
+  'queen-blue': '#586987',
+  warning: '#ffdf00',
+  success: '#28e146',
+  danger: '#ff1e32'
 }
 
 const rgbColors = {
@@ -24,7 +27,10 @@ const rgbColors = {
   'black-coral': '89, 99, 119',
   'blue-yonder': '92, 112, 143',
   'cadet-blue-crayola': '159, 175, 195',
-  'queen-blue': '88, 105, 135'
+  'queen-blue': '88, 105, 135',
+  warning: '255, 223, 0',
+  success: '40, 225, 70',
+  danger: '255, 30, 50'
 }
 
 const breakpoints = {
