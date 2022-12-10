@@ -1,26 +1,28 @@
 import styled from 'styled-components'
-import { CheckboxProps } from './checkbox.interface'
+import { RadioButtonProps } from './radiobutton.interface'
 
-const Checkbox: React.FC<CheckboxProps> = props => {
+const RadioButton: React.FC<RadioButtonProps> = props => {
   return (
-    <StyledCheckbox isDisabled={props.isDisabled} {...props}>
+    <StyledRadioButton isDisabled={props.isDisabled} {...props}>
       <input
-        className='hidden-checkbox'
-        type='checkbox'
+        type='radio'
         value={props.value}
         onChange={props.onChange}
+        className='hidden-checkbox'
         disabled={props.isDisabled}
       />
       <div className='visible-checkbox'>
-        <i className={'ri-check-line'}></i>
+        <i className={'ri-checkbox-blank-circle-fill'}></i>
       </div>
-    </StyledCheckbox>
+    </StyledRadioButton>
   )
 }
 
-export default Checkbox
+export default RadioButton
 
-export const StyledCheckbox = styled.label<Omit<CheckboxProps, 'onChange'>>`
+export const StyledRadioButton = styled.label<
+  Omit<RadioButtonProps, 'onChange'>
+>`
   .hidden-checkbox {
     display: none;
   }
@@ -41,7 +43,7 @@ export const StyledCheckbox = styled.label<Omit<CheckboxProps, 'onChange'>>`
       isDisabled
         ? `2px solid rgba(${theme.rgbColors['black-coral']},0.9)`
         : `2px solid rgba(${theme.rgbColors['black-coral']},0.2)`};
-    border-radius: 6px;
+    border-radius: 999px;
     box-sizing: border-box;
     &:hover {
       border-color: ${({ theme, isDisabled }) =>
@@ -55,6 +57,7 @@ export const StyledCheckbox = styled.label<Omit<CheckboxProps, 'onChange'>>`
     }
   }
   .hidden-checkbox:checked + .visible-checkbox {
+    font-size: 10px;
     color: ${({ theme }) => theme.colors['ghost-white']};
     background-color: ${({ theme, isDisabled }) =>
       isDisabled ? theme.colors['black-coral'] : theme.colors.primary};
