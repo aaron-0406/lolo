@@ -1,32 +1,32 @@
-import styled, { css } from 'styled-components'
+import styled, { css } from "styled-components";
 
-type InputState = 'danger' | 'warning' | 'success'
+type InputState = "danger" | "warning" | "success";
 
 interface InputProps {
-  state?: InputState
-  size?: 'small' | 'medium' | 'large'
-  fullWidth?: boolean
-  type?: string
-  inputID?: string
-  labelValue?: string
-  name?: string
-  hiddenLabel?: boolean
-  helperText?: string
-  isDisabled?: boolean
-  isOptional?: boolean
-  onChange?: React.ChangeEventHandler<HTMLInputElement>
-  className?: string
+  state?: InputState;
+  size?: "small" | "medium" | "large";
+  fullWidth?: boolean;
+  type?: string;
+  inputID?: string;
+  labelValue?: string;
+  name?: string;
+  hiddenLabel?: boolean;
+  helperText?: string;
+  isDisabled?: boolean;
+  isOptional?: boolean;
+  onChange?: React.ChangeEventHandler<HTMLInputElement>;
+  className?: string;
 }
 
-export const Input: React.FC<InputProps> = props => {
+const Input: React.FC<InputProps> = (props) => {
   const getIconClass = (state: InputState) => {
     const options = {
-      success: 'ri-checkbox-circle-line',
-      warning: 'ri-alert-line',
-      danger: 'ri-error-warning-line'
-    }
-    return options[state]
-  }
+      success: "ri-checkbox-circle-line",
+      warning: "ri-alert-line",
+      danger: "ri-error-warning-line",
+    };
+    return options[state];
+  };
 
   return (
     <StyledInput {...props}>
@@ -34,36 +34,38 @@ export const Input: React.FC<InputProps> = props => {
         <label htmlFor={props.inputID}>
           {props.labelValue}
           {props.isOptional && (
-            <span className='optional'>
-              <i className='ri-information-line'></i>(opcional)
+            <span className="optional">
+              <i className="ri-information-line"></i>(opcional)
             </span>
           )}
         </label>
       )}
-      <div className='inputWrapper'>
+      <div className="inputWrapper">
         <input
-          type={props.type || 'text'}
+          type={props.type || "text"}
           id={props.inputID}
           name={props.name}
           disabled={props.isDisabled}
           onChange={props.onChange}
         />
         {props.state && !props.isDisabled && (
-          <span className='icon icon__state'>
+          <span className="icon icon__state">
             <i className={getIconClass(props.state)}></i>
           </span>
         )}
       </div>
       {props.helperText && (
-        <span className='helperText'>{props.helperText}</span>
+        <span className="helperText">{props.helperText}</span>
       )}
     </StyledInput>
-  )
-}
+  );
+};
 
-const StyledInput = styled.div<Omit<InputProps, 'onChange'>>`
-  font-size: ${({ size }) => (size === 'small' ? '14px' : '16px')};
-  width: ${({ fullWidth }) => fullWidth && '100%'};
+export default Input;
+
+const StyledInput = styled.div<Omit<InputProps, "onChange">>`
+  font-size: ${({ size }) => (size === "small" ? "14px" : "16px")};
+  width: ${({ fullWidth }) => fullWidth && "100%"};
 
   &:has(.inputWrapper > input:focus) {
     .inputWrapper {
@@ -88,7 +90,7 @@ const StyledInput = styled.div<Omit<InputProps, 'onChange'>>`
   }
 
   &:has(.inputWrapper > input:disabled) {
-    color: ${({ theme }) => theme.colors['cadet-blue-crayola']};
+    color: ${({ theme }) => theme.colors["cadet-blue-crayola"]};
 
     label {
       .optional {
@@ -97,7 +99,7 @@ const StyledInput = styled.div<Omit<InputProps, 'onChange'>>`
     }
 
     .inputWrapper {
-      border: 2px solid ${({ theme }) => theme.colors['black-coral']};
+      border: 2px solid ${({ theme }) => theme.colors["black-coral"]};
       background-color: ${({ theme }) => theme.colors.purple};
     }
 
@@ -119,7 +121,7 @@ const StyledInput = styled.div<Omit<InputProps, 'onChange'>>`
           gap: 3px;
           margin-left: 3px;
           font-size: 14px;
-          color: ${({ theme }) => theme.colors['sapce-cadet']};
+          color: ${({ theme }) => theme.colors["sapce-cadet"]};
         }
       `}
   }
@@ -129,9 +131,9 @@ const StyledInput = styled.div<Omit<InputProps, 'onChange'>>`
     border-radius: 5px;
     width: 100%;
     padding: 0 10px;
-    border: 2px solid ${({ theme }) => theme.colors['blue-yonder']};
+    border: 2px solid ${({ theme }) => theme.colors["blue-yonder"]};
     height: ${({ size }) =>
-      size === 'large' ? '52px' : size === 'small' ? '36px' : '44px'};
+      size === "large" ? "52px" : size === "small" ? "36px" : "44px"};
 
     ${({ theme, state }) =>
       state &&
@@ -161,7 +163,7 @@ const StyledInput = styled.div<Omit<InputProps, 'onChange'>>`
   }
 
   .helperText {
-    font-size: ${({ size }) => (size === 'small' ? '12px' : '14px')};
+    font-size: ${({ size }) => (size === "small" ? "12px" : "14px")};
     color: ${({ theme, state }) => state && `${theme.colors[state]}D9`};
   }
-`
+`;
