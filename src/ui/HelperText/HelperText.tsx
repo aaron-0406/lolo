@@ -1,9 +1,9 @@
-import React from "react"
-import styled, { css } from "styled-components"
-import Container from "@/atoms/Container"
-import Text from "@/atoms/Text"
+import React from "react";
+import styled, { css } from "styled-components";
+import Container from "../Container";
+import Text from "../Text";
 
-const INITIAL_COUNTER = 0
+const INITIAL_COUNTER = 0;
 
 /**
  * HelperText Component
@@ -16,14 +16,14 @@ const INITIAL_COUNTER = 0
  * @prop {boolean} disabled Disabled state of helper text
  */
 export type HelperTextProps = {
-  wrap?: boolean
-  width?: string
-  hasError?: boolean
-  countDown?: number
-  charactersLimit?: number
-  children?: string
-  disabled?: boolean
-}
+  wrap?: boolean;
+  width?: string;
+  hasError?: boolean;
+  countDown?: number;
+  charactersLimit?: number;
+  children?: string;
+  disabled?: boolean;
+};
 
 const HelperText: React.FC<HelperTextProps> = ({
   width,
@@ -63,15 +63,15 @@ const HelperText: React.FC<HelperTextProps> = ({
         )}
       </StyledHelperTextWrapper>
     </Container>
-  ) : null
-}
+  ) : null;
+};
 
-export default HelperText
+export default HelperText;
 
 interface StyledHelperTextWrapperProps {
-  $hasError: boolean
-  $wrap?: boolean
-  $disabled?: boolean
+  $hasError: boolean;
+  $wrap?: boolean;
+  $disabled?: boolean;
 }
 
 /**
@@ -104,4 +104,4 @@ export const StyledHelperTextWrapper = styled(
       }
     `};
   `}
-`
+`;

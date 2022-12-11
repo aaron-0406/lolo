@@ -1,19 +1,19 @@
-import styled, { css } from "styled-components"
-import Container from "@/atoms/Container"
-import Icon from "@/atoms/Icon"
-import Text from "@/atoms/Text"
+import styled, { css } from "styled-components";
+import Container from "../Container";
+import Icon from "../Icon";
+import Text from "../Text";
 
 export type LabelProps = {
-  label?: string
-  name?: string
-  required?: boolean
-  disabled?: boolean
-  optional?: boolean
-  tooltipMessage?: string
-}
+  label?: string;
+  name?: string;
+  required?: boolean;
+  disabled?: boolean;
+  optional?: boolean;
+  tooltipMessage?: string;
+};
 
 const Label: React.FC<LabelProps> = (props) => {
-  const { label, name, disabled, required, optional, tooltipMessage } = props
+  const { label, name, disabled, required, optional, tooltipMessage } = props;
 
   return (
     <StyledLabelContainer
@@ -51,10 +51,10 @@ const Label: React.FC<LabelProps> = (props) => {
         </Text.Body>
       )}
     </StyledLabelContainer>
-  )
-}
+  );
+};
 
-export default Label
+export default Label;
 
 const StyledLabelContainer = styled(Container)<{ $disabled?: boolean }>`
   ${({ theme, $disabled }) =>
@@ -88,4 +88,4 @@ const StyledLabelContainer = styled(Container)<{ $disabled?: boolean }>`
         color: ${theme.colors.Neutral5};
       }
     `}
-`
+`;
