@@ -1,53 +1,57 @@
 // theme.ts
-import { ThemeType } from '../types/theme.type'
+import { ThemeType } from "../types/theme.type";
 
 const colors = {
-  primary: '#273469',
-  secondary: '#30343F',
-  'ghost-white': '#FAFAFF',
-  purple: '#E4D9FF',
-  'sapce-cadet': '#1E2749',
-  independence: '#434A5A',
-  'black-coral': '#596377',
-  'blue-yonder': '#5C708F',
-  'cadet-blue-crayola': '#9FAFC3',
-  'queen-blue': '#586987',
-  warning: '#ffdf00',
-  success: '#28e146',
-  danger: '#ff1e32'
-}
+  primary: "#273469",
+  secondary: "#30343F",
+  neutral1: "#F7F7FC",
+  neutral2: "#EFF0F6",
+  "ghost-white": "#FAFAFF",
+  purple: "#E4D9FF",
+  "sapce-cadet": "#1E2749",
+  independence: "#434A5A",
+  "black-coral": "#596377",
+  "blue-yonder": "#5C708F",
+  "cadet-blue-crayola": "#9FAFC3",
+  "queen-blue": "#586987",
+  warning: "#ffdf00",
+  success: "#28e146",
+  danger: "#ff1e32",
+};
 
 const rgbColors = {
-  primary: '#273469',
-  secondary: '#30343F',
-  'ghost-white': '#FAFAFF',
-  purple: '#E4D9FF',
-  'sapce-cadet': '#1E2749',
-  independence: '#434A5A',
-  'black-coral': '#596377',
-  'blue-yonder': '#5C708F',
-  'cadet-blue-crayola': '#9FAFC3',
-  'queen-blue': '#586987',
-  warning: '#ffdf00',
-  success: '#28e146',
-  danger: '#ff1e32'
-}
+  primary: "#273469",
+  secondary: "#30343F",
+  neutral1: "#F7F7FC",
+  neutral2: "#F7F7FC",
+  "ghost-white": "#FAFAFF",
+  purple: "#E4D9FF",
+  "sapce-cadet": "#1E2749",
+  independence: "#434A5A",
+  "black-coral": "#596377",
+  "blue-yonder": "#5C708F",
+  "cadet-blue-crayola": "#9FAFC3",
+  "queen-blue": "#586987",
+  warning: "#ffdf00",
+  success: "#28e146",
+  danger: "#ff1e32",
+};
 
 const breakpoints = {
-  mobileS: '320px',
-  mobileM: '375px',
-  mobileL: '425px',
-  mobileXL: '560px',
-  tablet: '768px',
-  tabletM: '900px',
-  laptop: '1024px',
-  laptopS: '1150px',
-  laptopM: '1260px',
-  laptopL: '1440px',
-  desktop: '1650px',
-  desktopM: '1950px',
-  desktopL: '2560px'
-}
+  mobileS: "320px",
+  mobileM: "375px",
+  mobileL: "425px",
+  mobileXL: "560px",
+  tablet: "768px",
+  tabletM: "900px",
+  laptop: "1024px",
+  laptopS: "1150px",
+  laptopM: "1260px",
+  laptopL: "1440px",
+  desktop: "1650px",
+  desktopM: "1950px",
+  desktopL: "2560px",
+};
 
 const device = {
   mobileS: `(min-width: ${breakpoints.mobileS})`,
@@ -62,12 +66,12 @@ const device = {
   laptopL: `(min-width: ${breakpoints.laptopL})`,
   desktop: `(min-width: ${breakpoints.desktop})`,
   desktopM: `(min-width: ${breakpoints.desktopM})`,
-  desktopL: `(min-width: ${breakpoints.desktopL})`
-}
+  desktopL: `(min-width: ${breakpoints.desktopL})`,
+};
 
 export const initialTheme: ThemeType = {
   colors: colors,
   rgbColors: rgbColors,
   breakpoints: breakpoints,
-  device: device
-}
+  device: device,
+};

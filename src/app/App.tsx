@@ -1,13 +1,11 @@
-import { HomeContainer } from '../containers/Dash/Home/HomeContainer'
-import { GlobalStyles } from '../styles/GlobalStyles'
+import Home from "../pages/Dashboard/Home";
 
 const App = () => {
   return (
     <>
-      <GlobalStyles />
-      <HomeContainer />
+      <Home />
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;
