@@ -29,6 +29,34 @@ export interface Colors {
   danger: string;
 }
 
+interface IBold {
+  fontSize: number;
+  textDecoration: string;
+  fontFamily: string;
+  fontWeight: number;
+  fontStyle: string;
+  fontStretch: string;
+  letterSpacing: number;
+  lineHeight: number;
+  paragraphIndent: number;
+  paragraphSpacing: number;
+  textCase: string;
+}
+
+interface IRegular {
+  fontSize: number;
+  textDecoration: string;
+  fontFamily: string;
+  fontWeight: number;
+  fontStyle: string;
+  fontStretch: string;
+  letterSpacing: number;
+  lineHeight: number;
+  paragraphIndent: number;
+  paragraphSpacing: number;
+  textCase: string;
+}
+
 export interface Breakpoints {
   mobileS: string;
   mobileM: string;

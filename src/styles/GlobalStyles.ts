@@ -25,7 +25,7 @@ body {
   font-family: 'DM Sans', sans-serif;
   margin: 0;
   line-height: inherit;
-  background-color: ${({ theme }) => theme.colors["ghost-white"]};
+  background-color: ${({ theme }) => theme.colors["Neutral0"]};
 
   #__next {
     display: flex;
