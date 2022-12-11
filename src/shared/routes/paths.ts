@@ -1,15 +1,22 @@
 export default {
   root: "/",
+  error: "/error",
+  general: {
+    validate: "/validate-token",
+    notFound: "/not-found",
+  },
   dash: {
     root: "/dash",
     login: "/dash/login",
   },
   company: {
-    root: "/dinamica",
-    login: "/dinamica/login",
-    dash: "/dinamica/dash",
-    perfil: "/dinamica/dash/perfil",
-    clientes: "/dinamica/dash/clientes",
-    cobranza: "/dinamica/dash/cobranza",
+    root: (urlIdentifier = ":urlIdentifier") => `/${urlIdentifier}`,
+    login: (urlIdentifier = ":urlIdentifier") => `/${urlIdentifier}/login`,
+    dash: (urlIdentifier = ":urlIdentifier") => `/${urlIdentifier}/dash`,
+    perfil: (urlIdentifier = ":urlIdentifier") => `/${urlIdentifier}/perfil`,
+    clientes: (urlIdentifier = ":urlIdentifier") =>
+      `/${urlIdentifier}/clientes`,
+    cobranza: (urlIdentifier = ":urlIdentifier") =>
+      `/${urlIdentifier}/cobranza`,
   },
 };

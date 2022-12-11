@@ -5,6 +5,7 @@ import { Providers } from "./shared/contexts/Providers";
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
+
 root.render(
   <Providers>
     <App />
