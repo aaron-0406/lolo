@@ -35,44 +35,44 @@ const StyledButton = styled.button<{
 
     ${hierarchy === "primary" &&
     css`
-      background-color: ${theme.colors.primary};
-      color: ${theme.colors["ghost-white"]};
+      background-color: ${theme.colors.Primary5};
+      color: ${theme.colors.Neutral0};
 
       :hover {
-        background-color: ${theme.colors["queen-blue"]};
+        background-color: ${theme.colors.Primary4};
       }
 
       :active {
-        background-color: ${theme.colors["blue-yonder"]};
+        background-color: ${theme.colors.Primary6};
       }
     `}
 
     ${hierarchy === "secondary" &&
     css`
-      border: 2px solid ${theme.colors.primary};
-      color: ${theme.colors.primary};
+      border: 2px solid ${theme.colors.Primary5};
+      color: ${theme.colors.Primary5};
 
       :hover {
-        color: ${theme.colors["blue-yonder"]};
-        border: 2px solid ${theme.colors["blue-yonder"]};
+        color: ${theme.colors.Primary4};
+        border: 2px solid ${theme.colors.Primary4};
       }
 
       :active {
-        color: ${theme.colors["sapce-cadet"]};
-        border: 2px solid ${theme.colors["sapce-cadet"]};
+        color: ${theme.colors.Primary6};
+        border: 2px solid ${theme.colors.Primary6};
       }
     `}
 
     ${hierarchy === "tertiary" &&
     css`
-      color: ${theme.colors.primary};
+      color: ${theme.colors.Primary5};
 
       :hover {
-        background-color: ${theme.colors.neutral1};
+        background-color: ${theme.colors.Neutral2};
       }
 
       :active {
-        background-color: ${theme.colors.neutral2};
+        background-color: ${theme.colors.Neutral3};
       }
     `}
   `}

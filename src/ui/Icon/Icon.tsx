@@ -1,4 +1,4 @@
-import type { DefaultTheme } from "styled-components";
+import type { IThemeColor } from "styled-components";
 import styled, { css } from "styled-components";
 
 const DEFAULT_ICON_SIZE = 24;
@@ -8,7 +8,7 @@ type IconProps = React.HTMLAttributes<HTMLDivElement> & {
   size?: number;
   className?: string;
   containerClassName?: string;
-  color?: keyof DefaultTheme["colors"];
+  color?: keyof IThemeColor;
 };
 
 const Icon: React.FC<IconProps> = ({
@@ -33,9 +33,9 @@ export default Icon;
  */
 const StyledIcon = styled.div<{
   size: number;
-  color?: keyof DefaultTheme["colors"];
+  color?: keyof IThemeColor;
 }>`
-  ${({ theme, size, color = "black-coral" }) => css`
+  ${({ theme, size, color = "Neutral8" }) => css`
     width: ${size}px;
     height: ${size}px;
     font-size: ${size}px;
