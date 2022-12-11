@@ -1,6 +1,7 @@
 import { createGlobalStyle } from "styled-components";
 import "./global/fonts/dmsans/stylesheet.css";
 import "./global/fonts/raleway/stylesheet.css";
+import "remixicon/fonts/remixicon.css";
 
 const GlobalStyles = createGlobalStyle`
 *,

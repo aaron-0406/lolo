@@ -68,7 +68,6 @@ const StyledButton = styled.button<{
       color: ${theme.colors.primary};
 
       :hover {
-        border: 0;
         background-color: ${theme.colors.neutral1};
       }
 
