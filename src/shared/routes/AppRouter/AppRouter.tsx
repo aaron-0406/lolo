@@ -10,6 +10,8 @@ import DashHome from "../../../pages/Dashboard/Home";
 //COMPANY
 import CompanyLogin from "../../../pages/Company/Login";
 import CompanyHome from "../../../pages/Company/Home";
+import CompanyCustomers from "../../../pages/Company/CompanyCustomers";
+import CompanyProfile from "../../../pages/Company/CompanyProfile";
 
 import ErrorPage from "../../../pages/ErrorPage";
 import NotFound from "../../../pages/NotFound";
@@ -18,8 +20,10 @@ import AppSwitch from "../AppSwitch";
 import GuestRoute from "../GhestRoutes";
 import GuestRouteCompany from "../GuestRoutesCompany";
 import ProtectedRoutes from "../ProtectedRoutes";
+import ProtectedRoutesCompany from "../ProtectedRoutesCompany";
 
 import paths from "../paths";
+import CompanyCobranza from "../../../pages/Company/CompanyCobranza";
 
 const AppRouter = () => {
   return (
@@ -42,11 +46,13 @@ const AppRouter = () => {
       <Route element={<GuestRouteCompany pathname={paths.company.root()} />}>
         <Route path={paths.company.login()} element={<CompanyLogin />} />
       </Route>
-      <Route element={<ProtectedRoutes pathname={paths.company.login()} />}>
+      <Route
+        element={<ProtectedRoutesCompany pathname={paths.company.login()} />}
+      >
         <Route path={paths.company.dash()} element={<CompanyHome />} />
-        <Route path={paths.company.perfil()} element={<div>X</div>} />
-        <Route path={paths.company.clientes()} element={<div>Y</div>} />
-        <Route path={paths.company.cobranza()} element={<div>Y</div>} />
+        <Route path={paths.company.perfil()} element={<CompanyProfile />} />
+        <Route path={paths.company.clientes()} element={<CompanyCustomers />} />
+        <Route path={paths.company.cobranza()} element={<CompanyCobranza />} />
       </Route>
 
       <Route path="*" element={<NotFound />} />
