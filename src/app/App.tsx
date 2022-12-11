@@ -1,4 +1,4 @@
-import Home from "../pages/Dashboard/Home";
+import Home from "../pages/Home";
 
 const App = () => {
   return (
