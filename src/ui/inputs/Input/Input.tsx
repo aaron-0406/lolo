@@ -5,11 +5,6 @@ import styled, { useTheme } from "styled-components";
 import { css } from "styled-components";
 import type { InputSize } from "./Input.interfaces";
 
-/**
- * Input Component
- * @prop {InputSize} size Set the size of button "small" | "large"
- */
-
 export type InputProps = Omit<InputHTMLAttributes<HTMLInputElement>, "size"> & {
   size?: InputSize;
 };
@@ -50,10 +45,6 @@ export default Input;
 
 type StyledInputProps = IRegular;
 
-/**
- * Styled Input Component
- * Do not export, use Input
- */
 const StyledInput = styled.input<StyledInputProps>`
   ${(props) => css`
     all: unset;
