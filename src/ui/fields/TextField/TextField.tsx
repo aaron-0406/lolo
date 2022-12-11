@@ -2,7 +2,7 @@ import { createRef, useState } from "react";
 import type CSS from "csstype";
 import styled, { css } from "styled-components";
 import Container from "../../Container";
-import HelperText from "@/atoms/HelperText";
+import HelperText from "../../HelperText";
 import type { InputSize } from "../../inputs/Input/Input.interfaces";
 import type {
   HelperFieldProps,
