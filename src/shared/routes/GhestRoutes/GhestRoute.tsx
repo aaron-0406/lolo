@@ -1,4 +1,4 @@
-import { Outlet } from "react-router";
+import { Outlet } from "react-router-dom";
 import RedirectRoute from "../RedirectRoute";
 
 type GuestRouteProps = {
