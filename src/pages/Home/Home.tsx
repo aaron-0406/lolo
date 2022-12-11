@@ -1,6 +1,5 @@
 import Button from "../../ui/Button";
 import Container from "../../ui/Container";
-import TextField from "../../ui/fields/TextField";
 
 const Home = () => {
   return (
@@ -8,7 +7,6 @@ const Home = () => {
       <Button width="100px" title="Button" hierarchy="primary" />
       <Button width="100px" title="Button" hierarchy="secondary" />
       <Button width="100px" title="Button" hierarchy="tertiary" />
-      <TextField title="Hola" label="Jelou" helperText="Text error" hasError />
     </Container>
   );
 };

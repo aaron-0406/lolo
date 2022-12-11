@@ -1,5 +1,6 @@
 import { ButtonHTMLAttributes } from "react";
 import styled, { css } from "styled-components";
+import Text from "../Text";
 import { HierarchyType } from "./Button.interfaces";
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -12,7 +13,9 @@ const Button: React.FC<ButtonProps> = (props) => {
 
   return (
     <StyledButton width={width} hierarchy={hierarchy} {...rest}>
-      {title}
+      <Text.Body size="m" weight="bold" color="Neutral0">
+        {title}
+      </Text.Body>
     </StyledButton>
   );
 };

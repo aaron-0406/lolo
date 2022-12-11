@@ -119,6 +119,8 @@ const TitleText: React.FC<TitleTextProps> = (props) => {
  * @exports {NumberTextProps} Number
  ** Exported Component, this is meant to be used for displaying numbers only
  */
+
+// eslint-disable-next-line import/no-anonymous-default-export
 export default {
   Title: TitleText,
   Body: BodyText,

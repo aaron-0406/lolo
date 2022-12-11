@@ -1,6 +1,5 @@
 import { Outlet } from "react-router-dom";
 import storage from "../../utils/storage";
-import paths from "../paths";
 import RedirectRoute from "../RedirectRoute";
 
 type ProtectedRoutesProps = {
