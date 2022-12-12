@@ -49,7 +49,7 @@ const AppRouter = () => {
       <Route
         element={<ProtectedRoutesCompany pathname={paths.company.login()} />}
       >
-        <Route path={paths.company.dash()} element={<CompanyHome />} />
+        <Route path={paths.company.root()} element={<CompanyHome />} />
         <Route path={paths.company.perfil()} element={<CompanyProfile />} />
         <Route path={paths.company.clientes()} element={<CompanyCustomers />} />
         <Route path={paths.company.cobranza()} element={<CompanyCobranza />} />

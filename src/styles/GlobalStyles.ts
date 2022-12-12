@@ -257,6 +257,10 @@ video {
 [hidden] {
   display: none;
 }
+
+.hide-component {
+  display: none;
+}
 `;
 
 export default GlobalStyles;

@@ -1,5 +1,7 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useParams } from "react-router-dom";
+import MenuCompany from "../../../components/Menus/MenuCompany";
 import storage from "../../utils/storage";
+import { GuestParamsType } from "../GuestRoutesCompany/GuestRoutesCompany.interfaces";
 import RedirectRoute from "../RedirectRoute";
 
 type ProtectedRoutesCompanyProps = {
@@ -9,8 +11,11 @@ type ProtectedRoutesCompanyProps = {
 const ProtectedRoutesCompany: React.FC<ProtectedRoutesCompanyProps> = ({
   pathname,
 }) => {
+  const { urlIdentifier } = useParams<GuestParamsType>();
+  //TODO: Validate url identifier
+
   //TODO: Get isAuthenticated from context - useGeneralContext
-  const isAuthenticated = false;
+  const isAuthenticated = true;
 
   if (!isAuthenticated) {
     storage.clear();
@@ -18,9 +23,9 @@ const ProtectedRoutesCompany: React.FC<ProtectedRoutesCompanyProps> = ({
   }
 
   return (
-    <div className="main-layout">
+    <MenuCompany urlIdentifier={urlIdentifier ?? ""}>
       <Outlet />
-    </div>
+    </MenuCompany>
   );
 };
 
