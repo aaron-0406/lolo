@@ -1,99 +1,51 @@
-import styled from "styled-components";
-import Button from "../../../ui/Button";
+import styled, { css } from "styled-components";
+import { device } from "../../../shared/breakpoints/reponsive";
+import { useMediaQuery } from "../../../shared/hooks/useMediaQuery";
 import Container from "../../../ui/Container";
-import TextAreaField from "../../../ui/fields/TextAreaField";
-import TextField from "../../../ui/fields/TextField";
-import Icon from "../../../ui/Icon";
-import Label from "../../../ui/Label";
-import Select from "../../../ui/Select";
 
-const LayoutCobranza = () => {
+type LayoutCobranzaProps = {
+  leftHeader: React.ReactNode;
+  leftActions: React.ReactNode;
+  leftContent: React.ReactNode;
+};
+
+const LayoutCobranza: React.FC<LayoutCobranzaProps> = (props) => {
+  const { leftHeader, leftActions, leftContent } = props;
+
+  const greaterThanTabletL = useMediaQuery(device.tabletL);
+
   return (
-    <StyledContainer width="100%" height="100%" padding="15px">
+    <StyledContainer
+      width="100%"
+      height="100%"
+      padding="15px"
+      display="flex"
+      gap="30px"
+    >
       <Container
+        className="container__left"
         width="100%"
         height="100%"
         display="flex"
         flexDirection="column"
         gap="20px"
       >
-        <Container
-          display="flex"
-          flexDirection="column"
-          backgroundColor="#eff0f6ff"
-          padding="15px"
-          gap="15px"
-        >
-          <Container display="flex" gap="15px">
-            <Label label="Buscar:" />
-            <TextField
-              width="100%"
-              placeholder="Código o RUC"
-              trailingIcon="ri-search-line"
-            />
-          </Container>
-        </Container>
+        {leftHeader}
 
-        <Container
-          width="100%"
-          height="68px"
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          overFlowX="auto"
-          gap="10px"
-        >
-          <Button width="100px" title="Agregar" />
-          <Button width="100px" title="Actualizar" />
-          <Icon size={32} remixClass="ri-delete-bin-line" color="Warning5" />
-        </Container>
+        {leftActions}
 
-        <Container
-          width="100%"
-          backgroundColor="#eff0f6ff"
-          padding="15px"
-          display="flex"
-          flexDirection="column"
-          gap="10px"
-          overFlowY="auto"
-        >
-          <Container display="flex" gap="15px">
-            <Label label="Código:" />
-            <TextField width="100%" />
-          </Container>
-
-          <Container display="flex" gap="15px">
-            <Label label="Estado:" />
-            <TextField width="100%" />
-          </Container>
-
-          <Container display="flex" gap="15px">
-            <Label label="Cliente:" />
-            <TextAreaField width="100%" rows={2} />
-          </Container>
-
-          <TextAreaField label="Perímetro venta:" width="100%" rows={1} />
-
-          <Container display="flex" gap="15px">
-            <Label label="Funcionario:" />
-            <Select width="100%" />
-          </Container>
-
-          <Container display="flex" gap="15px">
-            <Label label="Jurisdicción:" />
-            <Select width="100%" />
-          </Container>
-
-          <TextAreaField width="100%" label="Teléfonos 1:" rows={2} />
-
-          <TextAreaField width="100%" label="Teléfonos 2:" rows={2} />
-
-          <TextAreaField width="100%" label="Teléfonos 3:" rows={2} />
-        </Container>
+        {leftContent}
       </Container>
 
-      <Container className="hide-component" width="100px">
-        GESTION
+      <Container
+        width="300px"
+        className={`container__right ${
+          !greaterThanTabletL && "hide-component"
+        }`}
+        backgroundColor="#eff0f6ff"
+        padding="20px"
+      >
+        <Container>GESTION</Container>
       </Container>
     </StyledContainer>
   );
@@ -102,5 +54,30 @@ const LayoutCobranza = () => {
 export default LayoutCobranza;
 
 const StyledContainer = styled(Container)`
-  z-index: 5;
+  ${({ theme }) => css`
+    .container__right {
+      border-radius: 8px;
+      border: 1px solid ${theme.colors.Neutral4};
+    }
+
+    @media ${theme.device.tabletS} {
+      padding: 30px;
+    }
+
+    @media ${theme.device.tabletL} {
+      .container__left {
+        width: calc(100% - 300px);
+      }
+    }
+
+    @media ${theme.device.desktopS} {
+      .container__left {
+        width: calc(100% - 400px);
+      }
+
+      .container__right {
+        width: 400px;
+      }
+    }
+  `}
 `;

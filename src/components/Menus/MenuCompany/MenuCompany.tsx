@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import styled, { css } from "styled-components";
+import { device } from "../../../shared/breakpoints/reponsive";
+import { useMediaQuery } from "../../../shared/hooks/useMediaQuery";
 import paths from "../../../shared/routes/paths";
 import Container from "../../../ui/Container";
 import Icon from "../../../ui/Icon";
@@ -16,6 +18,8 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({
   urlIdentifier,
 }) => {
   const [toggleMenu, setToggleMenu] = useState(false);
+
+  const greaterThanTabletL = useMediaQuery(device.tabletL);
 
   const items = [
     {
@@ -39,7 +43,9 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({
   ];
 
   const onClickToggle = () => {
-    setToggleMenu(!toggleMenu);
+    if (!greaterThanTabletL) {
+      setToggleMenu(!toggleMenu);
+    }
   };
 
   return (
@@ -72,7 +78,9 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({
         flexDirection="row"
       >
         <Container
-          className={`layout__menu ${!toggleMenu && "hide-component"}`}
+          className={`layout__menu ${
+            !greaterThanTabletL && !toggleMenu && "hide-component"
+          }`}
           width="100%"
           height="calc(100vh - 50px)"
           position="absolute"
@@ -145,11 +153,10 @@ const StyledMenu = styled(Container)`
       }
     }
 
-    @media ${theme.device.desktopS} {
+    @media ${theme.device.tabletL} {
       .layout__menu {
         width: 60px;
         position: static;
-        z-index: 10;
 
         &:hover {
           width: 200px;

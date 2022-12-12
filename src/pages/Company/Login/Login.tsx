@@ -39,7 +39,7 @@ const Login = () => {
             <TextField width="100%" label="Password" type="password" />
           </Container>
 
-          <Button width="100%" title="Continuar" />
+          <Button width="100%" label="Continuar" />
         </Container>
       </Container>
     </StyledLoginContainer>

@@ -114,7 +114,6 @@ select {
   text-transform: none;
 }
 
-[type='button'],
 [type='reset'],
 [type='submit'] {
   -webkit-appearance: button;
