@@ -12,7 +12,7 @@ type InputTextAreaProps = TextAreaProps & {
 };
 
 const InputTextArea: React.FC<InputTextAreaProps> = (props) => {
-  const { disabled, width, hasError = false, ...rest } = props;
+  const { disabled, width, hasError = false, rows, ...rest } = props;
 
   return (
     <StyledInputTextAreaWrapper
@@ -24,7 +24,7 @@ const InputTextArea: React.FC<InputTextAreaProps> = (props) => {
         disabled={disabled}
         $hasError={hasError}
         $width={width}
-        rows={4}
+        rows={rows}
         {...rest}
       />
 

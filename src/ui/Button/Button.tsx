@@ -13,7 +13,11 @@ const Button: React.FC<ButtonProps> = (props) => {
 
   return (
     <StyledButton width={width} hierarchy={hierarchy} {...rest}>
-      <Text.Body size="m" weight="bold" color="Neutral0">
+      <Text.Body
+        size="m"
+        weight="bold"
+        color={hierarchy === "primary" ? "Neutral0" : "Primary5"}
+      >
         {title}
       </Text.Body>
     </StyledButton>
@@ -52,6 +56,7 @@ const StyledButton = styled.button<{
 
     ${hierarchy === "secondary" &&
     css`
+      background-color: ${theme.colors.Neutral0};
       border: 2px solid ${theme.colors.Primary5};
       color: ${theme.colors.Primary5};
 

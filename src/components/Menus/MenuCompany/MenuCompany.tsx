@@ -96,7 +96,11 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({
           </ul>
         </Container>
 
-        <Container className="layout__content" width="100%" height="100%">
+        <Container
+          className={`layout__content ${toggleMenu && "hide-component"}`}
+          width="100%"
+          height="100%"
+        >
           {children}
         </Container>
       </Container>
@@ -145,6 +149,7 @@ const StyledMenu = styled(Container)`
       .layout__menu {
         width: 60px;
         position: static;
+        z-index: 10;
 
         &:hover {
           width: 200px;

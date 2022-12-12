@@ -99,7 +99,6 @@ table {
   border-collapse: collapse;
 }
 
-button,
 input,
 optgroup,
 select,
@@ -111,12 +110,10 @@ textarea {
   padding: 0;
 }
 
-button,
 select {
   text-transform: none;
 }
 
-button,
 [type='button'],
 [type='reset'],
 [type='submit'] {

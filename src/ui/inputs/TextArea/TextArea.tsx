@@ -38,7 +38,6 @@ const StyledTextArea = styled.textarea<StyledTextAreaProps>`
     line-height: ${props.lineHeight}px;
     color: ${props.theme.colors.Neutral8};
     width: 100%;
-    height: ${props.size === "small" ? "72px" : "112px"};
     resize: vertical;
     outline: none;
 
