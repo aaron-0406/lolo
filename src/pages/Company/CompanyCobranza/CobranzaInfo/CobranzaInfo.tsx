@@ -29,11 +29,19 @@ const CobranzaInfo = () => {
       </div>
 
       <div className="field-wrapper">
+        <Label label="DNI o RUC:" />
+        <TextField width="calc(100% - 98px)" />
+      </div>
+
+      <div className="field-wrapper">
         <Label label="Cliente:" />
         <TextAreaField width="100%" rows={2} />
       </div>
 
-      <TextAreaField label="Perímetro venta:" width="100%" rows={1} />
+      <div className="fields-wrapper-container-d">
+        <TextAreaField label="Perímetro venta:" width="100%" rows={1} />
+        <Select label="Gestor:" width="100%" />
+      </div>
 
       <div className="fields-wrapper-container-d">
         <div className="field-wrapper">
