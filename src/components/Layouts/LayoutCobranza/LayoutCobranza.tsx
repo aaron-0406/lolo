@@ -7,10 +7,11 @@ type LayoutCobranzaProps = {
   leftHeader: React.ReactNode;
   leftActions: React.ReactNode;
   leftContent: React.ReactNode;
+  rightComments: React.ReactNode;
 };
 
 const LayoutCobranza: React.FC<LayoutCobranzaProps> = (props) => {
-  const { leftHeader, leftActions, leftContent } = props;
+  const { leftHeader, leftActions, leftContent, rightComments } = props;
 
   const greaterThanTabletL = useMediaQuery(device.tabletL);
 
@@ -45,7 +46,7 @@ const LayoutCobranza: React.FC<LayoutCobranzaProps> = (props) => {
         backgroundColor="#eff0f6ff"
         padding="20px"
       >
-        <Container>GESTION</Container>
+        {rightComments}
       </Container>
     </StyledContainer>
   );

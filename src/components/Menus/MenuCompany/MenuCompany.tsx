@@ -126,7 +126,7 @@ const StyledMenu = styled(Container)`
 
     .layout__menu {
       transition: width 0.3s ease;
-      background-color: ${theme.colors.Neutral6};
+      background-color: ${theme.colors.Primary5};
       top: 50px;
 
       .nav {

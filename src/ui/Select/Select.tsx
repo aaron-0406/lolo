@@ -67,14 +67,16 @@ const Select = <T extends string, K extends Record<string, unknown>>(
 
   return (
     <StyledWrapper width={width}>
-      <InputLabel
-        name={rest.name}
-        label={label}
-        tooltipMessage={tooltipMessage}
-        required={required}
-        optional={optional}
-        disabled={disabled}
-      />
+      {label && (
+        <InputLabel
+          name={rest.name}
+          label={label}
+          tooltipMessage={tooltipMessage}
+          required={required}
+          optional={optional}
+          disabled={disabled}
+        />
+      )}
 
       <Container position="relative" onClick={onSelectToogle} tabIndex={0}>
         <StyledSelect

@@ -16,36 +16,42 @@ const CobranzaInfo = () => {
       gap="10px"
       overFlowY="auto"
     >
-      <Container display="flex" gap="15px">
-        <Label label="Código:" />
-        <TextField width="100%" />
-      </Container>
+      <div className="fields-wrapper-container-t">
+        <div className="field-wrapper">
+          <Label label="Código:" />
+          <TextField width="100%" />
+        </div>
 
-      <Container display="flex" gap="15px">
-        <Label label="Estado:" />
-        <TextField width="100%" />
-      </Container>
+        <div className="field-wrapper">
+          <Label label="Estado:" />
+          <Select width="100%" />
+        </div>
+      </div>
 
-      <Container display="flex" gap="15px">
+      <div className="field-wrapper">
         <Label label="Cliente:" />
         <TextAreaField width="100%" rows={2} />
-      </Container>
+      </div>
 
       <TextAreaField label="Perímetro venta:" width="100%" rows={1} />
 
-      <Container display="flex" gap="15px">
-        <Label label="Funcionario:" />
-        <Select width="100%" />
-      </Container>
+      <div className="fields-wrapper-container-d">
+        <div className="field-wrapper">
+          <Label label="Funcionario:" />
+          <Select width="100%" />
+        </div>
 
-      <Container display="flex" gap="15px">
-        <Label label="Jurisdicción:" />
-        <Select width="100%" />
-      </Container>
+        <div className="field-wrapper">
+          <Label label="Jurisdicción:" />
+          <Select width="100%" />
+        </div>
+      </div>
 
-      <TextAreaField width="100%" label="Teléfonos 1:" rows={2} />
+      <div className="fields-wrapper-container-t">
+        <TextAreaField width="100%" label="Teléfonos 1:" rows={2} />
 
-      <TextAreaField width="100%" label="Teléfonos 2:" rows={2} />
+        <TextAreaField width="100%" label="Teléfonos 2:" rows={2} />
+      </div>
 
       <TextAreaField width="100%" label="Teléfonos 3:" rows={2} />
     </StyledContainer>
@@ -59,14 +65,45 @@ const StyledContainer = styled(Container)`
     border-radius: 8px;
     border: 1px solid ${theme.colors.Neutral4};
 
+    .fields-wrapper-container-t {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .fields-wrapper-container-d {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .field-wrapper {
+      width: 100%;
+      display: flex;
+      gap: 15px;
+    }
+
     @media ${theme.device.tabletS} {
       padding: 30px 40px;
     }
 
     @media ${theme.device.tabletL} {
+      .fields-wrapper-container-t {
+        flex-direction: row;
+        gap: 15px;
+      }
     }
 
     @media ${theme.device.desktopS} {
+    }
+
+    @media ${theme.device.desktopL} {
+      .fields-wrapper-container-d {
+        flex-direction: row;
+        gap: 15px;
+      }
     }
   `}
 `;
