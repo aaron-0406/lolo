@@ -13,7 +13,7 @@ const CobranzaInfo = () => {
       padding="15px"
       display="flex"
       flexDirection="column"
-      gap="10px"
+      gap="20px"
       overFlowY="auto"
     >
       <div className="fields-wrapper-container-t">
@@ -69,14 +69,14 @@ const StyledContainer = styled(Container)`
       width: 100%;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 20px;
     }
 
     .fields-wrapper-container-d {
       width: 100%;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 20px;
     }
 
     .field-wrapper {
@@ -97,6 +97,7 @@ const StyledContainer = styled(Container)`
     }
 
     @media ${theme.device.desktopS} {
+      padding: 30px 50px;
     }
 
     @media ${theme.device.desktopL} {

@@ -10,7 +10,7 @@ const CobranzaActions = () => {
   return (
     <StyledContainer
       width="100%"
-      height="70px"
+      height="75px"
       display="flex"
       justifyContent="center"
       alignItems="center"

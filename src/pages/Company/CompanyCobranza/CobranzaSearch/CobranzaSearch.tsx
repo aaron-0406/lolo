@@ -39,6 +39,7 @@ const StyledContainer = styled(Container)`
     }
 
     @media ${theme.device.desktopS} {
+      padding: 15px 50px;
     }
   `}
 `;

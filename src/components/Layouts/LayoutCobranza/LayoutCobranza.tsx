@@ -74,6 +74,7 @@ const StyledContainer = styled(Container)`
     @media ${theme.device.desktopS} {
       .container__left {
         width: calc(100% - 400px);
+        gap: 10px;
       }
 
       .container__right {
