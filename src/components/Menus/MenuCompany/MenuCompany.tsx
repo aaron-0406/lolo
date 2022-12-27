@@ -20,7 +20,9 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({
 }) => {
   const [toggleMenu, setToggleMenu] = useState(false);
 
-  const { customer } = useLoloContext();
+  const {
+    client: { customer },
+  } = useLoloContext();
 
   const greaterThanTabletL = useMediaQuery(device.tabletL);
 

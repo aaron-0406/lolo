@@ -16,7 +16,9 @@ const ProtectedRoutesCompany: React.FC<ProtectedRoutesCompanyProps> = ({
 }) => {
   const { urlIdentifier } = useParams<GuestParamsType>();
 
-  const { setCustomer } = useLoloContext();
+  const {
+    client: { setCustomer },
+  } = useLoloContext();
 
   const { isLoading, isError } = useQuery(
     "query-customer",
