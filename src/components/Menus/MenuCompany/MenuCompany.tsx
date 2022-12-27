@@ -2,11 +2,12 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import styled, { css } from "styled-components";
 import { device } from "../../../shared/breakpoints/reponsive";
+import { useLoloContext } from "../../../shared/contexts/LoloProvider";
 import { useMediaQuery } from "../../../shared/hooks/useMediaQuery";
-import paths from "../../../shared/routes/paths";
 import Container from "../../../ui/Container";
 import Icon from "../../../ui/Icon";
 import Text from "../../../ui/Text";
+import { getMenuItems } from "./utils/get-menu-items";
 
 type MenuCompanyProps = {
   children: JSX.Element;
@@ -19,28 +20,11 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({
 }) => {
   const [toggleMenu, setToggleMenu] = useState(false);
 
+  const { customer } = useLoloContext();
+
   const greaterThanTabletL = useMediaQuery(device.tabletL);
 
-  const items = [
-    {
-      id: 1,
-      title: "PERFIL",
-      remixClass: "ri-user-6-fill",
-      path: paths.company.perfil(urlIdentifier),
-    },
-    {
-      id: 2,
-      title: "CLIENTES",
-      remixClass: "ri-group-fill",
-      path: paths.company.clientes(urlIdentifier),
-    },
-    {
-      id: 3,
-      title: "COBRANZA",
-      remixClass: "ri-pie-chart-2-fill",
-      path: paths.company.cobranza(urlIdentifier),
-    },
-  ];
+  const items = getMenuItems(urlIdentifier);
 
   const onClickToggle = () => {
     if (!greaterThanTabletL) {
@@ -67,7 +51,7 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({
         <Icon remixClass="ri-menu-line" size={30} onClick={onClickToggle} />
 
         <Text.Body size="l" weight="bold">
-          HIDALGO VIDAL
+          {customer.companyName}
         </Text.Body>
       </Container>
 
