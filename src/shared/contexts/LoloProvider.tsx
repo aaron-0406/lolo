@@ -52,9 +52,10 @@ export const LoloProvider: React.FC<LoloProviderProps> = ({ children }) => {
     Array<CustomerHasBankType>
   >(appLoloBankStateKey, []);
 
+  //TODO: change 1 to 0 when you will select a bank
   const [selectedBankState, setSelectedBankState] = usePersistedState(
     appLoloSelectedBankStateKey,
-    0
+    1
   );
 
   const setCustomer = (customer: CustomerType) => {
