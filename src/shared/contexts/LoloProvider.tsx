@@ -13,6 +13,7 @@ const initialCustomerState: CustomerType = {
   companyName: "",
   urlIdentifier: "",
   state: false,
+  customerBanks: [],
 };
 
 export const LoloContext = createContext<{
