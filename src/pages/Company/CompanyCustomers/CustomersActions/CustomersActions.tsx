@@ -11,7 +11,9 @@ const CustomersActions = () => {
     client: { customer },
   } = useLoloContext();
 
-  const [bankID, setBankID] = useState<string>();
+  const {
+    bank: { selectedBank, setSelectedBank },
+  } = useLoloContext();
 
   const options: Array<SelectItemType> = customer.customerBanks.map((bank) => {
     return {
@@ -21,7 +23,7 @@ const CustomersActions = () => {
   });
 
   const onChangeBank = (key: string) => {
-    setBankID(key);
+    setSelectedBank(key);
   };
 
   return (
@@ -41,7 +43,7 @@ const CustomersActions = () => {
         <Select
           width="100%"
           label="Seleccionar banco:"
-          value={bankID}
+          value={selectedBank}
           options={options}
           onChange={onChangeBank}
         />

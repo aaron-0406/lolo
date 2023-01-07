@@ -4,6 +4,6 @@ const API = axiosClient.getUri();
 
 const url = `${API}/client`;
 
-export const getAllClientsByCHB = async (chb: number) => {
+export const getAllClientsByCHB = async (chb: string) => {
   return await axiosClient.get(`${url}/${chb}`);
 };

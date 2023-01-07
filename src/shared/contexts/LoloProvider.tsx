@@ -24,8 +24,8 @@ export const LoloContext = createContext<{
   bank: {
     banks: Array<CustomerHasBankType>;
     setBanks: (banks: Array<CustomerHasBankType>) => void;
-    selectedBank: number;
-    setSelectedBank: (selectedBank: number) => void;
+    selectedBank: string;
+    setSelectedBank: (selectedBank: string) => void;
   };
 } | null>(null);
 
@@ -53,10 +53,9 @@ export const LoloProvider: React.FC<LoloProviderProps> = ({ children }) => {
     Array<CustomerHasBankType>
   >(appLoloBankStateKey, []);
 
-  //TODO: change 1 to 0 when you will select a bank
   const [selectedBankState, setSelectedBankState] = usePersistedState(
     appLoloSelectedBankStateKey,
-    1
+    ""
   );
 
   const setCustomer = (customer: CustomerType) => {
@@ -67,7 +66,7 @@ export const LoloProvider: React.FC<LoloProviderProps> = ({ children }) => {
     setBanksState(banks);
   };
 
-  const setSelectedBank = (selectedBank: number) => {
+  const setSelectedBank = (selectedBank: string) => {
     setSelectedBankState(selectedBank);
   };
 
