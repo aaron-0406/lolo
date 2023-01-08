@@ -18,7 +18,5 @@ export default {
       `/${urlIdentifier}/clientes`,
     cobranza: (urlIdentifier = ":urlIdentifier") =>
       `/${urlIdentifier}/cobranza`,
-    cobranzaCode: (urlIdentifier = ":urlIdentifier", code = ":code") =>
-      `/${urlIdentifier}/cobranza/${code}`,
   },
 };

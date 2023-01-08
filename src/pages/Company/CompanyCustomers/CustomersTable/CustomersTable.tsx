@@ -36,7 +36,7 @@ const CustomersTable = () => {
   );
 
   const onClickRow = (code: string) => {
-    navigate(paths.company.cobranza(urlIdentifier));
+    navigate(`${paths.company.cobranza(urlIdentifier)}?code=${code}`);
   };
 
   useEffect(() => {

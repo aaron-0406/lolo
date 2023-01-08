@@ -1,9 +1,14 @@
+import { useSearchParams } from "react-router-dom";
 import styled, { css } from "styled-components";
 import Container from "../../../../ui/Container";
 import TextField from "../../../../ui/fields/TextField";
 import Label from "../../../../ui/Label";
 
 const CobranzaSearch = () => {
+  const [params] = useSearchParams();
+
+  const code = params.get("code") ?? "";
+
   return (
     <StyledContainer
       display="flex"
@@ -18,6 +23,7 @@ const CobranzaSearch = () => {
           width="100%"
           placeholder="Código o RUC"
           trailingIcon="ri-search-line"
+          defaultValue={code}
         />
       </Container>
     </StyledContainer>
