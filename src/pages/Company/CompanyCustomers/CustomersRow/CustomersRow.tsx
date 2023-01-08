@@ -7,13 +7,23 @@ type CustomersRowProps = {
   name: string;
   state: string;
   createdAt?: Date;
+  onClick?: (code: string) => void;
 };
 
 const CustomersRow = (props: CustomersRowProps) => {
-  const { code, name, state, createdAt } = props;
+  const { code, name, state, createdAt, onClick } = props;
+
+  const onClickRow = () => {
+    onClick?.(code);
+  };
 
   return (
-    <StyledContainer width="100%" height="60px" display="flex">
+    <StyledContainer
+      width="100%"
+      height="60px"
+      display="flex"
+      onClick={onClickRow}
+    >
       <Container
         width="20%"
         height="100%"
@@ -42,6 +52,11 @@ export default CustomersRow;
 
 const StyledContainer = styled(Container)`
   ${({ theme }) => css`
+    cursor: pointer;
     border-bottom: 2px solid ${theme.colors.Neutral4};
+
+    &:hover {
+      background-color: ${theme.colors.Neutral2};
+    }
   `}
 `;
