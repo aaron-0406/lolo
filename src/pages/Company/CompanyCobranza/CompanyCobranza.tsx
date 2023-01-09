@@ -27,8 +27,6 @@ const CompanyCobranza = () => {
     },
   });
 
-  console.log("dd", formMethods.watch());
-
   const {
     client: {
       customer: { id: customerID },
