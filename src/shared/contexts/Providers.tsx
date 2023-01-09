@@ -4,6 +4,7 @@ import GlobalStyles from "../../styles/GlobalStyles";
 import initialTheme from "../../styles/theme";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { LoloProvider } from "./LoloProvider";
+import { Toaster } from "react-hot-toast";
 
 interface ProvidersProps {
   children: React.ReactNode;
@@ -27,6 +28,7 @@ export const Providers: React.FC<ProvidersProps> = ({ children }) => {
         <LoloProvider>
           <ThemeProvider theme={initialTheme}>
             <GlobalStyles />
+            <Toaster />
             {children}
           </ThemeProvider>
         </LoloProvider>

@@ -15,7 +15,6 @@ const CustomersTable = () => {
     },
     bank: { selectedBank },
   } = useLoloContext();
-  console.log("🚀 ~ CustomersTable ~ selectedBank", selectedBank);
 
   const navigate = useNavigate();
 

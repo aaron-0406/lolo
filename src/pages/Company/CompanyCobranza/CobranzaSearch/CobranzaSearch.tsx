@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { useQuery } from "react-query";
 import { useSearchParams } from "react-router-dom";
@@ -9,12 +9,13 @@ import { ClientType } from "../../../../shared/types/client.type";
 import Container from "../../../../ui/Container";
 import TextField from "../../../../ui/fields/TextField";
 import Label from "../../../../ui/Label";
+import notification from "../../../../ui/notification";
 
 const CobranzaSearch = () => {
   const [params] = useSearchParams();
   const codeParams = params.get("code") ?? "";
 
-  const { setValue } = useFormContext<ClientType>();
+  const { setValue, reset } = useFormContext<ClientType>();
 
   const {
     bank: { selectedBank },
@@ -22,13 +23,13 @@ const CobranzaSearch = () => {
 
   const [code, setCode] = useState<string>(codeParams);
 
-  const { isError, refetch } = useQuery(
-    "query-client",
+  const { refetch } = useQuery(
+    "query-get-client-by-code",
     async () => {
       return await getClientByCode(code, selectedBank.idCHB);
     },
     {
-      enabled: !!code.length,
+      enabled: false,
       onSuccess: (data) => {
         setValue("id", data.data.id);
         setValue("code", data.data.code);
@@ -43,6 +44,15 @@ const CobranzaSearch = () => {
         setValue("funcionarioId", data.data.funcionarioId);
         setValue("customerUserId", data.data.customerUserId);
         setValue("customerHasBankId", data.data.customerHasBankId);
+
+        notification({ type: "success", message: "Cliente encontrado" });
+      },
+      onError: (error: any) => {
+        notification({
+          type: "info",
+          message: error.response.data.message,
+        });
+        reset();
       },
     }
   );
@@ -57,9 +67,11 @@ const CobranzaSearch = () => {
     setCode(e.target.value);
   };
 
-  const onBlur = () => {
-    refetch();
-  };
+  useEffect(() => {
+    if (!!codeParams.length) {
+      refetch();
+    }
+  }, []);
 
   return (
     <StyledContainer
@@ -76,7 +88,6 @@ const CobranzaSearch = () => {
           placeholder="Código o RUC"
           trailingIcon="ri-search-line"
           defaultValue={code}
-          onBlur={onBlur}
           onKeyDown={onKeyDown}
           onChange={onChange}
         />
