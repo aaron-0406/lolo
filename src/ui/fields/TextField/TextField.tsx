@@ -21,6 +21,7 @@ type TextFieldProps = Omit<
     prefix?: string;
     size?: InputSize;
     clearInput?: boolean;
+    onClickTrailing?: (value: string) => void;
   };
 
 const initialCounter = 0;
@@ -36,6 +37,7 @@ const TextField: React.FC<TextFieldProps> = (props) => {
     optional,
     required,
     charactersLimit,
+    onClickTrailing,
     ...rest
   } = props;
 
@@ -54,6 +56,10 @@ const TextField: React.FC<TextFieldProps> = (props) => {
       inputRef.current.dispatchEvent(inputEvent);
       setCountDown(initialCounter);
     }
+  };
+
+  const onClickTrailingIcon = () => {
+    onClickTrailing?.(String(value));
   };
 
   const [countDown, setCountDown] = useState<number>(
@@ -87,6 +93,7 @@ const TextField: React.FC<TextFieldProps> = (props) => {
         <InputText
           ref={inputRef}
           onClear={onClear}
+          onClickTrailingIcon={onClickTrailingIcon}
           onKeyUp={onKeyUpInput}
           value={value}
           numberCharacters={countDown}

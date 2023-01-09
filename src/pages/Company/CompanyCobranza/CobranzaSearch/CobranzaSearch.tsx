@@ -77,6 +77,10 @@ const CobranzaSearch = () => {
     }
   }, []);
 
+  const onClickTrailing = () => {
+    refetch();
+  };
+
   return (
     <StyledContainer
       display="flex"
@@ -94,6 +98,7 @@ const CobranzaSearch = () => {
           defaultValue={code}
           onKeyDown={onKeyDown}
           onChange={onChange}
+          onClickTrailing={onClickTrailing}
         />
       </Container>
     </StyledContainer>

@@ -17,6 +17,7 @@ type InputTextProps = InputProps & {
   hasError?: boolean;
   width?: string;
   onClear?: () => void;
+  onClickTrailingIcon?: () => void;
   clearInput?: boolean;
   numberCharacters?: number;
 };
@@ -35,6 +36,7 @@ const InputText = forwardRef(
       suffix,
       prefix,
       onClear,
+      onClickTrailingIcon,
       disabled,
       leadingIcon,
       trailingIcon,
@@ -105,7 +107,11 @@ const InputText = forwardRef(
               height="24px"
               className="trailing__icon"
             >
-              <Icon size={20} remixClass={trailingIcon} />
+              <Icon
+                size={20}
+                remixClass={trailingIcon}
+                onClick={onClickTrailingIcon}
+              />
             </Container>
           )
         )}
