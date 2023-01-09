@@ -139,6 +139,7 @@ const CobranzaActions = () => {
         trailingIcon="ri-edit-2-line"
         onClick={onUpdateClient}
         loading={loadingUpdateClient}
+        disabled={!getValues("id")}
       />
       <Button
         width="125px"
@@ -148,6 +149,7 @@ const CobranzaActions = () => {
         trailingIcon="ri-close-line"
         onClick={onDeleteClient}
         loading={loadingDeleteClient}
+        disabled={!getValues("id")}
       />
       <Button
         width="100px"
