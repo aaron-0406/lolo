@@ -11,7 +11,11 @@ import TextField from "../../../../ui/fields/TextField";
 import Label from "../../../../ui/Label";
 import notification from "../../../../ui/notification";
 
-const CobranzaSearch = () => {
+type CobranzaSearchProps = {
+  setLoadingGlobal: (state: boolean) => void;
+};
+
+const CobranzaSearch = ({ setLoadingGlobal }: CobranzaSearchProps) => {
   const [params] = useSearchParams();
   const codeParams = params.get("code") ?? "";
 
@@ -45,6 +49,8 @@ const CobranzaSearch = () => {
         setValue("customerUserId", data.data.customerUserId);
         setValue("customerHasBankId", data.data.customerHasBankId);
 
+        setLoadingGlobal(false);
+
         notification({ type: "success", message: "Cliente encontrado" });
       },
       onError: (error: any) => {
@@ -57,12 +63,15 @@ const CobranzaSearch = () => {
         setValue("salePerimeter", "");
         setValue("phone", "");
         setValue("email", "");
+
+        setLoadingGlobal(false);
       },
     }
   );
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
+      setLoadingGlobal(true);
       refetch();
     }
   };
@@ -71,10 +80,17 @@ const CobranzaSearch = () => {
     setCode(e.target.value);
   };
 
+  const onClickTrailing = () => {
+    setLoadingGlobal(true);
+    refetch();
+  };
+
   useEffect(() => {
     if (!!codeParams.length) {
+      setLoadingGlobal(true);
       refetch();
     }
+    // eslint-disable-next-line
   }, []);
 
   return (
@@ -94,6 +110,7 @@ const CobranzaSearch = () => {
           defaultValue={code}
           onKeyDown={onKeyDown}
           onChange={onChange}
+          onClickTrailing={onClickTrailing}
         />
       </Container>
     </StyledContainer>

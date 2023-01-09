@@ -1,14 +1,53 @@
 import { Controller, useFormContext } from "react-hook-form";
 import styled, { css } from "styled-components";
+import { useLoloContext } from "../../../../shared/contexts/LoloProvider";
 import { ClientType } from "../../../../shared/types/client.type";
 import Container from "../../../../ui/Container";
 import TextAreaField from "../../../../ui/fields/TextAreaField";
 import TextField from "../../../../ui/fields/TextField";
 import Label from "../../../../ui/Label";
 import Select from "../../../../ui/Select";
+import { SelectItemType } from "../../../../ui/Select/interfaces";
 
-const CobranzaInfo = () => {
+type CobranzaInfoProps = {
+  loading: boolean;
+};
+
+const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
   const { control } = useFormContext<ClientType>();
+
+  const {
+    city: { cities },
+    user: { users },
+    funcionario: { funcionarios },
+  } = useLoloContext();
+
+  const optionsCities: Array<SelectItemType> = cities.map((city) => {
+    return {
+      key: String(city.id),
+      label: city.name,
+    };
+  });
+
+  const optionsUsers: Array<SelectItemType> = users.map((user) => {
+    return {
+      key: String(user.id),
+      label: user.name,
+    };
+  });
+
+  const optionsFuncionarios: Array<SelectItemType> = funcionarios.map(
+    (funcionario) => {
+      return {
+        key: String(funcionario.id),
+        label: funcionario.name,
+      };
+    }
+  );
+
+  if (loading) {
+    return <div>Loading ...</div>;
+  }
 
   return (
     <StyledContainer
@@ -89,18 +128,58 @@ const CobranzaInfo = () => {
           )}
         />
 
-        <Select label="Gestor:" width="100%" />
+        <Controller
+          name="customerUserId"
+          control={control}
+          render={({ field }) => (
+            <Select
+              label="Gestor:"
+              width="100%"
+              value={String(field.value)}
+              options={optionsUsers}
+              onChange={(key) => {
+                field.onChange(parseInt(key));
+              }}
+            />
+          )}
+        />
       </div>
 
       <div className="fields-wrapper-container-d">
         <div className="field-wrapper">
           <Label label="Funcionario:" />
-          <Select width="100%" />
+          <Controller
+            name="funcionarioId"
+            control={control}
+            render={({ field }) => (
+              <Select
+                width="100%"
+                value={String(field.value)}
+                options={optionsFuncionarios}
+                onChange={(key) => {
+                  field.onChange(parseInt(key));
+                }}
+              />
+            )}
+          />
         </div>
 
         <div className="field-wrapper">
           <Label label="Jurisdicción:" />
-          <Select width="100%" />
+          <Controller
+            name="cityId"
+            control={control}
+            render={({ field }) => (
+              <Select
+                width="100%"
+                value={String(field.value)}
+                options={optionsCities}
+                onChange={(key) => {
+                  field.onChange(parseInt(key));
+                }}
+              />
+            )}
+          />
         </div>
       </div>
 

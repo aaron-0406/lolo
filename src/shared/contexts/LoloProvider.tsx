@@ -1,7 +1,10 @@
 import { createContext, useContext } from "react";
 import { usePersistedState } from "../hooks/usePersistedState";
+import { CityType } from "../types/city.type";
 import { CustomerHasBankType } from "../types/customer-has-bank";
+import { CustomerUserType } from "../types/customer-user.type";
 import { CustomerType } from "../types/customer.type";
+import { FuncionarioType } from "../types/funcionario.type";
 
 const appLoloClientStateKey = "lolo:client";
 const appLoloBankStateKey = "lolo:bank";
@@ -32,6 +35,18 @@ export const LoloContext = createContext<{
     selectedBank: SelectedBankType;
     setSelectedBank: (selectedBank: SelectedBankType) => void;
   };
+  city: {
+    cities: Array<CityType>;
+    setCities: (cities: Array<CityType>) => void;
+  };
+  user: {
+    users: Array<CustomerUserType>;
+    setUsers: (users: Array<CustomerUserType>) => void;
+  };
+  funcionario: {
+    funcionarios: Array<FuncionarioType>;
+    setFuncionarios: (funcionarios: Array<FuncionarioType>) => void;
+  };
 } | null>(null);
 
 export const useLoloContext = () => {
@@ -58,6 +73,19 @@ export const LoloProvider: React.FC<LoloProviderProps> = ({ children }) => {
     Array<CustomerHasBankType>
   >(appLoloBankStateKey, []);
 
+  const [citiesState, setCitiesState] = usePersistedState<Array<CityType>>(
+    appLoloBankStateKey,
+    []
+  );
+
+  const [usersState, setUsersState] = usePersistedState<
+    Array<CustomerUserType>
+  >(appLoloBankStateKey, []);
+
+  const [funcionariosState, setFuncionariosState] = usePersistedState<
+    Array<FuncionarioType>
+  >(appLoloBankStateKey, []);
+
   const [selectedBankState, setSelectedBankState] = usePersistedState(
     appLoloSelectedBankStateKey,
     {
@@ -72,6 +100,18 @@ export const LoloProvider: React.FC<LoloProviderProps> = ({ children }) => {
 
   const setBanks = (banks: Array<CustomerHasBankType>) => {
     setBanksState(banks);
+  };
+
+  const setCities = (cities: Array<CityType>) => {
+    setCitiesState(cities);
+  };
+
+  const setUsers = (users: Array<CustomerUserType>) => {
+    setUsersState(users);
+  };
+
+  const setFuncionarios = (funcionarios: Array<FuncionarioType>) => {
+    setFuncionariosState(funcionarios);
   };
 
   const setSelectedBank = (selectedBank: SelectedBankType) => {
@@ -90,6 +130,18 @@ export const LoloProvider: React.FC<LoloProviderProps> = ({ children }) => {
           setBanks,
           selectedBank: selectedBankState,
           setSelectedBank,
+        },
+        city: {
+          cities: citiesState,
+          setCities: setCities,
+        },
+        user: {
+          users: usersState,
+          setUsers: setUsers,
+        },
+        funcionario: {
+          funcionarios: funcionariosState,
+          setFuncionarios: setFuncionarios,
         },
       }}
     >
