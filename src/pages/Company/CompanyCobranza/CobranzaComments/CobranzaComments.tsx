@@ -1,14 +1,22 @@
-import { useState } from "react";
 import Button from "../../../../ui/Button";
 import Container from "../../../../ui/Container";
 import DatePicker from "../../../../ui/DatePicker/DatePicker";
 import TextAreaField from "../../../../ui/fields/TextAreaField";
 import moment from "moment";
+import { Controller, useForm } from "react-hook-form";
+import { CommentType } from "../../../../shared/types/comment.type";
 
 const CobranzaComments = () => {
-  const [valueDate, setValueDate] = useState<string>(
-    moment(new Date()).format("DD/MM/YYYY")
-  );
+  const { control, setValue, getValues } = useForm<CommentType>({
+    defaultValues: {
+      id: 0,
+      comment: "",
+      date: moment(new Date()).format("DD/MM/YYYY"),
+      clientId: 0,
+      customerUserId: 0,
+      negotiation: "",
+    },
+  });
 
   return (
     <Container width="100%" display="flex" flexDirection="column" gap="20px">
@@ -17,9 +25,10 @@ const CobranzaComments = () => {
           required
           placeholder="Ingrese la fecha"
           dateFormat="DD-MM-YYYY"
-          value={valueDate}
+          value={getValues().date}
           getDate={(e) => {
-            setValueDate(e);
+            console.log(getValues());
+            setValue("date", e);
           }}
         />
       </Container>
@@ -49,7 +58,18 @@ const CobranzaComments = () => {
       </Container>
 
       <Container width="100%">
-        <TextAreaField width="100%" rows={4} />
+        <Controller
+          name="comment"
+          control={control}
+          render={({ field }) => (
+            <TextAreaField
+              width="100%"
+              rows={4}
+              value={field.value}
+              onChange={field.onChange}
+            />
+          )}
+        />
       </Container>
 
       <Container></Container>
