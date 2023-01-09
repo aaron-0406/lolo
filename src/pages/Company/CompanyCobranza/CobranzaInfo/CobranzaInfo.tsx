@@ -1,8 +1,6 @@
 import { Controller, useFormContext } from "react-hook-form";
-import { useQuery } from "react-query";
 import styled, { css } from "styled-components";
-import { getAllCities } from "../../../../shared/services/city.service";
-import { CityType } from "../../../../shared/types/city.type";
+import { useLoloContext } from "../../../../shared/contexts/LoloProvider";
 import { ClientType } from "../../../../shared/types/client.type";
 import Container from "../../../../ui/Container";
 import TextAreaField from "../../../../ui/fields/TextAreaField";
@@ -11,21 +9,45 @@ import Label from "../../../../ui/Label";
 import Select from "../../../../ui/Select";
 import { SelectItemType } from "../../../../ui/Select/interfaces";
 
-const CobranzaInfo = () => {
+type CobranzaInfoProps = {
+  loading: boolean;
+};
+
+const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
   const { control } = useFormContext<ClientType>();
 
-  const { data } = useQuery("query-get-all-cities", async () => {
-    return await getAllCities();
+  const {
+    city: { cities },
+    user: { users },
+    funcionario: { funcionarios },
+  } = useLoloContext();
+
+  const optionsCities: Array<SelectItemType> = cities.map((city) => {
+    return {
+      key: String(city.id),
+      label: city.name,
+    };
   });
 
-  const options: Array<SelectItemType> = data
-    ? data.data.map((city: CityType) => {
-        return {
-          key: city.id,
-          label: city.name,
-        };
-      })
-    : [];
+  const optionsUsers: Array<SelectItemType> = users.map((user) => {
+    return {
+      key: String(user.id),
+      label: user.name,
+    };
+  });
+
+  const optionsFuncionarios: Array<SelectItemType> = funcionarios.map(
+    (funcionario) => {
+      return {
+        key: String(funcionario.id),
+        label: funcionario.name,
+      };
+    }
+  );
+
+  if (loading) {
+    return <div>Loading ...</div>;
+  }
 
   return (
     <StyledContainer
@@ -106,13 +128,40 @@ const CobranzaInfo = () => {
           )}
         />
 
-        <Select label="Gestor:" width="100%" />
+        <Controller
+          name="customerUserId"
+          control={control}
+          render={({ field }) => (
+            <Select
+              label="Gestor:"
+              width="100%"
+              value={String(field.value)}
+              options={optionsUsers}
+              onChange={(key) => {
+                field.onChange(parseInt(key));
+              }}
+            />
+          )}
+        />
       </div>
 
       <div className="fields-wrapper-container-d">
         <div className="field-wrapper">
           <Label label="Funcionario:" />
-          <Select width="100%" />
+          <Controller
+            name="funcionarioId"
+            control={control}
+            render={({ field }) => (
+              <Select
+                width="100%"
+                value={String(field.value)}
+                options={optionsFuncionarios}
+                onChange={(key) => {
+                  field.onChange(parseInt(key));
+                }}
+              />
+            )}
+          />
         </div>
 
         <div className="field-wrapper">
@@ -124,9 +173,9 @@ const CobranzaInfo = () => {
               <Select
                 width="100%"
                 value={String(field.value)}
-                options={options}
+                options={optionsCities}
                 onChange={(key) => {
-                  field.onChange(String(key));
+                  field.onChange(parseInt(key));
                 }}
               />
             )}

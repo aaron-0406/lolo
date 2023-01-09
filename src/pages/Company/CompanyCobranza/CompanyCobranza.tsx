@@ -1,5 +1,10 @@
+import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import { useQuery } from "react-query";
 import LayoutCobranza from "../../../components/Layouts/LayoutCobranza";
+import { useLoloContext } from "../../../shared/contexts/LoloProvider";
+import { getAllUsersByID } from "../../../shared/services/customer-user.service";
+import { getAllFuncionarios } from "../../../shared/services/funcionario.service";
 import { ClientType } from "../../../shared/types/client.type";
 import CobranzaActions from "./CobranzaActions";
 import CobranzaComments from "./CobranzaComments";
@@ -22,12 +27,54 @@ const CompanyCobranza = () => {
     },
   });
 
+  const {
+    client: {
+      customer: { id: customerID },
+    },
+    user: { setUsers },
+    funcionario: { setFuncionarios },
+  } = useLoloContext();
+
+  const { isLoading: isLoadingUsers } = useQuery(
+    "query-get-all-users-by-id",
+    async () => {
+      return await getAllUsersByID(customerID);
+    },
+    {
+      onSuccess: (response) => {
+        setUsers(response.data);
+      },
+    }
+  );
+
+  const { isLoading: isLoadingFuncionarios } = useQuery(
+    "query-get-all-funcionarios",
+    async () => {
+      return await getAllFuncionarios();
+    },
+    {
+      onSuccess: (response) => {
+        setFuncionarios(response.data);
+      },
+    }
+  );
+
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const setLoadingGlobal = (state: boolean) => {
+    setLoading(state);
+  };
+
   return (
     <FormProvider {...formMethods}>
       <LayoutCobranza
-        leftHeader={<CobranzaSearch />}
+        leftHeader={<CobranzaSearch setLoadingGlobal={setLoadingGlobal} />}
         leftActions={<CobranzaActions />}
-        leftContent={<CobranzaInfo />}
+        leftContent={
+          <CobranzaInfo
+            loading={loading || isLoadingUsers || isLoadingFuncionarios}
+          />
+        }
         rightComments={<CobranzaComments />}
       />
     </FormProvider>
