@@ -72,6 +72,7 @@ const Select = <T extends string, K extends Record<string, unknown>>(
         label: options?.find((option) => option.key === value)?.label as T,
       });
     }
+    // eslint-disable-next-line
   }, [value]);
 
   return (

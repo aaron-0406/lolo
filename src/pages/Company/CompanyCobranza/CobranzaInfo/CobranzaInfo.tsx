@@ -2,12 +2,15 @@ import { Controller, useFormContext } from "react-hook-form";
 import styled, { css } from "styled-components";
 import { useLoloContext } from "../../../../shared/contexts/LoloProvider";
 import { ClientType } from "../../../../shared/types/client.type";
+import Button from "../../../../ui/Button";
 import Container from "../../../../ui/Container";
 import TextAreaField from "../../../../ui/fields/TextAreaField";
 import TextField from "../../../../ui/fields/TextField";
 import Label from "../../../../ui/Label";
+import Modal from "../../../../ui/Modal";
 import Select from "../../../../ui/Select";
 import { SelectItemType } from "../../../../ui/Select/interfaces";
+import CobranzaInfoModals from "./CobranzaInfoModals";
 
 type CobranzaInfoProps = {
   loading: boolean;
@@ -243,6 +246,8 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
           )}
         />
       </div>
+
+      <CobranzaInfoModals />
     </StyledContainer>
   );
 };
