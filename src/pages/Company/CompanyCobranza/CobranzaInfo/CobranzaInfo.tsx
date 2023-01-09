@@ -1,14 +1,31 @@
 import { Controller, useFormContext } from "react-hook-form";
+import { useQuery } from "react-query";
 import styled, { css } from "styled-components";
+import { getAllCities } from "../../../../shared/services/city.service";
+import { CityType } from "../../../../shared/types/city.type";
 import { ClientType } from "../../../../shared/types/client.type";
 import Container from "../../../../ui/Container";
 import TextAreaField from "../../../../ui/fields/TextAreaField";
 import TextField from "../../../../ui/fields/TextField";
 import Label from "../../../../ui/Label";
 import Select from "../../../../ui/Select";
+import { SelectItemType } from "../../../../ui/Select/interfaces";
 
 const CobranzaInfo = () => {
   const { control } = useFormContext<ClientType>();
+
+  const { data } = useQuery("query-get-all-cities", async () => {
+    return await getAllCities();
+  });
+
+  const options: Array<SelectItemType> = data
+    ? data.data.map((city: CityType) => {
+        return {
+          key: city.id,
+          label: city.name,
+        };
+      })
+    : [];
 
   return (
     <StyledContainer
@@ -100,7 +117,20 @@ const CobranzaInfo = () => {
 
         <div className="field-wrapper">
           <Label label="Jurisdicción:" />
-          <Select width="100%" />
+          <Controller
+            name="cityId"
+            control={control}
+            render={({ field }) => (
+              <Select
+                width="100%"
+                value={String(field.value)}
+                options={options}
+                onChange={(key) => {
+                  field.onChange(String(key));
+                }}
+              />
+            )}
+          />
         </div>
       </div>
 
