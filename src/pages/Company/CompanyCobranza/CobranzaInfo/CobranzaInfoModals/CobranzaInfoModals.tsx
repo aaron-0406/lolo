@@ -7,7 +7,16 @@ import Modal from "../../../../../ui/Modal";
 
 const CobranzaInfoModals = () => {
   const { getValues } = useFormContext<ClientType>();
-  const { visible, showModal, hideModal } = useModal();
+  const {
+    visible: visibleModalFiadores,
+    showModal: showModalFiadores,
+    hideModal: hideModalFiadores,
+  } = useModal();
+  const {
+    visible: visibleModalAddresses,
+    showModal: showModalAddresses,
+    hideModal: hideModalAddresses,
+  } = useModal();
 
   return (
     <div className="fields-wrapper-container-t">
@@ -16,20 +25,37 @@ const CobranzaInfoModals = () => {
         label="Fiadores"
         trailingIcon="ri-archive-drawer-line"
         disabled={!getValues("id")}
-        onClick={showModal}
+        onClick={showModalFiadores}
       />
       <Button
         width="100%"
         label="Direcciones"
         trailingIcon="ri-archive-drawer-line"
         disabled={!getValues("id")}
+        onClick={showModalAddresses}
       />
 
       <Modal
         id="modal-fiadores"
         title="Fiadores"
-        visible={visible}
-        onClose={hideModal}
+        visible={visibleModalFiadores}
+        onClose={hideModalFiadores}
+      >
+        <Container
+          display="flex"
+          flexDirection="column"
+          position="relative"
+          overFlowY="auto"
+          height="100%"
+          width="100%"
+        ></Container>
+      </Modal>
+
+      <Modal
+        id="modal-addresses"
+        title="Direcciones"
+        visible={visibleModalAddresses}
+        onClose={hideModalAddresses}
       >
         <Container
           display="flex"
