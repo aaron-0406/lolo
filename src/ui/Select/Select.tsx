@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { HTMLAttributes } from "react";
 import type CSS from "csstype";
 import styled, { css } from "styled-components";
@@ -64,6 +64,15 @@ const Select = <T extends string, K extends Record<string, unknown>>(
     setState(option);
     onChange?.(option.key, option);
   };
+
+  useEffect(() => {
+    if (value) {
+      setState({
+        key: value,
+        label: options?.find((option) => option.key === value)?.label as T,
+      });
+    }
+  }, [value]);
 
   return (
     <StyledWrapper width={width}>
