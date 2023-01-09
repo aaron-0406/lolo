@@ -17,7 +17,9 @@ const CobranzaComments = () => {
       negotiation: "",
     },
   });
+  const handleCreateComment = ()=>{
 
+  }
   return (
     <Container width="100%" display="flex" flexDirection="column" gap="20px">
       <Container width="100%" display="flex" gap="5px">
@@ -27,7 +29,6 @@ const CobranzaComments = () => {
           dateFormat="DD-MM-YYYY"
           value={getValues().date}
           getDate={(e) => {
-            console.log(getValues());
             setValue("date", e);
           }}
         />
@@ -41,7 +42,7 @@ const CobranzaComments = () => {
         overFlowX="auto"
         gap="20px"
       >
-        <Button width="100px" shape="round" trailingIcon="ri-add-fill" />
+        <Button onClick={handleCreateComment} width="100px" shape="round" trailingIcon="ri-add-fill" />
         <Button width="100px" shape="round" trailingIcon="ri-edit-2-line" />
         <Button
           width="100px"
