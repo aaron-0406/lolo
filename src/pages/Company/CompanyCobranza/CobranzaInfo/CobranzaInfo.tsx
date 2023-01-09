@@ -14,7 +14,10 @@ type CobranzaInfoProps = {
 };
 
 const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
-  const { control } = useFormContext<ClientType>();
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext<ClientType>();
 
   const {
     city: { cities },
@@ -45,6 +48,11 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
     }
   );
 
+  const optionsStates: Array<SelectItemType> = [
+    { key: "ASIGNADO", label: "ASIGNADO" },
+    { key: "RETIRADO", label: "RETIRADO" },
+  ];
+
   if (loading) {
     return <div>Loading ...</div>;
   }
@@ -70,6 +78,7 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
                 width="100%"
                 value={field.value}
                 onChange={field.onChange}
+                hasError={!!errors.code}
               />
             )}
           />
@@ -78,7 +87,21 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
         <div className="field-wrapper">
           <Label label="Estado:" />
 
-          <Select width="100%" />
+          <Controller
+            name="state"
+            control={control}
+            render={({ field }) => (
+              <Select
+                width="100%"
+                value={field.value}
+                options={optionsStates}
+                onChange={(key) => {
+                  field.onChange(key);
+                }}
+                hasError={!!errors.state}
+              />
+            )}
+          />
         </div>
       </div>
 
@@ -92,6 +115,7 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
               width="calc(100% - 98px)"
               value={field.value}
               onChange={field.onChange}
+              hasError={!!errors.dniOrRuc}
             />
           )}
         />
@@ -108,6 +132,7 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
               rows={2}
               value={field.value}
               onChange={field.onChange}
+              hasError={!!errors.name}
             />
           )}
         />
@@ -124,6 +149,7 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
               rows={1}
               value={field.value}
               onChange={field.onChange}
+              hasError={!!errors.salePerimeter}
             />
           )}
         />
@@ -140,6 +166,7 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
               onChange={(key) => {
                 field.onChange(parseInt(key));
               }}
+              hasError={!!errors.customerUserId}
             />
           )}
         />
@@ -159,6 +186,7 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
                 onChange={(key) => {
                   field.onChange(parseInt(key));
                 }}
+                hasError={!!errors.funcionarioId}
               />
             )}
           />
@@ -177,6 +205,7 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
                 onChange={(key) => {
                   field.onChange(parseInt(key));
                 }}
+                hasError={!!errors.cityId}
               />
             )}
           />
@@ -194,6 +223,7 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
               rows={2}
               value={field.value}
               onChange={field.onChange}
+              hasError={!!errors.phone}
             />
           )}
         />
@@ -208,6 +238,7 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
               rows={2}
               value={field.value}
               onChange={field.onChange}
+              hasError={!!errors.email}
             />
           )}
         />

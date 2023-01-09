@@ -10,9 +10,11 @@ import CobranzaActions from "./CobranzaActions";
 import CobranzaComments from "./CobranzaComments";
 import CobranzaInfo from "./CobranzaInfo";
 import CobranzaSearch from "./CobranzaSearch";
+import { CompanyCobranzaResolver } from "./CompanyCobranza.yup";
 
 const CompanyCobranza = () => {
   const formMethods = useForm<ClientType>({
+    resolver: CompanyCobranzaResolver,
     mode: "all",
     defaultValues: {
       id: 0,

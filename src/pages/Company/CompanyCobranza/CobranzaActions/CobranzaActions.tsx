@@ -7,7 +7,7 @@ import Button from "../../../../ui/Button";
 import Container from "../../../../ui/Container";
 
 const CobranzaActions = () => {
-  const { setValue, reset } = useFormContext<ClientType>();
+  const { setValue, reset, handleSubmit } = useFormContext<ClientType>();
 
   const greaterThanDesktopS = useMediaQuery(device.desktopS);
 
@@ -16,6 +16,17 @@ const CobranzaActions = () => {
     setValue("salePerimeter", "");
     setValue("phone", "");
     setValue("email", "");
+  };
+
+  const onAddClient = () => {
+    handleSubmit(
+      (data) => {
+        console.log("success", data);
+      },
+      (error) => {
+        console.log("error", error);
+      }
+    )();
   };
 
   return (
@@ -33,6 +44,7 @@ const CobranzaActions = () => {
         label={greaterThanDesktopS && "Agregar"}
         shape={greaterThanDesktopS ? "default" : "round"}
         trailingIcon="ri-add-fill"
+        onClick={onAddClient}
       />
       <Button
         width="140px"
