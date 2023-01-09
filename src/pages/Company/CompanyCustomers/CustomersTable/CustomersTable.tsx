@@ -15,6 +15,7 @@ const CustomersTable = () => {
     },
     bank: { selectedBank },
   } = useLoloContext();
+  console.log("🚀 ~ CustomersTable ~ selectedBank", selectedBank);
 
   const navigate = useNavigate();
 
@@ -22,12 +23,12 @@ const CustomersTable = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const { refetch } = useQuery(
-    "query-client",
+    "query-get-all-clients-by-chb",
     async () => {
-      return await getAllClientsByCHB(selectedBank);
+      return await getAllClientsByCHB(selectedBank.idCHB);
     },
     {
-      enabled: !!selectedBank.length,
+      enabled: !!selectedBank.idCHB.length,
       onSuccess: (data) => {
         setCustomers(data.data);
         setIsLoading(false);
@@ -40,7 +41,7 @@ const CustomersTable = () => {
   };
 
   useEffect(() => {
-    if (selectedBank.length) {
+    if (selectedBank.idCHB.length) {
       setIsLoading(true);
       refetch();
     }

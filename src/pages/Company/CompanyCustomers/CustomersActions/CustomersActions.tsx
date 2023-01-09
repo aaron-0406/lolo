@@ -1,4 +1,3 @@
-import { useState } from "react";
 import styled, { css } from "styled-components";
 import { useLoloContext } from "../../../../shared/contexts/LoloProvider";
 import Container from "../../../../ui/Container";
@@ -23,7 +22,14 @@ const CustomersActions = () => {
   });
 
   const onChangeBank = (key: string) => {
-    setSelectedBank(key);
+    const customerBank = customer.customerBanks.find(
+      (customerBank) => String(customerBank.id) === key
+    );
+
+    setSelectedBank({
+      idBank: key,
+      idCHB: String(customerBank?.CUSTOMER_HAS_BANK.id),
+    });
   };
 
   return (
@@ -43,7 +49,7 @@ const CustomersActions = () => {
         <Select
           width="100%"
           label="Seleccionar banco:"
-          value={selectedBank}
+          value={selectedBank.idBank}
           options={options}
           onChange={onChangeBank}
         />

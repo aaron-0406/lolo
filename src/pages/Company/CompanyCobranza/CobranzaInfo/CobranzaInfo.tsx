@@ -1,4 +1,6 @@
+import { Controller, useFormContext } from "react-hook-form";
 import styled, { css } from "styled-components";
+import { ClientType } from "../../../../shared/types/client.type";
 import Container from "../../../../ui/Container";
 import TextAreaField from "../../../../ui/fields/TextAreaField";
 import TextField from "../../../../ui/fields/TextField";
@@ -6,6 +8,8 @@ import Label from "../../../../ui/Label";
 import Select from "../../../../ui/Select";
 
 const CobranzaInfo = () => {
+  const { control } = useFormContext<ClientType>();
+
   return (
     <StyledContainer
       width="100%"
@@ -19,27 +23,72 @@ const CobranzaInfo = () => {
       <div className="fields-wrapper-container-t">
         <div className="field-wrapper">
           <Label label="Código:" />
-          <TextField width="100%" />
+          <Controller
+            name="code"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                width="100%"
+                value={field.value}
+                onChange={field.onChange}
+              />
+            )}
+          />
         </div>
 
         <div className="field-wrapper">
           <Label label="Estado:" />
+
           <Select width="100%" />
         </div>
       </div>
 
       <div className="field-wrapper">
         <Label label="DNI o RUC:" />
-        <TextField width="calc(100% - 98px)" />
+        <Controller
+          name="dniOrRuc"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              width="calc(100% - 98px)"
+              value={field.value}
+              onChange={field.onChange}
+            />
+          )}
+        />
       </div>
 
       <div className="field-wrapper">
         <Label label="Cliente:" />
-        <TextAreaField width="100%" rows={2} />
+        <Controller
+          name="name"
+          control={control}
+          render={({ field }) => (
+            <TextAreaField
+              width="100%"
+              rows={2}
+              value={field.value}
+              onChange={field.onChange}
+            />
+          )}
+        />
       </div>
 
       <div className="fields-wrapper-container-d">
-        <TextAreaField label="Perímetro venta:" width="100%" rows={1} />
+        <Controller
+          name="salePerimeter"
+          control={control}
+          render={({ field }) => (
+            <TextAreaField
+              label="Perímetro venta:"
+              width="100%"
+              rows={1}
+              value={field.value}
+              onChange={field.onChange}
+            />
+          )}
+        />
+
         <Select label="Gestor:" width="100%" />
       </div>
 
@@ -56,12 +105,34 @@ const CobranzaInfo = () => {
       </div>
 
       <div className="fields-wrapper-container-t">
-        <TextAreaField width="100%" label="Teléfonos 1:" rows={2} />
+        <Controller
+          name="phone"
+          control={control}
+          render={({ field }) => (
+            <TextAreaField
+              width="100%"
+              label="Teléfonos:"
+              rows={2}
+              value={field.value}
+              onChange={field.onChange}
+            />
+          )}
+        />
 
-        <TextAreaField width="100%" label="Teléfonos 2:" rows={2} />
+        <Controller
+          name="email"
+          control={control}
+          render={({ field }) => (
+            <TextAreaField
+              width="100%"
+              label="Email:"
+              rows={2}
+              value={field.value}
+              onChange={field.onChange}
+            />
+          )}
+        />
       </div>
-
-      <TextAreaField width="100%" label="Teléfonos 3:" rows={2} />
     </StyledContainer>
   );
 };

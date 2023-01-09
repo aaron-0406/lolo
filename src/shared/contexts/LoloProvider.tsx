@@ -7,6 +7,11 @@ const appLoloClientStateKey = "lolo:client";
 const appLoloBankStateKey = "lolo:bank";
 const appLoloSelectedBankStateKey = "lolo:selected:bank";
 
+type SelectedBankType = {
+  idBank: string;
+  idCHB: string;
+};
+
 const initialCustomerState: CustomerType = {
   id: 0,
   ruc: "",
@@ -24,8 +29,8 @@ export const LoloContext = createContext<{
   bank: {
     banks: Array<CustomerHasBankType>;
     setBanks: (banks: Array<CustomerHasBankType>) => void;
-    selectedBank: string;
-    setSelectedBank: (selectedBank: string) => void;
+    selectedBank: SelectedBankType;
+    setSelectedBank: (selectedBank: SelectedBankType) => void;
   };
 } | null>(null);
 
@@ -55,7 +60,10 @@ export const LoloProvider: React.FC<LoloProviderProps> = ({ children }) => {
 
   const [selectedBankState, setSelectedBankState] = usePersistedState(
     appLoloSelectedBankStateKey,
-    ""
+    {
+      idBank: "",
+      idCHB: "",
+    }
   );
 
   const setCustomer = (customer: CustomerType) => {
@@ -66,7 +74,7 @@ export const LoloProvider: React.FC<LoloProviderProps> = ({ children }) => {
     setBanksState(banks);
   };
 
-  const setSelectedBank = (selectedBank: string) => {
+  const setSelectedBank = (selectedBank: SelectedBankType) => {
     setSelectedBankState(selectedBank);
   };
 
