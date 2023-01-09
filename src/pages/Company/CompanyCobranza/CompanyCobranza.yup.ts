@@ -1,5 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ClientType } from "../../../shared/types/client.type";
+import { CommentType } from "../../../shared/types/comment.type";
 import yup from "../../../shared/yupLocale";
 
 const CompanyCobranzaSchema: yup.SchemaOf<
@@ -18,4 +19,17 @@ const CompanyCobranzaSchema: yup.SchemaOf<
   customerHasBankId: yup.number().required().min(1),
 });
 
+const CompanyCobranzaCommentSchema: yup.SchemaOf<Omit<CommentType, "id">> = yup
+  .object()
+  .shape({
+    clientId: yup.number().min(1).required(),
+    customerUserId: yup.number().min(1).required(),
+    comment: yup.string().required(),
+    date: yup.string().required(),
+    negotiation: yup.string().required(),
+  });
+
 export const CompanyCobranzaResolver = yupResolver(CompanyCobranzaSchema);
+export const CompanyCobranzaCommentResolver = yupResolver(
+  CompanyCobranzaCommentSchema
+);

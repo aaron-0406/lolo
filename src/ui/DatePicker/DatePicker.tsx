@@ -34,7 +34,7 @@ const MONTH_SHORT_NAMES = [
   "Dec",
 ];
 
-const DAYS = ["L", "M", "M", "J", "V", "S", "D"];
+const DAYS = ["D", "L", "M", "M", "J", "V", "S"];
 
 type DatePickerProps = {
   selectedDate?: string;
@@ -42,7 +42,7 @@ type DatePickerProps = {
   name?: string;
   placeholder?: string;
   required?: boolean;
-  dateFormat?: "DD-MM-YYYY" | "YYYY-MM-DD" | "D d M, Y";
+  dateFormat?: "DD-MM-YYYY" | "YYYY-MM-DD" | "D d M, Y" | "DD/MM/YYYY";
   width?: string;
   label?: string;
   labelFontSize?: string;
@@ -87,13 +87,12 @@ const DatePicker: React.FC<DatePickerProps> = (props) => {
   const [valueInput, setValueInput] = useState<string>(value);
 
   useEffect(() => {
-    getNoOfDays(new Date().getFullYear(), new Date().getMonth() + 1);
+    getNoOfDays(new Date().getFullYear(), new Date().getMonth());
     return () => {
       setNoOfDays([]);
       setBlankDays([]);
     };
   }, []);
-
 
   const formatDateForDisplay = (date: any): string => {
     let formattedDay = DAYS[date.getDay()];
@@ -104,6 +103,8 @@ const DatePicker: React.FC<DatePickerProps> = (props) => {
       -2
     );
     let formattedYear = date.getFullYear();
+    if (dateFormat === "DD/MM/YYYY")
+      return `${formattedDate}/${formattedMonthInNumber}/${formattedYear}`;
     if (dateFormat === "DD-MM-YYYY")
       return `${formattedDate}-${formattedMonthInNumber}-${formattedYear}`;
     if (dateFormat === "YYYY-MM-DD")
@@ -213,8 +214,8 @@ const DatePicker: React.FC<DatePickerProps> = (props) => {
                   width="100%"
                   color="#000"
                 >
-                  {valueInput ? (
-                    <>{valueInput}</>
+                  {value ? (
+                    <>{value}</>
                   ) : (
                     <Container color="rgb(156 163 175)">
                       {placeholder}
