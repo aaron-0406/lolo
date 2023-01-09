@@ -1,11 +1,22 @@
+import { useFormContext } from "react-hook-form";
 import styled, { css } from "styled-components";
 import { device } from "../../../../shared/breakpoints/reponsive";
 import { useMediaQuery } from "../../../../shared/hooks/useMediaQuery";
+import { ClientType } from "../../../../shared/types/client.type";
 import Button from "../../../../ui/Button";
 import Container from "../../../../ui/Container";
 
 const CobranzaActions = () => {
+  const { setValue, reset } = useFormContext<ClientType>();
+
   const greaterThanDesktopS = useMediaQuery(device.desktopS);
+
+  const onClean = () => {
+    reset();
+    setValue("salePerimeter", "");
+    setValue("phone", "");
+    setValue("email", "");
+  };
 
   return (
     <StyledContainer
@@ -41,6 +52,7 @@ const CobranzaActions = () => {
         shape="round"
         display="warning"
         trailingIcon="ri-delete-bin-line"
+        onClick={onClean}
       />
     </StyledContainer>
   );

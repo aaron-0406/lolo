@@ -52,7 +52,11 @@ const CobranzaSearch = () => {
           type: "info",
           message: error.response.data.message,
         });
+
         reset();
+        setValue("salePerimeter", "");
+        setValue("phone", "");
+        setValue("email", "");
       },
     }
   );
