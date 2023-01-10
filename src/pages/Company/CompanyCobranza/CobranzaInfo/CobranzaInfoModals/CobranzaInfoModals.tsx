@@ -6,6 +6,7 @@ import Container from "../../../../../ui/Container";
 import Modal from "../../../../../ui/Modal";
 import ModalAddresses from "./ModalAddresses";
 import ModalFiadores from "./ModalFiadores";
+import ModalFiles from "./ModalFiles/ModalFiles";
 
 const CobranzaInfoModals = () => {
   const { getValues } = useFormContext<ClientType>();
@@ -19,11 +20,23 @@ const CobranzaInfoModals = () => {
     showModal: showModalAddresses,
     hideModal: hideModalAddresses,
   } = useModal();
+  const {
+    visible: visibleModalFiles,
+    showModal: showModalFiles,
+    hideModal: hideModalFiles,
+  } = useModal();
 
   const clientId = getValues("id");
 
   return (
     <div className="fields-wrapper-container-t">
+      <Button
+        width="100%"
+        label="Archivos"
+        trailingIcon="ri-archive-drawer-line"
+        disabled={!clientId}
+        onClick={showModalFiles}
+      />
       <Button
         width="100%"
         label="Fiadores"
@@ -46,6 +59,14 @@ const CobranzaInfoModals = () => {
         onClose={hideModalFiadores}
       >
         <ModalFiadores clientId={clientId} />
+      </Modal>
+      <Modal
+        id="modal-files"
+        title="Archivos"
+        visible={visibleModalFiles}
+        onClose={hideModalFiles}
+      >
+        <ModalFiles clientId={clientId} />
       </Modal>
 
       <Modal

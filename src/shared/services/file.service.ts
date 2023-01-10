@@ -9,6 +9,10 @@ export const postCreateFile = async (formData: FormData, id: number) => {
     headers: { "Content-Type": "multipart/form-data" },
   });
 };
-export const getFile = async (id: number) => {
+export const getFiles = async (id: number) => {
   return await axiosClient.get(`${url}/${id}`);
+};
+
+export const deleteFile = async (id: number) => {
+  return await axiosClient.delete(`${url}/${id}`);
 };

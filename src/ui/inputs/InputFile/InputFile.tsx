@@ -20,26 +20,21 @@ const InputFile: React.FC<InputFileProps> = (props) => {
     }
   };
   return (
-    <Container width="100%">
-      <Container></Container>
-      <ContainerInput
-        width="100%"
-        position="relative"
-        display="flex"
-        flexDirection="row"
-        gap="10px"
-      >
-        <StyledInput onChange={handleChangeInput} type="file" {...rest} />
-        <StyledButton>Choose File</StyledButton>
-        <StyledContainerNameFile
-          width="20rem"
-          display="flex"
-          alignItems="center"
-        >
-          {file?.name || filename || "Upload Your File"}
-        </StyledContainerNameFile>
-      </ContainerInput>
-    </Container>
+    <ContainerInput
+      width="100%"
+      position="relative"
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      flexDirection="row"
+      gap="10px"
+    >
+      <StyledInput onChange={handleChangeInput} type="file" {...rest} />
+      <StyledButton>Choose File</StyledButton>
+      <StyledContainerNameFile width="100%" display="flex" alignItems="center">
+        {file?.name || filename || "Upload Your File"}
+      </StyledContainerNameFile>
+    </ContainerInput>
   );
 };
 

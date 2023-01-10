@@ -59,17 +59,15 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({
 
       <Container
         width="100%"
-        height="calc(100vh - 50px)"
         display="flex"
         flexDirection="row"
+        position="relative"
       >
-        <Container
+        <SideBar
           className={`layout__menu ${
             !greaterThanTabletL && !toggleMenu && "hide-component"
           }`}
           width="100%"
-          height="calc(100vh - 50px)"
-          position="absolute"
         >
           <ul className="nav">
             {items.map((item) => {
@@ -88,7 +86,7 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({
               );
             })}
           </ul>
-        </Container>
+        </SideBar>
 
         <Container
           className={`layout__content ${toggleMenu && "hide-component"}`}
@@ -104,6 +102,12 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({
 
 export default MenuCompany;
 
+const SideBar = styled(Container)`
+  position: sticky;
+  top: 0;
+  left: 0;
+`;
+
 const StyledMenu = styled(Container)`
   ${({ theme }) => css`
     .layout__header {
@@ -116,6 +120,7 @@ const StyledMenu = styled(Container)`
       top: 50px;
 
       .nav {
+        height: 100vh;
         width: 100%;
         display: flex;
         flex-direction: column;

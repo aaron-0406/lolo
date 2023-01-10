@@ -193,6 +193,7 @@ const CobranzaComments = () => {
           render={({ field }) => (
             <DatePicker
               required
+              label="Fecha"
               selectedDate={field.value}
               placeholder="Ingrese la fecha"
               dateFormat="DD-MM-YYYY"
@@ -281,10 +282,10 @@ const CobranzaComments = () => {
 
       <StyledContainerCommentsList
         backgroundColor="#fff"
-        maxHeight="21rem"
         overFlowY="auto"
         display="flex"
         flexDirection="column"
+        height="20rem"
       >
         {comments.map((item) => {
           return (
@@ -304,12 +305,23 @@ const CobranzaComments = () => {
 export default CobranzaComments;
 
 const StyledContainerCommentsList = styled(Container)`
-  &::-webkit-scrollbar {
-    width: 1px;
-  }
   border-radius: 10px;
   ${({ theme }) =>
     css`
       border: 2px solid ${theme.colors.Neutral4};
+      ::-webkit-scrollbar-thumb {
+        background: ${theme.colors.Neutral5};
+        border-radius: 10px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: ${theme.colors.Neutral4};
+      }
+      ::-webkit-scrollbar-track {
+        background-color: transparent;
+      }
+      ::-webkit-scrollbar {
+        width: 10px;
+        background-color: transparent;
+      }
     `}
 `;
