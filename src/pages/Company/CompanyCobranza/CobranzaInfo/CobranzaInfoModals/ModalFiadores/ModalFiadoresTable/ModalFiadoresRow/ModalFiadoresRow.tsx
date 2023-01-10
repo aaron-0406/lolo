@@ -4,16 +4,16 @@ import Text from "../../../../../../../../ui/Text";
 
 type ModalFiadoresRowProps = {
   id: number;
-  code: string;
+  guarantorId: number;
   name: string;
-  onClick?: (code: string) => void;
+  onClick?: (guarantorId: number) => void;
 };
 
 const ModalFiadoresRow = (props: ModalFiadoresRowProps) => {
-  const { id, code, name, onClick } = props;
+  const { id, guarantorId, name, onClick } = props;
 
   const onClickRow = () => {
-    onClick?.(code);
+    onClick?.(guarantorId);
   };
 
   return (
