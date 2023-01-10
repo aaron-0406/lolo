@@ -10,6 +10,7 @@ import Label from "../../../../ui/Label";
 import Modal from "../../../../ui/Modal";
 import Select from "../../../../ui/Select";
 import { SelectItemType } from "../../../../ui/Select/interfaces";
+import CobranzaFileForm from "./CobranzaFileForm";
 import CobranzaInfoModals from "./CobranzaInfoModals";
 
 type CobranzaInfoProps = {
@@ -19,6 +20,8 @@ type CobranzaInfoProps = {
 const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
   const {
     control,
+    getValues,
+    watch,
     formState: { errors },
   } = useFormContext<ClientType>();
 
@@ -246,6 +249,11 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
           )}
         />
       </div>
+      {!!watch().id && (
+        <div className="fields-wrapper-container-t">
+          <CobranzaFileForm clientId={getValues().id} />
+        </div>
+      )}
 
       <CobranzaInfoModals />
     </StyledContainer>

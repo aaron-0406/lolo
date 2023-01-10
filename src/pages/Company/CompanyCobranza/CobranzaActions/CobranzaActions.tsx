@@ -155,7 +155,7 @@ const CobranzaActions = () => {
         width="100px"
         shape="round"
         display="warning"
-        trailingIcon="ri-delete-bin-line"
+        trailingIcon="ri-brush-2-line"
         onClick={onClean}
       />
     </StyledContainer>

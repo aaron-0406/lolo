@@ -20,7 +20,7 @@ import {
 } from "../../../../shared/services/comment.service";
 import { useEffect, useState } from "react";
 import CommentItem from "./CommentItem";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 const CobranzaComments = () => {
   const { getValues: getValuesClient } = useFormContext<ClientType>();
@@ -31,7 +31,7 @@ const CobranzaComments = () => {
     getValues,
     handleSubmit,
     reset,
-
+    watch,
     formState: { errors },
   } = useForm<CommentType>({
     resolver: CompanyCobranzaCommentResolver,
@@ -179,7 +179,9 @@ const CobranzaComments = () => {
     if (!!getValuesClient().id) {
       refetchGet();
     }
-    return () => {};
+    return () => {
+      setComments([]);
+    };
   }, [getValuesClient().id]);
 
   return (
@@ -212,18 +214,21 @@ const CobranzaComments = () => {
         gap="20px"
       >
         <Button
+          disabled={!getValuesClient("id")}
           onClick={onAddComment}
           width="100px"
           shape="round"
           trailingIcon="ri-add-fill"
         />
         <Button
+          disabled={!getValuesClient("id")}
           onClick={onEditComment}
           width="100px"
           shape="round"
           trailingIcon="ri-edit-2-line"
         />
         <Button
+          disabled={!getValuesClient("id")}
           onClick={onDeleteComment}
           width="100px"
           shape="round"
@@ -276,7 +281,7 @@ const CobranzaComments = () => {
 
       <StyledContainerCommentsList
         backgroundColor="#fff"
-        height="21rem"
+        maxHeight="21rem"
         overFlowY="auto"
         display="flex"
         flexDirection="column"
@@ -284,6 +289,7 @@ const CobranzaComments = () => {
         {comments.map((item) => {
           return (
             <CommentItem
+              selected={watch().id === item.id}
               getComment={getComment}
               comment={item}
               key={`${item.id}comment`}
@@ -301,5 +307,9 @@ const StyledContainerCommentsList = styled(Container)`
   &::-webkit-scrollbar {
     width: 1px;
   }
-  border-radius: 20px;
+  border-radius: 10px;
+  ${({ theme }) =>
+    css`
+      border: 2px solid ${theme.colors.Neutral4};
+    `}
 `;

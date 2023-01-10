@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { CommentType } from "../../../../../shared/types/comment.type";
 import Container from "../../../../../ui/Container";
 import Text from "../../../../../ui/Text";
@@ -7,6 +7,7 @@ import moment from "moment";
 
 type CommentItemProps = {
   comment: CommentType;
+  selected: boolean;
   getComment: (comment: CommentType) => void;
 };
 
@@ -15,6 +16,7 @@ const CommentItem: React.FC<CommentItemProps> = (props) => {
     comment: { comment: commentText, date, negotiation },
     getComment,
     comment,
+    selected,
   } = props;
 
   const handleClickComment = () => {
@@ -23,6 +25,7 @@ const CommentItem: React.FC<CommentItemProps> = (props) => {
 
   return (
     <StyledComment
+      $selected={selected}
       padding="10px 15px"
       display="flex"
       gap="10px"
@@ -43,8 +46,8 @@ const CommentItem: React.FC<CommentItemProps> = (props) => {
           </Text.Body>
         </Container>
       </Container>
-      <Container>
-        <Text.Body size="m" weight="regular">
+      <Container display="flex" alignItems="center">
+        <Text.Body ellipsis size="m" weight="regular">
           {commentText}
         </Text.Body>
       </Container>
@@ -54,9 +57,15 @@ const CommentItem: React.FC<CommentItemProps> = (props) => {
 
 export default CommentItem;
 
-const StyledComment = styled(Container)`
+const StyledComment = styled(Container)<{ $selected: boolean }>`
   :hover {
     background-color: #eff0f6ff;
   }
+
   cursor: pointer;
+  ${({ theme, $selected }) =>
+    css`
+      border-bottom: 2px solid ${theme.colors.Neutral4};
+      background-color: ${$selected ? "#eff0f6ff" : ""};
+    `}
 `;
