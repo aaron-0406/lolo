@@ -1,6 +1,7 @@
 import { FormProvider, useForm } from "react-hook-form";
 import Container from "../../../../../../ui/Container";
 import { GuarantorFormType } from "./hookforms.interfaces";
+import { ModalFiadoresResolver } from "./ModalFiadores.yup";
 import ModalFiadoresActions from "./ModalFiadoresActions";
 import ModalFiadoresInfo from "./ModalFiadoresInfo";
 import ModalFiadoresTable from "./ModalFiadoresTable";
@@ -11,10 +12,13 @@ type ModalFiadoresProps = {
 
 const ModalFiadores = ({ clientId }: ModalFiadoresProps) => {
   const formMethods = useForm<GuarantorFormType>({
+    resolver: ModalFiadoresResolver,
     mode: "all",
     defaultValues: {
       id: 0,
       name: "",
+      phone: "",
+      email: "",
       clientId: clientId,
       guarantors: [],
     },

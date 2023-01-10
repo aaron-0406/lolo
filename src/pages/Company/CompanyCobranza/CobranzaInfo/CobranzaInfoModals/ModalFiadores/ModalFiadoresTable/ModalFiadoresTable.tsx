@@ -9,10 +9,10 @@ import { GuarantorFormType } from "../hookforms.interfaces";
 import ModalFiadoresRow from "./ModalFiadoresRow";
 
 const ModalFiadoresTable = () => {
-  const { getValues, setValue } = useFormContext<GuarantorFormType>();
+  const { getValues, setValue, watch } = useFormContext<GuarantorFormType>();
 
   const clientId = getValues("clientId");
-  const fiadores = getValues("guarantors");
+  const fiadores = watch("guarantors");
 
   const { isLoading, refetch } = useQuery(
     "query-get-guarantors-by-client-id",
