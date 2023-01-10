@@ -4,6 +4,8 @@ import { ClientType } from "../../../../../shared/types/client.type";
 import Button from "../../../../../ui/Button";
 import Container from "../../../../../ui/Container";
 import Modal from "../../../../../ui/Modal";
+import ModalAddresses from "./ModalAddresses";
+import ModalFiadores from "./ModalFiadores";
 
 const CobranzaInfoModals = () => {
   const { getValues } = useFormContext<ClientType>();
@@ -18,20 +20,22 @@ const CobranzaInfoModals = () => {
     hideModal: hideModalAddresses,
   } = useModal();
 
+  const clientId = getValues("id");
+
   return (
     <div className="fields-wrapper-container-t">
       <Button
         width="100%"
         label="Fiadores"
         trailingIcon="ri-archive-drawer-line"
-        disabled={!getValues("id")}
+        disabled={!clientId}
         onClick={showModalFiadores}
       />
       <Button
         width="100%"
         label="Direcciones"
         trailingIcon="ri-archive-drawer-line"
-        disabled={!getValues("id")}
+        disabled={!clientId}
         onClick={showModalAddresses}
       />
 
@@ -41,14 +45,7 @@ const CobranzaInfoModals = () => {
         visible={visibleModalFiadores}
         onClose={hideModalFiadores}
       >
-        <Container
-          display="flex"
-          flexDirection="column"
-          position="relative"
-          overFlowY="auto"
-          height="100%"
-          width="100%"
-        ></Container>
+        <ModalFiadores clientId={clientId} />
       </Modal>
 
       <Modal
@@ -64,7 +61,9 @@ const CobranzaInfoModals = () => {
           overFlowY="auto"
           height="100%"
           width="100%"
-        ></Container>
+        >
+          <ModalAddresses />
+        </Container>
       </Modal>
     </div>
   );
