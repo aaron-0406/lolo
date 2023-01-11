@@ -251,6 +251,7 @@ const CobranzaComments = () => {
           control={control}
           render={({ field }) => (
             <Select
+              disabled={!getValuesClient("id")}
               width="100%"
               value={field.value}
               options={optionsStates}
@@ -266,6 +267,7 @@ const CobranzaComments = () => {
           control={control}
           render={({ field }) => (
             <TextAreaField
+              disabled={!getValuesClient("id")}
               width="100%"
               rows={4}
               value={field.value}

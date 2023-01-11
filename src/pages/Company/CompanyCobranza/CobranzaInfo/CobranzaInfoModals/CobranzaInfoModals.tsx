@@ -66,7 +66,7 @@ const CobranzaInfoModals = () => {
         visible={visibleModalFiles}
         onClose={hideModalFiles}
       >
-        <ModalFiles clientId={clientId} />
+        {/* <ModalFiles clientId={clientId} /> */}
       </Modal>
 
       <Modal

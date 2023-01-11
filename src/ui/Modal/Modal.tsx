@@ -83,7 +83,7 @@ const StyledBackdrop = styled(Container)`
     &.modal-overlay {
       top: 0;
       z-index: ${theme.zIndex.modal};
-      width: 100vw;
+      width: 100%;
       height: 100%;
       position: absolute;
       background: ${theme.colors.TransparentDark};

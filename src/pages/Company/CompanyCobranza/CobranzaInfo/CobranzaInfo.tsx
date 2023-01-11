@@ -249,11 +249,6 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
           )}
         />
       </div>
-      {/* {!!watch().id && (
-        <div className="fields-wrapper-container-t">
-          <CobranzaFileForm clientId={getValues().id} />
-        </div>
-      )} */}
       <CobranzaInfoModals />
     </StyledContainer>
   );
