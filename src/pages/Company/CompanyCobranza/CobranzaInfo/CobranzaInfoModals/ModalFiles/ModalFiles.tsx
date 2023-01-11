@@ -71,6 +71,7 @@ const ModalFiles: React.FC<ModalFilesProps> = (props) => {
       <ContainerTableFile
         backgroundColor={"#eff0f6ff"}
         width="100%"
+        minHeight="90%"
         padding="1rem"
         overFlowY="auto"
         maxHeight="90%"
