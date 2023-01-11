@@ -59,9 +59,9 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({
 
       <Container
         width="100%"
+        height="calc(100vh - 50px)"
         display="flex"
         flexDirection="row"
-        position="relative"
       >
         <Container
           className={`layout__menu ${
