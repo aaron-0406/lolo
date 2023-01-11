@@ -169,6 +169,10 @@ const CobranzaComments = () => {
 
   const optionsStates: Array<SelectItemType> = [
     { key: "CORREO", label: "CORREO" },
+    { key: "VISITA", label: "VISITA" },
+    { key: "LLAMADA", label: "LLAMADA" },
+    { key: "REUNIÓN OFICINA", label: "REUNIÓN OFICINA" },
+    { key: "MENSAJE WHATSAPP", label: "MENSAJE WHATSAPP" },
   ];
 
   const onClean = () => {
