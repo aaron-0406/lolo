@@ -184,6 +184,7 @@ const CobranzaComments = () => {
       refetchGet();
     }
     return () => {
+      onClean();
       setComments([]);
     };
   }, [getValuesClient().id]);
