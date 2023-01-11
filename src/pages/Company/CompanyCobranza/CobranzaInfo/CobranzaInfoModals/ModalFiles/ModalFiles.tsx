@@ -73,12 +73,11 @@ const ModalFiles: React.FC<ModalFilesProps> = (props) => {
         width="100%"
         padding="1rem"
         overFlowY="auto"
-        maxHeight="50%"
+        maxHeight="90%"
         >
         <ModalFilesTable files={files} setFiles={setFiles} />
       </ContainerTableFile>
       <Container
-        maxHeight="50%"
         width="100%"
         display="flex"
         justifyContent="center"

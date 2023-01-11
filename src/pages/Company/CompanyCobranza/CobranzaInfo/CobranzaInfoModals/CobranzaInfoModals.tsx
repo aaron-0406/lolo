@@ -65,8 +65,9 @@ const CobranzaInfoModals = () => {
         title="Archivos"
         visible={visibleModalFiles}
         onClose={hideModalFiles}
+        contentOverflowY="auto"
       >
-        {/* <ModalFiles clientId={clientId} /> */}
+        <ModalFiles clientId={clientId} />
       </Modal>
 
       <Modal
