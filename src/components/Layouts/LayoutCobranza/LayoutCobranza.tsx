@@ -44,7 +44,6 @@ const LayoutCobranza: React.FC<LayoutCobranzaProps> = (props) => {
           !greaterThanTabletL && "hide-component"
         }`}
         backgroundColor="#eff0f6ff"
-        padding="20px"
       >
         {rightComments}
       </Container>
