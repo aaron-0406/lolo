@@ -6,15 +6,17 @@ import ModalFileRow from "./ModalFileRow";
 type ModaFilesTableProps = {
   files: FileType[];
   setFiles: Dispatch<FileType[]>;
+  code: number;
 };
 
 const ModalFilesTable: React.FC<ModaFilesTableProps> = (props) => {
-  const { files, setFiles } = props;
+  const { files, setFiles, code } = props;
   return (
     <Container width="100%" display="flex" gap="0.2rem" flexDirection="column">
       {files.map((item) => {
         return (
           <ModalFileRow
+            code={code}
             files={files}
             setFiles={setFiles}
             file={item}

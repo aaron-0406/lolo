@@ -27,6 +27,7 @@ const CobranzaInfoModals = () => {
   } = useModal();
 
   const clientId = getValues("id");
+  const code = getValues("code");
 
   return (
     <div className="fields-wrapper-container-t">
@@ -67,7 +68,7 @@ const CobranzaInfoModals = () => {
         onClose={hideModalFiles}
         contentOverflowY="auto"
       >
-        <ModalFiles clientId={clientId} />
+        <ModalFiles clientId={clientId} code={Number(code)}/>
       </Modal>
 
       <Modal

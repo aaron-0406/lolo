@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import styled, { css } from "styled-components";
+import { useLoloContext } from "../../../../../../shared/contexts/LoloProvider";
 import {
   getFiles,
   postCreateFile,
@@ -16,11 +17,15 @@ type ChangeEvent = React.ChangeEvent<HTMLInputElement>;
 
 type ModalFilesProps = {
   clientId: number;
+  code: number;
 };
 
 const ModalFiles: React.FC<ModalFilesProps> = (props) => {
+  const {
+    bank: { selectedBank },
+  } = useLoloContext();
   const [files, setFiles] = useState<FileType[]>([]);
-  const { clientId } = props;
+  const { clientId, code } = props;
   const handleInputChange = async (e: ChangeEvent) => {
     if (e.target.files) {
       try {
@@ -31,7 +36,12 @@ const ModalFiles: React.FC<ModalFilesProps> = (props) => {
             const element = archivos[i];
             formData.append("file", element);
           }
-          const { data } = await postCreateFile(formData, clientId);
+          const { data } = await postCreateFile(
+            formData,
+            clientId,
+            code,
+            Number(selectedBank.idBank)
+          );
           setFiles([...files, ...data]);
           notification({ type: "success", message: "Documentos Creados" });
         }
@@ -46,7 +56,7 @@ const ModalFiles: React.FC<ModalFilesProps> = (props) => {
   const { refetch } = useQuery(
     "query-get-files",
     async () => {
-      return await getFiles(clientId);
+      return await getFiles(clientId, Number(selectedBank.idBank), code);
     },
     {
       onSuccess: ({ data }) => {
@@ -75,8 +85,8 @@ const ModalFiles: React.FC<ModalFilesProps> = (props) => {
         padding="1rem"
         overFlowY="auto"
         maxHeight="90%"
-        >
-        <ModalFilesTable files={files} setFiles={setFiles} />
+      >
+        <ModalFilesTable code={code} files={files} setFiles={setFiles} />
       </ContainerTableFile>
       <Container
         width="100%"

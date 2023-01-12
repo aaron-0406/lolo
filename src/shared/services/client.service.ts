@@ -13,8 +13,11 @@ export const getClientByCode = async (code: string, chb: string) => {
   return await axiosClient.get(`${url}/${code}/${chb}`);
 };
 
-export const createClient = async (client: Omit<ClientType, "id">) => {
-  return await axiosClient.post(url, client);
+export const createClient = async (
+  client: Omit<ClientType, "id">,
+  idBank: number
+) => {
+  return await axiosClient.post(`${url}/`, client);
 };
 
 export const updateClient = async (

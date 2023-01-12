@@ -28,7 +28,7 @@ const CobranzaActions = () => {
     useMutation<any, Error>(
       async () => {
         const { id, ...restClient } = getValues();
-        return await createClient(restClient);
+        return await createClient(restClient, Number(selectedBank.idBank));
       },
       {
         onSuccess: (data) => {

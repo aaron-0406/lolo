@@ -10,15 +10,21 @@ import Text from "../../../../../../../../ui/Text";
 import Button from "../../../../../../../../ui/Button";
 import { deleteFile } from "../../../../../../../../shared/services/file.service";
 import { useQuery } from "react-query";
+import { useLoloContext } from "../../../../../../../../shared/contexts/LoloProvider";
 
 type ModalFileRowProps = {
   file: FileType;
   files: FileType[];
   setFiles: Dispatch<FileType[]>;
+  code: number;
 };
 
 const ModalFileRow: React.FC<ModalFileRowProps> = (props) => {
   const {
+    bank: { selectedBank },
+  } = useLoloContext();
+  const {
+    code,
     file: { name, originalName, id },
     files,
     setFiles,
@@ -34,12 +40,12 @@ const ModalFileRow: React.FC<ModalFileRowProps> = (props) => {
   const { refetch: refetchDelete } = useQuery(
     "query-delete-file",
     async () => {
-      return await deleteFile(id);
+      return await deleteFile(Number(selectedBank.idBank), code, id);
     },
     {
       enabled: false,
       onSuccess: ({ data }) => {
-        setFiles(files.filter(item=>item.id!==Number(data.id)))
+        setFiles(files.filter((item) => item.id !== Number(data.id)));
       },
     }
   );
