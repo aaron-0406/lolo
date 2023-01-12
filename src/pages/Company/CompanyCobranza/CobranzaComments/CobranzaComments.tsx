@@ -169,6 +169,10 @@ const CobranzaComments = () => {
 
   const optionsStates: Array<SelectItemType> = [
     { key: "CORREO", label: "CORREO" },
+    { key: "VISITA", label: "VISITA" },
+    { key: "LLAMADA", label: "LLAMADA" },
+    { key: "REUNIÓN OFICINA", label: "REUNIÓN OFICINA" },
+    { key: "MENSAJE WHATSAPP", label: "MENSAJE WHATSAPP" },
   ];
 
   const onClean = () => {
@@ -180,13 +184,22 @@ const CobranzaComments = () => {
       refetchGet();
     }
     return () => {
+      onClean();
       setComments([]);
     };
   }, [getValuesClient().id]);
 
   return (
-    <Container width="100%" display="flex" flexDirection="column" gap="20px">
-      <Container width="100%" display="flex" gap="5px">
+    <Container
+      width="100%"
+      height="100%"
+      display="flex"
+      flexDirection="column"
+      gap="20px"
+      padding="20px"
+      overFlowY="auto"
+    >
+      <Container width="100%" height="80px" display="flex" gap="5px">
         <Controller
           name="date"
           control={control}
@@ -211,7 +224,6 @@ const CobranzaComments = () => {
         display="flex"
         justifyContent="center"
         alignItems="center"
-        overFlowX="auto"
         gap="20px"
       >
         <Button
@@ -269,7 +281,7 @@ const CobranzaComments = () => {
             <TextAreaField
               disabled={!getValuesClient("id")}
               width="100%"
-              rows={4}
+              rows={2}
               value={field.value}
               hasError={!!errors.comment}
               onChange={(e) => {
@@ -283,22 +295,24 @@ const CobranzaComments = () => {
       </Container>
 
       <StyledContainerCommentsList
+        width="100%"
+        height="400px"
         backgroundColor="#fff"
-        overFlowY="auto"
         display="flex"
         flexDirection="column"
-        height="20rem"
       >
-        {comments.map((item) => {
-          return (
-            <CommentItem
-              selected={watch().id === item.id}
-              getComment={getComment}
-              comment={item}
-              key={`${item.id}comment`}
-            />
-          );
-        })}
+        <Container width="100%" height="100%" overFlowY="auto">
+          {comments.map((item) => {
+            return (
+              <CommentItem
+                selected={watch().id === item.id}
+                getComment={getComment}
+                comment={item}
+                key={`${item.id}comment`}
+              />
+            );
+          })}
+        </Container>
       </StyledContainerCommentsList>
     </Container>
   );
@@ -311,19 +325,5 @@ const StyledContainerCommentsList = styled(Container)`
   ${({ theme }) =>
     css`
       border: 2px solid ${theme.colors.Neutral4};
-      ::-webkit-scrollbar-thumb {
-        background: ${theme.colors.Neutral5};
-        border-radius: 10px;
-      }
-      ::-webkit-scrollbar-thumb:hover {
-        background: ${theme.colors.Neutral4};
-      }
-      ::-webkit-scrollbar-track {
-        background-color: transparent;
-      }
-      ::-webkit-scrollbar {
-        width: 10px;
-        background-color: transparent;
-      }
     `}
 `;

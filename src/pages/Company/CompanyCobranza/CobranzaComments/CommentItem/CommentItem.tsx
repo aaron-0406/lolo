@@ -4,6 +4,7 @@ import { CommentType } from "../../../../../shared/types/comment.type";
 import Container from "../../../../../ui/Container";
 import Text from "../../../../../ui/Text";
 import moment from "moment";
+import { useLoloContext } from "../../../../../shared/contexts/LoloProvider";
 
 type CommentItemProps = {
   comment: CommentType;
@@ -13,11 +14,17 @@ type CommentItemProps = {
 
 const CommentItem: React.FC<CommentItemProps> = (props) => {
   const {
-    comment: { comment: commentText, date, negotiation },
+    comment: { comment: commentText, date, negotiation, customerUserId },
     getComment,
     comment,
     selected,
   } = props;
+
+  const {
+    user: { getUser },
+  } = useLoloContext();
+
+  const user = getUser(customerUserId);
 
   const handleClickComment = () => {
     getComment(comment);
@@ -32,20 +39,32 @@ const CommentItem: React.FC<CommentItemProps> = (props) => {
       flexDirection="column"
       onClick={handleClickComment}
     >
+      <Container>
+        <Text.Body ellipsis size="s" weight="bold">
+          <Text.Body ellipsis size="m" weight="bold" color="Primary5">
+            {user ? user.name.toUpperCase() : "-"}
+          </Text.Body>
+        </Text.Body>
+      </Container>
+
       <Container
         justifyContent="space-between"
         display="flex"
         flexDirection="row"
       >
         <Text.Body size="s" weight="bold">
-          Asunto: {negotiation}
+          {"Asunto: "}
+          <Text.Body ellipsis size="m" weight="regular" color="Primary5">
+            {negotiation}
+          </Text.Body>
         </Text.Body>
         <Container>
           <Text.Body size="m" weight="regular">
-            Fecha: {moment(date).format("DD-MM-YYYY")}
+            {moment(date).format("DD-MM-YYYY")}
           </Text.Body>
         </Container>
       </Container>
+
       <Container display="flex" alignItems="center">
         <Text.Body ellipsis size="m" weight="regular">
           {commentText}

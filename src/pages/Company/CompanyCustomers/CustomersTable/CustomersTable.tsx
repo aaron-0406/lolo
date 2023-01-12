@@ -51,19 +51,26 @@ const CustomersTable = () => {
   }
 
   return (
-    <Container width="100%" height="100%" padding="20px">
-      {customers.map((client: ClientType, index: number) => {
-        return (
-          <CustomersRow
-            key={index}
-            code={client.code}
-            name={client.name}
-            state={client.state}
-            createdAt={client.createdAt}
-            onClick={onClickRow}
-          />
-        );
-      })}
+    <Container
+      width="100%"
+      height="calc(100% - 112px)"
+      padding="20px"
+      overFlowY="auto"
+    >
+      <div>
+        {customers.map((client: ClientType, index: number) => {
+          return (
+            <CustomersRow
+              key={index}
+              code={client.code}
+              name={client.name}
+              state={client.state}
+              createdAt={client.createdAt}
+              onClick={onClickRow}
+            />
+          );
+        })}
+      </div>
     </Container>
   );
 };

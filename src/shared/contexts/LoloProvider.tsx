@@ -41,6 +41,7 @@ export const LoloContext = createContext<{
   };
   user: {
     users: Array<CustomerUserType>;
+    getUser: (userId: number) => CustomerUserType | undefined;
     setUsers: (users: Array<CustomerUserType>) => void;
   };
   funcionario: {
@@ -94,6 +95,11 @@ export const LoloProvider: React.FC<LoloProviderProps> = ({ children }) => {
     }
   );
 
+  const getUser = (userId: number) => {
+    const user = usersState.find((user) => user.id === userId);
+    return user;
+  };
+
   const setCustomer = (customer: CustomerType) => {
     setCustomerState(customer);
   };
@@ -137,6 +143,7 @@ export const LoloProvider: React.FC<LoloProviderProps> = ({ children }) => {
         },
         user: {
           users: usersState,
+          getUser,
           setUsers: setUsers,
         },
         funcionario: {
