@@ -17,7 +17,7 @@ export const createClient = async (
   client: Omit<ClientType, "id">,
   idBank: number
 ) => {
-  return await axiosClient.post(`${url}/`, client);
+  return await axiosClient.post(`${url}/${idBank}`, client);
 };
 
 export const updateClient = async (

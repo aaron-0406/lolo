@@ -100,6 +100,7 @@ const Select = <T extends string, K extends Record<string, unknown>>(
             weight="regular"
             className="select__text"
             color={disabled ? "Neutral5" : "Neutral8"}
+            ellipsis
           >
             {!state?.label || !value ? placeholder : state?.label}
           </Text.Body>

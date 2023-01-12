@@ -121,7 +121,6 @@ const CobranzaActions = () => {
       display="flex"
       justifyContent="center"
       alignItems="center"
-      overFlowX="auto"
       gap="20px"
     >
       <Button

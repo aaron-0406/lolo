@@ -52,7 +52,7 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({
       >
         <Icon remixClass="ri-menu-line" size={30} onClick={onClickToggle} />
 
-        <Text.Body size="l" weight="bold">
+        <Text.Body size="l" weight="bold" ellipsis>
           {customer.companyName}
         </Text.Body>
       </Container>

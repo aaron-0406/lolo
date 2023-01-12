@@ -1,4 +1,7 @@
+import moment from "moment";
 import styled, { css } from "styled-components";
+import { device } from "../../../../shared/breakpoints/reponsive";
+import { useMediaQuery } from "../../../../shared/hooks/useMediaQuery";
 import Container from "../../../../ui/Container";
 import Text from "../../../../ui/Text";
 
@@ -13,6 +16,8 @@ type CustomersRowProps = {
 const CustomersRow = (props: CustomersRowProps) => {
   const { code, name, state, createdAt, onClick } = props;
 
+  const isGreaterThanTableL = useMediaQuery(device.tabletL);
+
   const onClickRow = () => {
     onClick?.(code);
   };
@@ -23,9 +28,10 @@ const CustomersRow = (props: CustomersRowProps) => {
       height="60px"
       display="flex"
       onClick={onClickRow}
+      gap="10px"
     >
       <Container
-        width="20%"
+        width="25%"
         height="100%"
         display="flex"
         alignItems="center"
@@ -33,7 +39,12 @@ const CustomersRow = (props: CustomersRowProps) => {
       >
         {code}
       </Container>
-      <Container width="30%" height="100%" display="flex" alignItems="center">
+      <Container
+        width={!isGreaterThanTableL ? "50%" : "40%"}
+        height="100%"
+        display="flex"
+        alignItems="center"
+      >
         <Text.Body size="m" weight="regular" ellipsis>
           {name}
         </Text.Body>
@@ -41,9 +52,12 @@ const CustomersRow = (props: CustomersRowProps) => {
       <Container width="25%" height="100%" display="flex" alignItems="center">
         {state}
       </Container>
-      <Container width="25%" height="100%" display="flex" alignItems="center">
-        {String(createdAt)}
-      </Container>
+
+      {isGreaterThanTableL && (
+        <Container width="10%" height="100%" display="flex" alignItems="center">
+          {moment(createdAt).format("DD-MM-YYYY")}
+        </Container>
+      )}
     </StyledContainer>
   );
 };

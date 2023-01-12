@@ -8,7 +8,6 @@ import TextField from "../../../../ui/fields/TextField";
 import Label from "../../../../ui/Label";
 import Select from "../../../../ui/Select";
 import { SelectItemType } from "../../../../ui/Select/interfaces";
-// import CobranzaFileForm from "./CobranzaFileForm";
 import CobranzaInfoModals from "./CobranzaInfoModals";
 
 type CobranzaInfoProps = {
@@ -18,8 +17,6 @@ type CobranzaInfoProps = {
 const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
   const {
     control,
-    // getValues,
-    // watch,
     formState: { errors },
   } = useFormContext<ClientType>();
 
@@ -184,7 +181,7 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
             control={control}
             render={({ field }) => (
               <Select
-                width="100%"
+                width="calc(100% - 108px)"
                 value={String(field.value)}
                 options={optionsFuncionarios}
                 onChange={(key) => {
@@ -247,6 +244,7 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
           )}
         />
       </div>
+
       <CobranzaInfoModals />
     </StyledContainer>
   );

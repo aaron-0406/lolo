@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import styled, { css } from "styled-components";
 import { CommentType } from "../../../../../shared/types/comment.type";
 import Container from "../../../../../ui/Container";
@@ -24,7 +24,10 @@ const CommentItem: React.FC<CommentItemProps> = (props) => {
     user: { getUser },
   } = useLoloContext();
 
-  const user = getUser(customerUserId);
+  const user = useMemo(
+    () => getUser(customerUserId),
+    [customerUserId, getUser]
+  );
 
   const handleClickComment = () => {
     getComment(comment);
