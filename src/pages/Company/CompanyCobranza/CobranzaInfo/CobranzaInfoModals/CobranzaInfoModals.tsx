@@ -10,16 +10,19 @@ import ModalFiles from "./ModalFiles/ModalFiles";
 
 const CobranzaInfoModals = () => {
   const { getValues } = useFormContext<ClientType>();
+
   const {
     visible: visibleModalFiadores,
     showModal: showModalFiadores,
     hideModal: hideModalFiadores,
   } = useModal();
+
   const {
     visible: visibleModalAddresses,
     showModal: showModalAddresses,
     hideModal: hideModalAddresses,
   } = useModal();
+
   const {
     visible: visibleModalFiles,
     showModal: showModalFiles,
@@ -41,14 +44,12 @@ const CobranzaInfoModals = () => {
       <Button
         width="100%"
         label="Fiadores"
-        trailingIcon="ri-archive-drawer-line"
         disabled={!clientId}
         onClick={showModalFiadores}
       />
       <Button
         width="100%"
         label="Direcciones"
-        trailingIcon="ri-archive-drawer-line"
         disabled={!clientId}
         onClick={showModalAddresses}
       />
@@ -58,6 +59,7 @@ const CobranzaInfoModals = () => {
         title="Fiadores"
         visible={visibleModalFiadores}
         onClose={hideModalFiadores}
+        contentOverflowY="auto"
       >
         <ModalFiadores clientId={clientId} />
       </Modal>

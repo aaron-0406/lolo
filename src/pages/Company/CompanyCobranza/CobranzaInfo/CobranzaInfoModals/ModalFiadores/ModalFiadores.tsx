@@ -26,21 +26,20 @@ const ModalFiadores = ({ clientId }: ModalFiadoresProps) => {
 
   return (
     <FormProvider {...formMethods}>
-      <Container
-        display="flex"
-        flexDirection="column"
-        position="relative"
-        overFlowY="auto"
-        height="100%"
-        width="100%"
-        padding="20px"
-        gap="20px"
-      >
-        <ModalFiadoresActions />
+      <Container width="100%">
+        <Container
+          width="100%"
+          padding="20px"
+          display="flex"
+          flexDirection="column"
+          gap="20px"
+        >
+          <ModalFiadoresActions />
 
-        <ModalFiadoresInfo />
+          <ModalFiadoresInfo />
 
-        <ModalFiadoresTable />
+          <ModalFiadoresTable />
+        </Container>
       </Container>
     </FormProvider>
   );

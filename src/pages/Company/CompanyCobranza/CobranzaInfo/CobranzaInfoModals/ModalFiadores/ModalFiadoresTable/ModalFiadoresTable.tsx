@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { useQuery } from "react-query";
 import styled, { css } from "styled-components";
@@ -11,10 +11,12 @@ import ModalFiadoresRow from "./ModalFiadoresRow";
 const ModalFiadoresTable = () => {
   const { getValues, setValue, watch } = useFormContext<GuarantorFormType>();
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const clientId = getValues("clientId");
   const fiadores = watch("guarantors");
 
-  const { isLoading, refetch } = useQuery(
+  const { refetch } = useQuery(
     "query-get-guarantors-by-client-id",
     async () => {
       return await getGuarantorsByClientID(clientId);
@@ -23,11 +25,16 @@ const ModalFiadoresTable = () => {
       enabled: false,
       onSuccess: (data) => {
         setValue("guarantors", data.data);
+        setIsLoading(false);
+      },
+      onError: () => {
+        setIsLoading(false);
       },
     }
   );
 
   useEffect(() => {
+    setIsLoading(true);
     refetch();
   }, []);
 
@@ -36,17 +43,24 @@ const ModalFiadoresTable = () => {
   }
 
   return (
-    <StyledContainer width="100%" height="calc(100% - 350px)">
-      {fiadores.map((guarantor: GuarantorType, index: number) => {
-        return (
-          <ModalFiadoresRow
-            key={index}
-            id={index + 1}
-            guarantorId={guarantor.id}
-            name={guarantor.name}
-          />
-        );
-      })}
+    <StyledContainer
+      width="100%"
+      minHeight="100px"
+      maxHeight="300px"
+      overFlowY="auto"
+    >
+      <div>
+        {fiadores.map((guarantor: GuarantorType, index: number) => {
+          return (
+            <ModalFiadoresRow
+              key={index}
+              id={index + 1}
+              guarantorId={guarantor.id}
+              name={guarantor.name}
+            />
+          );
+        })}
+      </div>
     </StyledContainer>
   );
 };
