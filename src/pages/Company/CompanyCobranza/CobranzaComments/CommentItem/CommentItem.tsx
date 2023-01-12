@@ -24,7 +24,10 @@ const CommentItem: React.FC<CommentItemProps> = (props) => {
     user: { getUser },
   } = useLoloContext();
 
-  const user = useMemo(() => getUser(customerUserId), [customerUserId]);
+  const user = useMemo(
+    () => getUser(customerUserId),
+    [customerUserId, getUser]
+  );
 
   const handleClickComment = () => {
     getComment(comment);

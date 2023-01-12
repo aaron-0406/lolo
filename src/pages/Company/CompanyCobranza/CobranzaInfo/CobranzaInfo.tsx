@@ -181,7 +181,7 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
             control={control}
             render={({ field }) => (
               <Select
-                width="100%"
+                width="calc(100% - 108px)"
                 value={String(field.value)}
                 options={optionsFuncionarios}
                 onChange={(key) => {

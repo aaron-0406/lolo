@@ -36,6 +36,8 @@ const ModalFiadoresTable = () => {
   useEffect(() => {
     setIsLoading(true);
     refetch();
+
+    // eslint-disable-next-line
   }, []);
 
   if (isLoading) {
