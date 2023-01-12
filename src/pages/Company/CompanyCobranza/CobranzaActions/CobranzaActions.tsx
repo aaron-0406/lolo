@@ -67,7 +67,11 @@ const CobranzaActions = () => {
     useMutation<any, Error>(
       async () => {
         const { code, customerHasBankId } = getValues();
-        return await deleteClient(code, customerHasBankId);
+        return await deleteClient(
+          code,
+          customerHasBankId,
+          Number(selectedBank.idBank)
+        );
       },
       {
         onSuccess: () => {

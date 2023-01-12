@@ -28,6 +28,10 @@ export const updateClient = async (
   return await axiosClient.patch(`${url}/${code}/${chb}`, client);
 };
 
-export const deleteClient = async (code: string, chb: number) => {
-  return await axiosClient.delete(`${url}/${code}/${chb}`);
+export const deleteClient = async (
+  code: string,
+  chb: number,
+  idBank: number
+) => {
+  return await axiosClient.delete(`${url}/${code}/${chb}/${idBank}`);
 };
