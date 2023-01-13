@@ -9,6 +9,7 @@ import {
 } from "../../../../../../shared/services/file.service";
 import { FileType } from "../../../../../../shared/types/file.type";
 import Container from "../../../../../../ui/Container";
+import Icon from "../../../../../../ui/Icon";
 import InputFile from "../../../../../../ui/inputs/InputFile";
 import notification from "../../../../../../ui/notification";
 import ModalFilesTable from "./ModalFilesTable";
@@ -24,6 +25,7 @@ const ModalFiles: React.FC<ModalFilesProps> = (props) => {
   const {
     bank: { selectedBank },
   } = useLoloContext();
+  const [sendingFiles, setSendingFiles] = useState<boolean>(false);
   const [files, setFiles] = useState<FileType[]>([]);
   const { clientId, code } = props;
   const handleInputChange = async (e: ChangeEvent) => {
@@ -36,12 +38,14 @@ const ModalFiles: React.FC<ModalFilesProps> = (props) => {
             const element = archivos[i];
             formData.append("file", element);
           }
+          setSendingFiles(true);
           const { data } = await postCreateFile(
             formData,
             clientId,
             code,
             Number(selectedBank.idBank)
           );
+          setSendingFiles(false);
           setFiles([...files, ...data]);
           notification({ type: "success", message: "Documentos Creados" });
         }
@@ -53,10 +57,10 @@ const ModalFiles: React.FC<ModalFilesProps> = (props) => {
       }
     }
   };
-  const { refetch } = useQuery(
+  const { refetch, isFetching } = useQuery(
     "query-get-files",
     async () => {
-      return await getFiles(clientId, Number(selectedBank.idBank), code);
+      return await getFiles(clientId);
     },
     {
       onSuccess: ({ data }) => {
@@ -87,6 +91,18 @@ const ModalFiles: React.FC<ModalFilesProps> = (props) => {
         maxHeight="90%"
       >
         <ModalFilesTable code={code} files={files} setFiles={setFiles} />
+        {(sendingFiles || isFetching) && (
+          <Container
+            backgroundColor="#eff0f6ff"
+            width="100%"
+            height="20%"
+            display="flex"
+            justifyContent="center"
+            padding="2rem 0"
+          >
+            <StyledIcon remixClass="ri-loader-line"></StyledIcon>
+          </Container>
+        )}
       </ContainerTableFile>
       <Container
         width="100%"
@@ -102,6 +118,15 @@ const ModalFiles: React.FC<ModalFilesProps> = (props) => {
 };
 
 export default ModalFiles;
+
+const StyledIcon = styled(Icon)`
+  animation: rotate 2s linear infinite;
+  @keyframes rotate {
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+`;
 
 const ContainerTableFile = styled(Container)`
   ${({ theme }) =>

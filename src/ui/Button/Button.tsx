@@ -90,7 +90,7 @@ const Button: React.FC<ButtonProps> = (props) => {
         )}
 
         <StyledButtonText {...textStyle}>{label}</StyledButtonText>
-        {trailingIcon && (
+        {trailingIcon && !loading &&  (
           <Icon className="trailing-icon" remixClass={trailingIcon} />
         )}
       </div>

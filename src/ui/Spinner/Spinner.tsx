@@ -11,7 +11,7 @@ const Spinner = () => {
       height="24px"
       readonly
     >
-      <i className="ri-loader-4-line spinning" />
+      <StyledIcon className="ri-loader-4-line spinning" />
     </StyledSpinner>
   );
 };
@@ -24,4 +24,13 @@ export default Spinner;
  */
 const StyledSpinner = styled(Container)`
   font-size: 24px;
+`;
+
+const StyledIcon = styled.i`
+  animation: rotate 2s linear infinite;
+  @keyframes rotate {
+    100% {
+      transform: rotate(360deg);
+    }
+  }
 `;

@@ -8,7 +8,10 @@ import fileIcon from "../../../../../../../../shared/assets/icons/file.png";
 import Img from "../../../../../../../../ui/Img";
 import Text from "../../../../../../../../ui/Text";
 import Button from "../../../../../../../../ui/Button";
-import { deleteFile } from "../../../../../../../../shared/services/file.service";
+import {
+  deleteFile,
+  getFileById,
+} from "../../../../../../../../shared/services/file.service";
 import { useQuery } from "react-query";
 import { useLoloContext } from "../../../../../../../../shared/contexts/LoloProvider";
 
@@ -17,6 +20,8 @@ type ModalFileRowProps = {
   files: FileType[];
   setFiles: Dispatch<FileType[]>;
   code: number;
+  showModalFile: () => void;
+  setFileSelected: Dispatch<FileType>;
 };
 
 const ModalFileRow: React.FC<ModalFileRowProps> = (props) => {
@@ -24,6 +29,8 @@ const ModalFileRow: React.FC<ModalFileRowProps> = (props) => {
     bank: { selectedBank },
   } = useLoloContext();
   const {
+    showModalFile,
+    setFileSelected,
     code,
     file: { name, originalName, id },
     files,
@@ -37,8 +44,8 @@ const ModalFileRow: React.FC<ModalFileRowProps> = (props) => {
     return <Img placeholderImage="" src={fileIcon} />;
   };
 
-  const { refetch: refetchDelete } = useQuery(
-    "query-delete-file",
+  const { refetch: refetchDelete, isFetching } = useQuery(
+    `query-delete-file${id}`,
     async () => {
       return await deleteFile(Number(selectedBank.idBank), code, id);
     },
@@ -49,9 +56,26 @@ const ModalFileRow: React.FC<ModalFileRowProps> = (props) => {
       },
     }
   );
+  const { refetch: refetchViewFile, isFetching: isFetchingGet } = useQuery(
+    `query-get-file${id}`,
+    async () => {
+      return await getFileById(Number(selectedBank.idBank), code, id);
+    },
+    {
+      enabled: false,
+      onSuccess: ({ data }) => {
+        showModalFile();
+        setFileSelected(data);
+      },
+    }
+  );
 
   const onDeleteFile = () => {
     refetchDelete();
+  };
+
+  const onViewFile = () => {
+    refetchViewFile();
   };
 
   return (
@@ -83,9 +107,12 @@ const ModalFileRow: React.FC<ModalFileRowProps> = (props) => {
           shape="round"
           display="default"
           trailingIcon="ri-eye-line"
-        ></Button>
+          onClick={onViewFile}
+          loading={isFetchingGet}
+        />
         <Button
           onClick={onDeleteFile}
+          disabled={isFetching}
           shape="round"
           display="danger"
           trailingIcon="ri-close-line"

@@ -14,10 +14,14 @@ export const postCreateFile = async (
     headers: { "Content-Type": "multipart/form-data" },
   });
 };
-export const getFiles = async (id: number, bankId: number, code: number) => {
-  return await axiosClient.get(`${url}/${bankId}/${code}/${id}`);
+export const getFiles = async (id: number) => {
+  return await axiosClient.get(`${url}/${id}`);
 };
 
 export const deleteFile = async (idBank: number, code: number, id: number) => {
   return await axiosClient.delete(`${url}/${idBank}/${code}/${id}`);
+};
+
+export const getFileById = async (idBank: number, code: number, id: number) => {
+  return await axiosClient.get(`${url}/single/${idBank}/${code}/${id}`);
 };
