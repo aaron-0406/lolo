@@ -1,40 +1,28 @@
+import React from "react";
 import { useFormContext } from "react-hook-form";
 import styled, { css } from "styled-components";
 import Container from "../../../../../../../../ui/Container";
 import Text from "../../../../../../../../ui/Text";
-import { GuarantorFormType } from "../../hookforms.interfaces";
+import { DirectionFormType } from "../../hookforms.interfaces";
 
-type ModalFiadoresRowProps = {
+type ModalAddressesRowProps = {
   id: number;
-  guarantorId: number;
-  name: string;
-  email?: string;
-  phone?: string;
+  addressId: number;
+  direction: string;
   selected?: boolean;
-  onClick?: (guarantorId: number) => void;
+  onClick?: (addressId: number) => void;
 };
 
-const ModalFiadoresRow = (props: ModalFiadoresRowProps) => {
-  const { setValue } = useFormContext<GuarantorFormType>();
+const ModalAddressesRow: React.FC<ModalAddressesRowProps> = (props) => {
+  const { setValue } = useFormContext<DirectionFormType>();
 
-  const {
-    id,
-    guarantorId,
-    name,
-    email,
-    phone,
-    onClick,
-    selected = false,
-  } = props;
+  const { id, addressId, direction, onClick, selected = false } = props;
 
   const onClickRow = () => {
-    onClick?.(guarantorId);
-    setValue("name", name);
-    setValue("phone", phone === null ? "" : phone);
-    setValue("email", email === null ? "" : email);
-    setValue("id", guarantorId);
+    onClick?.(addressId);
+    setValue("direction", direction);
+    setValue("id", addressId);
   };
-
   return (
     <StyledContainer
       $selected={selected}
@@ -54,14 +42,14 @@ const ModalFiadoresRow = (props: ModalFiadoresRowProps) => {
       </Container>
       <Container width="80%" height="100%" display="flex" alignItems="center">
         <Text.Body size="m" weight="regular" ellipsis>
-          {name}
+          {direction}
         </Text.Body>
       </Container>
     </StyledContainer>
   );
 };
 
-export default ModalFiadoresRow;
+export default ModalAddressesRow;
 
 const StyledContainer = styled(Container)<{ $selected: boolean }>`
   ${({ theme, $selected }) => css`

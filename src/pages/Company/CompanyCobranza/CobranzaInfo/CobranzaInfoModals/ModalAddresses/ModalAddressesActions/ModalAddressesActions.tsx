@@ -1,31 +1,31 @@
+import React from "react";
 import { useFormContext } from "react-hook-form";
 import { useMutation } from "react-query";
 import {
-  createGuarantor,
-  deleteGuarantor,
-  editGuarantor,
-} from "../../../../../../../shared/services/guarantor.service";
+  createDirection,
+  deleteDirection,
+  editDirection,
+} from "../../../../../../../shared/services/direction.service";
 import Button from "../../../../../../../ui/Button";
 import Container from "../../../../../../../ui/Container";
 import notification from "../../../../../../../ui/notification";
-import { GuarantorFormType } from "../hookforms.interfaces";
+import { DirectionFormType } from "../hookforms.interfaces";
 
-const ModalFiadoresActions = () => {
+const ModalAddressesActions = () => {
   const { setValue, getValues, handleSubmit, watch } =
-    useFormContext<GuarantorFormType>();
-
-  const { isLoading: loadingCreateGuarantor, mutate: createGuarantorMutate } =
+    useFormContext<DirectionFormType>();
+  const { isLoading: loadingCreateDirection, mutate: createDirectionMutate } =
     useMutation<any, Error>(
       async () => {
-        const { id, guarantors, ...restClient } = getValues();
-        return await createGuarantor(restClient);
+        const { id, directions, ...restClient } = getValues();
+        return await createDirection(restClient);
       },
       {
         onSuccess: (data) => {
           setValue("id", data.data.id);
-          setValue("guarantors", [...getValues("guarantors"), data.data]);
+          setValue("directions", [...getValues("directions"), data.data]);
           onCleanFields();
-          notification({ type: "success", message: "Fiador creado" });
+          notification({ type: "success", message: "Dirección creada" });
         },
         onError: (error: any) => {
           notification({
@@ -35,24 +35,24 @@ const ModalFiadoresActions = () => {
         },
       }
     );
-    
-  const { isLoading: loadingEditGuarantor, mutate: editGuarantorMutate } =
+
+  const { isLoading: loadingEditDirection, mutate: editDirectionMutate } =
     useMutation<any, Error>(
       async () => {
-        const { id, guarantors, clientId, ...restClient } = getValues();
-        return await editGuarantor(restClient, id);
+        const { id, directions, clientId, ...restClient } = getValues();
+        return await editDirection(restClient, id);
       },
       {
         onSuccess: ({ data }) => {
           setValue("id", data.id);
-          setValue("guarantors", [
-            ...getValues("guarantors").map((item) => {
+          setValue("directions", [
+            ...getValues("directions").map((item) => {
               if (item.id === Number(data.id)) return data;
               return item;
             }),
           ]);
           onCleanFields();
-          notification({ type: "success", message: "Fiador editado" });
+          notification({ type: "success", message: "Dirección editada" });
         },
         onError: (error: any) => {
           notification({
@@ -62,21 +62,21 @@ const ModalFiadoresActions = () => {
         },
       }
     );
-  const { isLoading: loadingDeleteGuarantor, mutate: deleteGuarantorMutate } =
+  const { isLoading: loadingDeleteDirection, mutate: deleteDirectionMutate } =
     useMutation<any, Error>(
       async () => {
         const { id } = getValues();
-        return await deleteGuarantor(id);
+        return await deleteDirection(id);
       },
       {
         onSuccess: ({ data }) => {
-          setValue("guarantors", [
-            ...getValues("guarantors").filter(
+          setValue("directions", [
+            ...getValues("directions").filter(
               (item) => item.id !== Number(data.id)
             ),
           ]);
           onCleanFields();
-          notification({ type: "success", message: "Fiador eliminado" });
+          notification({ type: "success", message: "Dirección eliminada" });
         },
         onError: (error: any) => {
           notification({
@@ -89,28 +89,25 @@ const ModalFiadoresActions = () => {
 
   const onCleanFields = () => {
     setValue("id", 0);
-    setValue("name", "");
-    setValue("phone", "");
-    setValue("email", "");
+    setValue("direction", "");
     setValue("createdAt", undefined);
   };
 
-  const onAddFiador = () => {
+  const onAddDirection = () => {
     handleSubmit(() => {
-      createGuarantorMutate();
+      createDirectionMutate();
     })();
   };
-  const onEditFiador = () => {
+  const onEditDirection = () => {
     handleSubmit(() => {
-      editGuarantorMutate();
+      editDirectionMutate();
     })();
   };
-  const onDeleteFiador = () => {
+  const onDeleteDirection = () => {
     handleSubmit(() => {
-      deleteGuarantorMutate();
+      deleteDirectionMutate();
     })();
   };
-
   return (
     <Container
       width="100%"
@@ -124,16 +121,16 @@ const ModalFiadoresActions = () => {
         shape="round"
         trailingIcon="ri-add-fill"
         disabled={watch("id") !== 0}
-        onClick={onAddFiador}
-        loading={loadingCreateGuarantor}
+        onClick={onAddDirection}
+        loading={loadingCreateDirection}
       />
       <Button
         width="100px"
         shape="round"
         trailingIcon="ri-edit-2-line"
         disabled={watch("id") === 0}
-        onClick={onEditFiador}
-        loading={loadingEditGuarantor}
+        onClick={onEditDirection}
+        loading={loadingEditDirection}
       />
       <Button
         width="100px"
@@ -141,8 +138,8 @@ const ModalFiadoresActions = () => {
         disabled={watch("id") === 0}
         display="danger"
         trailingIcon="ri-close-line"
-        onClick={onDeleteFiador}
-        loading={loadingDeleteGuarantor}
+        onClick={onDeleteDirection}
+        loading={loadingDeleteDirection}
       />
       <Button
         width="100px"
@@ -155,4 +152,4 @@ const ModalFiadoresActions = () => {
   );
 };
 
-export default ModalFiadoresActions;
+export default ModalAddressesActions;

@@ -12,3 +12,12 @@ export const getGuarantorsByClientID = async (clientId: number) => {
 export const createGuarantor = async (guarantor: Omit<GuarantorType, "id">) => {
   return await axiosClient.post(url, guarantor);
 };
+export const editGuarantor = async (
+  guarantor: Omit<GuarantorType, "id" | "clientId">,
+  id: number
+) => {
+  return await axiosClient.patch(`${url}/${id}`, guarantor);
+};
+export const deleteGuarantor = async (id: number) => {
+  return await axiosClient.delete(`${url}/${id}`);
+};

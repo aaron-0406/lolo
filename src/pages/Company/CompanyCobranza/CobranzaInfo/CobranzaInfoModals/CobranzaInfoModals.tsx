@@ -87,7 +87,7 @@ const CobranzaInfoModals = () => {
           height="100%"
           width="100%"
         >
-          <ModalAddresses />
+          <ModalAddresses clientId={clientId}/>
         </Container>
       </Modal>
     </div>
