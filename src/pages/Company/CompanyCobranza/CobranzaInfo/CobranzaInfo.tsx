@@ -24,6 +24,7 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
     city: { cities },
     user: { users },
     funcionario: { funcionarios },
+    negociacion: { negociaciones },
   } = useLoloContext();
 
   const optionsCities: Array<SelectItemType> = cities.map((city) => {
@@ -49,11 +50,14 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
     }
   );
 
-  const optionsStates: Array<SelectItemType> = [
-    { key: "ASIGNADO", label: "ASIGNADO" },
-    { key: "RETIRADO", label: "RETIRADO" },
-  ];
-
+  const optionsStates: Array<SelectItemType> = negociaciones.map(
+    (negociacion) => {
+      return {
+        key: String(negociacion.id),
+        label: negociacion.name,
+      };
+    }
+  );
   if (loading) {
     return <div>Loading ...</div>;
   }

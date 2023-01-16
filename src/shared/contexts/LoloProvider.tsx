@@ -5,6 +5,7 @@ import { CustomerHasBankType } from "../types/customer-has-bank";
 import { CustomerUserType } from "../types/customer-user.type";
 import { CustomerType } from "../types/customer.type";
 import { FuncionarioType } from "../types/funcionario.type";
+import { NegotiationType } from "../types/negotiation.type";
 
 const appLoloClientStateKey = "lolo:client";
 const appLoloBankStateKey = "lolo:bank";
@@ -48,6 +49,10 @@ export const LoloContext = createContext<{
     funcionarios: Array<FuncionarioType>;
     setFuncionarios: (funcionarios: Array<FuncionarioType>) => void;
   };
+  negociacion: {
+    negociaciones: Array<NegotiationType>;
+    setNegociaciones: (negociaciones: Array<NegotiationType>) => void;
+  };
 } | null>(null);
 
 export const useLoloContext = () => {
@@ -87,6 +92,10 @@ export const LoloProvider: React.FC<LoloProviderProps> = ({ children }) => {
     Array<FuncionarioType>
   >(appLoloBankStateKey, []);
 
+  const [negociacionesState, setNegociacionesState] = usePersistedState<
+    Array<NegotiationType>
+  >(appLoloBankStateKey, []);
+
   const [selectedBankState, setSelectedBankState] = usePersistedState(
     appLoloSelectedBankStateKey,
     {
@@ -119,6 +128,9 @@ export const LoloProvider: React.FC<LoloProviderProps> = ({ children }) => {
   const setFuncionarios = (funcionarios: Array<FuncionarioType>) => {
     setFuncionariosState(funcionarios);
   };
+  const setNegociaciones = (negociaciones: Array<NegotiationType>) => {
+    setNegociacionesState(negociaciones);
+  };
 
   const setSelectedBank = (selectedBank: SelectedBankType) => {
     setSelectedBankState(selectedBank);
@@ -149,6 +161,10 @@ export const LoloProvider: React.FC<LoloProviderProps> = ({ children }) => {
         funcionario: {
           funcionarios: funcionariosState,
           setFuncionarios: setFuncionarios,
+        },
+        negociacion: {
+          negociaciones: negociacionesState,
+          setNegociaciones: setNegociaciones,
         },
       }}
     >

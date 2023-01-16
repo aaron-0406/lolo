@@ -5,6 +5,7 @@ import LayoutCobranza from "../../../components/Layouts/LayoutCobranza";
 import { useLoloContext } from "../../../shared/contexts/LoloProvider";
 import { getAllUsersByID } from "../../../shared/services/customer-user.service";
 import { getAllFuncionarios } from "../../../shared/services/funcionario.service";
+import { getAllNegociaciones } from "../../../shared/services/negotiation.service";
 import { ClientType } from "../../../shared/types/client.type";
 import CobranzaActions from "./CobranzaActions";
 import CobranzaComments from "./CobranzaComments";
@@ -35,6 +36,7 @@ const CompanyCobranza = () => {
     },
     user: { setUsers },
     funcionario: { setFuncionarios },
+    negociacion: { setNegociaciones },
   } = useLoloContext();
 
   const { isLoading: isLoadingUsers } = useQuery(
@@ -60,6 +62,17 @@ const CompanyCobranza = () => {
       },
     }
   );
+  const { isLoading: isLoadingNegotiation } = useQuery(
+    "query-get-all-negociaciones",
+    async () => {
+      return await getAllNegociaciones();
+    },
+    {
+      onSuccess: (response) => {
+        setNegociaciones(response.data);
+      },
+    }
+  );
 
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -74,7 +87,12 @@ const CompanyCobranza = () => {
         leftActions={<CobranzaActions />}
         leftContent={
           <CobranzaInfo
-            loading={loading || isLoadingUsers || isLoadingFuncionarios}
+            loading={
+              loading ||
+              isLoadingUsers ||
+              isLoadingFuncionarios ||
+              isLoadingNegotiation
+            }
           />
         }
         rightComments={<CobranzaComments />}
