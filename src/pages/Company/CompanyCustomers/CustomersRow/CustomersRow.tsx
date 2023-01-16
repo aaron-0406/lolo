@@ -8,13 +8,13 @@ import Text from "../../../../ui/Text";
 type CustomersRowProps = {
   code: string;
   name: string;
-  state: string;
+  negotiationId: number;
   createdAt?: Date;
   onClick?: (code: string) => void;
 };
 
 const CustomersRow = (props: CustomersRowProps) => {
-  const { code, name, state, createdAt, onClick } = props;
+  const { code, name, negotiationId, createdAt, onClick } = props;
 
   const isGreaterThanTableL = useMediaQuery(device.tabletL);
 
@@ -50,7 +50,7 @@ const CustomersRow = (props: CustomersRowProps) => {
         </Text.Body>
       </Container>
       <Container width="25%" height="100%" display="flex" alignItems="center">
-        {state}
+        {negotiationId}
       </Container>
 
       {isGreaterThanTableL && (

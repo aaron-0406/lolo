@@ -37,7 +37,7 @@ const CobranzaSearch = ({ setLoadingGlobal }: CobranzaSearchProps) => {
       onSuccess: (data) => {
         setValue("id", data.data.id);
         setValue("code", data.data.code);
-        setValue("state", data.data.state);
+        setValue("negotiationId", data.data.negotiationId);
         setValue("dniOrRuc", data.data.dniOrRuc);
         setValue("name", data.data.name);
         setValue("salePerimeter", data.data.salePerimeter);

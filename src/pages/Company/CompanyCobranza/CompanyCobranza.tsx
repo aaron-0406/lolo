@@ -20,7 +20,7 @@ const CompanyCobranza = () => {
     defaultValues: {
       id: 0,
       code: "",
-      state: "",
+      negotiationId: 0,
       dniOrRuc: "",
       name: "",
       cityId: 0,

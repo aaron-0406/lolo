@@ -93,17 +93,17 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
           <Label label="Estado:" />
 
           <Controller
-            name="state"
+            name="negotiationId"
             control={control}
             render={({ field }) => (
               <Select
                 width="100%"
-                value={field.value}
+                value={String(field.value)}
                 options={optionsStates}
                 onChange={(key) => {
                   field.onChange(key);
                 }}
-                hasError={!!errors.state}
+                hasError={!!errors.negotiationId}
               />
             )}
           />

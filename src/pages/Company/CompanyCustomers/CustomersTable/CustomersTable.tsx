@@ -64,7 +64,7 @@ const CustomersTable = () => {
               key={index}
               code={client.code}
               name={client.name}
-              state={client.state}
+              negotiationId={client.negotiationId}
               createdAt={client.createdAt}
               onClick={onClickRow}
             />
