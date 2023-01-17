@@ -58,6 +58,7 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
       };
     }
   );
+
   if (loading) {
     return <div>Loading ...</div>;
   }
@@ -101,7 +102,7 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
                 value={String(field.value)}
                 options={optionsStates}
                 onChange={(key) => {
-                  field.onChange(key);
+                  field.onChange(parseInt(key));
                 }}
                 hasError={!!errors.negotiationId}
               />

@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { useLoloContext } from "../../../../shared/contexts/LoloProvider";
 import paths from "../../../../shared/routes/paths";
 import { getAllClientsByCHB } from "../../../../shared/services/client.service";
+import { getAllFuncionariosByCHB } from "../../../../shared/services/funcionario.service";
+import { getAllNegociacionesByCHB } from "../../../../shared/services/negotiation.service";
 import { ClientType } from "../../../../shared/types/client.type";
 import Container from "../../../../ui/Container";
 import CustomersRow from "../CustomersRow";
@@ -14,12 +16,16 @@ const CustomersTable = () => {
       customer: { urlIdentifier },
     },
     bank: { selectedBank },
+    negociacion: { setNegociaciones },
+    funcionario: { setFuncionarios },
   } = useLoloContext();
 
   const navigate = useNavigate();
 
   const [customers, setCustomers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingNegotiations, setIsLoadingNegotiations] = useState(false);
+  const [isLoadingFuncionarions, setIsLoadingFuncionarions] = useState(false);
 
   const { refetch } = useQuery(
     "query-get-all-clients-by-chb",
@@ -35,6 +41,34 @@ const CustomersTable = () => {
     }
   );
 
+  const { refetch: refetchNegotiations } = useQuery(
+    "query-get-all-negociaciones",
+    async () => {
+      return await getAllNegociacionesByCHB(selectedBank.idCHB);
+    },
+    {
+      enabled: !!selectedBank.idCHB.length,
+      onSuccess: (response) => {
+        setNegociaciones(response.data);
+        setIsLoadingNegotiations(false);
+      },
+    }
+  );
+
+  const { refetch: refetchFuncionarios } = useQuery(
+    "query-get-all-funcionarios",
+    async () => {
+      return await getAllFuncionariosByCHB(selectedBank.idCHB);
+    },
+    {
+      enabled: !!selectedBank.idCHB.length,
+      onSuccess: (response) => {
+        setFuncionarios(response.data);
+        setIsLoadingFuncionarions(false);
+      },
+    }
+  );
+
   const onClickRow = (code: string) => {
     navigate(`${paths.company.cobranza(urlIdentifier)}?code=${code}`);
   };
@@ -42,11 +76,16 @@ const CustomersTable = () => {
   useEffect(() => {
     if (selectedBank.idCHB.length) {
       setIsLoading(true);
-      refetch();
-    }
-  }, [selectedBank, refetch]);
+      setIsLoadingNegotiations(true);
+      setIsLoadingFuncionarions(true);
 
-  if (isLoading) {
+      refetch();
+      refetchNegotiations();
+      refetchFuncionarios();
+    }
+  }, [selectedBank, refetch, refetchNegotiations, refetchFuncionarios]);
+
+  if (isLoading || isLoadingNegotiations || isLoadingFuncionarions) {
     return <div>Loading ...</div>;
   }
 

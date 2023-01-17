@@ -4,6 +4,6 @@ const API = axiosClient.getUri();
 
 const url = `${API}/negotiation`;
 
-export const getAllNegociaciones = async () => {
-  return await axiosClient.get(url);
+export const getAllNegociacionesByCHB = async (chb: string) => {
+  return await axiosClient.get(`${url}/all/${chb}`);
 };

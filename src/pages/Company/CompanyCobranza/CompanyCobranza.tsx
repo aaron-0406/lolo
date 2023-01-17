@@ -1,11 +1,6 @@
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { useQuery } from "react-query";
 import LayoutCobranza from "../../../components/Layouts/LayoutCobranza";
-import { useLoloContext } from "../../../shared/contexts/LoloProvider";
-import { getAllUsersByID } from "../../../shared/services/customer-user.service";
-import { getAllFuncionarios } from "../../../shared/services/funcionario.service";
-import { getAllNegociaciones } from "../../../shared/services/negotiation.service";
 import { ClientType } from "../../../shared/types/client.type";
 import CobranzaActions from "./CobranzaActions";
 import CobranzaComments from "./CobranzaComments";
@@ -30,34 +25,6 @@ const CompanyCobranza = () => {
     },
   });
 
-  const {
-    funcionario: { setFuncionarios },
-    negociacion: { setNegociaciones },
-  } = useLoloContext();
-
-  const { isLoading: isLoadingFuncionarios } = useQuery(
-    "query-get-all-funcionarios",
-    async () => {
-      return await getAllFuncionarios();
-    },
-    {
-      onSuccess: (response) => {
-        setFuncionarios(response.data);
-      },
-    }
-  );
-  const { isLoading: isLoadingNegotiation } = useQuery(
-    "query-get-all-negociaciones",
-    async () => {
-      return await getAllNegociaciones();
-    },
-    {
-      onSuccess: (response) => {
-        setNegociaciones(response.data);
-      },
-    }
-  );
-
   const [loading, setLoading] = useState<boolean>(false);
 
   const setLoadingGlobal = (state: boolean) => {
@@ -69,11 +36,7 @@ const CompanyCobranza = () => {
       <LayoutCobranza
         leftHeader={<CobranzaSearch setLoadingGlobal={setLoadingGlobal} />}
         leftActions={<CobranzaActions />}
-        leftContent={
-          <CobranzaInfo
-            loading={loading || isLoadingFuncionarios || isLoadingNegotiation}
-          />
-        }
+        leftContent={<CobranzaInfo loading={loading} />}
         rightComments={<CobranzaComments />}
       />
     </FormProvider>

@@ -9,6 +9,10 @@ import { NegotiationType } from "../types/negotiation.type";
 
 const appLoloClientStateKey = "lolo:client";
 const appLoloBankStateKey = "lolo:bank";
+const appLoloCityStateKey = "lolo:city";
+const appLoloUserStateKey = "lolo:user";
+const appLoloFuncionarioStateKey = "lolo:funcionario";
+const appLoloNegotiationStateKey = "lolo:negotiation";
 const appLoloSelectedBankStateKey = "lolo:selected:bank";
 
 type SelectedBankType = {
@@ -80,21 +84,21 @@ export const LoloProvider: React.FC<LoloProviderProps> = ({ children }) => {
   >(appLoloBankStateKey, []);
 
   const [citiesState, setCitiesState] = usePersistedState<Array<CityType>>(
-    appLoloBankStateKey,
+    appLoloCityStateKey,
     []
   );
 
   const [usersState, setUsersState] = usePersistedState<
     Array<CustomerUserType>
-  >(appLoloBankStateKey, []);
+  >(appLoloUserStateKey, []);
 
   const [funcionariosState, setFuncionariosState] = usePersistedState<
     Array<FuncionarioType>
-  >(appLoloBankStateKey, []);
+  >(appLoloFuncionarioStateKey, []);
 
   const [negociacionesState, setNegociacionesState] = usePersistedState<
     Array<NegotiationType>
-  >(appLoloBankStateKey, []);
+  >(appLoloNegotiationStateKey, []);
 
   const [selectedBankState, setSelectedBankState] = usePersistedState(
     appLoloSelectedBankStateKey,
