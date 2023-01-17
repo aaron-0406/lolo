@@ -1,9 +1,12 @@
 import { useState } from "react";
+import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
 import styled, { css } from "styled-components";
 import { device } from "../../../shared/breakpoints/reponsive";
 import { useLoloContext } from "../../../shared/contexts/LoloProvider";
 import { useMediaQuery } from "../../../shared/hooks/useMediaQuery";
+import { getAllCities } from "../../../shared/services/city.service";
+import { getAllUsersByID } from "../../../shared/services/customer-user.service";
 import Container from "../../../ui/Container";
 import Icon from "../../../ui/Icon";
 import Text from "../../../ui/Text";
@@ -22,6 +25,8 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({
 
   const {
     client: { customer },
+    city: { setCities },
+    user: { setUsers },
   } = useLoloContext();
 
   const greaterThanTabletL = useMediaQuery(device.tabletL);
@@ -33,6 +38,34 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({
       setToggleMenu(!toggleMenu);
     }
   };
+
+  const { isLoading: isLoadingCities } = useQuery(
+    "query-get-all-cities",
+    async () => {
+      return await getAllCities();
+    },
+    {
+      onSuccess: (response) => {
+        setCities(response.data);
+      },
+    }
+  );
+
+  const { isLoading: isLoadingUsers } = useQuery(
+    "query-get-all-users-by-id",
+    async () => {
+      return await getAllUsersByID(customer.id);
+    },
+    {
+      onSuccess: (response) => {
+        setUsers(response.data);
+      },
+    }
+  );
+
+  if (isLoadingCities || isLoadingUsers) {
+    return <div>Loading</div>;
+  }
 
   return (
     <StyledMenu

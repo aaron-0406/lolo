@@ -31,25 +31,9 @@ const CompanyCobranza = () => {
   });
 
   const {
-    client: {
-      customer: { id: customerID },
-    },
-    user: { setUsers },
     funcionario: { setFuncionarios },
     negociacion: { setNegociaciones },
   } = useLoloContext();
-
-  const { isLoading: isLoadingUsers } = useQuery(
-    "query-get-all-users-by-id",
-    async () => {
-      return await getAllUsersByID(customerID);
-    },
-    {
-      onSuccess: (response) => {
-        setUsers(response.data);
-      },
-    }
-  );
 
   const { isLoading: isLoadingFuncionarios } = useQuery(
     "query-get-all-funcionarios",
@@ -87,12 +71,7 @@ const CompanyCobranza = () => {
         leftActions={<CobranzaActions />}
         leftContent={
           <CobranzaInfo
-            loading={
-              loading ||
-              isLoadingUsers ||
-              isLoadingFuncionarios ||
-              isLoadingNegotiation
-            }
+            loading={loading || isLoadingFuncionarios || isLoadingNegotiation}
           />
         }
         rightComments={<CobranzaComments />}
