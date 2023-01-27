@@ -20,5 +20,11 @@ export const getMenuItems = (urlIdentifier: string) => {
       remixClass: "ri-pie-chart-2-fill",
       path: paths.company.cobranza(urlIdentifier),
     },
+    {
+      id: 4,
+      title: "DOCUMENTOS",
+      remixClass: "ri-file-text-line",
+      path: paths.company.document(urlIdentifier),
+    },
   ];
 };

@@ -13,6 +13,10 @@ export const getClientByCode = async (code: string, chb: string) => {
   return await axiosClient.get(`${url}/${code}/${chb}`);
 };
 
+export const getAllClientsByCHBDetails = async (chb: string) => {
+  return await axiosClient.get(`${url}/${chb}/details`);
+};
+
 export const createClient = async (
   client: Omit<ClientType, "id">,
   idBank: number
@@ -35,3 +39,4 @@ export const deleteClient = async (
 ) => {
   return await axiosClient.delete(`${url}/${code}/${chb}/${idBank}`);
 };
+

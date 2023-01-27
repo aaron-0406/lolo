@@ -90,6 +90,7 @@ const ModalAddressesActions = () => {
   const onCleanFields = () => {
     setValue("id", 0);
     setValue("direction", "");
+    setValue("type", "");
     setValue("createdAt", undefined);
   };
 

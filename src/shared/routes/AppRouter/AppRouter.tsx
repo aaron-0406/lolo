@@ -24,6 +24,7 @@ import ProtectedRoutesCompany from "../ProtectedRoutesCompany";
 
 import paths from "../paths";
 import CompanyCobranza from "../../../pages/Company/CompanyCobranza";
+import CompanyTemplate from "../../../pages/Company/CompanyTemplate";
 
 const AppRouter = () => {
   return (
@@ -53,6 +54,7 @@ const AppRouter = () => {
         <Route path={paths.company.perfil()} element={<CompanyProfile />} />
         <Route path={paths.company.clientes()} element={<CompanyCustomers />} />
         <Route path={paths.company.cobranza()} element={<CompanyCobranza />} />
+        <Route path={paths.company.document()} element={<CompanyTemplate />} />
       </Route>
 
       <Route path="*" element={<NotFound />} />
