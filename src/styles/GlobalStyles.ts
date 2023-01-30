@@ -1,25 +1,9 @@
-import { createGlobalStyle } from 'styled-components'
+import { createGlobalStyle } from "styled-components";
+import "./global/fonts/dmsans/stylesheet.css";
+import "./global/fonts/raleway/stylesheet.css";
+import "remixicon/fonts/remixicon.css";
 
-export const GlobalStyles = createGlobalStyle`
-
-::-webkit-scrollbar {
-  width: 7px;
-  height: 7px;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb { 
-  background-color:  ${({ theme }) => theme.colors.primary};
-  border-radius: 9999px;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background-color: ${({ theme }) => `rgba(${theme.rgbColors.primary}, 0.8)`};
-}
-
-/* Normalize TW */
-
+const GlobalStyles = createGlobalStyle`
 *,
 ::before,
 ::after {
@@ -38,10 +22,10 @@ html {
 }
 
 body {
+  font-family: 'DM Sans', sans-serif;
   margin: 0;
   line-height: inherit;
-  font-family: "Inter", sans-serif;
-  background-color: ${({ theme }) => theme.colors['ghost-white']};
+  background-color: ${({ theme }) => theme.colors["Neutral0"]};
 
   #__next {
     display: flex;
@@ -115,7 +99,6 @@ table {
   border-collapse: collapse;
 }
 
-button,
 input,
 optgroup,
 select,
@@ -127,13 +110,10 @@ textarea {
   padding: 0;
 }
 
-button,
 select {
   text-transform: none;
 }
 
-button,
-[type='button'],
 [type='reset'],
 [type='submit'] {
   -webkit-appearance: button;
@@ -272,4 +252,11 @@ video {
 
 [hidden] {
   display: none;
-}`
+}
+
+.hide-component {
+  display: none;
+}
+`;
+
+export default GlobalStyles;

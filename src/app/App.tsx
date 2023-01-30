@@ -1,13 +1,7 @@
-import { HomeContainer } from '../containers/Dash/Home/HomeContainer'
-import { GlobalStyles } from '../styles/GlobalStyles'
+import AppRouter from "../shared/routes/AppRouter";
 
 const App = () => {
-  return (
-    <>
-      <GlobalStyles />
-      <HomeContainer />
-    </>
-  )
-}
+  return <AppRouter />;
+};
 
-export default App
+export default App;
