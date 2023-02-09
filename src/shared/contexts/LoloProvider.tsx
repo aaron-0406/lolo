@@ -1,4 +1,11 @@
-import { createContext, useContext } from "react";
+import {
+  createContext,
+  Dispatch,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import jwtDecode from "jwt-decode";
 import { usePersistedState } from "../hooks/usePersistedState";
 import { CityType } from "../types/city.type";
 import { CustomerHasBankType } from "../types/customer-has-bank";
@@ -6,6 +13,7 @@ import { CustomerUserType } from "../types/customer-user.type";
 import { CustomerType } from "../types/customer.type";
 import { FuncionarioType } from "../types/funcionario.type";
 import { NegotiationType } from "../types/negotiation.type";
+import storage from "../utils/storage";
 
 const appLoloClientStateKey = "lolo:client";
 const appLoloBankStateKey = "lolo:bank";
@@ -27,6 +35,19 @@ const initialCustomerState: CustomerType = {
   urlIdentifier: "",
   state: false,
   customerBanks: [],
+};
+
+const initialCustomerUserState: CustomerUserType = {
+  createdAt: new Date(),
+  customerId: 0,
+  dni: "",
+  email: "",
+  id: 0,
+  lastName: "",
+  name: "",
+  phone: "",
+  privilege: "",
+  state: false,
 };
 
 export const LoloContext = createContext<{
@@ -56,6 +77,14 @@ export const LoloContext = createContext<{
   negociacion: {
     negociaciones: Array<NegotiationType>;
     setNegociaciones: (negociaciones: Array<NegotiationType>) => void;
+  };
+  auth: {
+    authenticate: boolean;
+    setAuthenticate: Dispatch<boolean>;
+  };
+  customerUser: {
+    user: CustomerUserType;
+    setUser: Dispatch<CustomerUserType>;
   };
 } | null>(null);
 
@@ -108,6 +137,9 @@ export const LoloProvider: React.FC<LoloProviderProps> = ({ children }) => {
     }
   );
 
+  const [user, setUser] = useState(initialCustomerUserState);
+  const [authenticate, setAuthenticate] = useState<boolean>(false);
+
   const getUser = (userId: number) => {
     const user = usersState.find((user) => user.id === userId);
     return user;
@@ -140,6 +172,20 @@ export const LoloProvider: React.FC<LoloProviderProps> = ({ children }) => {
     setSelectedBankState(selectedBank);
   };
 
+  useEffect(() => {
+    const token = storage.get<string>("token");
+    if (token) {
+      try {
+        const usuario = jwtDecode<CustomerUserType>(token);
+        setUser(usuario);
+        setAuthenticate(true);
+        return;
+      } catch (error) {}
+    }
+    setAuthenticate(false);
+    setUser(initialCustomerUserState);
+  }, []);
+
   return (
     <LoloContext.Provider
       value={{
@@ -169,6 +215,14 @@ export const LoloProvider: React.FC<LoloProviderProps> = ({ children }) => {
         negociacion: {
           negociaciones: negociacionesState,
           setNegociaciones: setNegociaciones,
+        },
+        auth: {
+          authenticate,
+          setAuthenticate,
+        },
+        customerUser: {
+          user,
+          setUser,
         },
       }}
     >

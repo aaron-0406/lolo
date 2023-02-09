@@ -21,10 +21,17 @@ import {
 import { useEffect, useState } from "react";
 import CommentItem from "./CommentItem";
 import styled, { css } from "styled-components";
+import { CustomerUserType } from "../../../../shared/types/customer-user.type";
+import { useLoloContext } from "../../../../shared/contexts/LoloProvider";
+
+type Comment = CommentType & { customerUser: CustomerUserType };
 
 const CobranzaComments = () => {
   const { getValues: getValuesClient } = useFormContext<ClientType>();
-  const [comments, setComments] = useState<CommentType[]>([]);
+  const [comments, setComments] = useState<Comment[]>([]);
+  const {
+    customerUser: { user },
+  } = useLoloContext();
   const {
     control,
     setValue,
@@ -39,7 +46,7 @@ const CobranzaComments = () => {
       comment: "",
       date: moment(new Date()).format("DD-MM-YYYY"),
       clientId: getValuesClient().id,
-      customerUserId: getValuesClient().customerUserId,
+      customerUserId: user.id,
       negotiation: "",
     },
   });
@@ -48,7 +55,7 @@ const CobranzaComments = () => {
   const { refetch } = useQuery(
     "query-post-comment",
     async () => {
-      return await createComment(getValues());
+      return await createComment(watch());
     },
     {
       enabled: false,
@@ -151,17 +158,20 @@ const CobranzaComments = () => {
   };
 
   const onAddComment = () => {
+    setValue("customerUserId", user.id);
     handleSubmit((data) => {
       refetch();
     })();
   };
 
   const onEditComment = () => {
+    setValue("customerUserId", user.id);
     handleSubmit((data) => {
       refetchPut();
     })();
   };
   const onDeleteComment = () => {
+    setValue("customerUserId", user.id);
     handleSubmit((data) => {
       refetchDelete();
     })();
@@ -227,21 +237,25 @@ const CobranzaComments = () => {
         gap="20px"
       >
         <Button
-          disabled={!getValuesClient("id")}
+          disabled={!getValuesClient("id") || !!watch("id")}
           onClick={onAddComment}
           width="100px"
           shape="round"
           trailingIcon="ri-add-fill"
         />
         <Button
-          disabled={!getValuesClient("id")}
+          disabled={
+            !getValuesClient("id") ||
+            watch("customerUserId") !== user.id ||
+            !watch("id")
+          }
           onClick={onEditComment}
           width="100px"
           shape="round"
           trailingIcon="ri-edit-2-line"
         />
         <Button
-          disabled={!getValuesClient("id")}
+          disabled={!getValuesClient("id") || !watch("id")}
           onClick={onDeleteComment}
           width="100px"
           shape="round"
@@ -287,7 +301,6 @@ const CobranzaComments = () => {
               onChange={(e) => {
                 setValue("comment", e.target.value);
                 setValue("clientId", getValuesClient().id);
-                setValue("customerUserId", getValuesClient().customerUserId);
               }}
             />
           )}

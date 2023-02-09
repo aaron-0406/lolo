@@ -6,9 +6,21 @@ import styled from "styled-components";
 import { useFormContext } from "react-hook-form";
 import { TemplateFormType } from "../hookforms.interfaces";
 import Button from "../../../../ui/Button";
+import data from "./template_hidalgo_vidal.json";
+import {
+  ParagraphOptionsType,
+  TextOptionsType,
+} from "../../../../shared/types/template-document.type";
 
 const TemplateDoc = () => {
   const { watch, setValue } = useFormContext<TemplateFormType>();
+
+  const datos = data as {
+    parrafos: {
+      texts: TextOptionsType[];
+      options?: ParagraphOptionsType;
+    }[];
+  };
 
   const setPrevious = () => {
     const index = watch("clients")
@@ -83,20 +95,20 @@ const TemplateDoc = () => {
           />
         )}
       </Container>
-      <Container backgroundColor="transparent" padding="120px 70px">
-        {watch("templateJson").parrafos.map((item, i) => {
+      <Container backgroundColor="transparent" overFlowY="hidden" padding="95px 75px">
+        {datos.parrafos.map((item, i) => {
           return <TemplateDocParagraph key={i + "parrafo"} {...item} />;
         })}
       </Container>
     </Container>
   );
 };
-
 export default TemplateDoc;
 
 const StyledImg = styled(Img)`
-  width: 100%;
-  height: 100%;
+  width: 793px;
+  height: 1122px;
+  object-fit: cover;
 `;
 
 const StyledButton = styled(Button)`

@@ -8,6 +8,7 @@ const TemplateDocText: React.FC<{ $text: string }> = (props) => {
   const { $text = "" } = props;
   const { watch } = useFormContext<TemplateFormType>();
   const parrafo = useRef<HTMLParagraphElement>(null);
+  
   useEffect(() => {
     if (parrafo.current) parrafo.current.innerHTML = $text;
     return () => {

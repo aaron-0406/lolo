@@ -44,7 +44,7 @@ const AppRouter = () => {
       </Route>
 
       {/* COMPANY */}
-      <Route element={<GuestRouteCompany pathname={paths.company.root()} />}>
+      <Route element={<GuestRouteCompany pathname={paths.company.cobranza()} />}>
         <Route path={paths.company.login()} element={<CompanyLogin />} />
       </Route>
       <Route

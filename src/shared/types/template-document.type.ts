@@ -4,6 +4,7 @@ export type TemplateDocument = {
 };
 
 export type TextOptionsType = {
+  img?:string;
   text?: string;
   bold?: boolean;
   italic?: boolean;

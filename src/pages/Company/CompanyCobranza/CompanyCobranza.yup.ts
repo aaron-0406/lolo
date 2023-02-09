@@ -6,7 +6,7 @@ import yup from "../../../shared/yupLocale";
 const CompanyCobranzaSchema: yup.SchemaOf<
   Omit<ClientType, "id" | "createdAt">
 > = yup.object().shape({
-  code: yup.string().required().min(2).max(50),
+  code: yup.string().required().matches(/^\d*$/),
   negotiationId: yup.number().required().min(1),
   dniOrRuc: yup.string().optional().max(20),
   name: yup.string().required().min(5).max(200),

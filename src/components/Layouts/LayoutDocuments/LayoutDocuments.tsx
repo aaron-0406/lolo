@@ -18,8 +18,8 @@ const LayoutDocuments: React.FC<LayoutDocumenetProps> = (props) => {
   const greaterThanTabletL = useMediaQuery(device.tabletL);
 
   let firstContainerWidth = greaterThanTabletL ? "25%" : "100%";
-  let secondContainerWidth = greaterThanTabletL ? "27%" : "100%";
-  let thirdContainerWidth = greaterThanTabletL ? "48%" : "100%";
+  let secondContainerWidth = greaterThanTabletL ? "25%" : "100%";
+  let thirdContainerWidth = greaterThanTabletL ? "50%" : "100%";
 
   return (
     <Container
@@ -61,7 +61,6 @@ const StyledContainerDoc = styled(Container)`
   ${({ theme }) =>
     css`
       border: 2px solid ${theme.colors.Neutral4};
-      border: 2px solid ${theme.colors.Neutral4};
       ::-webkit-scrollbar-thumb {
         background: ${theme.colors.Neutral5};
         border-radius: 10px;
@@ -83,7 +82,7 @@ const StyledContainerDoc = styled(Container)`
 
 const StyledDocument = styled.div`
   width: 793px;
-  height: 1123px;
+  height: 1122px;
   overflow-x: auto;
   overflow-y: hidden;
   background-color: #fff;

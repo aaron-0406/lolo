@@ -1,16 +1,20 @@
+import React, { Dispatch, FC } from "react";
 import styled, { css } from "styled-components";
 import { useLoloContext } from "../../../../shared/contexts/LoloProvider";
 import Container from "../../../../ui/Container";
 import TextField from "../../../../ui/fields/TextField";
+import { Opts } from "../../../../ui/Pagination/interfaces";
 import Select from "../../../../ui/Select";
 import { SelectItemType } from "../../../../ui/Select/interfaces";
 
-const CustomersActions = () => {
+type CustomerActionsProps = {
+  opts: Opts;
+  setOpts: Dispatch<Opts>;
+};
+
+const CustomersActions: FC<CustomerActionsProps> = ({ opts, setOpts }) => {
   const {
     client: { customer },
-  } = useLoloContext();
-
-  const {
     bank: { selectedBank, setSelectedBank },
   } = useLoloContext();
 
@@ -32,6 +36,13 @@ const CustomersActions = () => {
     });
   };
 
+  const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    if (value === "") return setOpts({ ...opts, filter: "", page: 1 });
+    if (value.length < 3) return;
+    return setOpts({ ...opts, filter: value.trim(), page: 1 });
+  };
+
   return (
     <StyledContainer
       width="100%"
@@ -42,7 +53,11 @@ const CustomersActions = () => {
       gap="20px"
     >
       <Container className="actions__textfield" width="100%">
-        <TextField width="100%" label="Buscar cliente:" />
+        <TextField
+          onChange={onChangeSearch}
+          width="100%"
+          label="Buscar cliente:"
+        />
       </Container>
 
       <Container className="actions__select" width="100%">

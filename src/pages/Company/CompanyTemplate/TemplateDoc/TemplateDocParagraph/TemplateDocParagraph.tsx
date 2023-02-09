@@ -19,9 +19,19 @@ const TemplateDocParagraph: React.FC<TemplateDocParagraphProps> = (props) => {
 
   const { watch } = useFormContext<TemplateFormType>();
 
-  let marginBottom = options?.spacingAfter ? options?.spacingAfter : 0;
+  let marginBottom = options?.spacingAfter
+    ? options?.spacingAfter - 8
+    : 0 - 5;
 
-  const createTag = (tag: "b" | "i" | "p", text: string, fontSize: number) => {
+  const createTag = (
+    tag: "b" | "i" | "p",
+    text: string,
+    fontSize: number,
+    img?: string
+  ) => {
+    if (img) {
+      return `<img src="${img}" />`;
+    }
     text = `<${tag} style="font-size: ${fontSize}px; display:inline">${text}</${tag}>`;
 
     for (let i = 0; i < watch("values").length; i++) {
@@ -45,7 +55,8 @@ const TemplateDocParagraph: React.FC<TemplateDocParagraphProps> = (props) => {
         tempText += createTag(
           "b",
           element.text ? element.text : "",
-          element.fontSize ? element.fontSize + 1 : 12
+          element.fontSize ? element.fontSize + 1 : 12,
+          element.img
         );
         continue;
       }
@@ -53,7 +64,8 @@ const TemplateDocParagraph: React.FC<TemplateDocParagraphProps> = (props) => {
         tempText += createTag(
           "i",
           element.text ? element.text : "",
-          element.fontSize ? element.fontSize + 1 : 12
+          element.fontSize ? element.fontSize + 1 : 12,
+          element.img
         );
         continue;
       }
@@ -61,7 +73,8 @@ const TemplateDocParagraph: React.FC<TemplateDocParagraphProps> = (props) => {
         tempText += createTag(
           "p",
           element.text ? element.text : "",
-          element.fontSize ? element.fontSize + 1 : 12
+          element.fontSize ? element.fontSize + 1 : 12,
+          element.img
         );
         continue;
       }
@@ -71,7 +84,7 @@ const TemplateDocParagraph: React.FC<TemplateDocParagraphProps> = (props) => {
 
   useEffect(() => {
     transformText();
-  }, [watch("values"), watch("clients"),watch("clientSelected")]);
+  }, [watch("values"), watch("clients"), watch("clientSelected")]);
 
   if (!!texts && texts[0]?.text === "[guarantor]") {
     return (

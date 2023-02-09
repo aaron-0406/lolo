@@ -4,6 +4,7 @@ export type CustomerUserType = {
   lastName: string;
   phone: string;
   dni: string;
+  email: string;
   privilege: string;
   state: boolean;
   createdAt: Date;

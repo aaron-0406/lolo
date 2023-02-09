@@ -1,33 +1,24 @@
-import React, { useMemo } from "react";
+import React from "react";
 import styled, { css } from "styled-components";
 import { CommentType } from "../../../../../shared/types/comment.type";
 import Container from "../../../../../ui/Container";
 import Text from "../../../../../ui/Text";
 import moment from "moment";
-import { useLoloContext } from "../../../../../shared/contexts/LoloProvider";
+import { CustomerUserType } from "../../../../../shared/types/customer-user.type";
 
 type CommentItemProps = {
-  comment: CommentType;
+  comment: CommentType & { customerUser: CustomerUserType };
   selected: boolean;
   getComment: (comment: CommentType) => void;
 };
 
 const CommentItem: React.FC<CommentItemProps> = (props) => {
   const {
-    comment: { comment: commentText, date, negotiation, customerUserId },
+    comment: { comment: commentText, date, negotiation },
     getComment,
     comment,
     selected,
   } = props;
-
-  const {
-    user: { getUser },
-  } = useLoloContext();
-
-  const user = useMemo(
-    () => getUser(customerUserId),
-    [customerUserId, getUser]
-  );
 
   const handleClickComment = () => {
     getComment(comment);
@@ -45,7 +36,7 @@ const CommentItem: React.FC<CommentItemProps> = (props) => {
       <Container>
         <Text.Body ellipsis size="s" weight="bold">
           <Text.Body ellipsis size="m" weight="bold" color="Primary5">
-            {user ? user.name.toUpperCase() : "-"}
+            {comment.customerUser.name.toUpperCase()}
           </Text.Body>
         </Text.Body>
       </Container>
