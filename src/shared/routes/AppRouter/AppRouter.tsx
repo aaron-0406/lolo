@@ -25,6 +25,8 @@ import ProtectedRoutesCompany from "../ProtectedRoutesCompany";
 import paths from "../paths";
 import CompanyCobranza from "../../../pages/Company/CompanyCobranza";
 import CompanyTemplate from "../../../pages/Company/CompanyTemplate";
+import ProtectedRoutesCompanyDash from "../ProtectedRoutesCompanyDash";
+import Dashboard from "../../../pages/Company/CompanyDashboard/Dashboard";
 
 const AppRouter = () => {
   return (
@@ -44,7 +46,9 @@ const AppRouter = () => {
       </Route>
 
       {/* COMPANY */}
-      <Route element={<GuestRouteCompany pathname={paths.company.cobranza()} />}>
+      <Route
+        element={<GuestRouteCompany pathname={paths.company.cobranza()} />}
+      >
         <Route path={paths.company.login()} element={<CompanyLogin />} />
       </Route>
       <Route
@@ -55,6 +59,16 @@ const AppRouter = () => {
         <Route path={paths.company.clientes()} element={<CompanyCustomers />} />
         <Route path={paths.company.cobranza()} element={<CompanyCobranza />} />
         <Route path={paths.company.document()} element={<CompanyTemplate />} />
+        <Route
+          element={
+            <ProtectedRoutesCompanyDash pathname={paths.company.login()} />
+          }
+        >
+          <Route
+            path={paths.companyDashboard.dashboard()}
+            element={<Dashboard />}
+          />
+        </Route>
       </Route>
 
       <Route path="*" element={<NotFound />} />

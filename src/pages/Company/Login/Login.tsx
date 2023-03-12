@@ -19,6 +19,7 @@ const Login = () => {
     customerUser: { setUser },
     auth: { setAuthenticate },
   } = useLoloContext();
+
   const {
     handleSubmit,
     control,
@@ -34,6 +35,7 @@ const Login = () => {
       customerId: 0,
     },
   });
+
   const { mutate: loginQuery, isLoading } = useMutation<ResponseLogin, Error>(
     async (): Promise<ResponseLogin> => {
       notification({ type: "info", message: "Espere por favor..." });
@@ -83,7 +85,6 @@ const Login = () => {
           padding="23px"
         >
           <Icon remixClass="ri-user-line" size={120} color="Primary5" />
-
           <Container
             width="100%"
             display="flex"

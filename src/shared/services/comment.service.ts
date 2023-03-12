@@ -22,6 +22,9 @@ export const createComment = async (commentParam: CommentType) => {
 export const getComments = async (id: number) => {
   return await axiosClient.get(`${url}/all-client/${id}`);
 };
+export const getChart = async (id: number) => {
+  return await axiosClient.get(`${url}/chart/${id}`);
+};
 export const deleteComment = async (id: number) => {
   return await axiosClient.delete(`${url}/${id}`);
 };

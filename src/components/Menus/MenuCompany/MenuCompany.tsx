@@ -5,13 +5,14 @@ import styled, { css } from "styled-components";
 import { device } from "../../../shared/breakpoints/reponsive";
 import { useLoloContext } from "../../../shared/contexts/LoloProvider";
 import { useMediaQuery } from "../../../shared/hooks/useMediaQuery";
+import paths from "../../../shared/routes/paths";
 import { getAllCities } from "../../../shared/services/city.service";
 import { getAllUsersByID } from "../../../shared/services/customer-user.service";
+import storage from "../../../shared/utils/storage";
 import Container from "../../../ui/Container";
 import Icon from "../../../ui/Icon";
 import Text from "../../../ui/Text";
 import { getMenuItems } from "./utils/get-menu-items";
-
 type MenuCompanyProps = {
   children: JSX.Element;
   urlIdentifier: string;
@@ -27,10 +28,10 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({
     client: { customer },
     city: { setCities },
     user: { setUsers },
+    auth: { setAuthenticate },
   } = useLoloContext();
 
   const greaterThanTabletL = useMediaQuery(device.tabletL);
-
   const items = getMenuItems(urlIdentifier);
 
   const onClickToggle = () => {
@@ -66,6 +67,12 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({
   if (isLoadingCities || isLoadingUsers) {
     return <div>Loading</div>;
   }
+
+  // Log Out
+  const logOut = () => {
+    storage.clear();
+    setAuthenticate(false);
+  };
 
   return (
     <StyledMenu
@@ -118,6 +125,16 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({
                 </Link>
               );
             })}
+            <Link
+              to={paths.company.login(urlIdentifier)}
+              className="nav__items"
+              onClick={logOut}
+            >
+              <Icon remixClass="ri-logout-circle-line" />
+              <Text.Body size="m" weight="bold" color="Neutral0">
+                CERRAR SESIÓN
+              </Text.Body>
+            </Link>
           </ul>
         </Container>
 

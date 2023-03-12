@@ -21,4 +21,9 @@ export default {
     document: (urlIdentifier = ":urlIdentifier") =>
       `/${urlIdentifier}/document`,
   },
+  companyDashboard: {
+    root: (urlIdentifier = ":urlIdentifier") => `/${urlIdentifier}`,
+    dashboard: (urlIdentifier = ":urlIdentifier") =>
+      `/${urlIdentifier}/dashboard`,
+  },
 };
