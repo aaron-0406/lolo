@@ -35,5 +35,6 @@ const StyledRow = styled.td<{ center: boolean; bold: boolean }>`
     font-weight: ${bold ? "bold" : "500"};
     font-size: 16px;
     letter-spacing: 0.05em;
+    word-break: break-all;
   `}
 `;

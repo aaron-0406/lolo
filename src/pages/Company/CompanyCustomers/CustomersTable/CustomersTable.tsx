@@ -105,9 +105,9 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
     }
   }, [refetch, opts, selectedBank]);
 
-  if (isLoading || isLoadingNegotiations || isLoadingFuncionarions) {
-    return <div>Loading ...</div>;
-  }
+  // if (isLoading || isLoadingNegotiations || isLoadingFuncionarions) {
+  //   return <div>Loading ...</div>;
+  // }
 
   return (
     <Container
@@ -118,23 +118,29 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
     >
       <Pagination count={customersCount} opts={opts} setOpts={setOpts} />
       <div>
-        {customers.map(
-          (
-            client: ClientType & { negotiation: NegotiationType },
-            index: number
-          ) => {
-            return (
-              <CustomersRow
-                key={index}
-                code={client.code}
-                name={client.name}
-                negotiationName={client.negotiation.name}
-                negotiationId={client.negotiationId}
-                createdAt={client.createdAt}
-                onClick={onClickRow}
-              />
-            );
-          }
+        {isLoading || isLoadingNegotiations || isLoadingFuncionarions ? (
+          <div>Loading ...</div>
+        ) : (
+          <>
+            {customers.map(
+              (
+                client: ClientType & { negotiation: NegotiationType },
+                index: number
+              ) => {
+                return (
+                  <CustomersRow
+                    key={index}
+                    code={client.code}
+                    name={client.name}
+                    negotiationName={client.negotiation.name}
+                    negotiationId={client.negotiationId}
+                    createdAt={client.createdAt}
+                    onClick={onClickRow}
+                  />
+                );
+              }
+            )}
+          </>
         )}
       </div>
     </Container>

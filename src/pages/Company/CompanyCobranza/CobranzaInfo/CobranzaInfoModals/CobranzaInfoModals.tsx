@@ -7,9 +7,10 @@ import Modal from "../../../../../ui/Modal";
 import ModalAddresses from "./ModalAddresses";
 import ModalFiadores from "./ModalFiadores";
 import ModalFiles from "./ModalFiles/ModalFiles";
+import ModalProducts from "./ModalProducts";
 
 const CobranzaInfoModals = () => {
-  const { getValues } = useFormContext<ClientType>();
+  const { getValues, watch } = useFormContext<ClientType>();
 
   const {
     visible: visibleModalFiadores,
@@ -29,8 +30,14 @@ const CobranzaInfoModals = () => {
     hideModal: hideModalFiles,
   } = useModal();
 
+  const {
+    visible: visibleModalProducts,
+    showModal: showModalProducts,
+    hideModal: hideModalProducts,
+  } = useModal();
+
   const clientId = getValues("id");
-  const code = getValues("code");
+  const code = watch("code");
 
   return (
     <div className="fields-wrapper-container-t">
@@ -53,6 +60,12 @@ const CobranzaInfoModals = () => {
         disabled={!clientId}
         onClick={showModalAddresses}
       />
+      <Button
+        width="100%"
+        label="Productos"
+        disabled={!clientId}
+        onClick={showModalProducts}
+      />
 
       <Modal
         id="modal-fiadores"
@@ -70,7 +83,7 @@ const CobranzaInfoModals = () => {
         onClose={hideModalFiles}
         contentOverflowY="auto"
       >
-        <ModalFiles clientId={clientId} code={Number(code)}/>
+        <ModalFiles clientId={clientId} code={Number(code)} />
       </Modal>
 
       <Modal
@@ -87,7 +100,24 @@ const CobranzaInfoModals = () => {
           height="100%"
           width="100%"
         >
-          <ModalAddresses clientId={clientId}/>
+          <ModalAddresses clientId={clientId} />
+        </Container>
+      </Modal>
+      <Modal
+        id="modal-products"
+        title="Productos"
+        visible={visibleModalProducts}
+        onClose={hideModalProducts}
+      >
+        <Container
+          display="flex"
+          flexDirection="column"
+          position="relative"
+          overFlowY="auto"
+          height="100%"
+          width="100%"
+        >
+          <ModalProducts clientCode={code} />
         </Container>
       </Modal>
     </div>

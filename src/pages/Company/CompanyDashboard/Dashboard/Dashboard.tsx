@@ -56,57 +56,57 @@ const Dashboard = () => {
         gap="10px"
         padding="10px"
         width="100%"
+        overFlowY="auto"
         height="100%"
       >
         <Form />
-        <Container width="100%" height="calc(100% - 7rem)">
-          <Container
-            width="100%"
-            display="flex"
-            flexDirection={greaterThanDesktopS ? "row" : "column-reverse"}
-          >
-            <StyledButton
-              onClick={handleChangeTab}
-              data-name="selected.clientAddedButton"
-              $selected={watch("selected.clientAddedButton")}
-              label="Clientes Agregados"
-            />
-            <StyledButton
-              onClick={handleChangeTab}
-              data-name="selected.clientDeletedButton"
-              $selected={watch("selected.clientDeletedButton")}
-              label="Clientes Eliminados"
-            />
-            <StyledButton
-              onClick={handleChangeTab}
-              data-name="selected.productAddedButton"
-              $selected={watch("selected.productAddedButton")}
-              label="Productos Agregados"
-            />
-            <StyledButton
-              onClick={handleChangeTab}
-              data-name="selected.productDeletedButton"
-              $selected={watch("selected.productDeletedButton")}
-              label="Productos Eliminados"
-            />
-            <StyledButton
-              onClick={handleChangeTab}
-              data-name="selected.productCastigoButton"
-              $selected={watch("selected.productCastigoButton")}
-              label="Productos Castigo"
-            />
-          </Container>
-          <Container
-            height="100%"
-            overFlowY="auto"
-            width="100%"
-          >
-            {watch("selected.clientAddedButton") && <TableClientsAdded />}
-            {watch("selected.clientDeletedButton") && <TableClientsDeleted />}
-            {watch("selected.productAddedButton") && <TableProductsAdded />}
-            {watch("selected.productDeletedButton") && <TableProductsDeleted />}
-            {watch("selected.productCastigoButton") && <TableProductsCastigo />}
-          </Container>
+        <Container
+          width="100%"
+          display="flex"
+          flexDirection={greaterThanDesktopS ? "row" : "column-reverse"}
+        >
+          <StyledButton
+            onClick={handleChangeTab}
+            data-name="selected.clientAddedButton"
+            $selected={watch("selected.clientAddedButton")}
+            label="Clientes Agregados"
+          />
+          <StyledButton
+            onClick={handleChangeTab}
+            data-name="selected.clientDeletedButton"
+            $selected={watch("selected.clientDeletedButton")}
+            label="Clientes Eliminados"
+          />
+          <StyledButton
+            onClick={handleChangeTab}
+            data-name="selected.productAddedButton"
+            $selected={watch("selected.productAddedButton")}
+            label="Productos Agregados"
+          />
+          <StyledButton
+            onClick={handleChangeTab}
+            data-name="selected.productDeletedButton"
+            $selected={watch("selected.productDeletedButton")}
+            label="Productos Eliminados"
+          />
+          <StyledButton
+            onClick={handleChangeTab}
+            data-name="selected.productCastigoButton"
+            $selected={watch("selected.productCastigoButton")}
+            label="Productos Castigo"
+          />
+        </Container>
+        <Container
+          width="100%"
+          display="flex"
+          flexDirection="column"
+          gap="10px"
+        >
+          {watch("selected.clientAddedButton") && <TableClientsAdded />}
+          {watch("selected.clientDeletedButton") && <TableClientsDeleted />}
+          {watch("selected.productAddedButton") && <TableProductsAdded />}
+          {watch("selected.productDeletedButton") && <TableProductsDeleted />}
+          {watch("selected.productCastigoButton") && <TableProductsCastigo />}
         </Container>
       </Container>
     </FormProvider>

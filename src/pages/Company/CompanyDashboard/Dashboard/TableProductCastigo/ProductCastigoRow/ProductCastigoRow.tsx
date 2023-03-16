@@ -5,7 +5,7 @@ import { ProductCastigoRowProps } from "./ProductCastigoRow.type";
 
 const ProductCastigoRow: FC<ProductCastigoRowProps> = (props) => {
   const {
-    product: { code, clientCode, state },
+    product: { code, clientCode, state,name },
     index,
   } = props;
   return (
@@ -13,6 +13,7 @@ const ProductCastigoRow: FC<ProductCastigoRowProps> = (props) => {
       <Row>{index + 1}</Row>
       <Row>{clientCode}</Row>
       <Row>{code}</Row>
+      <Row>{name}</Row>
       <Row>{state} {"> CASTIGO"}</Row>
     </StyledTr>
   );

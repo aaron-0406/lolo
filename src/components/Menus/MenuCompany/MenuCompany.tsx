@@ -28,6 +28,7 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({
     client: { customer },
     city: { setCities },
     user: { setUsers },
+    customerUser: { user },
     auth: { setAuthenticate },
   } = useLoloContext();
 
@@ -111,19 +112,37 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({
         >
           <ul className="nav">
             {items.map((item) => {
-              return (
-                <Link
-                  key={item.id}
-                  to={item.path}
-                  className="nav__items"
-                  onClick={onClickToggle}
-                >
-                  <Icon remixClass={item.remixClass} />
-                  <Text.Body size="m" weight="bold" color="Neutral0">
-                    {item.title}
-                  </Text.Body>
-                </Link>
-              );
+              if (user.privilege === "EDITOR" && item.admin) {
+                return (
+                  <Link
+                    key={item.id}
+                    to={item.path}
+                    className="nav__items"
+                    onClick={onClickToggle}
+                  >
+                    <Icon remixClass={item.remixClass} />
+                    <Text.Body size="m" weight="bold" color="Neutral0">
+                      {item.title}
+                    </Text.Body>
+                  </Link>
+                );
+              }
+              if (!item.admin) {
+                return (
+                  <Link
+                    key={item.id}
+                    to={item.path}
+                    className="nav__items"
+                    onClick={onClickToggle}
+                  >
+                    <Icon remixClass={item.remixClass} />
+                    <Text.Body size="m" weight="bold" color="Neutral0">
+                      {item.title}
+                    </Text.Body>
+                  </Link>
+                );
+              }
+              return <></>;
             })}
             <Link
               to={paths.company.login(urlIdentifier)}
@@ -140,7 +159,7 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({
 
         <Container
           className={`layout__content ${toggleMenu && "hide-component"}`}
-          width="100%"
+          width="calc(100% - 60px)"
           height="100%"
         >
           {children}

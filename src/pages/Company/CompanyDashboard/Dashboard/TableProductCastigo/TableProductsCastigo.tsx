@@ -12,6 +12,7 @@ const TableProductsCastigo = () => {
       <Column align="left" width="5%" text="#" />
       <Column align="left" width="31.5%" text="Codigo Cliente" />
       <Column align="left" width="31.5%" text="Código Producto" />
+      <Column align="left" width="31.5%" text="Nombre Producto" />
       <Column align="left" width="31.5%" text="Estado" />
     </tr>
   );

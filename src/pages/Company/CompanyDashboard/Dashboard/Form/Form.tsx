@@ -52,6 +52,7 @@ const Form = () => {
       setValue("productsDeleted", productsDeleted);
       setValue("productsCastigo", productsCastigo);
     } catch (error: any) {
+      setloading(false);
       notification({
         message: error.message,
         type: "error",
