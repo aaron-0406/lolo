@@ -52,6 +52,8 @@ const TableClientsAdded = () => {
             return {
               name: item.clientName,
               code: item.clientCode,
+              funcionarioId: item.funcionarioId,
+              cityId: item.cityId,
             };
           })
           .slice(start, end);

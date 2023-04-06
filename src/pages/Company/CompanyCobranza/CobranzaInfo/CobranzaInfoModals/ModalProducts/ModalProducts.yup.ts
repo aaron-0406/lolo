@@ -5,7 +5,13 @@ import { ProductFormType } from "./hookforms.interfaces";
 const ModalProductsSchema: yup.SchemaOf<
   Omit<
     ProductFormType,
-    "id" | "createdAt" | "products" | "clientCode" | "customerId"
+    | "id"
+    | "createdAt"
+    | "products"
+    | "clientCode"
+    | "customerId"
+    | "cityId"
+    | "funcionarioId"
   >
 > = yup.object().shape({
   code: yup.string().required().min(5).max(150),

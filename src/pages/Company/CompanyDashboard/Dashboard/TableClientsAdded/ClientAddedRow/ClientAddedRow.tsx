@@ -12,7 +12,7 @@ import { ClientAddedRowProps } from "./ClientAddedRow.type";
 
 const ClientAddedRow: FC<ClientAddedRowProps> = (props) => {
   const {
-    client: { clientCode, clientName, code },
+    client: { clientCode, clientName, code, cityId, funcionarioId },
     index,
   } = props;
   const {
@@ -32,7 +32,7 @@ const ClientAddedRow: FC<ClientAddedRowProps> = (props) => {
   const { isLoading, mutate: createProducts } = useMutation<any, Error>(
     async () => {
       return await createClientsDash(
-        [{ code: clientCode, name: clientName }],
+        [{ code: clientCode, name: clientName, cityId, funcionarioId }],
         customerUserId,
         +idCHB,
         +idBank

@@ -1,8 +1,12 @@
+import { ClientType } from "../types/client.type";
+import { ProductType, ProductTypeName } from "../types/product.type";
 import axiosClient from "../utils/api/clientAxios";
 
 interface Client {
   name: string;
   code: string;
+  cityId: string;
+  funcionarioId: string;
 }
 
 interface Product {
@@ -13,6 +17,16 @@ interface Product {
   clientCode: string;
   customerId: number;
 }
+
+type SendEmail = {
+  usersId: number[];
+  clientsAdded: ProductTypeName[];
+  clientsDeleted: ClientType[];
+  productsAdded: ProductTypeName[];
+  productsCastigo: ProductType[];
+  productsDeleted: ProductType[];
+};
+
 const API = axiosClient.getUri();
 
 const url = `${API}/dashboard`;
@@ -21,6 +35,9 @@ export const postDashboardXslx = async (formData: FormData) => {
   return await axiosClient.post(`${url}/xslx`, formData, {
     headers: { "Content-Type": "multipart/form-data" },
   });
+};
+export const postDashboardSendXslx = async (data: SendEmail) => {
+  return await axiosClient.post(`${url}/send-xslx`, data);
 };
 
 export const createClientsDash = async (

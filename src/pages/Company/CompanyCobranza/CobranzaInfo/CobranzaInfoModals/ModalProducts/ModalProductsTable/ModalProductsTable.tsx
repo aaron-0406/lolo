@@ -40,7 +40,7 @@ const ModalProductsTable = () => {
       overFlowY="auto"
     >
       <div>
-        {products.map((product: ProductType, index: number) => {
+        {products.map((product: Omit<ProductType, "funcionarioId" | "cityId">, index: number) => {
           return (
             <ModalProductsRow
               name={product.name}

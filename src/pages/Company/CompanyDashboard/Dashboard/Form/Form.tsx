@@ -9,6 +9,9 @@ import InputFile from "../../../../../ui/inputs/InputFile";
 import notification from "../../../../../ui/notification";
 import { useFormContext } from "react-hook-form";
 import { DashFormType } from "../hookform.type";
+import Modal from "../../../../../ui/Modal";
+import useModal from "../../../../../shared/hooks/useModal";
+import ModalUsers from "./ModalUsers";
 
 const Form = () => {
   const [file, setFile] = useState<File>();
@@ -21,6 +24,12 @@ const Form = () => {
       customer: { id },
     },
   } = useLoloContext();
+
+  const {
+    visible: visibleModalUsers,
+    showModal: showModalUsers,
+    hideModal: hideModalUsers,
+  } = useModal();
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) setFile(e.target.files[0]);
@@ -77,6 +86,23 @@ const Form = () => {
         loading={loading}
         disabled={loading}
       />
+      <Button
+        onClick={showModalUsers}
+        label={greaterThanDesktopS && "Enviar Email"}
+        shape={greaterThanDesktopS ? "default" : "round"}
+        leadingIcon="ri-mail-send-line"
+        loading={loading}
+        disabled={loading}
+      />
+      <Modal
+        id="modal-usuarios"
+        title="Usuarios"
+        visible={visibleModalUsers}
+        onClose={hideModalUsers}
+        contentOverflowY="auto"
+      >
+        <ModalUsers />
+      </Modal>
     </Container>
   );
 };
