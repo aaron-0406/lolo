@@ -22,16 +22,16 @@ const NotFound = () => {
       >
         <Container
           alignItems = "center"
-          width = "450px"
+          maxWidth = "85%"
           >
           <Img placeholderImage="" src={ErrorIcon}/>
           </Container>
         <Container
           textAlign= "center"
-          padding={"15px"}
+          padding={"1%"}
           >
-            <text style={{fontSize:24}}>PÁGINA NO ENCONTRADA</text> <br/>
-            <text style={{fontSize:18}}>La página que está buscando podría haber sido eliminada,<br/>
+            <text style={{fontSize:"90%"}}>PÁGINA NO ENCONTRADA</text> <br/>
+            <text style={{fontSize:"80%"}}>La página que está buscando podría haber sido eliminada,<br/>
               cambió su nombre o no está disponible temporalmente.</text>
           </Container>
         <Container >

@@ -159,7 +159,8 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({
 
         <Container
           className={`layout__content ${toggleMenu && "hide-component"}`}
-          width="calc(100% - 60px)"
+          width="100%"
+          // width="calc(100% - 60px)"
           height="100%"
         >
           {children}
