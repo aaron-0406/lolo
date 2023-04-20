@@ -63,6 +63,11 @@ const Login = () => {
       loginQuery();
     })();
   };
+  const handleKeyPress = (event: any) => {
+    if (event.key === 'Enter') {
+      window.document.getElementById("Continuar")?.click();
+    }
+  };
   return (
     <StyledLoginContainer
       width="100%"
@@ -118,12 +123,14 @@ const Login = () => {
                   helperText={errors.password?.message}
                   hasError={!!errors.password}
                   onChange={field.onChange}
+                  onKeyPress={handleKeyPress}
                 />
               )}
             />
           </Container>
-
+          
           <Button
+            id="Continuar"
             onClick={onLogin}
             disabled={isLoading}
             loading={isLoading}
