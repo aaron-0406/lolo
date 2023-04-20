@@ -68,11 +68,11 @@ const StyledProfile = styled(Container)`
     }
 
     .main_container_tablet {
-      flex-wrap: nowrap;
+      flex-wrap: wrap;
       flex-direction: row;
 
       .nav_image_tablet {
-        width: 50%;
+        width: 29%;
         max-width: 208px;
         margin: auto 2% auto 2%;
       }
