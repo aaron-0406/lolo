@@ -131,11 +131,11 @@ const Login = () => {
           </Container>
 
           <Button
-            id="Continuar"
             onClick={onLogin}
             disabled={isLoading}
             loading={isLoading}
             width="100%"
+            label="Continuar"
           />
         </Container>
       </Container>
