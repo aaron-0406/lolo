@@ -26,7 +26,7 @@ const CompanyProfile = () => {
 export default CompanyProfile;
 
 const StyledCompanyProfile = styled(Container)`
-  ${({ theme }) => css`
+  ${() => css`
     .main_container{
       display: flex;
       flex-direction: row;

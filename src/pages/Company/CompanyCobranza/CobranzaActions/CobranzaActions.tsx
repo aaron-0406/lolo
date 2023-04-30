@@ -13,6 +13,8 @@ import { ClientType } from "../../../../shared/types/client.type";
 import Button from "../../../../ui/Button";
 import Container from "../../../../ui/Container";
 import notification from "../../../../ui/notification";
+import { generateDocumentService } from "../../../../shared/services/document.service";
+import { DOMAIN } from "../../../../shared/utils/constant/api";
 
 const CobranzaActions = () => {
   const {
@@ -87,6 +89,29 @@ const CobranzaActions = () => {
       }
     );
 
+  const { mutate: generateDocument } = useMutation<any, Error>(
+    async () => {
+      return await generateDocumentService(3, [getValues("id")]);
+    },
+    {
+      onSuccess: ({ data }) => {
+        const anchor = document.createElement("a");
+        anchor.href = `${DOMAIN}/download/${data.docName}`;
+        anchor.click();
+        notification({
+          type: "success",
+          message: "Documento creado",
+        });
+      },
+      onError: (error: any) => {
+        notification({
+          type: "error",
+          message: error.response.data.message,
+        });
+      },
+    }
+  );
+
   const onClean = () => {
     reset();
     setValue("salePerimeter", "");
@@ -116,6 +141,10 @@ const CobranzaActions = () => {
     handleSubmit(() => {
       deleteCustomer();
     })();
+  };
+
+  const onGenerateWord = () => {
+    generateDocument();
   };
 
   return (
@@ -152,6 +181,13 @@ const CobranzaActions = () => {
         trailingIcon="ri-close-line"
         onClick={onDeleteClient}
         loading={loadingDeleteClient}
+        disabled={!getValues("id")}
+      />
+      <Button
+        width="100px"
+        shape="round"
+        trailingIcon="ri-file-word-line"
+        onClick={onGenerateWord}
         disabled={!getValues("id")}
       />
       <Button
