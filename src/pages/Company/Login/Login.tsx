@@ -63,9 +63,9 @@ const Login = () => {
       loginQuery();
     })();
   };
-  const handleKeyPress = (event: any) => {
-    if (event.key === 'Enter') {
-      window.document.getElementById("Continuar")?.click();
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      onLogin();
     }
   };
   return (
@@ -108,6 +108,7 @@ const Login = () => {
                   helperText={errors.email?.message}
                   hasError={!!errors.email}
                   onChange={field.onChange}
+                  onKeyPress={handleKeyPress}
                 />
               )}
             />
@@ -128,14 +129,13 @@ const Login = () => {
               )}
             />
           </Container>
-          
+
           <Button
             id="Continuar"
             onClick={onLogin}
             disabled={isLoading}
             loading={isLoading}
             width="100%"
-            label="Continuar"
           />
         </Container>
       </Container>
