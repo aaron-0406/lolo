@@ -31,16 +31,16 @@ const ProfileInfo = () => {
             !greaterThanDesktopS && "nav_information_tablet"
           }`}
         >
-          <Text.Body size="l" weight="bold">
+          <Text.Body size="l" weight="bold" ellipsis>
             {`${user.name} ${user.lastName}`}
           </Text.Body>
-          <Text.Body size="m" weight="regular">
+          <Text.Body size="m" weight="regular" ellipsis>
             <b>DNI:</b> {user.dni}
           </Text.Body>
-          <Text.Body size="m" weight="regular">
+          <Text.Body size="m" weight="regular" ellipsis>
             {user.email}
           </Text.Body>
-          <Text.Body size="m" weight="regular">
+          <Text.Body size="m" weight="regular" ellipsis>
             TELÉFONO: {user.phone}
           </Text.Body>
         </Container>
@@ -65,32 +65,47 @@ const StyledProfile = styled(Container)`
       .nav_image {
         display: flex;
         width: 50%;
-        text-align: center:
+        height: 60%;
+        align-items: center:
+        justify-self: center;
       }
       
       .nav_information {
         display: flex;
         gap: 5px;
-        width: 100%;
-        padding: 10px 0;
+        width: 90%;
+        padding: 10px 10px;
         flex-direction: column;
         justify-content: center;
       }
     }
 
     .main_container_tablet {
-      flex-wrap: nowrap;
+      display: flex;
       flex-direction: row;
 
       .nav_image_tablet {
-        width: 50%;
-        max-width: 208px;
-        margin: auto 2% auto 2%;
+        width: 100%;
+        height: 50%;
+        padding: 10px;
+        display: flex;
+        justify-content: center;
       }
 
       .nav_information_tablet {
-        width: 67%;
+        width: 100%;
+        height: 50%;
         overflow-wrap: break-word;
+      }
+
+      @media ${theme.device.tabletS} {
+        .nav_image_tablet {
+          width: 50%;
+        }
+
+        .nav_information_tablet {
+          width: 50%;
+        }
       }
     }
 
