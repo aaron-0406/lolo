@@ -63,6 +63,11 @@ const Login = () => {
       loginQuery();
     })();
   };
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      onLogin();
+    }
+  };
   return (
     <StyledLoginContainer
       width="100%"
@@ -103,6 +108,7 @@ const Login = () => {
                   helperText={errors.email?.message}
                   hasError={!!errors.email}
                   onChange={field.onChange}
+                  onKeyPress={handleKeyPress}
                 />
               )}
             />
@@ -118,6 +124,7 @@ const Login = () => {
                   helperText={errors.password?.message}
                   hasError={!!errors.password}
                   onChange={field.onChange}
+                  onKeyPress={handleKeyPress}
                 />
               )}
             />
