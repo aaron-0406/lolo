@@ -16,22 +16,32 @@ const ProfileInfo = () => {
 
   return (
     <StyledProfile width="100%" height="100%">
-      <Container className={`main_container ${!greaterThanDesktopS && "main_container_tablet"}`}>
-        <Container className={`nav_image ${!greaterThanDesktopS && "nav_image_tablet"}`}>
-          <Img placeholderImage="" src={ProfilePicture}/>
+      <Container
+        className={`main_container ${
+          !greaterThanDesktopS && "main_container_tablet"
+        }`}
+      >
+        <Container
+          className={`nav_image ${!greaterThanDesktopS && "nav_image_tablet"}`}
+        >
+          <Img placeholderImage="" src={ProfilePicture} />
         </Container>
-        <Container className={`nav_information ${!greaterThanDesktopS && "nav_information_tablet"}`}>
-          <Text.Body size="l" weight="bold">
+        <Container
+          className={`nav_information ${
+            !greaterThanDesktopS && "nav_information_tablet"
+          }`}
+        >
+          <Text.Body size="l" weight="bold" ellipsis>
             {`${user.name} ${user.lastName}`}
           </Text.Body>
-          <Text.Body size="m" weight="regular">
-            DNI: {user.dni}
+          <Text.Body size="m" weight="regular" ellipsis>
+            <b>DNI:</b> {user.dni}
           </Text.Body>
-          <Text.Body size="m" weight="regular">
-            Correo Electrónico: {user.email}
+          <Text.Body size="m" weight="regular" ellipsis>
+            {user.email}
           </Text.Body>
-          <Text.Body size="m" weight="regular">
-            Teléfono: {user.phone}
+          <Text.Body size="m" weight="regular" ellipsis>
+            TELÉFONO: {user.phone}
           </Text.Body>
         </Container>
       </Container>
@@ -40,7 +50,6 @@ const ProfileInfo = () => {
 };
 
 export default ProfileInfo;
-
 
 const StyledProfile = styled(Container)`
   ${({ theme }) => css`
@@ -56,30 +65,47 @@ const StyledProfile = styled(Container)`
       .nav_image {
         display: flex;
         width: 50%;
-        text-align: center:
+        height: 60%;
+        align-items: center:
+        justify-self: center;
       }
       
       .nav_information {
         display: flex;
-        width: 100%;
+        gap: 5px;
+        width: 90%;
+        padding: 10px 10px;
         flex-direction: column;
         justify-content: center;
       }
     }
 
     .main_container_tablet {
-      flex-wrap: wrap;
+      display: flex;
       flex-direction: row;
 
       .nav_image_tablet {
-        width: 29%;
-        max-width: 208px;
-        margin: auto 2% auto 2%;
+        width: 100%;
+        height: 50%;
+        padding: 10px;
+        display: flex;
+        justify-content: center;
       }
 
       .nav_information_tablet {
-        width: 67%;
+        width: 100%;
+        height: 50%;
         overflow-wrap: break-word;
+      }
+
+      @media ${theme.device.tabletS} {
+        .nav_image_tablet {
+          width: 50%;
+        }
+
+        .nav_information_tablet {
+          width: 50%;
+        }
       }
     }
 
