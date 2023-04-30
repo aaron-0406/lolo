@@ -16,22 +16,32 @@ const ProfileInfo = () => {
 
   return (
     <StyledProfile width="100%" height="100%">
-      <Container className={`main_container ${!greaterThanDesktopS && "main_container_tablet"}`}>
-        <Container className={`nav_image ${!greaterThanDesktopS && "nav_image_tablet"}`}>
-          <Img placeholderImage="" src={ProfilePicture}/>
+      <Container
+        className={`main_container ${
+          !greaterThanDesktopS && "main_container_tablet"
+        }`}
+      >
+        <Container
+          className={`nav_image ${!greaterThanDesktopS && "nav_image_tablet"}`}
+        >
+          <Img placeholderImage="" src={ProfilePicture} />
         </Container>
-        <Container className={`nav_information ${!greaterThanDesktopS && "nav_information_tablet"}`}>
+        <Container
+          className={`nav_information ${
+            !greaterThanDesktopS && "nav_information_tablet"
+          }`}
+        >
           <Text.Body size="l" weight="bold">
             {`${user.name} ${user.lastName}`}
           </Text.Body>
           <Text.Body size="m" weight="regular">
-            DNI: {user.dni}
+            <b>DNI:</b> {user.dni}
           </Text.Body>
           <Text.Body size="m" weight="regular">
-            Correo Electrónico: {user.email}
+            {user.email}
           </Text.Body>
           <Text.Body size="m" weight="regular">
-            Teléfono: {user.phone}
+            TELÉFONO: {user.phone}
           </Text.Body>
         </Container>
       </Container>
@@ -40,7 +50,6 @@ const ProfileInfo = () => {
 };
 
 export default ProfileInfo;
-
 
 const StyledProfile = styled(Container)`
   ${({ theme }) => css`
@@ -61,7 +70,9 @@ const StyledProfile = styled(Container)`
       
       .nav_information {
         display: flex;
+        gap: 5px;
         width: 100%;
+        padding: 10px 0;
         flex-direction: column;
         justify-content: center;
       }
