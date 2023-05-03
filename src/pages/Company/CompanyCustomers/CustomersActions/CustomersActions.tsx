@@ -57,6 +57,7 @@ const CustomersActions: FC<CustomerActionsProps> = ({ opts, setOpts }) => {
           onChange={onChangeSearch}
           width="100%"
           label="Buscar cliente:"
+          placeholder="Buscar cliente por nombre"
         />
       </Container>
 
