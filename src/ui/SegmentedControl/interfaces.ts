@@ -1,5 +1,5 @@
 export interface IOption {
-  value: string;
-  label: React.ReactNode;
-  disabled?: boolean;
+  value: string
+  label: React.ReactNode
+  disabled?: boolean
 }

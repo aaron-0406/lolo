@@ -1,51 +1,51 @@
-import { FC } from "react";
-import { useFormContext } from "react-hook-form";
-import { useMutation } from "react-query";
-import styled, { css } from "styled-components";
-import { useLoloContext } from "../../../../../../shared/contexts/LoloProvider";
-import { deleteClientsDash } from "../../../../../../shared/services/dashboard.service";
-import Button from "../../../../../../ui/Button";
-import notification from "../../../../../../ui/notification";
-import Row from "../../../../../../ui/Table/Row";
-import { DashFormType } from "../../hookform.type";
-import { ClientDeletedRowProps } from "./ClientDeletedRow.type";
+import { FC } from 'react'
+import { useFormContext } from 'react-hook-form'
+import { useMutation } from 'react-query'
+import styled, { css } from 'styled-components'
+import { useLoloContext } from '../../../../../../shared/contexts/LoloProvider'
+import { deleteClientsDash } from '../../../../../../shared/services/dashboard.service'
+import Button from '../../../../../../ui/Button'
+import notification from '../../../../../../ui/notification'
+import Row from '../../../../../../ui/Table/Row'
+import { DashFormType } from '../../hookform.type'
+import { ClientDeletedRowProps } from './ClientDeletedRow.type'
 
 const ClientDeletedRow: FC<ClientDeletedRowProps> = (props) => {
   const {
     client: { code, name },
     index,
-  } = props;
-  const { setValue, watch } = useFormContext<DashFormType>();
+  } = props
+  const { setValue, watch } = useFormContext<DashFormType>()
   const {
     bank: {
       selectedBank: { idBank, idCHB },
     },
-  } = useLoloContext();
+  } = useLoloContext()
 
   const handleDeleteClient = () => {
-    deleteClient();
-  };
+    deleteClient()
+  }
 
   const { isLoading, mutate: deleteClient } = useMutation<any, Error>(
     async () => {
-      return await deleteClientsDash([code], +idCHB, +idBank);
+      return await deleteClientsDash([code], +idCHB, +idBank)
     },
     {
       onSuccess: () => {
         setValue(
-          "clientsDeleted",
-          watch("clientsDeleted").filter((item) => item.code !== code)
-        );
-        notification({ type: "success", message: "Cliente Eliminado" });
+          'clientsDeleted',
+          watch('clientsDeleted').filter((item) => item.code !== code)
+        )
+        notification({ type: 'success', message: 'Cliente Eliminado' })
       },
       onError: (error: any) => {
         notification({
-          type: "error",
+          type: 'error',
           message: error.response.data.message,
-        });
+        })
       },
     }
-  );
+  )
   return (
     <StyledTr index={index}>
       <Row>{index + 1}</Row>
@@ -62,10 +62,10 @@ const ClientDeletedRow: FC<ClientDeletedRowProps> = (props) => {
         />
       </Row>
     </StyledTr>
-  );
-};
+  )
+}
 
-export default ClientDeletedRow;
+export default ClientDeletedRow
 
 const StyledTr = styled.tr<{ index: number }>`
   ${({ theme, index }) => css`
@@ -74,4 +74,4 @@ const StyledTr = styled.tr<{ index: number }>`
       background-color: ${theme.colors.Neutral4};
     }
   `}
-`;
+`

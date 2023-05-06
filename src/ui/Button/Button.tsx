@@ -1,30 +1,25 @@
-import type { ButtonHTMLAttributes } from "react";
-import type { IRegular } from "styled-components";
-import styled, { css, useTheme } from "styled-components";
-import CounterBadge from "../CounterBadge";
-import Icon from "../Icon";
-import Spinner from "../Spinner";
-import type {
-  ButtonClassType,
-  ButtonHierarchyType,
-  ButtonShapeType,
-  ButtonSizeType,
-} from "./interfaces";
-import style from "./style";
+import type { ButtonHTMLAttributes } from 'react'
+import type { IRegular } from 'styled-components'
+import styled, { css, useTheme } from 'styled-components'
+import CounterBadge from '../CounterBadge'
+import Icon from '../Icon'
+import Spinner from '../Spinner'
+import type { ButtonClassType, ButtonHierarchyType, ButtonShapeType, ButtonSizeType } from './interfaces'
+import style from './style'
 
-type ButtonProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, "size"> & {
-  counter?: number;
-  loading?: boolean;
-  leadingIcon?: string;
-  trailingIcon?: string;
-  size?: ButtonSizeType;
-  hierarchy?: ButtonHierarchyType;
-  display?: ButtonClassType;
-  shape?: ButtonShapeType;
-  width?: string;
-  maxWidth?: string;
-  label?: React.ReactNode;
-};
+type ButtonProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'size'> & {
+  counter?: number
+  loading?: boolean
+  leadingIcon?: string
+  trailingIcon?: string
+  size?: ButtonSizeType
+  hierarchy?: ButtonHierarchyType
+  display?: ButtonClassType
+  shape?: ButtonShapeType
+  width?: string
+  maxWidth?: string
+  label?: React.ReactNode
+}
 
 /**
  * Buttom Component
@@ -46,20 +41,18 @@ const Button: React.FC<ButtonProps> = (props) => {
     leadingIcon,
     trailingIcon,
     disabled = false,
-    hierarchy = "primary",
-    size = "default",
-    display = "default",
-    shape = "default",
+    hierarchy = 'primary',
+    size = 'default',
+    display = 'default',
+    shape = 'default',
     loading = false,
     ...rest
-  } = props;
+  } = props
 
-  const theme = useTheme();
+  const theme = useTheme()
 
   const textStyle =
-    hierarchy === "link" && size === "default"
-      ? theme.typography.body.l.bold
-      : theme.typography.body.m.bold;
+    hierarchy === 'link' && size === 'default' ? theme.typography.body.l.bold : theme.typography.body.m.bold
 
   return (
     <StyledButton
@@ -81,54 +74,46 @@ const Button: React.FC<ButtonProps> = (props) => {
           />
         )}
 
-        {loading ? (
-          <Spinner />
-        ) : (
-          leadingIcon && (
-            <Icon className="leading-icon" remixClass={leadingIcon} />
-          )
-        )}
+        {loading ? <Spinner /> : leadingIcon && <Icon className="leading-icon" remixClass={leadingIcon} />}
 
         <StyledButtonText {...textStyle}>{label}</StyledButtonText>
-        {trailingIcon && !loading &&  (
-          <Icon className="trailing-icon" remixClass={trailingIcon} />
-        )}
+        {trailingIcon && !loading && <Icon className="trailing-icon" remixClass={trailingIcon} />}
       </div>
     </StyledButton>
-  );
-};
+  )
+}
 
-export default Button;
+export default Button
 
 const getButtonSize = (size?: ButtonSizeType, icon?: boolean) => {
   switch (size) {
-    case "small":
+    case 'small':
       return css`
         height: 40px;
-        width: ${icon && "40px"};
-        padding: ${icon ? "6px" : "6px 12px 6px 12px"};
-      `;
+        width: ${icon && '40px'};
+        padding: ${icon ? '6px' : '6px 12px 6px 12px'};
+      `
     default:
       return css`
         height: 48px;
-        width: ${icon && "48px"};
-        padding: ${icon ? "10px" : "10px 14px 10px 14px"};
-      `;
+        width: ${icon && '48px'};
+        padding: ${icon ? '10px' : '10px 14px 10px 14px'};
+      `
   }
-};
+}
 
 /**
  * Styled Button Component
  * Do not export, use Buttton
  */
 const StyledButton = styled.button<{
-  size: ButtonSizeType;
-  hierarchy: ButtonHierarchyType;
-  display: ButtonClassType;
-  shape: ButtonShapeType;
-  $loading: boolean;
-  width?: string;
-  maxWidth?: string;
+  size: ButtonSizeType
+  hierarchy: ButtonHierarchyType
+  display: ButtonClassType
+  shape: ButtonShapeType
+  $loading: boolean
+  width?: string
+  maxWidth?: string
 }>`
   white-space: nowrap;
   ${({ width }) =>
@@ -143,10 +128,10 @@ const StyledButton = styled.button<{
       max-width: ${maxWidth};
     `}
 
-  ${({ shape, size }) => getButtonSize(size, shape === "round")}
+  ${({ shape, size }) => getButtonSize(size, shape === 'round')}
 
   ${({ shape }) =>
-    shape === "default" &&
+    shape === 'default' &&
     css`
       .button__container {
         display: flex;
@@ -156,7 +141,7 @@ const StyledButton = styled.button<{
     `}
 
   ${({ theme, hierarchy, display, $loading }) => {
-    const config = style(theme.colors)[`${hierarchy}-${display}`];
+    const config = style(theme.colors)[`${hierarchy}-${display}`]
 
     return css`
       cursor: pointer;
@@ -188,7 +173,7 @@ const StyledButton = styled.button<{
         .button__counter {
           border: ${config.hover.badgeBorder};
 
-          ${hierarchy === "tertiary" &&
+          ${hierarchy === 'tertiary' &&
           css`
             background: transparent;
           `}
@@ -264,18 +249,18 @@ const StyledButton = styled.button<{
           color: ${config.loading.color};
         }
       `}
-    `;
+    `
   }}
 
   ${({ hierarchy, size }) =>
-    hierarchy === "link" &&
+    hierarchy === 'link' &&
     css`
       padding: 0;
-      height: ${size === "default" ? "32px" : "24px"};
+      height: ${size === 'default' ? '32px' : '24px'};
     `}
-`;
+`
 
-type StyledButtonTextProps = IRegular;
+type StyledButtonTextProps = IRegular
 
 const StyledButtonText = styled.span<StyledButtonTextProps>`
   ${(props) => css`
@@ -288,4 +273,4 @@ const StyledButtonText = styled.span<StyledButtonTextProps>`
     overflow: hidden;
     text-overflow: ellipsis;
   `}
-`;
+`

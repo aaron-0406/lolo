@@ -1,5 +1,5 @@
 export type NegotiationType = {
-  id: number;
-  name: string;
-  createdAt?: Date;
-};
+  id: number
+  name: string
+  createdAt?: Date
+}

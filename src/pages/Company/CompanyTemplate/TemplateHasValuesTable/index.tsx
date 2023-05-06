@@ -1,1 +1,1 @@
-export { default } from "./TemplateHasValuesTable";
+export { default } from './TemplateHasValuesTable'

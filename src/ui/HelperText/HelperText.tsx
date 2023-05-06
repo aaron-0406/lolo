@@ -1,9 +1,9 @@
-import React from "react";
-import styled, { css } from "styled-components";
-import Container from "../Container";
-import Text from "../Text";
+import React from 'react'
+import styled, { css } from 'styled-components'
+import Container from '../Container'
+import Text from '../Text'
 
-const INITIAL_COUNTER = 0;
+const INITIAL_COUNTER = 0
 
 /**
  * HelperText Component
@@ -16,14 +16,14 @@ const INITIAL_COUNTER = 0;
  * @prop {boolean} disabled Disabled state of helper text
  */
 export type HelperTextProps = {
-  wrap?: boolean;
-  width?: string;
-  hasError?: boolean;
-  countDown?: number;
-  charactersLimit?: number;
-  children?: string;
-  disabled?: boolean;
-};
+  wrap?: boolean
+  width?: string
+  hasError?: boolean
+  countDown?: number
+  charactersLimit?: number
+  children?: string
+  disabled?: boolean
+}
 
 const HelperText: React.FC<HelperTextProps> = ({
   width,
@@ -35,12 +35,7 @@ const HelperText: React.FC<HelperTextProps> = ({
   wrap = false,
 }) => {
   return children || charactersLimit ? (
-    <Container
-      display="flex"
-      flexDirection="column"
-      position="relative"
-      width={width}
-    >
+    <Container display="flex" flexDirection="column" position="relative" width={width}>
       <StyledHelperTextWrapper
         display="flex"
         flexDirection="row"
@@ -63,26 +58,24 @@ const HelperText: React.FC<HelperTextProps> = ({
         )}
       </StyledHelperTextWrapper>
     </Container>
-  ) : null;
-};
+  ) : null
+}
 
-export default HelperText;
+export default HelperText
 
 interface StyledHelperTextWrapperProps {
-  $hasError: boolean;
-  $wrap?: boolean;
-  $disabled?: boolean;
+  $hasError: boolean
+  $wrap?: boolean
+  $disabled?: boolean
 }
 
 /**
  * Styled HelperText Wrapper Text Component
  * Do not export, use HelperText
  */
-export const StyledHelperTextWrapper = styled(
-  Container
-)<StyledHelperTextWrapperProps>`
+export const StyledHelperTextWrapper = styled(Container)<StyledHelperTextWrapperProps>`
   ${({ theme, $wrap, $disabled, $hasError }) => css`
-    white-space: ${$wrap ? "normal" : "nowrap"};
+    white-space: ${$wrap ? 'normal' : 'nowrap'};
 
     .body__text,
     .counter {
@@ -104,4 +97,4 @@ export const StyledHelperTextWrapper = styled(
       }
     `};
   `}
-`;
+`

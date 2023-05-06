@@ -1,5 +1,5 @@
-const safeWindow = typeof window !== "undefined" ? window : null;
+const safeWindow = typeof window !== 'undefined' ? window : null
 
-const safeDocument = safeWindow?.document;
+const safeDocument = safeWindow?.document
 
-export { safeWindow as window, safeDocument as document };
+export { safeWindow as window, safeDocument as document }

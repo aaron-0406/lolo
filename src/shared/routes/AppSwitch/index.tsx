@@ -1,1 +1,1 @@
-export { default } from "./AppSwitch";
+export { default } from './AppSwitch'

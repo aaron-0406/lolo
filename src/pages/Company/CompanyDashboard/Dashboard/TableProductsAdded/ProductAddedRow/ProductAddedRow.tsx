@@ -1,20 +1,20 @@
-import { FC } from "react";
-import { useFormContext } from "react-hook-form";
-import { useMutation } from "react-query";
-import styled, { css } from "styled-components";
-import { useLoloContext } from "../../../../../../shared/contexts/LoloProvider";
-import { createProductsDash } from "../../../../../../shared/services/dashboard.service";
-import Button from "../../../../../../ui/Button";
-import notification from "../../../../../../ui/notification";
-import Row from "../../../../../../ui/Table/Row";
-import { DashFormType } from "../../hookform.type";
-import { ProductAddedRowProps } from "./ProductAddedRow.type";
+import { FC } from 'react'
+import { useFormContext } from 'react-hook-form'
+import { useMutation } from 'react-query'
+import styled, { css } from 'styled-components'
+import { useLoloContext } from '../../../../../../shared/contexts/LoloProvider'
+import { createProductsDash } from '../../../../../../shared/services/dashboard.service'
+import Button from '../../../../../../ui/Button'
+import notification from '../../../../../../ui/notification'
+import Row from '../../../../../../ui/Table/Row'
+import { DashFormType } from '../../hookform.type'
+import { ProductAddedRowProps } from './ProductAddedRow.type'
 
 const ProductAddedRow: FC<ProductAddedRowProps> = (props) => {
   const {
     product: { code, clientCode, clientName, name, state },
     index,
-  } = props;
+  } = props
 
   const {
     client: {
@@ -26,13 +26,13 @@ const ProductAddedRow: FC<ProductAddedRowProps> = (props) => {
     bank: {
       selectedBank: { idBank, idCHB },
     },
-  } = useLoloContext();
+  } = useLoloContext()
 
-  const { setValue, watch } = useFormContext<DashFormType>();
+  const { setValue, watch } = useFormContext<DashFormType>()
 
   const handleAddProduct = () => {
-    createProducts();
-  };
+    createProducts()
+  }
 
   const { isLoading, mutate: createProducts } = useMutation<any, Error>(
     async () => {
@@ -41,24 +41,24 @@ const ProductAddedRow: FC<ProductAddedRowProps> = (props) => {
         customerUserId,
         +idCHB,
         +idBank
-      );
+      )
     },
     {
       onSuccess: () => {
         setValue(
-          "productsAdded",
-          watch("productsAdded").filter((item) => item.code !== code)
-        );
-        notification({ type: "success", message: "Producto Agregado" });
+          'productsAdded',
+          watch('productsAdded').filter((item) => item.code !== code)
+        )
+        notification({ type: 'success', message: 'Producto Agregado' })
       },
       onError: (error: any) => {
         notification({
-          type: "error",
+          type: 'error',
           message: error.response.data.message,
-        });
+        })
       },
     }
-  );
+  )
 
   return (
     <StyledTr index={index}>
@@ -79,10 +79,10 @@ const ProductAddedRow: FC<ProductAddedRowProps> = (props) => {
         />
       </Row>
     </StyledTr>
-  );
-};
+  )
+}
 
-export default ProductAddedRow;
+export default ProductAddedRow
 
 const StyledTr = styled.tr<{ index: number }>`
   ${({ theme, index }) => css`
@@ -91,4 +91,4 @@ const StyledTr = styled.tr<{ index: number }>`
       background-color: ${theme.colors.Neutral4};
     }
   `}
-`;
+`

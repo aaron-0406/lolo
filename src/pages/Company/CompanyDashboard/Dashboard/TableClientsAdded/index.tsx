@@ -1,1 +1,1 @@
-export { default } from "./TableClientsAdded";
+export { default } from './TableClientsAdded'

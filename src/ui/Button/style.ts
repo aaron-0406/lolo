@@ -1,7 +1,7 @@
-import type { IThemeColor } from "styled-components"
+import type { IThemeColor } from 'styled-components'
 
 const style = (colors: IThemeColor) => ({
-  "primary-default": {
+  'primary-default': {
     background: colors.Primary5,
     border: `2px solid ${colors.Primary5}`,
     color: colors.Neutral0,
@@ -36,7 +36,7 @@ const style = (colors: IThemeColor) => ({
       badgeColor: colors.Neutral5,
     },
   },
-  "primary-warning": {
+  'primary-warning': {
     background: colors.Warning4,
     border: `2px solid ${colors.Warning4}`,
     color: colors.Neutral0,
@@ -71,7 +71,7 @@ const style = (colors: IThemeColor) => ({
       badgeColor: colors.Neutral5,
     },
   },
-  "primary-danger": {
+  'primary-danger': {
     background: colors.Danger5,
     border: `2px solid ${colors.Danger5}`,
     color: colors.Neutral0,
@@ -106,7 +106,7 @@ const style = (colors: IThemeColor) => ({
       badgeColor: colors.Neutral5,
     },
   },
-  "secondary-default": {
+  'secondary-default': {
     background: colors.Neutral0,
     border: `2px solid ${colors.Primary5}`,
     color: colors.Primary5,
@@ -141,7 +141,7 @@ const style = (colors: IThemeColor) => ({
       badgeColor: colors.Neutral5,
     },
   },
-  "secondary-warning": {
+  'secondary-warning': {
     background: colors.Neutral0,
     border: `2px solid ${colors.Warning4}`,
     color: colors.Warning4,
@@ -176,7 +176,7 @@ const style = (colors: IThemeColor) => ({
       badgeColor: colors.Neutral5,
     },
   },
-  "secondary-danger": {
+  'secondary-danger': {
     background: colors.Neutral0,
     border: `2px solid ${colors.Danger5}`,
     color: colors.Danger5,
@@ -211,7 +211,7 @@ const style = (colors: IThemeColor) => ({
       badgeColor: colors.Neutral5,
     },
   },
-  "tertiary-default": {
+  'tertiary-default': {
     background: colors.Neutral0,
     border: `2px solid ${colors.Neutral0}`,
     color: colors.Primary5,
@@ -246,7 +246,7 @@ const style = (colors: IThemeColor) => ({
       badgeColor: colors.Neutral5,
     },
   },
-  "tertiary-warning": {
+  'tertiary-warning': {
     background: colors.Neutral0,
     border: `2px solid ${colors.Neutral0}`,
     color: colors.Warning4,
@@ -281,7 +281,7 @@ const style = (colors: IThemeColor) => ({
       badgeColor: colors.Neutral5,
     },
   },
-  "tertiary-danger": {
+  'tertiary-danger': {
     background: colors.Neutral0,
     border: `2px solid ${colors.Neutral0}`,
     color: colors.Danger5,
@@ -316,108 +316,108 @@ const style = (colors: IThemeColor) => ({
       badgeColor: colors.Neutral5,
     },
   },
-  "link-default": {
-    background: "transparent",
-    border: "none",
+  'link-default': {
+    background: 'transparent',
+    border: 'none',
     color: colors.Primary5,
-    badgeBorder: "none",
+    badgeBorder: 'none',
     badgeColor: colors.Primary5,
     hover: {
-      background: "",
+      background: '',
       color: colors.Primary4,
-      border: "",
-      badgeBorder: "",
+      border: '',
+      badgeBorder: '',
       badgeColor: colors.Primary4,
     },
     pressed: {
-      background: "",
+      background: '',
       color: colors.Primary6,
-      border: "",
-      badgeBorder: "",
+      border: '',
+      badgeBorder: '',
       badgeColor: colors.Primary6,
     },
     loading: {
-      background: "",
+      background: '',
       color: colors.Primary6,
-      border: "",
-      badgeBorder: "",
+      border: '',
+      badgeBorder: '',
       badgeColor: colors.Primary6,
     },
     disabled: {
-      background: "",
+      background: '',
       color: colors.Neutral5,
-      border: "",
-      badgeBorder: "",
+      border: '',
+      badgeBorder: '',
       badgeColor: colors.Neutral5,
     },
   },
-  "link-warning": {
-    background: "transparent",
+  'link-warning': {
+    background: 'transparent',
     border: `0 solid ${colors.Neutral0}`,
     color: colors.Warning4,
-    badgeBorder: "none",
+    badgeBorder: 'none',
     badgeColor: colors.Warning4,
     hover: {
-      background: "",
+      background: '',
       color: colors.Warning3,
-      border: "",
-      badgeBorder: "",
+      border: '',
+      badgeBorder: '',
       badgeColor: colors.Warning3,
     },
     pressed: {
-      background: "",
+      background: '',
       color: colors.Warning5,
-      border: "",
-      badgeBorder: "",
+      border: '',
+      badgeBorder: '',
       badgeColor: colors.Warning5,
     },
     loading: {
-      background: "",
+      background: '',
       color: colors.Warning3,
-      border: "",
-      badgeBorder: "",
+      border: '',
+      badgeBorder: '',
       badgeColor: colors.Warning3,
     },
     disabled: {
-      background: "",
+      background: '',
       color: colors.Neutral5,
-      border: "",
-      badgeBorder: "",
+      border: '',
+      badgeBorder: '',
       badgeColor: colors.Neutral5,
     },
   },
-  "link-danger": {
-    background: "transparent",
-    border: "none",
+  'link-danger': {
+    background: 'transparent',
+    border: 'none',
     color: colors.Danger5,
-    badgeBorder: "none",
+    badgeBorder: 'none',
     badgeColor: colors.Danger5,
     hover: {
-      background: "",
+      background: '',
       color: colors.Danger4,
-      border: "",
-      badgeBorder: "",
+      border: '',
+      badgeBorder: '',
       badgeColor: colors.Danger4,
     },
     pressed: {
-      background: "",
+      background: '',
       color: colors.Danger6,
-      border: "",
-      badgeBorder: "",
+      border: '',
+      badgeBorder: '',
       badgeColor: colors.Danger6,
     },
     loading: {
-      background: "",
+      background: '',
       color: colors.Danger4,
-      border: "",
-      badgeBorder: "",
+      border: '',
+      badgeBorder: '',
       badgeColor: colors.Danger4,
     },
     disabled: {
-      background: "",
+      background: '',
       color: colors.Neutral5,
-      border: "",
-      badgeBorder: "",
+      border: '',
+      badgeBorder: '',
       badgeColor: colors.Neutral5,
     },
   },

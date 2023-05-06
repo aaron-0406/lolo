@@ -1,5 +1,5 @@
-import styled, { css } from "styled-components";
-import Container from "../../ui/Container";
+import styled, { css } from 'styled-components'
+import Container from '../../ui/Container'
 
 export const StyledLoginContainer = styled(Container)`
   ${({ theme }) => css`
@@ -13,4 +13,4 @@ export const StyledLoginContainer = styled(Container)`
       }
     }
   `}
-`;
+`

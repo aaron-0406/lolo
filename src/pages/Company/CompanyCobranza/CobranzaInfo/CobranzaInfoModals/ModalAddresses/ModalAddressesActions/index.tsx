@@ -1,1 +1,1 @@
-export { default } from "./ModalAddressesActions";
+export { default } from './ModalAddressesActions'

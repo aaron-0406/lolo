@@ -1,60 +1,60 @@
-import { useLoloContext } from "../../../../../../shared/contexts/LoloProvider";
-import Container from "../../../../../../ui/Container";
-import { useForm, FormProvider, useFormContext } from "react-hook-form";
-import ModalUserRow from "./ModalUserRow";
-import { UserFormType } from "./hookforms.type";
-import Button from "../../../../../../ui/Button";
-import { useMediaQuery } from "../../../../../../shared/hooks/useMediaQuery";
-import { device } from "../../../../../../shared/breakpoints/reponsive";
-import { useMutation } from "react-query";
-import notification from "../../../../../../ui/notification";
-import { postDashboardSendXslx } from "../../../../../../shared/services/dashboard.service";
-import { DashFormType } from "../../hookform.type";
+import { useLoloContext } from '../../../../../../shared/contexts/LoloProvider'
+import Container from '../../../../../../ui/Container'
+import { useForm, FormProvider, useFormContext } from 'react-hook-form'
+import ModalUserRow from './ModalUserRow'
+import { UserFormType } from './hookforms.type'
+import Button from '../../../../../../ui/Button'
+import { useMediaQuery } from '../../../../../../shared/hooks/useMediaQuery'
+import { device } from '../../../../../../shared/breakpoints/reponsive'
+import { useMutation } from 'react-query'
+import notification from '../../../../../../ui/notification'
+import { postDashboardSendXslx } from '../../../../../../shared/services/dashboard.service'
+import { DashFormType } from '../../hookform.type'
 
 const ModalUsers = () => {
   const {
     user: { users },
-  } = useLoloContext();
+  } = useLoloContext()
 
-  const { watch } = useFormContext<DashFormType>();
+  const { watch } = useFormContext<DashFormType>()
 
-  const greaterThanDesktopS = useMediaQuery(device.desktopS);
+  const greaterThanDesktopS = useMediaQuery(device.desktopS)
 
   const formMethods = useForm<UserFormType>({
     defaultValues: {
       users: [],
     },
-  });
+  })
 
   const onSendEmail = () => {
     formMethods.handleSubmit(() => {
-      sendEmailXlsx();
-    })();
-  };
+      sendEmailXlsx()
+    })()
+  }
 
   const { isLoading, mutate: sendEmailXlsx } = useMutation<any, Error>(
     async () => {
       return await postDashboardSendXslx({
-        usersId: formMethods.watch("users"),
-        clientsAdded: watch("clientsAdded"),
-        clientsDeleted: watch("clientsDeleted"),
-        productsAdded: watch("productsAdded"),
-        productsDeleted: watch("productsDeleted"),
-        productsCastigo: watch("productsCastigo"),
-      });
+        usersId: formMethods.watch('users'),
+        clientsAdded: watch('clientsAdded'),
+        clientsDeleted: watch('clientsDeleted'),
+        productsAdded: watch('productsAdded'),
+        productsDeleted: watch('productsDeleted'),
+        productsCastigo: watch('productsCastigo'),
+      })
     },
     {
       onSuccess: (data) => {
-        notification({ type: "success", message: "Email enviado" });
+        notification({ type: 'success', message: 'Email enviado' })
       },
       onError: (error: any) => {
         notification({
-          type: "error",
+          type: 'error',
           message: error.response.data.message,
-        });
+        })
       },
     }
-  );
+  )
 
   return (
     <FormProvider {...formMethods}>
@@ -69,29 +69,22 @@ const ModalUsers = () => {
           overFlowY="scroll"
         >
           {users.map((user) => {
-            return (
-              <ModalUserRow key={user.customerId + user.dni} user={user} />
-            );
+            return <ModalUserRow key={user.customerId + user.dni} user={user} />
           })}
         </Container>
-        <Container
-          padding="20px"
-          display="flex"
-          alignItems="self-end"
-          justifyContent="end"
-        >
+        <Container padding="20px" display="flex" alignItems="self-end" justifyContent="end">
           <Button
             onClick={onSendEmail}
-            label={greaterThanDesktopS && "Enviar Email"}
-            shape={greaterThanDesktopS ? "default" : "round"}
+            label={greaterThanDesktopS && 'Enviar Email'}
+            shape={greaterThanDesktopS ? 'default' : 'round'}
             leadingIcon="ri-mail-send-line"
             loading={isLoading}
-            disabled={isLoading || formMethods.watch("users").length === 0}
+            disabled={isLoading || formMethods.watch('users').length === 0}
           />
         </Container>
       </Container>
     </FormProvider>
-  );
-};
+  )
+}
 
-export default ModalUsers;
+export default ModalUsers

@@ -1,1 +1,1 @@
-export { default } from "./CommentChart";
+export { default } from './CommentChart'

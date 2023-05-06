@@ -1,33 +1,30 @@
-import { useState } from "react";
-import type CSS from "csstype";
-import styled, { css } from "styled-components";
-import Container from "../../Container";
-import HelperText from "../../HelperText";
-import type { TextAreaSizeType } from "../../inputs/TextArea/TextArea";
-import type { HelperFieldProps, LabelFieldProps } from "../interfaces";
-import InputTextArea from "../../inputs/InputTextArea";
-import InputLabel from "../../Label";
+import { useState } from 'react'
+import type CSS from 'csstype'
+import styled, { css } from 'styled-components'
+import Container from '../../Container'
+import HelperText from '../../HelperText'
+import type { TextAreaSizeType } from '../../inputs/TextArea/TextArea'
+import type { HelperFieldProps, LabelFieldProps } from '../interfaces'
+import InputTextArea from '../../inputs/InputTextArea'
+import InputLabel from '../../Label'
 
-type TextAreaFieldProps = Omit<
-  React.TextareaHTMLAttributes<HTMLTextAreaElement>,
-  "size"
-> &
+type TextAreaFieldProps = Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, 'size'> &
   LabelFieldProps &
   HelperFieldProps & {
-    width?: string;
+    width?: string
   } & {
-    size?: TextAreaSizeType;
-  };
+    size?: TextAreaSizeType
+  }
 
-const initialCounter = 0;
-const CHARACTERS_LIMIT_SMALL_SIZE = 50;
+const initialCounter = 0
+const CHARACTERS_LIMIT_SMALL_SIZE = 50
 
 const TextAreaField: React.FC<TextAreaFieldProps> = (props) => {
   const {
     label,
     value,
     width,
-    size = "medium",
+    size = 'medium',
     wrap,
     tooltipMessage,
     helperText,
@@ -35,26 +32,21 @@ const TextAreaField: React.FC<TextAreaFieldProps> = (props) => {
     required,
     charactersLimit,
     ...rest
-  } = props;
+  } = props
 
   const [countDown, setCountDown] = useState<number>(
-    props.defaultValue
-      ? props.defaultValue?.toString()?.length
-      : value
-      ? value?.toString()?.length
-      : initialCounter
-  );
+    props.defaultValue ? props.defaultValue?.toString()?.length : value ? value?.toString()?.length : initialCounter
+  )
 
-  const charactersLimitSize =
-    size === "small" ? CHARACTERS_LIMIT_SMALL_SIZE : charactersLimit;
+  const charactersLimitSize = size === 'small' ? CHARACTERS_LIMIT_SMALL_SIZE : charactersLimit
 
   const onKeyUpInput = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.currentTarget.value) {
-      setCountDown(event.currentTarget.value.length);
+      setCountDown(event.currentTarget.value.length)
     } else {
-      setCountDown(initialCounter);
+      setCountDown(initialCounter)
     }
-  };
+  }
 
   return (
     <StyledWrapper width={width}>
@@ -68,12 +60,7 @@ const TextAreaField: React.FC<TextAreaFieldProps> = (props) => {
       />
 
       <Container display="flex" flexDirection="column" gap="4px">
-        <InputTextArea
-          value={value}
-          onKeyUp={onKeyUpInput}
-          size={size}
-          {...rest}
-        />
+        <InputTextArea value={value} onKeyUp={onKeyUpInput} size={size} {...rest} />
 
         <HelperText
           wrap={wrap}
@@ -87,17 +74,17 @@ const TextAreaField: React.FC<TextAreaFieldProps> = (props) => {
         </HelperText>
       </Container>
     </StyledWrapper>
-  );
-};
+  )
+}
 
-export default TextAreaField;
+export default TextAreaField
 
 const StyledWrapper = styled.div<{ width?: CSS.Property.Width }>`
   ${({ theme, width }) => css`
     gap: 8px;
     display: flex;
     flex-direction: column;
-    width: ${!!width ? width : "max-content"};
+    width: ${!!width ? width : 'max-content'};
     color: ${theme.colors.Neutral6};
   `}
-`;
+`

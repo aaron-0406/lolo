@@ -1,15 +1,15 @@
-import React, { ReactNode } from "react";
-import styled, { css } from "styled-components";
-import Container from "../Container";
+import React, { ReactNode } from 'react'
+import styled, { css } from 'styled-components'
+import Container from '../Container'
 
 type TableProps = {
-  rows: ReactNode[];
-  columns: ReactNode;
-  count: number;
-};
+  rows: ReactNode[]
+  columns: ReactNode
+  count: number
+}
 
 const Table: React.FC<TableProps> = (props) => {
-  const { columns, rows, count } = props;
+  const { columns, rows, count } = props
   return (
     <StyledContainer width="100%" height="100%">
       <StyledTable>
@@ -17,10 +17,10 @@ const Table: React.FC<TableProps> = (props) => {
         <StyledBody>{count > 0 && rows}</StyledBody>
       </StyledTable>
     </StyledContainer>
-  );
-};
+  )
+}
 
-export default Table;
+export default Table
 
 const StyledContainer = styled(Container)`
   overflow-y: auto;
@@ -43,7 +43,7 @@ const StyledContainer = styled(Container)`
       background-color: transparent;
     }
   `}
-`;
+`
 
 const StyledTable = styled.table`
   ${({ theme }) => css`
@@ -53,7 +53,7 @@ const StyledTable = styled.table`
     overflow-y: auto;
     border-bottom-width: 0px;
   `}
-`;
+`
 
 const StyledHead = styled.thead`
   ${({ theme }) => css`
@@ -62,9 +62,9 @@ const StyledHead = styled.thead`
     top: 0;
     background-color: ${theme.colors.Primary5};
   `}
-`;
+`
 const StyledBody = styled.tbody`
   ${({ theme }) => css`
     width: 100%;
   `}
-`;
+`

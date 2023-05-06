@@ -1,1 +1,1 @@
-export { default } from "./RedirectRoute";
+export { default } from './RedirectRoute'

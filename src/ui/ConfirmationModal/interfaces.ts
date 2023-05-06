@@ -1,8 +1,8 @@
 export enum ConfirmationModalEnum {
-  "success" = "success",
-  "warning" = "warning",
-  "error" = "error",
-  "info" = "info",
+  'success' = 'success',
+  'warning' = 'warning',
+  'error' = 'error',
+  'info' = 'info',
 }
 
 export type ConfirmationModalType = `${ConfirmationModalEnum}`

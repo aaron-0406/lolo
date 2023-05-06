@@ -1,7 +1,7 @@
-import { createGlobalStyle } from "styled-components";
-import "./global/fonts/dmsans/stylesheet.css";
-import "./global/fonts/raleway/stylesheet.css";
-import "remixicon/fonts/remixicon.css";
+import { createGlobalStyle } from 'styled-components'
+import './global/fonts/dmsans/stylesheet.css'
+import './global/fonts/raleway/stylesheet.css'
+import 'remixicon/fonts/remixicon.css'
 
 const GlobalStyles = createGlobalStyle`
 *,
@@ -25,7 +25,7 @@ body {
   font-family: 'DM Sans', sans-serif;
   margin: 0;
   line-height: inherit;
-  background-color: ${({ theme }) => theme.colors["Neutral0"]};
+  background-color: ${({ theme }) => theme.colors['Neutral0']};
 
   #__next {
     display: flex;
@@ -257,6 +257,6 @@ video {
 .hide-component {
   display: none;
 }
-`;
+`
 
-export default GlobalStyles;
+export default GlobalStyles

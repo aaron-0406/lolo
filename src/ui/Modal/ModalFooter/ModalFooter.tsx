@@ -1,15 +1,15 @@
-import styled, { css } from "styled-components";
-import Container from "../../Container";
+import styled, { css } from 'styled-components'
+import Container from '../../Container'
 
 type ModalFooterProps = {
-  children?: React.ReactNode | boolean;
-};
+  children?: React.ReactNode | boolean
+}
 
 const ModalFooter: React.FC<ModalFooterProps> = (props) => {
-  const { children = false } = props;
+  const { children = false } = props
 
-  if (typeof children === "boolean" && children === false) {
-    return null;
+  if (typeof children === 'boolean' && children === false) {
+    return null
   }
 
   return (
@@ -26,13 +26,13 @@ const ModalFooter: React.FC<ModalFooterProps> = (props) => {
         {children}
       </StyledContainerFooter>
     </>
-  );
-};
+  )
+}
 
-export default ModalFooter;
+export default ModalFooter
 
 const StyledContainerFooter = styled(Container)`
   ${({ theme }) => css`
-    border-top: 1px solid ${theme.colors["Neutral4"]};
+    border-top: 1px solid ${theme.colors['Neutral4']};
   `}
-`;
+`

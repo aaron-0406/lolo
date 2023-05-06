@@ -1,1 +1,1 @@
-export { default } from "./TemplateActions";
+export { default } from './TemplateActions'

@@ -1,43 +1,27 @@
-import { useFormContext } from "react-hook-form";
-import useModal from "../../../../../shared/hooks/useModal";
-import { ClientType } from "../../../../../shared/types/client.type";
-import Button from "../../../../../ui/Button";
-import Container from "../../../../../ui/Container";
-import Modal from "../../../../../ui/Modal";
-import ModalAddresses from "./ModalAddresses";
-import ModalFiadores from "./ModalFiadores";
-import ModalFiles from "./ModalFiles/ModalFiles";
-import ModalProducts from "./ModalProducts";
+import { useFormContext } from 'react-hook-form'
+import useModal from '../../../../../shared/hooks/useModal'
+import { ClientType } from '../../../../../shared/types/client.type'
+import Button from '../../../../../ui/Button'
+import Container from '../../../../../ui/Container'
+import Modal from '../../../../../ui/Modal'
+import ModalAddresses from './ModalAddresses'
+import ModalFiadores from './ModalFiadores'
+import ModalFiles from './ModalFiles/ModalFiles'
+import ModalProducts from './ModalProducts'
 
 const CobranzaInfoModals = () => {
-  const { getValues, watch } = useFormContext<ClientType>();
+  const { getValues, watch } = useFormContext<ClientType>()
 
-  const {
-    visible: visibleModalFiadores,
-    showModal: showModalFiadores,
-    hideModal: hideModalFiadores,
-  } = useModal();
+  const { visible: visibleModalFiadores, showModal: showModalFiadores, hideModal: hideModalFiadores } = useModal()
 
-  const {
-    visible: visibleModalAddresses,
-    showModal: showModalAddresses,
-    hideModal: hideModalAddresses,
-  } = useModal();
+  const { visible: visibleModalAddresses, showModal: showModalAddresses, hideModal: hideModalAddresses } = useModal()
 
-  const {
-    visible: visibleModalFiles,
-    showModal: showModalFiles,
-    hideModal: hideModalFiles,
-  } = useModal();
+  const { visible: visibleModalFiles, showModal: showModalFiles, hideModal: hideModalFiles } = useModal()
 
-  const {
-    visible: visibleModalProducts,
-    showModal: showModalProducts,
-    hideModal: hideModalProducts,
-  } = useModal();
+  const { visible: visibleModalProducts, showModal: showModalProducts, hideModal: hideModalProducts } = useModal()
 
-  const clientId = getValues("id");
-  const code = watch("code");
+  const clientId = getValues('id')
+  const code = watch('code')
 
   return (
     <div className="fields-wrapper-container-t">
@@ -48,24 +32,9 @@ const CobranzaInfoModals = () => {
         disabled={!clientId}
         onClick={showModalFiles}
       />
-      <Button
-        width="100%"
-        label="Fiadores"
-        disabled={!clientId}
-        onClick={showModalFiadores}
-      />
-      <Button
-        width="100%"
-        label="Direcciones"
-        disabled={!clientId}
-        onClick={showModalAddresses}
-      />
-      <Button
-        width="100%"
-        label="Productos"
-        disabled={!clientId}
-        onClick={showModalProducts}
-      />
+      <Button width="100%" label="Fiadores" disabled={!clientId} onClick={showModalFiadores} />
+      <Button width="100%" label="Direcciones" disabled={!clientId} onClick={showModalAddresses} />
+      <Button width="100%" label="Productos" disabled={!clientId} onClick={showModalProducts} />
 
       <Modal
         id="modal-fiadores"
@@ -86,12 +55,7 @@ const CobranzaInfoModals = () => {
         <ModalFiles clientId={clientId} code={Number(code)} />
       </Modal>
 
-      <Modal
-        id="modal-addresses"
-        title="Direcciones"
-        visible={visibleModalAddresses}
-        onClose={hideModalAddresses}
-      >
+      <Modal id="modal-addresses" title="Direcciones" visible={visibleModalAddresses} onClose={hideModalAddresses}>
         <Container
           display="flex"
           flexDirection="column"
@@ -103,12 +67,7 @@ const CobranzaInfoModals = () => {
           <ModalAddresses clientId={clientId} />
         </Container>
       </Modal>
-      <Modal
-        id="modal-products"
-        title="Productos"
-        visible={visibleModalProducts}
-        onClose={hideModalProducts}
-      >
+      <Modal id="modal-products" title="Productos" visible={visibleModalProducts} onClose={hideModalProducts}>
         <Container
           display="flex"
           flexDirection="column"
@@ -121,7 +80,7 @@ const CobranzaInfoModals = () => {
         </Container>
       </Modal>
     </div>
-  );
-};
+  )
+}
 
-export default CobranzaInfoModals;
+export default CobranzaInfoModals

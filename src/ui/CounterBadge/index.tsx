@@ -1,1 +1,1 @@
-export { default } from "./CounterBadge";
+export { default } from './CounterBadge'

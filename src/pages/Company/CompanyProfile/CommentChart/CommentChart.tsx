@@ -1,64 +1,56 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from "react";
-import Container from "../../../../ui/Container";
-import { Bar } from "react-chartjs-2";
-import { Chart, registerables } from "chart.js";
-import { useQuery } from "react-query";
-import { getChart } from "../../../../shared/services/comment.service";
-import { useLoloContext } from "../../../../shared/contexts/LoloProvider";
-import Text from "../../../../ui/Text";
+import React, { useEffect, useState } from 'react'
+import Container from '../../../../ui/Container'
+import { Bar } from 'react-chartjs-2'
+import { Chart, registerables } from 'chart.js'
+import { useQuery } from 'react-query'
+import { getChart } from '../../../../shared/services/comment.service'
+import { useLoloContext } from '../../../../shared/contexts/LoloProvider'
+import Text from '../../../../ui/Text'
 
-Chart.register(...registerables);
+Chart.register(...registerables)
 
 const CommentChart = () => {
-  const [data, setData] = useState<number[]>([]);
+  const [data, setData] = useState<number[]>([])
   const {
     customerUser: { user },
-  } = useLoloContext();
+  } = useLoloContext()
 
   const { refetch } = useQuery(
-    "query-get-chart",
+    'query-get-chart',
     async () => {
-      return await getChart(user.id);
+      return await getChart(user.id)
     },
     {
       onSuccess: ({ data }) => {
-        setData(data);
+        setData(data)
       },
     }
-  );
+  )
 
   useEffect(() => {
-    refetch();
-  }, []);
+    refetch()
+  }, [])
 
   const datos = {
-    labels: [
-      "Lunes",
-      "Martes",
-      "Miércoles",
-      "Jueves",
-      "Viernes",
-      "Sábado",
-      "Domingo",
-    ],
+    labels: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'],
     datasets: [
       {
-        label: "Comentarios realizados",
+        label: 'Comentarios realizados',
         data: data,
-        backgroundColor: "rgba(54, 162, 235, 0.2)",
-        borderColor: "rgba(54, 162, 235, 1)",
+        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+        borderColor: 'rgba(54, 162, 235, 1)',
         borderWidth: 1,
       },
     ],
-  };
+  }
   const options = {
     scales: {
       y: {
         beginAtZero: true,
       },
     },
-  };
+  }
 
   return (
     <Container
@@ -74,7 +66,7 @@ const CommentChart = () => {
       </Text.Title>
       <Bar data={datos} options={options} />
     </Container>
-  );
-};
+  )
+}
 
-export default CommentChart;
+export default CommentChart

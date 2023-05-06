@@ -1,53 +1,51 @@
 const isJson = (text: string) => {
   try {
-    JSON.parse(text);
+    JSON.parse(text)
   } catch (e) {
-    return false;
+    return false
   }
 
-  return true;
-};
+  return true
+}
 
 const storageHandler = () => {
   const setItemTransfrom = <T>(value: T) => {
-    return JSON.stringify(value);
-  };
+    return JSON.stringify(value)
+  }
 
   const getItem = <T>(key: string): T | null => {
     try {
-      const rawData = localStorage.getItem(key);
+      const rawData = localStorage.getItem(key)
 
       if (!rawData) {
-        return null;
+        return null
       }
 
-      return isJson(rawData)
-        ? (JSON.parse(rawData) as T)
-        : (rawData as unknown as T);
+      return isJson(rawData) ? (JSON.parse(rawData) as T) : (rawData as unknown as T)
     } catch (err) {
-      return err as unknown as T;
+      return err as unknown as T
     }
-  };
+  }
 
   const setItem = <T>(key: string, value: T) => {
-    return localStorage.setItem(key, setItemTransfrom<typeof value>(value));
-  };
+    return localStorage.setItem(key, setItemTransfrom<typeof value>(value))
+  }
 
   const removeItem = (key: string) => {
-    localStorage.removeItem(key);
-  };
+    localStorage.removeItem(key)
+  }
 
   const clearItems = () => {
-    localStorage.clear();
-  };
+    localStorage.clear()
+  }
 
   return {
     get: getItem,
     set: setItem,
     remove: removeItem,
     clear: clearItems,
-  };
-};
+  }
+}
 
-const storage = storageHandler();
-export default storage;
+const storage = storageHandler()
+export default storage

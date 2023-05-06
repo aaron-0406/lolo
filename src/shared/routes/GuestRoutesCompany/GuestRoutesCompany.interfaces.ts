@@ -1,3 +1,3 @@
 export type GuestParamsType = {
-  urlIdentifier: string;
-};
+  urlIdentifier: string
+}

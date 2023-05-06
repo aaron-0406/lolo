@@ -1,22 +1,15 @@
-import styled from "styled-components";
-import Container from "../Container";
+import styled from 'styled-components'
+import Container from '../Container'
 
 const Spinner = () => {
   return (
-    <StyledSpinner
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      width="24px"
-      height="24px"
-      readonly
-    >
+    <StyledSpinner display="flex" justifyContent="center" alignItems="center" width="24px" height="24px" readonly>
       <StyledIcon className="ri-loader-4-line spinning" />
     </StyledSpinner>
-  );
-};
+  )
+}
 
-export default Spinner;
+export default Spinner
 
 /**
  * Styled Spinner Component
@@ -24,7 +17,7 @@ export default Spinner;
  */
 const StyledSpinner = styled(Container)`
   font-size: 24px;
-`;
+`
 
 const StyledIcon = styled.i`
   animation: rotate 2s linear infinite;
@@ -33,4 +26,4 @@ const StyledIcon = styled.i`
       transform: rotate(360deg);
     }
   }
-`;
+`

@@ -1,15 +1,15 @@
-import * as React from "react";
-import toast from "react-hot-toast";
-import AlertNotification from "../AlertNotification";
-import { config } from "../AlertNotification";
-import type { AlertNotificationType } from "../AlertNotification/interfaces";
+import * as React from 'react'
+import toast from 'react-hot-toast'
+import AlertNotification from '../AlertNotification'
+import { config } from '../AlertNotification'
+import type { AlertNotificationType } from '../AlertNotification/interfaces'
 
 type NotificationProps = {
-  type: AlertNotificationType;
-  message: React.ReactNode;
-  icon?: boolean;
-  close?: boolean;
-};
+  type: AlertNotificationType
+  message: React.ReactNode
+  icon?: boolean
+  close?: boolean
+}
 
 /**
  * notification
@@ -21,23 +21,11 @@ type NotificationProps = {
  * @prop {string} message Text inside the notification
  * @prop {boolean} icon Whether to display the icon or not. The icons are already defined by the type of the alert
  */
-export const notification = ({
-  type,
-  message,
-  icon = true,
-  close = false,
-}: NotificationProps) => {
+export const notification = ({ type, message, icon = true, close = false }: NotificationProps) => {
   return toast.custom(
     ({ id, visible }) => (
-      <AlertNotification
-        type={type}
-        message={message}
-        visible={visible}
-        idToast={id}
-        icon={icon}
-        close={close}
-      />
+      <AlertNotification type={type} message={message} visible={visible} idToast={id} icon={icon} close={close} />
     ),
     { duration: config[type].duration }
-  );
-};
+  )
+}

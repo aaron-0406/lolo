@@ -1,0 +1,8 @@
+# Ignora todos los archivos dentro de la carpeta build
+build/*
+
+# Ignora todos los archivos dentro de la carpeta node_modules
+node_modules/*
+
+# Ignora el archivo de configuración de ESLint
+.eslintrc.js

@@ -1,49 +1,34 @@
-import { forwardRef } from "react";
-import type { InputHTMLAttributes } from "react";
-import type { IRegular } from "styled-components";
-import styled, { useTheme } from "styled-components";
-import { css } from "styled-components";
-import type { InputSize } from "./Input.interfaces";
+import { forwardRef } from 'react'
+import type { InputHTMLAttributes } from 'react'
+import type { IRegular } from 'styled-components'
+import styled, { useTheme } from 'styled-components'
+import { css } from 'styled-components'
+import type { InputSize } from './Input.interfaces'
 
-export type InputProps = Omit<InputHTMLAttributes<HTMLInputElement>, "size"> & {
-  size?: InputSize;
-};
+export type InputProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> & {
+  size?: InputSize
+}
 
 const Input = forwardRef(
   (
     props: InputProps,
-    ref:
-      | ((instance: HTMLInputElement | null) => void)
-      | React.RefObject<HTMLInputElement>
-      | null
-      | undefined
+    ref: ((instance: HTMLInputElement | null) => void) | React.RefObject<HTMLInputElement> | null | undefined
   ) => {
-    const { size = "small", ...rest } = props;
+    const { size = 'small', ...rest } = props
 
-    const theme = useTheme();
+    const theme = useTheme()
 
-    const textStyle =
-      size === "small"
-        ? theme.typography.body.m.regular
-        : theme.typography.body.l.regular;
+    const textStyle = size === 'small' ? theme.typography.body.m.regular : theme.typography.body.l.regular
 
-    return (
-      <StyledInput
-        ref={ref}
-        className="input-field"
-        autoComplete="off"
-        {...textStyle}
-        {...rest}
-      />
-    );
+    return <StyledInput ref={ref} className="input-field" autoComplete="off" {...textStyle} {...rest} />
   }
-);
+)
 
-Input.displayName = "Input";
+Input.displayName = 'Input'
 
-export default Input;
+export default Input
 
-type StyledInputProps = IRegular;
+type StyledInputProps = IRegular
 
 const StyledInput = styled.input<StyledInputProps>`
   ${(props) => css`
@@ -61,4 +46,4 @@ const StyledInput = styled.input<StyledInputProps>`
       color: ${props.theme.colors.Neutral5};
     }
   `}
-`;
+`

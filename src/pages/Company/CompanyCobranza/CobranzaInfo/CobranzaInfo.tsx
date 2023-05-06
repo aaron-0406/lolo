@@ -1,66 +1,62 @@
-import { Controller, useFormContext } from "react-hook-form";
-import styled, { css } from "styled-components";
-import { useLoloContext } from "../../../../shared/contexts/LoloProvider";
-import { ClientType } from "../../../../shared/types/client.type";
-import Container from "../../../../ui/Container";
-import TextAreaField from "../../../../ui/fields/TextAreaField";
-import TextField from "../../../../ui/fields/TextField";
-import Label from "../../../../ui/Label";
-import Select from "../../../../ui/Select";
-import { SelectItemType } from "../../../../ui/Select/interfaces";
-import CobranzaInfoModals from "./CobranzaInfoModals";
+import { Controller, useFormContext } from 'react-hook-form'
+import styled, { css } from 'styled-components'
+import { useLoloContext } from '../../../../shared/contexts/LoloProvider'
+import { ClientType } from '../../../../shared/types/client.type'
+import Container from '../../../../ui/Container'
+import TextAreaField from '../../../../ui/fields/TextAreaField'
+import TextField from '../../../../ui/fields/TextField'
+import Label from '../../../../ui/Label'
+import Select from '../../../../ui/Select'
+import { SelectItemType } from '../../../../ui/Select/interfaces'
+import CobranzaInfoModals from './CobranzaInfoModals'
 
 type CobranzaInfoProps = {
-  loading: boolean;
-};
+  loading: boolean
+}
 
 const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
   const {
     control,
     formState: { errors },
-  } = useFormContext<ClientType>();
+  } = useFormContext<ClientType>()
 
   const {
     city: { cities },
     user: { users },
     funcionario: { funcionarios },
     negociacion: { negociaciones },
-  } = useLoloContext();
+  } = useLoloContext()
 
   const optionsCities: Array<SelectItemType> = cities.map((city) => {
     return {
       key: String(city.id),
       label: city.name,
-    };
-  });
+    }
+  })
 
   const optionsUsers: Array<SelectItemType> = users.map((user) => {
     return {
       key: String(user.id),
       label: user.name,
-    };
-  });
-
-  const optionsFuncionarios: Array<SelectItemType> = funcionarios.map(
-    (funcionario) => {
-      return {
-        key: String(funcionario.id),
-        label: funcionario.name,
-      };
     }
-  );
+  })
 
-  const optionsStates: Array<SelectItemType> = negociaciones.map(
-    (negociacion) => {
-      return {
-        key: String(negociacion.id),
-        label: negociacion.name,
-      };
+  const optionsFuncionarios: Array<SelectItemType> = funcionarios.map((funcionario) => {
+    return {
+      key: String(funcionario.id),
+      label: funcionario.name,
     }
-  );
+  })
+
+  const optionsStates: Array<SelectItemType> = negociaciones.map((negociacion) => {
+    return {
+      key: String(negociacion.id),
+      label: negociacion.name,
+    }
+  })
 
   if (loading) {
-    return <div>Loading ...</div>;
+    return <div>Loading ...</div>
   }
 
   return (
@@ -80,12 +76,7 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
             name="code"
             control={control}
             render={({ field }) => (
-              <TextField
-                width="100%"
-                value={field.value}
-                onChange={field.onChange}
-                hasError={!!errors.code}
-              />
+              <TextField width="100%" value={field.value} onChange={field.onChange} hasError={!!errors.code} />
             )}
           />
         </div>
@@ -102,7 +93,7 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
                 value={String(field.value)}
                 options={optionsStates}
                 onChange={(key) => {
-                  field.onChange(parseInt(key));
+                  field.onChange(parseInt(key))
                 }}
                 hasError={!!errors.negotiationId}
               />
@@ -170,7 +161,7 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
               value={String(field.value)}
               options={optionsUsers}
               onChange={(key) => {
-                field.onChange(parseInt(key));
+                field.onChange(parseInt(key))
               }}
               hasError={!!errors.customerUserId}
             />
@@ -190,7 +181,7 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
                 value={String(field.value)}
                 options={optionsFuncionarios}
                 onChange={(key) => {
-                  field.onChange(parseInt(key));
+                  field.onChange(parseInt(key))
                 }}
                 hasError={!!errors.funcionarioId}
               />
@@ -209,7 +200,7 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
                 value={String(field.value)}
                 options={optionsCities}
                 onChange={(key) => {
-                  field.onChange(parseInt(key));
+                  field.onChange(parseInt(key))
                 }}
                 hasError={!!errors.cityId}
               />
@@ -252,10 +243,10 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
 
       <CobranzaInfoModals />
     </StyledContainer>
-  );
-};
+  )
+}
 
-export default CobranzaInfo;
+export default CobranzaInfo
 
 const StyledContainer = styled(Container)`
   ${({ theme }) => css`
@@ -304,4 +295,4 @@ const StyledContainer = styled(Container)`
       }
     }
   `}
-`;
+`
