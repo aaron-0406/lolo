@@ -1,16 +1,16 @@
-import React from "react";
-import styled, { css } from "styled-components";
-import { CommentType } from "../../../../../shared/types/comment.type";
-import Container from "../../../../../ui/Container";
-import Text from "../../../../../ui/Text";
-import moment from "moment";
-import { CustomerUserType } from "../../../../../shared/types/customer-user.type";
+import React from 'react'
+import styled, { css } from 'styled-components'
+import { CommentType } from '../../../../../shared/types/comment.type'
+import Container from '../../../../../ui/Container'
+import Text from '../../../../../ui/Text'
+import moment from 'moment'
+import { CustomerUserType } from '../../../../../shared/types/customer-user.type'
 
 type CommentItemProps = {
-  comment: CommentType & { customerUser: CustomerUserType };
-  selected: boolean;
-  getComment: (comment: CommentType) => void;
-};
+  comment: CommentType & { customerUser: CustomerUserType }
+  selected: boolean
+  getComment: (comment: CommentType) => void
+}
 
 const CommentItem: React.FC<CommentItemProps> = (props) => {
   const {
@@ -18,11 +18,11 @@ const CommentItem: React.FC<CommentItemProps> = (props) => {
     getComment,
     comment,
     selected,
-  } = props;
+  } = props
 
   const handleClickComment = () => {
-    getComment(comment);
-  };
+    getComment(comment)
+  }
 
   return (
     <StyledComment
@@ -41,20 +41,16 @@ const CommentItem: React.FC<CommentItemProps> = (props) => {
         </Text.Body>
       </Container>
 
-      <Container
-        justifyContent="space-between"
-        display="flex"
-        flexDirection="row"
-      >
+      <Container justifyContent="space-between" display="flex" flexDirection="row">
         <Text.Body size="s" weight="bold">
-          {"Asunto: "}
+          {'Asunto: '}
           <Text.Body ellipsis size="m" weight="regular" color="Primary5">
             {negotiation}
           </Text.Body>
         </Text.Body>
         <Container>
           <Text.Body size="m" weight="regular">
-            {moment(date).format("DD-MM-YYYY")}
+            {moment(date).format('DD-MM-YYYY')}
           </Text.Body>
         </Container>
       </Container>
@@ -65,10 +61,10 @@ const CommentItem: React.FC<CommentItemProps> = (props) => {
         </Text.Body>
       </Container>
     </StyledComment>
-  );
-};
+  )
+}
 
-export default CommentItem;
+export default CommentItem
 
 const StyledComment = styled(Container)<{ $selected: boolean }>`
   :hover {
@@ -79,6 +75,6 @@ const StyledComment = styled(Container)<{ $selected: boolean }>`
   ${({ theme, $selected }) =>
     css`
       border-bottom: 2px solid ${theme.colors.Neutral4};
-      background-color: ${$selected ? "#eff0f6ff" : ""};
+      background-color: ${$selected ? '#eff0f6ff' : ''};
     `}
-`;
+`

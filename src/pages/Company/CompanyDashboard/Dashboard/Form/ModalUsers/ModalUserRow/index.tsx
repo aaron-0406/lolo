@@ -1,1 +1,1 @@
-export { default } from "./ModalUserRow";
+export { default } from './ModalUserRow'

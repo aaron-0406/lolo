@@ -4,4 +4,4 @@ export const zIndex = {
   modal: 10,
   overlayDrawer: 15,
   drawer: 20,
-};
+}

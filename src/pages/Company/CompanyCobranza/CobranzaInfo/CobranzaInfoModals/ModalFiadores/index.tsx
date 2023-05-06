@@ -1,1 +1,1 @@
-export { default } from "./ModalFiadores";
+export { default } from './ModalFiadores'

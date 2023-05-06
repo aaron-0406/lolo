@@ -1,1 +1,1 @@
-export { default } from "./ProductDeletedRow";
+export { default } from './ProductDeletedRow'

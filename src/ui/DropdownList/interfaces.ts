@@ -1,1 +1,1 @@
-export type DropdownListSize = "large" | "default";
+export type DropdownListSize = 'large' | 'default'

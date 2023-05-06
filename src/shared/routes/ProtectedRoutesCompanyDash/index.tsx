@@ -1,1 +1,1 @@
-export { default } from "./ProtectedRoutesCompanyDash";
+export { default } from './ProtectedRoutesCompanyDash'

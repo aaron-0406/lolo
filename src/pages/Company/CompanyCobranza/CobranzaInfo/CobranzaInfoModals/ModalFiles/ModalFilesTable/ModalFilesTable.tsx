@@ -1,25 +1,21 @@
-import React, { Dispatch, useState } from "react";
-import useModal from "../../../../../../../shared/hooks/useModal";
-import { FileType } from "../../../../../../../shared/types/file.type";
-import Container from "../../../../../../../ui/Container";
-import Modal from "../../../../../../../ui/Modal";
-import FileViewer from "./FileViewer/FileViewer";
-import ModalFileRow from "./ModalFileRow";
+import React, { Dispatch, useState } from 'react'
+import useModal from '../../../../../../../shared/hooks/useModal'
+import { FileType } from '../../../../../../../shared/types/file.type'
+import Container from '../../../../../../../ui/Container'
+import Modal from '../../../../../../../ui/Modal'
+import FileViewer from './FileViewer/FileViewer'
+import ModalFileRow from './ModalFileRow'
 
 type ModaFilesTableProps = {
-  files: FileType[];
-  setFiles: Dispatch<FileType[]>;
-  code: number;
-};
+  files: FileType[]
+  setFiles: Dispatch<FileType[]>
+  code: number
+}
 
 const ModalFilesTable: React.FC<ModaFilesTableProps> = (props) => {
-  const { files, setFiles, code } = props;
-  const {
-    visible: visibleModalFile,
-    showModal: showModalFile,
-    hideModal: hideModalFile,
-  } = useModal();
-  const [fileSelected, setFileSelected] = useState<FileType>();
+  const { files, setFiles, code } = props
+  const { visible: visibleModalFile, showModal: showModalFile, hideModal: hideModalFile } = useModal()
+  const [fileSelected, setFileSelected] = useState<FileType>()
   return (
     <Container width="100%" display="flex" gap="0.2rem" flexDirection="column">
       {files.map((item) => {
@@ -31,9 +27,9 @@ const ModalFilesTable: React.FC<ModaFilesTableProps> = (props) => {
             files={files}
             setFiles={setFiles}
             file={item}
-            key={item.id + "files"}
+            key={item.id + 'files'}
           />
-        );
+        )
       })}
       <Modal
         id="modal-file-view"
@@ -54,7 +50,7 @@ const ModalFilesTable: React.FC<ModaFilesTableProps> = (props) => {
         </Container>
       </Modal>
     </Container>
-  );
-};
+  )
+}
 
-export default ModalFilesTable;
+export default ModalFilesTable

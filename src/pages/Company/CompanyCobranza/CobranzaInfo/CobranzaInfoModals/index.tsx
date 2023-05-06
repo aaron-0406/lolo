@@ -1,1 +1,1 @@
-export { default } from "./CobranzaInfoModals";
+export { default } from './CobranzaInfoModals'

@@ -1,1 +1,1 @@
-export { default } from "./CobranzaSearch";
+export { default } from './CobranzaSearch'

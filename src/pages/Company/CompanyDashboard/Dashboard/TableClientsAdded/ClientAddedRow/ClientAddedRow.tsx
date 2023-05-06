@@ -1,20 +1,20 @@
-import { FC } from "react";
-import { useFormContext } from "react-hook-form";
-import { useMutation } from "react-query";
-import styled, { css } from "styled-components";
-import { useLoloContext } from "../../../../../../shared/contexts/LoloProvider";
-import { createClientsDash } from "../../../../../../shared/services/dashboard.service";
-import Button from "../../../../../../ui/Button";
-import notification from "../../../../../../ui/notification";
-import Row from "../../../../../../ui/Table/Row";
-import { DashFormType } from "../../hookform.type";
-import { ClientAddedRowProps } from "./ClientAddedRow.type";
+import { FC } from 'react'
+import { useFormContext } from 'react-hook-form'
+import { useMutation } from 'react-query'
+import styled, { css } from 'styled-components'
+import { useLoloContext } from '../../../../../../shared/contexts/LoloProvider'
+import { createClientsDash } from '../../../../../../shared/services/dashboard.service'
+import Button from '../../../../../../ui/Button'
+import notification from '../../../../../../ui/notification'
+import Row from '../../../../../../ui/Table/Row'
+import { DashFormType } from '../../hookform.type'
+import { ClientAddedRowProps } from './ClientAddedRow.type'
 
 const ClientAddedRow: FC<ClientAddedRowProps> = (props) => {
   const {
     client: { clientCode, clientName, code, cityId, funcionarioId },
     index,
-  } = props;
+  } = props
   const {
     customerUser: {
       user: { id: customerUserId },
@@ -22,12 +22,12 @@ const ClientAddedRow: FC<ClientAddedRowProps> = (props) => {
     bank: {
       selectedBank: { idBank, idCHB },
     },
-  } = useLoloContext();
-  const { setValue, watch } = useFormContext<DashFormType>();
+  } = useLoloContext()
+  const { setValue, watch } = useFormContext<DashFormType>()
 
   const handleAddProduct = () => {
-    createProducts();
-  };
+    createProducts()
+  }
 
   const { isLoading, mutate: createProducts } = useMutation<any, Error>(
     async () => {
@@ -36,24 +36,24 @@ const ClientAddedRow: FC<ClientAddedRowProps> = (props) => {
         customerUserId,
         +idCHB,
         +idBank
-      );
+      )
     },
     {
       onSuccess: () => {
         setValue(
-          "clientsAdded",
-          watch("clientsAdded").filter((item) => item.code !== code)
-        );
-        notification({ type: "success", message: "Cliente Agregado" });
+          'clientsAdded',
+          watch('clientsAdded').filter((item) => item.code !== code)
+        )
+        notification({ type: 'success', message: 'Cliente Agregado' })
       },
       onError: (error: any) => {
         notification({
-          type: "error",
+          type: 'error',
           message: error.response.data.message,
-        });
+        })
       },
     }
-  );
+  )
   return (
     <StyledTr index={index}>
       <Row>{index + 1}</Row>
@@ -70,10 +70,10 @@ const ClientAddedRow: FC<ClientAddedRowProps> = (props) => {
         />
       </Row>
     </StyledTr>
-  );
-};
+  )
+}
 
-export default ClientAddedRow;
+export default ClientAddedRow
 
 const StyledTr = styled.tr<{ index: number }>`
   ${({ theme, index }) => css`
@@ -82,4 +82,4 @@ const StyledTr = styled.tr<{ index: number }>`
       background-color: ${theme.colors.Neutral4};
     }
   `}
-`;
+`

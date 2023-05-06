@@ -1,1 +1,1 @@
-export { default } from "./ModalFiadoresActions";
+export { default } from './ModalFiadoresActions'

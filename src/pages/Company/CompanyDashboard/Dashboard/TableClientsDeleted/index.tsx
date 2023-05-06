@@ -1,1 +1,1 @@
-export { default } from "./TableClientsDeleted";
+export { default } from './TableClientsDeleted'

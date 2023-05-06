@@ -1,10 +1,10 @@
-import styled, { css } from "styled-components";
-import Container from "../../../ui/Container";
-import Text from "../../../ui/Text";
+import styled, { css } from 'styled-components'
+import Container from '../../../ui/Container'
+import Text from '../../../ui/Text'
 
 type LoginHeaderProps = {
-  title: string;
-};
+  title: string
+}
 
 const LoginHeader: React.FC<LoginHeaderProps> = ({ title }) => {
   return (
@@ -20,13 +20,13 @@ const LoginHeader: React.FC<LoginHeaderProps> = ({ title }) => {
         {title}
       </Text.Body>
     </StyledContainer>
-  );
-};
+  )
+}
 
-export default LoginHeader;
+export default LoginHeader
 
 const StyledContainer = styled(Container)`
   ${({ theme }) => css`
     border-bottom: 2px solid ${theme.colors.Neutral4};
   `}
-`;
+`

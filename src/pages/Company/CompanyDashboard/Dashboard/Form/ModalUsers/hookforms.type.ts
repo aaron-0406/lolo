@@ -1,3 +1,3 @@
 export type UserFormType = {
-  users: number[];
-};
+  users: number[]
+}

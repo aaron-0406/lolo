@@ -1,25 +1,19 @@
-import React from "react";
-import type CSS from "csstype";
-import styled, { css } from "styled-components";
+import React from 'react'
+import type CSS from 'csstype'
+import styled, { css } from 'styled-components'
 
 type RadioButtonContainerProps = {
-  flexDirection?: CSS.Property.FlexDirection;
-  justifyContent?: CSS.Property.JustifyContent;
-};
+  flexDirection?: CSS.Property.FlexDirection
+  justifyContent?: CSS.Property.JustifyContent
+}
 
 export type RadioButtonProps = React.HTMLProps<HTMLInputElement> &
   RadioButtonContainerProps & {
-    containerClassName?: string;
-  };
+    containerClassName?: string
+  }
 
 const RadioButton: React.FC<RadioButtonProps> = (props) => {
-  const {
-    children,
-    flexDirection,
-    justifyContent,
-    containerClassName,
-    ...rest
-  } = props;
+  const { children, flexDirection, justifyContent, containerClassName, ...rest } = props
 
   return (
     <StyledRadioButton
@@ -32,10 +26,10 @@ const RadioButton: React.FC<RadioButtonProps> = (props) => {
       </div>
       {children}
     </StyledRadioButton>
-  );
-};
+  )
+}
 
-export default RadioButton;
+export default RadioButton
 
 /**
  * Styled RadioButton Component
@@ -70,7 +64,7 @@ const StyledRadioButton = styled.label<RadioButtonContainerProps>`
     }
 
     input::after {
-      content: "";
+      content: '';
       display: block;
       border-radius: 50%;
       border: 2px solid ${theme.colors.Neutral4};
@@ -125,4 +119,4 @@ const StyledRadioButton = styled.label<RadioButtonContainerProps>`
       }
     }
   `}
-`;
+`

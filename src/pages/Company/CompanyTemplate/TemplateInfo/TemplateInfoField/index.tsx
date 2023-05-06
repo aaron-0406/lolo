@@ -1,1 +1,1 @@
-export { default } from "./TemplateInfoField";
+export { default } from './TemplateInfoField'

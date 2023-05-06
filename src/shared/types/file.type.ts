@@ -1,7 +1,7 @@
 export type FileType = {
-  id: number;
-  name: string;
-  originalName: string;
-  createdAt: Date;
-  clientId: number;
-};
+  id: number
+  name: string
+  originalName: string
+  createdAt: Date
+  clientId: number
+}

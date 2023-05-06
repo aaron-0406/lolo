@@ -1,41 +1,41 @@
-import type CSS from "csstype";
-import styled, { css } from "styled-components";
+import type CSS from 'csstype'
+import styled, { css } from 'styled-components'
 
-const OPACITY_1 = 1;
-const OPACITY_0_8 = 0.8;
+const OPACITY_1 = 1
+const OPACITY_0_8 = 0.8
 
 export type ContainerProps = React.HTMLAttributes<HTMLDivElement> & {
-  display?: CSS.Property.Display;
-  alignItems?: CSS.Property.AlignItems;
-  justifyContent?: CSS.Property.JustifyContent;
-  textAlign?: CSS.Property.TextAlign;
-  position?: CSS.Property.Position;
-  centered?: boolean;
-  fullScreen?: boolean;
-  minHeight?: CSS.Property.MinHeight;
-  minWidth?: CSS.Property.MinWidth;
-  maxHeight?: CSS.Property.MaxHeight;
-  maxWidth?: CSS.Property.MaxWidth;
-  height?: CSS.Property.Height;
-  width?: CSS.Property.Width;
-  flexDirection?: CSS.Property.FlexDirection;
-  padding?: CSS.Property.Padding;
-  margin?: CSS.Property.Margin;
-  flexWrap?: CSS.Property.FlexWrap;
-  gap?: CSS.Property.Gap;
-  readonly?: boolean;
-  pointerEvents?: CSS.Property.PointerEvents;
-  overFlowX?: CSS.Property.OverflowX;
-  overFlowY?: CSS.Property.OverflowY;
-  cursor?: CSS.Property.Cursor;
-  backgroundColor?: CSS.Property.BackgroundColor;
-};
+  display?: CSS.Property.Display
+  alignItems?: CSS.Property.AlignItems
+  justifyContent?: CSS.Property.JustifyContent
+  textAlign?: CSS.Property.TextAlign
+  position?: CSS.Property.Position
+  centered?: boolean
+  fullScreen?: boolean
+  minHeight?: CSS.Property.MinHeight
+  minWidth?: CSS.Property.MinWidth
+  maxHeight?: CSS.Property.MaxHeight
+  maxWidth?: CSS.Property.MaxWidth
+  height?: CSS.Property.Height
+  width?: CSS.Property.Width
+  flexDirection?: CSS.Property.FlexDirection
+  padding?: CSS.Property.Padding
+  margin?: CSS.Property.Margin
+  flexWrap?: CSS.Property.FlexWrap
+  gap?: CSS.Property.Gap
+  readonly?: boolean
+  pointerEvents?: CSS.Property.PointerEvents
+  overFlowX?: CSS.Property.OverflowX
+  overFlowY?: CSS.Property.OverflowY
+  cursor?: CSS.Property.Cursor
+  backgroundColor?: CSS.Property.BackgroundColor
+}
 
 const Container: React.FC<ContainerProps> = (props) => {
-  return <StyledContainer {...props} />;
-};
+  return <StyledContainer {...props} />
+}
 
-export default Container;
+export default Container
 
 export const StyledContainer = styled.div<ContainerProps>`
   ${({ centered, fullScreen }) =>
@@ -63,7 +63,7 @@ export const StyledContainer = styled.div<ContainerProps>`
     `}
 
   ${({ readonly }) => css`
-    pointer-events: ${readonly ? "none" : "auto"};
+    pointer-events: ${readonly ? 'none' : 'auto'};
     opacity: ${readonly ? OPACITY_0_8 : OPACITY_1};
   `}
 
@@ -186,4 +186,4 @@ export const StyledContainer = styled.div<ContainerProps>`
     css`
       background-color: ${backgroundColor};
     `}
-`;
+`

@@ -1,33 +1,28 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode } from 'react'
 // import styled, { css } from "styled-components";
-import Container from "../../../ui/Container";
-import { device } from "../../../shared/breakpoints/reponsive";
-import { useMediaQuery } from "../../../shared/hooks/useMediaQuery";
-import styled, { css } from "styled-components";
+import Container from '../../../ui/Container'
+import { device } from '../../../shared/breakpoints/reponsive'
+import { useMediaQuery } from '../../../shared/hooks/useMediaQuery'
+import styled, { css } from 'styled-components'
 
 type LayoutDocumenetProps = {
-  firstChild: ReactNode;
-  actions: ReactNode;
-  info: ReactNode;
-  users: ReactNode;
-  doc: ReactNode;
-};
+  firstChild: ReactNode
+  actions: ReactNode
+  info: ReactNode
+  users: ReactNode
+  doc: ReactNode
+}
 
 const LayoutDocuments: React.FC<LayoutDocumenetProps> = (props) => {
-  const { info, doc, firstChild, actions, users } = props;
-  const greaterThanTabletL = useMediaQuery(device.tabletL);
+  const { info, doc, firstChild, actions, users } = props
+  const greaterThanTabletL = useMediaQuery(device.tabletL)
 
-  let firstContainerWidth = greaterThanTabletL ? "25%" : "100%";
-  let secondContainerWidth = greaterThanTabletL ? "25%" : "100%";
-  let thirdContainerWidth = greaterThanTabletL ? "50%" : "100%";
+  let firstContainerWidth = greaterThanTabletL ? '25%' : '100%'
+  let secondContainerWidth = greaterThanTabletL ? '25%' : '100%'
+  let thirdContainerWidth = greaterThanTabletL ? '50%' : '100%'
 
   return (
-    <Container
-      width="100%"
-      height="100%"
-      display="flex"
-      flexDirection={greaterThanTabletL ? "row" : "column"}
-    >
+    <Container width="100%" height="100%" display="flex" flexDirection={greaterThanTabletL ? 'row' : 'column'}>
       <Container width={firstContainerWidth} height="100%">
         {firstChild}
       </Container>
@@ -52,10 +47,10 @@ const LayoutDocuments: React.FC<LayoutDocumenetProps> = (props) => {
         <StyledDocument>{doc}</StyledDocument>
       </StyledContainerDoc>
     </Container>
-  );
-};
+  )
+}
 
-export default LayoutDocuments;
+export default LayoutDocuments
 
 const StyledContainerDoc = styled(Container)`
   ${({ theme }) =>
@@ -78,7 +73,7 @@ const StyledContainerDoc = styled(Container)`
       /* border: 5px solid ${theme.colors.Neutral4}; */
       overflow-x: auto;
     `}
-`;
+`
 
 const StyledDocument = styled.div`
   width: 793px;
@@ -86,4 +81,4 @@ const StyledDocument = styled.div`
   overflow-x: auto;
   overflow-y: hidden;
   background-color: #fff;
-`;
+`

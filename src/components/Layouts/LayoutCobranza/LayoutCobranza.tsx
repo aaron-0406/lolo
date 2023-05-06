@@ -1,28 +1,22 @@
-import styled, { css } from "styled-components";
-import { device } from "../../../shared/breakpoints/reponsive";
-import { useMediaQuery } from "../../../shared/hooks/useMediaQuery";
-import Container from "../../../ui/Container";
+import styled, { css } from 'styled-components'
+import { device } from '../../../shared/breakpoints/reponsive'
+import { useMediaQuery } from '../../../shared/hooks/useMediaQuery'
+import Container from '../../../ui/Container'
 
 type LayoutCobranzaProps = {
-  leftHeader: React.ReactNode;
-  leftActions: React.ReactNode;
-  leftContent: React.ReactNode;
-  rightComments: React.ReactNode;
-};
+  leftHeader: React.ReactNode
+  leftActions: React.ReactNode
+  leftContent: React.ReactNode
+  rightComments: React.ReactNode
+}
 
 const LayoutCobranza: React.FC<LayoutCobranzaProps> = (props) => {
-  const { leftHeader, leftActions, leftContent, rightComments } = props;
+  const { leftHeader, leftActions, leftContent, rightComments } = props
 
-  const greaterThanTabletL = useMediaQuery(device.tabletL);
+  const greaterThanTabletL = useMediaQuery(device.tabletL)
 
   return (
-    <StyledContainer
-      width="100%"
-      height="100%"
-      padding="15px"
-      display="flex"
-      gap="30px"
-    >
+    <StyledContainer width="100%" height="100%" padding="15px" display="flex" gap="30px">
       <Container
         className="container__left"
         width="100%"
@@ -40,18 +34,16 @@ const LayoutCobranza: React.FC<LayoutCobranzaProps> = (props) => {
 
       <Container
         width="300px"
-        className={`container__right ${
-          !greaterThanTabletL && "hide-component"
-        }`}
+        className={`container__right ${!greaterThanTabletL && 'hide-component'}`}
         backgroundColor="#eff0f6ff"
       >
         {rightComments}
       </Container>
     </StyledContainer>
-  );
-};
+  )
+}
 
-export default LayoutCobranza;
+export default LayoutCobranza
 
 const StyledContainer = styled(Container)`
   ${({ theme }) => css`
@@ -81,4 +73,4 @@ const StyledContainer = styled(Container)`
       }
     }
   `}
-`;
+`

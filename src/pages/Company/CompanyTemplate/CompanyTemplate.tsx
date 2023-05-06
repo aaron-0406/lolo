@@ -1,39 +1,39 @@
-import React from "react";
-import { FormProvider, useForm } from "react-hook-form";
-import LayoutDocuments from "../../../components/Layouts/LayoutDocuments";
-import { TemplateFormType } from "./hookforms.interfaces";
-import TemplateActions from "./TemplateActions";
-import TemplateDoc from "./TemplateDoc";
-import TemplateInfo from "./TemplateInfo";
-import TemplateTable from "./TemplateTable";
-import TemplateUsersTable from "./TemplateUsersTable";
+import React from 'react'
+import { FormProvider, useForm } from 'react-hook-form'
+import LayoutDocuments from '../../../components/Layouts/LayoutDocuments'
+import { TemplateFormType } from './hookforms.interfaces'
+import TemplateActions from './TemplateActions'
+import TemplateDoc from './TemplateDoc'
+import TemplateInfo from './TemplateInfo'
+import TemplateTable from './TemplateTable'
+import TemplateUsersTable from './TemplateUsersTable'
 
 const CompanyDocument = () => {
   const formMethods = useForm<TemplateFormType>({
-    mode: "all",
+    mode: 'all',
     defaultValues: {
       templates: [],
       templateSelected: {
         id: 0,
-        name: "",
+        name: '',
         customerId: 0,
-        templateJson: "",
-        templatePhoto: "",
+        templateJson: '',
+        templatePhoto: '',
       },
       templateHasValuesSelected: {
         id: 0,
-        name: "",
+        name: '',
         templateId: 0,
       },
       templateHasValues: [],
       fields: [],
       values: [],
       templateJson: { parrafos: [] },
-      templatePhoto: "",
+      templatePhoto: '',
       clients: [],
       clientSelected: {},
     },
-  });
+  })
   return (
     <FormProvider {...formMethods}>
       <LayoutDocuments
@@ -44,7 +44,7 @@ const CompanyDocument = () => {
         doc={<TemplateDoc />}
       />
     </FormProvider>
-  );
-};
+  )
+}
 
-export default CompanyDocument;
+export default CompanyDocument

@@ -1,13 +1,13 @@
-import { ThemeProvider } from "styled-components";
-import { BrowserRouter } from "react-router-dom";
-import GlobalStyles from "../../styles/GlobalStyles";
-import initialTheme from "../../styles/theme";
-import { QueryClient, QueryClientProvider } from "react-query";
-import { LoloProvider } from "./LoloProvider";
-import { Toaster } from "react-hot-toast";
+import { ThemeProvider } from 'styled-components'
+import { BrowserRouter } from 'react-router-dom'
+import GlobalStyles from '../../styles/GlobalStyles'
+import initialTheme from '../../styles/theme'
+import { QueryClient, QueryClientProvider } from 'react-query'
+import { LoloProvider } from './LoloProvider'
+import { Toaster } from 'react-hot-toast'
 
 interface ProvidersProps {
-  children: React.ReactNode;
+  children: React.ReactNode
 }
 
 export const Providers: React.FC<ProvidersProps> = ({ children }) => {
@@ -20,7 +20,7 @@ export const Providers: React.FC<ProvidersProps> = ({ children }) => {
         staleTime: 5 * 60 * 1000,
       },
     },
-  });
+  })
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -34,5 +34,5 @@ export const Providers: React.FC<ProvidersProps> = ({ children }) => {
         </LoloProvider>
       </BrowserRouter>
     </QueryClientProvider>
-  );
-};
+  )
+}

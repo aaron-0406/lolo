@@ -1,44 +1,44 @@
-import { ClientType } from "../types/client.type";
-import { ProductType, ProductTypeName } from "../types/product.type";
-import axiosClient from "../utils/api/clientAxios";
+import { ClientType } from '../types/client.type'
+import { ProductType, ProductTypeName } from '../types/product.type'
+import axiosClient from '../utils/api/clientAxios'
 
 interface Client {
-  name: string;
-  code: string;
-  cityId: string;
-  funcionarioId: string;
+  name: string
+  code: string
+  cityId: string
+  funcionarioId: string
 }
 
 interface Product {
-  name: string;
-  code: string;
-  state: string;
-  clientName: string;
-  clientCode: string;
-  customerId: number;
+  name: string
+  code: string
+  state: string
+  clientName: string
+  clientCode: string
+  customerId: number
 }
 
 type SendEmail = {
-  usersId: number[];
-  clientsAdded: ProductTypeName[];
-  clientsDeleted: ClientType[];
-  productsAdded: ProductTypeName[];
-  productsCastigo: ProductType[];
-  productsDeleted: ProductType[];
-};
+  usersId: number[]
+  clientsAdded: ProductTypeName[]
+  clientsDeleted: ClientType[]
+  productsAdded: ProductTypeName[]
+  productsCastigo: ProductType[]
+  productsDeleted: ProductType[]
+}
 
-const API = axiosClient.getUri();
+const API = axiosClient.getUri()
 
-const url = `${API}/dashboard`;
+const url = `${API}/dashboard`
 
 export const postDashboardXslx = async (formData: FormData) => {
   return await axiosClient.post(`${url}/xslx`, formData, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
-};
+    headers: { 'Content-Type': 'multipart/form-data' },
+  })
+}
 export const postDashboardSendXslx = async (data: SendEmail) => {
-  return await axiosClient.post(`${url}/send-xslx`, data);
-};
+  return await axiosClient.post(`${url}/send-xslx`, data)
+}
 
 export const createClientsDash = async (
   clients: Client[],
@@ -51,19 +51,15 @@ export const createClientsDash = async (
     customerUserId,
     customerHasBankId,
     idBank,
-  });
-};
-export const deleteClientsDash = async (
-  clients: string[],
-  customerHasBankId: number,
-  idBank: number
-) => {
+  })
+}
+export const deleteClientsDash = async (clients: string[], customerHasBankId: number, idBank: number) => {
   return await axiosClient.post(`${url}/delete-clients`, {
     clients,
     customerHasBankId,
     idBank,
-  });
-};
+  })
+}
 export const createProductsDash = async (
   products: Product[],
   customerUserId: number,
@@ -75,8 +71,8 @@ export const createProductsDash = async (
     customerUserId,
     customerHasBankId,
     idBank,
-  });
-};
+  })
+}
 export const deleteProductsDash = async (products: string[]) => {
-  return await axiosClient.post(`${url}/delete-products`, { products });
-};
+  return await axiosClient.post(`${url}/delete-products`, { products })
+}
