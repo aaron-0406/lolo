@@ -1,13 +1,13 @@
-import axios from "axios";
-import { API } from "../constant/api";
+import axios from 'axios'
+import { API } from '../constant/api'
 
-const API_URL = API;
+const API_URL = API
 
 const clientAxios = axios.create({
   baseURL: API_URL,
   headers: {
-    "Content-type": "application/json",
+    'Content-type': 'application/json',
   },
-});
+})
 
-export default clientAxios;
+export default clientAxios

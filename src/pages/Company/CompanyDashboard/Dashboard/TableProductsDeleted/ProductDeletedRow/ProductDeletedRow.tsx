@@ -1,43 +1,43 @@
-import { FC } from "react";
-import { useFormContext } from "react-hook-form";
-import { useMutation } from "react-query";
-import styled, { css } from "styled-components";
-import { deleteProductsDash } from "../../../../../../shared/services/dashboard.service";
-import Button from "../../../../../../ui/Button";
-import notification from "../../../../../../ui/notification";
-import Row from "../../../../../../ui/Table/Row";
-import { DashFormType } from "../../hookform.type";
-import { ProductDeletedRowProps } from "./ProductDeletedRow.type";
+import { FC } from 'react'
+import { useFormContext } from 'react-hook-form'
+import { useMutation } from 'react-query'
+import styled, { css } from 'styled-components'
+import { deleteProductsDash } from '../../../../../../shared/services/dashboard.service'
+import Button from '../../../../../../ui/Button'
+import notification from '../../../../../../ui/notification'
+import Row from '../../../../../../ui/Table/Row'
+import { DashFormType } from '../../hookform.type'
+import { ProductDeletedRowProps } from './ProductDeletedRow.type'
 
 const ProductDeletedRow: FC<ProductDeletedRowProps> = (props) => {
   const {
     product: { code, clientCode, name },
     index,
-  } = props;
-  const { setValue, watch } = useFormContext<DashFormType>();
+  } = props
+  const { setValue, watch } = useFormContext<DashFormType>()
   const handleDeleteProduct = () => {
-    deleteProduct();
-  };
+    deleteProduct()
+  }
   const { isLoading, mutate: deleteProduct } = useMutation<any, Error>(
     async () => {
-      return await deleteProductsDash([code]);
+      return await deleteProductsDash([code])
     },
     {
       onSuccess: () => {
         setValue(
-          "productsDeleted",
-          watch("productsDeleted").filter((item) => item.code !== code)
-        );
-        notification({ type: "success", message: "Producto Eliminado" });
+          'productsDeleted',
+          watch('productsDeleted').filter((item) => item.code !== code)
+        )
+        notification({ type: 'success', message: 'Producto Eliminado' })
       },
       onError: (error: any) => {
         notification({
-          type: "error",
+          type: 'error',
           message: error.response.data.message,
-        });
+        })
       },
     }
-  );
+  )
   return (
     <StyledTr index={index}>
       <Row>{index + 1}</Row>
@@ -55,10 +55,10 @@ const ProductDeletedRow: FC<ProductDeletedRowProps> = (props) => {
         />
       </Row>
     </StyledTr>
-  );
-};
+  )
+}
 
-export default ProductDeletedRow;
+export default ProductDeletedRow
 
 const StyledTr = styled.tr<{ index: number }>`
   ${({ theme, index }) => css`
@@ -67,4 +67,4 @@ const StyledTr = styled.tr<{ index: number }>`
       background-color: ${theme.colors.Neutral4};
     }
   `}
-`;
+`

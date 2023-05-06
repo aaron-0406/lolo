@@ -1,1 +1,1 @@
-export { default } from "./ReactPortal"
+export { default } from './ReactPortal'

@@ -1,1 +1,1 @@
-export { default } from "./GhestRoute";
+export { default } from './GhestRoute'

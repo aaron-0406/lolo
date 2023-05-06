@@ -1,6 +1,6 @@
-import { ProductType } from "../../../../../../shared/types/product.type";
+import { ProductType } from '../../../../../../shared/types/product.type'
 
 export type ProductCastigoRowProps = {
-  product: ProductType;
-  index: number;
-};
+  product: ProductType
+  index: number
+}

@@ -1,1 +1,1 @@
-export { default } from "./TemplateRow";
+export { default } from './TemplateRow'

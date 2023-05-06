@@ -1,1 +1,1 @@
-export { default } from "./TemplateDoc";
+export { default } from './TemplateDoc'

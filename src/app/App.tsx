@@ -1,7 +1,7 @@
-import AppRouter from "../shared/routes/AppRouter";
+import AppRouter from '../shared/routes/AppRouter'
 
 const App = () => {
-  return <AppRouter />;
-};
+  return <AppRouter />
+}
 
-export default App;
+export default App

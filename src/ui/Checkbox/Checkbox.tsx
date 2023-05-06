@@ -1,17 +1,17 @@
-import type { ChangeEvent } from "react";
-import styled, { css } from "styled-components";
+import type { ChangeEvent } from 'react'
+import styled, { css } from 'styled-components'
 
 type CheckboxProps<T> = React.HTMLProps<HTMLInputElement> & {
-  data?: T;
-  onChange?: (event: ChangeEvent<HTMLInputElement>, extra?: T) => void;
-};
+  data?: T
+  onChange?: (event: ChangeEvent<HTMLInputElement>, extra?: T) => void
+}
 
 const Checkbox = <T,>(props: CheckboxProps<T>) => {
-  const { data, onChange, children, ...rest } = props;
+  const { data, onChange, children, ...rest } = props
 
   const onCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
-    onChange?.(event, data);
-  };
+    onChange?.(event, data)
+  }
 
   return (
     <StyledCheckbox className="container">
@@ -19,10 +19,10 @@ const Checkbox = <T,>(props: CheckboxProps<T>) => {
       <input {...rest} type="checkbox" onChange={onCheckboxChange} />
       <span className="checkmark" />
     </StyledCheckbox>
-  );
-};
+  )
+}
 
-export default Checkbox;
+export default Checkbox
 
 const StyledCheckbox = styled.label`
   ${({ theme }) => css`
@@ -57,7 +57,7 @@ const StyledCheckbox = styled.label`
       }
 
       .checkmark:after {
-        content: "";
+        content: '';
         position: absolute;
         display: none;
       }
@@ -123,4 +123,4 @@ const StyledCheckbox = styled.label`
       transform: rotate(45deg);
     }
   `}
-`;
+`

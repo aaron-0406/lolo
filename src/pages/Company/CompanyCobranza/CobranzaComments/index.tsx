@@ -1,1 +1,1 @@
-export { default } from "./CobranzaComments";
+export { default } from './CobranzaComments'

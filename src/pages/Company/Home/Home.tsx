@@ -1,7 +1,7 @@
-import Container from "../../../ui/Container";
+import Container from '../../../ui/Container'
 
 const Home = () => {
-  return <Container>Home Company</Container>;
-};
+  return <Container>Home Company</Container>
+}
 
-export default Home;
+export default Home

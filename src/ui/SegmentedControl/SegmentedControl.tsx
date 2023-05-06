@@ -1,27 +1,25 @@
-import React, { useState } from "react";
-import styled, { css } from "styled-components";
-import Container from "../Container";
-import Text from "../Text";
-import type { IOption } from "./interfaces";
+import React, { useState } from 'react'
+import styled, { css } from 'styled-components'
+import Container from '../Container'
+import Text from '../Text'
+import type { IOption } from './interfaces'
 
 type SegmentedControlProps<T> = {
-  name: string;
-  options: Array<IOption>;
-  defaultValue?: T;
-  callback?: (value: T) => void;
-  width?: string;
-};
+  name: string
+  options: Array<IOption>
+  defaultValue?: T
+  callback?: (value: T) => void
+  width?: string
+}
 
-const SegmentedControl = <T extends string>(
-  props: SegmentedControlProps<T>
-) => {
-  const { name, options, callback, defaultValue, width } = props;
-  const [checked, setChecked] = useState<T | undefined>(defaultValue);
+const SegmentedControl = <T extends string>(props: SegmentedControlProps<T>) => {
+  const { name, options, callback, defaultValue, width } = props
+  const [checked, setChecked] = useState<T | undefined>(defaultValue)
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setChecked(event.target.value as T);
-    callback?.(event.target.value as T);
-  };
+    setChecked(event.target.value as T)
+    callback?.(event.target.value as T)
+  }
 
   return (
     <Container display="flex">
@@ -49,20 +47,20 @@ const SegmentedControl = <T extends string>(
               </Text.Body>
             </StyledSegmentControl>
           </StyledContSegmentControl>
-        );
+        )
       })}
     </Container>
-  );
-};
+  )
+}
 
-export default SegmentedControl;
+export default SegmentedControl
 
 const StyledContSegmentControl = styled.label<{
-  checked?: boolean;
-  disabled?: boolean;
-  width?: string;
+  checked?: boolean
+  disabled?: boolean
+  width?: string
 }>`
-  input[type="radio"] {
+  input[type='radio'] {
     width: 0;
     height: 0;
     opacity: 0;
@@ -71,7 +69,7 @@ const StyledContSegmentControl = styled.label<{
 
   ${({ theme, checked, disabled, width }) => css`
     border: 1px solid ${theme.colors.Neutral4};
-    min-width: ${width ? width : "200px"};
+    min-width: ${width ? width : '200px'};
     height: 48px;
     background: ${theme.colors.Neutral0};
     display: flex;
@@ -109,10 +107,10 @@ const StyledContSegmentControl = styled.label<{
       }
     `}
   `}
-`;
+`
 
 const StyledSegmentControl = styled.div`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-`;
+`

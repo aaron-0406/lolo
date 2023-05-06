@@ -1,13 +1,13 @@
-import type { IRegular, IThemeColor } from "styled-components";
-import styled, { css, useTheme } from "styled-components";
+import type { IRegular, IThemeColor } from 'styled-components'
+import styled, { css, useTheme } from 'styled-components'
 
 type CounterBadgeProps = {
-  color?: keyof IThemeColor;
-  background?: keyof IThemeColor;
-  label?: number;
-  containerClassName?: string;
-  contentClassName?: string;
-};
+  color?: keyof IThemeColor
+  background?: keyof IThemeColor
+  label?: number
+  containerClassName?: string
+  contentClassName?: string
+}
 
 const CounterBadge: React.FC<CounterBadgeProps> = ({
   color,
@@ -16,41 +16,34 @@ const CounterBadge: React.FC<CounterBadgeProps> = ({
   containerClassName,
   contentClassName,
 }) => {
-  const theme = useTheme();
-  const textStyle = theme.typography.body.m.bold;
+  const theme = useTheme()
+  const textStyle = theme.typography.body.m.bold
 
   if (label === undefined) {
-    return null;
+    return null
   }
 
   return (
-    <StyledCounter
-      background={background}
-      className={`counter ${containerClassName}`}
-    >
-      <StyledCounterText
-        {...textStyle}
-        className={`counter__content ${contentClassName}`}
-        color={color}
-      >
+    <StyledCounter background={background} className={`counter ${containerClassName}`}>
+      <StyledCounterText {...textStyle} className={`counter__content ${contentClassName}`} color={color}>
         {label}
       </StyledCounterText>
     </StyledCounter>
-  );
-};
+  )
+}
 
-export default CounterBadge;
+export default CounterBadge
 
 type StyledButtonTextProps = IRegular & {
-  color?: keyof IThemeColor;
-};
+  color?: keyof IThemeColor
+}
 
 /**
  * Styled Counter Text Component
  * Do not export, use CounterBadge
  */
 const StyledCounterText = styled.span<StyledButtonTextProps>`
-  ${({ color = "Primary5", ...props }) => css`
+  ${({ color = 'Primary5', ...props }) => css`
     font-size: ${props.fontSize}px;
     font-family: ${props.fontFamily};
     font-weight: ${props.fontWeight};
@@ -58,7 +51,7 @@ const StyledCounterText = styled.span<StyledButtonTextProps>`
     line-height: ${props.lineHeight}px;
     color: ${props.theme.colors[`${color}`]};
   `}
-`;
+`
 
 /**
  * Styled Counter Component
@@ -72,7 +65,7 @@ const StyledCounter = styled.div<{ background?: keyof IThemeColor }>`
     width: 24px;
     height: 24px;
     background: transparent;
-    background: ${!background ? "transparent" : theme.colors[`${background}`]};
+    background: ${!background ? 'transparent' : theme.colors[`${background}`]};
     border-radius: 45px;
   `}
-`;
+`

@@ -1,66 +1,61 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect } from "react";
-import { useFormContext } from "react-hook-form";
-import { useMutation } from "react-query";
-import styled, { css } from "styled-components";
-import { useLoloContext } from "../../../../shared/contexts/LoloProvider";
-import { getTemplatesHasValuesByCustomerId } from "../../../../shared/services/template-has-values.service";
-import { getTemplatesByCustomerId } from "../../../../shared/services/template.service";
-import Container from "../../../../ui/Container";
-import { TemplateFormType } from "../hookforms.interfaces";
-import TemplateRow from "./TemplateRow";
+import React, { useEffect } from 'react'
+import { useFormContext } from 'react-hook-form'
+import { useMutation } from 'react-query'
+import styled, { css } from 'styled-components'
+import { useLoloContext } from '../../../../shared/contexts/LoloProvider'
+import { getTemplatesHasValuesByCustomerId } from '../../../../shared/services/template-has-values.service'
+import { getTemplatesByCustomerId } from '../../../../shared/services/template.service'
+import Container from '../../../../ui/Container'
+import { TemplateFormType } from '../hookforms.interfaces'
+import TemplateRow from './TemplateRow'
 // eff0f6ff
 const TemplateTable = () => {
   const {
     client: {
       customer: { id },
     },
-  } = useLoloContext();
+  } = useLoloContext()
 
-  const { setValue, watch } = useFormContext<TemplateFormType>();
+  const { setValue, watch } = useFormContext<TemplateFormType>()
 
   // GET TEMPLATES
   const { mutate: getTemplatesQuery } = useMutation<any, Error>(
     async () => {
-      return await getTemplatesByCustomerId(id);
+      return await getTemplatesByCustomerId(id)
     },
     {
       onSuccess: (response) => {
-        setValue("templates", response.data);
+        setValue('templates', response.data)
       },
     }
-  );
+  )
 
   // GET TEMPLATES HAS VALUES
   const { mutate: getTemplatesHasValuesQuery } = useMutation<any, Error>(
     async () => {
-      return await getTemplatesHasValuesByCustomerId(id);
+      return await getTemplatesHasValuesByCustomerId(id)
     },
     {
       onSuccess: ({ data }) => {
-        setValue("templateHasValues", data);
+        setValue('templateHasValues', data)
       },
     }
-  );
+  )
 
   const getTemplates = () => {
-    getTemplatesQuery();
-    getTemplatesHasValuesQuery();
-  };
+    getTemplatesQuery()
+    getTemplatesHasValuesQuery()
+  }
 
   useEffect(() => {
-    getTemplates();
-    return () => {};
-  }, []);
+    getTemplates()
+    return () => {}
+  }, [])
 
   return (
-    <StyledContainer
-      overFlowY="auto"
-      width="100%"
-      height="100%"
-      backgroundColor="#eff0f6ff"
-    >
-      {watch("templates").map((template) => (
+    <StyledContainer overFlowY="auto" width="100%" height="100%" backgroundColor="#eff0f6ff">
+      {watch('templates').map((template) => (
         <TemplateRow
           selected={template.id === watch().templateSelected.id}
           template={template}
@@ -68,10 +63,10 @@ const TemplateTable = () => {
         />
       ))}
     </StyledContainer>
-  );
-};
+  )
+}
 
-export default TemplateTable;
+export default TemplateTable
 
 const StyledContainer = styled(Container)`
   ${({ theme }) =>
@@ -93,4 +88,4 @@ const StyledContainer = styled(Container)`
         background-color: transparent;
       }
     `}
-`;
+`

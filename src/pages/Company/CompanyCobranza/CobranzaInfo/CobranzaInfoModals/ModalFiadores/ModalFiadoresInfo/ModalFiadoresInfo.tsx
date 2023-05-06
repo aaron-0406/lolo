@@ -1,14 +1,14 @@
-import { Controller, useFormContext } from "react-hook-form";
-import { GuarantorType } from "../../../../../../../shared/types/guarantor.type";
-import Container from "../../../../../../../ui/Container";
-import TextAreaField from "../../../../../../../ui/fields/TextAreaField";
-import Label from "../../../../../../../ui/Label";
+import { Controller, useFormContext } from 'react-hook-form'
+import { GuarantorType } from '../../../../../../../shared/types/guarantor.type'
+import Container from '../../../../../../../ui/Container'
+import TextAreaField from '../../../../../../../ui/fields/TextAreaField'
+import Label from '../../../../../../../ui/Label'
 
 const ModalFiadoresInfo = () => {
   const {
     control,
     formState: { errors },
-  } = useFormContext<GuarantorType>();
+  } = useFormContext<GuarantorType>()
 
   return (
     <Container width="100%" display="flex" flexDirection="column" gap="10px">
@@ -63,7 +63,7 @@ const ModalFiadoresInfo = () => {
         />
       </Container>
     </Container>
-  );
-};
+  )
+}
 
-export default ModalFiadoresInfo;
+export default ModalFiadoresInfo

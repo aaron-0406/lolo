@@ -1,1 +1,1 @@
-export { default } from "./LayoutCobranza";
+export { default } from './LayoutCobranza'

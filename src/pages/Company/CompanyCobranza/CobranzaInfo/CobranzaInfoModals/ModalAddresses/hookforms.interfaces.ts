@@ -1,5 +1,5 @@
-import { DirectionType } from "../../../../../../shared/types/direction.type";
+import { DirectionType } from '../../../../../../shared/types/direction.type'
 
 export type DirectionFormType = DirectionType & {
-  directions: Array<DirectionType>;
-};
+  directions: Array<DirectionType>
+}

@@ -1,49 +1,45 @@
-import { useQuery } from "react-query";
-import { useParams, Outlet } from "react-router-dom";
-import { useLoloContext } from "../../contexts/LoloProvider";
-import { getCustomerByUrl } from "../../services/customer.service";
-import paths from "../paths";
-import RedirectRoute from "../RedirectRoute";
-import { GuestParamsType } from "./GuestRoutesCompany.interfaces";
+import { useQuery } from 'react-query'
+import { useParams, Outlet } from 'react-router-dom'
+import { useLoloContext } from '../../contexts/LoloProvider'
+import { getCustomerByUrl } from '../../services/customer.service'
+import paths from '../paths'
+import RedirectRoute from '../RedirectRoute'
+import { GuestParamsType } from './GuestRoutesCompany.interfaces'
 
 type GuestRouteCompanyProps = {
-  pathname: string;
-};
+  pathname: string
+}
 
 const GuestRouteCompany: React.FC<GuestRouteCompanyProps> = ({ pathname }) => {
-  const { urlIdentifier } = useParams<GuestParamsType>();
+  const { urlIdentifier } = useParams<GuestParamsType>()
   const {
     auth: { authenticate },
     client: { setCustomer },
-  } = useLoloContext();
+  } = useLoloContext()
 
   const { isLoading, isError } = useQuery(
-    "query-customer",
+    'query-customer',
     async () => {
-      return await getCustomerByUrl(urlIdentifier ?? "");
+      return await getCustomerByUrl(urlIdentifier ?? '')
     },
     {
       onSuccess: (response) => {
-        setCustomer(response.data);
+        setCustomer(response.data)
       },
     }
-  );
+  )
 
   if (authenticate) {
-    return (
-      <RedirectRoute
-        pathname={pathname.replace(":urlIdentifier", urlIdentifier + "")}
-      />
-    );
+    return <RedirectRoute pathname={pathname.replace(':urlIdentifier', urlIdentifier + '')} />
   }
 
   if (!urlIdentifier) {
-    return <RedirectRoute pathname={paths.general.notFound} />;
+    return <RedirectRoute pathname={paths.general.notFound} />
   }
 
-  if (isLoading) return <div>Loading</div>;
+  if (isLoading) return <div>Loading</div>
 
-  if (isError) return <div>Pagina no encontrada</div>;
+  if (isError) return <div>Pagina no encontrada</div>
 
   //TODO: Get isAuthenticated from context - useGeneralContext
 
@@ -51,7 +47,7 @@ const GuestRouteCompany: React.FC<GuestRouteCompanyProps> = ({ pathname }) => {
     <div className="login-provider">
       <Outlet />
     </div>
-  );
-};
+  )
+}
 
-export default GuestRouteCompany;
+export default GuestRouteCompany

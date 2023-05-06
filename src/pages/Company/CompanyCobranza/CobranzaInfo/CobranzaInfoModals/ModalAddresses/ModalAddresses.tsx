@@ -1,37 +1,31 @@
-import React from "react";
-import { FormProvider, useForm } from "react-hook-form";
-import Container from "../../../../../../ui/Container";
-import { DirectionFormType } from "./hookforms.interfaces";
-import { ModalAddressesResolver } from "./ModalAddresses.yup";
-import ModalAddressesActions from "./ModalAddressesActions";
-import ModalAddressesInfo from "./ModalAddressesInfo";
-import ModalAddressesTable from "./ModalAdressesTable";
+import React from 'react'
+import { FormProvider, useForm } from 'react-hook-form'
+import Container from '../../../../../../ui/Container'
+import { DirectionFormType } from './hookforms.interfaces'
+import { ModalAddressesResolver } from './ModalAddresses.yup'
+import ModalAddressesActions from './ModalAddressesActions'
+import ModalAddressesInfo from './ModalAddressesInfo'
+import ModalAddressesTable from './ModalAdressesTable'
 
 type ModalAddressesProps = {
-  clientId: number;
-};
+  clientId: number
+}
 const ModalAddresses: React.FC<ModalAddressesProps> = ({ clientId }) => {
   const formMethods = useForm<DirectionFormType>({
     resolver: ModalAddressesResolver,
-    mode: "all",
+    mode: 'all',
     defaultValues: {
       id: 0,
-      direction: "",
+      direction: '',
       clientId: clientId,
-      type:"",
+      type: '',
       directions: [],
     },
-  });
+  })
   return (
     <FormProvider {...formMethods}>
       <Container width="100%">
-        <Container
-          width="100%"
-          padding="20px"
-          display="flex"
-          flexDirection="column"
-          gap="20px"
-        >
+        <Container width="100%" padding="20px" display="flex" flexDirection="column" gap="20px">
           <ModalAddressesActions />
 
           <ModalAddressesInfo />
@@ -40,7 +34,7 @@ const ModalAddresses: React.FC<ModalAddressesProps> = ({ clientId }) => {
         </Container>
       </Container>
     </FormProvider>
-  );
-};
+  )
+}
 
-export default ModalAddresses;
+export default ModalAddresses

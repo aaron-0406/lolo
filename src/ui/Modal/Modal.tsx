@@ -1,27 +1,27 @@
-import type CSS from "csstype";
-import styled, { css } from "styled-components";
-import { usePortal } from "../../shared/hooks/usePortal";
-import type { ModalSize } from "./interfaces";
-import ModalFooter from "./ModalFooter";
-import ModalHeader from "./ModalHeader";
-import ReactPortal from "../ReactPortal";
-import Container from "../Container";
+import type CSS from 'csstype'
+import styled, { css } from 'styled-components'
+import { usePortal } from '../../shared/hooks/usePortal'
+import type { ModalSize } from './interfaces'
+import ModalFooter from './ModalFooter'
+import ModalHeader from './ModalHeader'
+import ReactPortal from '../ReactPortal'
+import Container from '../Container'
 
 export type ModalProps = {
-  id: string;
-  title?: string;
-  visible?: boolean;
-  className?: string;
-  size?: ModalSize;
-  minHeight?: string;
-  onClose?: () => void;
-  onBack?: () => void;
-  clickOutsideToClose?: () => void;
-  footer?: React.ReactNode;
-  children?: React.ReactNode;
-  contentOverflowY?: CSS.Property.OverflowY;
-  withPortal?: boolean;
-};
+  id: string
+  title?: string
+  visible?: boolean
+  className?: string
+  size?: ModalSize
+  minHeight?: string
+  onClose?: () => void
+  onBack?: () => void
+  clickOutsideToClose?: () => void
+  footer?: React.ReactNode
+  children?: React.ReactNode
+  contentOverflowY?: CSS.Property.OverflowY
+  withPortal?: boolean
+}
 
 const Modal: React.FC<ModalProps> = (props) => {
   const {
@@ -35,13 +35,13 @@ const Modal: React.FC<ModalProps> = (props) => {
     title,
     contentOverflowY,
     minHeight,
-    size = "large",
+    size = 'large',
     visible = false,
     withPortal = true,
-  } = props;
+  } = props
 
-  const headerProps = { onBack, onClose, title };
-  const portal = usePortal(`${id}-portal`);
+  const headerProps = { onBack, onClose, title }
+  const portal = usePortal(`${id}-portal`)
 
   return (
     <ReactPortal element={withPortal ? portal : undefined}>
@@ -75,8 +75,8 @@ const Modal: React.FC<ModalProps> = (props) => {
         </StyledBackdrop>
       )}
     </ReactPortal>
-  );
-};
+  )
+}
 
 const StyledBackdrop = styled(Container)`
   ${({ theme }) => css`
@@ -89,7 +89,7 @@ const StyledBackdrop = styled(Container)`
       background: ${theme.colors.TransparentDark};
     }
   `}
-`;
+`
 
 const StyledModalBox = styled(Container)<{ size?: ModalSize }>`
   ${({ theme, size }) => css`
@@ -102,7 +102,7 @@ const StyledModalBox = styled(Container)<{ size?: ModalSize }>`
       top: 48px;
       height: calc(100vh - 48px);
 
-      ${size === "small" &&
+      ${size === 'small' &&
       css`
         top: unset;
         bottom: 0;
@@ -118,7 +118,7 @@ const StyledModalBox = styled(Container)<{ size?: ModalSize }>`
         border-radius: 12px;
         max-width: calc(100vw - 48px);
 
-        ${size === "small" &&
+        ${size === 'small' &&
         css`
           max-width: 452px;
           height: auto;
@@ -129,17 +129,17 @@ const StyledModalBox = styled(Container)<{ size?: ModalSize }>`
       @media ${theme.device.tabletL} {
         max-width: 650px;
 
-        ${size === "small" &&
+        ${size === 'small' &&
         css`
           max-width: 452px;
         `}
       }
     }
   `}
-`;
+`
 
 const StyledContent = styled(Container)<{
-  contentOverflowY?: CSS.Property.OverflowY;
+  contentOverflowY?: CSS.Property.OverflowY
 }>`
   flex-grow: 1;
   ${({ contentOverflowY }) =>
@@ -147,6 +147,6 @@ const StyledContent = styled(Container)<{
     css`
       overflow-y: ${contentOverflowY};
     `}
-`;
+`
 
-export default Modal;
+export default Modal

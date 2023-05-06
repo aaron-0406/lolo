@@ -1,6 +1,6 @@
-import { ProductTypeName } from "../../../../../../shared/types/product.type";
+import { ProductTypeName } from '../../../../../../shared/types/product.type'
 
 export type ProductAddedRowProps = {
-  product: ProductTypeName;
-  index: number;
-};
+  product: ProductTypeName
+  index: number
+}

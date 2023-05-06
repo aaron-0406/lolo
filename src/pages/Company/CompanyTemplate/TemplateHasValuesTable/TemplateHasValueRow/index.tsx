@@ -1,1 +1,1 @@
-export { default } from "./TemplateHasValueRow";
+export { default } from './TemplateHasValueRow'
