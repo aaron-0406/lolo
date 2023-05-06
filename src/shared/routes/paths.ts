@@ -7,11 +7,11 @@ export default {
     notFound: '/not-found',
   },
   dash: {
-    root: "/dash",
-    login: "/dash/login",
-    clientes: "/dash/clientes",
-    gestiones: "/dash/gestiones",
-    reportes: "/dash/reportes",
+    root: '/dash',
+    login: '/dash/login',
+    clientes: '/dash/clientes',
+    gestiones: '/dash/gestiones',
+    reportes: '/dash/reportes',
   },
   company: {
     root: (urlIdentifier = ':urlIdentifier') => `/${urlIdentifier}`,
