@@ -19,7 +19,7 @@ export const customersColumns: ColumProps[] = [
   },
   {
     id: 'customers.datatable.header.date',
-    title: 'Date',
+    title: 'Fecha de registro',
     width: '10%',
     textAlign: 'center',
   },
