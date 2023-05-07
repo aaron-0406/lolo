@@ -97,11 +97,11 @@ const StyledOrderTable = styled.table`
       position: sticky;
       top: 0;
       z-index: 2;
-      background: ${theme.colors['Neutral2']};
+      background: ${theme.colors['Neutral3']};
     }
 
     tr:not([role='row-error']):not([role='row-empty']):hover {
-      background: ${theme.colors['Neutral1']};
+      background: ${theme.colors['Neutral2']};
     }
   `}
 `
