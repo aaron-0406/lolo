@@ -13,7 +13,7 @@ type HeaderCellProps = {
 const HeaderCell: React.FC<HeaderCellProps> = ({ children, textTransform, textAlign, width }) => {
   return (
     <StyledTh width={width}>
-      <Text.Title size="s" weight="bold" ellipsis>
+      <Text.Title size="s" weight="bold" textTransform={textTransform} textAlign={textAlign} ellipsis>
         {children}
       </Text.Title>
     </StyledTh>

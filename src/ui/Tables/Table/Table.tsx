@@ -15,7 +15,7 @@ type TableProps = {
   top?: string
   columns: Array<ColumProps>
   loading?: boolean
-  error?: ApolloError | undefined
+  error?: boolean | undefined
   errorRefetch?: () => void
   fetchMore?: () => void
   hasNextPage?: boolean
@@ -30,10 +30,7 @@ const Table: React.FC<TableProps> = ({
   columns,
   loading,
   error,
-  errorRefetch,
   children,
-  fetchMore,
-  hasNextPage,
   top,
   rightSpace,
   leftSpace,

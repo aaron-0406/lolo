@@ -12,7 +12,7 @@ type BodyCellProps = {
 const BodyCell: React.FC<BodyCellProps> = ({ children, textTransform, textAlign }) => {
   return (
     <td>
-      <Text.Body size="s" weight="regular" ellipsis>
+      <Text.Body size="s" weight="regular" textTransform={textTransform} textAlign={textAlign} ellipsis>
         {children}
       </Text.Body>
     </td>

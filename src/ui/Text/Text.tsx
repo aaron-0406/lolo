@@ -1,11 +1,14 @@
 import get from 'lodash/get'
 import type { IRegular, IThemeColor } from 'styled-components'
 import styled, { css, useTheme } from 'styled-components'
+import type CSS from 'csstype'
 import type { ITitleText, IBodyText, INumberText, SpanProps } from './interfaces'
 
 type StyledTextProps = IRegular & {
   color?: keyof TextColor
   ellipsis?: boolean
+  textAlign?: 'center' | 'left' | 'right' | 'justify'
+  textTransform?: CSS.Property.TextTransform
 }
 
 /**
@@ -13,20 +16,22 @@ type StyledTextProps = IRegular & {
  * Do not export, use Title, Body, Number instead
  */
 const StyledText = styled.span<StyledTextProps>`
-  ${({ ellipsis, color = 'Neutral9', ...props }) => css`
+  ${({ ellipsis, color = 'Neutral9', textAlign, textTransform, ...props }) => css`
     font-size: ${props.fontSize}px;
     font-family: ${props.fontFamily};
     font-weight: ${props.fontWeight};
     letter-spacing: ${props.letterSpacing}px;
     line-height: ${props.lineHeight}px;
     color: ${props.theme.colors[`${color}`]};
+    text-align: ${textAlign};
+    text-transform: ${textTransform};
 
     ${ellipsis &&
     css`
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
-    `}
+    `};
   `}
 `
 
@@ -44,6 +49,8 @@ type TextColor = Pick<
 type TextProps = SpanProps & {
   color?: keyof TextColor
   ellipsis?: boolean
+  textAlign?: 'center' | 'left' | 'right' | 'justify'
+  textTransform?: CSS.Property.TextTransform
 }
 
 /**
@@ -51,13 +58,13 @@ type TextProps = SpanProps & {
  * This is a base component, do not export, use Title, Body, Number instead
  */
 const Text: React.FC<TextTypeProps & TextProps> = (props) => {
-  const { type, size, weight, ellipsis = false, ...rest } = props
+  const { type, size, weight, ellipsis = false, textAlign, textTransform, ...rest } = props
 
   const theme = useTheme()
 
   const style = get(theme.typography, `${type}.${size}.${weight}`, theme.typography.body.m.regular)
 
-  return <StyledText {...rest} {...style} ellipsis={ellipsis} />
+  return <StyledText {...rest} {...style} textAlign={textAlign} textTransform={textTransform} ellipsis={ellipsis} />
 }
 
 type NumberTextProps = Omit<INumberText, 'type'> & TextProps
