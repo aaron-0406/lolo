@@ -110,7 +110,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
       <Table
         top="260px"
         columns={customersColumns}
-        loading={false}
+        loading={isLoading || isLoadingNegotiations || isLoadingFuncionarions}
         isArrayEmpty={!customers.length}
         emptyState={
           <EmptyStateCell colSpan={customersColumns.length}>
