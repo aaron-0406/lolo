@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components'
+import { createGlobalStyle, css } from 'styled-components'
 import './global/fonts/dmsans/stylesheet.css'
 import './global/fonts/raleway/stylesheet.css'
 import 'remixicon/fonts/remixicon.css'
@@ -257,6 +257,26 @@ video {
 .hide-component {
   display: none;
 }
+
+.styled-data-table-row {
+  position: relative;
+
+  .dropdown-actions {
+    visibility: hidden;
+  }
+
+  :hover {
+    .dropdown-actions {
+      visibility: visible;
+    }
+  }
+
+  ${({ theme }) =>
+    css`
+      border-bottom: 1px solid ${theme.colors.Neutral3};
+      background: ${theme.colors.Neutral0};
+    `}
+  }
 `
 
 export default GlobalStyles

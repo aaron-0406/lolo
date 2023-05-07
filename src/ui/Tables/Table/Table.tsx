@@ -5,9 +5,10 @@ import Container from '../../Container'
 import HeaderCell from './HeaderCell'
 
 export type ColumProps = {
+  id: string
   title: string
   width?: string
-  textAlign: 'center' | 'left' | 'right' | 'justify'
+  textAlign?: CSS.Property.TextAlign
   textTransform?: CSS.Property.TextTransform
 }
 
@@ -16,9 +17,6 @@ type TableProps = {
   columns: Array<ColumProps>
   loading?: boolean
   error?: boolean | undefined
-  errorRefetch?: () => void
-  fetchMore?: () => void
-  hasNextPage?: boolean
   leftSpace?: number
   rightSpace?: number
   isArrayEmpty?: boolean
@@ -43,19 +41,16 @@ const Table: React.FC<TableProps> = ({
         <thead className="table-header">
           <tr>
             {columns.map(({ textAlign = 'left', textTransform, width, title }, index) => {
-              {
-                return (
-                  <HeaderCell key={index} width={width} textAlign={textAlign} textTransform={textTransform}>
-                    {title}
-                  </HeaderCell>
-                )
-              }
+              return (
+                <HeaderCell key={index} width={width} textAlign={textAlign} textTransform={textTransform}>
+                  {title}
+                </HeaderCell>
+              )
             })}
           </tr>
         </thead>
 
         <tbody className="table-body">
-          {!error && children}
           {!!loading && (
             <tr>
               <td colSpan={columns.length}>
@@ -63,8 +58,9 @@ const Table: React.FC<TableProps> = ({
               </td>
             </tr>
           )}
+          {!error && !loading && children}
           {!!error && !loading && (
-            <tr role="row-error" className="row-error">
+            <tr className="row-error">
               <td colSpan={columns.length}>
                 {/* <RetryPage error={error} reload={errorRefetch} fullScreen /> */}
                 <>Error</>
@@ -114,6 +110,7 @@ const StyledContentTable = styled(Container)<{ top?: string; leftSpace?: number;
   ${({ top, leftSpace, rightSpace }) => css`
     width: 100%;
     overflow-x: auto;
+    overflow-y: auto;
     height: ${top ? `calc(100vh - ${top})` : '0'};
 
     th:last-child,

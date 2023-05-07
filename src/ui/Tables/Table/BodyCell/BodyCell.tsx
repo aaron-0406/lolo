@@ -1,22 +1,36 @@
 import React from 'react'
+import styled, { css } from 'styled-components'
 import type CSS from 'csstype'
 import Text from '../../../Text'
 
 type BodyCellProps = {
-  width?: string
-  textAlign: 'center' | 'left' | 'right' | 'justify'
+  textAlign?: CSS.Property.TextAlign
   textTransform?: CSS.Property.TextTransform
   children: React.ReactNode
 }
 
 const BodyCell: React.FC<BodyCellProps> = ({ children, textTransform, textAlign }) => {
   return (
-    <td>
-      <Text.Body size="s" weight="regular" textTransform={textTransform} textAlign={textAlign} ellipsis>
+    <StyledTd textAlign={textAlign} textTransform={textTransform}>
+      <Text.Body size="s" weight="regular" ellipsis>
         {children}
       </Text.Body>
-    </td>
+    </StyledTd>
   )
 }
 
 export default BodyCell
+
+const StyledTd = styled.td<BodyCellProps>`
+  ${({ textAlign, textTransform }) => css`
+    ${!!textAlign &&
+    css`
+      text-align: ${textAlign};
+    `}
+
+    ${!!textTransform &&
+    css`
+      text-transform: ${textTransform};
+    `}
+  `}
+`

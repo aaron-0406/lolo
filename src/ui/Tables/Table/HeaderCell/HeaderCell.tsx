@@ -5,28 +5,38 @@ import Text from '../../../Text'
 
 type HeaderCellProps = {
   width?: string
-  textAlign: 'center' | 'left' | 'right' | 'justify'
+  textAlign: CSS.Property.TextAlign
   textTransform?: CSS.Property.TextTransform
   children: React.ReactNode
 }
 
 const HeaderCell: React.FC<HeaderCellProps> = ({ children, textTransform, textAlign, width }) => {
   return (
-    <StyledTh width={width}>
-      <Text.Title size="s" weight="bold" textTransform={textTransform} textAlign={textAlign} ellipsis>
+    <StyledTh width={width} textAlign={textAlign} textTransform={textTransform}>
+      <Text.Body size="m" weight="bold" ellipsis>
         {children}
-      </Text.Title>
+      </Text.Body>
     </StyledTh>
   )
 }
 
 export default HeaderCell
 
-const StyledTh = styled.th<{ width?: string }>`
-  ${({ width }) => css`
+const StyledTh = styled.th<HeaderCellProps>`
+  ${({ width, textAlign, textTransform }) => css`
     ${!!width &&
     css`
       width: ${width};
+    `}
+
+    ${!!textAlign &&
+    css`
+      text-align: ${textAlign};
+    `}
+
+    ${!!textTransform &&
+    css`
+      text-transform: ${textTransform};
     `}
   `}
 `
