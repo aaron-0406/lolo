@@ -13,6 +13,10 @@ const CustomersActions = () => {
     console.log(e.target.value)
   }
 
+  const onClick = (e: React.ChangeEvent<HTMLButtonElement>) => {
+    
+  }
+
   return (
     <StyledContainer alignItems="center" justifyContent="space-around" display="flex" padding="20px">
       <Container
@@ -24,7 +28,7 @@ const CustomersActions = () => {
       >
         <Container display={greaterThanMobile ? 'block' : 'none'} padding="0 5px 0 0">
           <Text.Body className="actions__texfield-label" size="l" weight="bold">
-            Buscar:{' '}
+            Buscar:
           </Text.Body>
         </Container>
         <TextField
@@ -42,6 +46,12 @@ export default CustomersActions
 
 const StyledContainer = styled(Container)`
   ${({ theme }) => css`
+    .actions-button {
+      span {
+        font-size: 20px;
+      }
+    }
+
     @media ${theme.device.tabletS} {
       .actions__textfield {
         width: 80%;
@@ -49,13 +59,17 @@ const StyledContainer = styled(Container)`
 
       .actions-button {
         width: 10%;
+        span {
+          font-size: 30px;
+        }
       }
     }
-
-    @media ${theme.device.tabletL} {
-    }
-
     @media ${theme.device.desktopS} {
+      .actions-button {
+        span {
+          font-size: 25px;
+        }
+      }
     }
   `}
 `
