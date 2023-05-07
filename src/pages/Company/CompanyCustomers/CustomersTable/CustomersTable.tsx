@@ -124,8 +124,8 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
               <tr className="styled-data-table-row" key={record.id} onClick={() => onClickRow(record.code)}>
                 <BodyCell textAlign="center">{`${record.code || ''}`}</BodyCell>
                 <BodyCell>{`${record.name || ''}`}</BodyCell>
-                <BodyCell>{`${record.negotiation.name || ''}`}</BodyCell>
-                <BodyCell>{`${moment(record.createdAt).format('DD-MM-YYYY') || ''}`}</BodyCell>
+                <BodyCell>{`${record.negotiation.name.toUpperCase() || ''}`}</BodyCell>
+                <BodyCell textAlign="center">{`${moment(record.createdAt).format('DD-MM-YYYY') || ''}`}</BodyCell>
               </tr>
             )
           })}

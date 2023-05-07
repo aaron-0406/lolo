@@ -21,5 +21,6 @@ export const customersColumns: ColumProps[] = [
     id: 'customers.datatable.header.date',
     title: 'Date',
     width: '10%',
+    textAlign: 'center',
   },
 ]
