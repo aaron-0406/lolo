@@ -1,14 +1,14 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import styled, { css } from 'styled-components'
-import { useMediaQuery } from '../../../../shared/hooks/useMediaQuery'
-import paths from '../../../../shared/routes/paths'
-import storage from '../../../../shared/utils/storage'
-import Container from '../../../../ui/Container'
-import Icon from '../../../../ui/Icon'
-import Text from '../../../../ui/Text'
-import { device } from '../../../../shared/breakpoints/reponsive'
-import { getDashItems } from './get-dash-items'
+import { useMediaQuery } from '../../../shared/hooks/useMediaQuery'
+import paths from '../../../shared/routes/paths'
+import storage from '../../../shared/utils/storage'
+import Container from '../../../ui/Container'
+import Icon from '../../../ui/Icon'
+import Text from '../../../ui/Text'
+import { device } from '../../../shared/breakpoints/reponsive'
+import { getDashItems } from './utils/get-dash-items'
 
 type MenuProps = {
   children: JSX.Element

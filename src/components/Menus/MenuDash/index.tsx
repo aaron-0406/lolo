@@ -1,1 +1,1 @@
-export { default } from './utils/MenuDash'
+export { default } from './MenuDash'
