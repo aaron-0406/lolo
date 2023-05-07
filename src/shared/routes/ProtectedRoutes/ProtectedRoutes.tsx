@@ -9,7 +9,7 @@ type ProtectedRoutesProps = {
 
 const ProtectedRoutes: React.FC<ProtectedRoutesProps> = ({ pathname }) => {
   //TODO: Get isAuthenticated from context - useGeneralContext
-  const isAuthenticated = false
+  const isAuthenticated = true
 
   if (!isAuthenticated) {
     storage.clear()

@@ -45,7 +45,7 @@ const MenuDash: React.FC<MenuProps> = ({ children }) => {
         <Icon remixClass="ri-menu-line" size={30} onClick={onClickToggle} />
 
         <Text.Body size="l" weight="bold" ellipsis>
-          nombre de la seccion
+          LOLO BANK
         </Text.Body>
       </Container>
 

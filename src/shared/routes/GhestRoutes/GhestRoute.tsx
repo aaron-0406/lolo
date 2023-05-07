@@ -7,7 +7,7 @@ type GuestRouteProps = {
 
 const GuestRoute: React.FC<GuestRouteProps> = ({ pathname }) => {
   //TODO: Get isAuthenticated from context - useGeneralContext
-  const isAuthenticated = false
+  const isAuthenticated = true
 
   if (isAuthenticated) {
     return <RedirectRoute pathname={pathname} />
