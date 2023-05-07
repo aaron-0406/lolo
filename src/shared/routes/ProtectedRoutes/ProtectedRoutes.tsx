@@ -1,6 +1,7 @@
 import { Outlet } from 'react-router-dom'
 import storage from '../../utils/storage'
 import RedirectRoute from '../RedirectRoute'
+import MenuDash from '../../../components/Menus/MenuDash'
 
 type ProtectedRoutesProps = {
   pathname: string
@@ -8,7 +9,7 @@ type ProtectedRoutesProps = {
 
 const ProtectedRoutes: React.FC<ProtectedRoutesProps> = ({ pathname }) => {
   //TODO: Get isAuthenticated from context - useGeneralContext
-  const isAuthenticated = false
+  const isAuthenticated = true
 
   if (!isAuthenticated) {
     storage.clear()
@@ -16,9 +17,9 @@ const ProtectedRoutes: React.FC<ProtectedRoutesProps> = ({ pathname }) => {
   }
 
   return (
-    <div className="main-layout">
+    <MenuDash>
       <Outlet />
-    </div>
+    </MenuDash>
   )
 }
 
