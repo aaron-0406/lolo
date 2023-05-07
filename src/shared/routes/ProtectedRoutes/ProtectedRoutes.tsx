@@ -1,6 +1,7 @@
 import { Outlet } from 'react-router-dom'
 import storage from '../../utils/storage'
 import RedirectRoute from '../RedirectRoute'
+import MenuCompany from '../../../components/Menus/MenuDash'
 
 type ProtectedRoutesProps = {
   pathname: string
@@ -16,9 +17,9 @@ const ProtectedRoutes: React.FC<ProtectedRoutesProps> = ({ pathname }) => {
   }
 
   return (
-    <div className="main-layout">
+    <MenuCompany>
       <Outlet />
-    </div>
+    </MenuCompany>
   )
 }
 

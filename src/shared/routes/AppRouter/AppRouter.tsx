@@ -41,8 +41,9 @@ const AppRouter = () => {
       </Route>
       <Route element={<ProtectedRoutes pathname={paths.dash.login} />}>
         <Route path={paths.dash.root} element={<DashHome />} />
-        <Route path={paths.dash.root} element={<div>X</div>} />
-        <Route path={paths.dash.root} element={<div>Y</div>} />
+        <Route path={paths.dash.clientes} element={<div>clientes</div>} />
+        <Route path={paths.dash.gestiones} element={<div>gestiones</div>} />
+        <Route path={paths.dash.reportes} element={<div>reportes</div>} />
       </Route>
 
       {/* COMPANY */}
