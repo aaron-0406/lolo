@@ -27,6 +27,7 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({ children, urlIdentifier }) =>
     user: { setUsers },
     customerUser: { user },
     auth: { setAuthenticate },
+    clearAll,
   } = useLoloContext()
 
   const greaterThanTabletL = useMediaQuery(device.tabletL)
@@ -68,6 +69,7 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({ children, urlIdentifier }) =>
 
   // Log Out
   const logOut = () => {
+    clearAll()
     storage.clear()
     setAuthenticate(false)
   }

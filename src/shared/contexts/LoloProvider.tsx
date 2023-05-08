@@ -80,6 +80,7 @@ export const LoloContext = createContext<{
     user: CustomerUserType
     setUser: Dispatch<CustomerUserType>
   }
+  clearAll: () => void
 } | null>(null)
 
 export const useLoloContext = () => {
@@ -121,6 +122,7 @@ export const LoloProvider: React.FC<LoloProviderProps> = ({ children }) => {
   })
 
   const [user, setUser] = useState(initialCustomerUserState)
+
   const [authenticate, setAuthenticate] = useState<boolean>(false)
 
   const getUser = (userId: number) => {
@@ -147,12 +149,26 @@ export const LoloProvider: React.FC<LoloProviderProps> = ({ children }) => {
   const setFuncionarios = (funcionarios: Array<FuncionarioType>) => {
     setFuncionariosState(funcionarios)
   }
+
   const setNegociaciones = (negociaciones: Array<NegotiationType>) => {
     setNegociacionesState(negociaciones)
   }
 
   const setSelectedBank = (selectedBank: SelectedBankType) => {
     setSelectedBankState(selectedBank)
+  }
+
+  const clearAll = () => {
+    setBanksState([])
+    setCitiesState([])
+    setUsersState([])
+    setFuncionariosState([])
+    setNegociacionesState([])
+    setSelectedBankState({
+      idBank: '',
+      idCHB: '',
+    })
+    setAuthenticate(false)
   }
 
   useEffect(() => {
@@ -207,6 +223,7 @@ export const LoloProvider: React.FC<LoloProviderProps> = ({ children }) => {
           user,
           setUser,
         },
+        clearAll,
       }}
     >
       {children}
