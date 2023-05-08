@@ -1,10 +1,10 @@
 import styled, { css } from 'styled-components'
 import Container from '../../../../ui/Container'
 import TextField from '../../../../ui/fields/TextField'
-import Button from '../../../../ui/Button'
 import Text from '../../../../ui/Text/Text'
 import { useMediaQuery } from '../../../../shared/hooks/useMediaQuery'
 import { device } from '../../../../shared/breakpoints/reponsive'
+import CustomersActionsModal from './CustomersActionsModal'
 
 const CustomersActions = () => {
   const greaterThanMobile = useMediaQuery(device.tabletS)
@@ -12,11 +12,6 @@ const CustomersActions = () => {
   const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log(e.target.value)
   }
-
-  const onClick = (e: React.ChangeEvent<HTMLButtonElement>) => {
-    
-  }
-
   return (
     <StyledContainer alignItems="center" justifyContent="space-around" display="flex" padding="20px">
       <Container
@@ -37,7 +32,7 @@ const CustomersActions = () => {
           placeholder="Buscar cliente por nombre"
         />
       </Container>
-      <Button width="15%" className="actions-button" label="+" size="small" />
+      <CustomersActionsModal />
     </StyledContainer>
   )
 }
@@ -46,29 +41,10 @@ export default CustomersActions
 
 const StyledContainer = styled(Container)`
   ${({ theme }) => css`
-    .actions-button {
-      span {
-        font-size: 20px;
-      }
-    }
 
     @media ${theme.device.tabletS} {
       .actions__textfield {
         width: 80%;
-      }
-
-      .actions-button {
-        width: 10%;
-        span {
-          font-size: 30px;
-        }
-      }
-    }
-    @media ${theme.device.desktopS} {
-      .actions-button {
-        span {
-          font-size: 25px;
-        }
       }
     }
   `}
