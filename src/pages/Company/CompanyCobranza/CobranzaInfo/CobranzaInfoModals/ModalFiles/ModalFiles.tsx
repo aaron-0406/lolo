@@ -21,10 +21,13 @@ type ModalFilesProps = {
 const ModalFiles: React.FC<ModalFilesProps> = (props) => {
   const {
     bank: { selectedBank },
+    client: { customer },
   } = useLoloContext()
+
   const [sendingFiles, setSendingFiles] = useState<boolean>(false)
   const [files, setFiles] = useState<FileType[]>([])
   const { clientId, code } = props
+
   const handleInputChange = async (e: ChangeEvent) => {
     if (e.target.files) {
       try {
@@ -36,7 +39,13 @@ const ModalFiles: React.FC<ModalFilesProps> = (props) => {
             formData.append('file', element)
           }
           setSendingFiles(true)
-          const { data } = await postCreateFile(formData, clientId, code, Number(selectedBank.idBank))
+          const { data } = await postCreateFile(
+            formData,
+            Number(customer.id),
+            Number(selectedBank.idCHB),
+            code,
+            clientId
+          )
           setSendingFiles(false)
           setFiles([...files, ...data])
           notification({ type: 'success', message: 'Documentos Creados' })
@@ -49,6 +58,7 @@ const ModalFiles: React.FC<ModalFilesProps> = (props) => {
       }
     }
   }
+
   const { refetch, isFetching } = useQuery(
     'query-get-files',
     async () => {
@@ -60,6 +70,7 @@ const ModalFiles: React.FC<ModalFilesProps> = (props) => {
       },
     }
   )
+
   useEffect(() => {
     refetch()
     return () => {}

@@ -23,6 +23,7 @@ type ModalFileRowProps = {
 
 const ModalFileRow: React.FC<ModalFileRowProps> = (props) => {
   const {
+    client: { customer },
     bank: { selectedBank },
   } = useLoloContext()
   const {
@@ -43,7 +44,7 @@ const ModalFileRow: React.FC<ModalFileRowProps> = (props) => {
   const { refetch: refetchDelete, isFetching } = useQuery(
     `query-delete-file${id}`,
     async () => {
-      return await deleteFile(Number(selectedBank.idBank), code, id)
+      return await deleteFile(Number(customer.id), Number(selectedBank.idCHB), code, id)
     },
     {
       enabled: false,
@@ -55,7 +56,7 @@ const ModalFileRow: React.FC<ModalFileRowProps> = (props) => {
   const { refetch: refetchViewFile, isFetching: isFetchingGet } = useQuery(
     `query-get-file${id}`,
     async () => {
-      return await getFileById(Number(selectedBank.idBank), code, id)
+      return await getFileById(Number(customer.id), Number(selectedBank.idCHB), code, id)
     },
     {
       enabled: false,

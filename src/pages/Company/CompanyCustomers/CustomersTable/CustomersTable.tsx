@@ -1,6 +1,7 @@
 import { Dispatch, FC, useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import { useNavigate } from 'react-router-dom'
+import moment from 'moment'
 import { useLoloContext } from '../../../../shared/contexts/LoloProvider'
 import paths from '../../../../shared/routes/paths'
 import { getAllClientsByCHB } from '../../../../shared/services/client.service'
@@ -11,7 +12,10 @@ import { NegotiationType } from '../../../../shared/types/negotiation.type'
 import Container from '../../../../ui/Container'
 import Pagination from '../../../../ui/Pagination'
 import { Opts } from '../../../../ui/Pagination/interfaces'
-import CustomersRow from '../CustomersRow'
+import Table from '../../../../ui/Tables/Table'
+import { customersColumns } from './utils/columns'
+import EmptyStateCell from '../../../../ui/Tables/Table/EmptyStateCell'
+import BodyCell from '../../../../ui/Tables/Table/BodyCell'
 
 type CustomersTableProps = {
   opts: Opts
@@ -100,34 +104,32 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
     }
   }, [refetch, opts, selectedBank])
 
-  // if (isLoading || isLoadingNegotiations || isLoadingFuncionarions) {
-  //   return <div>Loading ...</div>;
-  // }
-
   return (
-    <Container width="100%" height="calc(100% - 112px)" padding="20px" overFlowY="auto">
+    <Container width="100%" height="calc(100% - 112px)" padding="20px">
       <Pagination count={customersCount} opts={opts} setOpts={setOpts} />
-      <div>
-        {isLoading || isLoadingNegotiations || isLoadingFuncionarions ? (
-          <div>Loading ...</div>
-        ) : (
-          <>
-            {customers.map((client: ClientType & { negotiation: NegotiationType }, index: number) => {
-              return (
-                <CustomersRow
-                  key={index}
-                  code={client.code}
-                  name={client.name}
-                  negotiationName={client.negotiation.name}
-                  negotiationId={client.negotiationId}
-                  createdAt={client.createdAt}
-                  onClick={onClickRow}
-                />
-              )
-            })}
-          </>
-        )}
-      </div>
+      <Table
+        top="260px"
+        columns={customersColumns}
+        loading={isLoading || isLoadingNegotiations || isLoadingFuncionarions}
+        isArrayEmpty={!customers.length}
+        emptyState={
+          <EmptyStateCell colSpan={customersColumns.length}>
+            <div>Vacio</div>
+          </EmptyStateCell>
+        }
+      >
+        {!!customers?.length &&
+          customers.map((record: ClientType & { negotiation: NegotiationType }) => {
+            return (
+              <tr className="styled-data-table-row" key={record.id} onClick={() => onClickRow(record.code)}>
+                <BodyCell textAlign="center">{`${record.code || ''}`}</BodyCell>
+                <BodyCell>{`${record.name || ''}`}</BodyCell>
+                <BodyCell>{`${record.negotiation.name.toUpperCase() || ''}`}</BodyCell>
+                <BodyCell textAlign="center">{`${moment(record.createdAt).format('DD-MM-YYYY') || ''}`}</BodyCell>
+              </tr>
+            )
+          })}
+      </Table>
     </Container>
   )
 }
