@@ -20,8 +20,8 @@ export const getAllClientsByCHBDetails = async (chb: string) => {
   return await axiosClient.get(`${url}/${chb}/details`)
 }
 
-export const createClient = async (client: Omit<ClientType, 'id'>, idBank: number) => {
-  return await axiosClient.post(`${url}/${idBank}`, client)
+export const createClient = async (client: Omit<ClientType, 'id'>, idCustomer: number) => {
+  return await axiosClient.post(`${url}/${idCustomer}`, client)
 }
 
 export const updateClient = async (
@@ -32,6 +32,6 @@ export const updateClient = async (
   return await axiosClient.patch(`${url}/${code}/${chb}`, client)
 }
 
-export const deleteClient = async (code: string, chb: number, idBank: number) => {
-  return await axiosClient.delete(`${url}/${code}/${chb}/${idBank}`)
+export const deleteClient = async (code: string, chb: number, idCustomer: number) => {
+  return await axiosClient.delete(`${url}/${code}/${chb}/${idCustomer}`)
 }
