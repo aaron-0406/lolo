@@ -14,6 +14,7 @@ import { DOMAIN } from '../../../../shared/utils/constant/api'
 
 const CobranzaActions = () => {
   const {
+    client: { customer },
     bank: { selectedBank },
   } = useLoloContext()
 
@@ -24,7 +25,7 @@ const CobranzaActions = () => {
   const { isLoading: loadingCreateClient, mutate: createCustomer } = useMutation<any, Error>(
     async () => {
       const { id, ...restClient } = getValues()
-      return await createClient(restClient, Number(selectedBank.idBank))
+      return await createClient(restClient, Number(customer.id))
     },
     {
       onSuccess: (data) => {
@@ -61,7 +62,7 @@ const CobranzaActions = () => {
   const { isLoading: loadingDeleteClient, mutate: deleteCustomer } = useMutation<any, Error>(
     async () => {
       const { code, customerHasBankId } = getValues()
-      return await deleteClient(code, customerHasBankId, Number(selectedBank.idBank))
+      return await deleteClient(code, customerHasBankId, Number(customer.id))
     },
     {
       onSuccess: () => {
