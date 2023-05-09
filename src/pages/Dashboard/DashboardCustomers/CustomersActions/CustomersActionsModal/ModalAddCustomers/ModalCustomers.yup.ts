@@ -7,7 +7,7 @@ const ModalCustomers: yup.SchemaOf<Omit<CustomersFirmFormType, 'customersfirm'>>
   companyName: yup.string().required().min(5),
   urlIdentifier: yup.string().required().min(5),
   description: yup.string().optional(),
-  state: yup.boolean().required(),
+  state: yup.number().required(),
 })
 
 export const ModalCustomersResolver = yupResolver(ModalCustomers)

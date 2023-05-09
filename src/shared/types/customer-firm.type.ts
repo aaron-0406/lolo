@@ -3,5 +3,5 @@ export type CustomerFirmType = {
   companyName: string
   urlIdentifier: string
   description?: string
-  state: boolean
+  state: number
 }
