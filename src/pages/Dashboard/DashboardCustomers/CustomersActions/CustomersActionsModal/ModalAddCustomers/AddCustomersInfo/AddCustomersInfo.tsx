@@ -4,7 +4,9 @@ import Container from '../../../../../../../ui/Container'
 import TextAreaField from '../../../../../../../ui/fields/TextAreaField'
 import Label from '../../../../../../../ui/Label'
 import Select from '../../../../../../../ui/Select'
+import Checkbox from '../../../../../../../ui/Checkbox'
 import { SelectItemType } from '../../../../../../../ui/Select/interfaces'
+import { getValue } from '@testing-library/user-event/dist/utils'
 
 type assets = {
   id: number
@@ -16,14 +18,13 @@ const AddCustomerInfo = () => {
     control,
     formState: { errors },
   } = useFormContext<CustomerType>()
-  
 
   const stateCustomer: Array<assets> = [
     { id: 1, name: 'activo' },
     { id: 2, name: 'inactivo' },
   ]
 
-  const optionsStates: Array<SelectItemType> = stateCustomer.map(sc => {
+  const optionsStates: Array<SelectItemType> = stateCustomer.map((sc) => {
     return {
       key: String(sc.id),
       label: sc.name,
@@ -102,14 +103,12 @@ const AddCustomerInfo = () => {
           name="state"
           control={control}
           render={({ field }) => (
-            <Select
+            <Checkbox
               width="100%"
               value={String(field.value)}
-              options={optionsStates}
               onChange={(key) => {
-                field.onChange(parseInt(key))
+                field.onChange(key)
               }}
-              hasError={!!errors.state}
             />
           )}
         />
