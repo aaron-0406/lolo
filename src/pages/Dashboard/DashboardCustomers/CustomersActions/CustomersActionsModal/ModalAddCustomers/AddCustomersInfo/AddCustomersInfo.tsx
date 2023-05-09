@@ -1,5 +1,5 @@
 import { Controller, useFormContext } from 'react-hook-form'
-import { CustomerFirmType } from '../../../../../../../shared/types/customer-firm.type'
+import { CustomerType } from '../../../../../../../shared/types/customer.type'
 import Container from '../../../../../../../ui/Container'
 import TextAreaField from '../../../../../../../ui/fields/TextAreaField'
 import Label from '../../../../../../../ui/Label'
@@ -15,7 +15,7 @@ const AddCustomerInfo = () => {
   const {
     control,
     formState: { errors },
-  } = useFormContext<CustomerFirmType>()
+  } = useFormContext<CustomerType>()
   
 
   const stateCustomer: Array<assets> = [

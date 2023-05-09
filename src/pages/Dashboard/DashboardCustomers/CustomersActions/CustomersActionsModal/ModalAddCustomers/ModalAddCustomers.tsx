@@ -14,7 +14,7 @@ const ModalAddCustomers = () => {
       companyName: '',
       urlIdentifier: '',
       description: '',
-      state: 0,
+      state: undefined,
       customersfirm: [],
     },
   })

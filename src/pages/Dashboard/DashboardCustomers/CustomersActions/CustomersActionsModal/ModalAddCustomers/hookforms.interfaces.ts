@@ -1,5 +1,5 @@
-import { CustomerFirmType } from '../../../../../../shared/types/customer-firm.type'
+import { CustomerType } from '../../../../../../shared/types/customer.type'
 
-export type CustomersFirmFormType = CustomerFirmType & {
-  customersfirm: Array<CustomerFirmType>
+export type CustomersFirmFormType = CustomerType & {
+  customersfirm: Array<CustomerType>
 }

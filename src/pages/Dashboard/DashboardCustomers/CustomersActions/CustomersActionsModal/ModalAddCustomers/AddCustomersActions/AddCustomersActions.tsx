@@ -2,11 +2,11 @@ import { useFormContext } from 'react-hook-form'
 import styled, { css } from 'styled-components'
 import Button from '../../../../../../../ui/Button'
 import Container from '../../../../../../../ui/Container'
-import { CustomerFirmType } from '../../../../../../../shared/types/customer-firm.type'
+import { CustomerType } from '../../../../../../../shared/types/customer.type'
 
 const AddCcustomersActions = () => {
 
-  const { setValue, reset, handleSubmit, getValues } = useFormContext<CustomerFirmType>()
+  const { setValue, reset, handleSubmit, getValues } = useFormContext<CustomerType>()
 
   return (
     <StyledContainer width="100%" height="75px" display="flex" justifyContent="center" alignItems="center" gap="20px">
