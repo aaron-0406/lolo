@@ -1,8 +1,8 @@
 import { useFormContext } from 'react-hook-form'
 import styled, { css } from 'styled-components'
-import Button from '../../../../../../../ui/Button'
-import Container from '../../../../../../../ui/Container'
-import { CustomerType } from '../../../../../../../shared/types/customer.type'
+import Button from '../../../../../../ui/Button'
+import Container from '../../../../../../ui/Container'
+import { CustomerType } from '../../../../../../shared/types/customer.type'
 
 const AddCcustomersActions = () => {
 

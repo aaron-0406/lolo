@@ -1,38 +1,29 @@
 import styled, { css } from 'styled-components'
-import Container from '../../../../ui/Container'
-import TextField from '../../../../ui/fields/TextField'
-import Text from '../../../../ui/Text/Text'
+import Container from '../../../../ui/Container/Container'
+import Button from '../../../../ui/Button'
+import Modal from '../../../../ui/Modal'
+import useModal from '../../../../shared/hooks/useModal'
 import { useMediaQuery } from '../../../../shared/hooks/useMediaQuery'
 import { device } from '../../../../shared/breakpoints/reponsive'
-import CustomersActionsModal from './CustomersActionsModal'
+import ModalAddCustomers from './ModalAddCustomers'
 
 const CustomersActions = () => {
+  const { visible: visibleModalAdd, showModal: showModalAdd, hideModal: hideModalAdd } = useModal()
+
   const greaterThanMobile = useMediaQuery(device.tabletS)
 
-  const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value)
-  }
   return (
-    <StyledContainer alignItems="center" justifyContent="space-around" display="flex" padding="20px">
-      <Container
-        className="actions__textfield"
-        width="75%"
-        display="flex"
-        alignItems="center"
-        justifyContent="space-around"
+    <StyledContainer width={greaterThanMobile ? "10%" : "15%"}>
+      <Button width="100%" className="actions-button" label="+" size="small" onClick={showModalAdd} />
+      <Modal
+        id="modal-files"
+        title="Agregar Cliente"
+        visible={visibleModalAdd}
+        onClose={hideModalAdd}
+        contentOverflowY="auto"
       >
-        <Container display={greaterThanMobile ? 'block' : 'none'} padding="0 5px 0 0">
-          <Text.Body className="actions__texfield-label" size="l" weight="bold">
-            Buscar:
-          </Text.Body>
-        </Container>
-        <TextField
-          onChange={onChangeSearch}
-          width={greaterThanMobile ? '85%' : '100%'}
-          placeholder="Buscar cliente por nombre"
-        />
-      </Container>
-      <CustomersActionsModal />
+        <ModalAddCustomers />
+      </Modal>
     </StyledContainer>
   )
 }
@@ -41,11 +32,26 @@ export default CustomersActions
 
 const StyledContainer = styled(Container)`
   ${({ theme }) => css`
+    .actions-button {
+      span {
+        font-size: 20px;
+      }
+    }
 
     @media ${theme.device.tabletS} {
-      .actions__textfield {
-        width: 80%;
+      .actions-button {
+        span {
+          font-size: 30px;
+        }
+      }
+    }
+    @media ${theme.device.desktopS} {
+      .actions-button {
+        span {
+          font-size: 25px;
+        }
       }
     }
   `}
 `
+
