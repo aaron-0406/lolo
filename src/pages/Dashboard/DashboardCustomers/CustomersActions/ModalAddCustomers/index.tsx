@@ -1,1 +1,1 @@
-export {default} from './ModalAddCustomers'
+export { default } from './ModalAddCustomers'

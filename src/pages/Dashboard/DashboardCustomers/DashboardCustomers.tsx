@@ -11,7 +11,7 @@ const DashboardCustomers = () => {
     resolver: ModalCustomersResolver,
     mode: 'all',
     defaultValues: {
-      id: 0,  
+      id: 0,
       ruc: '',
       companyName: '',
       urlIdentifier: '',
