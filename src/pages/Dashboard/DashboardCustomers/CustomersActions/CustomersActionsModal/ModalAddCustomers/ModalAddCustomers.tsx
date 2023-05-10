@@ -1,21 +1,21 @@
 import { FormProvider, useForm } from 'react-hook-form'
-import { CustomersFirmFormType } from './hookforms.interfaces'
+import { CustomerType } from '../../../../../../shared/types/customer.type'
 import { ModalCustomersResolver } from './ModalCustomers.yup'
 import AddCcustomersActions from './AddCustomersActions'
 import AddCustomerInfo from './AddCustomersInfo'
 import Container from '../../../../../../ui/Container'
 
 const ModalAddCustomers = () => {
-  const formMethods = useForm<CustomersFirmFormType>({
+  const formMethods = useForm<CustomerType>({
     resolver: ModalCustomersResolver,
     mode: 'all',
     defaultValues: {
+      id: 0,
       ruc: '',
       companyName: '',
       urlIdentifier: '',
       description: '',
       state: undefined,
-      customersfirm: [],
     },
   })
 

@@ -3,15 +3,7 @@ import { CustomerType } from '../../../../../../../shared/types/customer.type'
 import Container from '../../../../../../../ui/Container'
 import TextAreaField from '../../../../../../../ui/fields/TextAreaField'
 import Label from '../../../../../../../ui/Label'
-import Select from '../../../../../../../ui/Select'
 import Checkbox from '../../../../../../../ui/Checkbox'
-import { SelectItemType } from '../../../../../../../ui/Select/interfaces'
-import { getValue } from '@testing-library/user-event/dist/utils'
-
-type assets = {
-  id: number
-  name: string
-}
 
 const AddCustomerInfo = () => {
   const {
@@ -19,17 +11,6 @@ const AddCustomerInfo = () => {
     formState: { errors },
   } = useFormContext<CustomerType>()
 
-  const stateCustomer: Array<assets> = [
-    { id: 1, name: 'activo' },
-    { id: 2, name: 'inactivo' },
-  ]
-
-  const optionsStates: Array<SelectItemType> = stateCustomer.map((sc) => {
-    return {
-      key: String(sc.id),
-      label: sc.name,
-    }
-  })
 
   return (
     <Container width="100%" display="flex" flexDirection="column" gap="10px" padding="20px">
