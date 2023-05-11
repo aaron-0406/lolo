@@ -30,9 +30,9 @@ const DashboardCustomers = () => {
     <FormProvider {...formMethods}>
       <Container
         width="100%"
-        height="100%"
+        height="15%"
         display="flex"
-        flexDirection="column"
+        flexWrap="wrap"
         alignItems="center"
         justifyContent="space-around"
         gap="20px"

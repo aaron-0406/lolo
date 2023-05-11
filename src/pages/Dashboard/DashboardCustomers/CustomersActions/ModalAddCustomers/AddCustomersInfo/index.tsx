@@ -1,1 +1,1 @@
-export {default} from './AddCustomersInfo'
+export { default } from './AddCustomersInfo'

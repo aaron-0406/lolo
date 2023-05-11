@@ -1,1 +1,1 @@
-export {default} from './CustomersSearch'
+export { default } from './CustomersSearch'

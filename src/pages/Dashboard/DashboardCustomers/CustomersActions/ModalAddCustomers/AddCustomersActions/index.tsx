@@ -1,1 +1,1 @@
-export {default} from './AddCustomersActions'
+export { default } from './AddCustomersActions'

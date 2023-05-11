@@ -13,7 +13,7 @@ const CustomersActions = () => {
   const greaterThanMobile = useMediaQuery(device.tabletS)
 
   return (
-    <StyledContainer width={greaterThanMobile ? "10%" : "15%"}>
+    <StyledContainer width={greaterThanMobile ? '10%' : '15%'}>
       <Button width="100%" className="actions-button" label="+" size="small" onClick={showModalAdd} />
       <Modal
         id="modal-files"
@@ -54,4 +54,3 @@ const StyledContainer = styled(Container)`
     }
   `}
 `
-

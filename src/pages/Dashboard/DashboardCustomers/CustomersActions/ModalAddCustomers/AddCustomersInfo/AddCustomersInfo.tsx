@@ -11,7 +11,6 @@ const AddCustomerInfo = () => {
     formState: { errors },
   } = useFormContext<CustomerType>()
 
-
   return (
     <Container width="100%" display="flex" flexDirection="column" gap="10px" padding="20px">
       <Container width="100%" display="flex" gap="10px">
