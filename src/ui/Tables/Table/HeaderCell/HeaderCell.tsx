@@ -9,7 +9,7 @@ import { SelectItem } from '../../../Select/interfaces'
 
 type HeaderCellProps = {
   width?: string
-  textAlign: CSS.Property.TextAlign
+  justifyContent?: CSS.Property.JustifyContent
   textTransform?: CSS.Property.TextTransform
   children: React.ReactNode
   isThereFilter?: boolean
@@ -19,7 +19,7 @@ type HeaderCellProps = {
 const HeaderCell: React.FC<HeaderCellProps> = ({
   children,
   textTransform,
-  textAlign,
+  justifyContent,
   width,
   isThereFilter = false,
   options,
@@ -35,31 +35,35 @@ const HeaderCell: React.FC<HeaderCellProps> = ({
   }
 
   return (
-    <StyledTh
-      width={width}
-      textAlign={textAlign}
-      isThereFilter={isThereFilter}
-      textTransform={textTransform}
-      onClick={onSelectToogle}
-    >
-      <Text.Body size="m" weight="bold" ellipsis>
-        {children}
-      </Text.Body>
+    <StyledTh width={width} isThereFilter={isThereFilter} textTransform={textTransform} onClick={onSelectToogle}>
+      <Container
+        width="100%"
+        height="100%"
+        display="flex"
+        flexDirection="row"
+        justifyContent={justifyContent}
+        padding="0 16px"
+        alignItems="center"
+      >
+        <Text.Body size="m" weight="bold" ellipsis>
+          {children}
+        </Text.Body>
 
-      {isThereFilter && (
-        <Container
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          width="24px"
-          height="24px"
-          className="arrow__icon"
-        >
-          <Icon size={20} remixClass="ri-arrow-down-s-line" color="Neutral6" />
-        </Container>
-      )}
+        {isThereFilter && (
+          <Container
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            width="24px"
+            height="24px"
+            className="arrow__icon"
+          >
+            <Icon size={20} remixClass="ri-arrow-down-s-line" color="Neutral6" />
+          </Container>
+        )}
+      </Container>
 
-      {toggleSelect && <DropdownList onSelectItem={() => {}} options={options} />}
+      {toggleSelect && <DropdownList onSelectItem={() => {}} options={options} top="50px" />}
     </StyledTh>
   )
 }
@@ -67,7 +71,7 @@ const HeaderCell: React.FC<HeaderCellProps> = ({
 export default HeaderCell
 
 const StyledTh = styled.th<HeaderCellProps>`
-  ${({ width, textAlign, textTransform, isThereFilter }) => css`
+  ${({ width, textTransform, isThereFilter }) => css`
     ${!!width &&
     css`
       width: ${width};
@@ -78,11 +82,6 @@ const StyledTh = styled.th<HeaderCellProps>`
       .arrow__icon {
         float: right;
       }
-    `}
-
-    ${!!textAlign &&
-    css`
-      text-align: ${textAlign};
     `}
 
     ${!!textTransform &&

@@ -5,7 +5,7 @@ export const customersColumns: ColumProps[] = [
     id: 'customers.datatable.header.code',
     title: 'Código',
     width: '10%',
-    textAlign: 'center',
+    justifyContent: 'center',
   },
   {
     id: 'customers.datatable.header.name',
@@ -16,12 +16,13 @@ export const customersColumns: ColumProps[] = [
     id: 'customers.datatable.header.negotiation',
     title: 'Negociación',
     width: '30%',
+    justifyContent: 'space-between',
     isThereFilter: true,
   },
   {
     id: 'customers.datatable.header.date',
     title: 'Fecha de registro',
     width: '10%',
-    textAlign: 'center',
+    justifyContent: 'center',
   },
 ]

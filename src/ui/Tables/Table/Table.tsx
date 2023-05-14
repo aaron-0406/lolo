@@ -9,7 +9,7 @@ export type ColumProps = {
   id: string
   title: React.ReactNode
   width?: string
-  textAlign?: CSS.Property.TextAlign
+  justifyContent?: CSS.Property.JustifyContent
   textTransform?: CSS.Property.TextTransform
   isThereFilter?: boolean
 }
@@ -49,7 +49,7 @@ const Table: React.FC<TableProps> = ({
       <StyledOrderTable>
         <thead className="table-header">
           <tr>
-            {columns.map(({ textAlign = 'left', textTransform, width, title, id, isThereFilter }, index) => {
+            {columns.map(({ justifyContent = 'left', textTransform, width, title, id, isThereFilter }, index) => {
               const filterOption = filterOptions?.find((option) => option.identifier === id)
               const options = filterOption?.options
 
@@ -58,7 +58,7 @@ const Table: React.FC<TableProps> = ({
                   key={index}
                   isThereFilter={isThereFilter}
                   width={width}
-                  textAlign={textAlign}
+                  justifyContent={justifyContent}
                   textTransform={textTransform}
                   options={options}
                 >
@@ -101,16 +101,9 @@ const StyledOrderTable = styled.table`
     table-layout: auto;
 
     td {
-      height: 56px;
       padding-left: 16px;
       padding-right: 16px;
-      cursor: pointer;
-    }
-
-    th {
       height: 56px;
-      border-left: 16px solid ${theme.colors['Neutral3']};
-      border-right: 16px solid ${theme.colors['Neutral3']};
       cursor: pointer;
     }
 
@@ -119,6 +112,8 @@ const StyledOrderTable = styled.table`
     }
 
     th {
+      height: 56px;
+      cursor: pointer;
       position: sticky;
       top: 0;
       z-index: 2;

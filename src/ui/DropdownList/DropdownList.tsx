@@ -9,16 +9,17 @@ import type { DropdownListSize } from './interfaces'
 
 type DropdownListProps<T, K> = HTMLAttributes<HTMLUListElement> & {
   size?: DropdownListSize
+  top?: string
   options?: Array<SelectItem<T, K>>
   onSelectItem: (option: SelectItem<T, K>) => void
   value?: T
 }
 
 const DropdownList = <T extends string, K extends Record<string, unknown>>(props: DropdownListProps<T, K>) => {
-  const { size = 'default', options, onSelectItem, value, ...rest } = props
+  const { size = 'default', options, onSelectItem, value, top, ...rest } = props
 
   return (
-    <StyledDropdownList $size={size} {...rest}>
+    <StyledDropdownList $size={size} $top={top} {...rest}>
       {options?.length ? (
         options.map((option, key) => {
           return (
@@ -57,8 +58,8 @@ const DropdownList = <T extends string, K extends Record<string, unknown>>(props
 
 export default DropdownList
 
-const StyledDropdownList = styled.ul<{ $size: DropdownListSize }>`
-  ${({ theme, $size }) => css`
+const StyledDropdownList = styled.ul<{ $size: DropdownListSize; $top?: string }>`
+  ${({ theme, $size, $top }) => css`
     width: 100%;
     height: auto;
     background-color: ${theme.colors.Neutral0};
@@ -72,5 +73,10 @@ const StyledDropdownList = styled.ul<{ $size: DropdownListSize }>`
     border: 2px solid ${theme.colors.Neutral4};
     box-shadow: ${theme.shadows.elevationLow};
     z-index: ${theme.zIndex.dropdown};
+
+    ${!!$top &&
+    css`
+      top: ${$top};
+    `}
   `}
 `
