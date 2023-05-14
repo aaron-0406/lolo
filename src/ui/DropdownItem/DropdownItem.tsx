@@ -4,6 +4,7 @@ import Container from '../Container'
 import Icon from '../Icon'
 import Text from '../Text'
 import type { DropdownItemSizeType } from './interfaces'
+import Checkbox from '../Checkbox'
 
 type DropdownProps = LiHTMLAttributes<HTMLLIElement> & {
   leadingIcon?: string
@@ -12,22 +13,38 @@ type DropdownProps = LiHTMLAttributes<HTMLLIElement> & {
   text?: string
   size?: DropdownItemSizeType
   active?: boolean
+  withCheckbox?: boolean
 }
 
 const DropdownItem: React.FC<DropdownProps> = (props) => {
-  const { leadingIcon, text, suffix, trailingIcon, size = 'default', active = false, ...rest } = props
+  const {
+    leadingIcon,
+    text,
+    suffix,
+    trailingIcon,
+    size = 'default',
+    active = false,
+    withCheckbox = false,
+    ...rest
+  } = props
 
   const iconSizeDefault = 16
   const iconLargeDefault = 20
 
+  const onClick = (event: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
+    event.stopPropagation()
+  }
+
   return (
     <StyledLi $size={size} $active={active} {...rest}>
       <Container display="flex" alignItems="center" gap="8px">
-        {!!leadingIcon && (
+        {!!leadingIcon && !withCheckbox && (
           <Container display="flex" justifyContent="center" alignItems="center" width="24px" height="24px">
             <Icon size={size === 'default' ? iconSizeDefault : iconLargeDefault} remixClass={leadingIcon} />
           </Container>
         )}
+
+        {withCheckbox && <Checkbox onClick={onClick} checked={active} />}
 
         {!!text && (
           <Text.Body size={size === 'default' ? 'm' : 'l'} weight="regular" className="prefix__text" color="Neutral8">

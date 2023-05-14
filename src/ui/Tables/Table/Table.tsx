@@ -23,6 +23,8 @@ type TableProps = {
   top?: string
   columns: Array<ColumProps>
   filterOptions?: Array<FilterOptionsProps>
+  selectedFilterOptions?: Array<FilterOptionsProps>
+  onChangeFilterOptions?: (filterOption: FilterOptionsProps) => void
   loading?: boolean
   error?: boolean | undefined
   leftSpace?: number
@@ -35,6 +37,7 @@ type TableProps = {
 const Table: React.FC<TableProps> = ({
   columns,
   filterOptions,
+  onChangeFilterOptions,
   loading,
   error,
   children,
@@ -61,6 +64,7 @@ const Table: React.FC<TableProps> = ({
                   justifyContent={justifyContent}
                   textTransform={textTransform}
                   options={options}
+                  onChangeFilterOptions={(options) => onChangeFilterOptions?.({ identifier: id, options })}
                 >
                   {title}
                 </HeaderCell>

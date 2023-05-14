@@ -6,6 +6,7 @@ import Text from '../Text'
 import emptyFolder from '../../shared/assets/icons/emptyFolder.svg'
 import type { SelectItem } from '../Select/interfaces'
 import type { DropdownListSize } from './interfaces'
+import Checkbox from '../Checkbox'
 
 type DropdownListProps<T, K> = HTMLAttributes<HTMLUListElement> & {
   size?: DropdownListSize
@@ -13,15 +14,29 @@ type DropdownListProps<T, K> = HTMLAttributes<HTMLUListElement> & {
   options?: Array<SelectItem<T, K>>
   onSelectItem: (option: SelectItem<T, K>) => void
   value?: T
+  withCheckbox?: boolean
 }
 
 const DropdownList = <T extends string, K extends Record<string, unknown>>(props: DropdownListProps<T, K>) => {
-  const { size = 'default', options, onSelectItem, value, top, ...rest } = props
+  const { size = 'default', options, onSelectItem, value, top, withCheckbox = false, ...rest } = props
+
+  const onSelectOption = (option: SelectItem<T, K>, event: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
+    if (withCheckbox) {
+      event.stopPropagation()
+    }
+
+    onSelectItem(option)
+  }
 
   return (
     <StyledDropdownList $size={size} $top={top} {...rest}>
       {options?.length ? (
         options.map((option, key) => {
+          const values = value as unknown as Array<SelectItem<T, K>>
+          const active = withCheckbox
+            ? values?.some((filterOption: any) => option.key === filterOption.key)
+            : option.key === value
+
           return (
             <DropdownItem
               key={key}
@@ -30,9 +45,10 @@ const DropdownList = <T extends string, K extends Record<string, unknown>>(props
               text={option.label}
               suffix={option.suffix}
               leadingIcon={option.leadingIcon}
-              active={option.key === value}
+              active={active}
               trailingIcon={option.trailingIcon}
-              onClick={() => onSelectItem(option)}
+              onClick={(event) => onSelectOption(option, event)}
+              withCheckbox={withCheckbox}
             />
           )
         })

@@ -14,6 +14,7 @@ type HeaderCellProps = {
   children: React.ReactNode
   isThereFilter?: boolean
   options?: Array<SelectItem<any, any>>
+  onChangeFilterOptions?: (options: Array<SelectItem<any, any>>) => void
 }
 
 const HeaderCell: React.FC<HeaderCellProps> = ({
@@ -23,14 +24,34 @@ const HeaderCell: React.FC<HeaderCellProps> = ({
   width,
   isThereFilter = false,
   options,
+  onChangeFilterOptions,
 }) => {
   const [toggleSelect, setToggleSelect] = useState<boolean>(false)
+  const [selectedFilterOptions, setSelectedFilterOptions] = useState<Array<SelectItem<any, any>>>([])
 
   const onSelectToogle = () => {
     if (isThereFilter) {
       setToggleSelect(!toggleSelect)
     } else {
       setToggleSelect(false)
+    }
+  }
+
+  const onSelectItem = (option: SelectItem<any, any>) => {
+    const position = selectedFilterOptions.indexOf(option)
+
+    if (position === -1) {
+      setSelectedFilterOptions((prev) => {
+        const filterOptions = [...prev, option]
+        onChangeFilterOptions?.(filterOptions)
+        return filterOptions
+      })
+    } else {
+      setSelectedFilterOptions((prev) => {
+        const filterOptions = prev.filter((filterOption) => filterOption.key !== option.key)
+        onChangeFilterOptions?.(filterOptions)
+        return filterOptions
+      })
     }
   }
 
@@ -63,7 +84,15 @@ const HeaderCell: React.FC<HeaderCellProps> = ({
         )}
       </Container>
 
-      {toggleSelect && <DropdownList onSelectItem={() => {}} options={options} top="50px" />}
+      {toggleSelect && (
+        <DropdownList
+          onSelectItem={onSelectItem}
+          options={options}
+          value={selectedFilterOptions}
+          top="50px"
+          withCheckbox={isThereFilter}
+        />
+      )}
     </StyledTh>
   )
 }
