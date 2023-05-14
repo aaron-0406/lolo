@@ -110,7 +110,25 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
       setIsLoadingNegotiations(true)
       setIsLoadingFuncionarions(true)
 
-      refetchNegotiations()
+      refetchNegotiations().then((value) => {
+        setFilterOptions((prev) => {
+          return prev.map((option) => {
+            if (option.identifier === 'customers.datatable.header.negotiation') {
+              return {
+                identifier: option.identifier,
+                options: value.data?.data.map((option: { id: string; name: string }) => {
+                  return {
+                    key: option.id,
+                    label: option.name,
+                  }
+                }),
+              }
+            }
+
+            return option
+          })
+        })
+      })
       refetchFuncionarios()
     }
   }, [selectedBank, refetch, refetchNegotiations, refetchFuncionarios])
