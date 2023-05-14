@@ -16,6 +16,7 @@ export const customersColumns: ColumProps[] = [
     id: 'customers.datatable.header.negotiation',
     title: 'Negociación',
     width: '30%',
+    isThereFilter: true,
   },
   {
     id: 'customers.datatable.header.date',

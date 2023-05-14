@@ -6,10 +6,15 @@ import HeaderCell from './HeaderCell'
 
 export type ColumProps = {
   id: string
-  title: string
+  title: React.ReactNode
   width?: string
   textAlign?: CSS.Property.TextAlign
   textTransform?: CSS.Property.TextTransform
+  isThereFilter?: boolean
+  options?: Array<{
+    id: string
+    option: string
+  }>
 }
 
 type TableProps = {
@@ -40,9 +45,15 @@ const Table: React.FC<TableProps> = ({
       <StyledOrderTable>
         <thead className="table-header">
           <tr>
-            {columns.map(({ textAlign = 'left', textTransform, width, title }, index) => {
+            {columns.map(({ textAlign = 'left', textTransform, width, title, id, isThereFilter }, index) => {
               return (
-                <HeaderCell key={index} width={width} textAlign={textAlign} textTransform={textTransform}>
+                <HeaderCell
+                  key={index}
+                  isThereFilter={isThereFilter}
+                  width={width}
+                  textAlign={textAlign}
+                  textTransform={textTransform}
+                >
                   {title}
                 </HeaderCell>
               )
@@ -81,11 +92,17 @@ const StyledOrderTable = styled.table`
     width: 100%;
     table-layout: auto;
 
-    th,
     td {
       height: 56px;
       padding-left: 16px;
       padding-right: 16px;
+      cursor: pointer;
+    }
+
+    th {
+      height: 56px;
+      border-left: 16px solid ${theme.colors['Neutral3']};
+      border-right: 16px solid ${theme.colors['Neutral3']};
       cursor: pointer;
     }
 
