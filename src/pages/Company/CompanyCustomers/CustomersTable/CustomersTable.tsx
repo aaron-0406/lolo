@@ -16,6 +16,7 @@ import Table from '../../../../ui/Tables/Table'
 import { customersColumns } from './utils/columns'
 import EmptyStateCell from '../../../../ui/Tables/Table/EmptyStateCell'
 import BodyCell from '../../../../ui/Tables/Table/BodyCell'
+import { FilterOptionsProps } from '../../../../ui/Tables/Table/Table'
 
 type CustomersTableProps = {
   opts: Opts
@@ -28,7 +29,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
       customer: { urlIdentifier },
     },
     bank: { selectedBank },
-    negociacion: { setNegociaciones },
+    negociacion: { negociaciones, setNegociaciones },
     funcionario: { setFuncionarios },
   } = useLoloContext()
 
@@ -39,6 +40,8 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [isLoadingNegotiations, setIsLoadingNegotiations] = useState(false)
   const [isLoadingFuncionarions, setIsLoadingFuncionarions] = useState(false)
+
+  const [filterOptions, setFilterOptions] = useState<Array<FilterOptionsProps>>([])
 
   const { refetch } = useQuery(
     'query-get-all-clients-by-chb',
@@ -65,6 +68,21 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
       onSuccess: (response) => {
         setNegociaciones(response.data)
         setIsLoadingNegotiations(false)
+
+        setFilterOptions((prev) => {
+          return [
+            ...prev,
+            {
+              identifier: 'customers.datatable.header.negotiation',
+              options: negociaciones.map((negotiation) => {
+                return {
+                  key: negotiation.id,
+                  label: negotiation.name,
+                }
+              }),
+            },
+          ]
+        })
       },
     }
   )
@@ -110,6 +128,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
       <Table
         top="260px"
         columns={customersColumns}
+        filterOptions={filterOptions}
         loading={isLoading || isLoadingNegotiations || isLoadingFuncionarions}
         isArrayEmpty={!customers.length}
         emptyState={

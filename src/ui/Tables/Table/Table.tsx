@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components'
 import type CSS from 'csstype'
 import Container from '../../Container'
 import HeaderCell from './HeaderCell'
+import { SelectItem } from '../../Select/interfaces'
 
 export type ColumProps = {
   id: string
@@ -11,15 +12,17 @@ export type ColumProps = {
   textAlign?: CSS.Property.TextAlign
   textTransform?: CSS.Property.TextTransform
   isThereFilter?: boolean
-  options?: Array<{
-    id: string
-    option: string
-  }>
+}
+
+export type FilterOptionsProps = {
+  identifier: string
+  options: Array<SelectItem<any, any>>
 }
 
 type TableProps = {
   top?: string
   columns: Array<ColumProps>
+  filterOptions?: Array<FilterOptionsProps>
   loading?: boolean
   error?: boolean | undefined
   leftSpace?: number
@@ -31,6 +34,7 @@ type TableProps = {
 
 const Table: React.FC<TableProps> = ({
   columns,
+  filterOptions,
   loading,
   error,
   children,
@@ -46,6 +50,9 @@ const Table: React.FC<TableProps> = ({
         <thead className="table-header">
           <tr>
             {columns.map(({ textAlign = 'left', textTransform, width, title, id, isThereFilter }, index) => {
+              const filterOption = filterOptions?.find((option) => option.identifier === id)
+              const options = filterOption?.options
+
               return (
                 <HeaderCell
                   key={index}
@@ -53,6 +60,7 @@ const Table: React.FC<TableProps> = ({
                   width={width}
                   textAlign={textAlign}
                   textTransform={textTransform}
+                  options={options}
                 >
                   {title}
                 </HeaderCell>

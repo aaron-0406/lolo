@@ -13,6 +13,7 @@ type HeaderCellProps = {
   textTransform?: CSS.Property.TextTransform
   children: React.ReactNode
   isThereFilter?: boolean
+  options?: Array<SelectItem<any, any>>
 }
 
 const HeaderCell: React.FC<HeaderCellProps> = ({
@@ -21,6 +22,7 @@ const HeaderCell: React.FC<HeaderCellProps> = ({
   textAlign,
   width,
   isThereFilter = false,
+  options,
 }) => {
   const [toggleSelect, setToggleSelect] = useState<boolean>(false)
 
@@ -57,7 +59,7 @@ const HeaderCell: React.FC<HeaderCellProps> = ({
         </Container>
       )}
 
-      {toggleSelect && <DropdownList onSelectItem={() => {}} />}
+      {toggleSelect && <DropdownList onSelectItem={() => {}} options={options} />}
     </StyledTh>
   )
 }
