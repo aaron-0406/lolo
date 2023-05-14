@@ -6,7 +6,6 @@ import Text from '../Text'
 import emptyFolder from '../../shared/assets/icons/emptyFolder.svg'
 import type { SelectItem } from '../Select/interfaces'
 import type { DropdownListSize } from './interfaces'
-import Checkbox from '../Checkbox'
 
 type DropdownListProps<T, K> = HTMLAttributes<HTMLUListElement> & {
   size?: DropdownListSize
