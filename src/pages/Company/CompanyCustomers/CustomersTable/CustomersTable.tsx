@@ -18,6 +18,7 @@ import EmptyStateCell from '../../../../ui/Tables/Table/EmptyStateCell'
 import BodyCell from '../../../../ui/Tables/Table/BodyCell'
 import { FilterOptionsProps } from '../../../../ui/Tables/Table/Table'
 import { FuncionarioType } from '../../../../shared/types/funcionario.type'
+import { CustomerUserType } from '../../../../shared/types/customer-user.type'
 
 type CustomersTableProps = {
   opts: Opts
@@ -32,6 +33,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
     bank: { selectedBank },
     negociacion: { negociaciones, setNegociaciones },
     funcionario: { funcionarios, setFuncionarios },
+    user: { users },
   } = useLoloContext()
 
   const navigate = useNavigate()
@@ -89,13 +91,20 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
           return option.key
         })
 
+      const users = selectedFilterOptions
+        .find((filterOption) => filterOption.identifier === 'customers.datatable.header.user')
+        ?.options.map((option) => {
+          return option.key
+        })
+
       return await getAllClientsByCHB(
         selectedBank.idCHB,
         opts.page,
         opts.limit,
         opts.filter,
         JSON.stringify(negotiations),
-        JSON.stringify(funcionarios)
+        JSON.stringify(funcionarios),
+        JSON.stringify(users)
       )
     },
     {
@@ -118,21 +127,6 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
       onSuccess: (response) => {
         setNegociaciones(response.data)
         setIsLoadingNegotiations(false)
-
-        setFilterOptions((prev) => {
-          return [
-            ...prev,
-            {
-              identifier: 'customers.datatable.header.negotiation',
-              options: negociaciones.map((negotiation) => {
-                return {
-                  key: negotiation.id,
-                  label: negotiation.name,
-                }
-              }),
-            },
-          ]
-        })
       },
     }
   )
@@ -147,21 +141,6 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
       onSuccess: (response) => {
         setFuncionarios(response.data)
         setIsLoadingFuncionarions(false)
-
-        setFilterOptions((prev) => {
-          return [
-            ...prev,
-            {
-              identifier: 'customers.datatable.header.funcionario',
-              options: funcionarios.map((funcionario) => {
-                return {
-                  key: funcionario.id,
-                  label: funcionario.name,
-                }
-              }),
-            },
-          ]
-        })
       },
     }
   )
@@ -171,50 +150,110 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
       setIsLoadingNegotiations(true)
       setIsLoadingFuncionarions(true)
 
-      refetchNegotiations().then((value) => {
-        setFilterOptions((prev) => {
-          return prev.map((option) => {
-            if (option.identifier === 'customers.datatable.header.negotiation') {
-              return {
-                identifier: option.identifier,
-                options: value.data?.data.map((option: { id: string; name: string }) => {
-                  return {
-                    key: option.id,
-                    label: option.name,
-                  }
-                }),
-              }
-            }
-
-            return option
-          })
-        })
-      })
-      refetchFuncionarios().then((value) => {
-        setFilterOptions((prev) => {
-          return prev.map((option) => {
-            if (option.identifier === 'customers.datatable.header.funcionario') {
-              return {
-                identifier: option.identifier,
-                options: value.data?.data.map((option: { id: string; name: string }) => {
-                  return {
-                    key: option.id,
-                    label: option.name,
-                  }
-                }),
-              }
-            }
-
-            return option
-          })
-        })
-      })
+      refetchNegotiations()
+      refetchFuncionarios()
     }
   }, [selectedBank, refetch, refetchNegotiations, refetchFuncionarios])
 
   useEffect(() => {
+    const optionsFuncionarios = funcionarios.map((funcionario) => {
+      return {
+        key: funcionario.id,
+        label: funcionario.name,
+      }
+    })
+
+    setFilterOptions((prev) => {
+      const filterOption = prev.find((filter) => filter.identifier === 'customers.datatable.header.funcionario')
+
+      if (filterOption) {
+        return prev.map((filter) => {
+          if (filter.identifier === 'customers.datatable.header.funcionario') {
+            return {
+              identifier: filter.identifier,
+              options: optionsFuncionarios,
+            }
+          }
+          return filter
+        })
+      } else {
+        return [
+          ...prev,
+          {
+            identifier: 'customers.datatable.header.funcionario',
+            options: optionsFuncionarios,
+          },
+        ]
+      }
+    })
+  }, [funcionarios])
+
+  useEffect(() => {
+    const optionsNegotiations = negociaciones.map((negotiation) => {
+      return {
+        key: negotiation.id,
+        label: negotiation.name,
+      }
+    })
+
+    setFilterOptions((prev) => {
+      const filterOption = prev.find((filter) => filter.identifier === 'customers.datatable.header.negotiation')
+
+      if (filterOption) {
+        return prev.map((filter) => {
+          if (filter.identifier === 'customers.datatable.header.negotiation') {
+            return {
+              identifier: filter.identifier,
+              options: optionsNegotiations,
+            }
+          }
+          return filter
+        })
+      } else {
+        return [
+          ...prev,
+          {
+            identifier: 'customers.datatable.header.negotiation',
+            options: optionsNegotiations,
+          },
+        ]
+      }
+    })
+  }, [negociaciones])
+
+  useEffect(() => {
     setSelectedFilterOptions([])
     setResetFilters(!resetFilters)
+
+    const optionsUsers = users.map((user) => {
+      return {
+        key: user.id,
+        label: user.name,
+      }
+    })
+    setFilterOptions((prev) => {
+      const filterOption = prev.find((filter) => filter.identifier === 'customers.datatable.header.user')
+
+      if (filterOption) {
+        return prev.map((filter) => {
+          if (filter.identifier === 'customers.datatable.header.user') {
+            return {
+              identifier: filter.identifier,
+              options: optionsUsers,
+            }
+          }
+          return filter
+        })
+      } else {
+        return [
+          ...prev,
+          {
+            identifier: 'customers.datatable.header.user',
+            options: optionsUsers,
+          },
+        ]
+      }
+    })
   }, [selectedBank.idCHB])
 
   useEffect(() => {
@@ -242,17 +281,24 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
         }
       >
         {!!customers?.length &&
-          customers.map((record: ClientType & { negotiation: NegotiationType } & { funcionario: FuncionarioType }) => {
-            return (
-              <tr className="styled-data-table-row" key={record.id} onClick={() => onClickRow(record.code)}>
-                <BodyCell textAlign="center">{`${record.code || ''}`}</BodyCell>
-                <BodyCell>{`${record.name || ''}`}</BodyCell>
-                <BodyCell>{`${record.negotiation.name.toUpperCase() || ''}`}</BodyCell>
-                <BodyCell>{`${record.funcionario.name.toUpperCase() || ''}`}</BodyCell>
-                <BodyCell textAlign="center">{`${moment(record.createdAt).format('DD-MM-YYYY') || ''}`}</BodyCell>
-              </tr>
-            )
-          })}
+          customers.map(
+            (
+              record: ClientType & { negotiation: NegotiationType } & { funcionario: FuncionarioType } & {
+                customerUser: CustomerUserType
+              }
+            ) => {
+              return (
+                <tr className="styled-data-table-row" key={record.id} onClick={() => onClickRow(record.code)}>
+                  <BodyCell textAlign="center">{`${record.code || ''}`}</BodyCell>
+                  <BodyCell>{`${record.name || ''}`}</BodyCell>
+                  <BodyCell>{`${record.negotiation.name.toUpperCase() || ''}`}</BodyCell>
+                  <BodyCell>{`${record.funcionario.name.toUpperCase() || ''}`}</BodyCell>
+                  <BodyCell>{`${record.customerUser.name.toUpperCase() || ''}`}</BodyCell>
+                  <BodyCell textAlign="center">{`${moment(record.createdAt).format('DD-MM-YYYY') || ''}`}</BodyCell>
+                </tr>
+              )
+            }
+          )}
       </Table>
     </Container>
   )

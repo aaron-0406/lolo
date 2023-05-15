@@ -27,6 +27,13 @@ export const customersColumns: ColumProps[] = [
     isThereFilter: true,
   },
   {
+    id: 'customers.datatable.header.user',
+    title: 'GESTOR',
+    width: '30%',
+    justifyContent: 'space-between',
+    isThereFilter: true,
+  },
+  {
     id: 'customers.datatable.header.date',
     title: 'FECHA DE REGISTRO',
     width: '10%',
