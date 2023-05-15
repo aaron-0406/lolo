@@ -15,7 +15,7 @@ const DashboardCustomers = () => {
       ruc: '',
       companyName: '',
       urlIdentifier: '',
-      description: '',
+      description: 'no description',
       state: undefined,
     },
   })
