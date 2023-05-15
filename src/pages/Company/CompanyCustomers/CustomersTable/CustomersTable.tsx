@@ -42,11 +42,52 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
   const [isLoadingFuncionarions, setIsLoadingFuncionarions] = useState(false)
 
   const [filterOptions, setFilterOptions] = useState<Array<FilterOptionsProps>>([])
+  const [selectedFilterOptions, setSelectedFilterOptions] = useState<Array<FilterOptionsProps>>([])
+
+  const onChangeFilterOptions = (filterOption: FilterOptionsProps) => {
+    setTimeout(() => {
+      const position = selectedFilterOptions.find(
+        (selectedFilterOption) => selectedFilterOption.identifier === filterOption.identifier
+      )
+
+      if (!position) {
+        setSelectedFilterOptions((prev) => {
+          return [...prev, filterOption]
+        })
+      } else {
+        setSelectedFilterOptions((prev) => {
+          return prev.map((selectedFilterOption) => {
+            if (selectedFilterOption.identifier === filterOption.identifier) {
+              return filterOption
+            }
+
+            return selectedFilterOption
+          })
+        })
+      }
+    })
+  }
+
+  const onClickRow = (code: string) => {
+    navigate(`${paths.company.cobranza(urlIdentifier)}?code=${code}`)
+  }
 
   const { refetch } = useQuery(
     'query-get-all-clients-by-chb',
     async () => {
-      return await getAllClientsByCHB(selectedBank.idCHB, opts.page, opts.limit, opts.filter)
+      const negotiations = selectedFilterOptions
+        .find((filterOption) => filterOption.identifier === 'customers.datatable.header.negotiation')
+        ?.options.map((option) => {
+          return option.key
+        })
+
+      return await getAllClientsByCHB(
+        selectedBank.idCHB,
+        opts.page,
+        opts.limit,
+        opts.filter,
+        JSON.stringify(negotiations)
+      )
     },
     {
       enabled: !!selectedBank.idCHB.length,
@@ -101,10 +142,6 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
     }
   )
 
-  const onClickRow = (code: string) => {
-    navigate(`${paths.company.cobranza(urlIdentifier)}?code=${code}`)
-  }
-
   useEffect(() => {
     if (selectedBank.idCHB.length) {
       setIsLoadingNegotiations(true)
@@ -138,7 +175,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
       setIsLoading(true)
       refetch()
     }
-  }, [refetch, opts, selectedBank])
+  }, [refetch, opts, selectedBank, selectedFilterOptions])
 
   return (
     <Container width="100%" height="calc(100% - 112px)" padding="20px">
@@ -147,6 +184,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
         top="260px"
         columns={customersColumns}
         filterOptions={filterOptions}
+        onChangeFilterOptions={onChangeFilterOptions}
         loading={isLoading || isLoadingNegotiations || isLoadingFuncionarions}
         isArrayEmpty={!customers.length}
         emptyState={
