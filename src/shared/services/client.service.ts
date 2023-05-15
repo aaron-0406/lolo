@@ -5,11 +5,24 @@ const API = axiosClient.getUri()
 
 const url = `${API}/client`
 
-export const getAllClientsByCHB = async (chb: string, page: number, limit: number, filter?: string) => {
-  if (filter !== '' && filter !== undefined) {
-    return await axiosClient.get(`${url}/${chb}?filter=${filter}&page=${page}&limit=${limit}`)
-  }
-  return await axiosClient.get(`${url}/${chb}?page=${page}&limit=${limit}`)
+export const getAllClientsByCHB = async (
+  chb: string,
+  page: number,
+  limit: number,
+  filter?: string,
+  negotiations?: string,
+  funcionarios?: string,
+  users?: string,
+  cities?: string
+) => {
+  let filters = ''
+  filters += filter !== '' && filter !== undefined ? `filter=${filter}&` : ''
+  filters += !!negotiations?.length ? `negotiations=${negotiations}&` : 'negotiations=[]&'
+  filters += !!funcionarios?.length ? `funcionarios=${funcionarios}&` : 'funcionarios=[]&'
+  filters += !!users?.length ? `users=${users}&` : 'users=[]&'
+  filters += !!cities?.length ? `cities=${cities}&` : 'cities=[]&'
+
+  return await axiosClient.get(`${url}/${chb}?${filters}page=${page}&limit=${limit}`)
 }
 
 export const getClientByCode = async (code: string, chb: string) => {

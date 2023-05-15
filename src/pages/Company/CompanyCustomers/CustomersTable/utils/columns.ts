@@ -3,24 +3,47 @@ import { ColumProps } from '../../../../../ui/Tables/Table/Table'
 export const customersColumns: ColumProps[] = [
   {
     id: 'customers.datatable.header.code',
-    title: 'Código',
+    title: 'CÓDIGO',
     width: '10%',
-    textAlign: 'center',
+    justifyContent: 'center',
   },
   {
     id: 'customers.datatable.header.name',
-    title: 'Cliente',
+    title: 'CLIENTE',
     width: '50%',
   },
   {
     id: 'customers.datatable.header.negotiation',
-    title: 'Negociación',
+    title: 'NEGOCIACIÓN',
     width: '30%',
+    justifyContent: 'space-between',
+    isThereFilter: true,
+  },
+  {
+    id: 'customers.datatable.header.funcionario',
+    title: 'FUNCIONARIO',
+    width: '30%',
+    justifyContent: 'space-between',
+    isThereFilter: true,
+  },
+  {
+    id: 'customers.datatable.header.user',
+    title: 'GESTOR',
+    width: '30%',
+    justifyContent: 'space-between',
+    isThereFilter: true,
+  },
+  {
+    id: 'customers.datatable.header.city',
+    title: 'CIUDAD',
+    width: '30%',
+    justifyContent: 'space-between',
+    isThereFilter: true,
   },
   {
     id: 'customers.datatable.header.date',
-    title: 'Fecha de registro',
+    title: 'FECHA DE REGISTRO',
     width: '10%',
-    textAlign: 'center',
+    justifyContent: 'center',
   },
 ]
