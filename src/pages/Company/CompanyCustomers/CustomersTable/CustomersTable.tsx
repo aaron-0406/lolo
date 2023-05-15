@@ -17,6 +17,7 @@ import { customersColumns } from './utils/columns'
 import EmptyStateCell from '../../../../ui/Tables/Table/EmptyStateCell'
 import BodyCell from '../../../../ui/Tables/Table/BodyCell'
 import { FilterOptionsProps } from '../../../../ui/Tables/Table/Table'
+import { FuncionarioType } from '../../../../shared/types/funcionario.type'
 
 type CustomersTableProps = {
   opts: Opts
@@ -30,7 +31,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
     },
     bank: { selectedBank },
     negociacion: { negociaciones, setNegociaciones },
-    funcionario: { setFuncionarios },
+    funcionario: { funcionarios, setFuncionarios },
   } = useLoloContext()
 
   const navigate = useNavigate()
@@ -82,12 +83,19 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
           return option.key
         })
 
+      const funcionarios = selectedFilterOptions
+        .find((filterOption) => filterOption.identifier === 'customers.datatable.header.funcionario')
+        ?.options.map((option) => {
+          return option.key
+        })
+
       return await getAllClientsByCHB(
         selectedBank.idCHB,
         opts.page,
         opts.limit,
         opts.filter,
-        JSON.stringify(negotiations)
+        JSON.stringify(negotiations),
+        JSON.stringify(funcionarios)
       )
     },
     {
@@ -139,6 +147,21 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
       onSuccess: (response) => {
         setFuncionarios(response.data)
         setIsLoadingFuncionarions(false)
+
+        setFilterOptions((prev) => {
+          return [
+            ...prev,
+            {
+              identifier: 'customers.datatable.header.funcionario',
+              options: funcionarios.map((funcionario) => {
+                return {
+                  key: funcionario.id,
+                  label: funcionario.name,
+                }
+              }),
+            },
+          ]
+        })
       },
     }
   )
@@ -167,7 +190,25 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
           })
         })
       })
-      refetchFuncionarios()
+      refetchFuncionarios().then((value) => {
+        setFilterOptions((prev) => {
+          return prev.map((option) => {
+            if (option.identifier === 'customers.datatable.header.funcionario') {
+              return {
+                identifier: option.identifier,
+                options: value.data?.data.map((option: { id: string; name: string }) => {
+                  return {
+                    key: option.id,
+                    label: option.name,
+                  }
+                }),
+              }
+            }
+
+            return option
+          })
+        })
+      })
     }
   }, [selectedBank, refetch, refetchNegotiations, refetchFuncionarios])
 
@@ -201,12 +242,13 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
         }
       >
         {!!customers?.length &&
-          customers.map((record: ClientType & { negotiation: NegotiationType }) => {
+          customers.map((record: ClientType & { negotiation: NegotiationType } & { funcionario: FuncionarioType }) => {
             return (
               <tr className="styled-data-table-row" key={record.id} onClick={() => onClickRow(record.code)}>
                 <BodyCell textAlign="center">{`${record.code || ''}`}</BodyCell>
                 <BodyCell>{`${record.name || ''}`}</BodyCell>
                 <BodyCell>{`${record.negotiation.name.toUpperCase() || ''}`}</BodyCell>
+                <BodyCell>{`${record.funcionario.name.toUpperCase() || ''}`}</BodyCell>
                 <BodyCell textAlign="center">{`${moment(record.createdAt).format('DD-MM-YYYY') || ''}`}</BodyCell>
               </tr>
             )
