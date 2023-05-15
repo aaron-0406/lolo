@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled, { css } from 'styled-components'
 import type CSS from 'csstype'
 import Text from '../../../Text'
@@ -15,6 +15,7 @@ type HeaderCellProps = {
   isThereFilter?: boolean
   options?: Array<SelectItem<any, any>>
   onChangeFilterOptions?: (options: Array<SelectItem<any, any>>) => void
+  resetFilters?: boolean
 }
 
 const HeaderCell: React.FC<HeaderCellProps> = ({
@@ -25,6 +26,7 @@ const HeaderCell: React.FC<HeaderCellProps> = ({
   isThereFilter = false,
   options,
   onChangeFilterOptions,
+  resetFilters = false,
 }) => {
   const [toggleSelect, setToggleSelect] = useState<boolean>(false)
   const [selectedFilterOptions, setSelectedFilterOptions] = useState<Array<SelectItem<any, any>>>([])
@@ -54,6 +56,10 @@ const HeaderCell: React.FC<HeaderCellProps> = ({
       })
     }
   }
+
+  useEffect(() => {
+    setSelectedFilterOptions([])
+  }, [resetFilters])
 
   return (
     <StyledTh width={width} isThereFilter={isThereFilter} textTransform={textTransform} onClick={onSelectToogle}>

@@ -43,6 +43,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
 
   const [filterOptions, setFilterOptions] = useState<Array<FilterOptionsProps>>([])
   const [selectedFilterOptions, setSelectedFilterOptions] = useState<Array<FilterOptionsProps>>([])
+  const [resetFilters, setResetFilters] = useState<boolean>(false)
 
   const onChangeFilterOptions = (filterOption: FilterOptionsProps) => {
     setTimeout(() => {
@@ -171,11 +172,16 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
   }, [selectedBank, refetch, refetchNegotiations, refetchFuncionarios])
 
   useEffect(() => {
+    setSelectedFilterOptions([])
+    setResetFilters(!resetFilters)
+  }, [selectedBank.idCHB])
+
+  useEffect(() => {
     if (selectedBank.idCHB.length) {
       setIsLoading(true)
       refetch()
     }
-  }, [refetch, opts, selectedBank, selectedFilterOptions])
+  }, [refetch, opts, selectedFilterOptions])
 
   return (
     <Container width="100%" height="calc(100% - 112px)" padding="20px">
@@ -185,6 +191,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
         columns={customersColumns}
         filterOptions={filterOptions}
         onChangeFilterOptions={onChangeFilterOptions}
+        resetFilters={resetFilters}
         loading={isLoading || isLoadingNegotiations || isLoadingFuncionarions}
         isArrayEmpty={!customers.length}
         emptyState={
