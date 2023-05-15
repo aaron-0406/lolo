@@ -12,13 +12,15 @@ export const getAllClientsByCHB = async (
   filter?: string,
   negotiations?: string,
   funcionarios?: string,
-  users?: string
+  users?: string,
+  cities?: string
 ) => {
   let filters = ''
   filters += filter !== '' && filter !== undefined ? `filter=${filter}&` : ''
   filters += !!negotiations?.length ? `negotiations=${negotiations}&` : 'negotiations=[]&'
   filters += !!funcionarios?.length ? `funcionarios=${funcionarios}&` : 'funcionarios=[]&'
   filters += !!users?.length ? `users=${users}&` : 'users=[]&'
+  filters += !!cities?.length ? `cities=${cities}&` : 'cities=[]&'
 
   return await axiosClient.get(`${url}/${chb}?${filters}page=${page}&limit=${limit}`)
 }

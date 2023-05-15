@@ -20,6 +20,7 @@ import BodyCell from '../../../../ui/Tables/Table/BodyCell'
 import { FilterOptionsProps } from '../../../../ui/Tables/Table/Table'
 import { FuncionarioType } from '../../../../shared/types/funcionario.type'
 import { CustomerUserType } from '../../../../shared/types/customer-user.type'
+import { CityType } from '../../../../shared/types/city.type'
 
 type CustomersTableProps = {
   opts: Opts
@@ -35,6 +36,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
     negociacion: { negociaciones, setNegociaciones },
     funcionario: { funcionarios, setFuncionarios },
     user: { users },
+    city: { cities },
   } = useLoloContext()
 
   const navigate = useNavigate()
@@ -98,6 +100,12 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
           return option.key
         })
 
+      const cities = selectedFilterOptions
+        .find((filterOption) => filterOption.identifier === 'customers.datatable.header.city')
+        ?.options.map((option) => {
+          return option.key
+        })
+
       return await getAllClientsByCHB(
         selectedBank.idCHB,
         opts.page,
@@ -105,7 +113,8 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
         opts.filter,
         JSON.stringify(negotiations),
         JSON.stringify(funcionarios),
-        JSON.stringify(users)
+        JSON.stringify(users),
+        JSON.stringify(cities)
       )
     },
     {
@@ -255,6 +264,36 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
         ]
       }
     })
+
+    const optionsCities = cities.map((city) => {
+      return {
+        key: city.id,
+        label: city.name,
+      }
+    })
+    setFilterOptions((prev) => {
+      const filterOption = prev.find((filter) => filter.identifier === 'customers.datatable.header.city')
+
+      if (filterOption) {
+        return prev.map((filter) => {
+          if (filter.identifier === 'customers.datatable.header.city') {
+            return {
+              identifier: filter.identifier,
+              options: optionsCities,
+            }
+          }
+          return filter
+        })
+      } else {
+        return [
+          ...prev,
+          {
+            identifier: 'customers.datatable.header.city',
+            options: optionsCities,
+          },
+        ]
+      }
+    })
   }, [selectedBank.idCHB])
 
   useEffect(() => {
@@ -286,7 +325,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
             (
               record: ClientType & { negotiation: NegotiationType } & { funcionario: FuncionarioType } & {
                 customerUser: CustomerUserType
-              }
+              } & { city: CityType }
             ) => {
               return (
                 <tr className="styled-data-table-row" key={record.id} onClick={() => onClickRow(record.code)}>
@@ -295,6 +334,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
                   <BodyCell>{`${record.negotiation.name.toUpperCase() || ''}`}</BodyCell>
                   <BodyCell>{`${record.funcionario.name.toUpperCase() || ''}`}</BodyCell>
                   <BodyCell>{`${record.customerUser.name.toUpperCase() || ''}`}</BodyCell>
+                  <BodyCell>{`${record.city.name.toUpperCase() || ''}`}</BodyCell>
                   <BodyCell textAlign="center">{`${moment(record.createdAt).format('DD-MM-YYYY') || ''}`}</BodyCell>
                 </tr>
               )
