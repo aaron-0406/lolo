@@ -3,18 +3,28 @@ import styled, { css } from 'styled-components'
 import type CSS from 'csstype'
 import Container from '../../Container'
 import HeaderCell from './HeaderCell'
+import { SelectItem } from '../../Select/interfaces'
 
 export type ColumProps = {
   id: string
-  title: string
+  title: React.ReactNode
   width?: string
-  textAlign?: CSS.Property.TextAlign
+  justifyContent?: CSS.Property.JustifyContent
   textTransform?: CSS.Property.TextTransform
+  isThereFilter?: boolean
+}
+
+export type FilterOptionsProps = {
+  identifier: string
+  options: Array<SelectItem<any, any>>
 }
 
 type TableProps = {
   top?: string
   columns: Array<ColumProps>
+  filterOptions?: Array<FilterOptionsProps>
+  selectedFilterOptions?: Array<FilterOptionsProps>
+  onChangeFilterOptions?: (filterOption: FilterOptionsProps) => void
   loading?: boolean
   error?: boolean | undefined
   leftSpace?: number
@@ -22,10 +32,13 @@ type TableProps = {
   isArrayEmpty?: boolean
   emptyState?: React.ReactNode
   children?: React.ReactNode
+  resetFilters?: boolean
 }
 
 const Table: React.FC<TableProps> = ({
   columns,
+  filterOptions,
+  onChangeFilterOptions,
   loading,
   error,
   children,
@@ -34,15 +47,28 @@ const Table: React.FC<TableProps> = ({
   leftSpace,
   emptyState,
   isArrayEmpty = false,
+  resetFilters,
 }) => {
   return (
     <StyledContentTable id="main-layout-content-internal" top={top} leftSpace={leftSpace} rightSpace={rightSpace}>
       <StyledOrderTable>
         <thead className="table-header">
           <tr>
-            {columns.map(({ textAlign = 'left', textTransform, width, title }, index) => {
+            {columns.map(({ justifyContent = 'left', textTransform, width, title, id, isThereFilter }, index) => {
+              const filterOption = filterOptions?.find((option) => option.identifier === id)
+              const options = filterOption?.options
+
               return (
-                <HeaderCell key={index} width={width} textAlign={textAlign} textTransform={textTransform}>
+                <HeaderCell
+                  key={index}
+                  isThereFilter={isThereFilter}
+                  width={width}
+                  justifyContent={justifyContent}
+                  textTransform={textTransform}
+                  options={options}
+                  onChangeFilterOptions={(options) => onChangeFilterOptions?.({ identifier: id, options })}
+                  resetFilters={resetFilters}
+                >
                   {title}
                 </HeaderCell>
               )
@@ -81,11 +107,10 @@ const StyledOrderTable = styled.table`
     width: 100%;
     table-layout: auto;
 
-    th,
     td {
-      height: 56px;
       padding-left: 16px;
       padding-right: 16px;
+      height: 56px;
       cursor: pointer;
     }
 
@@ -94,6 +119,8 @@ const StyledOrderTable = styled.table`
     }
 
     th {
+      height: 56px;
+      cursor: pointer;
       position: sticky;
       top: 0;
       z-index: 2;
