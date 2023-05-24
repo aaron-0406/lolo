@@ -36,7 +36,9 @@ const AddCcustomersActions = () => {
       createCustomer()
     })()
     let a = getCustomerAll();
-    console.log(a)
+    a.then(response =>{
+      console.log(response.data)
+    })
   }
 
   return (

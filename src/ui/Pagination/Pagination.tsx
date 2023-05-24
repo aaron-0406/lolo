@@ -5,6 +5,7 @@ import { device } from '../../shared/breakpoints/reponsive'
 import { useMediaQuery } from '../../shared/hooks/useMediaQuery'
 import Select from '../Select'
 import { PaginationProps } from './interfaces'
+import Container from '../Container'
 
 const Pagination: FC<PaginationProps> = (props) => {
   const { count, opts, setOpts } = props
@@ -40,15 +41,17 @@ const Pagination: FC<PaginationProps> = (props) => {
     <>
       {count > 0 && (
         <StyledContainerPagination
-          flexDirection={greaterThanTabletL ? 'flex-row' : 'flex-column'}
+          flexDirection="row"
           gap={greaterThanTabletL ? '0rem' : '1.25rem'}
         >
           <SelectContainer>
-            <span>Página</span>
-            {opts.page}
-            <span>de</span>
-            {pages}
-            <span>, Mostrando </span>
+            <Container className="visual">
+              <span>Página </span>
+              {opts.page}
+              <span> de </span>
+              {pages}
+              <span>, Mostrando </span>
+            </Container>
             <Select
               value={String(opts.limit)}
               options={[
@@ -60,9 +63,11 @@ const Pagination: FC<PaginationProps> = (props) => {
               ]}
               onChange={handleChangeLimit}
             />
-            <span>de </span>
-            {count}
-            <span>registros </span>
+            <Container className="visual">
+              <span>de </span>
+              {count}
+              <span> registros</span>
+            </Container>
           </SelectContainer>
           <PagesContainer>
             <StyledIcon
@@ -138,6 +143,13 @@ const SelectContainer = styled.div`
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
+  @media (max-width: 450px) {
+    max-width: 320px;
+    flex-wrap: wrap;
+    .visual{
+      display: none;
+    }
+  }
 `
 
 const PagesContainer = styled.div`

@@ -7,19 +7,33 @@ import { useMediaQuery } from '../../../../shared/hooks/useMediaQuery'
 import { device } from '../../../../shared/breakpoints/reponsive'
 import ModalAddCustomers from './ModalAddCustomers'
 
-const CustomersActions = () => {
+type propsCustomerActions = {
+  setLoad: (state: boolean) => void
+}
+
+const CustomersActions = ({ setLoad }: propsCustomerActions) => {
   const { visible: visibleModalAdd, showModal: showModalAdd, hideModal: hideModalAdd } = useModal()
 
   const greaterThanMobile = useMediaQuery(device.tabletS)
 
+  const handleClickButton = () => {
+    setLoad(true)
+    showModalAdd()
+  }
+
+  const handleClickModal = () => {
+    hideModalAdd()
+    setLoad(false)
+  }
+
   return (
     <StyledContainer width={greaterThanMobile ? '10%' : '15%'}>
-      <Button width="100%" className="actions-button" label="+" size="small" onClick={showModalAdd} />
+      <Button width="100%" className="actions-button" label="+" size="small" onClick={handleClickButton} />
       <Modal
         id="modal-files"
         title="Agregar Cliente"
         visible={visibleModalAdd}
-        onClose={hideModalAdd}
+        onClose={handleClickModal}
         contentOverflowY="auto"
       >
         <ModalAddCustomers />

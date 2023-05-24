@@ -1,14 +1,25 @@
 import styled, { css } from 'styled-components'
+import { Dispatch, FC} from 'react'
 import Container from '../../../../ui/Container'
 import TextField from '../../../../ui/fields/TextField'
 import Text from '../../../../ui/Text'
 import { useMediaQuery } from '../../../../shared/hooks/useMediaQuery'
 import { device } from '../../../../shared/breakpoints/reponsive'
+import { Opts } from '../../../../ui/Pagination/interfaces'
 
-const CustomersSearch = () => {
+type CustomersTableProps = {
+  opts: Opts
+  setOpts: Dispatch<Opts>
+}
+
+const CustomersSearch: FC<CustomersTableProps> = ({ opts, setOpts}) => {
   const greaterThanMobile = useMediaQuery(device.tabletS)
+
   const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value)
+    const { value } = e.target
+    if (value === '') return setOpts({ ...opts, filter: '', page: 1 })
+    if (value.length < 3) return
+    return setOpts({ ...opts, filter: value.trim(), page: 1 })
   }
 
   return (
@@ -31,6 +42,7 @@ export default CustomersSearch
 
 const StyledContainer = styled(Container)`
   ${({ theme }) => css`
+    /* margin-top: 20px; */
     @media ${theme.device.tabletS} {
       .search__textfield {
         width: 80%;
