@@ -6,6 +6,7 @@ import Home from '../../../pages/Home'
 //DASHBOARD
 import DashLogin from '../../../pages/Dashboard/Login'
 import DashHome from '../../../pages/Dashboard/Home'
+import DashboardCustomers from '../../../pages/Dashboard/DashboardCustomers'
 
 //COMPANY
 import CompanyLogin from '../../../pages/Company/Login'
@@ -41,7 +42,7 @@ const AppRouter = () => {
       </Route>
       <Route element={<ProtectedRoutes pathname={paths.dash.login} />}>
         <Route path={paths.dash.root} element={<DashHome />} />
-        <Route path={paths.dash.clientes} element={<div>clientes</div>} />
+        <Route path={paths.dash.clientes} element={<DashboardCustomers />} />
         <Route path={paths.dash.gestiones} element={<div>gestiones</div>} />
         <Route path={paths.dash.reportes} element={<div>reportes</div>} />
       </Route>
