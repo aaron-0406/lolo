@@ -1,9 +1,5 @@
 import { Dispatch, FC, useState, useEffect } from 'react'
-import { useQuery } from 'react-query'
-import { useNavigate } from 'react-router-dom'
 import moment from 'moment'
-import { useLoloContext } from '../../../../shared/contexts/LoloProvider'
-import paths from '../../../../shared/routes/paths'
 import { getCustomerAll } from '../../../../shared/services/customer.service'
 import { CustomerType } from '../../../../shared/types/customer.type'
 import Container from '../../../../ui/Container'
@@ -34,14 +30,14 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, load }) => {
     } else {
       data.then((responso) => {
         let arr = responso.data.filter((a: CustomerType) => {
-          let cadena = a.companyName.substring(0, opts.filter.length)
-          return cadena === opts.filter
+          let cadena = (a.companyName.substring(0, opts.filter.length)).toUpperCase()
+          return cadena === opts.filter.toUpperCase()
         })
         setCustomers(arr)
         setCustomersCount(arr.length)
       })
     }
-  }, [opts])
+  }, [opts, load])
 
   return (
     <Container width="100%" height="calc(100% - 112px)" padding="20px">
