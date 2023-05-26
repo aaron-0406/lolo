@@ -1,17 +1,16 @@
 import styled, { css } from 'styled-components'
 import Container from '../../../../ui/Container/Container'
 import Button from '../../../../ui/Button'
-import Modal from '../../../../ui/Modal'
 import useModal from '../../../../shared/hooks/useModal'
 import { useMediaQuery } from '../../../../shared/hooks/useMediaQuery'
 import { device } from '../../../../shared/breakpoints/reponsive'
 import ModalAddCustomers from './ModalAddCustomers'
 
-type propsCustomerActions = {
+type propsCustomerModal = {
   setLoad: (state: boolean) => void
 }
 
-const CustomersActions = ({ setLoad }: propsCustomerActions) => {
+const CustomersModal = ({ setLoad }: propsCustomerModal) => {
   const { visible: visibleModalAdd, showModal: showModalAdd, hideModal: hideModalAdd } = useModal()
 
   const greaterThanMobile = useMediaQuery(device.tabletS)
@@ -29,20 +28,12 @@ const CustomersActions = ({ setLoad }: propsCustomerActions) => {
   return (
     <StyledContainer width={greaterThanMobile ? '10%' : '15%'}>
       <Button width="100%" className="actions-button" label="+" size="small" onClick={handleClickButton} />
-      <Modal
-        id="modal-files"
-        title="Agregar Cliente"
-        visible={visibleModalAdd}
-        onClose={handleClickModal}
-        contentOverflowY="auto"
-      >
-        <ModalAddCustomers />
-      </Modal>
+      <ModalAddCustomers visible={visibleModalAdd} onClose={handleClickModal} />
     </StyledContainer>
   )
 }
 
-export default CustomersActions
+export default CustomersModal
 
 const StyledContainer = styled(Container)`
   ${({ theme }) => css`

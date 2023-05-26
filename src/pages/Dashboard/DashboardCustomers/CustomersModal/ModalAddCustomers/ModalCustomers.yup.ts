@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import yup from '../../../shared/yupLocale'
-import { CustomerType } from '../../../shared/types/customer.type'
+import yup from '../../../../../shared/yupLocale'
+import { CustomerType } from '../../../../../shared/types/customer.type'
 
 const ModalCustomers: yup.SchemaOf<Omit<CustomerType, 'customerBanks' | 'createdAt' | 'id'>> = yup.object().shape({
   ruc: yup
