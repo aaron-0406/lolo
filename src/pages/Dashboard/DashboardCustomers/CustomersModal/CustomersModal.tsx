@@ -1,61 +1,52 @@
+import { FormProvider, useForm } from 'react-hook-form'
 import styled, { css } from 'styled-components'
-import Container from '../../../../ui/Container/Container'
-import Button from '../../../../ui/Button'
-import useModal from '../../../../shared/hooks/useModal'
-import { useMediaQuery } from '../../../../shared/hooks/useMediaQuery'
-import { device } from '../../../../shared/breakpoints/reponsive'
-import ModalAddCustomers from './ModalAddCustomers'
+import AddCcustomersActions from './AddCustomersActions'
+import AddCustomerInfo from './AddCustomersInfo'
+import Container from '../../../../ui/Container'
+import Modal from '../../../../ui/Modal'
+import { CustomerType } from '../../../../shared/types/customer.type'
+import { ModalCustomersResolver } from './ModalCustomers.yup'
 
-type propsCustomerModal = {
-  setLoad: (state: boolean) => void
+type PModalAddCustomers = {
+  visible: boolean
+  onClose: () => void
 }
 
-const CustomersModal = ({ setLoad }: propsCustomerModal) => {
-  const { visible: visibleModalAdd, showModal: showModalAdd, hideModal: hideModalAdd } = useModal()
-
-  const greaterThanMobile = useMediaQuery(device.tabletS)
-
-  const handleClickButton = () => {
-    setLoad(true)
-    showModalAdd()
-  }
-
-  const handleClickModal = () => {
-    hideModalAdd()
-    setLoad(false)
-  }
+const ModalAddCustomers = ({ visible, onClose }: PModalAddCustomers) => {
+  const formMethods = useForm<CustomerType>({
+    resolver: ModalCustomersResolver,
+    mode: 'all',
+    defaultValues: {
+      id: 0,
+      ruc: '',
+      companyName: '',
+      urlIdentifier: '',
+      description: 'no description',
+      state: undefined,
+    },
+  })
 
   return (
-    <StyledContainer width={greaterThanMobile ? '10%' : '15%'}>
-      <Button width="100%" className="actions-button" label="+" size="small" onClick={handleClickButton} />
-      <ModalAddCustomers visible={visibleModalAdd} onClose={handleClickModal} />
-    </StyledContainer>
+    <FormProvider {...formMethods}>
+      <Modal visible={visible} onClose={onClose} id="modal-files" title="Agregar Cliente" contentOverflowY="auto">
+        <StyledContainer gap="20px">
+          <AddCustomerInfo />
+          <AddCcustomersActions />
+        </StyledContainer>
+      </Modal>
+    </FormProvider>
   )
 }
 
-export default CustomersModal
+export default ModalAddCustomers
 
 const StyledContainer = styled(Container)`
-  ${({ theme }) => css`
-    .actions-button {
-      span {
-        font-size: 20px;
-      }
-    }
-
-    @media ${theme.device.tabletS} {
-      .actions-button {
-        span {
-          font-size: 30px;
-        }
-      }
-    }
-    @media ${theme.device.desktopS} {
-      .actions-button {
-        span {
-          font-size: 25px;
-        }
-      }
-    }
+  ${css`
+    width: 100%;
+    height: 410px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
   `}
 `

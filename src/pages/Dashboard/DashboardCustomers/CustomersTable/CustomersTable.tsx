@@ -1,5 +1,6 @@
 import { Dispatch, FC, useState, useEffect } from 'react'
 import moment from 'moment'
+import { useQuery } from 'react-query'
 import { getCustomerAll } from '../../../../shared/services/customer.service'
 import { CustomerType } from '../../../../shared/types/customer.type'
 import Container from '../../../../ui/Container'
@@ -15,29 +16,32 @@ type CustomersTableProps = {
   setOpts: Dispatch<Opts>
   load: boolean
 }
-
+  
 const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, load }) => {
   const [customers, setCustomers] = useState([])
   const [customersCount, setCustomersCount] = useState<number>(0)
 
-  useEffect(() => {
-    let data = getCustomerAll()
-    if (opts.filter === '') {
-      data.then((responso) => {
-        setCustomers(responso.data)
-        setCustomersCount(responso.data.length)
-      })
-    } else {
-      data.then((responso) => {
-        let arr = responso.data.filter((a: CustomerType) => {
-          let cadena = (a.companyName.substring(0, opts.filter.length)).toUpperCase()
-          return cadena === opts.filter.toUpperCase()
-        })
-        setCustomers(arr)
-        setCustomersCount(arr.length)
-      })
+  const { refetch } = useQuery(
+    'get-customer-all',
+    async () => {
+      return await getCustomerAll()
+    },
+    {
+      onSuccess: ({ data }) => {
+        if (opts.filter !== '') {
+          data = data.filter((filt: CustomerType) => {
+            return filt.companyName.substring(0, opts.filter.length).toUpperCase() === opts.filter.toUpperCase()
+          })
+        }
+        setCustomers(data)
+        setCustomersCount(data.length)
+      },
     }
-  }, [opts, load])
+  )
+
+  useEffect(() => {
+    refetch()
+  }, [refetch, opts])
 
   return (
     <Container width="100%" height="calc(100% - 112px)" padding="20px">

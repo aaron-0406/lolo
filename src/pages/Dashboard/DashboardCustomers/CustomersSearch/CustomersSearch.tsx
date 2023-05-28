@@ -7,6 +7,8 @@ import { useMediaQuery } from '../../../../shared/hooks/useMediaQuery'
 import { device } from '../../../../shared/breakpoints/reponsive'
 import { Opts } from '../../../../ui/Pagination/interfaces'
 import CustomersModal from '../CustomersModal'
+import Button from '../../../../ui/Button'
+import useModal from '../../../../shared/hooks/useModal'
 
 type CustomersTableProps = {
   opts: Opts
@@ -16,12 +18,21 @@ type CustomersTableProps = {
 
 const CustomersSearch: FC<CustomersTableProps> = ({ opts, setOpts, setLoadingGlobal }) => {
   const greaterThanMobile = useMediaQuery(device.tabletS)
-
   const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
     if (value === '') return setOpts({ ...opts, filter: '', page: 1 })
     if (value.length < 3) return
     return setOpts({ ...opts, filter: value.trim(), page: 1 })
+  }
+
+  const { visible: visibleModalAdd, showModal: showModalAdd, hideModal: hideModalAdd } = useModal()
+  const handleClickButton = () => {
+    showModalAdd()
+  }
+  const handleClickModal = () => {
+    setLoadingGlobal(true)
+    hideModalAdd()
+    setLoadingGlobal(false)
   }
 
   return (
@@ -38,19 +49,40 @@ const CustomersSearch: FC<CustomersTableProps> = ({ opts, setOpts, setLoadingGlo
           placeholder="Buscar cliente por nombre"
         />
       </StyledContainerSearch>
-      <CustomersModal setLoad={setLoadingGlobal} />
+      <Container width={greaterThanMobile ? '10%' : '15%'}>
+        <Button width="100%" className="actions-button" label="+" size="small" onClick={handleClickButton} />
+        <CustomersModal visible={visibleModalAdd} onClose={handleClickModal} />
+      </Container>
     </StyledContainer>
   )
 }
-
 export default CustomersSearch
 
 const StyledContainer = styled(Container)`
-  ${css`
+  ${({ theme }) => css`
     display: flex;
     width: 100%;
     padding: 0 20px;
     justify-content: space-around;
+    .actions-button {
+      span {
+        font-size: 20px;
+      }
+    }
+    @media ${theme.device.tabletS} {
+      .actions-button {
+        span {
+          font-size: 30px;
+        }
+      }
+    }
+    @media ${theme.device.desktopS} {
+      .actions-button {
+        span {
+          font-size: 25px;
+        }
+      }
+    }
   `}
 `
 
