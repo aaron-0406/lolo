@@ -6,6 +6,11 @@ import TextField from '../../../../ui/fields/TextField'
 import { Opts } from '../../../../ui/Pagination/interfaces'
 import Select from '../../../../ui/Select'
 import { SelectItemType } from '../../../../ui/Select/interfaces'
+import Button from '../../../../ui/Button/Button'
+import { useMutation } from 'react-query'
+import notification from '../../../../ui/notification'
+import { DOMAIN } from '../../../../shared/utils/constant/api'
+import { generateExcelOnDailyManagementService } from '../../../../shared/services/client.service'
 
 type CustomerActionsProps = {
   opts: Opts
@@ -17,6 +22,33 @@ const CustomersActions: FC<CustomerActionsProps> = ({ opts, setOpts }) => {
     client: { customer },
     bank: { selectedBank, setSelectedBank },
   } = useLoloContext()
+
+  const { mutate: generateExcel } = useMutation<any, Error>(
+    async () => {
+      return await generateExcelOnDailyManagementService()
+    },
+    {
+      onSuccess: ({ data }) => {
+        const blob = new Blob([data], { type: 'application/octet-stream' })
+        const url = URL.createObjectURL(blob)
+        const a = document.createElement('a')
+        a.href = url
+        a.download = 'archivo.xlsx'
+        a.click()
+
+        notification({
+          type: 'success',
+          message: 'Excel generado',
+        })
+      },
+      onError: (error: any) => {
+        notification({
+          type: 'error',
+          message: error.response.data.message,
+        })
+      },
+    }
+  )
 
   const options: Array<SelectItemType> = customer.customerBanks.map((bank) => {
     return {
@@ -41,14 +73,26 @@ const CustomersActions: FC<CustomerActionsProps> = ({ opts, setOpts }) => {
     return setOpts({ ...opts, filter: value.trim(), page: 1 })
   }
 
+  const onGenerateExcel = () => {
+    generateExcel()
+  }
+
   return (
     <StyledContainer width="100%" display="flex" flexDirection="column" alignItems="center" padding="20px" gap="20px">
-      <Container className="actions__textfield" width="100%">
+      <Container className="actions__textfield" width="100%" display="flex" alignItems="center" gap="10px">
         <TextField
           onChange={onChangeSearch}
           width="100%"
           label="Buscar cliente:"
           placeholder="Buscar cliente por nombre"
+        />
+
+        <Button
+          width="100px"
+          shape="round"
+          trailingIcon="ri-file-excel-line"
+          onClick={onGenerateExcel}
+          disabled={!selectedBank.idBank}
         />
       </Container>
 
