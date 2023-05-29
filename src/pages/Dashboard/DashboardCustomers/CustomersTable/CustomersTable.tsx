@@ -10,6 +10,7 @@ import Table from '../../../../ui/Tables/Table'
 import { customersColumns } from './utils/columns'
 import EmptyStateCell from '../../../../ui/Tables/Table/EmptyStateCell'
 import BodyCell from '../../../../ui/Tables/Table/BodyCell'
+import Button from '../../../../ui/Button'
 
 type CustomersTableProps = {
   opts: Opts
@@ -67,6 +68,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, load }) => {
                 <BodyCell>{`${record.description || ''}`}</BodyCell>
                 <BodyCell textAlign="center">{`${record.state || ''}`}</BodyCell>
                 <BodyCell textAlign="center">{`${moment(record.createdAt).format('DD-MM-YYYY') || ''}`}</BodyCell>
+                <BodyCell textAlign='center'>{<Button leadingIcon='ri-pencil-fill'></Button>}</BodyCell>
               </tr>
             )
           })}

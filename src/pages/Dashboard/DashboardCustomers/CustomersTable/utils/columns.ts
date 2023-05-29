@@ -4,7 +4,7 @@ export const customersColumns: ColumProps[] = [
   {
     id: 'customers.datatable.header.ruc',
     title: 'RUC',
-    width: '30%',
+    width: '20%',
     justifyContent: 'center',
   },
   {
@@ -36,4 +36,10 @@ export const customersColumns: ColumProps[] = [
     width: '10%',
     justifyContent: 'center',
   },
+  {
+    id: 'customers.datatable.header.bottons',
+    title: 'EDITAR',
+    width: '20%',
+    justifyContent: 'center'
+  }
 ]
