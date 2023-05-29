@@ -11,6 +11,6 @@ export const getCustomerByUrl = async (urlIdentifier: string) => {
 export const getCustomerAll = async () => {
   return await axiosClient.get(`${url}/`)
 }
-export const  createClient = async (client: Omit<CustomerType, 'id'>) => {
+export const createClient = async (client: Omit<CustomerType, 'id' | 'customerBanks'>) => {
   return await axiosClient.post(`${url}/`, client)
 }

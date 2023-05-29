@@ -1,6 +1,6 @@
 import { FormProvider, useForm } from 'react-hook-form'
 import styled, { css } from 'styled-components'
-import AddCcustomersActions from './AddCustomersActions'
+import AddCustomersActions from './AddCustomersActions'
 import AddCustomerInfo from './AddCustomersInfo'
 import Container from '../../../../ui/Container'
 import Modal from '../../../../ui/Modal'
@@ -13,7 +13,7 @@ type PModalAddCustomers = {
 }
 
 const ModalAddCustomers = ({ visible, onClose }: PModalAddCustomers) => {
-  const formMethods = useForm<CustomerType>({
+  const formMethods = useForm<Omit<CustomerType, 'customerBanks' | 'createdAt'>>({
     resolver: ModalCustomersResolver,
     mode: 'all',
     defaultValues: {
@@ -31,7 +31,7 @@ const ModalAddCustomers = ({ visible, onClose }: PModalAddCustomers) => {
       <Modal visible={visible} onClose={onClose} id="modal-files" title="Agregar Cliente" contentOverflowY="auto">
         <StyledContainer gap="20px">
           <AddCustomerInfo />
-          <AddCcustomersActions />
+          <AddCustomersActions />
         </StyledContainer>
       </Modal>
     </FormProvider>

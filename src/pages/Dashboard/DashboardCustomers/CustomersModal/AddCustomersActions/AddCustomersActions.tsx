@@ -7,30 +7,24 @@ import notification from '../../../../../ui/notification'
 import { CustomerType } from '../../../../../shared/types/customer.type'
 import { createClient } from '../../../../../shared/services/customer.service'
 
-const AddCcustomersActions = () => {
+const AddCustomersActions = () => {
   const {
     setValue,
     getValues,
     formState: { isValid },
   } = useFormContext<CustomerType>()
 
-  const {
-    isLoading: loadingCreateCustomer,
-    mutate: createCustomer,
-  } = useMutation<any, Error>(
+  const { isLoading: loadingCreateCustomer, mutate: createCustomer } = useMutation<any, Error>(
     async () => {
       const { id, ...restClient } = getValues()
-      console.log(restClient)
       return await createClient(restClient)
     },
     {
       onSuccess: (data) => {
-        console.log("A")
-        notification({ type: 'success', message: 'Cliente creado' })
         setValue('id', data.data.id)
+        notification({ type: 'success', message: 'Cliente creado' })
       },
       onError: (error: any) => {
-        console.log("B")
         notification({
           type: 'error',
           message: error.response.data.message,
@@ -40,7 +34,6 @@ const AddCcustomersActions = () => {
   )
 
   const onAddCustomer = () => {
-    setValue('createdAt', new Date())
     createCustomer()
   }
 
@@ -58,7 +51,7 @@ const AddCcustomersActions = () => {
     </StyledContainer>
   )
 }
-export default AddCcustomersActions
+export default AddCustomersActions
 
 const StyledContainer = styled(Container)`
   ${({ theme }) => css`
