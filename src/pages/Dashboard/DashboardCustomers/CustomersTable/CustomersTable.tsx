@@ -68,7 +68,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, load }) => {
                 <BodyCell>{`${record.description || ''}`}</BodyCell>
                 <BodyCell textAlign="center">{`${record.state || ''}`}</BodyCell>
                 <BodyCell textAlign="center">{`${moment(record.createdAt).format('DD-MM-YYYY') || ''}`}</BodyCell>
-                <BodyCell textAlign='center'>{<Button leadingIcon='ri-pencil-fill'></Button>}</BodyCell>
+                <BodyCell textAlign='center'>{<Button shape='round' leadingIcon='ri-pencil-fill' />}</BodyCell>
               </tr>
             )
           })}

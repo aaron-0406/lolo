@@ -51,7 +51,7 @@ const CustomersSearch: FC<CustomersTableProps> = ({ opts, setOpts, setLoadingGlo
       </StyledContainerSearch>
       <Container width={greaterThanMobile ? '10%' : '15%'}>
         <Button width="100%" className="actions-button" label="+" size="small" onClick={handleClickButton} />
-        <CustomersModal visible={visibleModalAdd} onClose={handleClickModal} />
+        <CustomersModal visible={visibleModalAdd} onClose={handleClickModal}/>
       </Container>
     </StyledContainer>
   )
