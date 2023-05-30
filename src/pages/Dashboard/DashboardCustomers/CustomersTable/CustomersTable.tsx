@@ -1,7 +1,8 @@
 import { Dispatch, FC, useState, useEffect } from 'react'
 import moment from 'moment'
 import { useQuery } from 'react-query'
-import { getCustomerAll } from '../../../../shared/services/customer.service'
+import { useFormContext } from 'react-hook-form'
+import { getCustomerAll, getCustomerByUrl } from '../../../../shared/services/customer.service'
 import { CustomerType } from '../../../../shared/types/customer.type'
 import Container from '../../../../ui/Container'
 import Pagination from '../../../../ui/Pagination'
@@ -11,16 +12,30 @@ import { customersColumns } from './utils/columns'
 import EmptyStateCell from '../../../../ui/Tables/Table/EmptyStateCell'
 import BodyCell from '../../../../ui/Tables/Table/BodyCell'
 import Button from '../../../../ui/Button'
+import CustomerModal from '../CustomersModal'
+import useModal from '../../../../shared/hooks/useModal'
 
 type CustomersTableProps = {
   opts: Opts
   setOpts: Dispatch<Opts>
   load: boolean
 }
-  
+
 const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, load }) => {
+  const { setValue } = useFormContext<CustomerType>()
+
   const [customers, setCustomers] = useState([])
+  const [urlEdit, setUrlEdit] = useState('')
   const [customersCount, setCustomersCount] = useState<number>(0)
+  const { visible: visibleModalAdd, showModal: showModalAdd, hideModal: hideModalAdd } = useModal()
+
+  const handleClickButton = (url: string) => {
+    setUrlEdit(url)
+    showModalAdd()
+  }
+  const handleClickModal = () => {
+    hideModalAdd()
+  }
 
   const { refetch } = useQuery(
     'get-customer-all',
@@ -39,10 +54,31 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, load }) => {
       },
     }
   )
+  const { refetch: refetchEdit } = useQuery(
+    'get-customer-by-url',
+    async () => {
+      return getCustomerByUrl(urlEdit)
+    },
+    {
+      onSuccess: ({ data }) => {
+        if (urlEdit !== '') {
+          setValue('companyName', data.companyName)
+          setValue('description', data.description)
+          setValue('ruc', data.ruc)
+          setValue('state', data.state)
+          setValue('urlIdentifier', data.urlIdentifier)
+        }
+      },
+    }
+  )
 
   useEffect(() => {
     refetch()
   }, [refetch, opts])
+
+  useEffect(() => {
+    refetchEdit()
+  }, [refetchEdit, urlEdit])
 
   return (
     <Container width="100%" height="calc(100% - 112px)" padding="20px">
@@ -66,13 +102,24 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, load }) => {
                 <BodyCell>{`${record.companyName || ''}`}</BodyCell>
                 <BodyCell>{`${record.urlIdentifier || ''}`}</BodyCell>
                 <BodyCell>{`${record.description || ''}`}</BodyCell>
-                <BodyCell textAlign="center">{`${record.state || ''}`}</BodyCell>
+                <BodyCell textAlign="center">{`${record.state ? "activo" : 'inactivo'}`}</BodyCell>
                 <BodyCell textAlign="center">{`${moment(record.createdAt).format('DD-MM-YYYY') || ''}`}</BodyCell>
-                <BodyCell textAlign='center'>{<Button shape='round' leadingIcon='ri-pencil-fill' />}</BodyCell>
+                <BodyCell textAlign="center">
+                  {
+                    <Button
+                      onClick={() => {
+                        handleClickButton(record.urlIdentifier)
+                      }}
+                      shape="round"
+                      leadingIcon="ri-pencil-fill"
+                    />
+                  }
+                </BodyCell>
               </tr>
             )
           })}
       </Table>
+      <CustomerModal visible={visibleModalAdd} onClose={handleClickModal} edit={true} />
     </Container>
   )
 }

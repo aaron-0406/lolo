@@ -8,7 +8,7 @@ import Container from '../../../ui/Container'
 import { Opts } from '../../../ui/Pagination/interfaces'
 
 const DashboardCustomers = () => {
-  const formMethods = useForm<Omit<CustomerType, 'customerBanks' | 'createdAt'>>({
+  const formMethods = useForm<CustomerType>({
     resolver: ModalCustomersResolver,
     mode: 'all',
     defaultValues: {
@@ -17,7 +17,7 @@ const DashboardCustomers = () => {
       companyName: '',
       urlIdentifier: '',
       description: 'no description',
-      state: undefined,
+      state: true,
     },
   })
 

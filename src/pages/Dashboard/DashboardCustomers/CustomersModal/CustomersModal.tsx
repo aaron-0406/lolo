@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components'
 import { useFormContext } from 'react-hook-form'
 import { useMutation } from 'react-query'
 import AddCustomerInfo from './AddCustomersInfo'
-import { createClient } from '../../../../shared/services/customer.service'
+import { createClient, editCustomerById } from '../../../../shared/services/customer.service'
 import { CustomerType } from '../../../../shared/types/customer.type'
 import Container from '../../../../ui/Container'
 import Modal from '../../../../ui/Modal'
@@ -45,7 +45,9 @@ const ModalAddCustomers = ({ visible, onClose, edit }: PModalAddCustomers) => {
     createCustomer()
   }
 
-  const onEditCustomer = () => {}
+  const onEditCustomer = () => {
+    console.log(getValues())
+  }
 
   return (
     <Modal visible={visible} onClose={onClose} id="modal-files" title="Agregar Cliente" contentOverflowY="auto">

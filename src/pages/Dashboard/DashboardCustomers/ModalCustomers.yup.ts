@@ -12,7 +12,7 @@ const ModalCustomers: yup.SchemaOf<Omit<CustomerType, 'customerBanks' | 'created
   companyName: yup.string().required().min(5),
   urlIdentifier: yup.string().required().min(5),
   description: yup.string().optional(),
-  state: yup.boolean().required().oneOf([true]),
+  state: yup.boolean().required(),
 })
 
 export const ModalCustomersResolver = yupResolver(ModalCustomers)
