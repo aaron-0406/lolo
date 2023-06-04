@@ -10,11 +10,12 @@ export const createComment = async (commentParam: CommentType) => {
   let day = dia[0]
   let month = dia[1]
   commentParam.date = `${month}-${day}-${dia[2]}`
-  const { comment, date, negotiation, clientId, customerUserId } = commentParam
+  const { comment, date, negotiation, clientId, customerUserId, managementActionId } = commentParam
   return await axiosClient.post(`${url}`, {
     comment,
     date,
     negotiation,
+    managementActionId,
     clientId,
     customerUserId,
   })
@@ -33,11 +34,12 @@ export const editComment = async (comment: CommentType) => {
   let day = dia[0]
   let month = dia[1]
   comment.date = `${month}-${day}-${dia[2]}`
-  const { comment: commentA, date, id, negotiation, customerUserId } = comment
+  const { comment: commentA, date, id, negotiation, customerUserId, managementActionId } = comment
   return await axiosClient.patch(`${url}/${id}`, {
     comment: commentA,
     date,
     negotiation,
+    managementActionId,
     customerUserId,
   })
 }

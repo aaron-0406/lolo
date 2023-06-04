@@ -8,12 +8,14 @@ import { CustomerType } from '../types/customer.type'
 import { FuncionarioType } from '../types/funcionario.type'
 import { NegotiationType } from '../types/negotiation.type'
 import storage from '../utils/storage'
+import { ManagementActionType } from '../types/management-action.type'
 
 const appLoloClientStateKey = 'lolo:client'
 const appLoloBankStateKey = 'lolo:bank'
 const appLoloCityStateKey = 'lolo:city'
 const appLoloUserStateKey = 'lolo:user'
 const appLoloFuncionarioStateKey = 'lolo:funcionario'
+const appLoloManagementActionStateKey = 'lolo:management:action'
 const appLoloNegotiationStateKey = 'lolo:negotiation'
 const appLoloSelectedBankStateKey = 'lolo:selected:bank'
 
@@ -68,6 +70,10 @@ export const LoloContext = createContext<{
     funcionarios: Array<FuncionarioType>
     setFuncionarios: (funcionarios: Array<FuncionarioType>) => void
   }
+  managementAction: {
+    managementActions: Array<ManagementActionType>
+    setManagementActions: (managementActions: Array<ManagementActionType>) => void
+  }
   negociacion: {
     negociaciones: Array<NegotiationType>
     setNegociaciones: (negociaciones: Array<NegotiationType>) => void
@@ -111,6 +117,11 @@ export const LoloProvider: React.FC<LoloProviderProps> = ({ children }) => {
     []
   )
 
+  const [managementActionsState, setManagementActionsState] = usePersistedState<Array<ManagementActionType>>(
+    appLoloManagementActionStateKey,
+    []
+  )
+
   const [negociacionesState, setNegociacionesState] = usePersistedState<Array<NegotiationType>>(
     appLoloNegotiationStateKey,
     []
@@ -150,6 +161,10 @@ export const LoloProvider: React.FC<LoloProviderProps> = ({ children }) => {
     setFuncionariosState(funcionarios)
   }
 
+  const setManagementActions = (managementActions: Array<ManagementActionType>) => {
+    setManagementActionsState(managementActions)
+  }
+
   const setNegociaciones = (negociaciones: Array<NegotiationType>) => {
     setNegociacionesState(negociaciones)
   }
@@ -163,6 +178,7 @@ export const LoloProvider: React.FC<LoloProviderProps> = ({ children }) => {
     setCitiesState([])
     setUsersState([])
     setFuncionariosState([])
+    setManagementActions([])
     setNegociacionesState([])
     setSelectedBankState({
       idBank: '',
@@ -210,6 +226,10 @@ export const LoloProvider: React.FC<LoloProviderProps> = ({ children }) => {
         funcionario: {
           funcionarios: funcionariosState,
           setFuncionarios: setFuncionarios,
+        },
+        managementAction: {
+          managementActions: managementActionsState,
+          setManagementActions: setManagementActions,
         },
         negociacion: {
           negociaciones: negociacionesState,

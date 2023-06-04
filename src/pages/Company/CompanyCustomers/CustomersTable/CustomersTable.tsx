@@ -21,6 +21,7 @@ import { FilterOptionsProps } from '../../../../ui/Tables/Table/Table'
 import { FuncionarioType } from '../../../../shared/types/funcionario.type'
 import { CustomerUserType } from '../../../../shared/types/customer-user.type'
 import { CityType } from '../../../../shared/types/city.type'
+import { getAllManagementActionsByCHB } from '../../../../shared/services/management-action.service'
 
 type CustomersTableProps = {
   opts: Opts
@@ -33,6 +34,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
       customer: { urlIdentifier },
     },
     bank: { selectedBank },
+    managementAction: { setManagementActions },
     negociacion: { negociaciones, setNegociaciones },
     funcionario: { funcionarios, setFuncionarios },
     user: { users },
@@ -43,9 +45,11 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
 
   const [customers, setCustomers] = useState([])
   const [customersCount, setCustomersCount] = useState<number>(0)
+
   const [isLoading, setIsLoading] = useState(false)
   const [isLoadingNegotiations, setIsLoadingNegotiations] = useState(false)
   const [isLoadingFuncionarions, setIsLoadingFuncionarions] = useState(false)
+  const [isLoadingManagementActions, setIsLoadingManagementActions] = useState(false)
 
   const [filterOptions, setFilterOptions] = useState<Array<FilterOptionsProps>>([])
   const [selectedFilterOptions, setSelectedFilterOptions] = useState<Array<FilterOptionsProps>>([])
@@ -127,6 +131,20 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
     }
   )
 
+  const { refetch: refetchManagementActions } = useQuery(
+    'query-get-all-management-actions',
+    async () => {
+      return await getAllManagementActionsByCHB(selectedBank.idCHB)
+    },
+    {
+      enabled: !!selectedBank.idCHB.length,
+      onSuccess: (response) => {
+        setManagementActions(response.data)
+        setIsLoadingManagementActions(false)
+      },
+    }
+  )
+
   const { refetch: refetchNegotiations } = useQuery(
     'query-get-all-negociaciones',
     async () => {
@@ -159,11 +177,13 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
     if (selectedBank.idCHB.length) {
       setIsLoadingNegotiations(true)
       setIsLoadingFuncionarions(true)
+      setIsLoadingManagementActions(true)
 
       refetchNegotiations()
       refetchFuncionarios()
+      refetchManagementActions()
     }
-  }, [selectedBank, refetch, refetchNegotiations, refetchFuncionarios])
+  }, [selectedBank, refetch, refetchNegotiations, refetchFuncionarios, refetchManagementActions])
 
   useEffect(() => {
     const optionsFuncionarios = funcionarios.map((funcionario) => {
@@ -312,7 +332,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
         filterOptions={filterOptions}
         onChangeFilterOptions={onChangeFilterOptions}
         resetFilters={resetFilters}
-        loading={isLoading || isLoadingNegotiations || isLoadingFuncionarions}
+        loading={isLoading || isLoadingNegotiations || isLoadingFuncionarions || isLoadingManagementActions}
         isArrayEmpty={!customers.length}
         emptyState={
           <EmptyStateCell colSpan={customersColumns.length}>
