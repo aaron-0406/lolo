@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import styled, { css } from 'styled-components'
-import { Controller, useFormContext } from 'react-hook-form'
+import { Controller } from 'react-hook-form'
 import { FormProvider, useForm } from 'react-hook-form'
 import { ModalCustomersResolver } from './ModalCustomers.yup'
 import { useMutation, useQuery } from 'react-query'
