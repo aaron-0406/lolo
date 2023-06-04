@@ -6,7 +6,6 @@ import { Opts } from '../../../ui/Pagination/interfaces'
 
 const DashboardCustomers = () => {
   
-
   const [loading, setLoading] = useState<boolean>(false)
   const [opts, setOpts] = useState<Opts>({ filter: '', limit: 50, page: 1 })
 
@@ -15,7 +14,6 @@ const DashboardCustomers = () => {
   }
 
   return (
-    
       <Container
         width="100%"
         height="100%"

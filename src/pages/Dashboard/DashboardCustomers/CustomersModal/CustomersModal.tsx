@@ -20,7 +20,7 @@ type PModalAddCustomers = {
   edits?: { edit: boolean; url: string }
 }
 
-const defaultValuesCustomer: Omit<CustomerType, 'customerBanks' | 'createdAt' > = {
+const defaultValuesCustomer: Omit<CustomerType, 'customerBanks' | 'createdAt'> = {
   id: 0,
   ruc: '',
   companyName: '',
@@ -136,7 +136,15 @@ const ModalAddCustomers = ({ visible, onClose, edits = { edit: false, url: '' } 
         title="Agregar Cliente"
         contentOverflowY="auto"
       >
-        <StyledContainer gap="20px">
+        <Container
+          width="100%"
+          height="410px"
+          display="flex"
+          justify-content="center"
+          flex-direction="column"
+          align-items="center"
+          gap="20px"
+        >
           <Container width="100%" display="flex" flexDirection="column" gap="10px" padding="20px">
             <AddCustomerInfo />
             <Container width="100%" display={edits?.edit ? 'none' : 'flex'} gap="10px">
@@ -174,7 +182,7 @@ const ModalAddCustomers = ({ visible, onClose, edits = { edit: false, url: '' } 
               disabled={!isValid}
             />
           </StyledContainerButton>
-        </StyledContainer>
+        </Container>
       </Modal>
     </FormProvider>
   )
@@ -182,16 +190,6 @@ const ModalAddCustomers = ({ visible, onClose, edits = { edit: false, url: '' } 
 
 export default ModalAddCustomers
 
-const StyledContainer = styled(Container)`
-  ${css`
-    width: 100%;
-    height: 410px;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-  `}
-`
 const StyledContainerButton = styled(Container)`
   ${({ theme }) => css`
     @media ${theme.device.tabletL} {

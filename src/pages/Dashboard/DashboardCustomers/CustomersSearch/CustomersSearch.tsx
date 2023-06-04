@@ -18,6 +18,8 @@ type CustomersTableProps = {
 
 const CustomersSearch: FC<CustomersTableProps> = ({ opts, setOpts, setLoadingGlobal }) => {
   const greaterThanMobile = useMediaQuery(device.tabletS)
+  const { visible: visibleModalAdd, showModal: showModalAdd, hideModal: hideModalAdd } = useModal()
+  
   const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
     if (value === '') return setOpts({ ...opts, filter: '', page: 1 })
@@ -25,7 +27,6 @@ const CustomersSearch: FC<CustomersTableProps> = ({ opts, setOpts, setLoadingGlo
     return setOpts({ ...opts, filter: value.trim(), page: 1 })
   }
 
-  const { visible: visibleModalAdd, showModal: showModalAdd, hideModal: hideModalAdd } = useModal()
   const handleClickButton = () => {
     showModalAdd()
   }
@@ -36,8 +37,8 @@ const CustomersSearch: FC<CustomersTableProps> = ({ opts, setOpts, setLoadingGlo
   }
 
   return (
-    <StyledContainer>
-      <StyledContainerSearch className="search__textfield">
+    <StyledContainer display="flex" width="100%" padding=" 0 20px" justify-content="space-around">
+      <StyledContainerSearch width="75%" display="flex" justify-content="space-around" className="search__textfield">
         <Container display={greaterThanMobile ? 'block' : 'none'} padding="0 5px 0 0">
           <Text.Body className="actions__texfield-label" size="l" weight="bold">
             Buscar:
@@ -51,7 +52,7 @@ const CustomersSearch: FC<CustomersTableProps> = ({ opts, setOpts, setLoadingGlo
       </StyledContainerSearch>
       <Container width={greaterThanMobile ? '10%' : '15%'}>
         <Button width="100%" className="actions-button" label="+" size="small" onClick={handleClickButton} />
-        <CustomersModal visible={visibleModalAdd} onClose={handleClickModal}/>
+        <CustomersModal visible={visibleModalAdd} onClose={handleClickModal} />
       </Container>
     </StyledContainer>
   )
@@ -60,15 +61,12 @@ export default CustomersSearch
 
 const StyledContainer = styled(Container)`
   ${({ theme }) => css`
-    display: flex;
-    width: 100%;
-    padding: 0 20px;
-    justify-content: space-around;
     .actions-button {
       span {
         font-size: 20px;
       }
     }
+
     @media ${theme.device.tabletS} {
       .actions-button {
         span {
@@ -76,6 +74,7 @@ const StyledContainer = styled(Container)`
         }
       }
     }
+
     @media ${theme.device.desktopS} {
       .actions-button {
         span {
@@ -88,9 +87,6 @@ const StyledContainer = styled(Container)`
 
 const StyledContainerSearch = styled(Container)`
   ${({ theme }) => css`
-    width: 75%;
-    display: flex;
-    justify-content: space-around;
     @media ${theme.device.tabletS} {
       .search__textfield {
         width: 80%;

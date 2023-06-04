@@ -31,7 +31,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, load }) => {
     showModalAdd()
   }
   const handleClickModal = () => {
-    setUrlEdit("")
+    setUrlEdit('')
     hideModalAdd()
   }
 
