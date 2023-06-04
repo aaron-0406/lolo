@@ -3,7 +3,6 @@ import { CustomerType } from '../../../../../shared/types/customer.type'
 import Container from '../../../../../ui/Container'
 import TextAreaField from '../../../../../ui/fields/TextAreaField'
 import Label from '../../../../../ui/Label'
-import Checkbox from '../../../../../ui/Checkbox'
 import TextField from '../../../../../ui/fields/TextField'
 
 const AddCustomerInfo = () => {
@@ -13,7 +12,7 @@ const AddCustomerInfo = () => {
   } = useFormContext<CustomerType>()
 
   return (
-    <Container width="100%" display="flex" flexDirection="column" gap="10px" padding="20px">
+    <>
       <Container width="100%" display="flex" gap="10px">
         <Label label="Ruc: " />
         <Controller
@@ -60,23 +59,7 @@ const AddCustomerInfo = () => {
           )}
         />
       </Container>
-      <Container width="100%" display="flex" gap="10px">
-        <Label label="Estado:" />
-        <Controller
-          name="state"
-          control={control}
-          render={({ field }) => (
-            <Checkbox
-              width="100%"
-              value={String(field.value)}
-              onChange={(key) => {
-                field.onChange(key)
-              }}
-            />
-          )}
-        />
-      </Container>
-    </Container>
+    </>
   )
 }
 

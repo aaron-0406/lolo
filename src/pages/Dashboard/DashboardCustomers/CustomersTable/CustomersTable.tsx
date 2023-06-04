@@ -1,8 +1,7 @@
 import { Dispatch, FC, useState, useEffect } from 'react'
 import moment from 'moment'
 import { useQuery } from 'react-query'
-import { useFormContext } from 'react-hook-form'
-import { getCustomerAll, getCustomerByUrl } from '../../../../shared/services/customer.service'
+import { getCustomerAll } from '../../../../shared/services/customer.service'
 import { CustomerType } from '../../../../shared/types/customer.type'
 import Container from '../../../../ui/Container'
 import Pagination from '../../../../ui/Pagination'
@@ -22,8 +21,6 @@ type CustomersTableProps = {
 }
 
 const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, load }) => {
-  const { setValue } = useFormContext<CustomerType>()
-
   const [customers, setCustomers] = useState([])
   const [urlEdit, setUrlEdit] = useState('')
   const [customersCount, setCustomersCount] = useState<number>(0)
@@ -34,6 +31,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, load }) => {
     showModalAdd()
   }
   const handleClickModal = () => {
+    setUrlEdit("")
     hideModalAdd()
   }
 
@@ -44,6 +42,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, load }) => {
     },
     {
       onSuccess: ({ data }) => {
+        console.log(data)
         if (opts.filter !== '') {
           data = data.filter((filt: CustomerType) => {
             return filt.companyName.substring(0, opts.filter.length).toUpperCase() === opts.filter.toUpperCase()
@@ -54,31 +53,10 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, load }) => {
       },
     }
   )
-  const { refetch: refetchEdit } = useQuery(
-    'get-customer-by-url',
-    async () => {
-      return getCustomerByUrl(urlEdit)
-    },
-    {
-      onSuccess: ({ data }) => {
-        if (urlEdit !== '') {
-          setValue('companyName', data.companyName)
-          setValue('description', data.description)
-          setValue('ruc', data.ruc)
-          setValue('state', data.state)
-          setValue('urlIdentifier', data.urlIdentifier)
-        }
-      },
-    }
-  )
 
   useEffect(() => {
     refetch()
   }, [refetch, opts])
-
-  useEffect(() => {
-    refetchEdit()
-  }, [refetchEdit, urlEdit])
 
   return (
     <Container width="100%" height="calc(100% - 112px)" padding="20px">
@@ -102,7 +80,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, load }) => {
                 <BodyCell>{`${record.companyName || ''}`}</BodyCell>
                 <BodyCell>{`${record.urlIdentifier || ''}`}</BodyCell>
                 <BodyCell>{`${record.description || ''}`}</BodyCell>
-                <BodyCell textAlign="center">{`${record.state ? "activo" : 'inactivo'}`}</BodyCell>
+                <BodyCell textAlign="center">{`${record.state ? 'activo' : 'inactivo'}`}</BodyCell>
                 <BodyCell textAlign="center">{`${moment(record.createdAt).format('DD-MM-YYYY') || ''}`}</BodyCell>
                 <BodyCell textAlign="center">
                   {
@@ -119,7 +97,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, load }) => {
             )
           })}
       </Table>
-      <CustomerModal visible={visibleModalAdd} onClose={handleClickModal} edit={true} />
+      <CustomerModal visible={visibleModalAdd} onClose={handleClickModal} edits={{ edit: true, url: urlEdit }} />
     </Container>
   )
 }
