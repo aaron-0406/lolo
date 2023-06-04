@@ -19,7 +19,7 @@ type CustomersTableProps = {
 const CustomersSearch: FC<CustomersTableProps> = ({ opts, setOpts, setLoadingGlobal }) => {
   const greaterThanMobile = useMediaQuery(device.tabletS)
   const { visible: visibleModalAdd, showModal: showModalAdd, hideModal: hideModalAdd } = useModal()
-  
+
   const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
     if (value === '') return setOpts({ ...opts, filter: '', page: 1 })
@@ -30,60 +30,34 @@ const CustomersSearch: FC<CustomersTableProps> = ({ opts, setOpts, setLoadingGlo
   const handleClickButton = () => {
     showModalAdd()
   }
+
   const handleClickModal = () => {
     setLoadingGlobal(true)
     hideModalAdd()
-    setLoadingGlobal(false)
   }
 
   return (
-    <StyledContainer display="flex" width="100%" padding=" 0 20px" justify-content="space-around">
-      <StyledContainerSearch width="75%" display="flex" justify-content="space-around" className="search__textfield">
-        <Container display={greaterThanMobile ? 'block' : 'none'} padding="0 5px 0 0">
+    <Container display="flex" width="100%" padding=" 0 20px" justify-content="space-around">
+      <StyledContainerSearch
+        width="calc(100% - 60px)"
+        display="flex"
+        justify-content="space-around"
+        className="search__textfield"
+        margin="0 20px 0 0"
+      >
+        <Container display={greaterThanMobile ? 'block' : 'none'} padding="0 10px 0 0">
           <Text.Body className="actions__texfield-label" size="l" weight="bold">
             Buscar:
           </Text.Body>
         </Container>
-        <TextField
-          onChange={onChangeSearch}
-          width={greaterThanMobile ? '85%' : '100%'}
-          placeholder="Buscar cliente por nombre"
-        />
+        <TextField onChange={onChangeSearch} width="100%" placeholder="Buscar cliente por nombre" />
       </StyledContainerSearch>
-      <Container width={greaterThanMobile ? '10%' : '15%'}>
-        <Button width="100%" className="actions-button" label="+" size="small" onClick={handleClickButton} />
-        <CustomersModal visible={visibleModalAdd} onClose={handleClickModal} />
-      </Container>
-    </StyledContainer>
+      <Button shape="round" leadingIcon="ri-add-fill" width="100%" size="small" onClick={handleClickButton} />
+      <CustomersModal visible={visibleModalAdd} onClose={handleClickModal} />
+    </Container>
   )
 }
 export default CustomersSearch
-
-const StyledContainer = styled(Container)`
-  ${({ theme }) => css`
-    .actions-button {
-      span {
-        font-size: 20px;
-      }
-    }
-
-    @media ${theme.device.tabletS} {
-      .actions-button {
-        span {
-          font-size: 30px;
-        }
-      }
-    }
-
-    @media ${theme.device.desktopS} {
-      .actions-button {
-        span {
-          font-size: 25px;
-        }
-      }
-    }
-  `}
-`
 
 const StyledContainerSearch = styled(Container)`
   ${({ theme }) => css`

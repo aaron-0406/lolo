@@ -107,6 +107,7 @@ const ModalAddCustomers = ({ visible, onClose, edits = { edit: false, url: '' } 
 
   const onAddCustomer = () => {
     createCustomer()
+    onClose()
   }
 
   const onEditCustomer = () => {
@@ -133,7 +134,7 @@ const ModalAddCustomers = ({ visible, onClose, edits = { edit: false, url: '' } 
         visible={visible}
         onClose={handleClickCloseModal}
         id="modal-files"
-        title="Agregar Cliente"
+        title={edits?.edit ? 'Editar Cliente' : 'Agregar Cliente'}
         contentOverflowY="auto"
       >
         <Container
@@ -141,7 +142,7 @@ const ModalAddCustomers = ({ visible, onClose, edits = { edit: false, url: '' } 
           height="410px"
           display="flex"
           justify-content="center"
-          flex-direction="column"
+          flexDirection="column"
           align-items="center"
           gap="20px"
         >

@@ -19,12 +19,6 @@ export const customersColumns: ColumProps[] = [
     justifyContent: 'space-between',
   },
   {
-    id: 'customers.datatable.header.description',
-    title: 'DESCRIPCION',
-    width: '30%',
-    justifyContent: 'space-between',
-  },
-  {
     id: 'customers.datatable.header.state',
     title: 'ESTADO',
     width: '10%',

@@ -18,9 +18,10 @@ type CustomersTableProps = {
   opts: Opts
   setOpts: Dispatch<Opts>
   load: boolean
+  setLoadingGlobal: (state: boolean) => void
 }
 
-const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, load }) => {
+const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, load, setLoadingGlobal }) => {
   const [customers, setCustomers] = useState([])
   const [urlEdit, setUrlEdit] = useState('')
   const [customersCount, setCustomersCount] = useState<number>(0)
@@ -50,13 +51,14 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, load }) => {
         }
         setCustomers(data)
         setCustomersCount(data.length)
+        setLoadingGlobal(false)
       },
     }
   )
 
   useEffect(() => {
     refetch()
-  }, [refetch, opts])
+  }, [refetch,load, opts])
 
   return (
     <Container width="100%" height="calc(100% - 112px)" padding="20px">
@@ -79,7 +81,6 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, load }) => {
                 <BodyCell textAlign="center">{`${record.ruc || ''}`}</BodyCell>
                 <BodyCell>{`${record.companyName || ''}`}</BodyCell>
                 <BodyCell>{`${record.urlIdentifier || ''}`}</BodyCell>
-                <BodyCell>{`${record.description || ''}`}</BodyCell>
                 <BodyCell textAlign="center">{`${record.state ? 'activo' : 'inactivo'}`}</BodyCell>
                 <BodyCell textAlign="center">{`${moment(record.createdAt).format('DD-MM-YYYY') || ''}`}</BodyCell>
                 <BodyCell textAlign="center">
