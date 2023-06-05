@@ -23,6 +23,7 @@ const CompanyCobranzaCommentSchema: yup.SchemaOf<Omit<CommentType, 'id'>> = yup.
   comment: yup.string().required(),
   date: yup.string().required(),
   negotiation: yup.string().required(),
+  managementActionId: yup.number().optional(),
 })
 
 export const CompanyCobranzaResolver = yupResolver(CompanyCobranzaSchema)
