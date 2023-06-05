@@ -1,16 +1,18 @@
 import { useFormContext } from 'react-hook-form'
 import { useMutation } from 'react-query'
 import styled, { css } from 'styled-components'
-import Button from '../../../../../../ui/Button'
-import Container from '../../../../../../ui/Container'
-import notification from '../../../../../../ui/notification'
-import { CustomerType } from '../../../../../../shared/types/customer.type'
-import { createClient, getCustomerAll } from '../../../../../../shared/services/customer.service'
-import { useLoloContext } from '../../../../../../shared/contexts/LoloProvider'
+import Button from '../../../../../ui/Button'
+import Container from '../../../../../ui/Container'
+import notification from '../../../../../ui/notification'
+import { CustomerType } from '../../../../../shared/types/customer.type'
+import { createClient } from '../../../../../shared/services/customer.service'
 
-const AddCcustomersActions = () => {
-  
-  const { setValue, reset, handleSubmit, getValues } = useFormContext<CustomerType>()
+const AddCustomersActions = () => {
+  const {
+    setValue,
+    getValues,
+    formState: { isValid },
+  } = useFormContext<CustomerType>()
 
   const { isLoading: loadingCreateCustomer, mutate: createCustomer } = useMutation<any, Error>(
     async () => {
@@ -32,11 +34,7 @@ const AddCcustomersActions = () => {
   )
 
   const onAddCustomer = () => {
-    handleSubmit(() => {
-      createCustomer()
-    })()
-    let a = getCustomerAll();
-    console.log(a)
+    createCustomer()
   }
 
   return (
@@ -48,11 +46,12 @@ const AddCcustomersActions = () => {
         trailingIcon="ri-add-fill"
         onClick={onAddCustomer}
         loading={loadingCreateCustomer}
+        disabled={!isValid}
       />
     </StyledContainer>
   )
 }
-export default AddCcustomersActions
+export default AddCustomersActions
 
 const StyledContainer = styled(Container)`
   ${({ theme }) => css`

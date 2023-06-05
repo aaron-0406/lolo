@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import yup from '../../../shared/yupLocale'
-import { CustomerType } from '../../../shared/types/customer.type'
+import yup from '../../../../shared/yupLocale'
+import { CustomerType } from '../../../../shared/types/customer.type'
 
 const ModalCustomers: yup.SchemaOf<Omit<CustomerType, 'customerBanks' | 'createdAt' | 'id'>> = yup.object().shape({
   ruc: yup
@@ -12,7 +12,7 @@ const ModalCustomers: yup.SchemaOf<Omit<CustomerType, 'customerBanks' | 'created
   companyName: yup.string().required().min(5),
   urlIdentifier: yup.string().required().min(5),
   description: yup.string().optional(),
-  state: yup.boolean().required(),
+  state: yup.boolean().required().oneOf([true]),
 })
 
 export const ModalCustomersResolver = yupResolver(ModalCustomers)
