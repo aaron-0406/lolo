@@ -33,7 +33,7 @@ const ModalManagementExcel = () => {
           message: 'Excel generado',
         })
       },
-      onError: (error: any) => {
+      onError: () => {
         notification({
           type: 'error',
           message: 'No se encontraron suficientes gestiones para exportar.',
