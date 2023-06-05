@@ -58,7 +58,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, load, setLoadi
 
   useEffect(() => {
     refetch()
-  }, [refetch,load, opts])
+  }, [refetch, load, opts])
 
   return (
     <Container width="100%" height="calc(100% - 112px)" padding="20px">
