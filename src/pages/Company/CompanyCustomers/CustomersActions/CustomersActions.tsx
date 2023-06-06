@@ -87,7 +87,7 @@ const CustomersActions: FC<CustomerActionsProps> = ({ opts, setOpts }) => {
         onClose={hideModalManagementExcel}
         contentOverflowY="auto"
         size="small"
-        minHeight="300px"
+        minHeight="360px"
       >
         <ModalManagementExcel />
       </Modal>

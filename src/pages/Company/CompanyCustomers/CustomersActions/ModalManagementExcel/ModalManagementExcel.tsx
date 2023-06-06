@@ -7,17 +7,25 @@ import moment from 'moment'
 import Container from '../../../../../ui/Container/Container'
 import Button from '../../../../../ui/Button'
 import { useLoloContext } from '../../../../../shared/contexts/LoloProvider'
+import Select from '../../../../../ui/Select'
+import { SelectItemType } from '../../../../../ui/Select/interfaces'
 
 const ModalManagementExcel = () => {
   const {
+    city: { cities },
     bank: { selectedBank },
   } = useLoloContext()
 
+  const [currentCityId, setCurrentCityId] = useState<string>('')
   const [currentDate, setCurrentDate] = useState(moment(new Date()).format('DD-MM-YYYY'))
+  const [loadingGenerateExcel, setLoadingGenerateExcel] = useState<boolean>(false)
 
   const { mutate: generateExcel } = useMutation<any, Error>(
     async () => {
-      return await generateExcelOnDailyManagementService(moment(currentDate, 'DD-MM-YYYY').toDate())
+      return await generateExcelOnDailyManagementService(
+        moment(currentDate, 'DD-MM-YYYY').toDate(),
+        parseInt(currentCityId)
+      )
     },
     {
       onSuccess: ({ data }) => {
@@ -28,12 +36,15 @@ const ModalManagementExcel = () => {
         a.download = 'archivo.xlsx'
         a.click()
 
+        setLoadingGenerateExcel(false)
+
         notification({
           type: 'success',
           message: 'Excel generado',
         })
       },
       onError: () => {
+        setLoadingGenerateExcel(false)
         notification({
           type: 'error',
           message: 'No se encontraron suficientes gestiones para exportar.',
@@ -42,12 +53,20 @@ const ModalManagementExcel = () => {
     }
   )
 
+  const optionsCities: Array<SelectItemType> = cities.map((city) => {
+    return {
+      key: String(city.id),
+      label: city.name,
+    }
+  })
+
   const onGenerateExcel = () => {
+    setLoadingGenerateExcel(true)
     generateExcel()
   }
 
   return (
-    <Container width="100%" padding="20px">
+    <Container width="100%" padding="20px" display="flex" flexDirection="column" gap="10px">
       <DatePicker
         required
         label="Fecha"
@@ -60,12 +79,24 @@ const ModalManagementExcel = () => {
         }}
       />
 
+      <Select
+        width="100%"
+        label="Ciudad"
+        value={currentCityId}
+        options={optionsCities}
+        onChange={(key) => {
+          setCurrentCityId(key)
+        }}
+        hasError={!currentCityId.length}
+      />
+
       <Button
         width="100%"
         label="Generar Excel"
         trailingIcon="ri-file-excel-line"
         onClick={onGenerateExcel}
-        disabled={!selectedBank.idBank}
+        loading={loadingGenerateExcel}
+        disabled={!selectedBank.idBank || !currentCityId.length}
       />
     </Container>
   )
