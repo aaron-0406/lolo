@@ -49,8 +49,8 @@ export const deleteClient = async (code: string, chb: number, idCustomer: number
   return await axiosClient.delete(`${url}/${code}/${chb}/${idCustomer}`)
 }
 
-export const generateExcelOnDailyManagementService = async (date: Date) => {
-  return await axiosClient.get(`${url}/download-excel-daily-management?date=${date}`, {
+export const generateExcelOnDailyManagementService = async (date: Date, cityId: number) => {
+  return await axiosClient.get(`${url}/download-excel-daily-management?date=${date}&cityId=${cityId}`, {
     responseType: 'blob',
   })
 }
