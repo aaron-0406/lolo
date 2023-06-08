@@ -4,17 +4,17 @@ import { Controller } from 'react-hook-form'
 import { FormProvider, useForm } from 'react-hook-form'
 import { ModalCustomersResolver } from './ModalCustomers.yup'
 import { useMutation, useQuery } from 'react-query'
-import AddCustomerInfo from './AddCustomersInfo'
-import { createClient, editCustomerById, getCustomerByUrl } from '../../../../shared/services/customer.service'
-import { CustomerType } from '../../../../shared/types/customer.type'
-import Container from '../../../../ui/Container'
-import Modal from '../../../../ui/Modal'
-import notification from '../../../../ui/notification'
-import Button from '../../../../ui/Button'
-import Checkbox from '../../../../ui/Checkbox'
-import Label from '../../../../ui/Label'
+import AddCustomersInfo from './AddCustomersInfo'
+import { createClient, editCustomerById, getCustomerByUrl } from '../../../../../shared/services/customer.service'
+import { CustomerType } from '../../../../../shared/types/customer.type'
+import Container from '../../../../../ui/Container'
+import Modal from '../../../../../ui/Modal'
+import notification from '../../../../../ui/notification'
+import Button from '../../../../../ui/Button'
+import Checkbox from '../../../../../ui/Checkbox'
+import Label from '../../../../../ui/Label'
 
-type PModalAddCustomers = {
+type CustomersModalProps = {
   visible: boolean
   onClose: () => void
   edits?: { edit: boolean; url: string }
@@ -29,7 +29,7 @@ const defaultValuesCustomer: Omit<CustomerType, 'customerBanks' | 'createdAt'> =
   state: true,
 }
 
-const ModalAddCustomers = ({ visible, onClose, edits = { edit: false, url: '' } }: PModalAddCustomers) => {
+const CustomersModal = ({ visible, onClose, edits = { edit: false, url: '' } }: CustomersModalProps) => {
   const formMethods = useForm<CustomerType>({
     resolver: ModalCustomersResolver,
     mode: 'all',
@@ -147,7 +147,7 @@ const ModalAddCustomers = ({ visible, onClose, edits = { edit: false, url: '' } 
           gap="20px"
         >
           <Container width="100%" display="flex" flexDirection="column" gap="10px" padding="20px">
-            <AddCustomerInfo />
+            <AddCustomersInfo />
             <Container width="100%" display={edits?.edit ? 'none' : 'flex'} gap="10px">
               <Label label="Estado:" />
               <Controller
@@ -189,7 +189,7 @@ const ModalAddCustomers = ({ visible, onClose, edits = { edit: false, url: '' } 
   )
 }
 
-export default ModalAddCustomers
+export default CustomersModal
 
 const StyledContainerButton = styled(Container)`
   ${({ theme }) => css`

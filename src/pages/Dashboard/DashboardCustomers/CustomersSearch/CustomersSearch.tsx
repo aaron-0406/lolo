@@ -6,7 +6,7 @@ import Text from '../../../../ui/Text'
 import { useMediaQuery } from '../../../../shared/hooks/useMediaQuery'
 import { device } from '../../../../shared/breakpoints/reponsive'
 import { Opts } from '../../../../ui/Pagination/interfaces'
-import CustomersModal from '../CustomersModal'
+import CustomersModal from '../Modals/CustomersModal'
 import Button from '../../../../ui/Button'
 import useModal from '../../../../shared/hooks/useModal'
 

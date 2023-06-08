@@ -11,7 +11,7 @@ import { customersColumns } from './utils/columns'
 import EmptyStateCell from '../../../../ui/Tables/Table/EmptyStateCell'
 import BodyCell from '../../../../ui/Tables/Table/BodyCell'
 import Button from '../../../../ui/Button'
-import CustomerModal from '../CustomersModal'
+import CustomerModal from '../Modals/CustomersModal'
 import useModal from '../../../../shared/hooks/useModal'
 
 type CustomersTableProps = {
