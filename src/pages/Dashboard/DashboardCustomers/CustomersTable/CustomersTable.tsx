@@ -27,10 +27,13 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, load, setLoadi
   const [customersCount, setCustomersCount] = useState<number>(0)
   const { visible: visibleModalAdd, showModal: showModalAdd, hideModal: hideModalAdd } = useModal()
 
-  const handleClickButton = (url: string) => {
+  const handleClickButtonAddClient = (url: string) => {
     setUrlEdit(url)
     showModalAdd()
   }
+
+  const handleClickButtonUser = (id: number) => {}
+
   const handleClickModal = () => {
     setUrlEdit('')
     hideModalAdd()
@@ -87,10 +90,21 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, load, setLoadi
                   {
                     <Button
                       onClick={() => {
-                        handleClickButton(record.urlIdentifier)
+                        handleClickButtonAddClient(record.urlIdentifier)
                       }}
                       shape="round"
                       leadingIcon="ri-pencil-fill"
+                    />
+                  }
+                </BodyCell>
+                <BodyCell textAlign="center">
+                  {
+                    <Button
+                      onClick={() => {
+                        handleClickButtonUser(record.id)
+                      }}
+                      shape="round"
+                      leadingIcon="ri-user-search-fill"
                     />
                   }
                 </BodyCell>

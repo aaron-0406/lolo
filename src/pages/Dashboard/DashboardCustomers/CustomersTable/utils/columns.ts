@@ -31,8 +31,14 @@ export const customersColumns: ColumProps[] = [
     justifyContent: 'center',
   },
   {
-    id: 'customers.datatable.header.bottons',
+    id: 'customers.datatable.header.editcliente',
     title: 'EDITAR',
+    width: '20%',
+    justifyContent: 'center',
+  },
+  {
+    id: 'customers.datatable.header.addusers',
+    title: 'USUARIOS',
     width: '20%',
     justifyContent: 'center',
   },
