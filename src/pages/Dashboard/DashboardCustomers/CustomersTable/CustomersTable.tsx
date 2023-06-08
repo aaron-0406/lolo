@@ -13,6 +13,7 @@ import BodyCell from '../../../../ui/Tables/Table/BodyCell'
 import Button from '../../../../ui/Button'
 import CustomerModal from '../Modals/CustomersModal'
 import useModal from '../../../../shared/hooks/useModal'
+import UsersModal from '../Modals/UsersModal/UsersModal'
 
 type CustomersTableProps = {
   opts: Opts
@@ -25,18 +26,25 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, load, setLoadi
   const [customers, setCustomers] = useState([])
   const [urlEdit, setUrlEdit] = useState('')
   const [customersCount, setCustomersCount] = useState<number>(0)
-  const { visible: visibleModalAdd, showModal: showModalAdd, hideModal: hideModalAdd } = useModal()
+  const { visible: visibleModalCustomer, showModal: showModalCustomer, hideModal: hideModalCustomer } = useModal()
+  const { visible: visibleModalUser, showModal: showModalUser, hideModal: hideModalUser } = useModal()
 
   const handleClickButtonAddClient = (url: string) => {
     setUrlEdit(url)
-    showModalAdd()
+    showModalCustomer()
   }
 
-  const handleClickButtonUser = (id: number) => {}
+  const handleClickButtonUser = (id: number) => {
+    showModalUser()
+  }
+
+  const handleClickUser = () => {
+    hideModalUser()
+  }
 
   const handleClickModal = () => {
     setUrlEdit('')
-    hideModalAdd()
+    hideModalCustomer()
   }
 
   const { refetch } = useQuery(
@@ -112,7 +120,8 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, load, setLoadi
             )
           })}
       </Table>
-      <CustomerModal visible={visibleModalAdd} onClose={handleClickModal} edits={{ edit: true, url: urlEdit }} />
+      <CustomerModal visible={visibleModalCustomer} onClose={handleClickModal} edits={{ edit: true, url: urlEdit }} />
+      <UsersModal visible={visibleModalUser} onClose={handleClickUser}/>
     </Container>
   )
 }
