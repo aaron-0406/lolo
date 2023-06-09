@@ -6,6 +6,10 @@ import TextField from '../../../../ui/fields/TextField'
 import { Opts } from '../../../../ui/Pagination/interfaces'
 import Select from '../../../../ui/Select'
 import { SelectItemType } from '../../../../ui/Select/interfaces'
+import Button from '../../../../ui/Button/Button'
+import Modal from '../../../../ui/Modal'
+import useModal from '../../../../shared/hooks/useModal'
+import ModalManagementExcel from './ModalManagementExcel/ModalManagementExcel'
 
 type CustomerActionsProps = {
   opts: Opts
@@ -17,6 +21,12 @@ const CustomersActions: FC<CustomerActionsProps> = ({ opts, setOpts }) => {
     client: { customer },
     bank: { selectedBank, setSelectedBank },
   } = useLoloContext()
+
+  const {
+    visible: visibleModalManagementExcel,
+    showModal: showModalManagementExcel,
+    hideModal: hideModalManagementExcel,
+  } = useModal()
 
   const options: Array<SelectItemType> = customer.customerBanks.map((bank) => {
     return {
@@ -43,12 +53,20 @@ const CustomersActions: FC<CustomerActionsProps> = ({ opts, setOpts }) => {
 
   return (
     <StyledContainer width="100%" display="flex" flexDirection="column" alignItems="center" padding="20px" gap="20px">
-      <Container className="actions__textfield" width="100%">
+      <Container className="actions__textfield" width="100%" display="flex" alignItems="center" gap="10px">
         <TextField
           onChange={onChangeSearch}
           width="100%"
           label="Buscar cliente:"
           placeholder="Buscar cliente por nombre"
+        />
+
+        <Button
+          width="100px"
+          shape="round"
+          trailingIcon="ri-file-excel-line"
+          onClick={showModalManagementExcel}
+          disabled={!selectedBank.idBank}
         />
       </Container>
 
@@ -61,6 +79,18 @@ const CustomersActions: FC<CustomerActionsProps> = ({ opts, setOpts }) => {
           onChange={onChangeBank}
         />
       </Container>
+
+      <Modal
+        id="modal-eport-excel"
+        title="EXPORTAR EXCEL DE GESTIÓN"
+        visible={visibleModalManagementExcel}
+        onClose={hideModalManagementExcel}
+        contentOverflowY="auto"
+        size="small"
+        minHeight="360px"
+      >
+        <ModalManagementExcel />
+      </Modal>
     </StyledContainer>
   )
 }

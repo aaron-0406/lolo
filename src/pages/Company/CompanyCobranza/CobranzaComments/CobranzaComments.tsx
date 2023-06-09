@@ -24,9 +24,12 @@ type Comment = CommentType & { customerUser: CustomerUserType }
 const CobranzaComments = () => {
   const { getValues: getValuesClient } = useFormContext<ClientType>()
   const [comments, setComments] = useState<Comment[]>([])
+
   const {
     customerUser: { user },
+    managementAction: { managementActions },
   } = useLoloContext()
+
   const {
     control,
     setValue,
@@ -150,6 +153,7 @@ const CobranzaComments = () => {
     setValue('comment', comment.comment)
     setValue('customerUserId', comment.customerUserId)
     setValue('negotiation', comment.negotiation)
+    setValue('managementActionId', comment.managementActionId)
   }
 
   const onAddComment = () => {
@@ -179,6 +183,13 @@ const CobranzaComments = () => {
     { key: 'REUNIÓN OFICINA', label: 'REUNIÓN OFICINA' },
     { key: 'MENSAJE WHATSAPP', label: 'MENSAJE WHATSAPP' },
   ]
+
+  const optionsActions: Array<SelectItemType> = managementActions.map((managementAction) => {
+    return {
+      key: String(managementAction.id),
+      label: managementAction.nameAction,
+    }
+  })
 
   const onClean = () => {
     reset()
@@ -250,7 +261,7 @@ const CobranzaComments = () => {
         <Button width="100px" shape="round" display="warning" trailingIcon="ri-brush-2-line" onClick={onClean} />
       </Container>
 
-      <Container width="100%">
+      <Container width="100%" display="flex" flexDirection="column" gap="5px">
         <Controller
           name="negotiation"
           control={control}
@@ -267,6 +278,24 @@ const CobranzaComments = () => {
             />
           )}
         />
+
+        <Controller
+          name="managementActionId"
+          control={control}
+          render={({ field }) => (
+            <Select
+              disabled={!getValuesClient('id')}
+              width="100%"
+              value={!!field.value ? String(field.value) : ''}
+              options={optionsActions}
+              onChange={(key) => {
+                field.onChange(parseInt(key))
+              }}
+              hasError={!!errors.managementActionId}
+            />
+          )}
+        />
+
         <Controller
           name="comment"
           control={control}
@@ -288,7 +317,7 @@ const CobranzaComments = () => {
 
       <StyledContainerCommentsList
         width="100%"
-        height="400px"
+        height="380px"
         backgroundColor="#fff"
         display="flex"
         flexDirection="column"
