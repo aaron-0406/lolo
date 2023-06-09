@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react'
-import styled, { css } from 'styled-components'
 import { Controller } from 'react-hook-form'
 import { FormProvider, useForm } from 'react-hook-form'
-import { ModalCustomersResolver } from './ModalCustomers.yup'
+import { ModalCustomersResolver } from './CustomersModal.yup'
 import { useMutation, useQuery } from 'react-query'
-import AddCustomersInfo from './AddCustomersInfo'
+import CustomerInfoForm from './CustomerInfoForm'
 import { createClient, editCustomerById, getCustomerByUrl } from '../../../../../shared/services/customer.service'
 import { CustomerType } from '../../../../../shared/types/customer.type'
 import Container from '../../../../../ui/Container'
@@ -125,7 +124,7 @@ const CustomersModal = ({ visible, onClose, edits = { edit: false, url: '' } }: 
 
   useEffect(() => {
     refetchEdit()
-  }, [urlEdit])
+  }, [urlEdit, refetchEdit])
 
   return (
     <FormProvider {...formMethods}>
@@ -146,7 +145,7 @@ const CustomersModal = ({ visible, onClose, edits = { edit: false, url: '' } }: 
           gap="20px"
         >
           <Container width="100%" display="flex" flexDirection="column" gap="10px" padding="20px">
-            <AddCustomersInfo />
+            <CustomerInfoForm />
             <Container width="100%" display={edits?.edit ? 'none' : 'flex'} gap="10px">
               <Label label="Estado:" />
               <Controller
@@ -164,14 +163,7 @@ const CustomersModal = ({ visible, onClose, edits = { edit: false, url: '' } }: 
               />
             </Container>
           </Container>
-          <StyledContainerButton
-            width="100%"
-            height="75px"
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            gap="20px"
-          >
+          <Container width="100%" height="75px" display="flex" justifyContent="center" alignItems="center" gap="20px">
             <Button
               width="125px"
               label={edits?.edit ? 'Editar' : 'Agregar'}
@@ -181,7 +173,7 @@ const CustomersModal = ({ visible, onClose, edits = { edit: false, url: '' } }: 
               loading={loadingCreateCustomer || loadingEditCustomer}
               disabled={!isValid}
             />
-          </StyledContainerButton>
+          </Container>
         </Container>
       </Modal>
     </FormProvider>
@@ -189,14 +181,3 @@ const CustomersModal = ({ visible, onClose, edits = { edit: false, url: '' } }: 
 }
 
 export default CustomersModal
-
-const StyledContainerButton = styled(Container)`
-  ${({ theme }) => css`
-    @media ${theme.device.tabletL} {
-      gap: 10px;
-    }
-    @media ${theme.device.desktopL} {
-      gap: 30px;
-    }
-  `}
-`

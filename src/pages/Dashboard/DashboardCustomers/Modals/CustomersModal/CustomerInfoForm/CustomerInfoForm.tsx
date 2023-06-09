@@ -5,7 +5,7 @@ import TextAreaField from '../../../../../../ui/fields/TextAreaField'
 import Label from '../../../../../../ui/Label'
 import TextField from '../../../../../../ui/fields/TextField'
 
-const AddCustomersInfo = () => {
+const CustomerInfoForm = () => {
   const {
     control,
     formState: { errors },
@@ -63,4 +63,4 @@ const AddCustomersInfo = () => {
   )
 }
 
-export default AddCustomersInfo
+export default CustomerInfoForm

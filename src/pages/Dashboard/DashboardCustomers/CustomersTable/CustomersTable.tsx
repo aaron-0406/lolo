@@ -103,6 +103,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, load, setLoadi
                         handleClickButtonAddClient(record.urlIdentifier)
                       }}
                       shape="round"
+                      size="small"
                       leadingIcon="ri-pencil-fill"
                     />
                   }
@@ -114,6 +115,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, load, setLoadi
                         handleClickButtonUser(record.id)
                       }}
                       shape="round"
+                      size="small"
                       leadingIcon="ri-user-search-fill"
                     />
                   }

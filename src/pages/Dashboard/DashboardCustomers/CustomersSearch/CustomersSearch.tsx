@@ -1,14 +1,13 @@
-import styled, { css } from 'styled-components'
 import { Dispatch, FC } from 'react'
 import Container from '../../../../ui/Container'
 import TextField from '../../../../ui/fields/TextField'
-import Text from '../../../../ui/Text'
 import { useMediaQuery } from '../../../../shared/hooks/useMediaQuery'
 import { device } from '../../../../shared/breakpoints/reponsive'
 import { Opts } from '../../../../ui/Pagination/interfaces'
 import CustomersModal from '../Modals/CustomersModal'
 import Button from '../../../../ui/Button'
 import useModal from '../../../../shared/hooks/useModal'
+import Label from '../../../../ui/Label/Label'
 
 type CustomersTableProps = {
   opts: Opts
@@ -17,6 +16,7 @@ type CustomersTableProps = {
 }
 
 const CustomersSearch: FC<CustomersTableProps> = ({ opts, setOpts, setLoadingGlobal }) => {
+  
   const greaterThanMobile = useMediaQuery(device.tabletS)
   const { visible: visibleModalAdd, showModal: showModalAdd, hideModal: hideModalAdd } = useModal()
 
@@ -38,33 +38,21 @@ const CustomersSearch: FC<CustomersTableProps> = ({ opts, setOpts, setLoadingGlo
 
   return (
     <Container display="flex" width="100%" padding=" 0 20px" justify-content="space-around">
-      <StyledContainerSearch
+      <Container
         width="calc(100% - 60px)"
         display="flex"
         justify-content="space-around"
         className="search__textfield"
         margin="0 20px 0 0"
       >
-        <Container display={greaterThanMobile ? 'block' : 'none'} padding="0 10px 0 0">
-          <Text.Body className="actions__texfield-label" size="l" weight="bold">
-            Buscar:
-          </Text.Body>
+        <Container display={greaterThanMobile ? 'flex' : 'none'} padding="0 10px 0 0">
+          <Label label="Buscar:" />
         </Container>
         <TextField onChange={onChangeSearch} width="100%" placeholder="Buscar cliente por nombre" />
-      </StyledContainerSearch>
+      </Container>
       <Button shape="round" leadingIcon="ri-add-fill" size="small" onClick={handleClickButton} />
       <CustomersModal visible={visibleModalAdd} onClose={handleClickModal} />
     </Container>
   )
 }
 export default CustomersSearch
-
-const StyledContainerSearch = styled(Container)`
-  ${({ theme }) => css`
-    @media ${theme.device.tabletS} {
-      .search__textfield {
-        width: 80%;
-      }
-    }
-  `}
-`
