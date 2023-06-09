@@ -1,17 +1,16 @@
 import { useState } from 'react'
-import Container from '../../../ui/Container'
 import CustomersSearch from './CustomersSearch'
 import CustomersTable from './CustomersTable'
+import Container from '../../../ui/Container'
 import { Opts } from '../../../ui/Pagination/interfaces'
 
 const DashboardCustomers = () => {
   const [loading, setLoading] = useState<boolean>(false)
+  const [opts, setOpts] = useState<Opts>({ filter: '', limit: 50, page: 1 })
 
   const setLoadingGlobal = (state: boolean) => {
     setLoading(state)
   }
-
-  const [opts, setOpts] = useState<Opts>({ filter: '', limit: 50, page: 1 })
 
   return (
     <Container
@@ -24,7 +23,7 @@ const DashboardCustomers = () => {
       gap="20px"
     >
       <CustomersSearch opts={opts} setOpts={setOpts} setLoadingGlobal={setLoadingGlobal} />
-      <CustomersTable opts={opts} setOpts={setOpts} load={loading} />
+      <CustomersTable opts={opts} setOpts={setOpts} load={loading} setLoadingGlobal={setLoadingGlobal} />
     </Container>
   )
 }

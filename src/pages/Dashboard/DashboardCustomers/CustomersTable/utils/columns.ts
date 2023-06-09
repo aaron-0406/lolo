@@ -4,7 +4,7 @@ export const customersColumns: ColumProps[] = [
   {
     id: 'customers.datatable.header.ruc',
     title: 'RUC',
-    width: '30%',
+    width: '20%',
     justifyContent: 'center',
   },
   {
@@ -19,12 +19,6 @@ export const customersColumns: ColumProps[] = [
     justifyContent: 'space-between',
   },
   {
-    id: 'customers.datatable.header.description',
-    title: 'DESCRIPCION',
-    width: '30%',
-    justifyContent: 'space-between',
-  },
-  {
     id: 'customers.datatable.header.state',
     title: 'ESTADO',
     width: '10%',
@@ -34,6 +28,12 @@ export const customersColumns: ColumProps[] = [
     id: 'customers.datatable.header.date',
     title: 'FECHA DE REGISTRO',
     width: '10%',
+    justifyContent: 'center',
+  },
+  {
+    id: 'customers.datatable.header.bottons',
+    title: 'EDITAR',
+    width: '20%',
     justifyContent: 'center',
   },
 ]

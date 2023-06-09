@@ -10,16 +10,31 @@ import Table from '../../../../ui/Tables/Table'
 import { customersColumns } from './utils/columns'
 import EmptyStateCell from '../../../../ui/Tables/Table/EmptyStateCell'
 import BodyCell from '../../../../ui/Tables/Table/BodyCell'
+import Button from '../../../../ui/Button'
+import CustomerModal from '../CustomersModal'
+import useModal from '../../../../shared/hooks/useModal'
 
 type CustomersTableProps = {
   opts: Opts
   setOpts: Dispatch<Opts>
   load: boolean
+  setLoadingGlobal: (state: boolean) => void
 }
-  
-const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, load }) => {
+
+const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, load, setLoadingGlobal }) => {
   const [customers, setCustomers] = useState([])
+  const [urlEdit, setUrlEdit] = useState('')
   const [customersCount, setCustomersCount] = useState<number>(0)
+  const { visible: visibleModalAdd, showModal: showModalAdd, hideModal: hideModalAdd } = useModal()
+
+  const handleClickButton = (url: string) => {
+    setUrlEdit(url)
+    showModalAdd()
+  }
+  const handleClickModal = () => {
+    setUrlEdit('')
+    hideModalAdd()
+  }
 
   const { refetch } = useQuery(
     'get-customer-all',
@@ -28,6 +43,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, load }) => {
     },
     {
       onSuccess: ({ data }) => {
+        console.log(data)
         if (opts.filter !== '') {
           data = data.filter((filt: CustomerType) => {
             return filt.companyName.substring(0, opts.filter.length).toUpperCase() === opts.filter.toUpperCase()
@@ -35,13 +51,14 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, load }) => {
         }
         setCustomers(data)
         setCustomersCount(data.length)
+        setLoadingGlobal(false)
       },
     }
   )
 
   useEffect(() => {
     refetch()
-  }, [refetch, opts])
+  }, [refetch, load, opts])
 
   return (
     <Container width="100%" height="calc(100% - 112px)" padding="20px">
@@ -64,13 +81,24 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, load }) => {
                 <BodyCell textAlign="center">{`${record.ruc || ''}`}</BodyCell>
                 <BodyCell>{`${record.companyName || ''}`}</BodyCell>
                 <BodyCell>{`${record.urlIdentifier || ''}`}</BodyCell>
-                <BodyCell>{`${record.description || ''}`}</BodyCell>
-                <BodyCell textAlign="center">{`${record.state || ''}`}</BodyCell>
+                <BodyCell textAlign="center">{`${record.state ? 'activo' : 'inactivo'}`}</BodyCell>
                 <BodyCell textAlign="center">{`${moment(record.createdAt).format('DD-MM-YYYY') || ''}`}</BodyCell>
+                <BodyCell textAlign="center">
+                  {
+                    <Button
+                      onClick={() => {
+                        handleClickButton(record.urlIdentifier)
+                      }}
+                      shape="round"
+                      leadingIcon="ri-pencil-fill"
+                    />
+                  }
+                </BodyCell>
               </tr>
             )
           })}
       </Table>
+      <CustomerModal visible={visibleModalAdd} onClose={handleClickModal} edits={{ edit: true, url: urlEdit }} />
     </Container>
   )
 }
