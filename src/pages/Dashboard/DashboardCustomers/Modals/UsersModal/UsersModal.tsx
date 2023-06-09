@@ -43,14 +43,6 @@ const UsersModal = ({ visible, onClose, id }: CustomersModalProps) => {
   const [users, setUsers] = useState([])
   const [filter, setFilter] = useState('')
 
-  const {
-    setValue,
-    getValues,
-    control,
-    reset,
-    formState: { isValid },
-  } = formMethods
-
   const handleClickCloseModal = () => {
     onClose()
   }
