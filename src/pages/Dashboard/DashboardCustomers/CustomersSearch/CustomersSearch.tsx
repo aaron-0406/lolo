@@ -52,7 +52,7 @@ const CustomersSearch: FC<CustomersTableProps> = ({ opts, setOpts, setLoadingGlo
         </Container>
         <TextField onChange={onChangeSearch} width="100%" placeholder="Buscar cliente por nombre" />
       </StyledContainerSearch>
-      <Button shape="round" leadingIcon="ri-add-fill" width="100%" size="small" onClick={handleClickButton} />
+      <Button shape="round" leadingIcon="ri-add-fill" size="small" onClick={handleClickButton} />
       <CustomersModal visible={visibleModalAdd} onClose={handleClickModal} />
     </Container>
   )

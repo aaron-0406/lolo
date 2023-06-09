@@ -87,7 +87,6 @@ const CustomersModal = ({ visible, onClose, edits = { edit: false, url: '' } }: 
   const { refetch: refetchEdit } = useQuery(
     'get-customer-by-url',
     async () => {
-      console.log('paint')
       return getCustomerByUrl(urlEdit)
     },
     {

@@ -28,23 +28,26 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, load, setLoadi
   const [customersCount, setCustomersCount] = useState<number>(0)
   const { visible: visibleModalCustomer, showModal: showModalCustomer, hideModal: hideModalCustomer } = useModal()
   const { visible: visibleModalUser, showModal: showModalUser, hideModal: hideModalUser } = useModal()
+  const [idCustomer, setIdCustomer] = useState(0)
 
   const handleClickButtonAddClient = (url: string) => {
     setUrlEdit(url)
     showModalCustomer()
   }
 
+  const handleClickModal = () => {
+    setUrlEdit('')
+    hideModalCustomer()
+  }
+
   const handleClickButtonUser = (id: number) => {
+    setIdCustomer(id)
     showModalUser()
   }
 
   const handleClickUser = () => {
+    setIdCustomer(0)
     hideModalUser()
-  }
-
-  const handleClickModal = () => {
-    setUrlEdit('')
-    hideModalCustomer()
   }
 
   const { refetch } = useQuery(
@@ -54,7 +57,6 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, load, setLoadi
     },
     {
       onSuccess: ({ data }) => {
-        console.log(data)
         if (opts.filter !== '') {
           data = data.filter((filt: CustomerType) => {
             return filt.companyName.substring(0, opts.filter.length).toUpperCase() === opts.filter.toUpperCase()
@@ -121,7 +123,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, load, setLoadi
           })}
       </Table>
       <CustomerModal visible={visibleModalCustomer} onClose={handleClickModal} edits={{ edit: true, url: urlEdit }} />
-      <UsersModal visible={visibleModalUser} onClose={handleClickUser}/>
+      <UsersModal visible={visibleModalUser} onClose={handleClickUser} id={idCustomer} />
     </Container>
   )
 }
