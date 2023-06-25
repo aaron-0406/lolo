@@ -7,6 +7,7 @@ import { CustomerType } from '../../types/customer.type'
 import storage from '../../utils/storage'
 import { GuestParamsType } from '../GuestRoutesCompany/GuestRoutesCompany.interfaces'
 import RedirectRoute from '../RedirectRoute'
+import { useEffect, useState } from 'react'
 
 type ProtectedRoutesCompanyProps = {
   pathname: string
@@ -25,30 +26,43 @@ const ProtectedRoutesCompany: React.FC<ProtectedRoutesCompanyProps> = ({ pathnam
   const { urlIdentifier } = useParams<GuestParamsType>()
   const {
     auth: { authenticate, setAuthenticate },
-    client: { customer, setCustomer },
+    client: { setCustomer },
     customerUser: { user },
   } = useLoloContext()
 
-  const { isLoading, isError } = useQuery(
+  const [isLoading, setIsLoading] = useState(true)
+
+  const { isError, refetch } = useQuery(
     'query-customer',
     async () => {
       return await getCustomerByUrl(urlIdentifier ?? '')
     },
     {
+      enabled: false,
       onSuccess: (response) => {
         setCustomer(response.data)
+
+        if (user.customerId !== response.data.id && user.customerId !== 0) {
+          setCustomer(initialCustomerState)
+          setAuthenticate(false)
+          storage.clear()
+          return <RedirectRoute pathname={pathname.replace(':urlIdentifier', urlIdentifier + '')} />
+        }
+
+        setIsLoading(false)
+      },
+      onError: () => {
+        setIsLoading(false)
       },
     }
   )
 
-  //TODO: Get isAuthenticated from context - useGeneralContext
+  useEffect(() => {
+    setIsLoading(true)
+    refetch()
+  }, [])
 
-  if (user.customerId !== customer.id && user.customerId !== 0) {
-    setCustomer(initialCustomerState)
-    setAuthenticate(false)
-    storage.clear()
-    return <RedirectRoute pathname={pathname.replace(':urlIdentifier', urlIdentifier + '')} />
-  }
+  //TODO: Get isAuthenticated from context - useGeneralContext
 
   if (!authenticate) {
     return <RedirectRoute pathname={pathname.replace(':urlIdentifier', urlIdentifier + '')} />

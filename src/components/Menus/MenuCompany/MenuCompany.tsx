@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import { Link } from 'react-router-dom'
 import styled, { css } from 'styled-components'
@@ -20,6 +20,8 @@ type MenuCompanyProps = {
 
 const MenuCompany: React.FC<MenuCompanyProps> = ({ children, urlIdentifier }) => {
   const [toggleMenu, setToggleMenu] = useState(false)
+  const [isLoadingCities, setIsLoadingCities] = useState(false)
+  const [isLoadingUsers, setIsLoadingUsers] = useState(false)
 
   const {
     client: { customer },
@@ -39,39 +41,57 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({ children, urlIdentifier }) =>
     }
   }
 
-  const { isLoading: isLoadingCities } = useQuery(
-    'query-get-all-cities',
-    async () => {
-      return await getAllCities()
-    },
-    {
-      onSuccess: (response) => {
-        setCities(response.data)
-      },
-    }
-  )
-
-  const { isLoading: isLoadingUsers } = useQuery(
-    'query-get-all-users-by-id',
-    async () => {
-      return await getAllUsersByID(customer.id)
-    },
-    {
-      onSuccess: (response) => {
-        setUsers(response.data)
-      },
-    }
-  )
-
-  if (isLoadingCities || isLoadingUsers) {
-    return <div>Loading</div>
-  }
-
   // Log Out
   const logOut = () => {
     clearAll()
     storage.clear()
     setAuthenticate(false)
+  }
+
+  const { refetch: refetchCities } = useQuery(
+    'query-get-all-cities',
+    async () => {
+      return await getAllCities()
+    },
+    {
+      enabled: false,
+      onSuccess: (response) => {
+        setCities(response.data)
+        setIsLoadingCities(false)
+      },
+      onError: () => {
+        setIsLoadingCities(false)
+      },
+    }
+  )
+
+  const { refetch: refetchUsers } = useQuery(
+    'query-get-all-users-by-id',
+    async () => {
+      return await getAllUsersByID(customer.id)
+    },
+    {
+      enabled: false,
+      onSuccess: (response) => {
+        setUsers(response.data)
+        setIsLoadingUsers(false)
+      },
+      onError: () => {
+        setIsLoadingUsers(false)
+      },
+    }
+  )
+
+  useEffect(() => {
+    setIsLoadingCities(true)
+    setIsLoadingUsers(true)
+
+    refetchCities()
+    refetchUsers()
+  }, [])
+
+  if (isLoadingCities || isLoadingUsers) {
+    return <div>Loading</div>
   }
 
   return (
@@ -116,7 +136,7 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({ children, urlIdentifier }) =>
                   </Link>
                 )
               }
-              return <></>
+              return <div key={item.id}></div>
             })}
             <Link to={paths.company.login(urlIdentifier)} className="nav__items" onClick={logOut}>
               <Icon remixClass="ri-logout-circle-line" />
