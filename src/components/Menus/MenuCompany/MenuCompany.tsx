@@ -88,6 +88,7 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({ children, urlIdentifier }) =>
 
     refetchCities()
     refetchUsers()
+    // eslint-disable-next-line
   }, [])
 
   if (isLoadingCities || isLoadingUsers) {

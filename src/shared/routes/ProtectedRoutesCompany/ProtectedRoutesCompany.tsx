@@ -60,6 +60,7 @@ const ProtectedRoutesCompany: React.FC<ProtectedRoutesCompanyProps> = ({ pathnam
   useEffect(() => {
     setIsLoading(true)
     refetch()
+    // eslint-disable-next-line
   }, [])
 
   //TODO: Get isAuthenticated from context - useGeneralContext
