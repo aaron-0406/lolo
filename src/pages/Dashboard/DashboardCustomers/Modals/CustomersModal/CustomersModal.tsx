@@ -67,8 +67,7 @@ const CustomersModal = ({ visible, onClose, edits = { edit: false, url: '' } }: 
   const { isLoading: loadingEditCustomer, mutate: EditCustomer } = useMutation<any, Error>(
     async () => {
       const { id, customerBanks, createdAt, state, ...restClient } = getValues()
-      let ID = getValues('id')
-      return await editCustomerById(ID, restClient)
+      return await editCustomerById(id, restClient)
     },
     {
       onSuccess: () => {
