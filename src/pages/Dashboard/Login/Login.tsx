@@ -11,8 +11,14 @@ import Container from '../../../ui/Container'
 import TextField from '../../../ui/fields/TextField'
 import Icon from '../../../ui/Icon'
 import notification from '../../../ui/notification'
+import { useDashContext } from '../../../shared/contexts/DashProvider'
 
 const Login = () => {
+  const {
+    dashUser: { setUser },
+    auth: { setAuthenticate },
+  } = useDashContext()
+
   const {
     handleSubmit,
     control,
