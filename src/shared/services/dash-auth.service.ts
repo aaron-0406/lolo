@@ -1,4 +1,4 @@
-import { LoginType } from '../types/dash-auth.type'
+import { LoginType } from '../types/auth-dash.type'
 import axiosClient from '../utils/api/clientAxios'
 import { AxiosResponse } from 'axios'
 import { UserAppType } from '../types/user-app'

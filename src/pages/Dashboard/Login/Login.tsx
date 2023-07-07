@@ -2,7 +2,7 @@ import { Controller, useForm } from 'react-hook-form'
 import { useMutation } from 'react-query'
 import LoginHeader from '../../../components/Login/LoginHeader'
 import { StyledLoginContainer } from '../../../components/Login/LoginStyled'
-import { LoginType } from '../../../shared/types/auth.type'
+import { LoginType } from '../../../shared/types/auth-dash.type'
 import { ResponseLogin, signin } from '../../../shared/services/dash-auth.service'
 import { LoginResolver } from './Login.yup'
 import storage from '../../../shared/utils/storage'
@@ -15,12 +15,11 @@ import { useDashContext } from '../../../shared/contexts/DashProvider'
 
 const Login = () => {
   const {
-    dashUser: { setUser },
+    dashUser: { setUser, user },
     auth: { setAuthenticate },
   } = useDashContext()
 
   const {
-    handleSubmit,
     control,
     getValues,
     setValue,
@@ -31,7 +30,7 @@ const Login = () => {
     defaultValues: {
       email: '',
       password: '',
-      customerId: 0,
+      id: 1,
     },
   })
 
@@ -43,12 +42,12 @@ const Login = () => {
     {
       onSuccess: ({ data }) => {
         storage.set('token', data.token)
-        // setUser(data.user)
-        // setAuthenticate(true)
+        setUser(data.user)
+        setAuthenticate(true)
         notification({ type: 'success', message: 'Bienvenido' })
       },
       onError: (error: any) => {
-        // setAuthenticate(false)
+        setAuthenticate(false)
         notification({
           type: 'error',
           message: error.response.data.message,
@@ -57,10 +56,9 @@ const Login = () => {
     }
   )
   const onLogin = () => {
-    // setValue('customerId', customer.id)
-    handleSubmit(() => {
-      loginQuery()
-    })()
+    console.log('a')
+    // setValue('id', user.id)
+    loginQuery()
   }
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
