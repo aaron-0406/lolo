@@ -32,6 +32,13 @@ export const getMenuItems = (urlIdentifier: string) => {
     },
     {
       id: 4,
+      title: 'METAS',
+      remixClass: 'ri-pie-chart-2-fill',
+      path: paths.company.metas(urlIdentifier),
+      admin: false,
+    },
+    {
+      id: 5,
       title: 'DOCUMENTOS',
       remixClass: 'ri-file-text-line',
       path: paths.company.document(urlIdentifier),
