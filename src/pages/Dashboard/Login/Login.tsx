@@ -22,7 +22,6 @@ const Login = () => {
   const {
     control,
     getValues,
-    setValue,
     formState: { errors },
   } = useForm<LoginType>({
     resolver: LoginResolver,
@@ -30,7 +29,6 @@ const Login = () => {
     defaultValues: {
       email: '',
       password: '',
-      id: 1,
     },
   })
 
@@ -55,11 +53,12 @@ const Login = () => {
       },
     }
   )
+
   const onLogin = () => {
-    console.log('a')
-    // setValue('id', user.id)
+    console.log(user)
     loginQuery()
   }
+
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       onLogin()
