@@ -13,7 +13,11 @@ import Modal from '../../../../../ui/Modal'
 import useModal from '../../../../../shared/hooks/useModal'
 import ModalUsers from './ModalUsers'
 
-const Form = () => {
+type FormProps = {
+  setLoading: (load: boolean)=> void
+}
+
+const Form = ({setLoading}: FormProps) => {
   const [file, setFile] = useState<File>()
   const [loading, setloading] = useState<boolean>(false)
   const { setValue } = useFormContext<DashFormType>()
@@ -35,6 +39,7 @@ const Form = () => {
     if (!file) return
     try {
       setloading(true)
+      setLoading(true)
       const formData = new FormData()
       formData.append('file', file)
       formData.append('customerId', String(id))
@@ -44,6 +49,7 @@ const Form = () => {
         type: 'success',
       })
       setloading(false)
+      setLoading(false)
       const { clientsAdded, clientsDeleted, productsAdded, productsCastigo, productsDeleted } = data
       setValue('clientsAdded', clientsAdded)
       setValue('clientsDeleted', clientsDeleted)
@@ -52,6 +58,7 @@ const Form = () => {
       setValue('productsCastigo', productsCastigo)
     } catch (error: any) {
       setloading(false)
+      setLoading(false)
       notification({
         message: error.message,
         type: 'error',

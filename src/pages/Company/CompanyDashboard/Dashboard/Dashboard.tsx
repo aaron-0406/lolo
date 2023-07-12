@@ -8,9 +8,10 @@ import Form from './Form'
 import { DashFormType } from './hookform.type'
 import TableClientsAdded from '../Tables/TableClientsAdded'
 import TableClientsDeleted from './TableClientsDeleted'
-import TableProductsCastigo from './TableProductCastigo/TableProductsCastigo'
+import TableProductsCastigo from '../Tables/TableProductCastigo'
 import TableProductsAdded from './TableProductsAdded'
 import TableProductsDeleted from './TableProductsDeleted'
+import { useState } from 'react'
 
 const Dashboard = () => {
   const formMethods = useForm<DashFormType>({
@@ -32,6 +33,7 @@ const Dashboard = () => {
 
   const { watch, setValue } = formMethods
   const greaterThanDesktopS = useMediaQuery(device.desktopS)
+  const [globalLoading, setGlobalLoading] = useState(false)
 
   const handleChangeTab = (e: React.MouseEvent<HTMLButtonElement>) => {
     onResetTabs()
@@ -59,7 +61,7 @@ const Dashboard = () => {
         overFlowY="auto"
         height="100%"
       >
-        <Form />
+        <Form setLoading={(load)=>{setGlobalLoading(load)}}/>
         <Container width="100%" display="flex" flexDirection={greaterThanDesktopS ? 'row' : 'column-reverse'}>
           <StyledButton
             onClick={handleChangeTab}
@@ -93,11 +95,11 @@ const Dashboard = () => {
           />
         </Container>
         <Container width="100%" display="flex" flexDirection="column" gap="10px">
-          {watch('selected.clientAddedButton') && <TableClientsAdded />}
+          {watch('selected.clientAddedButton') && <TableClientsAdded globalLoad={globalLoading}/>}
           {watch('selected.clientDeletedButton') && <TableClientsDeleted />}
           {watch('selected.productAddedButton') && <TableProductsAdded />}
           {watch('selected.productDeletedButton') && <TableProductsDeleted />}
-          {watch('selected.productCastigoButton') && <TableProductsCastigo />}
+          {watch('selected.productCastigoButton') && <TableProductsCastigo globalLoad={globalLoading}/>}
         </Container>
       </Container>
     </FormProvider>

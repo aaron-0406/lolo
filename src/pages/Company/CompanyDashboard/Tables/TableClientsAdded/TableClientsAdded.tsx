@@ -14,7 +14,11 @@ import BodyCell from '../../../../../ui/Tables/Table/BodyCell'
 import EmptyStateCell from '../../../../../ui/Tables/Table/EmptyStateCell'
 import Actions from '../../Dashboard/Actions'
 
-const TableClientsAdded = () => {
+type PropsTableClientAdded = {
+  globalLoad: boolean
+}
+
+const TableClientsAdded = ({ globalLoad }: PropsTableClientAdded) => {
   const { watch, setValue } = useFormContext<DashFormType>()
   const [clients, setClients] = useState(watch('clientsAdded'))
   const [client, setClient] = useState<ProductTypeName>(clients[0])
@@ -104,15 +108,27 @@ const TableClientsAdded = () => {
     createProducts()
   }
 
+  const handleFilter = (event: string) => {
+    clients
+      .filter(
+        (item) =>
+          item.clientCode.toLowerCase().includes(filter.toLowerCase()) ||
+          item.clientName.toLowerCase().includes(filter.toLowerCase())
+      )
+      .map((record: ProductTypeName) => setClient(record))
+      //esto solo funciona cuando existe un filtro, en caso de no haber no se activara
+    setFilter(event)
+  }
+
   useEffect(() => {
     setClients(watch('clientsAdded'))
-  }, [])
+  }, [globalLoad, watch])
 
   return (
     <Container width="100%" height="calc(100% - 112px)" padding="20px">
       <Actions
         setFilter={(e) => {
-          setFilter(e.target.value)
+          handleFilter(e.target.value)
         }}
         handleClick={handleAddClient}
         isLoading={isLoadingCreateC}
@@ -121,7 +137,7 @@ const TableClientsAdded = () => {
       <Table
         top="300px"
         columns={Columns}
-        loading={isLoadingCreateC}
+        loading={isLoadingCreateC || globalLoad}
         isArrayEmpty={!clients}
         emptyState={
           <EmptyStateCell colSpan={Columns.length}>
@@ -136,17 +152,18 @@ const TableClientsAdded = () => {
                 item.clientCode.toLowerCase().includes(filter.toLowerCase()) ||
                 item.clientName.toLowerCase().includes(filter.toLowerCase())
             )
-            .map((record: ProductTypeName) => {
-              setClient(record)
+            .map((record: ProductTypeName, index: number) => {
+              console.log(index)
               return (
-                <tr className="styled-data-table-row" key={client.id}>
-                  <BodyCell textAlign="center">{`${client.id || ''}`}</BodyCell>
-                  <BodyCell>{`${client.code || ''}`}</BodyCell>
-                  <BodyCell>{`${client.name || ''}`}</BodyCell>
+                <tr className="styled-data-table-row" key={record.id}>
+                  <BodyCell textAlign="center">{`${index + 1 || ''}`}</BodyCell>
+                  <BodyCell>{`${record.clientCode || ''}`}</BodyCell>
+                  <BodyCell>{`${record.clientName || ''}`}</BodyCell>
                   <BodyCell textAlign="center">
                     {
                       <Button
                         display="default"
+                        size="small"
                         shape="round"
                         onClick={handleAddProduct}
                         disabled={isLoadingCreateP}
