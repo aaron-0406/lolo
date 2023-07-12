@@ -1,8 +1,10 @@
 export type GoalType = {
   id: number
-  startDate: Date
-  endDate?: Date
+  startDate: string
+  endDate?: string
   week: number
   customerId: number
-  createdAt: Date
+  total?: number
+  totalMeta?: number
+  createdAt: string
 }

@@ -16,12 +16,27 @@ export const getGoals = async ({ limit, page }: { limit: number; page: number })
   return await axiosClient.get(`${url}?limit=${limit}&page=${page}`)
 }
 
-export const createGoalService = async (goal: Omit<GoalType, 'id'>): Promise<GoalApiResponse> => {
-  return await axiosClient.post(url, goal)
+export const createGoalService = async (
+  goal: Omit<GoalType, 'id' | 'createdAt' | 'customerId' | 'endDate'>
+): Promise<GoalApiResponse> => {
+  let dia = goal.startDate.split('-')
+  let day = dia[0]
+  let month = dia[1]
+  goal.startDate = `${dia[2]}-${month}-${day}`
+  const startDate = `${dia[2]}-${month}-${day}`
+  return await axiosClient.post(url, { ...goal, startDate: startDate })
 }
-export const editGoalService = async (goal: Omit<GoalType, 'id' | 'endDate'>, id: number): Promise<GoalApiResponse> => {
-  return await axiosClient.patch(`${url}/${id}`, goal)
+export const editGoalService = async (
+  goal: Omit<GoalType, 'id' | 'createdAt' | 'customerId' | 'endDate'>,
+  id: number
+): Promise<GoalApiResponse> => {
+  let dia = goal.startDate.split('-')
+  let day = dia[0]
+  let month = dia[1]
+  goal.startDate = `${dia[2]}-${month}-${day}`
+  const startDate = `${dia[2]}-${month}-${day}`
+  return await axiosClient.patch(`${url}/${id}`, { ...goal, startDate: startDate })
 }
-export const deleteGoal = async (id: number) => {
+export const deleteGoalService = async (id: number) => {
   return await axiosClient.delete(`${url}/${id}`)
 }

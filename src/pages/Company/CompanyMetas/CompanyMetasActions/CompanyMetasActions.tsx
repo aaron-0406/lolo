@@ -6,6 +6,7 @@ import CompanyMetasModal from '../CompanyMetasModal/CompanyMetasModal'
 import { useFormContext } from 'react-hook-form'
 import { GoalFormType } from '../hookform.type'
 import { useLoloContext } from '../../../../shared/contexts/LoloProvider'
+import moment from 'moment'
 
 const CompanyMetasActions = () => {
   const {
@@ -21,10 +22,10 @@ const CompanyMetasActions = () => {
   const handleClickButton = () => {
     setValue('goal', {
       id: 0,
-      createdAt: new Date(),
+      createdAt: moment(new Date()).format('DD-MM-YYYY'),
       customerId: id,
-      endDate: new Date(),
-      startDate: new Date(),
+      endDate: moment(new Date()).format('DD-MM-YYYY'),
+      startDate: moment(new Date()).format('DD-MM-YYYY'),
       week: 0,
     })
     showModalAdd()

@@ -4,23 +4,25 @@ import CompanyMetasTable from './CompanyMetasTable/CompanyMetasTable'
 import { useForm, FormProvider } from 'react-hook-form'
 import { GoalFormType } from './hookform.type'
 import { useLoloContext } from '../../../shared/contexts/LoloProvider'
+import moment from 'moment'
+import { CompanyGoalResolver } from './CompanyMetas.yup'
 
 const CompanyMetas = () => {
-  
   const {
     client: {
       customer: { id },
     },
   } = useLoloContext()
   const formMethods = useForm<GoalFormType>({
+    resolver: CompanyGoalResolver,
     defaultValues: {
       goals: [],
       goal: {
         id: 0,
-        createdAt: new Date(),
+        createdAt: moment(new Date()).format('DD-MM-YYYY'),
         customerId: id,
-        endDate: new Date(),
-        startDate: new Date(),
+        endDate: moment(new Date()).format('DD-MM-YYYY'),
+        startDate: moment(new Date()).format('DD-MM-YYYY'),
         week: 0,
       },
       loading: true,

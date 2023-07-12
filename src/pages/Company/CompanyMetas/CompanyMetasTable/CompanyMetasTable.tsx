@@ -12,22 +12,38 @@ import { Opts } from '../../../../ui/Pagination/interfaces'
 import { useEffect, useState } from 'react'
 import { goalsColumns } from './utils/columns'
 import { GoalType } from '../../../../shared/types/goal-type'
-import { GoalsApiResponse, getGoals } from '../../../../shared/services/goal.service'
-import { useQuery } from 'react-query'
+import {
+  GoalApiResponse,
+  GoalsApiResponse,
+  deleteGoalService,
+  getGoals,
+} from '../../../../shared/services/goal.service'
+import { useMutation, useQuery } from 'react-query'
 import CompanyMetasModal from '../CompanyMetasModal/CompanyMetasModal'
 import useModal from '../../../../shared/hooks/useModal'
+import { notification } from '../../../../ui/notification/notification'
+import Progress from '../../../../ui/Progress/Progress'
+import CompanyMetasModalView from '../CompanyMetasModalView/CompanyMetasModalView'
 
 const CompanyMetasTable = () => {
   const { watch, setValue } = useFormContext<GoalFormType>()
   const [opts, setOpts] = useState<Opts>({ filter: '', limit: 50, page: 1 })
 
   const { visible: visibleModalAdd, showModal: showModalAdd, hideModal: hideModalAdd } = useModal()
+  const { visible: visibleModalView, showModal: showModalView, hideModal: hideModalView } = useModal()
 
   const handleClickButton = () => {
     showModalAdd()
   }
+  const handleClickProgress = () => {
+    showModalView()
+  }
   const handleClickModal = () => {
     hideModalAdd()
+  }
+
+  const handleClickModalView = () => {
+    hideModalView()
   }
 
   const { refetch } = useQuery<GoalsApiResponse>(
@@ -40,10 +56,35 @@ const CompanyMetasTable = () => {
     },
     {
       onSuccess: ({ data }) => {
-        console.log(data)
         setValue('goals', data.goals)
         setValue('quantity', data.quantity)
         setValue('loading', false)
+      },
+    }
+  )
+
+  const { isLoading: loadingDeleteGoal, mutate: onDeleteGoal } = useMutation<GoalApiResponse, Error>(
+    async () => {
+      const {
+        goal: { id },
+      } = watch()
+      return await deleteGoalService(id)
+    },
+    {
+      onSuccess: ({ data }) => {
+        setValue(
+          'goals',
+          watch('goals').filter((goal) => {
+            return goal.id !== data.id
+          })
+        )
+        notification({ type: 'success', message: 'Meta eliminada' })
+      },
+      onError: (error: any) => {
+        notification({
+          type: 'error',
+          message: error.response.data.message,
+        })
       },
     }
   )
@@ -73,18 +114,53 @@ const CompanyMetasTable = () => {
                 <BodyCell textAlign="center">{`${i + 1}`}</BodyCell>
                 <BodyCell>{`${moment(record.startDate).format('DD-MM-YYYY') || ''}`}</BodyCell>
                 <BodyCell>{`${moment(record.endDate).format('DD-MM-YYYY') || ''}`}</BodyCell>
-                <BodyCell>{``}</BodyCell>
-                <BodyCell textAlign="center">{``}</BodyCell>
+                <BodyCell>{`${record.totalMeta}`}</BodyCell>
+                <BodyCell textAlign="center">
+                  <Container onClick={() => {}} width="100%" display="flex" justifyContent="center">
+                    <Progress
+                      onClick={() => {
+                        setValue('goal', record)
+                        handleClickProgress()
+                      }}
+                      value={
+                        record.totalMeta === 0
+                          ? 0
+                          : Number(((Number(record.total) * 100) / Number(record.totalMeta)).toFixed(2)) >= 100
+                          ? 100
+                          : Number(((Number(record.total) * 100) / Number(record.totalMeta)).toFixed(2))
+                      }
+                      bgColorInit="#FF7875"
+                      bgColorEnd="#51AB2B"
+                      bgColorMid="#F3BD5B"
+                    />
+                  </Container>
+                </BodyCell>
                 <BodyCell textAlign="center">
                   {
-                    <Button
-                      onClick={() => {
-                        handleClickButton()
-                        setValue('goal', record)
-                      }}
-                      shape="round"
-                      leadingIcon="ri-pencil-fill"
-                    />
+                    <Container display="flex" justifyContent="center" gap="15px">
+                      <Button
+                        display="warning"
+                        onClick={() => {
+                          handleClickButton()
+                          const dia = record.startDate.split('-')
+                          const fecha = `${dia[2]}-${dia[1]}-${dia[0]}`
+                          setValue('goal', record)
+                          setValue('goal.startDate', fecha)
+                        }}
+                        shape="round"
+                        leadingIcon="ri-pencil-fill"
+                      />
+                      <Button
+                        loading={loadingDeleteGoal}
+                        onClick={() => {
+                          setValue('goal', record)
+                          onDeleteGoal()
+                        }}
+                        display="danger"
+                        shape="round"
+                        leadingIcon="ri-close-line"
+                      />
+                    </Container>
                   }
                 </BodyCell>
               </tr>
@@ -92,6 +168,7 @@ const CompanyMetasTable = () => {
           })}
       </Table>
       <CompanyMetasModal visible={visibleModalAdd} onClose={handleClickModal} />
+      <CompanyMetasModalView visible={visibleModalView} onClose={handleClickModalView} />
     </Container>
   )
 }
