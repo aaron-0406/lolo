@@ -43,7 +43,6 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, load, setLoadi
     },
     {
       onSuccess: ({ data }) => {
-        console.log(data)
         if (opts.filter !== '') {
           data = data.filter((filt: CustomerType) => {
             return filt.companyName.substring(0, opts.filter.length).toUpperCase() === opts.filter.toUpperCase()
