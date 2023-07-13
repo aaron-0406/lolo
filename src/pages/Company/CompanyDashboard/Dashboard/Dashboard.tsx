@@ -7,9 +7,9 @@ import Container from '../../../../ui/Container'
 import Form from './Form'
 import { DashFormType } from './hookform.type'
 import TableClientsAdded from '../Tables/TableClientsAdded'
-import TableClientsDeleted from './TableClientsDeleted'
+import TableClientsDeleted from '../Tables/TableClientsDeleted'
 import TableProductsCastigo from '../Tables/TableProductCastigo'
-import TableProductsAdded from './TableProductsAdded'
+import TableProductsAdded from '../Tables/TableProductsAdded'
 import TableProductsDeleted from './TableProductsDeleted'
 import { useState } from 'react'
 
@@ -96,8 +96,8 @@ const Dashboard = () => {
         </Container>
         <Container width="100%" display="flex" flexDirection="column" gap="10px">
           {watch('selected.clientAddedButton') && <TableClientsAdded globalLoad={globalLoading}/>}
-          {watch('selected.clientDeletedButton') && <TableClientsDeleted />}
-          {watch('selected.productAddedButton') && <TableProductsAdded />}
+          {watch('selected.clientDeletedButton') && <TableClientsDeleted globalLoad={globalLoading}/>}
+          {watch('selected.productAddedButton') && <TableProductsAdded globalLoad={globalLoading}/>}
           {watch('selected.productDeletedButton') && <TableProductsDeleted />}
           {watch('selected.productCastigoButton') && <TableProductsCastigo globalLoad={globalLoading}/>}
         </Container>

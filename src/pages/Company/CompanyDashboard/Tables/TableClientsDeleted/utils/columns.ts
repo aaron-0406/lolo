@@ -2,24 +2,24 @@ import { ColumProps } from '../../../../../../ui/Tables/Table/Table'
 
 export const Columns: ColumProps[] = [
   {
-    id: 'company.dashboard.clientAdded.number',
+    id: 'company.dashboard.clientDeleted.number',
     title: '#',
     width: '10%',
     justifyContent: 'center',
   },
   {
-    id: 'company.dashboard.clientAdded.client',
+    id: 'company.dashboard.clientDeleted.clientC',
     title: 'Codigo Cliente',
-    width: '40%',
-  },
-  {
-    id: 'company.dashboard.clientAdded.name',
-    title: 'Nombre',
-    width: '40%',
-  },
-  {
-    id: 'company.dashboard.clientAdded.button',
-    title: 'Acciones',
     width: '30%',
+  },
+  {
+    id: 'company.dashboard.clientDeleted.name',
+    title: 'Nombre',
+    width: '30%',
+  },
+  {
+    id: 'company.dashboard.clientDeleted.button',
+    title: 'Acciones',
+    width: '20%',
   },
 ]

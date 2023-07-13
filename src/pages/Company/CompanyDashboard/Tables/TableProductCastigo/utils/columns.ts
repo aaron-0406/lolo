@@ -2,28 +2,28 @@ import { ColumProps } from '../../../../../../ui/Tables/Table/Table'
 
 export const Columns: ColumProps[] = [
   {
-    id: 'company.dashboard.table.clientAdded',
+    id: 'company.dashboard.ProductCastigo.number',
     title: '#',
     width: '10%',
     justifyContent: 'center',
   },
   {
-    id: 'company.dashboard.table.clientDeleted',
+    id: 'company.dashboard.ProductCastigo.client',
     title: 'Codigo Cliente',
     width: '31.5%',
   },
   {
-    id: 'ccompany.dashboard.table.productAdded',
+    id: 'company.dashboard.ProductCastigo.product',
     title: 'Código Producto',
     width: '31.5%',
   },
   {
-    id: 'company.dashboard.table.productDeleted',
+    id: 'company.dashboard.ProductCastigo.nameProduct',
     title: 'Nombre Producto',
-    width: '431.5%',
+    width: '31.5%',
   },
   {
-    id: 'company.dashboard.table.productDeleted',
+    id: 'company.dashboard.ProductCastigo.state',
     title: 'Estado',
     width: '20%',
   },

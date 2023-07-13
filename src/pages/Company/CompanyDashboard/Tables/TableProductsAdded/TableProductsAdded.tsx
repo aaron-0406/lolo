@@ -2,58 +2,69 @@ import { useEffect, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { useMutation } from 'react-query'
 import { useLoloContext } from '../../../../../shared/contexts/LoloProvider'
-import { createClientsDash } from '../../../../../shared/services/dashboard.service'
+import { createProductsDash } from '../../../../../shared/services/dashboard.service'
 import { DashFormType } from '../../Dashboard/hookform.type'
 import { Props } from '../Props.type'
 import { ProductTypeName } from '../../../../../shared/types/product.type'
-import { Columns } from './utils/colums'
 import Button from '../../../../../ui/Button'
 import Container from '../../../../../ui/Container'
 import notification from '../../../../../ui/notification'
 import Table from '../../../../../ui/Tables/Table'
-import BodyCell from '../../../../../ui/Tables/Table/BodyCell'
-import EmptyStateCell from '../../../../../ui/Tables/Table/EmptyStateCell'
 import Actions from '../../Dashboard/Actions'
+import { Columns } from './utils/columns'
+import EmptyStateCell from '../../../../../ui/Tables/Table/EmptyStateCell'
+import BodyCell from '../../../../../ui/Tables/Table/BodyCell'
 
-const TableClientsAdded = ({ globalLoad }: Props) => {
+const TableProductsAdded = ({ globalLoad }: Props) => {
   const { watch, setValue } = useFormContext<DashFormType>()
-  const [clients, setClients] = useState(watch('clientsAdded'))
-  const [client, setClient] = useState<ProductTypeName>(clients[0])
   const [filter, setFilter] = useState('')
+  const [products, setProducts] = useState(watch('productsAdded'))
+  const [product, setProduct] = useState<ProductTypeName>(products[0])
 
   const {
     customerUser: {
       user: { id: customerUserId },
+    },
+    client: {
+      customer: { id: customerId },
     },
     bank: {
       selectedBank: { idBank, idCHB },
     },
   } = useLoloContext()
 
-  const { isLoading: isLoadingCreateC, mutate: createClients } = useMutation<any, Error>(
+  const { isLoading: loadCreateProducts, mutate: createProducts } = useMutation<any, Error>(
     async () => {
       const QUANTITY_DATA_SENT = 40
-      const DATA_GROUPS = Math.ceil(watch('clientsAdded').length / QUANTITY_DATA_SENT)
+      const DATA_GROUPS = Math.ceil(watch('productsAdded').length / QUANTITY_DATA_SENT)
       for (let i = 0; i < DATA_GROUPS; i++) {
         const start = i * QUANTITY_DATA_SENT
         const end = start + QUANTITY_DATA_SENT
-        const chunk = watch('clientsAdded')
+        const chunk = watch('productsAdded')
           .map((item) => {
             return {
-              name: item.clientName,
-              code: item.clientCode,
-              funcionarioId: item.funcionarioId,
-              cityId: item.cityId,
+              name: item.name,
+              code: item.code,
+              clientName: item.clientName,
+              state: item.state,
+              customerId: customerId,
+              clientCode: item.clientCode,
             }
           })
           .slice(start, end)
-        await createClientsDash(chunk, customerUserId, +idCHB, +idBank)
+        await createProductsDash(chunk, customerUserId, +idCHB, +idBank)
       }
     },
     {
       onSuccess: () => {
         notification({ type: 'success', message: 'Productos Agregados' })
-        setValue('clientsAdded', [])
+        setValue(
+          'clientsAdded',
+          watch('clientsAdded').filter(
+            (item) => !watch('productsAdded').some((item2) => item2.clientCode === item.clientCode)
+          )
+        )
+        setValue('productsAdded', [])
       },
       onError: (error: any) => {
         notification({
@@ -64,15 +75,17 @@ const TableClientsAdded = ({ globalLoad }: Props) => {
     }
   )
 
-  const { isLoading: isLoadingCreateP, mutate: createProducts } = useMutation<any, Error>(
+  const { isLoading: loadCreateProduct, mutate: createProduct } = useMutation<any, Error>(
     async () => {
-      return await createClientsDash(
+      return await createProductsDash(
         [
           {
-            code: client.clientCode,
-            name: client.clientName,
-            cityId: client.cityId,
-            funcionarioId: client.funcionarioId,
+            code: product.code,
+            name: product.name,
+            clientCode: product.clientCode,
+            clientName: product.clientName,
+            customerId: product.id,
+            state: product.state,
           },
         ],
         customerUserId,
@@ -83,10 +96,10 @@ const TableClientsAdded = ({ globalLoad }: Props) => {
     {
       onSuccess: () => {
         setValue(
-          'clientsAdded',
-          watch('clientsAdded').filter((item) => item.code !== client.code)
+          'productsAdded',
+          watch('productsAdded').filter((item) => item.code !== product.code)
         )
-        notification({ type: 'success', message: 'Cliente Agregado' })
+        notification({ type: 'success', message: 'Producto Agregado' })
       },
       onError: (error: any) => {
         notification({
@@ -97,22 +110,22 @@ const TableClientsAdded = ({ globalLoad }: Props) => {
     }
   )
 
-  const handleAddClient = () => {
-    createClients()
+  const handleAddProducts = () => {
+    createProducts()
   }
 
   const handleAddProduct = (index: number) => {
-    clients.filter((record: ProductTypeName) => {
+    products.filter((record: ProductTypeName) => {
       if (record.id === index) {
-        setClient(record)
-        createProducts()
+        setProduct(record)
+        createProduct()
       }
       return null
     })
   }
 
   useEffect(() => {
-    setClients(watch('clientsAdded'))
+    setProducts(watch('productsAdded'))
   }, [globalLoad, watch])
 
   return (
@@ -121,23 +134,23 @@ const TableClientsAdded = ({ globalLoad }: Props) => {
         setFilter={(e) => {
           setFilter(e.target.value)
         }}
-        handleClick={handleAddClient}
-        isLoading={isLoadingCreateC}
+        handleClick={handleAddProducts}
+        isLoading={loadCreateProducts}
         state={true}
       />
       <Table
         top="300px"
         columns={Columns}
-        loading={isLoadingCreateC || globalLoad}
-        isArrayEmpty={!clients}
+        loading={loadCreateProducts || globalLoad || loadCreateProduct}
+        isArrayEmpty={!products}
         emptyState={
           <EmptyStateCell colSpan={Columns.length}>
             <div>Vacio</div>
           </EmptyStateCell>
         }
       >
-        {!!clients?.length &&
-          clients
+        {!!products?.length &&
+          products
             .filter(
               (item) =>
                 item.clientCode.toLowerCase().includes(filter.toLowerCase()) ||
@@ -145,10 +158,13 @@ const TableClientsAdded = ({ globalLoad }: Props) => {
             )
             .map((record: ProductTypeName, index: number) => {
               return (
-                <tr className="styled-data-table-row" key={record.id}>
+                <tr className="styled-data-table-row" key={index}>
                   <BodyCell textAlign="center">{`${index + 1 || ''}`}</BodyCell>
                   <BodyCell>{`${record.clientCode || ''}`}</BodyCell>
                   <BodyCell>{`${record.clientName || ''}`}</BodyCell>
+                  <BodyCell>{`${record.code || ''}`}</BodyCell>
+                  <BodyCell>{`${record.name || ''}`}</BodyCell>
+                  <BodyCell>{`${record.state || ''}`}</BodyCell>
                   <BodyCell textAlign="center">
                     {
                       <Button
@@ -158,8 +174,8 @@ const TableClientsAdded = ({ globalLoad }: Props) => {
                         onClick={() => {
                           handleAddProduct(record.id)
                         }}
-                        disabled={isLoadingCreateP}
-                        loading={isLoadingCreateP}
+                        disabled={loadCreateProduct}
+                        loading={loadCreateProduct}
                         trailingIcon="ri-add-fill"
                       />
                     }
@@ -172,4 +188,4 @@ const TableClientsAdded = ({ globalLoad }: Props) => {
   )
 }
 
-export default TableClientsAdded
+export default TableProductsAdded
