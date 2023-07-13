@@ -10,7 +10,7 @@ import TableClientsAdded from '../Tables/TableClientsAdded'
 import TableClientsDeleted from '../Tables/TableClientsDeleted'
 import TableProductsCastigo from '../Tables/TableProductCastigo'
 import TableProductsAdded from '../Tables/TableProductsAdded'
-import TableProductsDeleted from './TableProductsDeleted'
+import TableProductsDeleted from '../Tables/TableProductsDeleted'
 import { useState } from 'react'
 
 const Dashboard = () => {
@@ -98,7 +98,7 @@ const Dashboard = () => {
           {watch('selected.clientAddedButton') && <TableClientsAdded globalLoad={globalLoading}/>}
           {watch('selected.clientDeletedButton') && <TableClientsDeleted globalLoad={globalLoading}/>}
           {watch('selected.productAddedButton') && <TableProductsAdded globalLoad={globalLoading}/>}
-          {watch('selected.productDeletedButton') && <TableProductsDeleted />}
+          {watch('selected.productDeletedButton') && <TableProductsDeleted globalLoad={globalLoading}/>}
           {watch('selected.productCastigoButton') && <TableProductsCastigo globalLoad={globalLoading}/>}
         </Container>
       </Container>
