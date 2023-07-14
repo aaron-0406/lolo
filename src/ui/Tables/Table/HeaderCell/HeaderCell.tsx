@@ -71,6 +71,7 @@ const HeaderCell: React.FC<HeaderCellProps> = ({
         justifyContent={justifyContent}
         padding="0 16px"
         alignItems="center"
+        backgroundColor={toggleSelect ? '#d9dbe9ff' : ''}
       >
         <Text.Body size="m" weight="bold" ellipsis>
           {children}
@@ -79,12 +80,24 @@ const HeaderCell: React.FC<HeaderCellProps> = ({
         {isThereFilter && (
           <Container
             display="flex"
-            justifyContent="center"
+            justifyContent="space-around"
             alignItems="center"
-            width="24px"
+            margin="0 0 0 10px"
+            width="60px"
             height="24px"
             className="arrow__icon"
           >
+            {selectedFilterOptions.length > 0 ? (
+              <Icon
+                size={20}
+                remixClass="ri-delete-bin-line"
+                color="Warning3"
+                onClick={() => {
+                  setSelectedFilterOptions([])
+                  onChangeFilterOptions?.([])
+                }}
+              />
+            ) : null}
             <Icon size={20} remixClass="ri-arrow-down-s-line" color="Neutral6" />
           </Container>
         )}
