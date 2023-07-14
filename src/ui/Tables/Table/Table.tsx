@@ -4,8 +4,6 @@ import type CSS from 'csstype'
 import Container from '../../Container'
 import HeaderCell from './HeaderCell'
 import { SelectItem } from '../../Select/interfaces'
-import { QueryObserverResult, RefetchOptions, RefetchQueryFilters } from 'react-query'
-import { AxiosResponse } from 'axios'
 
 export type ColumProps = {
   id: string
