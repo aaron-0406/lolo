@@ -75,11 +75,13 @@ const DatePicker: React.FC<DatePickerProps> = (props) => {
 
   useEffect(() => {
     getNoOfDays(new Date().getFullYear(), new Date().getMonth())
+    setMonth(new Date().getMonth());
+    setValueInput(value);
     return () => {
       setNoOfDays([])
       setBlankDays([])
     }
-  }, [])
+  }, [value])
 
   const formatDateForDisplay = (date: any): string => {
     let formattedDay = DAYS[date.getDay()]
@@ -209,7 +211,7 @@ const DatePicker: React.FC<DatePickerProps> = (props) => {
           </Container>
           {open && (
             // eslint-disable-next-line
-            <ContainerCalendar position="absolute" $isRow={isRow} onClick={() => setOpen(true)}>
+            <ContainerCalendar position="absolute" $isRow={isRow}>
               <StyledCalendar>
                 <Container display="flex" alignItems="center" justifyContent="space-between" margin="0 0 0.5rem 0">
                   <Container display="flex" alignItems="center" justifyContent="space-between">
