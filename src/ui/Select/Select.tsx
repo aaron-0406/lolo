@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import type { HTMLAttributes } from 'react'
 import type CSS from 'csstype'
+import ClickOutSideComponent from '../../shared/hooks/useClickOutside'
 import styled, { css } from 'styled-components'
 import Container from '../Container'
 import DropdownList from '../DropdownList'
@@ -72,7 +73,7 @@ const Select = <T extends string, K extends Record<string, unknown>>(props: Sele
   }, [value])
 
   return (
-    <StyledWrapper width={width}>
+    <StyledWrapper callback={() => setToggleSelect(false)} width={width}>
       {label && (
         <InputLabel
           name={rest.name}
@@ -205,7 +206,7 @@ const StyledSelect = styled.div<{
   `}
 `
 
-const StyledWrapper = styled.div<{ width?: CSS.Property.Width }>`
+const StyledWrapper = styled(ClickOutSideComponent)<{ width?: CSS.Property.Width }>`
   ${({ theme, width }) => css`
     width: ${!!width ? width : 'auto'};
     display: flex;
