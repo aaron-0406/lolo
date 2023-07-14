@@ -14,7 +14,6 @@ type HeaderCellProps = {
   children: React.ReactNode
   isThereFilter?: boolean
   options?: Array<SelectItem<any, any>>
-  identifier?: string
   onChangeFilterOptions?: (options: Array<SelectItem<any, any>>) => void
   resetFilters?: boolean
 }
@@ -63,7 +62,7 @@ const HeaderCell: React.FC<HeaderCellProps> = ({
   }, [resetFilters])
 
   return (
-    <StyledTh width={width} isThereFilter={isThereFilter} textTransform={textTransform} onClick={onSelectToogle} >
+    <StyledTh width={width} isThereFilter={isThereFilter} textTransform={textTransform} onClick={onSelectToogle}>
       <Container
         width="100%"
         height="100%"
@@ -72,7 +71,7 @@ const HeaderCell: React.FC<HeaderCellProps> = ({
         justifyContent={justifyContent}
         padding="0 16px"
         alignItems="center"
-        backgroundColor = {toggleSelect ? '#d9dbe9ff' : ""}
+        backgroundColor={toggleSelect ? '#d9dbe9ff' : ''}
       >
         <Text.Body size="m" weight="bold" ellipsis>
           {children}
@@ -83,7 +82,7 @@ const HeaderCell: React.FC<HeaderCellProps> = ({
             display="flex"
             justifyContent="space-around"
             alignItems="center"
-            margin={'0 0 0 10px'}
+            margin="0 0 0 10px"
             width="60px"
             height="24px"
             className="arrow__icon"
