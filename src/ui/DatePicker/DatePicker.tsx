@@ -76,6 +76,7 @@ const DatePicker: React.FC<DatePickerProps> = (props) => {
   useEffect(() => {
     getNoOfDays(new Date().getFullYear(), new Date().getMonth())
     setMonth(new Date().getMonth())
+    setValueInput(value);
     return () => {
       setNoOfDays([])
       setBlankDays([])
