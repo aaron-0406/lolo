@@ -81,7 +81,7 @@ const DatePicker: React.FC<DatePickerProps> = (props) => {
       setNoOfDays([])
       setBlankDays([])
     }
-  }, [])
+  }, [value])
 
   const formatDateForDisplay = (date: any): string => {
     let formattedDay = DAYS[date.getDay()]
