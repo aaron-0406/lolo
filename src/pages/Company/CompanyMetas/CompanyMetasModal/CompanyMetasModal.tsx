@@ -98,23 +98,9 @@ const CompanyMetasModal = ({ visible, onClose }: PModalAddGoal) => {
         alignItems="center"
         padding="20px"
         gap="20px"
+        minHeight={"400px"}
       >
         <Container width="100%" display="flex" flexDirection="column" gap="25px">
-          <Controller
-            name="goal.week"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                width="100%"
-                label="Cantidad de Semanas"
-                required
-                value={field.value}
-                helperText={errors.goal?.week?.message ? errors.goal?.week.message : ''}
-                hasError={!!errors.goal?.week}
-                onChange={field.onChange}
-              />
-            )}
-          />
           <Controller
             name="goal.startDate"
             control={control}
@@ -129,6 +115,21 @@ const CompanyMetasModal = ({ visible, onClose }: PModalAddGoal) => {
                 getDate={(e) => {
                   setValue('goal.startDate', e)
                 }}
+              />
+            )}
+          />
+          <Controller
+            name="goal.week"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                width="100%"
+                label="Cantidad de Semanas"
+                required
+                value={field.value}
+                helperText={errors.goal?.week?.message ? errors.goal?.week.message : ''}
+                hasError={!!errors.goal?.week}
+                onChange={field.onChange}
               />
             )}
           />

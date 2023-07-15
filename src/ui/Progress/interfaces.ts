@@ -7,5 +7,6 @@ export interface ProgressProps {
   bgColorEnd?: CSS.Property.BackgroundColor
   width?: CSS.Property.Width
   value?: number
+  quantity?: number
   onClick?: MouseEventHandler<HTMLDivElement>
 }

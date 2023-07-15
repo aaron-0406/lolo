@@ -25,6 +25,7 @@ const CompanyMetas = () => {
         startDate: moment(new Date()).format('DD-MM-YYYY'),
         week: 0,
       },
+      goalUsers:[],
       loading: true,
       quantity: 0,
     },

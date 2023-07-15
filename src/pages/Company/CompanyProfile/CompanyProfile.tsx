@@ -4,17 +4,19 @@ import ProfileInfo from './ProfileInfo'
 import { device } from '../../../shared/breakpoints/reponsive'
 import { useMediaQuery } from '../../../shared/hooks/useMediaQuery'
 import styled, { css } from 'styled-components'
+import GoalInfo from './GoalInfo'
 
 const CompanyProfile = () => {
   const greaterThanTabletL = useMediaQuery(device.desktopS)
 
   return (
-    <StyledCompanyProfile height="100%" width="100%">
+    <StyledCompanyProfile height="100%" width="100%" overFlowY='auto'>
       <Container className={`main_container ${!greaterThanTabletL && 'main_container_tablet'}`}>
         <Container className={`side_bar ${!greaterThanTabletL && 'side_bar_tablet'}`}>
           <ProfileInfo />
         </Container>
         <Container className={`body_area ${!greaterThanTabletL && 'body_area_tablet'}`}>
+          <GoalInfo />
           <CommentChart />
         </Container>
       </Container>
@@ -48,6 +50,7 @@ const StyledCompanyProfile = styled(Container)`
         width: 66%;
         margin: auto 2% auto 2%;
         height: 100%;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
       }
