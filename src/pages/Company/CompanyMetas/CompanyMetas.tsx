@@ -33,7 +33,7 @@ const CompanyMetas = () => {
 
   return (
     <FormProvider {...formMethods}>
-      <Container width="100%" height="100%" display="flex" flexDirection="column" padding="15px" gap="30px">
+      <Container width="100%" height="100%" display="flex" flexDirection="column" padding="20px" gap="30px">
         <CompanyMetasActions />
         <CompanyMetasTable />
       </Container>

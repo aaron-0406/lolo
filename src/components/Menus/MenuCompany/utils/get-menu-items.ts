@@ -26,19 +26,19 @@ export const getMenuItems = (urlIdentifier: string) => {
     {
       id: 3,
       title: 'COBRANZA',
-      remixClass: 'ri-pie-chart-2-fill',
+      remixClass: 'ri-folder-info-fill',
       path: paths.company.cobranza(urlIdentifier),
       admin: false,
     },
     {
       id: 4,
       title: 'METAS',
-      remixClass: 'ri-pie-chart-2-fill',
+      remixClass: 'ri-bar-chart-fill',
       path: paths.company.metas(urlIdentifier),
       admin: false,
     },
     {
-      id: 5,
+      id: 6,
       title: 'DOCUMENTOS',
       remixClass: 'ri-file-text-line',
       path: paths.company.document(urlIdentifier),

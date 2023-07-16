@@ -94,7 +94,7 @@ const CompanyMetasTable = () => {
   }, [opts])
 
   return (
-    <Container width="100%" height="calc(100% - 112px)" padding="20px">
+    <Container width="100%" height="calc(100% - 78px)">
       <Pagination count={watch('goals').length} opts={opts} setOpts={setOpts} />
       <Table
         top="260px"

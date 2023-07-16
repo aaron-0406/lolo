@@ -75,14 +75,32 @@ const CompanyMetasModalView = ({ onClose, visible }: PModalAddGoal) => {
       visible={visible}
       onClose={handleClickCloseModal}
       id="modal-goal-view"
-      title={'Meta'}
+      title="Metas de los usuarios"
       contentOverflowY="auto"
+      footer={
+        <Container width="100%" display="flex" justifyContent="flex-end">
+          <Button
+            onClick={() => {
+              onUpdateGoalUsers()
+            }}
+            leadingIcon="ri-save-line"
+            label="Guardar"
+          />
+        </Container>
+      }
     >
       <Container width="100%" height="100%" display="flex" flexDirection="column" padding="20px" gap="30px">
         <Container width="100%" display="flex" flexDirection="column" gap="25px">
-          {watch('goalUsers').map((goalUser) => {
+          {watch('goalUsers').map((goalUser, key) => {
             return (
-              <Container width="100%" display="flex" gap="10px" justifyContent="space-around" alignItems="center">
+              <Container
+                key={key}
+                width="100%"
+                display="flex"
+                gap="10px"
+                justifyContent="space-around"
+                alignItems="center"
+              >
                 <Container width="33%">{`${goalUser.customerUser.name} ${goalUser.customerUser.lastName}`}</Container>
                 <Container>{goalUser.totalRealizados} de</Container>
                 <TextField
@@ -136,15 +154,6 @@ const CompanyMetasModalView = ({ onClose, visible }: PModalAddGoal) => {
           <Text.Body size="m" weight="bold">
             {`${moment(watch('goal.endDate')).format('DD-MM-YYYY') || ''}`}
           </Text.Body>
-        </Container>
-        <Container width="100%" display="flex" justifyContent="flex-end">
-          <Button
-            onClick={() => {
-              onUpdateGoalUsers()
-            }}
-            leadingIcon="ri-save-line"
-            label="Guardar"
-          />
         </Container>
       </Container>
     </Modal>

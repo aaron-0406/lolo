@@ -20,6 +20,7 @@ const GoalInfo = () => {
     total: 0,
     totalMeta: 0,
   })
+
   const [globalGoal, setGlobalGoal] = useState<GoalType>({
     id: 0,
     createdAt: moment(new Date()).format('DD-MM-YYYY'),
@@ -68,19 +69,20 @@ const GoalInfo = () => {
   }, [])
 
   return (
-    <Container width="100%" padding="140px 0px 0px 0px">
-      <Container display="flex" justifyContent="space-between" width="100%" padding="0px 0px 0px 2rem">
+    <Container width="100%" height="50%" display="flex" flexDirection="column" justifyContent="center" gap="1rem">
+      <Container display="flex" justifyContent="space-between" width="100%" padding="0 2rem">
         <Text.Body size="m" weight="bold">
-          Meta del {moment(globalGoal.startDate).format('DD-MM-YYYY')} al{' '}
-          {moment(globalGoal.endDate).format('DD-MM-YYYY')}
+          {globalGoal.id
+            ? `Meta del ${globalGoal.startDate} al ${globalGoal.endDate}`
+            : 'No hay meta registrada para esta semana!'}
         </Text.Body>
       </Container>
       {privilege === 'EDITOR' && (
-        <Container width="100%" display="flex" flexDirection="column" padding="2rem" gap="20px">
+        <Container width="100%" display="flex" flexDirection="column" padding="0 2rem" gap="20px">
           <Container width="100%" display="flex">
             <Container display="flex" justifyContent="space-between" width="100%">
               <Text.Body size="m" weight="bold">
-                Barra de progreso Global
+                Progreso Global
               </Text.Body>
               <Text.Body size="m" weight="bold">
                 Total: {globalGoal.totalMeta}
@@ -102,11 +104,11 @@ const GoalInfo = () => {
           />
         </Container>
       )}
-      <Container width="100%" display="flex" flexDirection="column" padding="2rem" gap="20px">
+      <Container width="100%" display="flex" flexDirection="column" padding="0 2rem" gap="20px">
         <Container width="100%" display="flex">
           <Container display="flex" justifyContent="space-between" width="100%">
             <Text.Body size="m" weight="bold">
-              Barra de progreso Personal
+              Progreso Personal
             </Text.Body>
             <Text.Body size="m" weight="bold">
               Total: {personalGoal.totalMeta}

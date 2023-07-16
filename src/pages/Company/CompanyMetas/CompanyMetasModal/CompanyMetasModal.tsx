@@ -88,6 +88,29 @@ const CompanyMetasModal = ({ visible, onClose }: PModalAddGoal) => {
       title={watch('goal.id') !== 0 ? 'Editar Meta' : 'Agregar Meta'}
       contentOverflowY="auto"
       size="small"
+      footer={
+        <StyledContainerButton
+          width="100%"
+          height="75px"
+          display="flex"
+          justifyContent="flex-end"
+          alignItems="center"
+          gap="20px"
+        >
+          <Button
+            width="125px"
+            label={watch('goal.id') !== 0 ? 'Editar' : 'Agregar'}
+            shape="default"
+            trailingIcon="ri-add-fill"
+            onClick={() => {
+              handleSubmit(() => {
+                watch('goal.id') !== 0 ? onEditGoal() : onCreateGoal()
+              })()
+            }}
+            loading={loadingCreateGoal || loadingEditGoal}
+          />
+        </StyledContainerButton>
+      }
     >
       <Container
         width="100%"
@@ -97,10 +120,9 @@ const CompanyMetasModal = ({ visible, onClose }: PModalAddGoal) => {
         flexDirection="column"
         alignItems="center"
         padding="20px"
-        gap="20px"
-        minHeight={"400px"}
+        minHeight="300px"
       >
-        <Container width="100%" display="flex" flexDirection="column" gap="25px">
+        <Container width="100%" display="flex" flexDirection="column" gap="15px">
           <Controller
             name="goal.startDate"
             control={control}
@@ -134,27 +156,6 @@ const CompanyMetasModal = ({ visible, onClose }: PModalAddGoal) => {
             )}
           />
         </Container>
-        <StyledContainerButton
-          width="100%"
-          height="75px"
-          display="flex"
-          justifyContent="flex-end"
-          alignItems="center"
-          gap="20px"
-        >
-          <Button
-            width="125px"
-            label={watch('goal.id') !== 0 ? 'Editar' : 'Agregar'}
-            shape="default"
-            trailingIcon="ri-add-fill"
-            onClick={() => {
-              handleSubmit(() => {
-                watch('goal.id') !== 0 ? onEditGoal() : onCreateGoal()
-              })()
-            }}
-            loading={loadingCreateGoal || loadingEditGoal}
-          />
-        </StyledContainerButton>
       </Container>
     </Modal>
   )
