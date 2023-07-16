@@ -60,7 +60,7 @@ const DatePicker: React.FC<DatePickerProps> = (props) => {
     dateFormat = 'DD-MM-YYYY',
     width = '100%',
     label,
-    labelFontSize = '16px',
+    labelFontSize = '15px',
     getDate,
   } = props
 
@@ -75,7 +75,7 @@ const DatePicker: React.FC<DatePickerProps> = (props) => {
 
   useEffect(() => {
     getNoOfDays(new Date().getFullYear(), new Date().getMonth())
-    setMonth(new Date().getMonth());
+    setMonth(new Date().getMonth())
     setValueInput(value);
     return () => {
       setNoOfDays([])
@@ -166,8 +166,8 @@ const DatePicker: React.FC<DatePickerProps> = (props) => {
           <Container display="flex" flexDirection="row" gap="0.25rem" margin={'0.25rem 0px'} height="2rem">
             {label && (
               <StyledLabel labelFontSize={labelFontSize} width={isRow ? '8rem' : ''} htmlFor={name}>
-                {label}
                 {required && <StyledSpanRequired>*</StyledSpanRequired>}
+                {label}
               </StyledLabel>
             )}
           </Container>
@@ -248,7 +248,7 @@ const DatePicker: React.FC<DatePickerProps> = (props) => {
                 <Container display="flex" flexDirection="row" flexWrap="wrap" margin="0 -0.25rem 0.75rem -0.25rem">
                   {DAYS.map((item, i) => {
                     return (
-                      <Container key={i} padding="0 1.125rem" width="14.26%">
+                      <Container key={i} padding="0 1.125rem" width="14.26%" display="flex" justifyContent="center">
                         <DayNameSpan size="m" weight="regular">
                           {item}
                         </DayNameSpan>
@@ -265,7 +265,9 @@ const DatePicker: React.FC<DatePickerProps> = (props) => {
                       <Container key={i} width="14.28%" padding="0 0.25rem 0.25rem 0.25rem">
                         {/* eslint-disable-next-line */}
                         <NoOfDaysItem
-                          onClick={() => getDateValue(item)}
+                          onClick={() => {
+                            getDateValue(item)
+                          }}
                           $today={isToday(item)}
                           $selectItem={isSelectedDate(item)}
                         >
@@ -367,7 +369,9 @@ const StyledLabel = styled.label<{
   labelFontSize: string
   width: string
 }>`
-  font-weight: normal;
+  font-weight: bold;
+  display: flex;
+  gap: 4px;
   white-space: nowrap;
   ${({ width }) =>
     !!width &&
