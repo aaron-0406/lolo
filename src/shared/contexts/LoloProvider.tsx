@@ -134,7 +134,7 @@ export const LoloProvider: React.FC<LoloProviderProps> = ({ children }) => {
 
   const [user, setUser] = useState(initialCustomerUserState)
 
-  const [authenticate, setAuthenticate] = useState<boolean>(false)
+  const [authenticate, setAuthenticate] = useState<boolean>(storage.get<string>('token') ? true : false)
 
   const getUser = (userId: number) => {
     const user = usersState.find((user) => user.id === userId)
