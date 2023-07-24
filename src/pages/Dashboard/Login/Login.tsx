@@ -2,7 +2,7 @@ import { Controller, useForm } from 'react-hook-form'
 import { useMutation } from 'react-query'
 import LoginHeader from '../../../components/Login/LoginHeader'
 import { StyledLoginContainer } from '../../../components/Login/LoginStyled'
-import { LoginType } from '../../../shared/types/auth-dash.type'
+import { LoginTypeDash } from '../../../shared/types/auth-dash.type'
 import { ResponseLogin, signin } from '../../../shared/services/dash-auth.service'
 import { LoginResolver } from './Login.yup'
 import storage from '../../../shared/utils/storage'
@@ -23,7 +23,7 @@ const Login = () => {
     control,
     getValues,
     formState: { errors },
-  } = useForm<LoginType>({
+  } = useForm<LoginTypeDash>({
     resolver: LoginResolver,
     mode: 'all',
     defaultValues: {

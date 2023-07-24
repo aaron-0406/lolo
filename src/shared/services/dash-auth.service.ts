@@ -1,4 +1,4 @@
-import { LoginType } from '../types/auth-dash.type'
+import { LoginTypeDash } from '../types/auth-dash.type'
 import axiosClient from '../utils/api/clientAxios'
 import { AxiosResponse } from 'axios'
 import { UserAppType } from '../types/user-app'
@@ -15,6 +15,6 @@ export type LoginAPI = {
 
 export type ResponseLogin = AxiosResponse<LoginAPI, LoginAPI>
 
-export const signin = async (login: LoginType) => {
+export const signin = async (login: LoginTypeDash) => {
   return await axiosClient.post(`${url}/signin`, login)
 }

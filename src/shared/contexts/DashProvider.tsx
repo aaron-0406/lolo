@@ -1,10 +1,7 @@
 import { createContext, Dispatch, useContext, useEffect, useState } from 'react'
 import jwtDecode from 'jwt-decode'
-import { usePersistedState } from '../hooks/usePersistedState'
 import { UserAppType } from '../types/user-app'
 import storage from '../utils/storage'
-
-const appDashUserStateKey = 'dash:user'
 
 const initialUserState: UserAppType = {
   id: 0,
@@ -24,11 +21,6 @@ export const DashContext = createContext<{
   auth: {
     authenticate: boolean
     setAuthenticate: Dispatch<boolean>
-  }
-  user: {
-    users: Array<UserAppType>
-    getUser: (userId: number) => UserAppType | undefined
-    setUsers: (users: Array<UserAppType>) => void
   }
   dashUser: {
     user: UserAppType
@@ -52,21 +44,10 @@ type DashProviderProps = {
 }
 
 export const DashProvider: React.FC<DashProviderProps> = ({ children }) => {
-  const [authenticate, setAuthenticate] = useState<boolean>(false)
-  const [usersState, setUsersState] = usePersistedState<Array<UserAppType>>(appDashUserStateKey, [])
+  const [authenticate, setAuthenticate] = useState<boolean>(storage.get<string>('token') ? true : false)
   const [user, setUser] = useState(initialUserState)
 
-  const getUser = (userId: number) => {
-    const user = usersState.find((user) => user.id === userId)
-    return user
-  }
-
-  const setUsers = (users: Array<UserAppType>) => {
-    setUsersState(users)
-  }
-
   const clearAll = () => {
-    setUsersState([])
     setAuthenticate(false)
   }
 
@@ -90,11 +71,6 @@ export const DashProvider: React.FC<DashProviderProps> = ({ children }) => {
         auth: {
           authenticate,
           setAuthenticate,
-        },
-        user: {
-          users: usersState,
-          getUser,
-          setUsers: setUsers,
         },
         dashUser: {
           user,
