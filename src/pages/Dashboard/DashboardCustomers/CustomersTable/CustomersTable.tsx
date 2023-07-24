@@ -124,7 +124,12 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, load, setLoadi
             )
           })}
       </Table>
-      <CustomerModal visible={visibleModalCustomer} onClose={handleClickModal} edits={{ edit: true, url: urlEdit }} />
+      <CustomerModal
+        visible={visibleModalCustomer}
+        onClose={handleClickModal}
+        setLoadingGlobal={setLoadingGlobal}
+        edits={{ edit: true, url: urlEdit }}
+      />
       <UsersModal visible={visibleModalUser} onClose={handleClickUser} id={idCustomer} />
     </Container>
   )

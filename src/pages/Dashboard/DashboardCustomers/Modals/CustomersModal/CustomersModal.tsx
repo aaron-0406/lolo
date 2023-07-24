@@ -17,6 +17,7 @@ type CustomersModalProps = {
   visible: boolean
   onClose: () => void
   edits?: { edit: boolean; url: string }
+  setLoadingGlobal: (state: boolean) => void
 }
 
 const defaultValuesCustomer: Omit<CustomerType, 'customerBanks' | 'createdAt'> = {
@@ -28,7 +29,12 @@ const defaultValuesCustomer: Omit<CustomerType, 'customerBanks' | 'createdAt'> =
   state: true,
 }
 
-const CustomersModal = ({ visible, onClose, edits = { edit: false, url: '' } }: CustomersModalProps) => {
+const CustomersModal = ({
+  visible,
+  onClose,
+  setLoadingGlobal,
+  edits = { edit: false, url: '' },
+}: CustomersModalProps) => {
   const formMethods = useForm<CustomerType>({
     resolver: ModalCustomersResolver,
     mode: 'all',
@@ -51,20 +57,22 @@ const CustomersModal = ({ visible, onClose, edits = { edit: false, url: '' } }: 
       return await createClient(restClient)
     },
     {
-      onSuccess: (data) => {
-        setValue('id', data.data.id)
+      onSuccess: () => {
         notification({ type: 'success', message: 'Cliente creado' })
+        setLoadingGlobal(true)
+        onClose()
       },
       onError: (error: any) => {
         notification({
           type: 'error',
           message: error.response.data.message,
         })
+        onClose()
       },
     }
   )
 
-  const { isLoading: loadingEditCustomer, mutate: EditCustomer } = useMutation<any, Error>(
+  const { isLoading: loadingEditCustomer, mutate: editCustomer } = useMutation<any, Error>(
     async () => {
       const { id, customerBanks, createdAt, state, ...restClient } = getValues()
       return await editCustomerById(id, restClient)
@@ -72,12 +80,15 @@ const CustomersModal = ({ visible, onClose, edits = { edit: false, url: '' } }: 
     {
       onSuccess: () => {
         notification({ type: 'success', message: 'Cliente editado' })
+        setLoadingGlobal(true)
+        onClose()
       },
       onError: (error: any) => {
         notification({
           type: 'error',
           message: error.response.data.message,
         })
+        onClose()
       },
     }
   )
@@ -104,11 +115,11 @@ const CustomersModal = ({ visible, onClose, edits = { edit: false, url: '' } }: 
 
   const onAddCustomer = () => {
     createCustomer()
-    onClose()
+    setUrlEdit('')
   }
 
   const onEditCustomer = () => {
-    EditCustomer()
+    editCustomer()
     setUrlEdit('')
   }
 

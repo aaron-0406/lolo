@@ -23,6 +23,7 @@ const CustomerInfoForm = () => {
           )}
         />
       </Container>
+
       <Container width="100%" display="flex" gap="10px">
         <Label label="Compañía: " />
         <Controller
@@ -33,6 +34,7 @@ const CustomerInfoForm = () => {
           )}
         />
       </Container>
+
       <Container width="100%" display="flex" gap="10px">
         <Label label="URL: " />
         <Controller
@@ -43,6 +45,7 @@ const CustomerInfoForm = () => {
           )}
         />
       </Container>
+
       <Container width="100%" display="flex" gap="10px">
         <Label label="Description: " />
         <Controller

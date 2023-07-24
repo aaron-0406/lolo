@@ -16,7 +16,6 @@ type CustomersTableProps = {
 }
 
 const CustomersSearch: FC<CustomersTableProps> = ({ opts, setOpts, setLoadingGlobal }) => {
-  
   const greaterThanMobile = useMediaQuery(device.tabletS)
   const { visible: visibleModalAdd, showModal: showModalAdd, hideModal: hideModalAdd } = useModal()
 
@@ -32,26 +31,24 @@ const CustomersSearch: FC<CustomersTableProps> = ({ opts, setOpts, setLoadingGlo
   }
 
   const handleClickModal = () => {
-    setLoadingGlobal(true)
     hideModalAdd()
   }
 
   return (
     <Container display="flex" width="100%" padding=" 0 20px" justify-content="space-around">
-      <Container
-        width="calc(100% - 60px)"
-        display="flex"
-        justify-content="space-around"
-        className="search__textfield"
-        margin="0 20px 0 0"
-      >
+      <Container width="calc(100% - 60px)" display="flex" justify-content="space-around" margin="0 20px 0 0">
         <Container display={greaterThanMobile ? 'flex' : 'none'} padding="0 10px 0 0">
           <Label label="Buscar:" />
         </Container>
         <TextField onChange={onChangeSearch} width="100%" placeholder="Buscar cliente por nombre" />
       </Container>
       <Button shape="round" leadingIcon="ri-add-fill" size="small" onClick={handleClickButton} />
-      <CustomersModal visible={visibleModalAdd} onClose={handleClickModal} />
+      <CustomersModal
+        visible={visibleModalAdd}
+        onClose={handleClickModal}
+        setLoadingGlobal={setLoadingGlobal}
+        edits={{ edit: false, url: '' }}
+      />
     </Container>
   )
 }
