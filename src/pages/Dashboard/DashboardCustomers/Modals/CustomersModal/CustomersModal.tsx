@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react'
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect } from 'react'
 import { Controller } from 'react-hook-form'
 import { FormProvider, useForm } from 'react-hook-form'
 import { ModalCustomersResolver } from './CustomersModal.yup'
