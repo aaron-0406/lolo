@@ -22,7 +22,7 @@ export const customersColumns: ColumProps[] = [
     id: 'customers.datatable.header.state',
     title: 'ESTADO',
     width: '10%',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
   },
   {
     id: 'customers.datatable.header.date',

@@ -18,24 +18,25 @@ import UsersModal from '../Modals/UsersModal/UsersModal'
 type CustomersTableProps = {
   opts: Opts
   setOpts: Dispatch<Opts>
-  load: boolean
+  loading: boolean
   setLoadingGlobal: (state: boolean) => void
 }
 
-const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, load, setLoadingGlobal }) => {
+const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, loading, setLoadingGlobal }) => {
   const [customers, setCustomers] = useState([])
   const [urlEdit, setUrlEdit] = useState('')
   const [customersCount, setCustomersCount] = useState<number>(0)
-  const { visible: visibleModalCustomer, showModal: showModalCustomer, hideModal: hideModalCustomer } = useModal()
-  const { visible: visibleModalUser, showModal: showModalUser, hideModal: hideModalUser } = useModal()
   const [idCustomer, setIdCustomer] = useState(0)
 
-  const handleClickButtonAddClient = (url: string) => {
+  const { visible: visibleModalCustomer, showModal: showModalCustomer, hideModal: hideModalCustomer } = useModal()
+  const { visible: visibleModalUser, showModal: showModalUser, hideModal: hideModalUser } = useModal()
+
+  const handleClickButtonClient = (url: string) => {
     setUrlEdit(url)
     showModalCustomer()
   }
 
-  const handleClickModal = () => {
+  const onCloseModal = () => {
     setUrlEdit('')
     hideModalCustomer()
   }
@@ -45,7 +46,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, load, setLoadi
     showModalUser()
   }
 
-  const handleClickUser = () => {
+  const onCloseUser = () => {
     setIdCustomer(0)
     hideModalUser()
   }
@@ -66,12 +67,13 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, load, setLoadi
         setCustomersCount(data.length)
         setLoadingGlobal(false)
       },
+      enabled: false,
     }
   )
 
   useEffect(() => {
-    refetch()
-  }, [refetch, load, opts])
+    if (loading) refetch()
+  }, [refetch, loading, opts])
 
   return (
     <Container width="100%" height="calc(100% - 112px)" padding="20px">
@@ -79,7 +81,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, load, setLoadi
       <Table
         top="260px"
         columns={customersColumns}
-        loading={load}
+        loading={loading}
         isArrayEmpty={!customers.length}
         emptyState={
           <EmptyStateCell colSpan={customersColumns.length}>
@@ -100,7 +102,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, load, setLoadi
                   {
                     <Button
                       onClick={() => {
-                        handleClickButtonAddClient(record.urlIdentifier)
+                        handleClickButtonClient(record.urlIdentifier)
                       }}
                       shape="round"
                       size="small"
@@ -124,13 +126,15 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, load, setLoadi
             )
           })}
       </Table>
+
       <CustomerModal
         visible={visibleModalCustomer}
-        onClose={handleClickModal}
+        onClose={onCloseModal}
         setLoadingGlobal={setLoadingGlobal}
-        edits={{ edit: true, url: urlEdit }}
+        url={urlEdit}
+        isEdit
       />
-      <UsersModal visible={visibleModalUser} onClose={handleClickUser} id={idCustomer} />
+      <UsersModal visible={visibleModalUser} onClose={onCloseUser} id={idCustomer} />
     </Container>
   )
 }

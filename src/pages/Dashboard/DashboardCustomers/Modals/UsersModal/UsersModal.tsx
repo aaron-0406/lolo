@@ -22,6 +22,7 @@ type CustomersModalProps = {
 
 const UsersModal = ({ visible, onClose, id }: CustomersModalProps) => {
   const greaterThanMobile = useMediaQuery(device.tabletS)
+
   const [load, setLoad] = useState(false)
   const [users, setUsers] = useState([])
   const [filter, setFilter] = useState('')
@@ -58,16 +59,16 @@ const UsersModal = ({ visible, onClose, id }: CustomersModalProps) => {
 
   return (
     <Modal visible={visible} onClose={handleClickCloseModal} id="modal-files" title="Usuarios" contentOverflowY="auto">
-      <Container width="100%" padding="20px" display="flex" flexDirection="column">
-        <Container display="flex" justifyContent="space-between">
-          <Container display={greaterThanMobile ? 'flex' : 'none'} padding="0 10px 0 0">
+      <Container width="100%" padding="20px" display="flex" flexDirection="column" gap="20px">
+        <Container display="flex" justifyContent="space-between" gap="10px">
+          <Container display={greaterThanMobile ? 'flex' : 'none'}>
             <Label label="Buscar:" />
           </Container>
           <TextField onChange={onChangeSearch} width="100%" placeholder="Buscar usuario por nombre:" />
         </Container>
-        <Container margin="10px 0 0 0">
+        <Container>
           <Table
-            top="260px"
+            top="340px"
             columns={usersColumns}
             loading={load}
             isArrayEmpty={!users.length}

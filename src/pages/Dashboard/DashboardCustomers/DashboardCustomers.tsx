@@ -23,7 +23,7 @@ const DashboardCustomers = () => {
       gap="20px"
     >
       <CustomersSearch opts={opts} setOpts={setOpts} setLoadingGlobal={setLoadingGlobal} />
-      <CustomersTable opts={opts} setOpts={setOpts} load={loading} setLoadingGlobal={setLoadingGlobal} />
+      <CustomersTable opts={opts} setOpts={setOpts} loading={loading} setLoadingGlobal={setLoadingGlobal} />
     </Container>
   )
 }

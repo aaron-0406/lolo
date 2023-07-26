@@ -30,7 +30,7 @@ const CustomersSearch: FC<CustomersTableProps> = ({ opts, setOpts, setLoadingGlo
     showModalAdd()
   }
 
-  const handleClickModal = () => {
+  const onCloseModal = () => {
     hideModalAdd()
   }
 
@@ -43,12 +43,8 @@ const CustomersSearch: FC<CustomersTableProps> = ({ opts, setOpts, setLoadingGlo
         <TextField onChange={onChangeSearch} width="100%" placeholder="Buscar cliente por nombre" />
       </Container>
       <Button shape="round" leadingIcon="ri-add-fill" size="small" onClick={handleClickButton} />
-      <CustomersModal
-        visible={visibleModalAdd}
-        onClose={handleClickModal}
-        setLoadingGlobal={setLoadingGlobal}
-        edits={{ edit: false, url: '' }}
-      />
+
+      <CustomersModal visible={visibleModalAdd} onClose={onCloseModal} setLoadingGlobal={setLoadingGlobal} />
     </Container>
   )
 }

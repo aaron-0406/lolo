@@ -16,7 +16,8 @@ import Label from '../../../../../ui/Label'
 type CustomersModalProps = {
   visible: boolean
   onClose: () => void
-  edits?: { edit: boolean; url: string }
+  isEdit?: boolean
+  url?: string
   setLoadingGlobal: (state: boolean) => void
 }
 
@@ -29,12 +30,7 @@ const defaultValuesCustomer: Omit<CustomerType, 'customerBanks' | 'createdAt'> =
   state: true,
 }
 
-const CustomersModal = ({
-  visible,
-  onClose,
-  setLoadingGlobal,
-  edits = { edit: false, url: '' },
-}: CustomersModalProps) => {
+const CustomersModal = ({ visible, onClose, setLoadingGlobal, isEdit = false, url = '' }: CustomersModalProps) => {
   const formMethods = useForm<CustomerType>({
     resolver: ModalCustomersResolver,
     mode: 'all',
@@ -49,8 +45,6 @@ const CustomersModal = ({
     formState: { isValid },
   } = formMethods
 
-  const [urlEdit, setUrlEdit] = useState('')
-
   const { isLoading: loadingCreateCustomer, mutate: createCustomer } = useMutation<any, Error>(
     async () => {
       const { id, ...restClient } = getValues()
@@ -60,14 +54,13 @@ const CustomersModal = ({
       onSuccess: () => {
         notification({ type: 'success', message: 'Cliente creado' })
         setLoadingGlobal(true)
-        onClose()
+        handleClickCloseModal()
       },
       onError: (error: any) => {
         notification({
           type: 'error',
           message: error.response.data.message,
         })
-        onClose()
       },
     }
   )
@@ -88,19 +81,18 @@ const CustomersModal = ({
           type: 'error',
           message: error.response.data.message,
         })
-        onClose()
       },
     }
   )
 
-  const { refetch: refetchEdit } = useQuery(
+  const { refetch: refetchGetCustomerByURL } = useQuery(
     'get-customer-by-url',
     async () => {
-      return getCustomerByUrl(urlEdit)
+      return getCustomerByUrl(url)
     },
     {
       onSuccess: ({ data }) => {
-        if (urlEdit !== '') {
+        if (url !== '') {
           setValue('companyName', data.companyName)
           setValue('description', data.description)
           setValue('ruc', data.ruc)
@@ -110,17 +102,16 @@ const CustomersModal = ({
           reset(defaultValuesCustomer)
         }
       },
+      enabled: false,
     }
   )
 
   const onAddCustomer = () => {
     createCustomer()
-    setUrlEdit('')
   }
 
   const onEditCustomer = () => {
     editCustomer()
-    setUrlEdit('')
   }
 
   const handleClickCloseModal = () => {
@@ -129,12 +120,10 @@ const CustomersModal = ({
   }
 
   useEffect(() => {
-    setUrlEdit(edits?.url)
-  }, [edits?.url])
-
-  useEffect(() => {
-    refetchEdit()
-  }, [urlEdit, refetchEdit])
+    if (url !== '') {
+      refetchGetCustomerByURL()
+    }
+  }, [url])
 
   return (
     <FormProvider {...formMethods}>
@@ -142,7 +131,7 @@ const CustomersModal = ({
         visible={visible}
         onClose={handleClickCloseModal}
         id="modal-files"
-        title={edits?.edit ? 'Editar Cliente' : 'Agregar Cliente'}
+        title={isEdit ? 'Editar Cliente' : 'Agregar Cliente'}
         contentOverflowY="auto"
       >
         <Container
@@ -156,7 +145,7 @@ const CustomersModal = ({
         >
           <Container width="100%" display="flex" flexDirection="column" gap="10px" padding="20px">
             <CustomerInfoForm />
-            <Container width="100%" display={edits?.edit ? 'none' : 'flex'} gap="10px">
+            <Container width="100%" display={isEdit ? 'none' : 'flex'} gap="10px">
               <Label label="Estado:" />
               <Controller
                 name="state"
@@ -176,10 +165,10 @@ const CustomersModal = ({
           <Container width="100%" height="75px" display="flex" justifyContent="center" alignItems="center" gap="20px">
             <Button
               width="125px"
-              label={edits?.edit ? 'Editar' : 'Agregar'}
+              label={isEdit ? 'Editar' : 'Agregar'}
               shape="default"
               trailingIcon="ri-add-fill"
-              onClick={edits?.edit ? onEditCustomer : onAddCustomer}
+              onClick={isEdit ? onEditCustomer : onAddCustomer}
               loading={loadingCreateCustomer || loadingEditCustomer}
               disabled={!isValid}
             />
