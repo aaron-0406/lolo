@@ -50,11 +50,12 @@ const UsersModal = ({ visible, onClose, id }: CustomersModalProps) => {
         setUsers(data)
         setLoad(false)
       },
+      enabled: false,
     }
   )
 
   useEffect(() => {
-    refetch()
+    if (id) refetch()
   }, [refetch, load, filter, id])
 
   return (
@@ -68,7 +69,7 @@ const UsersModal = ({ visible, onClose, id }: CustomersModalProps) => {
         </Container>
         <Container>
           <Table
-            top="340px"
+            top={greaterThanMobile ? '340px' : '200px'}
             columns={usersColumns}
             loading={load}
             isArrayEmpty={!users.length}

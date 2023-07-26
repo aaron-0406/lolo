@@ -21,9 +21,16 @@ const CustomersSearch: FC<CustomersTableProps> = ({ opts, setOpts, setLoadingGlo
 
   const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
-    if (value === '') return setOpts({ ...opts, filter: '', page: 1 })
+    if (value === '') {
+      setOpts({ ...opts, filter: '', page: 1 })
+      setLoadingGlobal(true)
+      return
+    }
+
     if (value.length < 3) return
-    return setOpts({ ...opts, filter: value.trim(), page: 1 })
+
+    setOpts({ ...opts, filter: value.trim(), page: 1 })
+    setLoadingGlobal(true)
   }
 
   const handleClickButton = () => {
