@@ -1,5 +1,6 @@
 import { Outlet } from 'react-router-dom'
 import RedirectRoute from '../RedirectRoute'
+import { useDashContext } from '../../contexts/DashProvider'
 
 type GuestRouteProps = {
   pathname: string
@@ -7,9 +8,13 @@ type GuestRouteProps = {
 
 const GuestRoute: React.FC<GuestRouteProps> = ({ pathname }) => {
   //TODO: Get isAuthenticated from context - useGeneralContext
-  const isAuthenticated = true
+  const {
+    auth: { authenticate },
+  } = useDashContext()
 
-  if (isAuthenticated) {
+  // const isAuthenticated = true
+
+  if (authenticate) {
     return <RedirectRoute pathname={pathname} />
   }
 

@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react'
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect } from 'react'
 import { Controller } from 'react-hook-form'
 import { FormProvider, useForm } from 'react-hook-form'
 import { ModalCustomersResolver } from './CustomersModal.yup'
@@ -16,7 +17,9 @@ import Label from '../../../../../ui/Label'
 type CustomersModalProps = {
   visible: boolean
   onClose: () => void
-  edits?: { edit: boolean; url: string }
+  isEdit?: boolean
+  url?: string
+  setLoadingGlobal: (state: boolean) => void
 }
 
 const defaultValuesCustomer: Omit<CustomerType, 'customerBanks' | 'createdAt'> = {
@@ -28,7 +31,7 @@ const defaultValuesCustomer: Omit<CustomerType, 'customerBanks' | 'createdAt'> =
   state: true,
 }
 
-const CustomersModal = ({ visible, onClose, edits = { edit: false, url: '' } }: CustomersModalProps) => {
+const CustomersModal = ({ visible, onClose, setLoadingGlobal, isEdit = false, url = '' }: CustomersModalProps) => {
   const formMethods = useForm<CustomerType>({
     resolver: ModalCustomersResolver,
     mode: 'all',
@@ -43,17 +46,16 @@ const CustomersModal = ({ visible, onClose, edits = { edit: false, url: '' } }: 
     formState: { isValid },
   } = formMethods
 
-  const [urlEdit, setUrlEdit] = useState('')
-
   const { isLoading: loadingCreateCustomer, mutate: createCustomer } = useMutation<any, Error>(
     async () => {
       const { id, ...restClient } = getValues()
       return await createClient(restClient)
     },
     {
-      onSuccess: (data) => {
-        setValue('id', data.data.id)
+      onSuccess: () => {
         notification({ type: 'success', message: 'Cliente creado' })
+        setLoadingGlobal(true)
+        handleClickCloseModal()
       },
       onError: (error: any) => {
         notification({
@@ -64,7 +66,7 @@ const CustomersModal = ({ visible, onClose, edits = { edit: false, url: '' } }: 
     }
   )
 
-  const { isLoading: loadingEditCustomer, mutate: EditCustomer } = useMutation<any, Error>(
+  const { isLoading: loadingEditCustomer, mutate: editCustomer } = useMutation<any, Error>(
     async () => {
       const { id, customerBanks, createdAt, state, ...restClient } = getValues()
       return await editCustomerById(id, restClient)
@@ -72,6 +74,8 @@ const CustomersModal = ({ visible, onClose, edits = { edit: false, url: '' } }: 
     {
       onSuccess: () => {
         notification({ type: 'success', message: 'Cliente editado' })
+        setLoadingGlobal(true)
+        onClose()
       },
       onError: (error: any) => {
         notification({
@@ -82,14 +86,14 @@ const CustomersModal = ({ visible, onClose, edits = { edit: false, url: '' } }: 
     }
   )
 
-  const { refetch: refetchEdit } = useQuery(
+  const { refetch: refetchGetCustomerByURL } = useQuery(
     'get-customer-by-url',
     async () => {
-      return getCustomerByUrl(urlEdit)
+      return getCustomerByUrl(url)
     },
     {
       onSuccess: ({ data }) => {
-        if (urlEdit !== '') {
+        if (url !== '') {
           setValue('companyName', data.companyName)
           setValue('description', data.description)
           setValue('ruc', data.ruc)
@@ -99,17 +103,16 @@ const CustomersModal = ({ visible, onClose, edits = { edit: false, url: '' } }: 
           reset(defaultValuesCustomer)
         }
       },
+      enabled: false,
     }
   )
 
   const onAddCustomer = () => {
     createCustomer()
-    onClose()
   }
 
   const onEditCustomer = () => {
-    EditCustomer()
-    setUrlEdit('')
+    editCustomer()
   }
 
   const handleClickCloseModal = () => {
@@ -118,12 +121,10 @@ const CustomersModal = ({ visible, onClose, edits = { edit: false, url: '' } }: 
   }
 
   useEffect(() => {
-    setUrlEdit(edits?.url)
-  }, [edits?.url])
-
-  useEffect(() => {
-    refetchEdit()
-  }, [urlEdit, refetchEdit])
+    if (url !== '') {
+      refetchGetCustomerByURL()
+    }
+  }, [url])
 
   return (
     <FormProvider {...formMethods}>
@@ -131,7 +132,7 @@ const CustomersModal = ({ visible, onClose, edits = { edit: false, url: '' } }: 
         visible={visible}
         onClose={handleClickCloseModal}
         id="modal-files"
-        title={edits?.edit ? 'Editar Cliente' : 'Agregar Cliente'}
+        title={isEdit ? 'Editar Cliente' : 'Agregar Cliente'}
         contentOverflowY="auto"
       >
         <Container
@@ -145,7 +146,7 @@ const CustomersModal = ({ visible, onClose, edits = { edit: false, url: '' } }: 
         >
           <Container width="100%" display="flex" flexDirection="column" gap="10px" padding="20px">
             <CustomerInfoForm />
-            <Container width="100%" display={edits?.edit ? 'none' : 'flex'} gap="10px">
+            <Container width="100%" display={isEdit ? 'none' : 'flex'} gap="10px">
               <Label label="Estado:" />
               <Controller
                 name="state"
@@ -165,10 +166,10 @@ const CustomersModal = ({ visible, onClose, edits = { edit: false, url: '' } }: 
           <Container width="100%" height="75px" display="flex" justifyContent="center" alignItems="center" gap="20px">
             <Button
               width="125px"
-              label={edits?.edit ? 'Editar' : 'Agregar'}
+              label={isEdit ? 'Editar' : 'Agregar'}
               shape="default"
               trailingIcon="ri-add-fill"
-              onClick={edits?.edit ? onEditCustomer : onAddCustomer}
+              onClick={isEdit ? onEditCustomer : onAddCustomer}
               loading={loadingCreateCustomer || loadingEditCustomer}
               disabled={!isValid}
             />
