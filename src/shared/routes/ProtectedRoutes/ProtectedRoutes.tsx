@@ -1,4 +1,3 @@
-import { useQuery } from 'react-query'
 import { Outlet } from 'react-router-dom'
 import storage from '../../utils/storage'
 import RedirectRoute from '../RedirectRoute'
