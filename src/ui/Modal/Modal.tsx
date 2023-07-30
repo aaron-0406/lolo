@@ -35,7 +35,7 @@ const Modal: React.FC<ModalProps> = (props) => {
     title,
     contentOverflowY,
     minHeight,
-    size = 'large',
+    size = 'medium',
     visible = false,
     withPortal = true,
   } = props
@@ -132,6 +132,10 @@ const StyledModalBox = styled(Container)<{ size?: ModalSize }>`
         ${size === 'small' &&
         css`
           max-width: 452px;
+        `}
+        ${size === 'large' &&
+        css`
+          max-width: calc(100vw - 160px);
         `}
       }
     }
