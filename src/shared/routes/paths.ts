@@ -19,6 +19,7 @@ export default {
     perfil: (urlIdentifier = ':urlIdentifier') => `/${urlIdentifier}/perfil`,
     clientes: (urlIdentifier = ':urlIdentifier') => `/${urlIdentifier}/clientes`,
     cobranza: (urlIdentifier = ':urlIdentifier') => `/${urlIdentifier}/cobranza`,
+    metas: (urlIdentifier = ':urlIdentifier') => `/${urlIdentifier}/metas`,
     document: (urlIdentifier = ':urlIdentifier') => `/${urlIdentifier}/document`,
   },
   companyDashboard: {

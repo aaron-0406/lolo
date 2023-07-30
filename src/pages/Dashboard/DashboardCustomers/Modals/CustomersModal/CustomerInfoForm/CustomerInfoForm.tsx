@@ -1,11 +1,11 @@
 import { Controller, useFormContext } from 'react-hook-form'
-import { CustomerType } from '../../../../../shared/types/customer.type'
-import Container from '../../../../../ui/Container'
-import TextAreaField from '../../../../../ui/fields/TextAreaField'
-import Label from '../../../../../ui/Label'
-import TextField from '../../../../../ui/fields/TextField'
+import { CustomerType } from '../../../../../../shared/types/customer.type'
+import Container from '../../../../../../ui/Container'
+import TextAreaField from '../../../../../../ui/fields/TextAreaField'
+import Label from '../../../../../../ui/Label'
+import TextField from '../../../../../../ui/fields/TextField'
 
-const AddCustomerInfo = () => {
+const CustomerInfoForm = () => {
   const {
     control,
     formState: { errors },
@@ -23,6 +23,7 @@ const AddCustomerInfo = () => {
           )}
         />
       </Container>
+
       <Container width="100%" display="flex" gap="10px">
         <Label label="Compañía: " />
         <Controller
@@ -33,6 +34,7 @@ const AddCustomerInfo = () => {
           )}
         />
       </Container>
+
       <Container width="100%" display="flex" gap="10px">
         <Label label="URL: " />
         <Controller
@@ -43,6 +45,7 @@ const AddCustomerInfo = () => {
           )}
         />
       </Container>
+
       <Container width="100%" display="flex" gap="10px">
         <Label label="Description: " />
         <Controller
@@ -63,4 +66,4 @@ const AddCustomerInfo = () => {
   )
 }
 
-export default AddCustomerInfo
+export default CustomerInfoForm

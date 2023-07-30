@@ -5,6 +5,7 @@ import initialTheme from '../../styles/theme'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { LoloProvider } from './LoloProvider'
 import { Toaster } from 'react-hot-toast'
+import { DashProvider } from './DashProvider'
 
 interface ProvidersProps {
   children: React.ReactNode
@@ -25,13 +26,15 @@ export const Providers: React.FC<ProvidersProps> = ({ children }) => {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <LoloProvider>
-          <ThemeProvider theme={initialTheme}>
-            <GlobalStyles />
-            <Toaster />
-            {children}
-          </ThemeProvider>
-        </LoloProvider>
+        <DashProvider>
+          <LoloProvider>
+            <ThemeProvider theme={initialTheme}>
+              <GlobalStyles />
+              <Toaster />
+              {children}
+            </ThemeProvider>
+          </LoloProvider>
+        </DashProvider>
       </BrowserRouter>
     </QueryClientProvider>
   )

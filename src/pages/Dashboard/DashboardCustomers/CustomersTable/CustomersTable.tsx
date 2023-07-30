@@ -11,29 +11,44 @@ import { customersColumns } from './utils/columns'
 import EmptyStateCell from '../../../../ui/Tables/Table/EmptyStateCell'
 import BodyCell from '../../../../ui/Tables/Table/BodyCell'
 import Button from '../../../../ui/Button'
-import CustomerModal from '../CustomersModal'
+import CustomerModal from '../Modals/CustomersModal'
 import useModal from '../../../../shared/hooks/useModal'
+import UsersModal from '../Modals/UsersModal/UsersModal'
 
 type CustomersTableProps = {
   opts: Opts
   setOpts: Dispatch<Opts>
-  load: boolean
+  loading: boolean
   setLoadingGlobal: (state: boolean) => void
 }
 
-const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, load, setLoadingGlobal }) => {
+const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, loading, setLoadingGlobal }) => {
   const [customers, setCustomers] = useState([])
   const [urlEdit, setUrlEdit] = useState('')
   const [customersCount, setCustomersCount] = useState<number>(0)
-  const { visible: visibleModalAdd, showModal: showModalAdd, hideModal: hideModalAdd } = useModal()
+  const [idCustomer, setIdCustomer] = useState(0)
 
-  const handleClickButton = (url: string) => {
+  const { visible: visibleModalCustomer, showModal: showModalCustomer, hideModal: hideModalCustomer } = useModal()
+  const { visible: visibleModalUser, showModal: showModalUser, hideModal: hideModalUser } = useModal()
+
+  const handleClickButtonClient = (url: string) => {
     setUrlEdit(url)
-    showModalAdd()
+    showModalCustomer()
   }
-  const handleClickModal = () => {
+
+  const onCloseModal = () => {
     setUrlEdit('')
-    hideModalAdd()
+    hideModalCustomer()
+  }
+
+  const handleClickButtonUser = (id: number) => {
+    setIdCustomer(id)
+    showModalUser()
+  }
+
+  const onCloseUser = () => {
+    setIdCustomer(0)
+    hideModalUser()
   }
 
   const { refetch } = useQuery(
@@ -43,7 +58,6 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, load, setLoadi
     },
     {
       onSuccess: ({ data }) => {
-        console.log(data)
         if (opts.filter !== '') {
           data = data.filter((filt: CustomerType) => {
             return filt.companyName.substring(0, opts.filter.length).toUpperCase() === opts.filter.toUpperCase()
@@ -53,12 +67,13 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, load, setLoadi
         setCustomersCount(data.length)
         setLoadingGlobal(false)
       },
+      enabled: false,
     }
   )
 
   useEffect(() => {
-    refetch()
-  }, [refetch, load, opts])
+    if (loading) refetch()
+  }, [refetch, loading, opts])
 
   return (
     <Container width="100%" height="calc(100% - 112px)" padding="20px">
@@ -66,7 +81,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, load, setLoadi
       <Table
         top="260px"
         columns={customersColumns}
-        loading={load}
+        loading={loading}
         isArrayEmpty={!customers.length}
         emptyState={
           <EmptyStateCell colSpan={customersColumns.length}>
@@ -87,10 +102,23 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, load, setLoadi
                   {
                     <Button
                       onClick={() => {
-                        handleClickButton(record.urlIdentifier)
+                        handleClickButtonClient(record.urlIdentifier)
                       }}
                       shape="round"
+                      size="small"
                       leadingIcon="ri-pencil-fill"
+                    />
+                  }
+                </BodyCell>
+                <BodyCell textAlign="center">
+                  {
+                    <Button
+                      onClick={() => {
+                        handleClickButtonUser(record.id)
+                      }}
+                      shape="round"
+                      size="small"
+                      leadingIcon="ri-user-search-fill"
                     />
                   }
                 </BodyCell>
@@ -98,7 +126,15 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, load, setLoadi
             )
           })}
       </Table>
-      <CustomerModal visible={visibleModalAdd} onClose={handleClickModal} edits={{ edit: true, url: urlEdit }} />
+
+      <CustomerModal
+        visible={visibleModalCustomer}
+        onClose={onCloseModal}
+        setLoadingGlobal={setLoadingGlobal}
+        url={urlEdit}
+        isEdit
+      />
+      <UsersModal visible={visibleModalUser} onClose={onCloseUser} id={idCustomer} />
     </Container>
   )
 }

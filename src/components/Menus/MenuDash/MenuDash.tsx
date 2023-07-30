@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import styled, { css } from 'styled-components'
 import { useMediaQuery } from '../../../shared/hooks/useMediaQuery'
+import { useDashContext } from '../../../shared/contexts/DashProvider'
 import paths from '../../../shared/routes/paths'
 import storage from '../../../shared/utils/storage'
 import Container from '../../../ui/Container'
@@ -17,6 +18,11 @@ type MenuProps = {
 const MenuDash: React.FC<MenuProps> = ({ children }) => {
   const [toggleMenu, setToggleMenu] = useState(false)
 
+  const {
+    auth: { setAuthenticate },
+    clearAll,
+  } = useDashContext()
+
   const greaterThanTabletL = useMediaQuery(device.tabletL)
   const items = getDashItems()
 
@@ -27,8 +33,9 @@ const MenuDash: React.FC<MenuProps> = ({ children }) => {
   }
 
   const logOut = () => {
+    clearAll()
     storage.clear()
-    // setAuthenticate(false)
+    setAuthenticate(false)
   }
 
   return (
