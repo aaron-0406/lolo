@@ -55,7 +55,6 @@ const Login = () => {
   )
 
   const onLogin = () => {
-    console.log(user)
     loginQuery()
   }
 
@@ -82,7 +81,7 @@ const Login = () => {
         >
           <Icon remixClass="ri-user-line" size={120} color="Primary5" />
 
-          <Container width="100%" display="flex" flexDirection="column" gap="10px">
+          <Container width="100%" display="flex" flexDirection="column" gap="30px">
             <Controller
               name="email"
               control={control}
