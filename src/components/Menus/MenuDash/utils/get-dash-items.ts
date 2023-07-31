@@ -18,9 +18,9 @@ export const getDashItems = () => {
     },
     {
       id: 2,
-      title: 'GESTIONES',
-      remixClass: 'ri-survey-fill',
-      path: paths.dash.gestiones,
+      title: 'USUARIOS',
+      remixClass: 'ri-user-settings-fill',
+      path: paths.dash.usuarios,
       admin: false,
     },
     {
