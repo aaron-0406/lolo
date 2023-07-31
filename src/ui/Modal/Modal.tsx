@@ -133,6 +133,7 @@ const StyledModalBox = styled(Container)<{ size?: ModalSize }>`
         css`
           max-width: 452px;
         `}
+
         ${size === 'large' &&
         css`
           max-width: calc(100vw - 160px);
