@@ -9,7 +9,7 @@ export const getAll = async () => {
   return await axiosClient.get(`${url}/`)
 }
 
-export const getAllUsersByCustomerID = async (customerID: number) => {
+export const getAllUsersByID = async (customerID: number) => {
   return await axiosClient.get(`${url}/users/${customerID}`)
 }
 
