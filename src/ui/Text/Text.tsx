@@ -38,7 +38,16 @@ type TextTypeProps = ITitleText | IBodyText | INumberText
  */
 type TextColor = Pick<
   IThemeColor,
-  'Neutral0' | 'Neutral1' | 'Neutral4' | 'Neutral5' | 'Neutral6' | 'Neutral8' | 'Neutral9' | 'Danger5' | 'Primary5'
+  | 'Neutral0'
+  | 'Neutral1'
+  | 'Neutral4'
+  | 'Neutral5'
+  | 'Neutral6'
+  | 'Neutral8'
+  | 'Neutral9'
+  | 'Danger5'
+  | 'Primary5'
+  | 'Success5'
 >
 
 type TextProps = SpanProps & {
