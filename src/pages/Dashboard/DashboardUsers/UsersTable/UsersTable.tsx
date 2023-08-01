@@ -1,7 +1,7 @@
 import { Dispatch, FC, useState, useEffect } from 'react'
 import moment from 'moment'
 import { useQuery } from 'react-query'
-import { getAll } from '../../../../shared/services/customer-user.service'
+import { getAllUsersByID } from '../../../../shared/services/customer-user.service'
 import { CustomerUserType } from '../../../../shared/types/customer-user.type'
 import Container from '../../../../ui/Container'
 import Pagination from '../../../../ui/Pagination'
@@ -11,8 +11,9 @@ import { usersColumns } from './utils/columns'
 import EmptyStateCell from '../../../../ui/Tables/Table/EmptyStateCell'
 import BodyCell from '../../../../ui/Tables/Table/BodyCell'
 import Button from '../../../../ui/Button'
-// import useModal from '../../../../shared/hooks/useModal'
-// import UsersModal from '../Modals/UsersModal/UsersModal'
+import { useDashContext } from '../../../../shared/contexts/DashProvider'
+import UsersModal from '../Modals/UsersModal'
+import useModal from '../../../../shared/hooks/useModal'
 
 type UsersTableProps = {
   opts: Opts
@@ -22,26 +23,32 @@ type UsersTableProps = {
 }
 
 const UsersTable: FC<UsersTableProps> = ({ opts, setOpts, loading, setLoadingGlobal }) => {
+  const {
+    dashCustomer: {
+      selectedCustomer: { id: customerId },
+    },
+  } = useDashContext()
+
   const [users, setUsers] = useState([])
   const [usersCount, setUsersCount] = useState<number>(0)
   const [idUser, setIdUser] = useState(0)
 
-  // const { visible: visibleModalCustomer, showModal: showModalCustomer, hideModal: hideModalCustomer } = useModal()
-  // const { visible: visibleModalUser, showModal: showModalUser, hideModal: hideModalUser } = useModal()
+  const { visible: visibleModalUser, showModal: showModalUser, hideModal: hideModalUser } = useModal()
 
   const handleClickEditUser = (id: number) => {
     setIdUser(id)
+    showModalUser()
   }
 
   const onCloseUser = () => {
     setIdUser(0)
-    // hideModalUser()
+    hideModalUser()
   }
 
   const { refetch } = useQuery(
     'get-all',
     async () => {
-      return await getAll()
+      return await getAllUsersByID(customerId)
     },
     {
       onSuccess: ({ data }) => {
@@ -90,42 +97,41 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts, loading, setLoadingGlo
                 <BodyCell textAlign="center">{`${record.state ? 'activo' : 'inactivo'}`}</BodyCell>
                 <BodyCell textAlign="center">{`${moment(record.createdAt).format('DD-MM-YYYY') || ''}`}</BodyCell>
                 <BodyCell textAlign="center">
-                  {
-                    <Button
-                      onClick={() => {
-                        handleClickEditUser(record.id)
-                      }}
-                      shape="round"
-                      size="small"
-                      leadingIcon="ri-pencil-fill"
-                    />
-                  }
-                </BodyCell>
-                <BodyCell textAlign="center">
-                  {
-                    <Button
-                      // onClick={() => {
-                      //   handleClickButtonUser(record.id)
-                      // }}
-                      shape="round"
-                      size="small"
-                      leadingIcon="ri-user-search-fill"
-                    />
-                  }
+                  <Container justifyContent="space-between" display="flex">
+                    {
+                      <Button
+                        onClick={() => {
+                          handleClickEditUser(record.id)
+                        }}
+                        shape="round"
+                        size="small"
+                        leadingIcon="ri-pencil-fill"
+                      />
+                    }
+                    {
+                      <Button
+                        // onClick={() =>{
+                        //   handleClickButtonUser(record.id)
+                        // }}
+                        shape="round"
+                        size="small"
+                        leadingIcon="ri-user-search-fill"
+                      />
+                    }
+                  </Container>
                 </BodyCell>
               </tr>
             )
           })}
       </Table>
 
-      {/* <CustomerModal
-        visible={visibleModalCustomer}
-        onClose={onCloseModal}
+      <UsersModal
+        visible={visibleModalUser}
+        onClose={onCloseUser}
         setLoadingGlobal={setLoadingGlobal}
-        url={urlEdit}
+        idUser={idUser}
         isEdit
-      /> */}
-      {/* <UsersModal visible={visibleModalUser} onClose={onCloseUser} id={idUser} /> */}
+      />
     </Container>
   )
 }

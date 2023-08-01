@@ -12,6 +12,7 @@ import notification from '../../../../../ui/notification'
 import Button from '../../../../../ui/Button'
 import Checkbox from '../../../../../ui/Checkbox'
 import Label from '../../../../../ui/Label'
+import { useDashContext } from '../../../../../shared/contexts/DashProvider'
 
 type UsersModalProps = {
   visible: boolean
@@ -34,6 +35,12 @@ const defaultValuesCustomerUser: Omit<CustomerUserType, 'customerId' | 'createdA
 }
 
 const UsersModal = ({ visible, onClose, idUser = 0, isEdit = false, setLoadingGlobal }: UsersModalProps) => {
+  const {
+    dashCustomer: {
+      selectedCustomer: { id: customerId },
+    },
+  } = useDashContext()
+
   const formMethods = useForm<CustomerUserType>({
     resolver: ModalUsersResolver,
     mode: 'all',
@@ -51,7 +58,7 @@ const UsersModal = ({ visible, onClose, idUser = 0, isEdit = false, setLoadingGl
   const { isLoading: loadingCreateClient, mutate: createCustomerUser } = useMutation<any, Error>(
     async () => {
       const { id, ...restUser } = getValues()
-      return await createUser(restUser)
+      return await createUser({ ...restUser, customerId })
     },
     {
       onSuccess: () => {

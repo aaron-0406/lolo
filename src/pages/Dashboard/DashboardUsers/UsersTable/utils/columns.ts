@@ -52,15 +52,9 @@ export const usersColumns: ColumProps[] = [
     justifyContent: 'space-between',
   },
   {
-    id: 'users.datatable.header.edit',
-    title: 'EDITAR',
-    width: '10%',
-    justifyContent: 'space-between',
-  },
-  {
-    id: 'users.datatable.header.delete',
-    title: 'ELIMINAR',
-    width: '10%',
+    id: 'users.datatable.header.actions',
+    title: 'ACCIONES',
+    width: '40%',
     justifyContent: 'space-between',
   },
 ]
