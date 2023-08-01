@@ -14,6 +14,7 @@ import Button from '../../../../ui/Button'
 import CustomerModal from '../Modals/CustomersModal'
 import useModal from '../../../../shared/hooks/useModal'
 import UsersModal from '../Modals/UsersModal/UsersModal'
+import { useDashContext } from '../../../../shared/contexts/DashProvider'
 
 type CustomersTableProps = {
   opts: Opts
@@ -23,6 +24,10 @@ type CustomersTableProps = {
 }
 
 const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, loading, setLoadingGlobal }) => {
+  const {
+    dashCustomer: { setSelectedCustomer },
+  } = useDashContext()
+
   const [customers, setCustomers] = useState([])
   const [urlEdit, setUrlEdit] = useState('')
   const [customersCount, setCustomersCount] = useState<number>(0)
@@ -34,6 +39,10 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, loading, setLo
   const handleClickButtonClient = (url: string) => {
     setUrlEdit(url)
     showModalCustomer()
+  }
+
+  const handleClickButtonCustomer = (customer: CustomerType) => {
+    setSelectedCustomer(customer)
   }
 
   const onCloseModal = () => {
@@ -92,7 +101,13 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, loading, setLo
         {!!customers?.length &&
           customers.map((record: CustomerType) => {
             return (
-              <tr className="styled-data-table-row" key={record.id}>
+              <tr
+                className="styled-data-table-row"
+                key={record.id}
+                onClick={() => {
+                  handleClickButtonCustomer(record)
+                }}
+              >
                 <BodyCell textAlign="center">{`${record.ruc || ''}`}</BodyCell>
                 <BodyCell>{`${record.companyName || ''}`}</BodyCell>
                 <BodyCell>{`${record.urlIdentifier || ''}`}</BodyCell>
@@ -101,7 +116,8 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, loading, setLo
                 <BodyCell textAlign="center">
                   {
                     <Button
-                      onClick={() => {
+                      onClick={(event) => {
+                        event.stopPropagation()
                         handleClickButtonClient(record.urlIdentifier)
                       }}
                       shape="round"
@@ -113,7 +129,8 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, loading, setLo
                 <BodyCell textAlign="center">
                   {
                     <Button
-                      onClick={() => {
+                      onClick={(event) => {
+                        event.stopPropagation()
                         handleClickButtonUser(record.id)
                       }}
                       shape="round"
