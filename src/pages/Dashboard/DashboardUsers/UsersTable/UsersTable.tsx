@@ -1,7 +1,7 @@
 import { Dispatch, FC, useState, useEffect } from 'react'
 import moment from 'moment'
 import { useQuery } from 'react-query'
-import { getCustomerAll } from '../../../../shared/services/customer.service'
+import { getAll } from '../../../../shared/services/customer-user.service'
 import { CustomerUserType } from '../../../../shared/types/customer-user.type'
 import Container from '../../../../ui/Container'
 import Pagination from '../../../../ui/Pagination'
@@ -11,8 +11,8 @@ import { usersColumns } from './utils/columns'
 import EmptyStateCell from '../../../../ui/Tables/Table/EmptyStateCell'
 import BodyCell from '../../../../ui/Tables/Table/BodyCell'
 import Button from '../../../../ui/Button'
-import useModal from '../../../../shared/hooks/useModal'
-import UsersModal from '../Modals/UsersModal/UsersModal'
+// import useModal from '../../../../shared/hooks/useModal'
+// import UsersModal from '../Modals/UsersModal/UsersModal'
 
 type UsersTableProps = {
   opts: Opts
@@ -26,23 +26,22 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts, loading, setLoadingGlo
   const [usersCount, setUsersCount] = useState<number>(0)
   const [idUser, setIdUser] = useState(0)
 
-  const { visible: visibleModalCustomer, showModal: showModalCustomer, hideModal: hideModalCustomer } = useModal()
-  const { visible: visibleModalUser, showModal: showModalUser, hideModal: hideModalUser } = useModal()
+  // const { visible: visibleModalCustomer, showModal: showModalCustomer, hideModal: hideModalCustomer } = useModal()
+  // const { visible: visibleModalUser, showModal: showModalUser, hideModal: hideModalUser } = useModal()
 
-  const handleClickButtonUser = (id: number) => {
+  const handleClickEditUser = (id: number) => {
     setIdUser(id)
-    showModalUser()
   }
 
   const onCloseUser = () => {
     setIdUser(0)
-    hideModalUser()
+    // hideModalUser()
   }
 
   const { refetch } = useQuery(
-    'get-customer-all',
+    'get-all',
     async () => {
-      return await getCustomerAll()
+      return await getAll()
     },
     {
       onSuccess: ({ data }) => {
@@ -82,16 +81,18 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts, loading, setLoadingGlo
             return (
               <tr className="styled-data-table-row" key={record.id}>
                 <BodyCell textAlign="center">{`${record.name || ''}`}</BodyCell>
-                <BodyCell>{`${record.lastname || ''}`}</BodyCell>
-                <BodyCell>{`${record.cellphone || ''}`}</BodyCell>
+                <BodyCell>{`${record.lastName || ''}`}</BodyCell>
+                <BodyCell>{`${record.phone || ''}`}</BodyCell>
                 <BodyCell>{`${record.dni || ''}`}</BodyCell>
+                <BodyCell>{`${record.email || ''}`}</BodyCell>
+                <BodyCell textAlign="center">{`${record.privilege || ''}`}</BodyCell>
                 <BodyCell textAlign="center">{`${record.state ? 'activo' : 'inactivo'}`}</BodyCell>
                 <BodyCell textAlign="center">{`${moment(record.createdAt).format('DD-MM-YYYY') || ''}`}</BodyCell>
                 <BodyCell textAlign="center">
                   {
                     <Button
                       onClick={() => {
-                        handleClickButtonClient(record.urlIdentifier)
+                        handleClickEditUser(record.id)
                       }}
                       shape="round"
                       size="small"
@@ -102,9 +103,9 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts, loading, setLoadingGlo
                 <BodyCell textAlign="center">
                   {
                     <Button
-                      onClick={() => {
-                        handleClickButtonUser(record.id)
-                      }}
+                      // onClick={() => {
+                      //   handleClickButtonUser(record.id)
+                      // }}
                       shape="round"
                       size="small"
                       leadingIcon="ri-user-search-fill"
@@ -116,14 +117,14 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts, loading, setLoadingGlo
           })}
       </Table>
 
-      <CustomerModal
+      {/* <CustomerModal
         visible={visibleModalCustomer}
         onClose={onCloseModal}
         setLoadingGlobal={setLoadingGlobal}
         url={urlEdit}
         isEdit
-      />
-      <UsersModal visible={visibleModalUser} onClose={onCloseUser} id={idCustomer} />
+      /> */}
+      {/* <UsersModal visible={visibleModalUser} onClose={onCloseUser} id={idUser} /> */}
     </Container>
   )
 }
