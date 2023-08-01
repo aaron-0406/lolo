@@ -37,9 +37,9 @@ const UsersSearch: FC<UsersTableProps> = ({ opts, setOpts, setLoadingGlobal }) =
     showModalAdd()
   }
 
-  const onCloseModal = () => {
-    hideModalAdd()
-  }
+  // const onCloseModal = () => {
+  //   hideModalAdd()
+  // }
 
   return (
     <Container display="flex" width="100%" padding=" 0 20px" justify-content="space-around">
