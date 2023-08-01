@@ -80,6 +80,7 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts, loading, setLoadingGlo
           users.map((record: CustomerUserType) => {
             return (
               <tr className="styled-data-table-row" key={record.id}>
+                <BodyCell textAlign="center">{`${record.id || ''}`}</BodyCell>
                 <BodyCell textAlign="center">{`${record.name || ''}`}</BodyCell>
                 <BodyCell>{`${record.lastName || ''}`}</BodyCell>
                 <BodyCell>{`${record.phone || ''}`}</BodyCell>

@@ -2,6 +2,12 @@ import { ColumProps } from '../../../../../ui/Tables/Table/Table'
 
 export const usersColumns: ColumProps[] = [
   {
+    id: 'users.datatable.header.id',
+    title: 'N°',
+    width: '10%',
+    justifyContent: 'center',
+  },
+  {
     id: 'users.datatable.header.name',
     title: 'NOMBRE',
     width: '20%',
