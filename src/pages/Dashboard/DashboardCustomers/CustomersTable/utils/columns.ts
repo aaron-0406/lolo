@@ -10,12 +10,12 @@ export const customersColumns: ColumProps[] = [
   {
     id: 'customers.datatable.header.company',
     title: 'COMPAÑIA',
-    width: '40%',
+    width: '30%',
   },
   {
     id: 'customers.datatable.header.urlidentifier',
     title: 'URL',
-    width: '30%',
+    width: '15%',
     justifyContent: 'space-between',
   },
   {
@@ -32,8 +32,8 @@ export const customersColumns: ColumProps[] = [
   },
   {
     id: 'customers.datatable.header.editcliente',
-    title: 'EDITAR',
-    width: '20%',
+    title: 'ACCIONES',
+    width: '30%',
     justifyContent: 'center',
   },
   {

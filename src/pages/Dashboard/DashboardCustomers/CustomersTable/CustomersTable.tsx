@@ -115,7 +115,8 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, loading, setLo
                 <BodyCell textAlign="center">{`${moment(record.createdAt).format('DD-MM-YYYY') || ''}`}</BodyCell>
                 <BodyCell textAlign="center">
                   {
-                    <Button
+                    <Container display='flex' justifyContent='space-between'>
+                      <Button
                       onClick={(event) => {
                         event.stopPropagation()
                         handleClickButtonClient(record.urlIdentifier)
@@ -124,6 +125,14 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, loading, setLo
                       size="small"
                       leadingIcon="ri-pencil-fill"
                     />
+                    <Button
+                      onClick={(event) => {
+                      }}
+                      shape="round"
+                      size="small"
+                      leadingIcon={record.state ? "ri-shield-user-fill" : "ri-shield-user-line"}
+                    />
+                    </Container>
                   }
                 </BodyCell>
                 <BodyCell textAlign="center">
