@@ -59,7 +59,7 @@ const CommentChart = () => {
       alignItems="center"
       width="100%"
       flexDirection="column"
-      height="50%"
+      height="70%"
       padding="2rem 2rem"
     >
       <Text.Title size="m" weight="bold">
