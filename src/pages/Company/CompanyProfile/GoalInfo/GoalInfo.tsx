@@ -67,13 +67,12 @@ const GoalInfo = () => {
 
     return () => {}
   }, [])
-
   return (
-    <Container width="100%" height="50%" display="flex" flexDirection="column" justifyContent="center" gap="1rem">
+    <Container width="100%"  display="flex" flexDirection="column" justifyContent="center" gap="1rem">
       <Container display="flex" justifyContent="space-between" width="100%" padding="0 2rem">
         <Text.Body size="m" weight="bold">
-          {globalGoal.id
-            ? `Meta del ${globalGoal.startDate} al ${globalGoal.endDate}`
+          {globalGoal.id !== 0
+            ? `Meta del ${moment(globalGoal.startDate).format('DD-MM-YYYY')} al ${moment(globalGoal.endDate).format('DD-MM-YYYY')}`
             : 'No hay meta registrada para esta semana!'}
         </Text.Body>
       </Container>

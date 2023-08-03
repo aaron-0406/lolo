@@ -31,7 +31,7 @@ const StyledCompanyProfile = styled(Container)`
     .main_container {
       display: flex;
       flex-direction: row;
-      flex-wrap: wrap;
+      /* flex-wrap: wrap; */
       height: 100%;
       width: 100%;
 
@@ -50,22 +50,21 @@ const StyledCompanyProfile = styled(Container)`
         width: 70%;
         height: 100%;
         flex-direction: column;
-        justify-content: center;
+        justify-content: space-around;
         align-items: center;
       }
     }
 
     .main_container_tablet {
       flex-direction: column;
-
       .side_bar_tablet {
         width: 100%;
-        height: 37%;
+        /* height: 37%; */
       }
 
       .body_area_tablet {
         width: 100%;
-        height: calc(63% - 50px);
+        /* height: calc(63% - 10px); */
       }
     }
   `}
