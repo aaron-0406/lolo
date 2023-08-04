@@ -10,7 +10,7 @@ export default {
     root: '/dash',
     login: '/dash/login',
     clientes: '/dash/clientes',
-    gestiones: '/dash/gestiones',
+    usuarios: '/dash/usuarios',
     reportes: '/dash/reportes',
   },
   company: {
