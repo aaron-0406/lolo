@@ -21,8 +21,8 @@ const DeleteUsersModal = ({ visible, idUser = 0, onClose, setLoadingGlobal }: De
     {
       onSuccess: () => {
         notification({ type: 'success', message: 'Usuario eliminado' })
-        setLoadingGlobal(loadingDeleteUser)
-        onClose()
+        setLoadingGlobal(true)
+        handleClickCloseModal()
       },
       onError: (error: any) => {
         notification({
