@@ -1,7 +1,11 @@
 import { createContext, Dispatch, useContext, useEffect, useState } from 'react'
 import jwtDecode from 'jwt-decode'
 import { UserAppType } from '../types/user-app'
+import { CustomerType } from '../types/customer.type'
 import storage from '../utils/storage'
+import { usePersistedState } from '../hooks/usePersistedState'
+
+const appDashSelectedCustomerStateKey = 'dash:customer'
 
 const initialUserState: UserAppType = {
   id: 0,
@@ -17,6 +21,15 @@ const initialUserState: UserAppType = {
   createdAt: new Date(),
 }
 
+const initialCustomerState: CustomerType = {
+  id: 0,
+  ruc: '',
+  companyName: '',
+  urlIdentifier: '',
+  state: false,
+  customerBanks: [],
+}
+
 export const DashContext = createContext<{
   auth: {
     authenticate: boolean
@@ -25,6 +38,10 @@ export const DashContext = createContext<{
   dashUser: {
     user: UserAppType
     setUser: Dispatch<UserAppType>
+  }
+  dashCustomer: {
+    selectedCustomer: CustomerType
+    setSelectedCustomer: Dispatch<CustomerType>
   }
   clearAll: () => void
 } | null>(null)
@@ -46,6 +63,15 @@ type DashProviderProps = {
 export const DashProvider: React.FC<DashProviderProps> = ({ children }) => {
   const [authenticate, setAuthenticate] = useState<boolean>(storage.get<string>('token') ? true : false)
   const [user, setUser] = useState(initialUserState)
+
+  const [selectedCustomerState, setSelectedCustomerState] = usePersistedState<CustomerType>(
+    appDashSelectedCustomerStateKey,
+    initialCustomerState
+  )
+
+  const setSelectedCustomer = (selectedCustomer: CustomerType) => {
+    setSelectedCustomerState(selectedCustomer)
+  }
 
   const clearAll = () => {
     setAuthenticate(false)
@@ -75,6 +101,10 @@ export const DashProvider: React.FC<DashProviderProps> = ({ children }) => {
         dashUser: {
           user,
           setUser,
+        },
+        dashCustomer: {
+          selectedCustomer: selectedCustomerState,
+          setSelectedCustomer,
         },
         clearAll,
       }}

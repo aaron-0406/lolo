@@ -20,6 +20,9 @@ const MenuDash: React.FC<MenuProps> = ({ children }) => {
 
   const {
     auth: { setAuthenticate },
+    dashCustomer: {
+      selectedCustomer: { urlIdentifier },
+    },
     clearAll,
   } = useDashContext()
 
@@ -46,14 +49,22 @@ const MenuDash: React.FC<MenuProps> = ({ children }) => {
         height="50px"
         display="flex"
         alignItems="center"
+        justifyContent="space-between"
         gap="35px"
         padding="15px"
       >
-        <Icon remixClass="ri-menu-line" size={30} onClick={onClickToggle} />
+        <Container display="flex" gap="35px">
+          <Icon remixClass="ri-menu-line" size={30} onClick={onClickToggle} />
 
-        <Text.Body size="l" weight="bold" ellipsis>
-          LOLO BANK
-        </Text.Body>
+          <Text.Body size="l" weight="bold" ellipsis>
+            LOLO BANK
+          </Text.Body>
+        </Container>
+        <Container>
+          <Text.Body size="m" weight="bold" color="Success5">
+            {urlIdentifier}
+          </Text.Body>
+        </Container>
       </Container>
 
       <Container width="100%" height="calc(100vh - 50px)" display="flex" flexDirection="row">
