@@ -42,7 +42,7 @@ const UserInfoForm = () => {
       </Container>
 
       <Container width="100%" display="flex" gap="10%">
-        <Label label="Telefono: " />
+        <Label label="Teléfono: " />
         <Controller
           name="phone"
           control={control}
@@ -86,7 +86,7 @@ const UserInfoForm = () => {
       </Container>
 
       <Container width="100%" display="flex" gap="10%">
-        <Label label="Privilegio " />
+        <Label label="Privilegio: " />
         <Controller
           name="privilege"
           control={control}

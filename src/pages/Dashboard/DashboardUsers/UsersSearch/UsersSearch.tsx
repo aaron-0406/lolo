@@ -9,13 +9,13 @@ import Button from '../../../../ui/Button'
 import useModal from '../../../../shared/hooks/useModal'
 import Label from '../../../../ui/Label/Label'
 
-type UsersTableProps = {
+type UsersSearchProps = {
   opts: Opts
   setOpts: Dispatch<Opts>
   setLoadingGlobal: (state: boolean) => void
 }
 
-const UsersSearch: FC<UsersTableProps> = ({ opts, setOpts, setLoadingGlobal }) => {
+const UsersSearch: FC<UsersSearchProps> = ({ opts, setOpts, setLoadingGlobal }) => {
   const greaterThanMobile = useMediaQuery(device.tabletS)
   const { visible: visibleModalAdd, showModal: showModalAdd, hideModal: hideModalAdd } = useModal()
 
@@ -47,7 +47,7 @@ const UsersSearch: FC<UsersTableProps> = ({ opts, setOpts, setLoadingGlobal }) =
         <Container display={greaterThanMobile ? 'flex' : 'none'} padding="0 10px 0 0">
           <Label label="Buscar:" />
         </Container>
-        <TextField onChange={onChangeSearch} width="100%" placeholder="Buscar cliente por nombre" />
+        <TextField onChange={onChangeSearch} width="100%" placeholder="Buscar usuario por nombre" />
       </Container>
       <Button shape="round" leadingIcon="ri-add-fill" size="small" onClick={handleClickModal} />
 
