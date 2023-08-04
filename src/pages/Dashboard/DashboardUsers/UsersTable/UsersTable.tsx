@@ -33,6 +33,7 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts, loading, setLoadingGlo
   const [users, setUsers] = useState([])
   const [usersCount, setUsersCount] = useState<number>(0)
   const [idUser, setIdUser] = useState(0)
+  const [idDeletedUser, setIdDeletedUser] = useState(0)
 
   const { visible: visibleModalUser, showModal: showModalUser, hideModal: hideModalUser } = useModal()
   const { visible: VisibleDeleteUser, showModal: showDeleteUser, hideModal: hideDeleteUser } = useModal()
@@ -43,12 +44,12 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts, loading, setLoadingGlo
   }
 
   const handleClickDeleteUser = (id: number) => {
-    setIdUser(id)
+    setIdDeletedUser(id)
     showDeleteUser()
   }
 
   const onCloseDeleteUser = () => {
-    setIdUser(0)
+    setIdDeletedUser(0)
     setLoadingGlobal(false)
     hideDeleteUser()
   }
@@ -80,6 +81,7 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts, loading, setLoadingGlo
 
   useEffect(() => {
     if (loading) refetch()
+    console.log(loading)
   }, [refetch, loading, opts])
 
   return (
@@ -150,7 +152,7 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts, loading, setLoadingGlo
         visible={VisibleDeleteUser}
         onClose={onCloseDeleteUser}
         setLoadingGlobal={setLoadingGlobal}
-        idUser={idUser}
+        idUser={idDeletedUser}
       />
     </Container>
   )

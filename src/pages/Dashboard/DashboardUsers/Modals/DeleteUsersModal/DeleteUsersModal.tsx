@@ -14,7 +14,7 @@ type DeleteUsersModalProps = {
 }
 
 const DeleteUsersModal = ({ visible, idUser = 0, onClose, setLoadingGlobal }: DeleteUsersModalProps) => {
-  const { isLoading: loadingDeleteUser, mutate: DeleteUserMutate } = useMutation<any, Error>(
+  const { isLoading: loadingDeleteUser, mutate: deleteUserMutate } = useMutation<any, Error>(
     async () => {
       return await deleteUser(idUser)
     },
@@ -22,7 +22,7 @@ const DeleteUsersModal = ({ visible, idUser = 0, onClose, setLoadingGlobal }: De
       onSuccess: () => {
         notification({ type: 'success', message: 'Usuario eliminado' })
         setLoadingGlobal(true)
-        handleClickCloseModal()
+        onClose()
       },
       onError: (error: any) => {
         notification({
@@ -33,23 +33,18 @@ const DeleteUsersModal = ({ visible, idUser = 0, onClose, setLoadingGlobal }: De
     }
   )
 
-  const handleClickCloseModal = () => {
-    onClose()
-    setLoadingGlobal(false)
-  }
-
-  const DeleteUsers = () => {
+  const deleteUsers = () => {
     if (idUser !== 0) {
-      DeleteUserMutate()
+      deleteUserMutate()
     }
   }
 
   return (
     <Modal
       visible={visible}
-      onClose={handleClickCloseModal}
+      onClose={onClose}
       id="modal-delete"
-      title="ELIMINAR USUARIO"
+      title="Desea eliminar al usuario?"
       contentOverflowY="auto"
       size="small"
       footer={
@@ -57,8 +52,9 @@ const DeleteUsersModal = ({ visible, idUser = 0, onClose, setLoadingGlobal }: De
           {
             <Button
               onClick={() => {
-                DeleteUsers()
+                deleteUsers()
               }}
+              loading={loadingDeleteUser}
               display="danger"
               size="default"
               label="ACEPTAR"
