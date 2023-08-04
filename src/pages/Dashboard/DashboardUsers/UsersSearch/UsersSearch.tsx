@@ -4,7 +4,7 @@ import TextField from '../../../../ui/fields/TextField'
 import { useMediaQuery } from '../../../../shared/hooks/useMediaQuery'
 import { device } from '../../../../shared/breakpoints/reponsive'
 import { Opts } from '../../../../ui/Pagination/interfaces'
-// import UsersModal from '../Modals/UsersModal'
+import UsersModal from '../Modals/UsersModal'
 import Button from '../../../../ui/Button'
 import useModal from '../../../../shared/hooks/useModal'
 import Label from '../../../../ui/Label/Label'
@@ -51,7 +51,7 @@ const UsersSearch: FC<UsersTableProps> = ({ opts, setOpts, setLoadingGlobal }) =
       </Container>
       <Button shape="round" leadingIcon="ri-add-fill" size="small" onClick={handleClickModal} />
 
-      {/* <UsersModal visible={visibleModalAdd} onClose={onCloseModal} setLoadingGlobal={setLoadingGlobal} /> */}
+      <UsersModal visible={visibleModalAdd} onClose={onCloseModal} setLoadingGlobal={setLoadingGlobal} />
     </Container>
   )
 }

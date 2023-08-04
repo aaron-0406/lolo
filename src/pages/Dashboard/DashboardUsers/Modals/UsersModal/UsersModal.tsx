@@ -5,19 +5,21 @@ import { ModalUsersResolver } from './UsersModal.yup'
 import { useMutation, useQuery } from 'react-query'
 import UserInfoForm from './UserInfoForm'
 import { CustomerUserType } from '../../../../../shared/types/customer-user.type'
-import { createClient, editUserById, getUserByUserId } from '../../../../../shared/services/customer-user.service'
+import { createUser, editUserById, getUserByUserId } from '../../../../../shared/services/customer-user.service'
 import Container from '../../../../../ui/Container'
 import Modal from '../../../../../ui/Modal'
 import notification from '../../../../../ui/notification'
 import Button from '../../../../../ui/Button'
 import Checkbox from '../../../../../ui/Checkbox'
 import Label from '../../../../../ui/Label'
+import { useDashContext } from '../../../../../shared/contexts/DashProvider'
 
 type UsersModalProps = {
   visible: boolean
   onClose: () => void
   isEdit?: boolean
   setLoadingGlobal: (state: boolean) => void
+  idUser?: number
 }
 
 const defaultValuesCustomerUser: Omit<CustomerUserType, 'customerId' | 'createdAt'> = {
@@ -27,10 +29,18 @@ const defaultValuesCustomerUser: Omit<CustomerUserType, 'customerId' | 'createdA
   phone: '',
   dni: '',
   email: '',
+  password: '',
   privilege: '',
   state: true,
 }
-const UsersModal = ({ visible, onClose, isEdit = false, setLoadingGlobal }: UsersModalProps) => {
+
+const UsersModal = ({ visible, onClose, idUser = 0, isEdit = false, setLoadingGlobal }: UsersModalProps) => {
+  const {
+    dashCustomer: {
+      selectedCustomer: { id: customerId },
+    },
+  } = useDashContext()
+
   const formMethods = useForm<CustomerUserType>({
     resolver: ModalUsersResolver,
     mode: 'all',
@@ -45,32 +55,88 @@ const UsersModal = ({ visible, onClose, isEdit = false, setLoadingGlobal }: User
     formState: { isValid },
   } = formMethods
 
-  // const { refetch: refetchGetUser } =useQuery(
-  //   'get-user-by-user-id',
-  //   async() => {
-  //     return getUserByUserId()
-  //   },
-  //   {
-  //     onSuccess: ({ data }) => {
-  //       if ( userID !== '' ){
-  //         setValue
-  //       }
-  //     }
-  //   }
-  // )
+  const { isLoading: loadingCreateClient, mutate: createCustomerUser } = useMutation<any, Error>(
+    async () => {
+      const { id, ...restUser } = getValues()
+      return await createUser({ ...restUser, customerId })
+    },
+    {
+      onSuccess: () => {
+        notification({ type: 'success', message: 'Usuario creado' })
+        setLoadingGlobal(true)
+        handleClickCloseModal()
+      },
+      onError: (error: any) => {
+        notification({
+          type: 'error',
+          message: error.response.data.message,
+        })
+      },
+    }
+  )
 
-  const onAddUser = () => {
-    createUser()
-  }
+  const { isLoading: loadingEditUser, mutate: editUser } = useMutation<any, Error>(
+    async () => {
+      const { id, createdAt, password, email, customerId, ...restUser } = getValues()
+      return await editUserById(id, restUser)
+    },
+    {
+      onSuccess: () => {
+        notification({ type: 'success', message: 'Usuario editado' })
+        setLoadingGlobal(true)
+        onClose()
+      },
+      onError: (error: any) => {
+        notification({
+          type: 'error',
+          message: error.response.data.message,
+        })
+      },
+    }
+  )
+
+  const { refetch: refetchGetUserByUserId } = useQuery(
+    'get-user-by-user-id',
+    async () => {
+      return getUserByUserId(idUser)
+    },
+    {
+      onSuccess: ({ data }) => {
+        if (idUser !== 0) {
+          setValue('name', data.name)
+          setValue('lastName', data.lastName)
+          setValue('phone', data.phone)
+          setValue('dni', data.dni)
+          setValue('email', data.email)
+          setValue('password', data.password)
+          setValue('privilege', data.privilege)
+          setValue('id', data.id)
+        } else {
+          reset(defaultValuesCustomerUser)
+        }
+      },
+      enabled: false,
+    }
+  )
 
   const onEditUser = () => {
     editUser()
+  }
+
+  const onAddUser = () => {
+    createCustomerUser()
   }
 
   const handleClickCloseModal = () => {
     reset()
     onClose()
   }
+
+  useEffect(() => {
+    if (idUser !== 0) {
+      refetchGetUserByUserId()
+    }
+  }, [idUser])
 
   return (
     <FormProvider {...formMethods}>
@@ -116,7 +182,7 @@ const UsersModal = ({ visible, onClose, isEdit = false, setLoadingGlobal }: User
               shape="default"
               trailingIcon="ri-add-fill"
               onClick={isEdit ? onEditUser : onAddUser}
-              loading={loadingCreateCustomer || loadingEditCustomer}
+              loading={loadingCreateClient || loadingEditUser}
               disabled={!isValid}
             />
           </Container>
