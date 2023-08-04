@@ -13,14 +13,18 @@ import Table from '../../../../../ui/Tables/Table'
 import BodyCell from '../../../../../ui/Tables/Table/BodyCell'
 import EmptyStateCell from '../../../../../ui/Tables/Table/EmptyStateCell'
 import Label from '../../../../../ui/Label'
+import { useDashContext } from '../../../../../shared/contexts/DashProvider'
 
 type CustomersModalProps = {
   visible: boolean
   onClose: () => void
-  id: number
 }
 
-const UsersModal = ({ visible, onClose, id }: CustomersModalProps) => {
+const UsersModal = ({ visible, onClose }: CustomersModalProps) => {
+  const {
+    dashCustomer: { selectedCustomer },
+  } = useDashContext()
+
   const greaterThanMobile = useMediaQuery(device.tabletS)
 
   const [load, setLoad] = useState(false)
@@ -38,7 +42,7 @@ const UsersModal = ({ visible, onClose, id }: CustomersModalProps) => {
   const { refetch } = useQuery(
     'get-all-user-by-id',
     async () => {
-      return await getAllUsersByID(id)
+      return await getAllUsersByID(selectedCustomer.id)
     },
     {
       onSuccess: ({ data }) => {
@@ -55,8 +59,8 @@ const UsersModal = ({ visible, onClose, id }: CustomersModalProps) => {
   )
 
   useEffect(() => {
-    if (id) refetch()
-  }, [refetch, load, filter, id])
+    if (selectedCustomer.id) refetch()
+  }, [refetch, load, filter, selectedCustomer.id])
 
   return (
     <Modal size='large' visible={visible} onClose={handleClickCloseModal} id="modal-files" title="Usuarios" contentOverflowY="auto">

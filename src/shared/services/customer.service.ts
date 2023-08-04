@@ -15,5 +15,8 @@ export const createClient = async (client: Omit<CustomerType, 'id' | 'customerBa
   return await axiosClient.post(`${url}/`, client)
 }
 export const editCustomerById = async (id: number, client: Omit<CustomerType, 'id' | 'customerBanks' | 'state' | 'createAt'>) => {
-  return await axiosClient.patch(`${url}/${id}`, client)
+  return await axiosClient.put(`${url}/${id}`, client)
+}
+export const updateStateCustomer = async (id: number, state: boolean) => {
+  return await axiosClient.put(`${url}/state/${id}`, {state})
 }

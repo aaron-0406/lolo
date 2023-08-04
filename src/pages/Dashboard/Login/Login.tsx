@@ -15,7 +15,7 @@ import { useDashContext } from '../../../shared/contexts/DashProvider'
 
 const Login = () => {
   const {
-    dashUser: { setUser, user },
+    dashUser: { setUser },
     auth: { setAuthenticate },
   } = useDashContext()
 

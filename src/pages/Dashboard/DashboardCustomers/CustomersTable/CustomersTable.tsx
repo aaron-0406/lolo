@@ -1,7 +1,7 @@
 import { Dispatch, FC, useState, useEffect } from 'react'
 import moment from 'moment'
-import { useQuery } from 'react-query'
-import { getCustomerAll } from '../../../../shared/services/customer.service'
+import { useMutation, useQuery } from 'react-query'
+import { getCustomerAll, updateStateCustomer } from '../../../../shared/services/customer.service'
 import { CustomerType } from '../../../../shared/types/customer.type'
 import Container from '../../../../ui/Container'
 import Pagination from '../../../../ui/Pagination'
@@ -15,6 +15,7 @@ import CustomerModal from '../Modals/CustomersModal'
 import useModal from '../../../../shared/hooks/useModal'
 import UsersModal from '../Modals/UsersModal/UsersModal'
 import { useDashContext } from '../../../../shared/contexts/DashProvider'
+import notification from '../../../../ui/notification'
 
 type CustomersTableProps = {
   opts: Opts
@@ -32,11 +33,12 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, loading, setLo
   const [urlEdit, setUrlEdit] = useState('')
   const [customersCount, setCustomersCount] = useState<number>(0)
   const [idCustomer, setIdCustomer] = useState(0)
+  const [stateCustomer, setStateCustomer] = useState(true)
 
   const { visible: visibleModalCustomer, showModal: showModalCustomer, hideModal: hideModalCustomer } = useModal()
   const { visible: visibleModalUser, showModal: showModalUser, hideModal: hideModalUser } = useModal()
 
-  const handleClickButtonClient = (url: string) => {
+  const handleClickButtonEdit = (url: string) => {
     setUrlEdit(url)
     showModalCustomer()
   }
@@ -45,20 +47,46 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, loading, setLo
     setSelectedCustomer(customer)
   }
 
+  const handleClickButtonUser = (customer: CustomerType) => {
+    setSelectedCustomer(customer)
+    showModalUser()
+  }
+
+  const handleClickButtonState = ( state: boolean, id: number) => {
+    setIdCustomer(id)
+    setStateCustomer(!state)
+  }
+
   const onCloseModal = () => {
     setUrlEdit('')
     hideModalCustomer()
-  }
-
-  const handleClickButtonUser = (id: number) => {
-    setIdCustomer(id)
-    showModalUser()
   }
 
   const onCloseUser = () => {
     setIdCustomer(0)
     hideModalUser()
   }
+
+  const { mutate: editStateCustomer } = useMutation<any, Error>(
+    async () => { 
+      return await updateStateCustomer(idCustomer, stateCustomer)
+    },
+    {
+      onSuccess: () => {
+        stateCustomer ? 
+        notification({ type: 'success', message: 'cliente habilitado' })
+        : 
+        notification({ type: 'success', message: 'cliente inhabilitado' })
+        setLoadingGlobal(true)
+      },
+      onError: (error: any) => {
+        notification({
+          type: 'error',
+          message: error.response.data.message,
+        })
+      },
+    }
+  )
 
   const { refetch } = useQuery(
     'get-customer-all',
@@ -79,6 +107,10 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, loading, setLo
       enabled: false,
     }
   )
+
+  useEffect(() => {
+    if(idCustomer !== 0) editStateCustomer()
+  }, [stateCustomer, idCustomer, editStateCustomer])
 
   useEffect(() => {
     if (loading) refetch()
@@ -115,19 +147,25 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, loading, setLo
                 <BodyCell textAlign="center">{`${moment(record.createdAt).format('DD-MM-YYYY') || ''}`}</BodyCell>
                 <BodyCell textAlign="center">
                   {
-                    <Container display='flex' justifyContent='space-between'>
+                    <Container display='flex' justifyContent='space-around'>
                       <Button
                       onClick={(event) => {
                         event.stopPropagation()
-                        handleClickButtonClient(record.urlIdentifier)
+                        handleClickButtonEdit(record.urlIdentifier)
                       }}
+                      idTootip="btnEdit"
+                      messageTooltip="Editar Cliente"
                       shape="round"
                       size="small"
                       leadingIcon="ri-pencil-fill"
                     />
                     <Button
                       onClick={(event) => {
+                        event.stopPropagation()
+                        handleClickButtonState(record.state, record.id)
                       }}
+                      idTootip="btnState"
+                      messageTooltip="Editar Estado"
                       shape="round"
                       size="small"
                       leadingIcon={record.state ? "ri-shield-user-fill" : "ri-shield-user-line"}
@@ -140,7 +178,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, loading, setLo
                     <Button
                       onClick={(event) => {
                         event.stopPropagation()
-                        handleClickButtonUser(record.id)
+                        handleClickButtonUser(record)
                       }}
                       shape="round"
                       size="small"
@@ -160,7 +198,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, loading, setLo
         url={urlEdit}
         isEdit
       />
-      <UsersModal visible={visibleModalUser} onClose={onCloseUser} id={idCustomer} />
+      <UsersModal visible={visibleModalUser} onClose={onCloseUser} />
     </Container>
   )
 }
