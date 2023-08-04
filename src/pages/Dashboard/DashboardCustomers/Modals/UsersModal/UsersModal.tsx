@@ -59,7 +59,7 @@ const UsersModal = ({ visible, onClose, id }: CustomersModalProps) => {
   }, [refetch, load, filter, id])
 
   return (
-    <Modal visible={visible} onClose={handleClickCloseModal} id="modal-files" title="Usuarios" contentOverflowY="auto">
+    <Modal size='large' visible={visible} onClose={handleClickCloseModal} id="modal-files" title="Usuarios" contentOverflowY="auto">
       <Container width="100%" padding="20px" display="flex" flexDirection="column" gap="20px">
         <Container display="flex" justifyContent="space-between" gap="10px">
           <Container display={greaterThanMobile ? 'flex' : 'none'}>
