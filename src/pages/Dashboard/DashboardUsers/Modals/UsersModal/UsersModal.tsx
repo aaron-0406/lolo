@@ -55,7 +55,7 @@ const UsersModal = ({ visible, onClose, idUser = 0, isEdit = false, setLoadingGl
     formState: { isValid },
   } = formMethods
 
-  const { isLoading: loadingCreateClient, mutate: createCustomerUser } = useMutation<any, Error>(
+  const { isLoading: loadingCreateUser, mutate: createCustomerUser } = useMutation<any, Error>(
     async () => {
       const { id, ...restUser } = getValues()
       return await createUser({ ...restUser, customerId })
@@ -182,7 +182,7 @@ const UsersModal = ({ visible, onClose, idUser = 0, isEdit = false, setLoadingGl
               shape="default"
               trailingIcon="ri-add-fill"
               onClick={isEdit ? onEditUser : onAddUser}
-              loading={loadingCreateClient || loadingEditUser}
+              loading={loadingCreateUser || loadingEditUser}
               disabled={!isValid}
             />
           </Container>
