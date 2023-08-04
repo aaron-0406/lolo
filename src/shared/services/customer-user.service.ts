@@ -17,7 +17,7 @@ export const getUserByUserId = async (userID: number) => {
   return await axiosClient.get(`${url}/${userID}`)
 }
 
-export const createClient = async (user: Omit<CustomerUserType, 'id'>) => {
+export const createUser = async (user: Omit<CustomerUserType, 'id'>) => {
   return await axiosClient.post(`${url}/`, user)
 }
 

@@ -33,7 +33,7 @@ const initialCustomerState: CustomerType = {
   customerBanks: [],
 }
 
-const initialCustomerUserState: CustomerUserType = {
+const initialCustomerUserState: Omit<CustomerUserType, 'password'> = {
   createdAt: new Date(),
   customerId: 0,
   dni: '',
@@ -83,7 +83,7 @@ export const LoloContext = createContext<{
     setAuthenticate: Dispatch<boolean>
   }
   customerUser: {
-    user: CustomerUserType
+    user: Omit<CustomerUserType, 'password'>
     setUser: Dispatch<CustomerUserType>
   }
   clearAll: () => void

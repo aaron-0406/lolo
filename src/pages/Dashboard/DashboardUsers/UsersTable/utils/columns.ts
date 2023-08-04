@@ -2,6 +2,12 @@ import { ColumProps } from '../../../../../ui/Tables/Table/Table'
 
 export const usersColumns: ColumProps[] = [
   {
+    id: 'users.datatable.header.id',
+    title: 'N°',
+    width: '10%',
+    justifyContent: 'center',
+  },
+  {
     id: 'users.datatable.header.name',
     title: 'NOMBRE',
     width: '20%',
@@ -46,15 +52,9 @@ export const usersColumns: ColumProps[] = [
     justifyContent: 'space-between',
   },
   {
-    id: 'users.datatable.header.edit',
-    title: 'EDITAR',
-    width: '10%',
-    justifyContent: 'space-between',
-  },
-  {
-    id: 'users.datatable.header.delete',
-    title: 'ELIMINAR',
-    width: '10%',
+    id: 'users.datatable.header.actions',
+    title: 'ACCIONES',
+    width: '40%',
     justifyContent: 'space-between',
   },
 ]
