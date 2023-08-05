@@ -50,7 +50,6 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts, loading, setLoadingGlo
 
   const onCloseDeleteUser = () => {
     setIdDeletedUser(0)
-    setLoadingGlobal(false)
     hideDeleteUser()
   }
   const onCloseUser = () => {
@@ -81,7 +80,6 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts, loading, setLoadingGlo
 
   useEffect(() => {
     if (loading) refetch()
-    console.log(loading)
   }, [refetch, loading, opts])
 
   return (
