@@ -16,12 +16,8 @@ const ActionsMenu: FC = () => {
     // bank: { selectedBank, setSelectedBank },
   } = useDashContext()
 
-  const options: Array<SelectItemType> = selectedCustomer.customerBanks.map((bank) => {
-    return {
-      key: String(bank.id),
-      label: bank.name,
-    }
-  })
+  
+  
   type SelectedBankType = {
     idBank: string
     idCHB: string
