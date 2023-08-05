@@ -49,26 +49,8 @@ const DeleteUsersModal = ({ visible, idUser = 0, onClose, setLoadingGlobal }: De
       size="small"
       footer={
         <Container width="100%" justifyContent="space-around" display="flex" alignItems="center">
-          {
-            <Button
-              onClick={() => {
-                deleteUsers()
-              }}
-              loading={loadingDeleteUser}
-              display="danger"
-              size="default"
-              label="ACEPTAR"
-            />
-          }
-          {
-            <Button
-              onClick={() => {
-                onClose()
-              }}
-              size="default"
-              label="CANCELAR"
-            />
-          }
+          {<Button onClick={deleteUsers} loading={loadingDeleteUser} display="danger" size="default" label="ACEPTAR" />}
+          {<Button onClick={onClose} size="default" label="CANCELAR" />}
         </Container>
       }
     ></Modal>
