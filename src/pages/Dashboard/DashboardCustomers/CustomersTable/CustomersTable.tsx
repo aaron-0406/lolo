@@ -45,7 +45,8 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, loading, setLo
     setSelectedCustomer(customer)
   }
 
-  const handleClickButtonUser = () => {
+  const handleClickButtonUser = (customer: CustomerType) => {
+    setSelectedCustomer(customer)
     showModalUser()
   }
 
@@ -171,7 +172,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, loading, setLo
                       <Button
                         onClick={(event) => {
                           event.stopPropagation()
-                          handleClickButtonUser()
+                          handleClickButtonUser(record)
                         }}
                         shape="round"
                         messageTooltip="Ver usuarios"
