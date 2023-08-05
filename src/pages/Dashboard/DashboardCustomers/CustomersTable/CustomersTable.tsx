@@ -1,7 +1,7 @@
 import { Dispatch, FC, useState, useEffect } from 'react'
 import moment from 'moment'
-import { useQuery } from 'react-query'
-import { getCustomerAll } from '../../../../shared/services/customer.service'
+import { useMutation, useQuery } from 'react-query'
+import { getCustomerAll, updateStateCustomer } from '../../../../shared/services/customer.service'
 import { CustomerType } from '../../../../shared/types/customer.type'
 import Container from '../../../../ui/Container'
 import Pagination from '../../../../ui/Pagination'
@@ -15,6 +15,7 @@ import CustomerModal from '../Modals/CustomersModal'
 import useModal from '../../../../shared/hooks/useModal'
 import UsersModal from '../Modals/UsersModal/UsersModal'
 import { useDashContext } from '../../../../shared/contexts/DashProvider'
+import notification from '../../../../ui/notification'
 
 type CustomersTableProps = {
   opts: Opts
@@ -28,15 +29,14 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, loading, setLo
     dashCustomer: { setSelectedCustomer },
   } = useDashContext()
 
-  const [customers, setCustomers] = useState([])
+  const [customers, setCustomers] = useState<Array<CustomerType>>([])
   const [urlEdit, setUrlEdit] = useState('')
   const [customersCount, setCustomersCount] = useState<number>(0)
-  const [idCustomer, setIdCustomer] = useState(0)
 
   const { visible: visibleModalCustomer, showModal: showModalCustomer, hideModal: hideModalCustomer } = useModal()
   const { visible: visibleModalUser, showModal: showModalUser, hideModal: hideModalUser } = useModal()
 
-  const handleClickButtonClient = (url: string) => {
+  const handleClickButtonEdit = (url: string) => {
     setUrlEdit(url)
     showModalCustomer()
   }
@@ -45,20 +45,52 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, loading, setLo
     setSelectedCustomer(customer)
   }
 
+  const handleClickButtonUser = (customer: CustomerType) => {
+    setSelectedCustomer(customer)
+    showModalUser()
+  }
+
+  const handleClickButtonState = (state: boolean, customerId: number) => {
+    editStateCustomer({ customerId, state })
+  }
+
   const onCloseModal = () => {
     setUrlEdit('')
     hideModalCustomer()
   }
 
-  const handleClickButtonUser = (id: number) => {
-    setIdCustomer(id)
-    showModalUser()
-  }
-
   const onCloseUser = () => {
-    setIdCustomer(0)
     hideModalUser()
   }
+
+  const { mutate: editStateCustomer } = useMutation<any, Error, { customerId: number; state: boolean }>(
+    async ({ customerId, state }) => {
+      return await updateStateCustomer(customerId, !state)
+    },
+    {
+      onSuccess: (_, { customerId, state }) => {
+        state
+          ? notification({ type: 'success', message: 'Cliente inhabilitado' })
+          : notification({ type: 'success', message: 'Cliente habilitado' })
+
+        setCustomers((prevState) => {
+          return prevState.map((prev) => {
+            if (prev.id === customerId) {
+              return { ...prev, state: !state }
+            }
+
+            return prev
+          })
+        })
+      },
+      onError: (error: any) => {
+        notification({
+          type: 'error',
+          message: error.response.data.message,
+        })
+      },
+    }
+  )
 
   const { refetch } = useQuery(
     'get-customer-all',
@@ -115,28 +147,39 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, loading, setLo
                 <BodyCell textAlign="center">{`${moment(record.createdAt).format('DD-MM-YYYY') || ''}`}</BodyCell>
                 <BodyCell textAlign="center">
                   {
-                    <Button
-                      onClick={(event) => {
-                        event.stopPropagation()
-                        handleClickButtonClient(record.urlIdentifier)
-                      }}
-                      shape="round"
-                      size="small"
-                      leadingIcon="ri-pencil-fill"
-                    />
-                  }
-                </BodyCell>
-                <BodyCell textAlign="center">
-                  {
-                    <Button
-                      onClick={(event) => {
-                        event.stopPropagation()
-                        handleClickButtonUser(record.id)
-                      }}
-                      shape="round"
-                      size="small"
-                      leadingIcon="ri-user-search-fill"
-                    />
+                    <Container display="flex" gap="15px" justifyContent="space-around">
+                      <Button
+                        onClick={(event) => {
+                          event.stopPropagation()
+                          handleClickButtonEdit(record.urlIdentifier)
+                        }}
+                        messageTooltip="Editar Cliente"
+                        shape="round"
+                        size="small"
+                        leadingIcon="ri-pencil-fill"
+                      />
+                      <Button
+                        onClick={(event) => {
+                          event.stopPropagation()
+                          handleClickButtonState(record.state, record.id)
+                        }}
+                        display={record.state ? 'default' : 'warning'}
+                        messageTooltip={record.state ? 'Inhabilitar' : 'Habilitar'}
+                        shape="round"
+                        size="small"
+                        leadingIcon={record.state ? 'ri-shield-user-fill' : 'ri-shield-user-line'}
+                      />
+                      <Button
+                        onClick={(event) => {
+                          event.stopPropagation()
+                          handleClickButtonUser(record)
+                        }}
+                        shape="round"
+                        messageTooltip="Ver usuarios"
+                        size="small"
+                        leadingIcon="ri-user-search-fill"
+                      />
+                    </Container>
                   }
                 </BodyCell>
               </tr>
@@ -151,7 +194,8 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, loading, setLo
         url={urlEdit}
         isEdit
       />
-      <UsersModal visible={visibleModalUser} onClose={onCloseUser} id={idCustomer} />
+
+      {visibleModalUser && <UsersModal visible={visibleModalUser} onClose={onCloseUser} />}
     </Container>
   )
 }
