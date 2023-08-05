@@ -194,7 +194,8 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, loading, setLo
         url={urlEdit}
         isEdit
       />
-      <UsersModal visible={visibleModalUser} onClose={onCloseUser} />
+
+      {visibleModalUser && <UsersModal visible={visibleModalUser} onClose={onCloseUser} />}
     </Container>
   )
 }
