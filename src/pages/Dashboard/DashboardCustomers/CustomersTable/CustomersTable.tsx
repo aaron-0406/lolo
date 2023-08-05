@@ -29,11 +29,9 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, loading, setLo
     dashCustomer: { setSelectedCustomer },
   } = useDashContext()
 
-  const [customers, setCustomers] = useState([])
+  const [customers, setCustomers] = useState<Array<CustomerType>>([])
   const [urlEdit, setUrlEdit] = useState('')
   const [customersCount, setCustomersCount] = useState<number>(0)
-  const [idCustomer, setIdCustomer] = useState(0)
-  const [stateCustomer, setStateCustomer] = useState(true)
 
   const { visible: visibleModalCustomer, showModal: showModalCustomer, hideModal: hideModalCustomer } = useModal()
   const { visible: visibleModalUser, showModal: showModalUser, hideModal: hideModalUser } = useModal()
@@ -47,14 +45,12 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, loading, setLo
     setSelectedCustomer(customer)
   }
 
-  const handleClickButtonUser = (customer: CustomerType) => {
-    setSelectedCustomer(customer)
+  const handleClickButtonUser = () => {
     showModalUser()
   }
 
-  const handleClickButtonState = ( state: boolean, id: number) => {
-    setIdCustomer(id)
-    setStateCustomer(!state)
+  const handleClickButtonState = (state: boolean, customerId: number) => {
+    editStateCustomer({ customerId, state })
   }
 
   const onCloseModal = () => {
@@ -63,21 +59,28 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, loading, setLo
   }
 
   const onCloseUser = () => {
-    setIdCustomer(0)
     hideModalUser()
   }
 
-  const { mutate: editStateCustomer } = useMutation<any, Error>(
-    async () => { 
-      return await updateStateCustomer(idCustomer, stateCustomer)
+  const { mutate: editStateCustomer } = useMutation<any, Error, { customerId: number; state: boolean }>(
+    async ({ customerId, state }) => {
+      return await updateStateCustomer(customerId, !state)
     },
     {
-      onSuccess: () => {
-        stateCustomer ? 
-        notification({ type: 'success', message: 'cliente habilitado' })
-        : 
-        notification({ type: 'success', message: 'cliente inhabilitado' })
-        setLoadingGlobal(true)
+      onSuccess: (_, { customerId, state }) => {
+        state
+          ? notification({ type: 'success', message: 'Cliente inhabilitado' })
+          : notification({ type: 'success', message: 'Cliente habilitado' })
+
+        setCustomers((prevState) => {
+          return prevState.map((prev) => {
+            if (prev.id === customerId) {
+              return { ...prev, state: !state }
+            }
+
+            return prev
+          })
+        })
       },
       onError: (error: any) => {
         notification({
@@ -107,10 +110,6 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, loading, setLo
       enabled: false,
     }
   )
-
-  useEffect(() => {
-    if(idCustomer !== 0) editStateCustomer()
-  }, [stateCustomer, idCustomer, editStateCustomer])
 
   useEffect(() => {
     if (loading) refetch()
@@ -147,43 +146,39 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, loading, setLo
                 <BodyCell textAlign="center">{`${moment(record.createdAt).format('DD-MM-YYYY') || ''}`}</BodyCell>
                 <BodyCell textAlign="center">
                   {
-                    <Container display='flex' justifyContent='space-around'>
+                    <Container display="flex" gap="15px" justifyContent="space-around">
                       <Button
-                      onClick={(event) => {
-                        event.stopPropagation()
-                        handleClickButtonEdit(record.urlIdentifier)
-                      }}
-                      idTootip="btnEdit"
-                      messageTooltip="Editar Cliente"
-                      shape="round"
-                      size="small"
-                      leadingIcon="ri-pencil-fill"
-                    />
-                    <Button
-                      onClick={(event) => {
-                        event.stopPropagation()
-                        handleClickButtonState(record.state, record.id)
-                      }}
-                      idTootip="btnState"
-                      messageTooltip="Editar Estado"
-                      shape="round"
-                      size="small"
-                      leadingIcon={record.state ? "ri-shield-user-fill" : "ri-shield-user-line"}
-                    />
+                        onClick={(event) => {
+                          event.stopPropagation()
+                          handleClickButtonEdit(record.urlIdentifier)
+                        }}
+                        messageTooltip="Editar Cliente"
+                        shape="round"
+                        size="small"
+                        leadingIcon="ri-pencil-fill"
+                      />
+                      <Button
+                        onClick={(event) => {
+                          event.stopPropagation()
+                          handleClickButtonState(record.state, record.id)
+                        }}
+                        display={record.state ? 'default' : 'warning'}
+                        messageTooltip={record.state ? 'Inhabilitar' : 'Habilitar'}
+                        shape="round"
+                        size="small"
+                        leadingIcon={record.state ? 'ri-shield-user-fill' : 'ri-shield-user-line'}
+                      />
+                      <Button
+                        onClick={(event) => {
+                          event.stopPropagation()
+                          handleClickButtonUser()
+                        }}
+                        shape="round"
+                        messageTooltip="Ver usuarios"
+                        size="small"
+                        leadingIcon="ri-user-search-fill"
+                      />
                     </Container>
-                  }
-                </BodyCell>
-                <BodyCell textAlign="center">
-                  {
-                    <Button
-                      onClick={(event) => {
-                        event.stopPropagation()
-                        handleClickButtonUser(record)
-                      }}
-                      shape="round"
-                      size="small"
-                      leadingIcon="ri-user-search-fill"
-                    />
                   }
                 </BodyCell>
               </tr>

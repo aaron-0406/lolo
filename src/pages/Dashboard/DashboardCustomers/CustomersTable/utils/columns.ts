@@ -36,10 +36,4 @@ export const customersColumns: ColumProps[] = [
     width: '30%',
     justifyContent: 'center',
   },
-  {
-    id: 'customers.datatable.header.addusers',
-    title: 'USUARIOS',
-    width: '20%',
-    justifyContent: 'center',
-  },
 ]

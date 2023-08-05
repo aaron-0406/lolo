@@ -1,5 +1,5 @@
 import type { ButtonHTMLAttributes } from 'react'
-import { Tooltip} from 'react-tooltip'
+import { Tooltip } from 'react-tooltip'
 import type { IRegular } from 'styled-components'
 import styled, { css, useTheme } from 'styled-components'
 import CounterBadge from '../CounterBadge'
@@ -20,7 +20,6 @@ type ButtonProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'size'> & {
   width?: string
   maxWidth?: string
   label?: React.ReactNode
-  idTootip?: string
   messageTooltip?: string
 }
 
@@ -40,8 +39,7 @@ type ButtonProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'size'> & {
 const Button: React.FC<ButtonProps> = (props) => {
   const {
     label,
-    idTootip = "",
-    messageTooltip = "",
+    messageTooltip,
     counter,
     leadingIcon,
     trailingIcon,
@@ -61,7 +59,7 @@ const Button: React.FC<ButtonProps> = (props) => {
 
   return (
     <StyledButton
-      data-tooltip-id={idTootip}
+      data-tooltip-id="button-tooltip"
       data-tooltip-content={messageTooltip}
       type="button"
       {...rest}
@@ -81,7 +79,7 @@ const Button: React.FC<ButtonProps> = (props) => {
           />
         )}
 
-        {!!idTootip && (<Tooltip place='right' id={idTootip} />)}
+        {!!messageTooltip && <Tooltip place="right" id="button-tooltip" />}
 
         {loading ? <Spinner /> : leadingIcon && <Icon className="leading-icon" remixClass={leadingIcon} />}
 
