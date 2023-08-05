@@ -14,6 +14,7 @@ import Button from '../../../../ui/Button'
 import { useDashContext } from '../../../../shared/contexts/DashProvider'
 import UsersModal from '../Modals/UsersModal'
 import useModal from '../../../../shared/hooks/useModal'
+import DeleteUsersModal from '../Modals/DeleteUsersModal'
 
 type UsersTableProps = {
   opts: Opts
@@ -32,21 +33,33 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts, loading, setLoadingGlo
   const [users, setUsers] = useState([])
   const [usersCount, setUsersCount] = useState<number>(0)
   const [idUser, setIdUser] = useState(0)
+  const [idDeletedUser, setIdDeletedUser] = useState(0)
 
   const { visible: visibleModalUser, showModal: showModalUser, hideModal: hideModalUser } = useModal()
+  const { visible: VisibleDeleteUser, showModal: showDeleteUser, hideModal: hideDeleteUser } = useModal()
 
   const handleClickEditUser = (id: number) => {
     setIdUser(id)
     showModalUser()
   }
 
+  const handleClickDeleteUser = (id: number) => {
+    setIdDeletedUser(id)
+    showDeleteUser()
+  }
+
+  const onCloseDeleteUser = () => {
+    setIdDeletedUser(0)
+    hideDeleteUser()
+  }
   const onCloseUser = () => {
     setIdUser(0)
+    setLoadingGlobal(false)
     hideModalUser()
   }
 
   const { refetch } = useQuery(
-    'get-all',
+    'get-all-users-by-id',
     async () => {
       return await getAllUsersByID(customerId)
     },
@@ -110,12 +123,12 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts, loading, setLoadingGlo
                     }
                     {
                       <Button
-                        // onClick={() =>{
-                        //   handleClickButtonUser(record.id)
-                        // }}
+                        onClick={() => {
+                          handleClickDeleteUser(record.id)
+                        }}
                         shape="round"
                         size="small"
-                        leadingIcon="ri-user-search-fill"
+                        leadingIcon="ri-user-unfollow-fill"
                       />
                     }
                   </Container>
@@ -131,6 +144,13 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts, loading, setLoadingGlo
         setLoadingGlobal={setLoadingGlobal}
         idUser={idUser}
         isEdit
+      />
+
+      <DeleteUsersModal
+        visible={VisibleDeleteUser}
+        onClose={onCloseDeleteUser}
+        setLoadingGlobal={setLoadingGlobal}
+        idUser={idDeletedUser}
       />
     </Container>
   )
