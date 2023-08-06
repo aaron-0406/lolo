@@ -3,7 +3,6 @@ import TextField from '../../../../ui/fields/TextField/TextField'
 import Container from '../../../../ui/Container/Container'
 import Select from '../../../../ui/Select/Select'
 import Button from '../../../../ui/Button/Button'
-import Modal from '../../../../ui/Modal/Modal'
 import { useDashContext } from '../../../../shared/contexts/DashProvider'
 import { SelectItemType } from '../../../../ui/Select/interfaces'
 import Label from '../../../../ui/Label/Label'
@@ -37,6 +36,7 @@ const ActionsSearch: FC<ActionsSearchProps> = ({ opts, setOpts, setLoadingGlobal
 
   const onChangeBank = (key: string) => {
     setChb(parseInt(key))
+    setLoadingGlobal(true)
   }
 
   const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
