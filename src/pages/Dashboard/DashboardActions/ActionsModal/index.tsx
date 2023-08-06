@@ -1,1 +1,1 @@
-export { default } from './ActionModal'
+export { default } from './ActionsModal'

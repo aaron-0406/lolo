@@ -9,26 +9,24 @@ import { SelectItemType } from '../../../../ui/Select/interfaces'
 import Label from '../../../../ui/Label/Label'
 import { Opts } from '../../../../ui/Pagination/interfaces'
 import useModal from '../../../../shared/hooks/useModal'
-import ActionModal from '../ActionsModal/ActionModal'
+import ActionModal from '../ActionsModal/ActionsModal'
 import { useMediaQuery } from '../../../../shared/hooks/useMediaQuery'
 import { device } from '../../../../shared/breakpoints/reponsive'
 
-type SelectedBankType = {
-  idCHB: string
-}
-
-type ActionsTableProps = {
+type ActionsSearchProps = {
   opts: Opts
   setOpts: Dispatch<Opts>
   setLoadingGlobal: (state: boolean) => void
+  selectedBank: { chb: number; setChb: (chb: number) => void }
 }
 
-const ActionsSearch: FC<ActionsTableProps> = ({ opts, setOpts, setLoadingGlobal }) => {
+const ActionsSearch: FC<ActionsSearchProps> = ({ opts, setOpts, setLoadingGlobal, selectedBank: { chb, setChb } }) => {
   const {
     dashCustomer: { selectedCustomer },
   } = useDashContext()
 
-  const [selectedBank, setSelectedBank] = useState<SelectedBankType>()
+  const greaterThanMobile = useMediaQuery(device.tabletS)
+  const { visible: visibleModalAdd, showModal: showModalAdd, hideModal: hideModalAdd } = useModal()
 
   const options: Array<SelectItemType> = selectedCustomer.customerBanks.map((customerBank) => {
     return {
@@ -37,13 +35,8 @@ const ActionsSearch: FC<ActionsTableProps> = ({ opts, setOpts, setLoadingGlobal 
     }
   })
 
-  const greaterThanMobile = useMediaQuery(device.tabletS)
-  const { visible: visibleModalAdd, showModal: showModalAdd, hideModal: hideModalAdd } = useModal()
-
   const onChangeBank = (key: string) => {
-    setSelectedBank({
-      idCHB: key,
-    })
+    setChb(parseInt(key))
   }
 
   const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -60,7 +53,7 @@ const ActionsSearch: FC<ActionsTableProps> = ({ opts, setOpts, setLoadingGlobal 
     setLoadingGlobal(true)
   }
 
-  const handleClickButton = () => {
+  const onShowModal = () => {
     showModalAdd()
   }
 
@@ -69,56 +62,27 @@ const ActionsSearch: FC<ActionsTableProps> = ({ opts, setOpts, setLoadingGlobal 
   }
 
   return (
-    <Container display="flex" width="100%" padding=" 0 20px" justify-content="space-around" margin='20px 0' gap='20px'>
-      <Container width="calc(100% - 60px)" display="flex" justify-content="space-around" >
+    <Container display="flex" width="100%" padding=" 0 20px" justify-content="space-around" margin="20px 0" gap="20px">
+      <Container width="calc(100% - 60px)" display="flex" justify-content="space-around">
         <Container display={greaterThanMobile ? 'flex' : 'none'} padding="0 10px 0 0">
           <Label label="Buscar:" />
         </Container>
         <TextField onChange={onChangeSearch} width="100%" placeholder="Buscar cliente por nombre" />
       </Container>
+
       <Select
         width="calc(100% - 700px)"
         placeholder="Selecciona un banco"
-        value={String(selectedBank?.idCHB)}
+        value={String(chb)}
         options={options}
         onChange={onChangeBank}
       />
-      <Button shape="round" leadingIcon="ri-add-fill" size="small" onClick={handleClickButton} />
-      {/* <ActionModal visible={visibleModalAdd} onClose={onCloseModal} setLoadingGlobal={setLoadingGlobal} /> */}
+
+      <Button shape="round" leadingIcon="ri-add-fill" size="small" onClick={onShowModal} disabled={!chb} />
+
+      <ActionModal visible={visibleModalAdd} onClose={onCloseModal} setLoadingGlobal={setLoadingGlobal} chb={chb} />
     </Container>
   )
 }
 
 export default ActionsSearch
-
-// const StyledContainer = styled(Container)`
-//   ${({ theme }) => css`
-//     @media ${theme.device.tabletS} {
-//       flex-direction: row;
-
-//       .actions__textfield .actions_select {
-//         width: 50%;
-//       }
-//     }
-
-//     @media ${theme.device.tabletL} {
-//       .actions__textfield {
-//         width: 60%;
-//       }
-
-//       .actions__select {
-//         width: 40%;
-//       }
-//     }
-
-//     @media ${theme.device.desktopS} {
-//       .actions__textfield {
-//         width: 70%;
-//       }
-
-//       .actions__select {
-//         width: 30%;
-//       }
-//     }
-//   `}
-// `
