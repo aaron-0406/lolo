@@ -40,7 +40,7 @@ const ActionInfoForm = () => {
           name="codeSubTypeManagement"
           control={control}
           render={({ field }) => (
-            <TextField width="70%" value={field.value} onChange={field.onChange} hasError={!!errors.codeSubTypeManagement} />
+            <TextField width="62%" value={field.value} onChange={field.onChange} hasError={!!errors.codeSubTypeManagement} />
           )}
         />
       </Container>

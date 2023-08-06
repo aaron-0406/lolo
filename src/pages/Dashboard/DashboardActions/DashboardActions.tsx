@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import ActionsSearch from './ActionsSearch/ActionsSearch'
 import { Opts } from '../../../ui/Pagination/interfaces'
 import Container from '../../../ui/Container'
@@ -33,9 +33,14 @@ const DashboardActions = () => {
         setLoadingGlobal={setLoadingGlobal}
         selectedBank={{ chb, setChb: setChbGlobal }}
       />
-      <ActionsTable opts={opts} setOpts={setOpts} loading={loading} setLoadingGlobal={setLoadingGlobal} selectedBank={{ chb, setChb: setChbGlobal }}/>
+      <ActionsTable
+        opts={opts}
+        setOpts={setOpts}
+        loading={loading}
+        setLoadingGlobal={setLoadingGlobal}
+        selectedBank={{ chb, setChb: setChbGlobal }}
+      />
     </Container>
-    
   )
 }
 

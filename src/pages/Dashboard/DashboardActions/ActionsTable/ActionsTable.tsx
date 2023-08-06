@@ -82,7 +82,7 @@ const ActionsTable: FC<ActionsTableProps> = ({
             return (
               <tr className="styled-data-table-row" key={record.id}>
                 <BodyCell textAlign="center">{`${record.id || ''}`}</BodyCell>
-                <BodyCell>{`${record.codeAction || ''}`}</BodyCell>
+                <BodyCell textAlign="center">{`${record.codeAction || ''}`}</BodyCell>
                 <BodyCell>{`${record.nameAction || ''}`}</BodyCell>
                 <BodyCell textAlign="center">{`${record.codeSubTypeManagement || ''}`}</BodyCell>
               </tr>

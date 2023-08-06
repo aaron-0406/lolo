@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { ManagementActionType } from '../../../../shared/types/management-action.type'
 import { ModalActionsResolver } from './ActionsModal.yup'
-import { Controller, FormProvider, useForm } from 'react-hook-form'
+import { FormProvider, useForm } from 'react-hook-form'
 import { useMutation, useQuery } from 'react-query'
 import {
   createManagementAction,
@@ -40,7 +40,6 @@ const ActionsModal = ({ visible, onClose, setLoadingGlobal, isEdit = false, idAc
   const {
     setValue,
     getValues,
-    control,
     reset,
     formState: { isValid },
   } = formMethods
@@ -131,20 +130,10 @@ const ActionsModal = ({ visible, onClose, setLoadingGlobal, isEdit = false, idAc
         id="modal-files"
         title={isEdit ? 'Editar Accion' : 'Agregar Accion'}
         contentOverflowY="auto"
-      >
-        <Container
-          width="100%"
-          height="410px"
-          display="flex"
-          justify-content="center"
-          flexDirection="column"
-          align-items="center"
-          gap="20px"
-        >
-          <Container width="100%" display="flex" flexDirection="column" gap="10px" padding="20px">
-            <ActionInfoForm />
-          </Container>
-          <Container width="100%" height="75px" display="flex" justifyContent="center" alignItems="center" gap="20px">
+        size="small"
+        minHeight="400px"
+        footer={
+          <Container width="100%" height="75px" display="flex" justifyContent="end" alignItems="center" gap="20px">
             <Button
               width="125px"
               label={isEdit ? 'Editar' : 'Agregar'}
@@ -154,6 +143,20 @@ const ActionsModal = ({ visible, onClose, setLoadingGlobal, isEdit = false, idAc
               loading={loadingCreateAction || loadingEditAction}
               disabled={!isValid}
             />
+          </Container>
+        }
+      >
+        <Container
+          width="100%"
+          height="260px"
+          display="flex"
+          justify-content="center"
+          flexDirection="column"
+          align-items="center"
+          gap="20px"
+        >
+          <Container width="100%" display="flex" flexDirection="column" gap="20px" padding="20px" margin="30px 0">
+            <ActionInfoForm />
           </Container>
         </Container>
       </Modal>
