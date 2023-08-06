@@ -4,12 +4,8 @@ import Container from '../../../ui/Container'
 import { Opts } from '../../../ui/Pagination/interfaces'
 
 const DashboardNegotiation = () => {
-  const [loading, setLoading] = useState<boolean>(true)
+  
   const [opts, setOpts] = useState<Opts>({ filter: '', limit: 50, page: 1 })
-
-  const setLoadingGlobal = (state: boolean) => {
-    setLoading(state)
-  }
 
   return (
     <Container
@@ -21,7 +17,7 @@ const DashboardNegotiation = () => {
       justifyContent="center"
       gap="20px"
     >
-      <NegotiationTable opts={opts} setOpts={setOpts} loading={loading} setLoadingGlobal={setLoadingGlobal} />
+      <NegotiationTable opts={opts} setOpts={setOpts} />
     </Container>
   )
 }
