@@ -67,7 +67,7 @@ const ActionsModal = ({ visible, onClose, setLoadingGlobal, isEdit = false, idAc
   const { isLoading: loadingEditAction, mutate: editAction } = useMutation<any, Error>(
     async () => {
       const { id, ...restClient } = getValues()
-      return await updateManagementAction(id, restClient)
+      return await updateManagementAction(id, { ...restClient, customerHasBankId: chb })
     },
     {
       onSuccess: () => {
@@ -92,6 +92,7 @@ const ActionsModal = ({ visible, onClose, setLoadingGlobal, isEdit = false, idAc
     {
       onSuccess: ({ data }) => {
         if (!!idAction) {
+          setValue('id', data.id)
           setValue('codeAction', data.codeAction)
           setValue('nameAction', data.nameAction)
           setValue('codeSubTypeManagement', data.codeSubTypeManagement)

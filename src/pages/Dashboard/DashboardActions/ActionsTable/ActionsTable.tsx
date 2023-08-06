@@ -34,6 +34,11 @@ const ActionsTable: FC<ActionsTableProps> = ({
 
   const { visible: visibleModalAction, showModal: showModalAction, hideModal: hideModalAction } = useModal()
 
+  const handleClickButtonEdit = (id: number) => {
+    setIdEdit(id)
+    showModalAction()
+  }
+
   const onCloseModal = () => {
     setIdEdit(0)
     hideModalAction()
@@ -78,13 +83,29 @@ const ActionsTable: FC<ActionsTableProps> = ({
         }
       >
         {!!actions?.length &&
-          actions.map((record: ManagementActionType) => {
+          actions.map((record: ManagementActionType,key) => {
             return (
               <tr className="styled-data-table-row" key={record.id}>
-                <BodyCell textAlign="center">{`${record.id || ''}`}</BodyCell>
+                <BodyCell textAlign="center">{`${key+1 || ''}`}</BodyCell>
                 <BodyCell textAlign="center">{`${record.codeAction || ''}`}</BodyCell>
                 <BodyCell>{`${record.nameAction || ''}`}</BodyCell>
                 <BodyCell textAlign="center">{`${record.codeSubTypeManagement || ''}`}</BodyCell>
+                <BodyCell textAlign="center">
+                  {
+                    <Container display="flex" gap="15px" justifyContent="space-around">
+                      <Button
+                        onClick={(event) => {
+                          event.stopPropagation()
+                          handleClickButtonEdit(record.id)
+                        }}
+                        messageTooltip="Editar acción"
+                        shape="round"
+                        size="small"
+                        leadingIcon="ri-pencil-fill"
+                      />
+                    </Container>
+                  }
+                </BodyCell>
               </tr>
             )
           })}
