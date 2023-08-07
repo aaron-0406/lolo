@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { Controller } from 'react-hook-form'
 import { FormProvider, useForm } from 'react-hook-form'
 import { ModalCustomersResolver } from './CustomersModal.yup'
-import { useMutation, useQuery } from 'react-query'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
 import CustomerInfoForm from './CustomerInfoForm'
 import { createClient, editCustomerById, getCustomerByUrl } from '../../../../../shared/services/customer.service'
 import { CustomerType } from '../../../../../shared/types/customer.type'
@@ -13,13 +13,14 @@ import notification from '../../../../../ui/notification'
 import Button from '../../../../../ui/Button'
 import Checkbox from '../../../../../ui/Checkbox'
 import Label from '../../../../../ui/Label'
+import dashCustomersCache from '../../CustomersTable/utils/dash-clientes.cache'
+import { AxiosResponse } from 'axios'
 
 type CustomersModalProps = {
   visible: boolean
   onClose: () => void
   isEdit?: boolean
   url?: string
-  setLoadingGlobal: (state: boolean) => void
 }
 
 const defaultValuesCustomer: Omit<CustomerType, 'customerBanks' | 'createdAt'> = {
@@ -31,7 +32,15 @@ const defaultValuesCustomer: Omit<CustomerType, 'customerBanks' | 'createdAt'> =
   state: true,
 }
 
-const CustomersModal = ({ visible, onClose, setLoadingGlobal, isEdit = false, url = '' }: CustomersModalProps) => {
+const CustomersModal = ({ visible, onClose, isEdit = false, url = '' }: CustomersModalProps) => {
+  const queryClient = useQueryClient()
+  const {
+    actions: { createCustomerCache, editCustomerCache },
+    onMutateCache,
+    onSettledCache,
+    onErrorCache,
+  } = dashCustomersCache(queryClient)
+
   const formMethods = useForm<CustomerType>({
     resolver: ModalCustomersResolver,
     mode: 'all',
@@ -46,18 +55,25 @@ const CustomersModal = ({ visible, onClose, setLoadingGlobal, isEdit = false, ur
     formState: { isValid },
   } = formMethods
 
-  const { isLoading: loadingCreateCustomer, mutate: createCustomer } = useMutation<any, Error>(
+  const { isLoading: loadingCreateCustomer, mutate: createCustomer } = useMutation<AxiosResponse<CustomerType>, Error>(
     async () => {
       const { id, ...restClient } = getValues()
       return await createClient(restClient)
     },
     {
-      onSuccess: () => {
+      onSuccess: (result) => {
+        createCustomerCache(result.data)
         notification({ type: 'success', message: 'Cliente creado' })
-        setLoadingGlobal(true)
         handleClickCloseModal()
       },
-      onError: (error: any) => {
+      onMutate: () => {
+        onMutateCache()
+      },
+      onSettled: () => {
+        onSettledCache()
+      },
+      onError: (error: any, _, context: any) => {
+        onErrorCache(context)
         notification({
           type: 'error',
           message: error.response.data.message,
@@ -66,18 +82,25 @@ const CustomersModal = ({ visible, onClose, setLoadingGlobal, isEdit = false, ur
     }
   )
 
-  const { isLoading: loadingEditCustomer, mutate: editCustomer } = useMutation<any, Error>(
+  const { isLoading: loadingEditCustomer, mutate: editCustomer } = useMutation<AxiosResponse<CustomerType>, Error>(
     async () => {
       const { id, customerBanks, createdAt, state, ...restClient } = getValues()
       return await editCustomerById(id, restClient)
     },
     {
-      onSuccess: () => {
+      onSuccess: (result) => {
+        editCustomerCache(result.data)
         notification({ type: 'success', message: 'Cliente editado' })
-        setLoadingGlobal(true)
         onClose()
       },
-      onError: (error: any) => {
+      onMutate: () => {
+        onMutateCache()
+      },
+      onSettled: () => {
+        onSettledCache()
+      },
+      onError: (error: any, _, context: any) => {
+        onErrorCache(context)
         notification({
           type: 'error',
           message: error.response.data.message,
