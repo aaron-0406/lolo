@@ -103,7 +103,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
     }
   )
 
-  const { isLoading } = useQuery(
+  const { isLoading, refetch } = useQuery(
     KEY_DASH_CLIENTES_CACHE,
     async () => {
       return await getCustomerAll()
@@ -120,6 +120,10 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
       },
     }
   )
+
+  useEffect(() => {
+    refetch()
+  }, [])
 
   return (
     <Container width="100%" height="calc(100% - 112px)" padding="20px">

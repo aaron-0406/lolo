@@ -1,4 +1,4 @@
-import { Dispatch, FC, useState } from 'react'
+import { Dispatch, FC, useEffect, useState } from 'react'
 import moment from 'moment'
 import { useQuery } from 'react-query'
 import { getAllUsersByID } from '../../../../shared/services/customer-user.service'
@@ -56,7 +56,7 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts }) => {
     hideModalUser()
   }
 
-  const { isLoading } = useQuery(
+  const { isLoading, refetch } = useQuery(
     KEY_DASH_USUARIOS_CACHE,
     async () => {
       return await getAllUsersByID(customerId)
@@ -73,6 +73,10 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts }) => {
       },
     }
   )
+
+  useEffect(() => {
+    refetch()
+  }, [])
 
   return (
     <Container width="100%" height="calc(100% - 112px)" padding="20px">
