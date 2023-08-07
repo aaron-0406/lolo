@@ -12,6 +12,7 @@ import BodyCell from '../../../../ui/Tables/Table/BodyCell'
 import Button from '../../../../ui/Button'
 import ActionsModal from '../ActionsModal/ActionsModal'
 import { actionsColumns } from './utils/columns'
+import DeleteActionsModal from '../ActionsModal/DeleteActionsModal'
 
 type ActionsTableProps = {
   opts: Opts
@@ -21,22 +22,26 @@ type ActionsTableProps = {
   selectedBank: { chb: number; setChb: (chb: number) => void }
 }
 
-const ActionsTable: FC<ActionsTableProps> = ({
-  opts,
-  setOpts,
-  loading,
-  setLoadingGlobal,
-  selectedBank: { chb, setChb },
-}) => {
+const ActionsTable: FC<ActionsTableProps> = ({ opts, setOpts, loading, setLoadingGlobal, selectedBank: { chb } }) => {
   const [actions, setActions] = useState<Array<ManagementActionType>>([])
   const [idEdit, setIdEdit] = useState(0)
   const [actionsCount, setActionsCount] = useState<number>(0)
+  const [idDeletedAction, setIdDeletedAction] = useState(0)
 
   const { visible: visibleModalAction, showModal: showModalAction, hideModal: hideModalAction } = useModal()
+  const { visible: visibleDeleteAction, showModal: showDeleteAction, hideModal: hideDeleteAction } = useModal()
 
   const handleClickButtonEdit = (id: number) => {
     setIdEdit(id)
     showModalAction()
+  }
+  const handleClickDeleteUser = (id: number) => {
+    setIdDeletedAction(id)
+    showDeleteAction()
+  }
+  const onCloseDeleteAction = () => {
+    setIdDeletedAction(0)
+    hideDeleteAction()
   }
 
   const onCloseModal = () => {
@@ -83,10 +88,10 @@ const ActionsTable: FC<ActionsTableProps> = ({
         }
       >
         {!!actions?.length &&
-          actions.map((record: ManagementActionType,key) => {
+          actions.map((record: ManagementActionType, key) => {
             return (
               <tr className="styled-data-table-row" key={record.id}>
-                <BodyCell textAlign="center">{`${key+1 || ''}`}</BodyCell>
+                <BodyCell textAlign="center">{`${key + 1 || ''}`}</BodyCell>
                 <BodyCell textAlign="center">{`${record.codeAction || ''}`}</BodyCell>
                 <BodyCell>{`${record.nameAction || ''}`}</BodyCell>
                 <BodyCell textAlign="center">{`${record.codeSubTypeManagement || ''}`}</BodyCell>
@@ -103,6 +108,15 @@ const ActionsTable: FC<ActionsTableProps> = ({
                         size="small"
                         leadingIcon="ri-pencil-fill"
                       />
+                      <Button
+                        onClick={() => {
+                          handleClickDeleteUser(record.id)
+                        }}
+                        messageTooltip={'Eliminar acción'}
+                        shape="round"
+                        size="small"
+                        leadingIcon={'ri-delete-bin-line'}
+                      />
                     </Container>
                   }
                 </BodyCell>
@@ -118,6 +132,12 @@ const ActionsTable: FC<ActionsTableProps> = ({
         idAction={idEdit}
         isEdit
         chb={chb}
+      />
+      <DeleteActionsModal
+        visible={visibleDeleteAction}
+        onClose={onCloseDeleteAction}
+        setLoadingGlobal={setLoadingGlobal}
+        idAction={idDeletedAction}
       />
     </Container>
   )

@@ -36,7 +36,7 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts, loading, setLoadingGlo
   const [idDeletedUser, setIdDeletedUser] = useState(0)
 
   const { visible: visibleModalUser, showModal: showModalUser, hideModal: hideModalUser } = useModal()
-  const { visible: VisibleDeleteUser, showModal: showDeleteUser, hideModal: hideDeleteUser } = useModal()
+  const { visible: visibleDeleteUser, showModal: showDeleteUser, hideModal: hideDeleteUser } = useModal()
 
   const handleClickEditUser = (id: number) => {
     setIdUser(id)
@@ -147,7 +147,7 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts, loading, setLoadingGlo
       />
 
       <DeleteUsersModal
-        visible={VisibleDeleteUser}
+        visible={visibleDeleteUser}
         onClose={onCloseDeleteUser}
         setLoadingGlobal={setLoadingGlobal}
         idUser={idDeletedUser}
