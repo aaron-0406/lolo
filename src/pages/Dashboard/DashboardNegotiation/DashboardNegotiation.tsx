@@ -2,10 +2,14 @@ import { useState } from 'react'
 import NegotiationTable from './NegotiationTable'
 import Container from '../../../ui/Container'
 import { Opts } from '../../../ui/Pagination/interfaces'
+import NegotiationSearch from './NegotiationSearch/NegotiationSearch'
 
 const DashboardNegotiation = () => {
-  
   const [opts, setOpts] = useState<Opts>({ filter: '', limit: 50, page: 1 })
+  const [chb, setChb] = useState<number>(0)
+  const setChbGlobal = (chb: number) => {
+    setChb(chb)
+  }
 
   return (
     <Container
@@ -17,7 +21,8 @@ const DashboardNegotiation = () => {
       justifyContent="center"
       gap="20px"
     >
-      <NegotiationTable opts={opts} setOpts={setOpts} />
+      <NegotiationSearch opts={opts} setOpts={setOpts} selectedBank={{ chb, setChbGlobal }} />
+      <NegotiationTable opts={opts} setOpts={setOpts} selectedBank={{ chb, setChbGlobal }} />
     </Container>
   )
 }

@@ -1,7 +1,7 @@
 import { Dispatch, useState, useEffect } from 'react'
 import { useQuery } from 'react-query'
 import moment from 'moment'
-import { getAllPage } from '../../../../shared/services/negotiation.service'
+import { getAllPage, getAllNegociacionesByCHB } from '../../../../shared/services/negotiation.service'
 import { NegotiationType } from '../../../../shared/types/negotiation.type'
 import Container from '../../../../ui/Container'
 import Pagination from '../../../../ui/Pagination'
@@ -11,12 +11,13 @@ import EmptyStateCell from '../../../../ui/Tables/Table/EmptyStateCell'
 import BodyCell from '../../../../ui/Tables/Table/BodyCell'
 import { negotiationColumns } from './utils/columns'
 
-type NegotiationTableType = {
+type NegotiationTableProps = {
   opts: Opts
   setOpts: Dispatch<Opts>
+  selectedBank: { chb: number; setChbGlobal: (chb: number) => void }
 }
 
-const NegotiationTable = ({ opts, setOpts}: NegotiationTableType) => {
+const NegotiationTable = ({ opts, setOpts, selectedBank: { chb, setChbGlobal } }: NegotiationTableProps) => {
   const [negotiations, setNegotiations] = useState<Array<NegotiationType>>([])
   const [negotiationCount, setNegotiationCount] = useState(0)
   const [isLoading, setIsLoading] = useState(false)
@@ -29,7 +30,7 @@ const NegotiationTable = ({ opts, setOpts}: NegotiationTableType) => {
     {
       onSuccess: ({ data }) => {
         if (opts.filter !== '') {
-          data = data.filter((filt: NegotiationType) => {
+          data.rta = data.rta.filter((filt: NegotiationType) => {
             return filt.name.substring(0, opts.filter.length).toUpperCase() === opts.filter.toUpperCase()
           })
         }
@@ -40,10 +41,33 @@ const NegotiationTable = ({ opts, setOpts}: NegotiationTableType) => {
       enabled: false,
     }
   )
+  const { refetch: refetchChb } = useQuery(
+    'get-all-negociaciones-by-chb',
+    async () => {
+      return await getAllNegociacionesByCHB(String(chb))
+    },
+    {
+      onSuccess: ({ data }) => {
+        if (opts.filter !== '') {
+          data = data.filter((filt: NegotiationType) => {
+            return filt.name.substring(0, opts.filter.length).toUpperCase() === opts.filter.toUpperCase()
+          })
+        }
+        setNegotiations(data)
+        setNegotiationCount(data.length)
+        setIsLoading(false)
+      },
+      enabled: false,
+    }
+  )
 
   useEffect(() => {
-    refetch()
-  }, [refetch, isLoading, opts])
+    if (chb !== 0) {
+      refetchChb()
+    } else {
+      refetch()
+    }
+  }, [refetch, isLoading, opts, refetchChb, chb])
 
   return (
     <Container width="100%" height="calc(100% - 112px)" padding="20px">
