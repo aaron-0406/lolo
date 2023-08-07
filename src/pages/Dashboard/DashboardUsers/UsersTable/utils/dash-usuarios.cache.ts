@@ -54,8 +54,7 @@ const dashUsuariosCache = (queryClient: QueryClient) => {
   }
 
   const onSettledCache = () => {
-    //queryClient.cancelQueries(KEY_DASH_USUARIOS_CACHE)
-    queryClient.invalidateQueries(KEY_DASH_USUARIOS_CACHE)
+    queryClient.cancelQueries(KEY_DASH_USUARIOS_CACHE)
   }
 
   const onErrorCache = (context: { old: QueryDataTypeType }) => {
