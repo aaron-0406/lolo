@@ -4,11 +4,11 @@ import { AxiosResponse } from 'axios'
 
 export const KEY_DASH_USUARIOS_CACHE = 'key-dash-usuarios-cache'
 
-type QueryDataTypeType = AxiosResponse<CustomerUserType[]> | undefined
+type QueryDataType = AxiosResponse<CustomerUserType[]> | undefined
 
 const dashUsuariosCache = (queryClient: QueryClient) => {
   const createUserCache = (data: CustomerUserType) => {
-    queryClient.setQueryData<QueryDataTypeType>(KEY_DASH_USUARIOS_CACHE, (old) => {
+    queryClient.setQueryData<QueryDataType>(KEY_DASH_USUARIOS_CACHE, (old) => {
       if (old) {
         return { ...old, data: [...old.data, data] }
       }
@@ -16,7 +16,7 @@ const dashUsuariosCache = (queryClient: QueryClient) => {
   }
 
   const editUserCache = (data: CustomerUserType) => {
-    queryClient.setQueryData<QueryDataTypeType>(KEY_DASH_USUARIOS_CACHE, (old) => {
+    queryClient.setQueryData<QueryDataType>(KEY_DASH_USUARIOS_CACHE, (old) => {
       if (old) {
         const dataUpdated = old.data.map((user: CustomerUserType) => {
           if (user.id === data.id) {
@@ -32,7 +32,7 @@ const dashUsuariosCache = (queryClient: QueryClient) => {
   }
 
   const deleteUserCache = (idUser: string) => {
-    queryClient.setQueryData<QueryDataTypeType>(KEY_DASH_USUARIOS_CACHE, (old) => {
+    queryClient.setQueryData<QueryDataType>(KEY_DASH_USUARIOS_CACHE, (old) => {
       if (old) {
         const dataUpdated = old.data.filter((user: CustomerUserType) => user.id !== parseInt(idUser))
         return { ...old, data: dataUpdated }
@@ -57,7 +57,7 @@ const dashUsuariosCache = (queryClient: QueryClient) => {
     queryClient.cancelQueries(KEY_DASH_USUARIOS_CACHE)
   }
 
-  const onErrorCache = (context: { old: QueryDataTypeType }) => {
+  const onErrorCache = (context: { old: QueryDataType }) => {
     queryClient.setQueryData(KEY_DASH_USUARIOS_CACHE, context.old)
   }
 
