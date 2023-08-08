@@ -29,13 +29,14 @@ const NegotiationTable = ({ opts, setOpts, selectedBank: { chb, setChbGlobal } }
     },
     {
       onSuccess: ({ data }) => {
+        setNegotiationCount(data.quantity)
         if (opts.filter !== '') {
           data.rta = data.rta.filter((filt: NegotiationType) => {
             return filt.name.substring(0, opts.filter.length).toUpperCase() === opts.filter.toUpperCase()
           })
+          setNegotiationCount(data.rta.length)
         }
         setNegotiations(data.rta)
-        setNegotiationCount(data.quantity)
         setIsLoading(false)
       },
       enabled: false,
@@ -48,13 +49,14 @@ const NegotiationTable = ({ opts, setOpts, selectedBank: { chb, setChbGlobal } }
     },
     {
       onSuccess: ({ data }) => {
+        setNegotiationCount(data.length)
         if (opts.filter !== '') {
           data = data.filter((filt: NegotiationType) => {
             return filt.name.substring(0, opts.filter.length).toUpperCase() === opts.filter.toUpperCase()
           })
+          setNegotiationCount(data.length)
         }
         setNegotiations(data)
-        setNegotiationCount(data.length)
         setIsLoading(false)
       },
       enabled: false,
