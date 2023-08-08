@@ -1,30 +1,49 @@
-import { useMutation } from 'react-query'
+import { useMutation, useQueryClient } from 'react-query'
 import Container from '../../../../../ui/Container'
 import Modal from '../../../../../ui/Modal'
 import notification from '../../../../../ui/notification'
 import Button from '../../../../../ui/Button'
 import { deleteManagementAction } from '../../../../../shared/services/management-action.service'
+import dashAccionesCache from '../../ActionsTable/utils/dash-acciones.cache'
 
 type DeleteActionsModalProps = {
   visible: boolean
   onClose: () => void
   isEdit?: boolean
-  setLoadingGlobal: (state: boolean) => void
+  // setLoadingGlobal: (state: boolean) => void
   idAction?: number
+  chb: number
 }
 
-const DeleteActionsModal = ({ visible, idAction = 0, onClose, setLoadingGlobal }: DeleteActionsModalProps) => {
+const DeleteActionsModal = ({ visible, idAction = 0, onClose, chb = 0 }: DeleteActionsModalProps) => {
+  const queryClient = useQueryClient()
+
+  const {
+    actions: { deleteActionCache },
+    onMutateCache,
+    onSettledCache,
+    onErrorCache,
+  } = dashAccionesCache(queryClient)
+
   const { isLoading: loadingDeleteAction, mutate: deleteActionMutate } = useMutation<any, Error>(
     async () => {
       return await deleteManagementAction(idAction)
     },
     {
       onSuccess: () => {
+        deleteActionCache(String(idAction), chb)
         notification({ type: 'success', message: 'Acción eliminada' })
-        setLoadingGlobal(true)
+        // setLoadingGlobal(true)
         onClose()
       },
-      onError: (error: any) => {
+      onMutate: () => {
+        onMutateCache(chb)
+      },
+      onSettled: () => {
+        onSettledCache(chb)
+      },
+      onError: (error: any, _, context: any) => {
+        onErrorCache(context, chb)
         notification({
           type: 'error',
           message: error.response.data.message,

@@ -13,16 +13,15 @@ import Button from '../../../../ui/Button'
 import ActionsModal from '../ActionsModal/ActionsModal'
 import { actionsColumns } from './utils/columns'
 import DeleteActionsModal from '../ActionsModal/DeleteActionsModal'
+import { KEY_DASH_ACCIONES_CACHE } from './utils/dash-acciones.cache'
 
 type ActionsTableProps = {
   opts: Opts
   setOpts: Dispatch<Opts>
-  loading: boolean
-  setLoadingGlobal: (state: boolean) => void
   selectedBank: { chb: number; setChb: (chb: number) => void }
 }
 
-const ActionsTable: FC<ActionsTableProps> = ({ opts, setOpts, loading, setLoadingGlobal, selectedBank: { chb } }) => {
+const ActionsTable: FC<ActionsTableProps> = ({ opts, setOpts, selectedBank: { chb } }) => {
   const [actions, setActions] = useState<Array<ManagementActionType>>([])
   const [idEdit, setIdEdit] = useState(0)
   const [actionsCount, setActionsCount] = useState<number>(0)
@@ -49,8 +48,8 @@ const ActionsTable: FC<ActionsTableProps> = ({ opts, setOpts, loading, setLoadin
     hideModalAction()
   }
 
-  const { refetch } = useQuery(
-    'get-actions-all',
+  const { isLoading } = useQuery(
+    [KEY_DASH_ACCIONES_CACHE, chb],
     async () => {
       return await getAllManagementActionsByCHB(String(chb))
     },
@@ -63,15 +62,14 @@ const ActionsTable: FC<ActionsTableProps> = ({ opts, setOpts, loading, setLoadin
         }
         setActions(data)
         setActionsCount(data.length)
-        setLoadingGlobal(false)
       },
-      enabled: false,
+      // enabled: false,
     }
   )
 
-  useEffect(() => {
-    if (loading) refetch()
-  }, [refetch, loading, opts])
+  // useEffect(() => {
+  //   refetch()
+  // }, [])
 
   return (
     <Container width="100%" height="calc(100% - 112px)" padding="20px">
@@ -79,7 +77,7 @@ const ActionsTable: FC<ActionsTableProps> = ({ opts, setOpts, loading, setLoadin
       <Table
         top="260px"
         columns={actionsColumns}
-        loading={loading}
+        loading={isLoading}
         isArrayEmpty={!actions.length}
         emptyState={
           <EmptyStateCell colSpan={actionsColumns.length}>
@@ -125,18 +123,12 @@ const ActionsTable: FC<ActionsTableProps> = ({ opts, setOpts, loading, setLoadin
           })}
       </Table>
 
-      <ActionsModal
-        visible={visibleModalAction}
-        onClose={onCloseModal}
-        setLoadingGlobal={setLoadingGlobal}
-        idAction={idEdit}
-        isEdit
-        chb={chb}
-      />
+      <ActionsModal visible={visibleModalAction} onClose={onCloseModal} idAction={idEdit} isEdit chb={chb} />
       <DeleteActionsModal
         visible={visibleDeleteAction}
         onClose={onCloseDeleteAction}
-        setLoadingGlobal={setLoadingGlobal}
+        chb={chb}
+        // setLoadingGlobal={setLoadingGlobal}
         idAction={idDeletedAction}
       />
     </Container>

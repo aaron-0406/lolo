@@ -11,18 +11,22 @@ import useModal from '../../../../shared/hooks/useModal'
 import ActionModal from '../ActionsModal/ActionsModal'
 import { useMediaQuery } from '../../../../shared/hooks/useMediaQuery'
 import { device } from '../../../../shared/breakpoints/reponsive'
+import { useQueryClient } from 'react-query'
+import dashAccionesCache from '../ActionsTable/utils/dash-acciones.cache'
 
 type ActionsSearchProps = {
   opts: Opts
   setOpts: Dispatch<Opts>
-  setLoadingGlobal: (state: boolean) => void
   selectedBank: { chb: number; setChb: (chb: number) => void }
 }
 
-const ActionsSearch: FC<ActionsSearchProps> = ({ opts, setOpts, setLoadingGlobal, selectedBank: { chb, setChb } }) => {
+const ActionsSearch: FC<ActionsSearchProps> = ({ opts, setOpts, selectedBank: { chb, setChb } }) => {
   const {
     dashCustomer: { selectedCustomer },
   } = useDashContext()
+
+  const queryClient = useQueryClient()
+  const { onRefetchQueryCache } = dashAccionesCache(queryClient)
 
   const greaterThanMobile = useMediaQuery(device.tabletS)
   const { visible: visibleModalAdd, showModal: showModalAdd, hideModal: hideModalAdd } = useModal()
@@ -35,22 +39,23 @@ const ActionsSearch: FC<ActionsSearchProps> = ({ opts, setOpts, setLoadingGlobal
   })
 
   const onChangeBank = (key: string) => {
+    console.log(key, chb)
     setChb(parseInt(key))
-    setLoadingGlobal(true)
+    onRefetchQueryCache(parseInt(key))
   }
 
   const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
     if (value === '') {
       setOpts({ ...opts, filter: '', page: 1 })
-      setLoadingGlobal(true)
+      onRefetchQueryCache(chb)
       return
     }
 
     if (value.length < 3) return
 
     setOpts({ ...opts, filter: value.trim(), page: 1 })
-    setLoadingGlobal(true)
+    onRefetchQueryCache(chb)
   }
 
   const onShowModal = () => {
@@ -80,7 +85,7 @@ const ActionsSearch: FC<ActionsSearchProps> = ({ opts, setOpts, setLoadingGlobal
 
       <Button shape="round" leadingIcon="ri-add-fill" size="small" onClick={onShowModal} disabled={!chb} />
 
-      <ActionModal visible={visibleModalAdd} onClose={onCloseModal} setLoadingGlobal={setLoadingGlobal} chb={chb} />
+      <ActionModal visible={visibleModalAdd} onClose={onCloseModal} chb={chb} />
     </Container>
   )
 }
