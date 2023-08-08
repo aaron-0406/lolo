@@ -1,10 +1,13 @@
-import { useEffect } from 'react'
 import { useMutation, useQuery } from 'react-query'
-import { Controller } from 'react-hook-form'
 import { FormProvider, useForm } from 'react-hook-form'
+import { createNegotiation, updateNegotiation } from '../../../../../shared/services/negotiation.service'
 import { ModalNegotiationResolver } from './NegotiationModal.yup'
 import { NegotiationType } from '../../../../../shared/types/negotiation.type'
 import Modal from '../../../../../ui/Modal'
+import Container from '../../../../../ui/Container'
+import Button from '../../../../../ui/Button'
+import NegotiationInfoForm from './NegotiationInfoForm'
+import notification from '../../../../../ui/notification'
 
 type NegotiationModalProps = {
   visible: boolean
@@ -18,7 +21,7 @@ const defaultValuesCustomerUser: Omit<NegotiationType, 'createdAt'> = {
   customerHasBankId: 0,
 }
 
-const NegotiationModal = ({ visible, onClose , isEdit = false}: NegotiationModalProps) => {
+const NegotiationModal = ({ visible, onClose, isEdit = false }: NegotiationModalProps) => {
   const formMethods = useForm<NegotiationType>({
     resolver: ModalNegotiationResolver,
     mode: 'all',
@@ -26,16 +29,60 @@ const NegotiationModal = ({ visible, onClose , isEdit = false}: NegotiationModal
   })
 
   const {
-    setValue,
     getValues,
-    control,
     reset,
     formState: { isValid },
   } = formMethods
 
+  const { isLoading: loadingCreateNegotiation, mutate: mutateCreateNegotiation } = useMutation<any, Error>(
+    async () => {
+      const { id, ...restNegotiation } = getValues()
+      return await createNegotiation(restNegotiation)
+    },
+    {
+      onSuccess: () => {
+        notification({ type: 'success', message: 'Negociación creada' })
+        handleClickCloseModal()
+      },
+      onError: (error: any) => {
+        notification({
+          type: 'error',
+          message: error.response.data.message,
+        })
+      },
+    }
+  )
+
+  const { isLoading: loadingEditNegotiation, mutate: mutateEditNegotiation } = useMutation<any, Error>(
+    async () => {
+      const { id, ...restNegotiation } = getValues()
+      return await updateNegotiation(id, restNegotiation)
+    },
+    {
+      onSuccess: () => {
+        notification({ type: 'success', message: 'Cliente editado' })
+        onClose()
+      },
+      onError: (error: any) => {
+        notification({
+          type: 'error',
+          message: error.response.data.message,
+        })
+      },
+    }
+  )
+
   const handleClickCloseModal = () => {
     reset()
     onClose()
+  }
+
+  const onAddNegotiation = () => {
+    mutateCreateNegotiation()
+  }
+
+  const onEditNegotiation = () => {
+    mutateEditNegotiation()
   }
 
   return (
@@ -44,8 +91,22 @@ const NegotiationModal = ({ visible, onClose , isEdit = false}: NegotiationModal
         visible={visible}
         onClose={handleClickCloseModal}
         id="modal-files"
-        title={isEdit ? 'Editar Cliente' : 'Agregar Cliente'}
+        title={isEdit ? 'Editar Negociación' : 'Agregar Negociación'}
         contentOverflowY="auto"
+        children={<NegotiationInfoForm />}
+        footer={
+          <Container width="100%" height="75px" display="flex" justifyContent="center" alignItems="center" gap="20px">
+            <Button
+              width="125px"
+              label={isEdit ? 'Editar' : 'Agregar'}
+              shape="default"
+              trailingIcon="ri-add-fill"
+              onClick={isEdit ? onEditNegotiation : onAddNegotiation}
+              loading={loadingCreateNegotiation || loadingEditNegotiation}
+              disabled={!isValid}
+            />
+          </Container>
+        }
       ></Modal>
     </FormProvider>
   )
