@@ -122,7 +122,6 @@ const ActionsModal = ({ visible, onClose, isEdit = false, idAction = 0, chb }: A
           setValue('codeAction', data.codeAction)
           setValue('nameAction', data.nameAction)
           setValue('codeSubTypeManagement', data.codeSubTypeManagement)
-          // setValue('customerHasBankId', chb)
         } else {
           reset(defaultValuesActions)
         }

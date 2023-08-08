@@ -63,13 +63,8 @@ const ActionsTable: FC<ActionsTableProps> = ({ opts, setOpts, selectedBank: { ch
         setActions(data)
         setActionsCount(data.length)
       },
-      // enabled: false,
     }
   )
-
-  // useEffect(() => {
-  //   refetch()
-  // }, [])
 
   return (
     <Container width="100%" height="calc(100% - 112px)" padding="20px">
@@ -128,7 +123,6 @@ const ActionsTable: FC<ActionsTableProps> = ({ opts, setOpts, selectedBank: { ch
         visible={visibleDeleteAction}
         onClose={onCloseDeleteAction}
         chb={chb}
-        // setLoadingGlobal={setLoadingGlobal}
         idAction={idDeletedAction}
       />
     </Container>

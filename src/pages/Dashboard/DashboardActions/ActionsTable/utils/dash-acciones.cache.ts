@@ -31,7 +31,7 @@ const dashAccionesCache = (queryClient: QueryClient) => {
     })
   }
 
-  const deleteActionCache = (idAction: string, chb:number) => {
+  const deleteActionCache = (idAction: string, chb: number) => {
     queryClient.setQueryData<QueryDataType>([KEY_DASH_ACCIONES_CACHE, chb], (old) => {
       if (old) {
         const dataUpdated = old.data.filter((user: ManagementActionType) => user.id !== parseInt(idAction))
@@ -40,11 +40,11 @@ const dashAccionesCache = (queryClient: QueryClient) => {
     })
   }
 
-  const onRefetchQueryCache = async (chb:number) => {
+  const onRefetchQueryCache = async (chb: number) => {
     await queryClient.refetchQueries([KEY_DASH_ACCIONES_CACHE, chb])
   }
 
-  const onMutateCache = async (chb:number) => {
+  const onMutateCache = async (chb: number) => {
     const old = queryClient.getQueryData([KEY_DASH_ACCIONES_CACHE, chb])
     if (!old) {
       await queryClient.prefetchQuery([KEY_DASH_ACCIONES_CACHE, chb])
@@ -53,11 +53,11 @@ const dashAccionesCache = (queryClient: QueryClient) => {
     return { old }
   }
 
-  const onSettledCache = (chb:number) => {
+  const onSettledCache = (chb: number) => {
     queryClient.cancelQueries([KEY_DASH_ACCIONES_CACHE, chb])
   }
 
-  const onErrorCache = (context: { old: QueryDataType }, chb:number) => {
+  const onErrorCache = (context: { old: QueryDataType }, chb: number) => {
     queryClient.setQueryData([KEY_DASH_ACCIONES_CACHE, chb], context.old)
   }
 

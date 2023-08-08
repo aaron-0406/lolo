@@ -10,7 +10,6 @@ type DeleteActionsModalProps = {
   visible: boolean
   onClose: () => void
   isEdit?: boolean
-  // setLoadingGlobal: (state: boolean) => void
   idAction?: number
   chb: number
 }
@@ -33,7 +32,6 @@ const DeleteActionsModal = ({ visible, idAction = 0, onClose, chb = 0 }: DeleteA
       onSuccess: () => {
         deleteActionCache(String(idAction), chb)
         notification({ type: 'success', message: 'Acción eliminada' })
-        // setLoadingGlobal(true)
         onClose()
       },
       onMutate: () => {
