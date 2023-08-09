@@ -90,7 +90,7 @@ const ActionsTable: FC<ActionsTableProps> = ({ opts, setOpts, selectedBank: { ch
                 <BodyCell textAlign="center">{`${record.codeSubTypeManagement || ''}`}</BodyCell>
                 <BodyCell textAlign="center">
                   {
-                    <Container display="flex" gap="15px" justifyContent="space-around">
+                    <Container display="flex" gap="10px" justifyContent="space-around">
                       <Button
                         onClick={(event) => {
                           event.stopPropagation()

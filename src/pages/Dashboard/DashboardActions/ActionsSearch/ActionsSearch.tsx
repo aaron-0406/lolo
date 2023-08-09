@@ -39,7 +39,6 @@ const ActionsSearch: FC<ActionsSearchProps> = ({ opts, setOpts, selectedBank: { 
   })
 
   const onChangeBank = (key: string) => {
-    console.log(key, chb)
     setChb(parseInt(key))
     onRefetchQueryCache(parseInt(key))
   }
