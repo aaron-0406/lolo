@@ -1,30 +1,46 @@
-import { useMutation } from 'react-query'
+import { useMutation, useQueryClient } from 'react-query'
 import Container from '../../../../../ui/Container'
 import { deleteUser } from '../../../../../shared/services/customer-user.service'
 import Modal from '../../../../../ui/Modal'
 import notification from '../../../../../ui/notification'
 import Button from '../../../../../ui/Button'
+import dashUsuariosCache from '../../UsersTable/utils/dash-usuarios.cache'
+import { AxiosResponse } from 'axios'
 
 type DeleteUsersModalProps = {
   visible: boolean
   onClose: () => void
   isEdit?: boolean
-  setLoadingGlobal: (state: boolean) => void
   idUser?: number
 }
 
-const DeleteUsersModal = ({ visible, idUser = 0, onClose, setLoadingGlobal }: DeleteUsersModalProps) => {
-  const { isLoading: loadingDeleteUser, mutate: deleteUserMutate } = useMutation<any, Error>(
+const DeleteUsersModal = ({ visible, idUser = 0, onClose }: DeleteUsersModalProps) => {
+  const queryClient = useQueryClient()
+  const {
+    actions: { deleteUserCache },
+    onMutateCache,
+    onSettledCache,
+    onErrorCache,
+  } = dashUsuariosCache(queryClient)
+
+  const { isLoading: loadingDeleteUser, mutate: deleteUserMutate } = useMutation<AxiosResponse<{ id: string }>, Error>(
     async () => {
       return await deleteUser(idUser)
     },
     {
-      onSuccess: () => {
+      onSuccess: (result) => {
+        deleteUserCache(result.data.id)
         notification({ type: 'success', message: 'Usuario eliminado' })
-        setLoadingGlobal(true)
         onClose()
       },
-      onError: (error: any) => {
+      onMutate: () => {
+        onMutateCache()
+      },
+      onSettled: () => {
+        onSettledCache()
+      },
+      onError: (error: any, _, context: any) => {
+        onErrorCache(context)
         notification({
           type: 'error',
           message: error.response.data.message,
