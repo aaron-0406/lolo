@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { ManagementActionType } from '../../../../shared/types/management-action.type'
+import { ManagementActionType } from '../../../../../shared/types/management-action.type'
 import { ModalActionsResolver } from './ActionsModal.yup'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
@@ -7,13 +7,13 @@ import {
   createManagementAction,
   getManagementActionById,
   updateManagementAction,
-} from '../../../../shared/services/management-action.service'
-import notification from '../../../../ui/notification'
-import Modal from '../../../../ui/Modal'
-import Container from '../../../../ui/Container'
-import Button from '../../../../ui/Button'
+} from '../../../../../shared/services/management-action.service'
+import notification from '../../../../../ui/notification'
+import Modal from '../../../../../ui/Modal'
+import Container from '../../../../../ui/Container'
+import Button from '../../../../../ui/Button'
 import ActionInfoForm from './ActionInfoForm/ActionInfoForm'
-import dashAccionesCache from '../ActionsTable/utils/dash-acciones.cache'
+import dashAccionesCache from '../../ActionsTable/utils/dash-acciones.cache'
 import { AxiosResponse } from 'axios'
 
 type ActionsModalProps = {
@@ -147,7 +147,7 @@ const ActionsModal = ({ visible, onClose, isEdit = false, idAction = 0, chb }: A
     if (!!idAction) {
       refetchGetActionById()
     }
-  }, [idAction])
+  }, [idAction, refetchGetActionById])
 
   return (
     <FormProvider {...formMethods}>

@@ -1,4 +1,4 @@
-import React, { Dispatch, FC, useEffect, useState } from 'react'
+import { Dispatch, FC, useState } from 'react'
 import { Opts } from '../../../../ui/Pagination/interfaces'
 import { ManagementActionType } from '../../../../shared/types/management-action.type'
 import useModal from '../../../../shared/hooks/useModal'
@@ -10,9 +10,9 @@ import Table from '../../../../ui/Tables/Table'
 import EmptyStateCell from '../../../../ui/Tables/Table/EmptyStateCell'
 import BodyCell from '../../../../ui/Tables/Table/BodyCell'
 import Button from '../../../../ui/Button'
-import ActionsModal from '../ActionsModal/ActionsModal'
+import ActionsModal from '../Modals/ActionsModal/ActionsModal'
 import { actionsColumns } from './utils/columns'
-import DeleteActionsModal from '../ActionsModal/DeleteActionsModal'
+import DeleteActionsModal from '../Modals/DeleteActionsModal'
 import { KEY_DASH_ACCIONES_CACHE } from './utils/dash-acciones.cache'
 
 type ActionsTableProps = {
@@ -23,9 +23,9 @@ type ActionsTableProps = {
 
 const ActionsTable: FC<ActionsTableProps> = ({ opts, setOpts, selectedBank: { chb } }) => {
   const [actions, setActions] = useState<Array<ManagementActionType>>([])
-  const [idEdit, setIdEdit] = useState(0)
+  const [idEdit, setIdEdit] = useState<number>(0)
   const [actionsCount, setActionsCount] = useState<number>(0)
-  const [idDeletedAction, setIdDeletedAction] = useState(0)
+  const [idDeletedAction, setIdDeletedAction] = useState<number>(0)
 
   const { visible: visibleModalAction, showModal: showModalAction, hideModal: hideModalAction } = useModal()
   const { visible: visibleDeleteAction, showModal: showDeleteAction, hideModal: hideDeleteAction } = useModal()
@@ -118,7 +118,7 @@ const ActionsTable: FC<ActionsTableProps> = ({ opts, setOpts, selectedBank: { ch
           })}
       </Table>
 
-      <ActionsModal visible={visibleModalAction} onClose={onCloseModal} idAction={idEdit} isEdit chb={chb} />
+      <ActionsModal visible={visibleModalAction} onClose={onCloseModal} idAction={idEdit} chb={chb} isEdit />
       <DeleteActionsModal
         visible={visibleDeleteAction}
         onClose={onCloseDeleteAction}

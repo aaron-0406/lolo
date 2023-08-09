@@ -76,6 +76,7 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts }) => {
 
   useEffect(() => {
     refetch()
+    // eslint-disable-next-line
   }, [])
 
   return (
@@ -135,7 +136,6 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts }) => {
       </Table>
 
       <UsersModal visible={visibleModalUser} onClose={onCloseUser} idUser={idUser} isEdit />
-
 
       <DeleteUsersModal visible={visibleDeleteUser} onClose={onCloseDeleteUser} idUser={idDeletedUser} />
     </Container>

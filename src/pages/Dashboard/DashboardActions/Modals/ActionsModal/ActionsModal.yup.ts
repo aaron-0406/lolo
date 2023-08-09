@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import yup from '../../../../shared/yupLocale'
-import { ManagementActionType } from '../../../../shared/types/management-action.type'
+import yup from '../../../../../shared/yupLocale'
+import { ManagementActionType } from '../../../../../shared/types/management-action.type'
 
 const ModalActions: yup.SchemaOf<Omit<ManagementActionType, 'customerHasBankId' | 'id'>> = yup.object().shape({
   codeAction: yup.string().required().max(10),
