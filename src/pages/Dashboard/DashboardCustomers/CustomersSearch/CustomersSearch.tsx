@@ -8,29 +8,33 @@ import CustomersModal from '../Modals/CustomersModal'
 import Button from '../../../../ui/Button'
 import useModal from '../../../../shared/hooks/useModal'
 import Label from '../../../../ui/Label/Label'
+import { useQueryClient } from 'react-query'
+import dashCustomersCache from '../CustomersTable/utils/dash-clientes.cache'
 
 type CustomersTableProps = {
   opts: Opts
   setOpts: Dispatch<Opts>
-  setLoadingGlobal: (state: boolean) => void
 }
 
-const CustomersSearch: FC<CustomersTableProps> = ({ opts, setOpts, setLoadingGlobal }) => {
+const CustomersSearch: FC<CustomersTableProps> = ({ opts, setOpts }) => {
   const greaterThanMobile = useMediaQuery(device.tabletS)
   const { visible: visibleModalAdd, showModal: showModalAdd, hideModal: hideModalAdd } = useModal()
+
+  const queryClient = useQueryClient()
+  const { onRefetchQueryCache } = dashCustomersCache(queryClient)
 
   const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
     if (value === '') {
       setOpts({ ...opts, filter: '', page: 1 })
-      setLoadingGlobal(true)
+      onRefetchQueryCache()
       return
     }
 
     if (value.length < 3) return
 
     setOpts({ ...opts, filter: value.trim(), page: 1 })
-    setLoadingGlobal(true)
+    onRefetchQueryCache()
   }
 
   const handleClickButton = () => {
@@ -51,7 +55,7 @@ const CustomersSearch: FC<CustomersTableProps> = ({ opts, setOpts, setLoadingGlo
       </Container>
       <Button shape="round" leadingIcon="ri-add-fill" size="small" onClick={handleClickButton} />
 
-      <CustomersModal visible={visibleModalAdd} onClose={onCloseModal} setLoadingGlobal={setLoadingGlobal} />
+      <CustomersModal visible={visibleModalAdd} onClose={onCloseModal} />
     </Container>
   )
 }

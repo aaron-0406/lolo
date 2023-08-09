@@ -16,7 +16,7 @@ export const Providers: React.FC<ProvidersProps> = ({ children }) => {
     defaultOptions: {
       queries: {
         refetchOnWindowFocus: false,
-        refetchOnReconnect: false,
+        refetchOnReconnect: true,
         retry: false,
         staleTime: 5 * 60 * 1000,
       },
