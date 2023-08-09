@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { ManagementActionType } from '../../../../shared/types/management-action.type'
 import { ModalActionsResolver } from './ActionsModal.yup'
 import { FormProvider, useForm } from 'react-hook-form'
-import { useMutation, useQuery } from 'react-query'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
 import {
   createManagementAction,
   getManagementActionById,
@@ -13,13 +13,14 @@ import Modal from '../../../../ui/Modal'
 import Container from '../../../../ui/Container'
 import Button from '../../../../ui/Button'
 import ActionInfoForm from './ActionInfoForm/ActionInfoForm'
+import dashAccionesCache from '../ActionsTable/utils/dash-acciones.cache'
+import { AxiosResponse } from 'axios'
 
 type ActionsModalProps = {
   visible: boolean
   onClose: () => void
   isEdit?: boolean
   idAction?: number
-  setLoadingGlobal: (state: boolean) => void
   chb: number
 }
 
@@ -30,7 +31,15 @@ const defaultValuesActions: Omit<ManagementActionType, 'customerHasBankId'> = {
   codeSubTypeManagement: '',
 }
 
-const ActionsModal = ({ visible, onClose, setLoadingGlobal, isEdit = false, idAction = 0, chb }: ActionsModalProps) => {
+const ActionsModal = ({ visible, onClose, isEdit = false, idAction = 0, chb }: ActionsModalProps) => {
+  const queryClient = useQueryClient()
+  const {
+    actions: { createActionCache, editActionCache },
+    onMutateCache,
+    onSettledCache,
+    onErrorCache,
+  } = dashAccionesCache(queryClient)
+
   const formMethods = useForm<ManagementActionType>({
     resolver: ModalActionsResolver,
     mode: 'all',
@@ -44,18 +53,28 @@ const ActionsModal = ({ visible, onClose, setLoadingGlobal, isEdit = false, idAc
     formState: { isValid },
   } = formMethods
 
-  const { isLoading: loadingCreateAction, mutate: createAction } = useMutation<any, Error>(
+  const { isLoading: loadingCreateAction, mutate: createAction } = useMutation<
+    AxiosResponse<ManagementActionType>,
+    Error
+  >(
     async () => {
       const { id, ...restClient } = getValues()
       return await createManagementAction({ ...restClient, customerHasBankId: chb })
     },
     {
-      onSuccess: () => {
+      onSuccess: (result) => {
+        createActionCache(result.data)
         notification({ type: 'success', message: 'Acción creada' })
-        setLoadingGlobal(true)
         handleClickCloseModal()
       },
-      onError: (error: any) => {
+      onMutate: () => {
+        onMutateCache(chb)
+      },
+      onSettled: () => {
+        onSettledCache(chb)
+      },
+      onError: (error: any, _, context: any) => {
+        onErrorCache(context, chb)
         notification({
           type: 'error',
           message: error.response.data.message,
@@ -64,18 +83,25 @@ const ActionsModal = ({ visible, onClose, setLoadingGlobal, isEdit = false, idAc
     }
   )
 
-  const { isLoading: loadingEditAction, mutate: editAction } = useMutation<any, Error>(
+  const { isLoading: loadingEditAction, mutate: editAction } = useMutation<AxiosResponse<ManagementActionType>, Error>(
     async () => {
       const { id, ...restClient } = getValues()
       return await updateManagementAction(id, { ...restClient, customerHasBankId: chb })
     },
     {
-      onSuccess: () => {
+      onSuccess: (result) => {
+        editActionCache(result.data)
         notification({ type: 'success', message: 'Acción editada' })
-        setLoadingGlobal(true)
         onClose()
       },
-      onError: (error: any) => {
+      onMutate: () => {
+        onMutateCache(chb)
+      },
+      onSettled: () => {
+        onSettledCache(chb)
+      },
+      onError: (error: any, _, context: any) => {
+        onErrorCache(context, chb)
         notification({
           type: 'error',
           message: error.response.data.message,

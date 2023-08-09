@@ -4,18 +4,19 @@ export const actionsColumns: ColumProps[] = [
   {
     id: 'actions.datatable.header.id',
     title: 'ID',
-    width: '20%',
+    width: '10%',
     justifyContent: 'center',
   },
   {
     id: 'actions.datatable.header.codeaction',
     title: 'CÓDIGO',
     width: '15%',
+    justifyContent: 'center',
   },
   {
     id: 'actions.datatable.header.nameaction',
     title: 'NOMBRE',
-    width: '30%',
+    width: '40%',
     justifyContent: 'space-between',
   },
   {
@@ -27,7 +28,7 @@ export const actionsColumns: ColumProps[] = [
   {
     id: 'actions.datatable.header.actions',
     title: 'ACCIONES',
-    width: '30%',
+    width: '20%',
     justifyContent: 'center',
   },
 ]
