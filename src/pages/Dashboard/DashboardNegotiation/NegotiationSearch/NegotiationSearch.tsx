@@ -26,7 +26,7 @@ const NegotiationSearch = ({ opts, setOpts, selectedBank: { chb, setChbGlobal } 
   const greaterThanMobile = useMediaQuery(device.tabletS)
   const { visible: visibleModalAdd, showModal: showModalAdd, hideModal: hideModalAdd } = useModal()
 
-  const optionsSelect: Array<SelectItemType> = selectedCustomer.customerBanks.map((customerBank) => {
+  const optionsSelect: Array<SelectItemType> = selectedCustomer.customerBanks .map((customerBank) => {
     return {
       key: String(customerBank.CUSTOMER_HAS_BANK.id),
       label: customerBank.name,

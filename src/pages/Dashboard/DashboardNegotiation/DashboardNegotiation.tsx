@@ -2,7 +2,7 @@ import { useState } from 'react'
 import NegotiationTable from './NegotiationTable'
 import Container from '../../../ui/Container'
 import { Opts } from '../../../ui/Pagination/interfaces'
-import NegotiationSearch from './NegotiationSearch/NegotiationSearch'
+import NegotiationSearch from './NegotiationSearch'
 
 const DashboardNegotiation = () => {
   const [opts, setOpts] = useState<Opts>({ filter: '', limit: 50, page: 1 })
