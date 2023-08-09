@@ -12,6 +12,7 @@ export default {
     clientes: '/dash/clientes',
     usuarios: '/dash/usuarios',
     reportes: '/dash/reportes',
+    acciones: '/dash/acciones',
   },
   company: {
     root: (urlIdentifier = ':urlIdentifier') => `/${urlIdentifier}`,

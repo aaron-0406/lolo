@@ -13,18 +13,18 @@ export const getAllManagementActionsByCHB = async (chb: string) => {
   return await axiosClient.get(`${url}/all/${chb}`)
 }
 
-export const getManagementActionById = async (ID: number) => {
-  return await axiosClient.get(`${url}/${ID}`)
+export const getManagementActionById = async (id: number) => {
+  return await axiosClient.get(`${url}/${id}`)
 }
 
-export const createManagementAction = async (ManAct: Omit<ManagementActionType, 'id'>) => {
-  return await axiosClient.post(`${url}/`, ManAct)
+export const createManagementAction = async (manAct: Omit<ManagementActionType, 'id'>) => {
+  return await axiosClient.post(`${url}/`, manAct)
 }
 
-export const updateManagementAction = async (ID: number, ManAct: Omit<ManagementActionType, 'id'>) => {
-  return await axiosClient.put(`${url}/${ID}`, ManAct)
+export const updateManagementAction = async (id: number, manAct: Omit<ManagementActionType, 'id'>) => {
+  return await axiosClient.put(`${url}/${id}`, manAct)
 }
 
-export const deleteManagementAction = async (ID: number) => {
-  return await axiosClient.delete(`${url}/${ID}`)
+export const deleteManagementAction = async (id: number) => {
+  return await axiosClient.delete(`${url}/${id}`)
 }

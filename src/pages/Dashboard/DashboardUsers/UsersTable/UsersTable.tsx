@@ -35,7 +35,7 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts }) => {
   const [idDeletedUser, setIdDeletedUser] = useState(0)
 
   const { visible: visibleModalUser, showModal: showModalUser, hideModal: hideModalUser } = useModal()
-  const { visible: VisibleDeleteUser, showModal: showDeleteUser, hideModal: hideDeleteUser } = useModal()
+  const { visible: visibleDeleteUser, showModal: showDeleteUser, hideModal: hideDeleteUser } = useModal()
 
   const handleClickEditUser = (id: number) => {
     setIdUser(id)
@@ -76,6 +76,7 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts }) => {
 
   useEffect(() => {
     refetch()
+    // eslint-disable-next-line
   }, [])
 
   return (
@@ -136,7 +137,7 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts }) => {
 
       <UsersModal visible={visibleModalUser} onClose={onCloseUser} idUser={idUser} isEdit />
 
-      <DeleteUsersModal visible={VisibleDeleteUser} onClose={onCloseDeleteUser} idUser={idDeletedUser} />
+      <DeleteUsersModal visible={visibleDeleteUser} onClose={onCloseDeleteUser} idUser={idDeletedUser} />
     </Container>
   )
 }
