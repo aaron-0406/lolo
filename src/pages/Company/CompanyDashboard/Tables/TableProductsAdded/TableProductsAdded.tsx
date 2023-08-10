@@ -9,11 +9,11 @@ import { ProductTypeName } from '../../../../../shared/types/product.type'
 import Button from '../../../../../ui/Button'
 import Container from '../../../../../ui/Container'
 import notification from '../../../../../ui/notification'
-import Table from '../../../../../ui/Tables/Table'
+import Table from '../../../../../ui/Table'
 import Actions from '../../Dashboard/Actions'
 import { Columns } from './utils/columns'
-import EmptyStateCell from '../../../../../ui/Tables/Table/EmptyStateCell'
-import BodyCell from '../../../../../ui/Tables/Table/BodyCell'
+import EmptyStateCell from '../../../../../ui/Table/EmptyStateCell'
+import BodyCell from '../../../../../ui/Table/BodyCell'
 
 const TableProductsAdded = ({ globalLoad }: Props) => {
   const { watch, setValue } = useFormContext<DashFormType>()

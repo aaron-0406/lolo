@@ -7,9 +7,9 @@ import { ClientType } from '../../../../../shared/types/client.type'
 import { Props } from '../Props.type'
 import { deleteClientsDash } from '../../../../../shared/services/dashboard.service'
 import Container from '../../../../../ui/Container'
-import Table from '../../../../../ui/Tables/Table'
-import BodyCell from '../../../../../ui/Tables/Table/BodyCell'
-import EmptyStateCell from '../../../../../ui/Tables/Table/EmptyStateCell'
+import Table from '../../../../../ui/Table'
+import BodyCell from '../../../../../ui/Table/BodyCell'
+import EmptyStateCell from '../../../../../ui/Table/EmptyStateCell'
 import Button from '../../../../../ui/Button'
 import Actions from '../../Dashboard/Actions'
 import { useLoloContext } from '../../../../../shared/contexts/LoloProvider'
@@ -90,7 +90,7 @@ const TableClientDeleted = ({ globalLoad }: Props) => {
       return null
     })
   }
-  
+
   useEffect(() => {
     setclients(watch('clientsDeleted'))
   }, [globalLoad, watch])

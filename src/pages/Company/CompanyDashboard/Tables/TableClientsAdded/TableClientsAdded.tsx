@@ -10,9 +10,9 @@ import { Columns } from './utils/colums'
 import Button from '../../../../../ui/Button'
 import Container from '../../../../../ui/Container'
 import notification from '../../../../../ui/notification'
-import Table from '../../../../../ui/Tables/Table'
-import BodyCell from '../../../../../ui/Tables/Table/BodyCell'
-import EmptyStateCell from '../../../../../ui/Tables/Table/EmptyStateCell'
+import Table from '../../../../../ui/Table'
+import BodyCell from '../../../../../ui/Table/BodyCell'
+import EmptyStateCell from '../../../../../ui/Table/EmptyStateCell'
 import Actions from '../../Dashboard/Actions'
 
 const TableClientsAdded = ({ globalLoad }: Props) => {

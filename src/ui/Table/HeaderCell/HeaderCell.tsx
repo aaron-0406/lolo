@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import styled, { css } from 'styled-components'
 import type CSS from 'csstype'
-import Text from '../../../Text'
-import Container from '../../../Container'
-import Icon from '../../../Icon'
-import DropdownList from '../../../DropdownList'
-import { SelectItem } from '../../../Select/interfaces'
+import Text from '../../Text'
+import Container from '../../Container'
+import Icon from '../../Icon'
+import DropdownList from '../../DropdownList'
+import { SelectItem } from '../../Select/interfaces'
 
 type HeaderCellProps = {
   width?: string

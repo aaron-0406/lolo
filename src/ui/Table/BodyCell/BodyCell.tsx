@@ -1,7 +1,7 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
 import type CSS from 'csstype'
-import Text from '../../../Text'
+import Text from '../../Text'
 
 type BodyCellProps = {
   textAlign?: CSS.Property.TextAlign

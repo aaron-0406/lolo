@@ -5,9 +5,9 @@ import { Columns } from './utils/columns'
 import { ProductType } from '../../../../../shared/types/product.type'
 import { Props } from '../Props.type'
 import Container from '../../../../../ui/Container'
-import Table from '../../../../../ui/Tables/Table'
-import BodyCell from '../../../../../ui/Tables/Table/BodyCell'
-import EmptyStateCell from '../../../../../ui/Tables/Table/EmptyStateCell'
+import Table from '../../../../../ui/Table'
+import BodyCell from '../../../../../ui/Table/BodyCell'
+import EmptyStateCell from '../../../../../ui/Table/EmptyStateCell'
 
 const TableProductCastigo = ({ globalLoad }: Props) => {
   const { watch } = useFormContext<DashFormType>()
