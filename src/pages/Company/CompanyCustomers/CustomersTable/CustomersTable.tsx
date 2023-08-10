@@ -162,7 +162,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
   const { refetch: refetchFuncionarios } = useQuery(
     'query-get-all-funcionarios',
     async () => {
-      return await getAllFuncionariosByCHB(selectedBank.idCHB)
+      return await getAllFuncionariosByCHB(parseInt(selectedBank.idCHB))
     },
     {
       enabled: !!selectedBank.idCHB.length,
