@@ -10,7 +10,7 @@ import Table from '../../../../ui/Table'
 import EmptyStateCell from '../../../../ui/Table/EmptyStateCell'
 import BodyCell from '../../../../ui/Table/BodyCell'
 import Button from '../../../../ui/Button'
-import FuncionariosModal from '../Modals/FuncionariosModal'
+// import FuncionariosModal from '../Modals/FuncionariosModal'
 import { funcionariosColumns } from './utils/columns'
 import moment from 'moment'
 // import DeleteFuncionariosModal from '../Modals/DeleteFuncionariosModal'
@@ -123,13 +123,13 @@ const FuncionariosTable: FC<FuncionariosTableProps> = ({ opts, setOpts, selected
           })}
       </Table>
 
-      <FuncionariosModal
+      {/* <FuncionariosModal
         visible={visibleModalFuncionario}
         onClose={onCloseModal}
         idFuncionario={idFuncionario}
         chb={chb}
         isEdit
-      />
+      /> */}
       {/* <DeleteFuncionariosModal
         visible={visibleDeleteFuncionario}
         onClose={onCloseDeleteFuncionario}

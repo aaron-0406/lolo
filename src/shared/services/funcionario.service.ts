@@ -17,11 +17,11 @@ export const getAllFuncionariosByID = async (id: number) => {
   return await axiosClient.get(`${url}/${id}`)
 }
 
-export const createFuncionario = async (funcionario: Omit<FuncionarioType, 'id' | 'createdAt'>) => {
+export const createFuncionario = async (funcionario: Omit<FuncionarioType, 'id'>) => {
   return await axiosClient.post(`${url}/`, funcionario)
 }
 
-export const editFuncionarioById = async (id: number, funcionario: Omit<FuncionarioType, 'id' | 'createdAt'>) => {
+export const editFuncionarioById = async (id: number, funcionario: Omit<FuncionarioType, 'id'>) => {
   return await axiosClient.put(`${url}/${id}`, funcionario)
 }
 
