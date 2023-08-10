@@ -161,6 +161,7 @@ const UsersModal = ({ visible, onClose, idUser = 0, isEdit = false }: UsersModal
     if (idUser !== 0) {
       refetchGetUserByUserId()
     }
+    // eslint-disable-next-line
   }, [idUser])
 
   return (

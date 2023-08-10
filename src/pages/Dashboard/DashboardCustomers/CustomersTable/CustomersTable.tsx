@@ -123,6 +123,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
 
   useEffect(() => {
     refetch()
+    // eslint-disable-next-line
   }, [])
 
   return (
