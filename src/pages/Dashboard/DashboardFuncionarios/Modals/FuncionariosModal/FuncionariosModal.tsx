@@ -27,7 +27,7 @@ const defaultValuesFuncionarios: Omit<FuncionarioType, ''> = {
   id: 0,
   name: '',
   createdAt: new Date(),
-  bankId: 0,
+  customerHasBankId: 0,
 }
 
 const FuncionariosModal = ({ visible, onClose, isEdit = false, idFuncionario = 0, chb }: FuncionariosModalProps) => {
@@ -58,7 +58,7 @@ const FuncionariosModal = ({ visible, onClose, isEdit = false, idFuncionario = 0
   >(
     async () => {
       const { id, ...restClient } = getValues()
-      return await createFuncionario({ ...restClient, bankId: chb })
+      return await createFuncionario({ ...restClient, customerHasBankId: chb })
     },
     {
       onSuccess: (result) => {
@@ -88,7 +88,7 @@ const FuncionariosModal = ({ visible, onClose, isEdit = false, idFuncionario = 0
   >(
     async () => {
       const { id, ...restClient } = getValues()
-      return await editFuncionarioById(id, { ...restClient, bankId: chb })
+      return await editFuncionarioById(id, { ...restClient, customerHasBankId: chb })
     },
     {
       onSuccess: (result) => {
@@ -122,7 +122,7 @@ const FuncionariosModal = ({ visible, onClose, isEdit = false, idFuncionario = 0
         if (!!idFuncionario) {
           setValue('id', data.id)
           setValue('name', data.name)
-          setValue('bankId', data.bankId)
+          setValue('customerHasBankId', data.customerHasBankId)
         } else {
           reset(defaultValuesFuncionarios)
         }
@@ -148,7 +148,7 @@ const FuncionariosModal = ({ visible, onClose, isEdit = false, idFuncionario = 0
     if (!!idFuncionario) {
       refetchGetFuncionarioById()
     }
-  }, [idFuncionario])
+  }, [idFuncionario, refetchGetFuncionarioById])
 
   return (
     <FormProvider {...formMethods}>

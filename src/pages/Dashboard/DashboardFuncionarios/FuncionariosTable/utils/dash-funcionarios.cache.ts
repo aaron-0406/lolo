@@ -8,7 +8,7 @@ type QueryDataType = AxiosResponse<FuncionarioType[]> | undefined
 
 const dashFuncionariosCache = (queryClient: QueryClient) => {
   const createFuncionarioCache = (data: FuncionarioType) => {
-    queryClient.setQueryData<QueryDataType>([KEY_DASH_FUNCIONARIOS_CACHE, data.bankId], (old) => {
+    queryClient.setQueryData<QueryDataType>([KEY_DASH_FUNCIONARIOS_CACHE, data.customerHasBankId], (old) => {
       if (old) {
         return { ...old, data: [...old.data, data] }
       }
@@ -16,7 +16,7 @@ const dashFuncionariosCache = (queryClient: QueryClient) => {
   }
 
   const editFuncionarioCache = (data: FuncionarioType) => {
-    queryClient.setQueryData<QueryDataType>([KEY_DASH_FUNCIONARIOS_CACHE, data.bankId], (old) => {
+    queryClient.setQueryData<QueryDataType>([KEY_DASH_FUNCIONARIOS_CACHE, data.customerHasBankId], (old) => {
       if (old) {
         const dataUpdated = old.data.map((funcionario: FuncionarioType) => {
           if (funcionario.id === data.id) {
