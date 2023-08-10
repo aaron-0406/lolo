@@ -13,7 +13,7 @@ import Button from '../../../../ui/Button'
 import FuncionariosModal from '../Modals/FuncionariosModal'
 import { funcionariosColumns } from './utils/columns'
 import moment from 'moment'
-// import DeleteFuncionariosModal from '../Modals/DeleteFuncionariosModal'
+import DeleteFuncionariosModal from '../Modals/DeleteFuncionariosModal'
 import { KEY_DASH_FUNCIONARIOS_CACHE } from './utils/dash-funcionarios.cache'
 
 type FuncionariosTableProps = {
@@ -88,10 +88,10 @@ const FuncionariosTable: FC<FuncionariosTableProps> = ({ opts, setOpts, selected
         }
       >
         {!!funcionarios?.length &&
-          funcionarios.map((record: FuncionarioType) => {
+          funcionarios.map((record: FuncionarioType, key) => {
             return (
               <tr className="styled-data-table-row" key={record.id}>
-                <BodyCell textAlign="center">{`${record.id || ''}`}</BodyCell>
+                <BodyCell textAlign="center">{`${key + 1 || ''}`}</BodyCell>
                 <BodyCell textAlign="center">{`${record.name || ''}`}</BodyCell>
                 <BodyCell textAlign="center">{`${moment(record.createdAt).format('DD-MM-YYYY') || ''}`}</BodyCell>
                 <BodyCell textAlign="center">
@@ -130,12 +130,12 @@ const FuncionariosTable: FC<FuncionariosTableProps> = ({ opts, setOpts, selected
         chb={chb}
         isEdit
       />
-      {/* <DeleteFuncionariosModal
+      <DeleteFuncionariosModal
         visible={visibleDeleteFuncionario}
         onClose={onCloseDeleteFuncionario}
         chb={chb}
         idAction={idDeletedFuncionario}
-      /> */}
+      />
     </Container>
   )
 }

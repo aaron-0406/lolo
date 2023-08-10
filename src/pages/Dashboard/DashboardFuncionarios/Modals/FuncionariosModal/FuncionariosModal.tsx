@@ -12,7 +12,7 @@ import notification from '../../../../../ui/notification'
 import Modal from '../../../../../ui/Modal'
 import Container from '../../../../../ui/Container'
 import Button from '../../../../../ui/Button'
-import FuncionarioInfoForm from './FuncionarioInfoForm'
+import FuncionarioInfoForm from './FuncionarioInfoForm/FuncionarioInfoForm'
 import dashFuncionariosCache from '../../FuncionariosTable/utils/dash-funcionarios.cache'
 import { AxiosResponse } from 'axios'
 
