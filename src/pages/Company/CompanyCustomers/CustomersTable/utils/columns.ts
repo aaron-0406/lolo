@@ -1,4 +1,4 @@
-import { ColumProps } from '../../../../../ui/Tables/Table/Table'
+import { ColumProps } from '../../../../../ui/Table/Table'
 
 export const customersColumns: ColumProps[] = [
   {
