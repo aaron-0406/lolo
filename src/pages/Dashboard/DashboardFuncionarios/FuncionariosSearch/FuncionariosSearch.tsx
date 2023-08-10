@@ -10,9 +10,9 @@ import { Opts } from '../../../../ui/Pagination/interfaces'
 import useModal from '../../../../shared/hooks/useModal'
 import { useMediaQuery } from '../../../../shared/hooks/useMediaQuery'
 import { device } from '../../../../shared/breakpoints/reponsive'
-// import { useQueryClient } from 'react-query'
-// import dashFuncionariosCache from '../FuncionariosTable/utils/dash-funcionarios.cache'
-// import FuncionariosModal from '../Modals/FuncionariosModal'
+import { useQueryClient } from 'react-query'
+import dashFuncionariosCache from '../FuncionariosTable/utils/dash-funcionarios.cache'
+import FuncionariosModal from '../Modals/FuncionariosModal'
 
 type FuncionariosSearchProps = {
   opts: Opts
@@ -25,8 +25,8 @@ const FuncionariosSearch: FC<FuncionariosSearchProps> = ({ opts, setOpts, select
     dashCustomer: { selectedCustomer },
   } = useDashContext()
 
-  // const queryClient = useQueryClient()
-  // const { onRefetchQueryCache } = dashFuncionariosCache(queryClient)
+  const queryClient = useQueryClient()
+  const { onRefetchQueryCache } = dashFuncionariosCache(queryClient)
 
   const greaterThanMobile = useMediaQuery(device.tabletS)
   const { visible: visibleModalAdd, showModal: showModalAdd, hideModal: hideModalAdd } = useModal()
@@ -40,21 +40,21 @@ const FuncionariosSearch: FC<FuncionariosSearchProps> = ({ opts, setOpts, select
 
   const onChangeBank = (key: string) => {
     setChb(parseInt(key))
-    // onRefetchQueryCache(parseInt(key))
+    onRefetchQueryCache(parseInt(key))
   }
 
   const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
     if (value === '') {
       setOpts({ ...opts, filter: '', page: 1 })
-      // onRefetchQueryCache(chb)
+      onRefetchQueryCache(chb)
       return
     }
 
     if (value.length < 3) return
 
     setOpts({ ...opts, filter: value.trim(), page: 1 })
-    // onRefetchQueryCache(chb)
+    onRefetchQueryCache(chb)
   }
 
   const onShowModal = () => {
@@ -84,7 +84,7 @@ const FuncionariosSearch: FC<FuncionariosSearchProps> = ({ opts, setOpts, select
 
       <Button shape="round" leadingIcon="ri-add-fill" size="small" onClick={onShowModal} disabled={!chb} />
 
-      {/* <FuncionariosModal visible={visibleModalAdd} onClose={onCloseModal} chb={chb} /> */}
+      <FuncionariosModal visible={visibleModalAdd} onClose={onCloseModal} chb={chb} />
     </Container>
   )
 }
