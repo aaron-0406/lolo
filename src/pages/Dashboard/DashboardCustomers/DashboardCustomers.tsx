@@ -5,12 +5,7 @@ import Container from '../../../ui/Container'
 import { Opts } from '../../../ui/Pagination/interfaces'
 
 const DashboardCustomers = () => {
-  const [loading, setLoading] = useState<boolean>(false)
   const [opts, setOpts] = useState<Opts>({ filter: '', limit: 50, page: 1 })
-
-  const setLoadingGlobal = (state: boolean) => {
-    setLoading(state)
-  }
 
   return (
     <Container
@@ -22,8 +17,8 @@ const DashboardCustomers = () => {
       justifyContent="center"
       gap="20px"
     >
-      <CustomersSearch opts={opts} setOpts={setOpts} setLoadingGlobal={setLoadingGlobal} />
-      <CustomersTable opts={opts} setOpts={setOpts} load={loading} setLoadingGlobal={setLoadingGlobal} />
+      <CustomersSearch opts={opts} setOpts={setOpts} />
+      <CustomersTable opts={opts} setOpts={setOpts} />
     </Container>
   )
 }

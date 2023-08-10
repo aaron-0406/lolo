@@ -1,23 +1,26 @@
-import { useState, useEffect } from 'react'
-import styled, { css } from 'styled-components'
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect } from 'react'
 import { Controller } from 'react-hook-form'
 import { FormProvider, useForm } from 'react-hook-form'
-import { ModalCustomersResolver } from './ModalCustomers.yup'
-import { useMutation, useQuery } from 'react-query'
-import AddCustomerInfo from './AddCustomersInfo'
-import { createClient, editCustomerById, getCustomerByUrl } from '../../../../shared/services/customer.service'
-import { CustomerType } from '../../../../shared/types/customer.type'
-import Container from '../../../../ui/Container'
-import Modal from '../../../../ui/Modal'
-import notification from '../../../../ui/notification'
-import Button from '../../../../ui/Button'
-import Checkbox from '../../../../ui/Checkbox'
-import Label from '../../../../ui/Label'
+import { ModalCustomersResolver } from './CustomersModal.yup'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
+import CustomerInfoForm from './CustomerInfoForm'
+import { createClient, editCustomerById, getCustomerByUrl } from '../../../../../shared/services/customer.service'
+import { CustomerType } from '../../../../../shared/types/customer.type'
+import Container from '../../../../../ui/Container'
+import Modal from '../../../../../ui/Modal'
+import notification from '../../../../../ui/notification'
+import Button from '../../../../../ui/Button'
+import Checkbox from '../../../../../ui/Checkbox'
+import Label from '../../../../../ui/Label'
+import dashCustomersCache from '../../CustomersTable/utils/dash-clientes.cache'
+import { AxiosResponse } from 'axios'
 
-type PModalAddCustomers = {
+type CustomersModalProps = {
   visible: boolean
   onClose: () => void
-  edits?: { edit: boolean; url: string }
+  isEdit?: boolean
+  url?: string
 }
 
 const defaultValuesCustomer: Omit<CustomerType, 'customerBanks' | 'createdAt'> = {
@@ -29,7 +32,15 @@ const defaultValuesCustomer: Omit<CustomerType, 'customerBanks' | 'createdAt'> =
   state: true,
 }
 
-const ModalAddCustomers = ({ visible, onClose, edits = { edit: false, url: '' } }: PModalAddCustomers) => {
+const CustomersModal = ({ visible, onClose, isEdit = false, url = '' }: CustomersModalProps) => {
+  const queryClient = useQueryClient()
+  const {
+    actions: { createCustomerCache, editCustomerCache },
+    onMutateCache,
+    onSettledCache,
+    onErrorCache,
+  } = dashCustomersCache(queryClient)
+
   const formMethods = useForm<CustomerType>({
     resolver: ModalCustomersResolver,
     mode: 'all',
@@ -44,19 +55,25 @@ const ModalAddCustomers = ({ visible, onClose, edits = { edit: false, url: '' } 
     formState: { isValid },
   } = formMethods
 
-  const [urlEdit, setUrlEdit] = useState('')
-
-  const { isLoading: loadingCreateCustomer, mutate: createCustomer } = useMutation<any, Error>(
+  const { isLoading: loadingCreateCustomer, mutate: createCustomer } = useMutation<AxiosResponse<CustomerType>, Error>(
     async () => {
       const { id, ...restClient } = getValues()
       return await createClient(restClient)
     },
     {
-      onSuccess: (data) => {
-        setValue('id', data.data.id)
+      onSuccess: (result) => {
+        createCustomerCache(result.data)
         notification({ type: 'success', message: 'Cliente creado' })
+        handleClickCloseModal()
       },
-      onError: (error: any) => {
+      onMutate: () => {
+        onMutateCache()
+      },
+      onSettled: () => {
+        onSettledCache()
+      },
+      onError: (error: any, _, context: any) => {
+        onErrorCache(context)
         notification({
           type: 'error',
           message: error.response.data.message,
@@ -65,17 +82,25 @@ const ModalAddCustomers = ({ visible, onClose, edits = { edit: false, url: '' } 
     }
   )
 
-  const { isLoading: loadingEditCustomer, mutate: EditCustomer } = useMutation<any, Error>(
+  const { isLoading: loadingEditCustomer, mutate: editCustomer } = useMutation<AxiosResponse<CustomerType>, Error>(
     async () => {
       const { id, customerBanks, createdAt, state, ...restClient } = getValues()
-      let ID = getValues('id')
-      return await editCustomerById(ID, restClient)
+      return await editCustomerById(id, restClient)
     },
     {
-      onSuccess: () => {
+      onSuccess: (result) => {
+        editCustomerCache(result.data)
         notification({ type: 'success', message: 'Cliente editado' })
+        onClose()
       },
-      onError: (error: any) => {
+      onMutate: () => {
+        onMutateCache()
+      },
+      onSettled: () => {
+        onSettledCache()
+      },
+      onError: (error: any, _, context: any) => {
+        onErrorCache(context)
         notification({
           type: 'error',
           message: error.response.data.message,
@@ -84,15 +109,14 @@ const ModalAddCustomers = ({ visible, onClose, edits = { edit: false, url: '' } 
     }
   )
 
-  const { refetch: refetchEdit } = useQuery(
+  const { refetch: refetchGetCustomerByURL } = useQuery(
     'get-customer-by-url',
     async () => {
-      console.log('paint')
-      return getCustomerByUrl(urlEdit)
+      return getCustomerByUrl(url)
     },
     {
       onSuccess: ({ data }) => {
-        if (urlEdit !== '') {
+        if (url !== '') {
           setValue('companyName', data.companyName)
           setValue('description', data.description)
           setValue('ruc', data.ruc)
@@ -102,17 +126,16 @@ const ModalAddCustomers = ({ visible, onClose, edits = { edit: false, url: '' } 
           reset(defaultValuesCustomer)
         }
       },
+      enabled: false,
     }
   )
 
   const onAddCustomer = () => {
     createCustomer()
-    onClose()
   }
 
   const onEditCustomer = () => {
-    EditCustomer()
-    setUrlEdit('')
+    editCustomer()
   }
 
   const handleClickCloseModal = () => {
@@ -121,12 +144,10 @@ const ModalAddCustomers = ({ visible, onClose, edits = { edit: false, url: '' } 
   }
 
   useEffect(() => {
-    setUrlEdit(edits?.url)
-  }, [edits?.url])
-
-  useEffect(() => {
-    refetchEdit()
-  }, [urlEdit])
+    if (url !== '') {
+      refetchGetCustomerByURL()
+    }
+  }, [url])
 
   return (
     <FormProvider {...formMethods}>
@@ -134,7 +155,7 @@ const ModalAddCustomers = ({ visible, onClose, edits = { edit: false, url: '' } 
         visible={visible}
         onClose={handleClickCloseModal}
         id="modal-files"
-        title={edits?.edit ? 'Editar Cliente' : 'Agregar Cliente'}
+        title={isEdit ? 'Editar Cliente' : 'Agregar Cliente'}
         contentOverflowY="auto"
       >
         <Container
@@ -147,8 +168,8 @@ const ModalAddCustomers = ({ visible, onClose, edits = { edit: false, url: '' } 
           gap="20px"
         >
           <Container width="100%" display="flex" flexDirection="column" gap="10px" padding="20px">
-            <AddCustomerInfo />
-            <Container width="100%" display={edits?.edit ? 'none' : 'flex'} gap="10px">
+            <CustomerInfoForm />
+            <Container width="100%" display={isEdit ? 'none' : 'flex'} gap="10px">
               <Label label="Estado:" />
               <Controller
                 name="state"
@@ -165,39 +186,21 @@ const ModalAddCustomers = ({ visible, onClose, edits = { edit: false, url: '' } 
               />
             </Container>
           </Container>
-          <StyledContainerButton
-            width="100%"
-            height="75px"
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            gap="20px"
-          >
+          <Container width="100%" height="75px" display="flex" justifyContent="center" alignItems="center" gap="20px">
             <Button
               width="125px"
-              label={edits?.edit ? 'Editar' : 'Agregar'}
+              label={isEdit ? 'Editar' : 'Agregar'}
               shape="default"
               trailingIcon="ri-add-fill"
-              onClick={edits?.edit ? onEditCustomer : onAddCustomer}
+              onClick={isEdit ? onEditCustomer : onAddCustomer}
               loading={loadingCreateCustomer || loadingEditCustomer}
               disabled={!isValid}
             />
-          </StyledContainerButton>
+          </Container>
         </Container>
       </Modal>
     </FormProvider>
   )
 }
 
-export default ModalAddCustomers
-
-const StyledContainerButton = styled(Container)`
-  ${({ theme }) => css`
-    @media ${theme.device.tabletL} {
-      gap: 10px;
-    }
-    @media ${theme.device.desktopL} {
-      gap: 30px;
-    }
-  `}
-`
+export default CustomersModal

@@ -10,8 +10,9 @@ export default {
     root: '/dash',
     login: '/dash/login',
     clientes: '/dash/clientes',
-    gestiones: '/dash/gestiones',
+    usuarios: '/dash/usuarios',
     reportes: '/dash/reportes',
+    acciones: '/dash/acciones',
   },
   company: {
     root: (urlIdentifier = ':urlIdentifier') => `/${urlIdentifier}`,
@@ -19,6 +20,7 @@ export default {
     perfil: (urlIdentifier = ':urlIdentifier') => `/${urlIdentifier}/perfil`,
     clientes: (urlIdentifier = ':urlIdentifier') => `/${urlIdentifier}/clientes`,
     cobranza: (urlIdentifier = ':urlIdentifier') => `/${urlIdentifier}/cobranza`,
+    metas: (urlIdentifier = ':urlIdentifier') => `/${urlIdentifier}/metas`,
     document: (urlIdentifier = ':urlIdentifier') => `/${urlIdentifier}/document`,
   },
   companyDashboard: {

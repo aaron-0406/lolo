@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import styled, { css } from 'styled-components'
 import { useMediaQuery } from '../../../shared/hooks/useMediaQuery'
+import { useDashContext } from '../../../shared/contexts/DashProvider'
 import paths from '../../../shared/routes/paths'
 import storage from '../../../shared/utils/storage'
 import Container from '../../../ui/Container'
@@ -17,6 +18,14 @@ type MenuProps = {
 const MenuDash: React.FC<MenuProps> = ({ children }) => {
   const [toggleMenu, setToggleMenu] = useState(false)
 
+  const {
+    auth: { setAuthenticate },
+    dashCustomer: {
+      selectedCustomer: { urlIdentifier },
+    },
+    clearAll,
+  } = useDashContext()
+
   const greaterThanTabletL = useMediaQuery(device.tabletL)
   const items = getDashItems()
 
@@ -27,8 +36,9 @@ const MenuDash: React.FC<MenuProps> = ({ children }) => {
   }
 
   const logOut = () => {
+    clearAll()
     storage.clear()
-    // setAuthenticate(false)
+    setAuthenticate(false)
   }
 
   return (
@@ -39,14 +49,22 @@ const MenuDash: React.FC<MenuProps> = ({ children }) => {
         height="50px"
         display="flex"
         alignItems="center"
+        justifyContent="space-between"
         gap="35px"
         padding="15px"
       >
-        <Icon remixClass="ri-menu-line" size={30} onClick={onClickToggle} />
+        <Container display="flex" gap="35px">
+          <Icon remixClass="ri-menu-line" size={30} onClick={onClickToggle} />
 
-        <Text.Body size="l" weight="bold" ellipsis>
-          LOLO BANK
-        </Text.Body>
+          <Text.Body size="l" weight="bold" ellipsis>
+            LOLO BANK
+          </Text.Body>
+        </Container>
+        <Container>
+          <Text.Body size="m" weight="bold" color="Success5">
+            {urlIdentifier}
+          </Text.Body>
+        </Container>
       </Container>
 
       <Container width="100%" height="calc(100vh - 50px)" display="flex" flexDirection="row">
