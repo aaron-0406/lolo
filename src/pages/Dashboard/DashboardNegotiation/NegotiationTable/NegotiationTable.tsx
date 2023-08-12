@@ -16,7 +16,7 @@ type NegotiationTableType = {
   setOpts: Dispatch<Opts>
 }
 
-const NegotiationTable = ({ opts, setOpts}: NegotiationTableType) => {
+const NegotiationTable = ({ opts, setOpts }: NegotiationTableType) => {
   const [negotiations, setNegotiations] = useState<Array<NegotiationType>>([])
   const [negotiationCount, setNegotiationCount] = useState(0)
   const [isLoading, setIsLoading] = useState(false)
