@@ -1,4 +1,4 @@
-import { Dispatch, FC, useState, useEffect } from 'react'
+import { Dispatch, FC, useEffect, useState } from 'react'
 import moment from 'moment'
 import { useQuery } from 'react-query'
 import { getAllUsersByID } from '../../../../shared/services/customer-user.service'
@@ -6,24 +6,23 @@ import { CustomerUserType } from '../../../../shared/types/customer-user.type'
 import Container from '../../../../ui/Container'
 import Pagination from '../../../../ui/Pagination'
 import { Opts } from '../../../../ui/Pagination/interfaces'
-import Table from '../../../../ui/Tables/Table'
+import Table from '../../../../ui/Table'
 import { usersColumns } from './utils/columns'
-import EmptyStateCell from '../../../../ui/Tables/Table/EmptyStateCell'
-import BodyCell from '../../../../ui/Tables/Table/BodyCell'
+import EmptyStateCell from '../../../../ui/Table/EmptyStateCell'
+import BodyCell from '../../../../ui/Table/BodyCell'
 import Button from '../../../../ui/Button'
 import { useDashContext } from '../../../../shared/contexts/DashProvider'
 import UsersModal from '../Modals/UsersModal'
 import useModal from '../../../../shared/hooks/useModal'
 import DeleteUsersModal from '../Modals/DeleteUsersModal'
+import { KEY_DASH_USUARIOS_CACHE } from './utils/dash-usuarios.cache'
 
 type UsersTableProps = {
   opts: Opts
   setOpts: Dispatch<Opts>
-  loading: boolean
-  setLoadingGlobal: (state: boolean) => void
 }
 
-const UsersTable: FC<UsersTableProps> = ({ opts, setOpts, loading, setLoadingGlobal }) => {
+const UsersTable: FC<UsersTableProps> = ({ opts, setOpts }) => {
   const {
     dashCustomer: {
       selectedCustomer: { id: customerId },
@@ -36,7 +35,7 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts, loading, setLoadingGlo
   const [idDeletedUser, setIdDeletedUser] = useState(0)
 
   const { visible: visibleModalUser, showModal: showModalUser, hideModal: hideModalUser } = useModal()
-  const { visible: VisibleDeleteUser, showModal: showDeleteUser, hideModal: hideDeleteUser } = useModal()
+  const { visible: visibleDeleteUser, showModal: showDeleteUser, hideModal: hideDeleteUser } = useModal()
 
   const handleClickEditUser = (id: number) => {
     setIdUser(id)
@@ -54,12 +53,11 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts, loading, setLoadingGlo
   }
   const onCloseUser = () => {
     setIdUser(0)
-    setLoadingGlobal(false)
     hideModalUser()
   }
 
-  const { refetch } = useQuery(
-    'get-all-users-by-id',
+  const { isLoading, refetch } = useQuery(
+    KEY_DASH_USUARIOS_CACHE,
     async () => {
       return await getAllUsersByID(customerId)
     },
@@ -72,15 +70,14 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts, loading, setLoadingGlo
         }
         setUsers(data)
         setUsersCount(data.length)
-        setLoadingGlobal(false)
       },
-      enabled: false,
     }
   )
 
   useEffect(() => {
-    if (loading) refetch()
-  }, [refetch, loading, opts])
+    refetch()
+    // eslint-disable-next-line
+  }, [])
 
   return (
     <Container width="100%" height="calc(100% - 112px)" padding="20px">
@@ -88,7 +85,7 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts, loading, setLoadingGlo
       <Table
         top="260px"
         columns={usersColumns}
-        loading={loading}
+        loading={isLoading}
         isArrayEmpty={!users.length}
         emptyState={
           <EmptyStateCell colSpan={usersColumns.length}>
@@ -138,20 +135,9 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts, loading, setLoadingGlo
           })}
       </Table>
 
-      <UsersModal
-        visible={visibleModalUser}
-        onClose={onCloseUser}
-        setLoadingGlobal={setLoadingGlobal}
-        idUser={idUser}
-        isEdit
-      />
+      <UsersModal visible={visibleModalUser} onClose={onCloseUser} idUser={idUser} isEdit />
 
-      <DeleteUsersModal
-        visible={VisibleDeleteUser}
-        onClose={onCloseDeleteUser}
-        setLoadingGlobal={setLoadingGlobal}
-        idUser={idDeletedUser}
-      />
+      <DeleteUsersModal visible={visibleDeleteUser} onClose={onCloseDeleteUser} idUser={idDeletedUser} />
     </Container>
   )
 }

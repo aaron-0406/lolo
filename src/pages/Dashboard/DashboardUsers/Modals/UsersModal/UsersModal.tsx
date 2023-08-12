@@ -1,8 +1,7 @@
 import { useEffect } from 'react'
-import { Controller } from 'react-hook-form'
-import { FormProvider, useForm } from 'react-hook-form'
+import { FormProvider, useForm, Controller } from 'react-hook-form'
 import { ModalUsersResolver } from './UsersModal.yup'
-import { useMutation, useQuery } from 'react-query'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
 import UserInfoForm from './UserInfoForm'
 import { CustomerUserType } from '../../../../../shared/types/customer-user.type'
 import { createUser, editUserById, getUserByUserId } from '../../../../../shared/services/customer-user.service'
@@ -13,12 +12,13 @@ import Button from '../../../../../ui/Button'
 import Checkbox from '../../../../../ui/Checkbox'
 import Label from '../../../../../ui/Label'
 import { useDashContext } from '../../../../../shared/contexts/DashProvider'
+import dashUsuariosCache from '../../UsersTable/utils/dash-usuarios.cache'
+import { AxiosResponse } from 'axios'
 
 type UsersModalProps = {
   visible: boolean
   onClose: () => void
   isEdit?: boolean
-  setLoadingGlobal: (state: boolean) => void
   idUser?: number
 }
 
@@ -34,12 +34,20 @@ const defaultValuesCustomerUser: Omit<CustomerUserType, 'customerId' | 'createdA
   state: true,
 }
 
-const UsersModal = ({ visible, onClose, idUser = 0, isEdit = false, setLoadingGlobal }: UsersModalProps) => {
+const UsersModal = ({ visible, onClose, idUser = 0, isEdit = false }: UsersModalProps) => {
   const {
     dashCustomer: {
       selectedCustomer: { id: customerId },
     },
   } = useDashContext()
+
+  const queryClient = useQueryClient()
+  const {
+    actions: { createUserCache, editUserCache },
+    onMutateCache,
+    onSettledCache,
+    onErrorCache,
+  } = dashUsuariosCache(queryClient)
 
   const formMethods = useForm<CustomerUserType>({
     resolver: ModalUsersResolver,
@@ -55,18 +63,28 @@ const UsersModal = ({ visible, onClose, idUser = 0, isEdit = false, setLoadingGl
     formState: { isValid },
   } = formMethods
 
-  const { isLoading: loadingCreateUser, mutate: createCustomerUser } = useMutation<any, Error>(
+  const { isLoading: loadingCreateUser, mutate: createCustomerUser } = useMutation<
+    AxiosResponse<CustomerUserType>,
+    Error
+  >(
     async () => {
       const { id, ...restUser } = getValues()
       return await createUser({ ...restUser, customerId })
     },
     {
-      onSuccess: () => {
+      onSuccess: (result) => {
+        createUserCache(result.data)
         notification({ type: 'success', message: 'Usuario creado' })
-        setLoadingGlobal(true)
         handleClickCloseModal()
       },
-      onError: (error: any) => {
+      onMutate: () => {
+        onMutateCache()
+      },
+      onSettled: () => {
+        onSettledCache()
+      },
+      onError: (error: any, _, context: any) => {
+        onErrorCache(context)
         notification({
           type: 'error',
           message: error.response.data.message,
@@ -75,18 +93,25 @@ const UsersModal = ({ visible, onClose, idUser = 0, isEdit = false, setLoadingGl
     }
   )
 
-  const { isLoading: loadingEditUser, mutate: editUser } = useMutation<any, Error>(
+  const { isLoading: loadingEditUser, mutate: editUser } = useMutation<AxiosResponse<CustomerUserType>, Error>(
     async () => {
       const { id, createdAt, password, email, customerId, ...restUser } = getValues()
       return await editUserById(id, restUser)
     },
     {
-      onSuccess: () => {
+      onSuccess: (result) => {
+        editUserCache(result.data)
         notification({ type: 'success', message: 'Usuario editado' })
-        setLoadingGlobal(true)
         onClose()
       },
-      onError: (error: any) => {
+      onMutate: () => {
+        onMutateCache()
+      },
+      onSettled: () => {
+        onSettledCache()
+      },
+      onError: (error: any, _, context: any) => {
+        onErrorCache(context)
         notification({
           type: 'error',
           message: error.response.data.message,
@@ -136,6 +161,7 @@ const UsersModal = ({ visible, onClose, idUser = 0, isEdit = false, setLoadingGl
     if (idUser !== 0) {
       refetchGetUserByUserId()
     }
+    // eslint-disable-next-line
   }, [idUser])
 
   return (

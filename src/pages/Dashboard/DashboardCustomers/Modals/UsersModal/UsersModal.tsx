@@ -9,9 +9,9 @@ import { useMediaQuery } from '../../../../../shared/hooks/useMediaQuery'
 import Container from '../../../../../ui/Container'
 import Modal from '../../../../../ui/Modal'
 import TextField from '../../../../../ui/fields/TextField'
-import Table from '../../../../../ui/Tables/Table'
-import BodyCell from '../../../../../ui/Tables/Table/BodyCell'
-import EmptyStateCell from '../../../../../ui/Tables/Table/EmptyStateCell'
+import Table from '../../../../../ui/Table'
+import BodyCell from '../../../../../ui/Table/BodyCell'
+import EmptyStateCell from '../../../../../ui/Table/EmptyStateCell'
 import Label from '../../../../../ui/Label'
 import { useDashContext } from '../../../../../shared/contexts/DashProvider'
 
@@ -63,7 +63,14 @@ const UsersModal = ({ visible, onClose }: CustomersModalProps) => {
   }, [refetch, load, filter, selectedCustomer.id])
 
   return (
-    <Modal size='large' visible={visible} onClose={handleClickCloseModal} id="modal-files" title="Usuarios" contentOverflowY="auto">
+    <Modal
+      size="large"
+      visible={visible}
+      onClose={handleClickCloseModal}
+      id="modal-files"
+      title="Usuarios"
+      contentOverflowY="auto"
+    >
       <Container width="100%" padding="20px" display="flex" flexDirection="column" gap="20px">
         <Container display="flex" justifyContent="space-between" gap="10px">
           <Container display={greaterThanMobile ? 'flex' : 'none'}>

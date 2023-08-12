@@ -1,70 +1,153 @@
-import React, { ReactNode } from 'react'
+import React from 'react'
 import styled, { css } from 'styled-components'
+import type CSS from 'csstype'
 import Container from '../Container'
+import HeaderCell from './HeaderCell'
+import { SelectItem } from '../Select/interfaces'
 
-type TableProps = {
-  rows: ReactNode[]
-  columns: ReactNode
-  count: number
+export type ColumProps = {
+  id: string
+  title: React.ReactNode
+  width?: string
+  justifyContent?: CSS.Property.JustifyContent
+  textTransform?: CSS.Property.TextTransform
+  isThereFilter?: boolean
 }
 
-const Table: React.FC<TableProps> = (props) => {
-  const { columns, rows, count } = props
+export type FilterOptionsProps = {
+  identifier: string
+  options: Array<SelectItem<any, any>>
+}
+
+type TableProps = {
+  top?: string
+  columns: Array<ColumProps>
+  filterOptions?: Array<FilterOptionsProps>
+  selectedFilterOptions?: Array<FilterOptionsProps>
+  onChangeFilterOptions?: (filterOption: FilterOptionsProps) => void
+  loading?: boolean
+  error?: boolean | undefined
+  leftSpace?: number
+  rightSpace?: number
+  isArrayEmpty?: boolean
+  emptyState?: React.ReactNode
+  children?: React.ReactNode
+  resetFilters?: boolean
+}
+
+const Table: React.FC<TableProps> = ({
+  columns,
+  filterOptions,
+  onChangeFilterOptions,
+  loading,
+  error,
+  children,
+  top,
+  rightSpace,
+  leftSpace,
+  emptyState,
+  isArrayEmpty = false,
+  resetFilters,
+}) => {
   return (
-    <StyledContainer width="100%" height="100%">
-      <StyledTable>
-        <StyledHead>{columns}</StyledHead>
-        <StyledBody>{count > 0 && rows}</StyledBody>
-      </StyledTable>
-    </StyledContainer>
+    <StyledContentTable id="main-layout-content-internal" top={top} leftSpace={leftSpace} rightSpace={rightSpace}>
+      <StyledOrderTable>
+        <thead className="table-header">
+          <tr>
+            {columns.map(({ justifyContent = 'left', textTransform, width, title, id, isThereFilter }, index) => {
+              const filterOption = filterOptions?.find((option) => option.identifier === id)
+              const options = filterOption?.options
+
+              return (
+                <HeaderCell
+                  key={index}
+                  isThereFilter={isThereFilter}
+                  width={width}
+                  justifyContent={justifyContent}
+                  textTransform={textTransform}
+                  options={options}
+                  onChangeFilterOptions={(options) => onChangeFilterOptions?.({ identifier: id, options })}
+                  resetFilters={resetFilters}
+                >
+                  {title}
+                </HeaderCell>
+              )
+            })}
+          </tr>
+        </thead>
+
+        <tbody className="table-body">
+          {!!loading && (
+            <tr>
+              <td colSpan={columns.length}>
+                <>Loading skeleton</>
+              </td>
+            </tr>
+          )}
+          {!error && !loading && children}
+          {!!error && !loading && (
+            <tr className="row-error">
+              <td colSpan={columns.length}>
+                {/* <RetryPage error={error} reload={errorRefetch} fullScreen /> */}
+                <>Error</>
+              </td>
+            </tr>
+          )}
+          {isArrayEmpty && !loading && emptyState}
+        </tbody>
+      </StyledOrderTable>
+    </StyledContentTable>
   )
 }
 
 export default Table
 
-const StyledContainer = styled(Container)`
-  overflow-y: auto;
-
+const StyledOrderTable = styled.table`
   ${({ theme }) => css`
-    border: 2px solid ${theme.colors.Neutral4};
+    width: 100%;
+    table-layout: auto;
 
-    ::-webkit-scrollbar-thumb {
-      background: ${theme.colors.Neutral5};
-      border-radius: 10px;
+    td {
+      padding-left: 16px;
+      padding-right: 16px;
+      height: 56px;
+      cursor: pointer;
     }
-    ::-webkit-scrollbar-thumb:hover {
-      background: ${theme.colors.Neutral4};
+
+    thead {
+      border-bottom: 1px solid ${theme.colors['Neutral3']};
     }
-    ::-webkit-scrollbar-track {
-      background-color: transparent;
+
+    th {
+      height: 56px;
+      cursor: pointer;
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: ${theme.colors['Neutral3']};
     }
-    ::-webkit-scrollbar {
-      width: 10px;
-      background-color: transparent;
+
+    tr:not([role='row-error']):not([role='row-empty']):hover {
+      background: ${theme.colors['Neutral2']};
     }
   `}
 `
 
-const StyledTable = styled.table`
-  ${({ theme }) => css`
-    min-width: 100%;
-    position: relative;
-    border-radius: 10px;
+const StyledContentTable = styled(Container)<{ top?: string; leftSpace?: number; rightSpace?: number }>`
+  ${({ top, leftSpace, rightSpace }) => css`
+    width: 100%;
+    overflow-x: auto;
     overflow-y: auto;
-    border-bottom-width: 0px;
-  `}
-`
+    height: ${top ? `calc(100vh - ${top})` : '0'};
 
-const StyledHead = styled.thead`
-  ${({ theme }) => css`
-    width: 100%;
-    position: sticky;
-    top: 0;
-    background-color: ${theme.colors.Primary5};
-  `}
-`
-const StyledBody = styled.tbody`
-  ${({ theme }) => css`
-    width: 100%;
+    th:last-child,
+    td:last-child {
+      padding-right: ${rightSpace ?? 16}px;
+    }
+
+    th:first-child,
+    td:first-child {
+      padding-left: ${leftSpace ?? 16}px;
+    }
   `}
 `

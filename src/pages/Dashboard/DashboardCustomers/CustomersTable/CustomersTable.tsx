@@ -1,33 +1,41 @@
 import { Dispatch, FC, useState, useEffect } from 'react'
 import moment from 'moment'
-import { useMutation, useQuery } from 'react-query'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { getCustomerAll, updateStateCustomer } from '../../../../shared/services/customer.service'
 import { CustomerType } from '../../../../shared/types/customer.type'
 import Container from '../../../../ui/Container'
 import Pagination from '../../../../ui/Pagination'
 import { Opts } from '../../../../ui/Pagination/interfaces'
-import Table from '../../../../ui/Tables/Table'
+import Table from '../../../../ui/Table'
 import { customersColumns } from './utils/columns'
-import EmptyStateCell from '../../../../ui/Tables/Table/EmptyStateCell'
-import BodyCell from '../../../../ui/Tables/Table/BodyCell'
+import EmptyStateCell from '../../../../ui/Table/EmptyStateCell'
+import BodyCell from '../../../../ui/Table/BodyCell'
 import Button from '../../../../ui/Button'
 import CustomerModal from '../Modals/CustomersModal'
 import useModal from '../../../../shared/hooks/useModal'
 import UsersModal from '../Modals/UsersModal/UsersModal'
 import { useDashContext } from '../../../../shared/contexts/DashProvider'
 import notification from '../../../../ui/notification'
+import dashCustomersCache, { KEY_DASH_CLIENTES_CACHE } from './utils/dash-clientes.cache'
+import { AxiosResponse } from 'axios'
 
 type CustomersTableProps = {
   opts: Opts
   setOpts: Dispatch<Opts>
-  loading: boolean
-  setLoadingGlobal: (state: boolean) => void
 }
 
-const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, loading, setLoadingGlobal }) => {
+const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
   const {
     dashCustomer: { setSelectedCustomer },
   } = useDashContext()
+
+  const queryClient = useQueryClient()
+  const {
+    actions: { editCustomerCache },
+    onMutateCache,
+    onSettledCache,
+    onErrorCache,
+  } = dashCustomersCache(queryClient)
 
   const [customers, setCustomers] = useState<Array<CustomerType>>([])
   const [urlEdit, setUrlEdit] = useState('')
@@ -63,27 +71,30 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, loading, setLo
     hideModalUser()
   }
 
-  const { mutate: editStateCustomer } = useMutation<any, Error, { customerId: number; state: boolean }>(
+  const { mutate: editStateCustomer } = useMutation<
+    AxiosResponse<CustomerType>,
+    Error,
+    { customerId: number; state: boolean }
+  >(
     async ({ customerId, state }) => {
       return await updateStateCustomer(customerId, !state)
     },
     {
-      onSuccess: (_, { customerId, state }) => {
+      onSuccess: (result, { state }) => {
         state
           ? notification({ type: 'success', message: 'Cliente inhabilitado' })
           : notification({ type: 'success', message: 'Cliente habilitado' })
 
-        setCustomers((prevState) => {
-          return prevState.map((prev) => {
-            if (prev.id === customerId) {
-              return { ...prev, state: !state }
-            }
-
-            return prev
-          })
-        })
+        editCustomerCache(result.data)
       },
-      onError: (error: any) => {
+      onMutate: () => {
+        onMutateCache()
+      },
+      onSettled: () => {
+        onSettledCache()
+      },
+      onError: (error: any, _, context: any) => {
+        onErrorCache(context)
         notification({
           type: 'error',
           message: error.response.data.message,
@@ -92,8 +103,8 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, loading, setLo
     }
   )
 
-  const { refetch } = useQuery(
-    'get-customer-all',
+  const { isLoading, refetch } = useQuery(
+    KEY_DASH_CLIENTES_CACHE,
     async () => {
       return await getCustomerAll()
     },
@@ -106,15 +117,14 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, loading, setLo
         }
         setCustomers(data)
         setCustomersCount(data.length)
-        setLoadingGlobal(false)
       },
-      enabled: false,
     }
   )
 
   useEffect(() => {
-    if (loading) refetch()
-  }, [refetch, loading, opts])
+    refetch()
+    // eslint-disable-next-line
+  }, [])
 
   return (
     <Container width="100%" height="calc(100% - 112px)" padding="20px">
@@ -122,7 +132,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, loading, setLo
       <Table
         top="260px"
         columns={customersColumns}
-        loading={loading}
+        loading={isLoading}
         isArrayEmpty={!customers.length}
         emptyState={
           <EmptyStateCell colSpan={customersColumns.length}>
@@ -187,13 +197,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts, loading, setLo
           })}
       </Table>
 
-      <CustomerModal
-        visible={visibleModalCustomer}
-        onClose={onCloseModal}
-        setLoadingGlobal={setLoadingGlobal}
-        url={urlEdit}
-        isEdit
-      />
+      <CustomerModal visible={visibleModalCustomer} onClose={onCloseModal} url={urlEdit} isEdit />
 
       {visibleModalUser && <UsersModal visible={visibleModalUser} onClose={onCloseUser} />}
     </Container>
