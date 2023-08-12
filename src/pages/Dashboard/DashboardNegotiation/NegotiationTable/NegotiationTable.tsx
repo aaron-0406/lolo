@@ -1,7 +1,7 @@
 import { Dispatch, useState, useEffect } from 'react'
 import { useQuery } from 'react-query'
 import moment from 'moment'
-import { getAllPage } from '../../../../shared/services/negotiation.service'
+import { getAll } from '../../../../shared/services/negotiation.service'
 import { NegotiationType } from '../../../../shared/types/negotiation.type'
 import Container from '../../../../ui/Container'
 import Pagination from '../../../../ui/Pagination'
@@ -10,6 +10,7 @@ import Table from '../../../../ui/Table'
 import EmptyStateCell from '../../../../ui/Table/EmptyStateCell'
 import BodyCell from '../../../../ui/Table/BodyCell'
 import { negotiationColumns } from './utils/columns'
+import { KEY_DASH_NEGOTIATION_CACHE } from './utils/dash-cobranza.cache'
 
 type NegotiationTableType = {
   opts: Opts
@@ -17,14 +18,14 @@ type NegotiationTableType = {
 }
 
 const NegotiationTable = ({ opts, setOpts }: NegotiationTableType) => {
+
   const [negotiations, setNegotiations] = useState<Array<NegotiationType>>([])
   const [negotiationCount, setNegotiationCount] = useState(0)
-  const [isLoading, setIsLoading] = useState(false)
 
-  const { refetch } = useQuery(
-    'get-all-page',
+  const { isLoading, refetch } = useQuery(
+    KEY_DASH_NEGOTIATION_CACHE,
     async () => {
-      return await getAllPage(opts.page, opts.limit)
+      return await getAll()
     },
     {
       onSuccess: ({ data }) => {
@@ -33,9 +34,8 @@ const NegotiationTable = ({ opts, setOpts }: NegotiationTableType) => {
             return filt.name.substring(0, opts.filter.length).toUpperCase() === opts.filter.toUpperCase()
           })
         }
-        setNegotiations(data.rta)
-        setNegotiationCount(data.quantity)
-        setIsLoading(false)
+        setNegotiations(data)
+        setNegotiationCount(data.length)
       },
       enabled: false,
     }
@@ -43,7 +43,8 @@ const NegotiationTable = ({ opts, setOpts }: NegotiationTableType) => {
 
   useEffect(() => {
     refetch()
-  }, [refetch, isLoading, opts])
+    // eslint-disable-next-line
+  }, [])
 
   return (
     <Container width="100%" height="calc(100% - 112px)" padding="20px">
