@@ -11,7 +11,7 @@ export const funcionariosColumns: ColumProps[] = [
     id: 'funcionarios.datatable.header.name',
     title: 'NOMBRE',
     width: '40%',
-    justifyContent: 'center',
+    justifyContent: 'left',
   },
   {
     id: 'funcionarios.datatable.header.date',
