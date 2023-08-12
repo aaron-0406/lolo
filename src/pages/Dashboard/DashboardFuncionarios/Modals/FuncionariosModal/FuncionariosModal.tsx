@@ -159,7 +159,7 @@ const FuncionariosModal = ({ visible, onClose, isEdit = false, idFuncionario = 0
         title={isEdit ? 'Editar Funcionario' : 'Agregar Funcionario'}
         contentOverflowY="auto"
         size="small"
-        minHeight="400px"
+        minHeight="180px"
         footer={
           <Container width="100%" height="75px" display="flex" justifyContent="end" alignItems="center" gap="20px">
             <Button
@@ -176,7 +176,7 @@ const FuncionariosModal = ({ visible, onClose, isEdit = false, idFuncionario = 0
       >
         <Container
           width="100%"
-          height="260px"
+          height="180px"
           display="flex"
           justify-content="center"
           flexDirection="column"

@@ -25,7 +25,6 @@ type FuncionariosTableProps = {
 const FuncionariosTable: FC<FuncionariosTableProps> = ({ opts, setOpts, selectedBank: { chb } }) => {
   const [funcionarios, setFuncionarios] = useState<Array<FuncionarioType>>([])
   const [idFuncionario, setIdFuncionario] = useState<number>(0)
-  const [funcionariosCount, setFuncionariosCount] = useState<number>(0)
   const [idDeletedFuncionario, setIdDeletedFuncionario] = useState<number>(0)
 
   const {
@@ -68,14 +67,13 @@ const FuncionariosTable: FC<FuncionariosTableProps> = ({ opts, setOpts, selected
           })
         }
         setFuncionarios(data)
-        setFuncionariosCount(data.length)
       },
     }
   )
 
   return (
     <Container width="100%" height="calc(100% - 112px)" padding="20px">
-      <Pagination count={funcionariosCount} opts={opts} setOpts={setOpts} />
+      <Pagination count={funcionarios.length} opts={opts} setOpts={setOpts} />
       <Table
         top="260px"
         columns={funcionariosColumns}
@@ -92,7 +90,7 @@ const FuncionariosTable: FC<FuncionariosTableProps> = ({ opts, setOpts, selected
             return (
               <tr className="styled-data-table-row" key={record.id}>
                 <BodyCell textAlign="center">{`${key + 1 || ''}`}</BodyCell>
-                <BodyCell textAlign="center">{`${record.name || ''}`}</BodyCell>
+                <BodyCell textAlign="left">{`${record.name || ''}`}</BodyCell>
                 <BodyCell textAlign="center">{`${moment(record.createdAt).format('DD-MM-YYYY') || ''}`}</BodyCell>
                 <BodyCell textAlign="center">
                   {
@@ -110,10 +108,10 @@ const FuncionariosTable: FC<FuncionariosTableProps> = ({ opts, setOpts, selected
                         onClick={() => {
                           handleClickDeleteUser(record.id)
                         }}
-                        messageTooltip={'Eliminar Funcionario'}
+                        messageTooltip="Eliminar Funcionario"
                         shape="round"
                         size="small"
-                        leadingIcon={'ri-delete-bin-line'}
+                        leadingIcon="ri-delete-bin-line"
                       />
                     </Container>
                   }

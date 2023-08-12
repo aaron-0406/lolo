@@ -25,7 +25,7 @@ export const getDashItems = () => {
     },
     {
       id: 6,
-      title: 'Funcionarios',
+      title: 'FUNCIONARIOS',
       remixClass: 'ri-briefcase-fill',
       path: paths.dash.funcionarios,
       admin: false,
