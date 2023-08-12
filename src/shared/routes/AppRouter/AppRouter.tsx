@@ -9,6 +9,7 @@ import DashHome from '../../../pages/Dashboard/Home'
 import DashboardCustomers from '../../../pages/Dashboard/DashboardCustomers'
 import DashboardActions from '../../../pages/Dashboard/DashboardActions'
 import DashboardUsers from '../../../pages/Dashboard/DashboardUsers'
+import DashboardFuncionarios from '../../../pages/Dashboard/DashboardFuncionarios'
 
 //COMPANY
 import CompanyLogin from '../../../pages/Company/Login'
@@ -47,8 +48,9 @@ const AppRouter = () => {
         <Route path={paths.dash.root} element={<DashHome />} />
         <Route path={paths.dash.clientes} element={<DashboardCustomers />} />
         <Route path={paths.dash.usuarios} element={<DashboardUsers />} />
+        <Route path={paths.dash.funcionarios} element={<DashboardFuncionarios />} />
         <Route path={paths.dash.reportes} element={<div>reportes</div>} />
-        <Route path={paths.dash.acciones} element={<DashboardActions/>} />
+        <Route path={paths.dash.acciones} element={<DashboardActions />} />
       </Route>
 
       {/* COMPANY */}
