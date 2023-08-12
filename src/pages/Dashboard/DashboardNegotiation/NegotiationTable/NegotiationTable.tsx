@@ -1,15 +1,16 @@
 import { Dispatch, useState, useEffect } from 'react'
 import { useQuery } from 'react-query'
 import moment from 'moment'
-import { getAllPage, getAllNegociacionesByCHB } from '../../../../shared/services/negotiation.service'
+import { getAll, getAllNegociacionesByCHB } from '../../../../shared/services/negotiation.service'
 import { NegotiationType } from '../../../../shared/types/negotiation.type'
 import Container from '../../../../ui/Container'
 import Pagination from '../../../../ui/Pagination'
 import { Opts } from '../../../../ui/Pagination/interfaces'
-import Table from '../../../../ui/Tables/Table'
-import EmptyStateCell from '../../../../ui/Tables/Table/EmptyStateCell'
-import BodyCell from '../../../../ui/Tables/Table/BodyCell'
+import Table from '../../../../ui/Table'
+import EmptyStateCell from '../../../../ui/Table/EmptyStateCell'
+import BodyCell from '../../../../ui/Table/BodyCell'
 import { negotiationColumns } from './utils/columns'
+import { KEY_DASH_NEGOTIATION_CACHE } from './utils/dash-cobranza.cache'
 
 type NegotiationTableProps = {
   opts: Opts
@@ -20,56 +21,49 @@ type NegotiationTableProps = {
 const NegotiationTable = ({ opts, setOpts, selectedBank: { chb, setChbGlobal } }: NegotiationTableProps) => {
   const [negotiations, setNegotiations] = useState<Array<NegotiationType>>([])
   const [negotiationCount, setNegotiationCount] = useState(0)
-  const [isLoading, setIsLoading] = useState(false)
 
-  const { refetch } = useQuery(
-    'get-all-page',
-    async () => {
-      return await getAllPage(opts.page, opts.limit)
-    },
-    {
-      onSuccess: ({ data }) => {
-        setNegotiationCount(data.quantity)
-        if (opts.filter !== '') {
-          data.rta = data.rta.filter((filt: NegotiationType) => {
-            return filt.name.substring(0, opts.filter.length).toUpperCase() === opts.filter.toUpperCase()
-          })
-          setNegotiationCount(data.rta.length)
-        }
-        setNegotiations(data.rta)
-        setIsLoading(false)
-      },
-      enabled: false,
+  const paintTable = (negotiationTemp: NegotiationType[]) => {
+    
+    if (opts.filter !== '') {
+      negotiationTemp = negotiationTemp.filter((filt: NegotiationType) => {
+        return filt.name.substring(0, opts.filter.length).toUpperCase() === opts.filter.toUpperCase()
+      })
     }
-  )
-  const { refetch: refetchChb } = useQuery(
-    'get-all-negociaciones-by-chb',
+
+    setNegotiationCount(negotiationTemp.length)
+    negotiationTemp = negotiations.slice(((opts.page - 1) * opts.limit), (opts.limit * opts.page) - 1)
+
+    return negotiationTemp.map((record: NegotiationType) => {
+      console.log(opts)
+      return (
+        <tr className="styled-data-table-row" key={record.id}>
+          <BodyCell textAlign="center">{`${record.id || ''}`}</BodyCell>
+          <BodyCell textAlign="center">{`${record.name || ''}`}</BodyCell>
+          <BodyCell textAlign="center">{`${moment(record.createdAt).format('DD-MM-YYYY') || ''}`}</BodyCell>
+          <BodyCell textAlign="center">{`${record.customerHasBankId || ''}`}</BodyCell>
+        </tr>
+      )
+    })
+  }
+
+  const { isLoading, refetch } = useQuery(
+    KEY_DASH_NEGOTIATION_CACHE,
     async () => {
-      return await getAllNegociacionesByCHB(String(chb))
+      return await getAll()
     },
     {
       onSuccess: ({ data }) => {
         setNegotiationCount(data.length)
-        if (opts.filter !== '') {
-          data = data.filter((filt: NegotiationType) => {
-            return filt.name.substring(0, opts.filter.length).toUpperCase() === opts.filter.toUpperCase()
-          })
-          setNegotiationCount(data.length)
-        }
         setNegotiations(data)
-        setIsLoading(false)
       },
       enabled: false,
     }
   )
 
   useEffect(() => {
-    if (chb !== 0) {
-      refetchChb()
-    } else {
-      refetch()
-    }
-  }, [refetch, isLoading, opts, refetchChb, chb])
+    refetch()
+    // eslint-disable-next-line
+  }, [])
 
   return (
     <Container width="100%" height="calc(100% - 112px)" padding="20px">
@@ -85,17 +79,7 @@ const NegotiationTable = ({ opts, setOpts, selectedBank: { chb, setChbGlobal } }
           </EmptyStateCell>
         }
       >
-        {!!negotiationCount &&
-          negotiations.map((record: NegotiationType) => {
-            return (
-              <tr className="styled-data-table-row" key={record.id}>
-                <BodyCell textAlign="center">{`${record.id || ''}`}</BodyCell>
-                <BodyCell textAlign="center">{`${record.name || ''}`}</BodyCell>
-                <BodyCell textAlign="center">{`${moment(record.createdAt).format('DD-MM-YYYY') || ''}`}</BodyCell>
-                <BodyCell textAlign="center">{`${record.customerHasBankId || ''}`}</BodyCell>
-              </tr>
-            )
-          })}
+        {!!negotiationCount && paintTable(negotiations)}
       </Table>
     </Container>
   )
