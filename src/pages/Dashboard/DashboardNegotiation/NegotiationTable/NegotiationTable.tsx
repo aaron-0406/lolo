@@ -18,9 +18,24 @@ type NegotiationTableType = {
 }
 
 const NegotiationTable = ({ opts, setOpts }: NegotiationTableType) => {
-
   const [negotiations, setNegotiations] = useState<Array<NegotiationType>>([])
   const [negotiationCount, setNegotiationCount] = useState(0)
+
+  const paintTable = () => {
+    const negotiationTemp = negotiations.slice(((opts.page - 1) * opts.limit), (opts.limit * opts.page) - 1)
+
+    return negotiationTemp.map((record: NegotiationType) => {
+      console.log(opts)
+      return (
+        <tr className="styled-data-table-row" key={record.id}>
+          <BodyCell textAlign="center">{`${record.id || ''}`}</BodyCell>
+          <BodyCell textAlign="center">{`${record.name || ''}`}</BodyCell>
+          <BodyCell textAlign="center">{`${moment(record.createdAt).format('DD-MM-YYYY') || ''}`}</BodyCell>
+          <BodyCell textAlign="center">{`${record.customerHasBankId || ''}`}</BodyCell>
+        </tr>
+      )
+    })
+  }
 
   const { isLoading, refetch } = useQuery(
     KEY_DASH_NEGOTIATION_CACHE,
@@ -60,17 +75,7 @@ const NegotiationTable = ({ opts, setOpts }: NegotiationTableType) => {
           </EmptyStateCell>
         }
       >
-        {!!negotiationCount &&
-          negotiations.map((record: NegotiationType) => {
-            return (
-              <tr className="styled-data-table-row" key={record.id}>
-                <BodyCell textAlign="center">{`${record.id || ''}`}</BodyCell>
-                <BodyCell textAlign="center">{`${record.name || ''}`}</BodyCell>
-                <BodyCell textAlign="center">{`${moment(record.createdAt).format('DD-MM-YYYY') || ''}`}</BodyCell>
-                <BodyCell textAlign="center">{`${record.customerHasBankId || ''}`}</BodyCell>
-              </tr>
-            )
-          })}
+        {!!negotiationCount && paintTable()}
       </Table>
     </Container>
   )
