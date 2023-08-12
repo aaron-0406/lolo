@@ -6,9 +6,9 @@ import { NegotiationType } from '../../../../shared/types/negotiation.type'
 import Container from '../../../../ui/Container'
 import Pagination from '../../../../ui/Pagination'
 import { Opts } from '../../../../ui/Pagination/interfaces'
-import Table from '../../../../ui/Tables/Table'
-import EmptyStateCell from '../../../../ui/Tables/Table/EmptyStateCell'
-import BodyCell from '../../../../ui/Tables/Table/BodyCell'
+import Table from '../../../../ui/Table'
+import EmptyStateCell from '../../../../ui/Table/EmptyStateCell'
+import BodyCell from '../../../../ui/Table/BodyCell'
 import { negotiationColumns } from './utils/columns'
 
 type NegotiationTableType = {

@@ -23,6 +23,13 @@ export const getDashItems = () => {
       path: paths.dash.usuarios,
       admin: false,
     },
+    {	
+      id: 3,	
+      title: 'REPORTES',	
+      remixClass: 'ri-file-list-fill',	
+      path: paths.dash.reportes,	
+      admin: false,	
+    },
     {
       id: 4,
       title: 'ACCIONES',
