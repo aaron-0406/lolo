@@ -47,6 +47,7 @@ const AppRouter = () => {
         <Route path={paths.dash.root} element={<DashHome />} />
         <Route path={paths.dash.clientes} element={<DashboardCustomers />} />
         <Route path={paths.dash.usuarios} element={<DashboardUsers />} />
+        <Route path={paths.dash.reportes} element={<></>} />
         <Route path={paths.dash.cobranza} element={<DashboardNegotiation />} />
       </Route>
 

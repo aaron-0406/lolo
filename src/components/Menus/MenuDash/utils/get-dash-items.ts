@@ -24,7 +24,7 @@ export const getDashItems = () => {
       admin: false,
     },
     {
-      id: 3,
+      id: 5,
       title: 'COBRANZA',
       remixClass: 'ri-folder-2-fill',
       path: paths.dash.cobranza,
