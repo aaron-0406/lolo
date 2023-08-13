@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { FormProvider, useForm } from 'react-hook-form'
 import { createNegotiation, updateNegotiation, getAllNegociacionesById } from '../../../../../shared/services/negotiation.service'
@@ -6,10 +7,9 @@ import { NegotiationType } from '../../../../../shared/types/negotiation.type'
 import Modal from '../../../../../ui/Modal'
 import Container from '../../../../../ui/Container'
 import Button from '../../../../../ui/Button'
-import NegotiationInfoForm from './NegotiationInfoForm'
 import notification from '../../../../../ui/notification'
+import NegotiationInfoForm from './NegotiationInfoForm'
 import dashNegotiationCache from '../../../DashboardNegotiation/NegotiationTable/utils/dash-cobranza.cache'
-import { useEffect } from 'react'
 
 type NegotiationModalProps = {
   visible: boolean
@@ -136,6 +136,7 @@ const NegotiationModal = ({ visible, onClose, isEdit = false, idNegotiation = 0 
     if (idNegotiation !== 0) {
       refetchNegotiations()
     }
+    // eslint-disable-next-line
   }, [idNegotiation])
 
   return (
