@@ -25,4 +25,10 @@ export const negotiationColumns: ColumProps[] = [
     width: '20%',
     justifyContent: 'center',
   },
+  {
+    id: 'negotiation.datatable.header.actions',
+    title: 'Acciones',
+    width: '20%',
+    justifyContent: 'space-around',
+  },
 ]

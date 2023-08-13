@@ -11,6 +11,9 @@ import EmptyStateCell from '../../../../ui/Table/EmptyStateCell'
 import BodyCell from '../../../../ui/Table/BodyCell'
 import { negotiationColumns } from './utils/columns'
 import { KEY_DASH_NEGOTIATION_CACHE } from './utils/dash-cobranza.cache'
+import Button from '../../../../ui/Button'
+import NegotiationModal from '../Modals/NegotiationModal'
+import useModal from '../../../../shared/hooks/useModal'
 
 type NegotiationTableProps = {
   opts: Opts
@@ -21,7 +24,9 @@ type NegotiationTableProps = {
 const NegotiationTable = ({ opts, setOpts, selectedBank: { chb, setChbGlobal } }: NegotiationTableProps) => {
   const [negotiations, setNegotiations] = useState<Array<NegotiationType>>([])
   const [negotiationCount, setNegotiationCount] = useState(0)
+  const [negotiationId, setNegotiationId] = useState<number>()
   const [table, setTable] = useState<JSX.Element[]>()
+  const { visible: visibleModalEdit, showModal: showModalEdit, hideModal: hideModalEdit } = useModal()
 
   const paintTable = (negotiationTemp: NegotiationType[]) => {
     if (opts.filter !== '') {
@@ -41,10 +46,29 @@ const NegotiationTable = ({ opts, setOpts, selectedBank: { chb, setChbGlobal } }
             <BodyCell textAlign="center">{`${record.name || ''}`}</BodyCell>
             <BodyCell textAlign="center">{`${moment(record.createdAt).format('DD-MM-YYYY') || ''}`}</BodyCell>
             <BodyCell textAlign="center">{`${record.customerHasBankId || ''}`}</BodyCell>
+            <BodyCell textAlign="center">
+              {
+                <Button
+                  onClick={(event) => {
+                    event.stopPropagation()
+                    handleClickButtonEdit(record.id)
+                  }}
+                  messageTooltip="Editar Negociación"
+                  shape="round"
+                  size="small"
+                  leadingIcon="ri-pencil-fill"
+                />
+              }
+            </BodyCell>
           </tr>
         )
       })
     )
+  }
+
+  const handleClickButtonEdit = (id: number) => {
+    setNegotiationId(id)
+    showModalEdit()
   }
 
   const { isLoading, refetch } = useQuery(
@@ -106,6 +130,7 @@ const NegotiationTable = ({ opts, setOpts, selectedBank: { chb, setChbGlobal } }
       >
         {!!negotiationCount && table}
       </Table>
+      <NegotiationModal visible={visibleModalEdit} onClose={hideModalEdit} idNegotiation={negotiationId} isEdit />
     </Container>
   )
 }
