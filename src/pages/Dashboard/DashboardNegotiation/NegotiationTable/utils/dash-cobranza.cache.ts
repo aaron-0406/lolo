@@ -7,8 +7,6 @@ export const KEY_DASH_NEGOTIATION_CACHE = 'key-dash-negotiation-cache'
 type QueryDataType = AxiosResponse<NegotiationType[]> | undefined
 
 const dashNegotiationCache = (queryClient: QueryClient) => {
-  const returnNegotiationCache = queryClient.getQueryData<QueryDataType>(KEY_DASH_NEGOTIATION_CACHE)
-
   const createNegotiationCache = (data: NegotiationType) => {
     queryClient.setQueryData<QueryDataType>(KEY_DASH_NEGOTIATION_CACHE, (old) => {
       if (old) {
@@ -28,6 +26,15 @@ const dashNegotiationCache = (queryClient: QueryClient) => {
           return negotiation
         })
 
+        return { ...old, data: dataUpdated }
+      }
+    })
+  }
+
+  const deleteNegotiationCache = (idUser: string) => {
+    queryClient.setQueryData<QueryDataType>(KEY_DASH_NEGOTIATION_CACHE, (old) => {
+      if (old) {
+        const dataUpdated = old.data.filter((user: NegotiationType) => user.id !== parseInt(idUser))
         return { ...old, data: dataUpdated }
       }
     })
@@ -56,7 +63,7 @@ const dashNegotiationCache = (queryClient: QueryClient) => {
 
   return {
     actions: {
-      returnNegotiationCache,
+      deleteNegotiationCache,
       createNegotiationCache,
       editNegotiationCache,
     },
