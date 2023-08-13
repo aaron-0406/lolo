@@ -12,17 +12,18 @@ const clientAxios = axios.create({
 })
 
 clientAxios.interceptors.request.use(async (config: any) => {
-  const token = await storage.get('token')
-  // if (token) {
-  // const usuario = jwtDecode<IUser>(token);
-  // const secondsSinceEpoch = Math.round(Date.now() / 1000);
-  // checking for time expiration of the token
-  // if (secondsSinceEpoch > parseInt(usuario.exp + '')) {
-  //   await localStorage.removeItem('token');
-  //   window.location.href = '/';
-  //   return;
-  // }
-  // }
+  let token
+
+  const tokenCompany = await storage.get('token')
+  if (tokenCompany) {
+    token = tokenCompany
+  }
+
+  const tokenDash = await storage.get('dash:token')
+  if (tokenDash) {
+    token = tokenDash
+  }
+
   config.headers.Authorization = `Bearer ${token}`
   return config
 })
