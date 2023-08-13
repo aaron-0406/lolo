@@ -39,7 +39,7 @@ const Login = () => {
     },
     {
       onSuccess: ({ data }) => {
-        storage.set('token', data.token)
+        storage.set('dash:token', data.token)
         setUser(data.user)
         setAuthenticate(true)
         notification({ type: 'success', message: 'Bienvenido' })

@@ -66,6 +66,7 @@ const ProtectedRoutesCompany: React.FC<ProtectedRoutesCompanyProps> = ({ pathnam
   //TODO: Get isAuthenticated from context - useGeneralContext
 
   if (!authenticate) {
+    storage.clear()
     return <RedirectRoute pathname={pathname.replace(':urlIdentifier', urlIdentifier + '')} />
   }
 

@@ -61,7 +61,7 @@ type DashProviderProps = {
 }
 
 export const DashProvider: React.FC<DashProviderProps> = ({ children }) => {
-  const [authenticate, setAuthenticate] = useState<boolean>(storage.get<string>('token') ? true : false)
+  const [authenticate, setAuthenticate] = useState<boolean>(storage.get<string>('dash:token') ? true : false)
   const [user, setUser] = useState(initialUserState)
 
   const [selectedCustomerState, setSelectedCustomerState] = usePersistedState<CustomerType>(
@@ -74,12 +74,15 @@ export const DashProvider: React.FC<DashProviderProps> = ({ children }) => {
   }
 
   const clearAll = () => {
+    setSelectedCustomerState(initialCustomerState)
     setAuthenticate(false)
   }
 
   useEffect(() => {
-    const token = storage.get<string>('token')
+    const token = storage.get<string>('dash:token')
     if (token) {
+      storage.remove('token')
+
       try {
         const usuario = jwtDecode<UserAppType>(token)
         setUser(usuario)
@@ -87,6 +90,7 @@ export const DashProvider: React.FC<DashProviderProps> = ({ children }) => {
         return
       } catch (error) {}
     }
+
     setAuthenticate(false)
     setUser(initialUserState)
   }, [])
