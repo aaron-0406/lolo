@@ -44,5 +44,12 @@ export const getDashItems = () => {
       path: paths.dash.cobranza,
       admin: false,
     },
+    {
+      id: 6,
+      title: 'FUNCIONARIOS',
+      remixClass: 'ri-briefcase-fill',
+      path: paths.dash.funcionarios,
+      admin: false,
+    },
   ]
 }
