@@ -11,6 +11,10 @@ import EmptyStateCell from '../../../../ui/Table/EmptyStateCell'
 import BodyCell from '../../../../ui/Table/BodyCell'
 import { negotiationColumns } from './utils/columns'
 import { KEY_DASH_NEGOTIATION_CACHE } from './utils/dash-cobranza.cache'
+import Button from '../../../../ui/Button'
+import NegotiationModal from '../Modals/NegotiationModal'
+import useModal from '../../../../shared/hooks/useModal'
+import DeleteNegotiationModal from '../Modals/DeleteNegotiationModal/DeleteNegotiationModal'
 
 type NegotiationTableProps = {
   opts: Opts
@@ -21,7 +25,10 @@ type NegotiationTableProps = {
 const NegotiationTable = ({ opts, setOpts, selectedBank: { chb, setChbGlobal } }: NegotiationTableProps) => {
   const [negotiations, setNegotiations] = useState<Array<NegotiationType>>([])
   const [negotiationCount, setNegotiationCount] = useState(0)
+  const [negotiationId, setNegotiationId] = useState<number>()
   const [table, setTable] = useState<JSX.Element[]>()
+  const { visible: visibleModalEdit, showModal: showModalEdit, hideModal: hideModalEdit } = useModal()
+  const { visible: visibleDeleteNegotiation, showModal: showDeleteNegotiation, hideModal: hideDeleteNegotiation } = useModal()
 
   const paintTable = (negotiationTemp: NegotiationType[]) => {
     if (opts.filter !== '') {
@@ -41,10 +48,46 @@ const NegotiationTable = ({ opts, setOpts, selectedBank: { chb, setChbGlobal } }
             <BodyCell textAlign="center">{`${record.name || ''}`}</BodyCell>
             <BodyCell textAlign="center">{`${moment(record.createdAt).format('DD-MM-YYYY') || ''}`}</BodyCell>
             <BodyCell textAlign="center">{`${record.customerHasBankId || ''}`}</BodyCell>
+            <BodyCell textAlign="center">
+              {
+                <Container display="flex" gap="15px" justifyContent="space-around">
+                  <Button
+                    onClick={(event) => {
+                      event.stopPropagation()
+                      handleClickButtonEdit(record.id)
+                    }}
+                    messageTooltip="Editar Negociación"
+                    shape="round"
+                    size="small"
+                    leadingIcon="ri-pencil-fill"
+                  />
+                  <Button
+                    onClick={(event) => {
+                      event.stopPropagation()
+                      handleClickDeleteNegotiation(record.id)
+                    }}
+                    messageTooltip="Eliminar Negociación"
+                    shape="round"
+                    size="small"
+                    leadingIcon="ri-user-unfollow-fill"
+                  />
+                </Container>
+              }
+            </BodyCell>
           </tr>
         )
       })
     )
+  }
+
+  const handleClickButtonEdit = (id: number) => {
+    setNegotiationId(id)
+    showModalEdit()
+  }
+
+  const handleClickDeleteNegotiation = (id: number) => {
+    setNegotiationId(id)
+    showDeleteNegotiation()
   }
 
   const { isLoading, refetch } = useQuery(
@@ -106,6 +149,8 @@ const NegotiationTable = ({ opts, setOpts, selectedBank: { chb, setChbGlobal } }
       >
         {!!negotiationCount && table}
       </Table>
+      <DeleteNegotiationModal visible={visibleDeleteNegotiation} onClose={hideDeleteNegotiation} idUser={negotiationId}/>
+      <NegotiationModal visible={visibleModalEdit} onClose={hideModalEdit} idNegotiation={negotiationId} isEdit />
     </Container>
   )
 }
