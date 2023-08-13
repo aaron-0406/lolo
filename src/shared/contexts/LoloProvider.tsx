@@ -190,6 +190,8 @@ export const LoloProvider: React.FC<LoloProviderProps> = ({ children }) => {
   useEffect(() => {
     const token = storage.get<string>('token')
     if (token) {
+      storage.remove('dash:token')
+
       try {
         const usuario = jwtDecode<CustomerUserType>(token)
         setUser(usuario)
@@ -197,6 +199,7 @@ export const LoloProvider: React.FC<LoloProviderProps> = ({ children }) => {
         return
       } catch (error) {}
     }
+
     setAuthenticate(false)
     setUser(initialCustomerUserState)
   }, [])
