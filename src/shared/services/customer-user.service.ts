@@ -22,7 +22,7 @@ export const createUser = async (user: Omit<CustomerUserType, 'id'>) => {
 }
 
 export const editUserState = async (userID: number, state: boolean) => {
-  return await axiosClient.patch(`${url}/state/${userID}`, state)
+  return await axiosClient.patch(`${url}/state/${userID}`, { state })
 }
 
 export const editUserById = async (

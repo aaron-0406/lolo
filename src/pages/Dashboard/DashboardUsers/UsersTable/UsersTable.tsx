@@ -1,7 +1,7 @@
 import { Dispatch, FC, useEffect, useState } from 'react'
 import moment from 'moment'
-import { useQuery } from 'react-query'
-import { getAllUsersByID } from '../../../../shared/services/customer-user.service'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
+import { getAllUsersByID, editUserState } from '../../../../shared/services/customer-user.service'
 import { CustomerUserType } from '../../../../shared/types/customer-user.type'
 import Container from '../../../../ui/Container'
 import Pagination from '../../../../ui/Pagination'
@@ -15,7 +15,9 @@ import { useDashContext } from '../../../../shared/contexts/DashProvider'
 import UsersModal from '../Modals/UsersModal'
 import useModal from '../../../../shared/hooks/useModal'
 import DeleteUsersModal from '../Modals/DeleteUsersModal'
-import { KEY_DASH_USUARIOS_CACHE } from './utils/dash-usuarios.cache'
+import dashUsuariosCache, { KEY_DASH_USUARIOS_CACHE } from './utils/dash-usuarios.cache'
+import notification from '../../../../ui/notification'
+import { AxiosResponse } from 'axios'
 
 type UsersTableProps = {
   opts: Opts
@@ -28,6 +30,14 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts }) => {
       selectedCustomer: { id: customerId },
     },
   } = useDashContext()
+
+  const queryClient = useQueryClient()
+  const {
+    actions: { editUserCache },
+    onMutateCache,
+    onSettledCache,
+    onErrorCache,
+  } = dashUsuariosCache(queryClient)
 
   const [users, setUsers] = useState([])
   const [usersCount, setUsersCount] = useState<number>(0)
@@ -47,6 +57,10 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts }) => {
     showDeleteUser()
   }
 
+  const handleClickButtonState = (state: boolean, idUser: number) => {
+    editStateUser({ idUser, state })
+  }
+
   const onCloseDeleteUser = () => {
     setIdDeletedUser(0)
     hideDeleteUser()
@@ -55,6 +69,38 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts }) => {
     setIdUser(0)
     hideModalUser()
   }
+
+  const { mutate: editStateUser } = useMutation<
+    AxiosResponse<CustomerUserType>,
+    Error,
+    { idUser: number; state: boolean }
+  >(
+    async ({ idUser, state }) => {
+      return await editUserState(idUser, !state)
+    },
+    {
+      onSuccess: (result, { state }) => {
+        state
+          ? notification({ type: 'success', message: 'Usuario habilitado' })
+          : notification({ type: 'success', message: 'Usuario inhabilitado' })
+
+        editUserCache(result.data)
+      },
+      onMutate: () => {
+        onMutateCache()
+      },
+      onSettled: () => {
+        onSettledCache()
+      },
+      onError: (error: any, _, context: any) => {
+        onErrorCache(context)
+        notification({
+          type: 'error',
+          message: error.response.data.message,
+        })
+      },
+    }
+  )
 
   const { isLoading, refetch } = useQuery(
     KEY_DASH_USUARIOS_CACHE,
@@ -107,7 +153,7 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts }) => {
                 <BodyCell textAlign="center">{`${record.state ? 'activo' : 'inactivo'}`}</BodyCell>
                 <BodyCell textAlign="center">{`${moment(record.createdAt).format('DD-MM-YYYY') || ''}`}</BodyCell>
                 <BodyCell textAlign="center">
-                  <Container justifyContent="space-between" display="flex">
+                  <Container justifyContent="space-around" gap="15px" display="flex">
                     {
                       <Button
                         onClick={() => {
@@ -118,6 +164,16 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts }) => {
                         leadingIcon="ri-pencil-fill"
                       />
                     }
+                    <Button
+                      onClick={() => {
+                        handleClickButtonState(record.state, record.id)
+                      }}
+                      display={record.state ? 'default' : 'warning'}
+                      messageTooltip={record.state ? 'Inhabilitar' : 'Habilitar'}
+                      shape="round"
+                      size="small"
+                      leadingIcon={record.state ? 'ri-shield-user-fill' : 'ri-shield-user-line'}
+                    />
                     {
                       <Button
                         onClick={() => {
