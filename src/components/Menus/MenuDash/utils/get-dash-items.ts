@@ -24,13 +24,6 @@ export const getDashItems = () => {
       admin: false,
     },
     {
-      id: 6,
-      title: 'FUNCIONARIOS',
-      remixClass: 'ri-briefcase-fill',
-      path: paths.dash.funcionarios,
-      admin: false,
-    },
-    {
       id: 3,
       title: 'REPORTES',
       remixClass: 'ri-file-list-fill',
@@ -49,6 +42,13 @@ export const getDashItems = () => {
       title: 'COBRANZA',
       remixClass: 'ri-folder-2-fill',
       path: paths.dash.cobranza,
+      admin: false,
+    },
+    {
+      id: 6,
+      title: 'FUNCIONARIOS',
+      remixClass: 'ri-briefcase-fill',
+      path: paths.dash.funcionarios,
       admin: false,
     },
   ]

@@ -20,7 +20,7 @@ export const funcionariosColumns: ColumProps[] = [
     justifyContent: 'center',
   },
   {
-    id: 'users.datatable.header.actions',
+    id: 'funcionarios.datatable.header.actions',
     title: 'ACCIONES',
     width: '30%',
     justifyContent: 'center',

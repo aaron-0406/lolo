@@ -31,6 +31,15 @@ const dashNegotiationCache = (queryClient: QueryClient) => {
     })
   }
 
+  const deleteNegotiationCache = (idUser: string) => {
+    queryClient.setQueryData<QueryDataType>(KEY_DASH_NEGOTIATION_CACHE, (old) => {
+      if (old) {
+        const dataUpdated = old.data.filter((user: NegotiationType) => user.id !== parseInt(idUser))
+        return { ...old, data: dataUpdated }
+      }
+    })
+  }
+
   const onRefetchQueryCache = async () => {
     await queryClient.refetchQueries(KEY_DASH_NEGOTIATION_CACHE)
   }
@@ -54,6 +63,7 @@ const dashNegotiationCache = (queryClient: QueryClient) => {
 
   return {
     actions: {
+      deleteNegotiationCache,
       createNegotiationCache,
       editNegotiationCache,
     },
