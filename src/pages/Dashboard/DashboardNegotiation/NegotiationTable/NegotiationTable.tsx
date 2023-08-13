@@ -1,7 +1,7 @@
 import { Dispatch, useState, useEffect } from 'react'
 import { useQuery } from 'react-query'
 import moment from 'moment'
-import { getAll, getAllNegociacionesByCHB } from '../../../../shared/services/negotiation.service'
+import { getAll } from '../../../../shared/services/negotiation.service'
 import { NegotiationType } from '../../../../shared/types/negotiation.type'
 import Container from '../../../../ui/Container'
 import Pagination from '../../../../ui/Pagination'
@@ -23,18 +23,20 @@ const NegotiationTable = ({ opts, setOpts, selectedBank: { chb, setChbGlobal } }
   const [negotiationCount, setNegotiationCount] = useState(0)
 
   const paintTable = (negotiationTemp: NegotiationType[]) => {
-    
+    if (chb !== 0) {
+      negotiationTemp = negotiationTemp.filter((filt: NegotiationType) => filt.customerHasBankId === chb)
+    }
+
     if (opts.filter !== '') {
       negotiationTemp = negotiationTemp.filter((filt: NegotiationType) => {
         return filt.name.substring(0, opts.filter.length).toUpperCase() === opts.filter.toUpperCase()
       })
     }
 
-    setNegotiationCount(negotiationTemp.length)
-    negotiationTemp = negotiations.slice(((opts.page - 1) * opts.limit), (opts.limit * opts.page) - 1)
+    // setNegotiationCount(negotiationTemp.length)
+    negotiationTemp = negotiationTemp.slice((opts.page - 1) * opts.limit, opts.limit * opts.page - 1)
 
     return negotiationTemp.map((record: NegotiationType) => {
-      console.log(opts)
       return (
         <tr className="styled-data-table-row" key={record.id}>
           <BodyCell textAlign="center">{`${record.id || ''}`}</BodyCell>
