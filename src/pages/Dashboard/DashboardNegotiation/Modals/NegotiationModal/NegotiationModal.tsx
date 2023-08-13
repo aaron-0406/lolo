@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from 'react-query'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { FormProvider, useForm } from 'react-hook-form'
 import { createNegotiation, updateNegotiation } from '../../../../../shared/services/negotiation.service'
 import { ModalNegotiationResolver } from './NegotiationModal.yup'
@@ -8,6 +8,7 @@ import Container from '../../../../../ui/Container'
 import Button from '../../../../../ui/Button'
 import NegotiationInfoForm from './NegotiationInfoForm'
 import notification from '../../../../../ui/notification'
+import dashNegotiationCache from '../../../DashboardNegotiation/NegotiationTable/utils/dash-cobranza.cache'
 
 type NegotiationModalProps = {
   visible: boolean
@@ -34,17 +35,33 @@ const NegotiationModal = ({ visible, onClose, isEdit = false }: NegotiationModal
     formState: { isValid },
   } = formMethods
 
+  const queryClient = useQueryClient()
+  const {
+    actions: { createNegotiationCache, editNegotiationCache },
+    onMutateCache,
+    onSettledCache,
+    onErrorCache,
+  } = dashNegotiationCache(queryClient)
+
   const { isLoading: loadingCreateNegotiation, mutate: mutateCreateNegotiation } = useMutation<any, Error>(
     async () => {
       const { id, ...restNegotiation } = getValues()
       return await createNegotiation(restNegotiation)
     },
     {
-      onSuccess: () => {
+      onSuccess: (result) => {
+        createNegotiationCache(result.data)
         notification({ type: 'success', message: 'Negociación creada' })
         handleClickCloseModal()
       },
-      onError: (error: any) => {
+      onMutate: () => {
+        onMutateCache()
+      },
+      onSettled: () => {
+        onSettledCache()
+      },
+      onError: (error: any, _, context: any) => {
+        onErrorCache(context)
         notification({
           type: 'error',
           message: error.response.data.message,

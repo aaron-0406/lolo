@@ -66,24 +66,21 @@ const ActionsSearch: FC<ActionsSearchProps> = ({ opts, setOpts, selectedBank: { 
   }
 
   return (
-    <Container display="flex" width="100%" padding=" 0 20px" justify-content="space-around" margin="20px 0" gap="20px">
-      <Container width="calc(100% - 60px)" display="flex" justify-content="space-around">
-        <Container display={greaterThanMobile ? 'flex' : 'none'} padding="0 10px 0 0">
-          <Label label="Buscar:" />
-        </Container>
-        <TextField onChange={onChangeSearch} width="100%" placeholder="Buscar cliente por nombre" />
+    <Container display="flex" width="100%" padding=" 0 20px">
+      <Container display={greaterThanMobile ? 'flex' : 'none'} padding="0 10px 0 0">
+        <Label label="Buscar:" />
       </Container>
-
-      <Select
-        width="calc(100% - 700px)"
-        placeholder="Selecciona un banco"
-        value={String(chb)}
-        options={options}
-        onChange={onChangeBank}
-      />
-
+      <Container width="calc(100% - 60px)" display="flex" justifyContent="space-between" margin="0 20px 0 0">
+        <TextField onChange={onChangeSearch} width="70%" placeholder="Buscar cliente por nombre" />
+        <Select
+          width="28%"
+          placeholder="Selecciona un banco"
+          value={String(chb)}
+          options={options}
+          onChange={onChangeBank}
+        />
+      </Container>
       <Button shape="round" leadingIcon="ri-add-fill" size="small" onClick={onShowModal} disabled={!chb} />
-
       <ActionModal visible={visibleModalAdd} onClose={onCloseModal} chb={chb} />
     </Container>
   )

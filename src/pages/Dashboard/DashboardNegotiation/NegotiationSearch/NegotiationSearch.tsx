@@ -26,7 +26,7 @@ const NegotiationSearch = ({ opts, setOpts, selectedBank: { chb, setChbGlobal } 
   const greaterThanMobile = useMediaQuery(device.tabletS)
   const { visible: visibleModalAdd, showModal: showModalAdd, hideModal: hideModalAdd } = useModal()
 
-  const optionsSelect: Array<SelectItemType> = selectedCustomer.customerBanks .map((customerBank) => {
+  const optionsSelect: Array<SelectItemType> = selectedCustomer.customerBanks.map((customerBank) => {
     return {
       key: String(customerBank.CUSTOMER_HAS_BANK.id),
       label: customerBank.name,
@@ -54,7 +54,13 @@ const NegotiationSearch = ({ opts, setOpts, selectedBank: { chb, setChbGlobal } 
       </Container>
       <Container width="calc(100% - 60px)" display="flex" justifyContent="space-between" margin="0 20px 0 0">
         <TextField onChange={onChangeSearch} width="70%" placeholder="Buscar negociación por nombre" />
-        <Select width="28%" options={optionsSelect} value={String(chb)} onChange={onChangeBank} />
+        <Select
+          width="28%"
+          placeholder="Seleccione un banco "
+          options={optionsSelect}
+          value={String(chb)}
+          onChange={onChangeBank}
+        />
       </Container>
       <Button shape="round" leadingIcon="ri-add-fill" size="small" onClick={showModalAdd} />
       <NegotiationModal visible={visibleModalAdd} onClose={hideModalAdd} />
