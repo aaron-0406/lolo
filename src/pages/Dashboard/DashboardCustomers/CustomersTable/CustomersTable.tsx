@@ -43,6 +43,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
 
   const { visible: visibleModalCustomer, showModal: showModalCustomer, hideModal: hideModalCustomer } = useModal()
   const { visible: visibleModalUser, showModal: showModalUser, hideModal: hideModalUser } = useModal()
+  const { visible: visibleModalBank, showModal: showModalBank, hideModal: hideModalBank } = useModal()
 
   const handleClickButtonEdit = (url: string) => {
     setUrlEdit(url)
@@ -61,6 +62,9 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
   const handleClickButtonState = (state: boolean, customerId: number) => {
     editStateCustomer({ customerId, state })
   }
+  const handleClickButtonBank = (customer: CustomerType) => {
+    showModalBank()
+  }
 
   const onCloseModal = () => {
     setUrlEdit('')
@@ -69,6 +73,10 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
 
   const onCloseUser = () => {
     hideModalUser()
+  }
+
+  const onCloseBank = () => {
+    hideModalBank()
   }
 
   const { mutate: editStateCustomer } = useMutation<
@@ -188,6 +196,17 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
                         messageTooltip="Ver usuarios"
                         size="small"
                         leadingIcon="ri-user-search-fill"
+                      />
+
+                      <Button
+                        onClick={(event) => {
+                          event.stopPropagation()
+                          handleClickButtonBank(record)
+                        }}
+                        shape="round"
+                        messageTooltip="Ver bancos"
+                        size="small"
+                        leadingIcon="ri-bank-line"
                       />
                     </Container>
                   }
