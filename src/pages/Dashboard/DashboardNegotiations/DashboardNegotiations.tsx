@@ -7,6 +7,7 @@ import NegotiationSearch from './NegotiationSearch'
 const DashboardNegotiation = () => {
   const [opts, setOpts] = useState<Opts>({ filter: '', limit: 50, page: 1 })
   const [chb, setChb] = useState<number>(0)
+
   const setChbGlobal = (chb: number) => {
     setChb(chb)
   }
@@ -21,8 +22,8 @@ const DashboardNegotiation = () => {
       justifyContent="center"
       gap="20px"
     >
-      <NegotiationSearch opts={opts} setOpts={setOpts} selectedBank={{ chb, setChbGlobal }} />
-      <NegotiationTable opts={opts} setOpts={setOpts} selectedBank={{ chb, setChbGlobal }} />
+      <NegotiationSearch opts={opts} setOpts={setOpts} selectedBank={{ chb, setChb: setChbGlobal }} />
+      <NegotiationTable opts={opts} setOpts={setOpts} selectedBank={{ chb, setChb: setChbGlobal }} />
     </Container>
   )
 }

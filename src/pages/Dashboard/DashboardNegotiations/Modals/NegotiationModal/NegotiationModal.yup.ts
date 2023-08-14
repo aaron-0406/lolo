@@ -3,7 +3,7 @@ import yup from '../../../../../shared/yupLocale'
 import { NegotiationType } from '../../../../../shared/types/negotiation.type'
 
 const NegotiationModal: yup.SchemaOf<Omit<NegotiationType, 'createdAt' | 'id'>> = yup.object().shape({
-  name: yup.string().min(3).required(),
+  name: yup.string().min(1).max(200).required(),
   customerHasBankId: yup.number().required(),
 })
 

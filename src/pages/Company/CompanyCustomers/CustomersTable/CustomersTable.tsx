@@ -148,7 +148,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
   const { refetch: refetchNegotiations } = useQuery(
     'query-get-all-negociaciones',
     async () => {
-      return await getAllNegociacionesByCHB(selectedBank.idCHB)
+      return await getAllNegociacionesByCHB(parseInt(selectedBank.idCHB))
     },
     {
       enabled: !!selectedBank.idCHB.length,

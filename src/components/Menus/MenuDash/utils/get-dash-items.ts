@@ -39,9 +39,9 @@ export const getDashItems = () => {
     },
     {
       id: 5,
-      title: 'COBRANZA',
+      title: 'NEGOCIACIONES',
       remixClass: 'ri-folder-2-fill',
-      path: paths.dash.cobranza,
+      path: paths.dash.negociaciones,
       admin: false,
     },
     {

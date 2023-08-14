@@ -13,7 +13,7 @@ export const getAllPage = async (page: number, limit: number) => {
   return await axiosClient.get(`${url}/opts/?page=${page}&limit=${limit}`)
 }
 
-export const getAllNegociacionesByCHB = async (chb: string) => {
+export const getAllNegociacionesByCHB = async (chb: number) => {
   return await axiosClient.get(`${url}/all/${chb}`)
 }
 

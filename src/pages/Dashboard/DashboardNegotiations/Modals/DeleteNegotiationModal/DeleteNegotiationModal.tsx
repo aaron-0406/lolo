@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from 'react-query'
 import { AxiosResponse } from 'axios'
-import dashNegotiationCache from '../../NegotiationTable/utils/dash-cobranza.cache'
+import dashNegotiationCache from '../../NegotiationTable/utils/dash-negociaciones.cache'
 import { deleteNegotiation } from '../../../../../shared/services/negotiation.service'
 import notification from '../../../../../ui/notification'
 import Modal from '../../../../../ui/Modal'
@@ -10,11 +10,13 @@ import Button from '../../../../../ui/Button'
 type DeleteNegotiationModalProps = {
   visible: boolean
   onClose: () => void
-  idUser?: number
+  idNegociation?: number
+  chb: number
 }
 
-const DeleteNegotiationModal = ({ visible, idUser = 0, onClose }: DeleteNegotiationModalProps) => {
+const DeleteNegotiationModal = ({ visible, idNegociation = 0, onClose, chb }: DeleteNegotiationModalProps) => {
   const queryClient = useQueryClient()
+
   const {
     actions: { deleteNegotiationCache },
     onMutateCache,
@@ -27,22 +29,22 @@ const DeleteNegotiationModal = ({ visible, idUser = 0, onClose }: DeleteNegotiat
     Error
   >(
     async () => {
-      return await deleteNegotiation(idUser)
+      return await deleteNegotiation(idNegociation)
     },
     {
       onSuccess: (result) => {
-        deleteNegotiationCache(result.data.id)
+        deleteNegotiationCache(result.data.id, chb)
         notification({ type: 'success', message: 'Usuario eliminado' })
         onClose()
       },
       onMutate: () => {
-        onMutateCache()
+        onMutateCache(chb)
       },
       onSettled: () => {
-        onSettledCache()
+        onSettledCache(chb)
       },
       onError: (error: any, _, context: any) => {
-        onErrorCache(context)
+        onErrorCache(context, chb)
         notification({
           type: 'error',
           message: error.response.data.message,
@@ -52,7 +54,7 @@ const DeleteNegotiationModal = ({ visible, idUser = 0, onClose }: DeleteNegotiat
   )
 
   const handleClickDelete = () => {
-    if (idUser !== 0) {
+    if (idNegociation !== 0) {
       deleteNegotiationMutate()
     }
   }

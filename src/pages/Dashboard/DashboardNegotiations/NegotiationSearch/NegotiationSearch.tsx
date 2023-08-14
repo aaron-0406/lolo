@@ -11,17 +11,22 @@ import useModal from '../../../../shared/hooks/useModal'
 import Label from '../../../../ui/Label/Label'
 import Select from '../../../../ui/Select'
 import { useDashContext } from '../../../../shared/contexts/DashProvider'
+import { useQueryClient } from 'react-query'
+import dashNegotiationCache from '../NegotiationTable/utils/dash-negociaciones.cache'
 
 type NegotiationSearchProps = {
   opts: Opts
   setOpts: Dispatch<Opts>
-  selectedBank: { chb: number; setChbGlobal: (chb: number) => void }
+  selectedBank: { chb: number; setChb: (chb: number) => void }
 }
 
-const NegotiationSearch = ({ opts, setOpts, selectedBank: { chb, setChbGlobal } }: NegotiationSearchProps) => {
+const NegotiationSearch = ({ opts, setOpts, selectedBank: { chb, setChb } }: NegotiationSearchProps) => {
   const {
     dashCustomer: { selectedCustomer },
   } = useDashContext()
+
+  const queryClient = useQueryClient()
+  const { onRefetchQueryCache } = dashNegotiationCache(queryClient)
 
   const greaterThanMobile = useMediaQuery(device.tabletS)
   const { visible: visibleModalAdd, showModal: showModalAdd, hideModal: hideModalAdd } = useModal()
@@ -34,17 +39,22 @@ const NegotiationSearch = ({ opts, setOpts, selectedBank: { chb, setChbGlobal } 
   })
 
   const onChangeBank = (key: string) => {
-    setChbGlobal(parseInt(key))
+    setChb(parseInt(key))
+    onRefetchQueryCache(parseInt(key))
   }
 
   const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
     if (value === '') {
       setOpts({ ...opts, filter: '', page: 1 })
+      onRefetchQueryCache(chb)
       return
     }
+
     if (value.length < 3) return
+
     setOpts({ ...opts, filter: value.trim(), page: 1 })
+    onRefetchQueryCache(chb)
   }
 
   return (
@@ -62,8 +72,8 @@ const NegotiationSearch = ({ opts, setOpts, selectedBank: { chb, setChbGlobal } 
           onChange={onChangeBank}
         />
       </Container>
-      <Button shape="round" leadingIcon="ri-add-fill" size="small" onClick={showModalAdd} />
-      <NegotiationModal visible={visibleModalAdd} onClose={hideModalAdd} />
+      <Button shape="round" leadingIcon="ri-add-fill" size="small" onClick={showModalAdd} disabled={!chb} />
+      <NegotiationModal visible={visibleModalAdd} onClose={hideModalAdd} chb={chb} />
     </Container>
   )
 }
