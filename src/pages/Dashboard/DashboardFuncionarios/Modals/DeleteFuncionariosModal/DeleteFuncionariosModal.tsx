@@ -5,11 +5,11 @@ import notification from '../../../../../ui/notification'
 import Button from '../../../../../ui/Button'
 import { deleteFuncionario } from '../../../../../shared/services/funcionario.service'
 import dashFuncionariosCache from '../../FuncionariosTable/utils/dash-funcionarios.cache'
+import { AxiosResponse } from 'axios'
 
 type DeleteFuncionariosModalProps = {
   visible: boolean
   onClose: () => void
-  isEdit?: boolean
   idAction?: number
   chb: number
 }
@@ -24,7 +24,10 @@ const DeleteFuncionariosModal = ({ visible, idAction = 0, onClose, chb = 0 }: De
     onErrorCache,
   } = dashFuncionariosCache(queryClient)
 
-  const { isLoading: loadingDeleteFuncionario, mutate: deleteFuncionarioMutate } = useMutation<any, Error>(
+  const { isLoading: loadingDeleteFuncionario, mutate: deleteFuncionarioMutate } = useMutation<
+    AxiosResponse<{ id: string }>,
+    Error
+  >(
     async () => {
       return await deleteFuncionario(idAction)
     },

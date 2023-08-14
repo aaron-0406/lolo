@@ -42,18 +42,22 @@ const FuncionariosTable: FC<FuncionariosTableProps> = ({ opts, setOpts, selected
     setIdFuncionario(id)
     showModalFuncionario()
   }
+
   const handleClickDeleteUser = (id: number) => {
     setIdDeletedFuncionario(id)
     showDeleteFuncionario()
   }
+
   const onCloseDeleteFuncionario = () => {
     setIdDeletedFuncionario(0)
     hideDeleteFuncionario()
   }
+
   const onCloseModal = () => {
     setIdFuncionario(0)
     hideModalFuncionario()
   }
+
   const { isLoading } = useQuery(
     [KEY_DASH_FUNCIONARIOS_CACHE, chb],
     async () => {

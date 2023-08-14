@@ -155,7 +155,7 @@ const FuncionariosModal = ({ visible, onClose, isEdit = false, idFuncionario = 0
       <Modal
         visible={visible}
         onClose={handleClickCloseModal}
-        id="modal-files"
+        id="modal-funcionarios"
         title={isEdit ? 'Editar Funcionario' : 'Agregar Funcionario'}
         contentOverflowY="auto"
         size="small"

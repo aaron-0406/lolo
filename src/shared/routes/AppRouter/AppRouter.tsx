@@ -9,6 +9,7 @@ import DashHome from '../../../pages/Dashboard/Home'
 import DashboardCustomers from '../../../pages/Dashboard/DashboardCustomers'
 import DashboardActions from '../../../pages/Dashboard/DashboardActions'
 import DashboardUsers from '../../../pages/Dashboard/DashboardUsers'
+import DashboardNegotiations from '../../../pages/Dashboard/DashboardNegotiations'
 import DashboardFuncionarios from '../../../pages/Dashboard/DashboardFuncionarios'
 
 //COMPANY
@@ -51,6 +52,7 @@ const AppRouter = () => {
         <Route path={paths.dash.funcionarios} element={<DashboardFuncionarios />} />
         <Route path={paths.dash.reportes} element={<div>reportes</div>} />
         <Route path={paths.dash.acciones} element={<DashboardActions />} />
+        <Route path={paths.dash.negociaciones} element={<DashboardNegotiations />} />
       </Route>
 
       {/* COMPANY */}

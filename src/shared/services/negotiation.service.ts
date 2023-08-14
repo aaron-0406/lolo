@@ -9,7 +9,7 @@ export const getAll = async () => {
   return await axiosClient.get(`${url}/`)
 }
 
-export const getAllNegociacionesByCHB = async (chb: string) => {
+export const getAllNegociacionesByCHB = async (chb: number) => {
   return await axiosClient.get(`${url}/all/${chb}`)
 }
 

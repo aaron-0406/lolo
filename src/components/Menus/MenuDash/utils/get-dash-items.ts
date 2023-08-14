@@ -3,7 +3,7 @@ import paths from '../../../../shared/routes/paths'
 export const getDashItems = () => {
   return [
     {
-      id: 5,
+      id: 10,
       title: 'DASHBOARD',
       remixClass: 'ri-dashboard-line',
       path: paths.dash.root,
@@ -24,13 +24,6 @@ export const getDashItems = () => {
       admin: false,
     },
     {
-      id: 6,
-      title: 'FUNCIONARIOS',
-      remixClass: 'ri-briefcase-fill',
-      path: paths.dash.funcionarios,
-      admin: false,
-    },
-    {
       id: 3,
       title: 'REPORTES',
       remixClass: 'ri-file-list-fill',
@@ -42,6 +35,20 @@ export const getDashItems = () => {
       title: 'ACCIONES',
       remixClass: 'ri-pencil-ruler-2-fill',
       path: paths.dash.acciones,
+      admin: false,
+    },
+    {
+      id: 5,
+      title: 'NEGOCIACIONES',
+      remixClass: 'ri-folder-2-fill',
+      path: paths.dash.negociaciones,
+      admin: false,
+    },
+    {
+      id: 6,
+      title: 'FUNCIONARIOS',
+      remixClass: 'ri-briefcase-fill',
+      path: paths.dash.funcionarios,
       admin: false,
     },
   ]

@@ -13,6 +13,7 @@ export default {
     usuarios: '/dash/usuarios',
     funcionarios: 'dash/funcionarios',
     reportes: '/dash/reportes',
+    negociaciones: '/dash/negociaciones',
     acciones: '/dash/acciones',
   },
   company: {
