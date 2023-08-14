@@ -4,7 +4,7 @@ import Container from '../../../ui/Container'
 import { Opts } from '../../../ui/Pagination/interfaces'
 import NegotiationSearch from './NegotiationSearch'
 
-const DashboardNegotiation = () => {
+const DashboardNegotiations = () => {
   const [opts, setOpts] = useState<Opts>({ filter: '', limit: 50, page: 1 })
   const [chb, setChb] = useState<number>(0)
 
@@ -28,4 +28,4 @@ const DashboardNegotiation = () => {
   )
 }
 
-export default DashboardNegotiation
+export default DashboardNegotiations

@@ -1,7 +1,7 @@
 import { Dispatch, useState } from 'react'
 import { useQuery } from 'react-query'
 import moment from 'moment'
-import { getAll, getAllNegociacionesByCHB } from '../../../../shared/services/negotiation.service'
+import { getAllNegociacionesByCHB } from '../../../../shared/services/negotiation.service'
 import { NegotiationType } from '../../../../shared/types/negotiation.type'
 import Container from '../../../../ui/Container'
 import Pagination from '../../../../ui/Pagination'
