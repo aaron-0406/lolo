@@ -3,7 +3,7 @@ import { useLoloContext } from '../../../../shared/contexts/LoloProvider'
 import { useMediaQuery } from '../../../../shared/hooks/useMediaQuery'
 import { device } from '../../../../shared/breakpoints/reponsive'
 import Container from '../../../../ui/Container'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import Text from '../../../../ui/Text'
 import Img from '../../../../ui/Img'
 import Icon from '../../../../ui/Icon/Icon'
@@ -123,8 +123,10 @@ const StyledContainer = styled(Container)`
 `
 
 const StyledPictureContainer = styled(Img)`
+  ${({ theme }) => css`
+    border-color: ${theme.colors.Primary1};
+  `}
   border-radius: 50%;
   border: 0.5px;
-  border-color: #225679;
   border-style: solid;
 `
