@@ -60,7 +60,6 @@ const UsersModal = ({ visible, onClose, idUser = 0, isEdit = false }: UsersModal
     getValues,
     control,
     reset,
-    formState: { isValid },
   } = formMethods
 
   const { isLoading: loadingCreateUser, mutate: createCustomerUser } = useMutation<
@@ -95,7 +94,7 @@ const UsersModal = ({ visible, onClose, idUser = 0, isEdit = false }: UsersModal
 
   const { isLoading: loadingEditUser, mutate: editUser } = useMutation<AxiosResponse<CustomerUserType>, Error>(
     async () => {
-      const { id, createdAt, password, email, customerId, ...restUser } = getValues()
+      const { id, createdAt, email, customerId, ...restUser } = getValues()
       return await editUserById(id, restUser)
     },
     {
@@ -209,7 +208,6 @@ const UsersModal = ({ visible, onClose, idUser = 0, isEdit = false }: UsersModal
               trailingIcon="ri-add-fill"
               onClick={isEdit ? onEditUser : onAddUser}
               loading={loadingCreateUser || loadingEditUser}
-              disabled={!isValid}
             />
           </Container>
         </Container>
