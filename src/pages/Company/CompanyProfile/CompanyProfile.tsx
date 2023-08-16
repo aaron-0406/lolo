@@ -3,69 +3,44 @@ import CommentChart from './CommentChart'
 import ProfileInfo from './ProfileInfo'
 import { device } from '../../../shared/breakpoints/reponsive'
 import { useMediaQuery } from '../../../shared/hooks/useMediaQuery'
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 import GoalInfo from './GoalInfo'
 
 const CompanyProfile = () => {
   const greaterThanTabletL = useMediaQuery(device.desktopS)
 
   return (
-    <StyledCompanyProfile height="100%" width="100%" overFlowY="auto">
-      <Container className={`main_container ${!greaterThanTabletL && 'main_container_tablet'}`}>
-        <Container className={`side_bar ${!greaterThanTabletL && 'side_bar_tablet'}`}>
-          <ProfileInfo />
-        </Container>
-        <Container className={`body_area ${!greaterThanTabletL && 'body_area_tablet'}`}>
+    <Container
+      backgroundColor="#F2F2F2"
+      padding="15px"
+      gap="15px"
+      display="flex"
+      width="100%"
+      height="100%"
+      flexWrap={greaterThanTabletL ? 'nowrap' : 'wrap'}
+      overFlowY="auto"
+    >
+      <ProfileInfo />
+      <Container
+        minWidth={greaterThanTabletL ? 'calc(60% - 7.5px)' : '100%'}
+        gap="15px"
+        display="flex"
+        flexDirection="column"
+        backgroundColor="#F2F2F2"
+      >
+        <StyledContainer backgroundColor="#fff" padding="1rem">
           <GoalInfo />
+        </StyledContainer>
+        <StyledContainer backgroundColor="#fff" padding="1rem">
           <CommentChart />
-        </Container>
+        </StyledContainer>
       </Container>
-    </StyledCompanyProfile>
+    </Container>
   )
 }
 
 export default CompanyProfile
 
-const StyledCompanyProfile = styled(Container)`
-  ${() => css`
-    .main_container {
-      display: flex;
-      flex-direction: row;
-      /* flex-wrap: wrap; */
-      height: 100%;
-      width: 100%;
-
-      .side_bar {
-        display: flex;
-        width: 30%;
-        height: 100%;
-        text-align: center;
-        align-items: center;
-        justify-content: center;
-        background-color: #e5e7eb;
-      }
-
-      .body_area {
-        display: flex;
-        width: 70%;
-        height: 100%;
-        flex-direction: column;
-        justify-content: space-around;
-        align-items: center;
-      }
-    }
-
-    .main_container_tablet {
-      flex-direction: column;
-      .side_bar_tablet {
-        width: 100%;
-        /* height: 37%; */
-      }
-
-      .body_area_tablet {
-        width: 100%;
-        /* height: calc(63% - 10px); */
-      }
-    }
-  `}
+const StyledContainer = styled(Container)`
+  border-radius: 5px;
 `

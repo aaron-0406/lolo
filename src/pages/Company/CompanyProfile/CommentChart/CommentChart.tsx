@@ -53,16 +53,8 @@ const CommentChart = () => {
   }
 
   return (
-    <Container
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      width="100%"
-      flexDirection="column"
-      height="70%"
-      padding="2rem 2rem"
-    >
-      <Text.Title size="m" weight="bold">
+    <Container display="flex" justifyContent="center" alignItems="center" flexDirection="column">
+      <Text.Title color="Primary5" size="s" weight="bold">
         Comentarios realizados esta semana
       </Text.Title>
       <Bar data={datos} options={options} />
