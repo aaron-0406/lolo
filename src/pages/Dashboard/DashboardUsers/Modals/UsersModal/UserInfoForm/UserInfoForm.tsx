@@ -80,7 +80,7 @@ const UserInfoForm = () => {
           name="password"
           control={control}
           render={({ field }) => (
-            <TextField width="100%" value={field.value} onChange={field.onChange} hasError={!!errors.password} />
+            <TextField type="password" width="100%" value={field.value} onChange={field.onChange} hasError={!!errors.password} />
           )}
         />
       </Container>
