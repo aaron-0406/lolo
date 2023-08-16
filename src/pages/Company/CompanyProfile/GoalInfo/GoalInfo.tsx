@@ -68,16 +68,18 @@ const GoalInfo = () => {
     return () => {}
   }, [])
   return (
-    <Container width="100%"  display="flex" flexDirection="column" justifyContent="center" gap="1rem">
-      <Container display="flex" justifyContent="space-between" width="100%" padding="0 2rem">
-        <Text.Body size="m" weight="bold">
+    <Container width="100%" display="flex" flexDirection="column" justifyContent="center" gap="1rem">
+      <Container display="flex" justifyContent="space-between" width="100%">
+        <Text.Body size="m" weight="bold" color="Primary5">
           {globalGoal.id !== 0
-            ? `Meta del ${moment(globalGoal.startDate).format('DD-MM-YYYY')} al ${moment(globalGoal.endDate).format('DD-MM-YYYY')}`
+            ? `Meta del ${moment(globalGoal.startDate).format('DD-MM-YYYY')} al ${moment(globalGoal.endDate).format(
+                'DD-MM-YYYY'
+              )}`
             : 'No hay meta registrada para esta semana!'}
         </Text.Body>
       </Container>
       {privilege === 'EDITOR' && (
-        <Container width="100%" display="flex" flexDirection="column" padding="0 2rem" gap="20px">
+        <Container width="100%" display="flex" flexDirection="column" gap="15px">
           <Container width="100%" display="flex">
             <Container display="flex" justifyContent="space-between" width="100%">
               <Text.Body size="m" weight="bold">
@@ -103,7 +105,7 @@ const GoalInfo = () => {
           />
         </Container>
       )}
-      <Container width="100%" display="flex" flexDirection="column" padding="0 2rem" gap="20px">
+      <Container width="100%" display="flex" flexDirection="column" gap="15px">
         <Container width="100%" display="flex">
           <Container display="flex" justifyContent="space-between" width="100%">
             <Text.Body size="m" weight="bold">
