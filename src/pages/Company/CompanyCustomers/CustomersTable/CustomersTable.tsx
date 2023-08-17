@@ -80,7 +80,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
   }
 
   const onClickRow = (code: string) => {
-    navigate(`${paths.company.cobranza(urlIdentifier)}?code=${code}`)
+    navigate(`${paths.cobranza.cobranza(urlIdentifier)}?code=${code}`)
   }
 
   const { refetch } = useQuery(
