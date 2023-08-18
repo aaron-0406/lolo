@@ -1,5 +1,5 @@
 import axiosClient from '../../utils/api/clientAxios'
-import { FuncionarioType } from '../../types/funcionario.type'
+import { FuncionarioType } from '../../types/dash/funcionario.type'
 
 const API = axiosClient.getUri()
 

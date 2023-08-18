@@ -11,7 +11,7 @@ import { GoalFormType } from '../hookform.type'
 import { Opts } from '../../../../ui/Pagination/interfaces'
 import { useEffect, useState } from 'react'
 import { goalsColumns } from './utils/columns'
-import { GoalType } from '../../../../shared/types/goal-type'
+import { GoalType } from '../../../../shared/types/extrajudicial/goal.type'
 import {
   GoalApiResponse,
   GoalsApiResponse,

@@ -1,11 +1,11 @@
 import { ClientType } from '../../../shared/types/extrajudicial/client.type'
 import { DirectionType } from '../../../shared/types/extrajudicial/direction.type'
-import { ECampoType } from '../../../shared/types/ecampo.type'
-import { GuarantorType } from '../../../shared/types/guarantor.type'
-import { TemplateDocument } from '../../../shared/types/template-document.type'
-import { TemplateHasValuesType } from '../../../shared/types/template-has-values.type'
-import { TemplateType } from '../../../shared/types/template.type'
-import { ValueType } from '../../../shared/types/value.type'
+import { ECampoType } from '../../../shared/types/extrajudicial/ecampo.type'
+import { GuarantorType } from '../../../shared/types/extrajudicial/guarantor.type'
+import { TemplateDocument } from '../../../shared/types/extrajudicial/template-document.type'
+import { TemplateHasValuesType } from '../../../shared/types/extrajudicial/template-has-values.type'
+import { TemplateType } from '../../../shared/types/extrajudicial/template.type'
+import { ValueType } from '../../../shared/types/extrajudicial/value.type'
 
 export type ClientTypeForm = ClientType & {
   direction: DirectionType[]

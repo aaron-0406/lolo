@@ -1,6 +1,6 @@
 import React, { Dispatch, ReactNode } from 'react'
 import styled, { css } from 'styled-components'
-import { FileType } from '../../../../../../../../shared/types/file.type'
+import { FileType } from '../../../../../../../../shared/types/extrajudicial/file.type'
 import Container from '../../../../../../../../ui/Container'
 import pdfIcon from '../../../../../../../../shared/assets/icons/pdf.png'
 import wordIcon from '../../../../../../../../shared/assets/icons/word-doc.png'

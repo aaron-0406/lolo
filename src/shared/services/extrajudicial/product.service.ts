@@ -1,4 +1,4 @@
-import { ProductType } from '../../types/product.type'
+import { ProductType } from '../../types/extrajudicial/product.type'
 import axiosClient from '../../utils/api/clientAxios'
 
 const API = axiosClient.getUri()

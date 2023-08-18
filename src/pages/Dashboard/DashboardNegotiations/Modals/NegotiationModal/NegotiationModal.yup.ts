@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import yup from '../../../../../shared/yupLocale'
-import { NegotiationType } from '../../../../../shared/types/negotiation.type'
+import { NegotiationType } from '../../../../../shared/types/dash/negotiation.type'
 
 const NegotiationModal: yup.SchemaOf<Omit<NegotiationType, 'createdAt' | 'id'>> = yup.object().shape({
   name: yup.string().min(1).max(200).required(),

@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { ManagementActionType } from '../../../../../shared/types/management-action.type'
+import { ManagementActionType } from '../../../../../shared/types/dash/management-action.type'
 import { ModalActionsResolver } from './ActionsModal.yup'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useMutation, useQuery, useQueryClient } from 'react-query'

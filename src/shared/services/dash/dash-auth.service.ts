@@ -1,7 +1,7 @@
 import { LoginTypeDash } from '../../types/dash/auth-dash.type'
 import axiosClient from '../../utils/api/clientAxios'
 import { AxiosResponse } from 'axios'
-import { UserAppType } from '../../types/user-app'
+import { UserAppType } from '../../types/dash/user-app'
 
 const API = axiosClient.getUri()
 

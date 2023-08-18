@@ -1,6 +1,6 @@
 import { Dispatch, FC, useState } from 'react'
 import { Opts } from '../../../../ui/Pagination/interfaces'
-import { ManagementActionType } from '../../../../shared/types/management-action.type'
+import { ManagementActionType } from '../../../../shared/types/dash/management-action.type'
 import useModal from '../../../../shared/hooks/useModal'
 import { useQuery } from 'react-query'
 import { getAllManagementActionsByCHB } from '../../../../shared/services/dash/management-action.service'

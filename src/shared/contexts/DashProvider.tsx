@@ -1,6 +1,6 @@
 import { createContext, Dispatch, useContext, useEffect, useState } from 'react'
 import jwtDecode from 'jwt-decode'
-import { UserAppType } from '../types/user-app'
+import { UserAppType } from '../types/dash/user-app'
 import { CustomerType } from '../types/dash/customer.type'
 import storage from '../utils/storage'
 import { usePersistedState } from '../hooks/usePersistedState'

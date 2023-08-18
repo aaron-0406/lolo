@@ -8,7 +8,7 @@ import {
   deleteTemplateHasValuesService,
   updateTemplateHasValuesService,
 } from '../../../../shared/services/extrajudicial/template-has-values.service'
-import { ECampoType } from '../../../../shared/types/ecampo.type'
+import { ECampoType } from '../../../../shared/types/extrajudicial/ecampo.type'
 import { DOMAIN } from '../../../../shared/utils/constant/api'
 import Button from '../../../../ui/Button'
 import Container from '../../../../ui/Container'

@@ -7,7 +7,7 @@ import {
   getAllNegociacionesById,
 } from '../../../../../shared/services/dash/negotiation.service'
 import { ModalNegotiationResolver } from './NegotiationModal.yup'
-import { NegotiationType } from '../../../../../shared/types/negotiation.type'
+import { NegotiationType } from '../../../../../shared/types/dash/negotiation.type'
 import Modal from '../../../../../ui/Modal'
 import Container from '../../../../../ui/Container'
 import Button from '../../../../../ui/Button'

@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react'
-import { FileType } from '../../../../../../../../shared/types/file.type'
+import { FileType } from '../../../../../../../../shared/types/extrajudicial/file.type'
 import DocViewer, { DocViewerRenderers, IDocument } from '@cyntler/react-doc-viewer'
 
 import { DOMAIN } from '../../../../../../../../shared/utils/constant/api'

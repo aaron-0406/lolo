@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { FuncionarioType } from '../../../../../shared/types/funcionario.type'
+import { FuncionarioType } from '../../../../../shared/types/dash/funcionario.type'
 import { ModalFuncionariosResolver } from './FuncionariosModal.yup'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useMutation, useQuery, useQueryClient } from 'react-query'

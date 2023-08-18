@@ -1,6 +1,6 @@
 import { Dispatch, FC, useState } from 'react'
 import { Opts } from '../../../../ui/Pagination/interfaces'
-import { FuncionarioType } from '../../../../shared/types/funcionario.type'
+import { FuncionarioType } from '../../../../shared/types/dash/funcionario.type'
 import useModal from '../../../../shared/hooks/useModal'
 import { useQuery } from 'react-query'
 import { getAllFuncionariosByCHB } from '../../../../shared/services/dash/funcionario.service'

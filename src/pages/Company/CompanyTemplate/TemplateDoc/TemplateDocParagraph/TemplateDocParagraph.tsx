@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
-import { ParagraphOptionsType, TextOptionsType } from '../../../../../shared/types/template-document.type'
+import { ParagraphOptionsType, TextOptionsType } from '../../../../../shared/types/extrajudicial/template-document.type'
 import Container from '../../../../../ui/Container'
 import { TemplateFormType } from '../../hookforms.interfaces'
 import TemplateDocText from './TemplateDocText'

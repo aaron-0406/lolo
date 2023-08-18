@@ -1,5 +1,5 @@
-import { GoalType } from '../../types/goal-type'
-import { GoalUserType } from '../../types/goal-user.type'
+import { GoalType } from '../../types/extrajudicial/goal.type'
+import { GoalUserType } from '../../types/extrajudicial/goal-user.type'
 import axiosClient from '../../utils/api/clientAxios'
 import { AxiosResponse } from 'axios'
 
