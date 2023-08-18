@@ -8,7 +8,7 @@ import TemplateInfo from './TemplateInfo'
 import TemplateTable from './TemplateTable'
 import TemplateUsersTable from './TemplateUsersTable'
 
-const CompanyDocument = () => {
+const ExtrajudicialTemplate = () => {
   const formMethods = useForm<TemplateFormType>({
     mode: 'all',
     defaultValues: {
@@ -47,4 +47,4 @@ const CompanyDocument = () => {
   )
 }
 
-export default CompanyDocument
+export default ExtrajudicialTemplate

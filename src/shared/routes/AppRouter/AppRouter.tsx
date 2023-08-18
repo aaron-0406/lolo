@@ -29,7 +29,7 @@ import ProtectedRoutesCompany from '../ProtectedRoutesCompany'
 
 import paths from '../paths'
 import ExtrajudicialCobranza from '../../../pages/Company/Extrajudicial/ExtrajudicialCobranza'
-import CompanyTemplate from '../../../pages/Company/Extrajudicial/CompanyTemplate'
+import CompanyTemplate from '../../../pages/Company/Extrajudicial/ExtrajudicialTemplate'
 import ProtectedRoutesCompanyDash from '../ProtectedRoutesCompanyDash'
 import Dashboard from '../../../pages/Company/Extrajudicial/CompanyDashboard/Dashboard'
 import CompanyMetas from '../../../pages/Company/Extrajudicial/CompanyMetas/CompanyMetas'
