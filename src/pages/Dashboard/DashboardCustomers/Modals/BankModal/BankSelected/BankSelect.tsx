@@ -3,7 +3,10 @@ import { banksSelectColumns } from './utils/columnsSelect'
 import { useState, useEffect } from 'react'
 import Table from '../../../../../../ui/Table'
 import Container from '../../../../../../ui/Container'
+import { getAllById } from '../../../../../../shared/services/customer-has-bank.service'
 import { useQuery } from 'react-query'
+import { CustomerHasBankType } from '../../../../../../shared/types/customer-has-bank'
+import { BankType } from '../../../../../../shared/types/bank.type'
 import { useMediaQuery } from '../../../../../../shared/hooks/useMediaQuery'
 import { device } from '../../../../../../shared/breakpoints/reponsive'
 import BodyCell from '../../../../../../ui/Table/BodyCell'
@@ -17,7 +20,6 @@ const BankSelected = () => {
   const greaterThanMobile = useMediaQuery(device.tabletS)
 
   const [load, setLoad] = useState(false)
-  const [banks, setBanks] = useState([])
 
   return (
     <Container width="49%">
@@ -25,13 +27,22 @@ const BankSelected = () => {
         top={greaterThanMobile ? '340px' : '200px'}
         columns={banksSelectColumns}
         loading={load}
-        isArrayEmpty={!banks.length}
+        isArrayEmpty={!selectedCustomer.customerBanks.length}
         emptyState={
           <EmptyStateCell colSpan={banksSelectColumns.length}>
             <div>Vacio</div>
           </EmptyStateCell>
         }
-      ></Table>
+      >
+        {!!selectedCustomer.customerBanks?.length &&
+          selectedCustomer.customerBanks.map((record: BankType, key) => {
+            return (
+              <tr className="styled-data-table-row" key={key}>
+                <BodyCell textAlign="center">{`${record.name || ''}`}</BodyCell>
+              </tr>
+            )
+          })}
+      </Table>
     </Container>
   )
 }
