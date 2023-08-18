@@ -40,11 +40,19 @@ const BankNoSelected = () => {
     },
     {
       onSuccess: ({ data }) => {
+        data = data.filter((bank: BankType) =>
+          !selectedCustomer.customerBanks.some((bankSelect: BankType) => bankSelect.id === bank.id)
+        )
         setBanks(data)
         createBankCache(data)
       },
+      enabled: false,
     }
   )
+
+  useEffect(() => {
+    refetch()
+  }, [refetch])
 
   const onHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {}
 
@@ -53,16 +61,16 @@ const BankNoSelected = () => {
       <Table
         top={greaterThanMobile ? '340px' : '200px'}
         columns={banksNoSelectColumns}
-        loading={load}
-        isArrayEmpty={!selectedCustomer.customerBanks.length}
+        loading={isLoading}
+        isArrayEmpty={!banks.length}
         emptyState={
           <EmptyStateCell colSpan={banksNoSelectColumns.length}>
             <div>Vacio</div>
           </EmptyStateCell>
         }
       >
-        {!!selectedCustomer.customerBanks?.length &&
-          selectedCustomer.customerBanks.map((record: BankType, key) => {
+        {!!banks.length &&
+          banks.map((record: BankType, key) => {
             return (
               <tr className="styled-data-table-row" key={key}>
                 <BodyCell textAlign="center">{`${record.name || ''}`}</BodyCell>
