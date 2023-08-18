@@ -15,7 +15,16 @@ import DashboardFuncionarios from '../../../pages/Dashboard/DashboardFuncionario
 //COMPANY
 import CompanyLogin from '../../../pages/Company/Login'
 import CompanyHome from '../../../pages/Company/Home'
+
+//EXTRAJUDICIAL
 import ExtrajudicialProfile from '../../../pages/Company/Extrajudicial/ExtrajudicialProfile'
+import ExtrajudicialCobranza from '../../../pages/Company/Extrajudicial/ExtrajudicialCobranza'
+import ExtrajudicialTemplate from '../../../pages/Company/Extrajudicial/ExtrajudicialTemplate'
+import Dashboard from '../../../pages/Company/Extrajudicial/ExtrajudicialDashboard/Dashboard'
+import ExtrajudicialMetas from '../../../pages/Company/Extrajudicial/ExtrajudicialMetas'
+import ExtrajudicialCustomers from '../../../pages/Company/Extrajudicial/ExtrajudicialCustomers/ExtrajudicialCustomers'
+
+//JUDICIAL
 
 import ErrorPage from '../../../pages/ErrorPage'
 import NotFound from '../../../pages/NotFound'
@@ -25,14 +34,9 @@ import GuestRoute from '../GhestRoutes'
 import GuestRouteCompany from '../GuestRoutesCompany'
 import ProtectedRoutes from '../ProtectedRoutes'
 import ProtectedRoutesCompany from '../ProtectedRoutesCompany'
+import ProtectedRoutesCompanyDash from '../ProtectedRoutesCompanyDash'
 
 import paths from '../paths'
-import ExtrajudicialCobranza from '../../../pages/Company/Extrajudicial/ExtrajudicialCobranza'
-import ExtrajudicialTemplate from '../../../pages/Company/Extrajudicial/ExtrajudicialTemplate'
-import ProtectedRoutesCompanyDash from '../ProtectedRoutesCompanyDash'
-import Dashboard from '../../../pages/Company/Extrajudicial/ExtrajudicialDashboard/Dashboard'
-import ExtrajudicialMetas from '../../../pages/Company/Extrajudicial/ExtrajudicialMetas'
-import ExtrajudicialCustomers from '../../../pages/Company/Extrajudicial/ExtrajudicialCustomers'
 
 const AppRouter = () => {
   return (
