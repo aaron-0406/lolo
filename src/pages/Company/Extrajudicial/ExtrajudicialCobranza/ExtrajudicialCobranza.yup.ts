@@ -3,7 +3,7 @@ import { ClientType } from '../../../../shared/types/extrajudicial/client.type'
 import { CommentType } from '../../../../shared/types/extrajudicial/comment.type'
 import yup from '../../../../shared/yupLocale'
 
-const CompanyCobranzaSchema: yup.SchemaOf<Omit<ClientType, 'id' | 'createdAt'>> = yup.object().shape({
+const ExtrajudicialCobranzaSchema: yup.SchemaOf<Omit<ClientType, 'id' | 'createdAt'>> = yup.object().shape({
   code: yup.string().required().matches(/^\d*$/),
   negotiationId: yup.number().required().min(1),
   dniOrRuc: yup.string().optional().max(20),
@@ -17,7 +17,7 @@ const CompanyCobranzaSchema: yup.SchemaOf<Omit<ClientType, 'id' | 'createdAt'>> 
   customerHasBankId: yup.number().required().min(1),
 })
 
-const CompanyCobranzaCommentSchema: yup.SchemaOf<Omit<CommentType, 'id'>> = yup.object().shape({
+const ExtrajudicialCobranzaCommentSchema: yup.SchemaOf<Omit<CommentType, 'id'>> = yup.object().shape({
   clientId: yup.number().min(1).required(),
   customerUserId: yup.number().min(1).required(),
   comment: yup.string().required(),
@@ -26,5 +26,5 @@ const CompanyCobranzaCommentSchema: yup.SchemaOf<Omit<CommentType, 'id'>> = yup.
   managementActionId: yup.number().optional(),
 })
 
-export const CompanyCobranzaResolver = yupResolver(CompanyCobranzaSchema)
-export const CompanyCobranzaCommentResolver = yupResolver(CompanyCobranzaCommentSchema)
+export const ExtrajudicialCobranzaResolver = yupResolver(ExtrajudicialCobranzaSchema)
+export const ExtrajudicialCobranzaCommentResolver = yupResolver(ExtrajudicialCobranzaCommentSchema)

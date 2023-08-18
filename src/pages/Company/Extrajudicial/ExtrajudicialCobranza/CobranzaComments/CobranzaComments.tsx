@@ -6,7 +6,7 @@ import TextAreaField from '../../../../../ui/fields/TextAreaField'
 import moment from 'moment'
 import { Controller, useForm, useFormContext } from 'react-hook-form'
 import { CommentType } from '../../../../../shared/types/extrajudicial/comment.type'
-import { CompanyCobranzaCommentResolver } from '../CompanyCobranza.yup'
+import { ExtrajudicialCobranzaCommentResolver } from '../ExtrajudicialCobranza.yup'
 import { ClientType } from '../../../../../shared/types/extrajudicial/client.type'
 import Select from '../../../../../ui/Select'
 import { SelectItemType } from '../../../../../ui/Select/interfaces'
@@ -44,7 +44,7 @@ const CobranzaComments = () => {
     watch,
     formState: { errors },
   } = useForm<CommentType>({
-    resolver: CompanyCobranzaCommentResolver,
+    resolver: ExtrajudicialCobranzaCommentResolver,
     defaultValues: {
       comment: '',
       date: moment(new Date()).format('DD-MM-YYYY'),

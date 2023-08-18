@@ -6,11 +6,11 @@ import CobranzaActions from './CobranzaActions'
 import CobranzaComments from './CobranzaComments'
 import CobranzaInfo from './CobranzaInfo'
 import CobranzaSearch from './CobranzaSearch'
-import { CompanyCobranzaResolver } from './CompanyCobranza.yup'
+import { ExtrajudicialCobranzaResolver } from './ExtrajudicialCobranza.yup'
 
-const CompanyCobranza = () => {
+const ExtrajudicialCobranza = () => {
   const formMethods = useForm<ClientType>({
-    resolver: CompanyCobranzaResolver,
+    resolver: ExtrajudicialCobranzaResolver,
     mode: 'all',
     defaultValues: {
       id: 0,
@@ -43,4 +43,4 @@ const CompanyCobranza = () => {
   )
 }
 
-export default CompanyCobranza
+export default ExtrajudicialCobranza
