@@ -16,7 +16,7 @@ import DashboardFuncionarios from '../../../pages/Dashboard/DashboardFuncionario
 import CompanyLogin from '../../../pages/Company/Login'
 import CompanyHome from '../../../pages/Company/Home'
 import CompanyCustomers from '../../../pages/Company/Extrajudicial/CompanyCustomers'
-import CompanyProfile from '../../../pages/Company/Extrajudicial/CompanyProfile'
+import ExtrajudicialProfile from '../../../pages/Company/Extrajudicial/ExtrajudicialProfile'
 
 import ErrorPage from '../../../pages/ErrorPage'
 import NotFound from '../../../pages/NotFound'
@@ -61,7 +61,7 @@ const AppRouter = () => {
       </Route>
       <Route element={<ProtectedRoutesCompany pathname={paths.company.login()} />}>
         <Route path={paths.company.root()} element={<CompanyHome />} />
-        <Route path={paths.cobranza.perfil()} element={<CompanyProfile />} />
+        <Route path={paths.cobranza.perfil()} element={<ExtrajudicialProfile />} />
         <Route path={paths.cobranza.clientes()} element={<CompanyCustomers />} />
         <Route path={paths.cobranza.cobranza()} element={<ExtrajudicialCobranza />} />
         <Route path={paths.cobranza.metas()} element={<CompanyMetas />} />

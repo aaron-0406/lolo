@@ -6,7 +6,7 @@ import { useMediaQuery } from '../../../../shared/hooks/useMediaQuery'
 import styled from 'styled-components'
 import GoalInfo from './GoalInfo'
 
-const CompanyProfile = () => {
+const ExtrajudicialProfile = () => {
   const greaterThanTabletL = useMediaQuery(device.desktopS)
 
   return (
@@ -39,7 +39,7 @@ const CompanyProfile = () => {
   )
 }
 
-export default CompanyProfile
+export default ExtrajudicialProfile
 
 const StyledContainer = styled(Container)`
   border-radius: 5px;
