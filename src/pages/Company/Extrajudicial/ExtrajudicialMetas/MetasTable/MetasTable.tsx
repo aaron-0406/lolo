@@ -19,11 +19,11 @@ import {
   getGoals,
 } from '../../../../../shared/services/extrajudicial/goal.service'
 import { useMutation, useQuery } from 'react-query'
-import CompanyMetasModal from '../CompanyMetasModal/CompanyMetasModal'
+import MetasModal from '../MetasModal/MetasModal'
 import useModal from '../../../../../shared/hooks/useModal'
 import { notification } from '../../../../../ui/notification/notification'
 import Progress from '../../../../../ui/Progress/Progress'
-import CompanyMetasModalView from '../MetasModalView/MetasModalView'
+import MetasModalView from '../MetasModalView/MetasModalView'
 
 const MetasTable = () => {
   const { watch, setValue } = useFormContext<GoalFormType>()
@@ -167,8 +167,8 @@ const MetasTable = () => {
             )
           })}
       </Table>
-      <CompanyMetasModal visible={visibleModalAdd} onClose={handleClickModal} />
-      <CompanyMetasModalView visible={visibleModalView} onClose={handleClickModalView} />
+      <MetasModal visible={visibleModalAdd} onClose={handleClickModal} />
+      <MetasModalView visible={visibleModalView} onClose={handleClickModalView} />
     </Container>
   )
 }

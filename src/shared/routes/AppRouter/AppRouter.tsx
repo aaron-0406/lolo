@@ -15,7 +15,6 @@ import DashboardFuncionarios from '../../../pages/Dashboard/DashboardFuncionario
 //COMPANY
 import CompanyLogin from '../../../pages/Company/Login'
 import CompanyHome from '../../../pages/Company/Home'
-import CompanyCustomers from '../../../pages/Company/Extrajudicial/CompanyCustomers'
 import ExtrajudicialProfile from '../../../pages/Company/Extrajudicial/ExtrajudicialProfile'
 
 import ErrorPage from '../../../pages/ErrorPage'
@@ -31,8 +30,9 @@ import paths from '../paths'
 import ExtrajudicialCobranza from '../../../pages/Company/Extrajudicial/ExtrajudicialCobranza'
 import ExtrajudicialTemplate from '../../../pages/Company/Extrajudicial/ExtrajudicialTemplate'
 import ProtectedRoutesCompanyDash from '../ProtectedRoutesCompanyDash'
-import Dashboard from '../../../pages/Company/Extrajudicial/CompanyDashboard/Dashboard'
-import ExtrajudicialMetas from '../../../pages/Company/Extrajudicial/ExtrajudicialMetas/ExtrajudicialMetas'
+import Dashboard from '../../../pages/Company/Extrajudicial/ExtrajudicialDashboard/Dashboard'
+import ExtrajudicialMetas from '../../../pages/Company/Extrajudicial/ExtrajudicialMetas'
+import ExtrajudicialCustomers from '../../../pages/Company/Extrajudicial/ExtrajudicialCustomers'
 
 const AppRouter = () => {
   return (
@@ -62,7 +62,7 @@ const AppRouter = () => {
       <Route element={<ProtectedRoutesCompany pathname={paths.company.login()} />}>
         <Route path={paths.company.root()} element={<CompanyHome />} />
         <Route path={paths.cobranza.perfil()} element={<ExtrajudicialProfile />} />
-        <Route path={paths.cobranza.clientes()} element={<CompanyCustomers />} />
+        <Route path={paths.cobranza.clientes()} element={<ExtrajudicialCustomers />} />
         <Route path={paths.cobranza.cobranza()} element={<ExtrajudicialCobranza />} />
         <Route path={paths.cobranza.metas()} element={<ExtrajudicialMetas />} />
         <Route path={paths.cobranza.document()} element={<ExtrajudicialTemplate />} />

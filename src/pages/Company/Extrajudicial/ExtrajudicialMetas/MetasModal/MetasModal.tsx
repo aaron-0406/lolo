@@ -19,7 +19,7 @@ type PModalAddGoal = {
   onClose: () => void
 }
 
-const CompanyMetasModal = ({ visible, onClose }: PModalAddGoal) => {
+const MetasModal = ({ visible, onClose }: PModalAddGoal) => {
   const {
     watch,
     setValue,
@@ -165,7 +165,7 @@ const CompanyMetasModal = ({ visible, onClose }: PModalAddGoal) => {
   )
 }
 
-export default CompanyMetasModal
+export default MetasModal
 
 const StyledContainerButton = styled(Container)`
   ${({ theme }) => css`

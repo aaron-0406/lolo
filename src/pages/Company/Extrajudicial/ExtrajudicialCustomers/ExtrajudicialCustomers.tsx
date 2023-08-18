@@ -4,7 +4,7 @@ import { Opts } from '../../../../ui/Pagination/interfaces'
 import CustomersActions from './CustomersActions'
 import CustomersTable from './CustomersTable'
 
-const CompanyCustomers = () => {
+const ExtrajudicialCustomers = () => {
   const [opts, setOpts] = useState<Opts>({ filter: '', limit: 50, page: 1 })
   return (
     <Container width="100%" height="100%" display="flex" flexDirection="column">
@@ -15,4 +15,4 @@ const CompanyCustomers = () => {
   )
 }
 
-export default CompanyCustomers
+export default ExtrajudicialCustomers

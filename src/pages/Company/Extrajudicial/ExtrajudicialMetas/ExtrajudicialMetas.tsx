@@ -1,6 +1,6 @@
 import Container from '../../../../ui/Container/Container'
-import CompanyMetasActions from './CompanyMetasActions/CompanyMetasActions'
-import CompanyMetasTable from './MetasTable/MetasTable'
+import MetasActions from './MetasActions/MetasActions'
+import MetasModalView from './MetasTable/MetasTable'
 import { useForm, FormProvider } from 'react-hook-form'
 import { GoalFormType } from './hookform.type'
 import { useLoloContext } from '../../../../shared/contexts/LoloProvider'
@@ -34,8 +34,8 @@ const ExtrajudicialMetas = () => {
   return (
     <FormProvider {...formMethods}>
       <Container width="100%" height="100%" display="flex" flexDirection="column" padding="20px" gap="30px">
-        <CompanyMetasActions />
-        <CompanyMetasTable />
+        <MetasActions />
+        <MetasModalView />
       </Container>
     </FormProvider>
   )
