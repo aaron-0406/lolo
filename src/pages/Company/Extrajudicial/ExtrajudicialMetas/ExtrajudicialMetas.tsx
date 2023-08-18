@@ -1,20 +1,20 @@
 import Container from '../../../../ui/Container/Container'
 import CompanyMetasActions from './CompanyMetasActions/CompanyMetasActions'
-import CompanyMetasTable from './CompanyMetasTable/CompanyMetasTable'
+import CompanyMetasTable from './MetasTable/MetasTable'
 import { useForm, FormProvider } from 'react-hook-form'
 import { GoalFormType } from './hookform.type'
 import { useLoloContext } from '../../../../shared/contexts/LoloProvider'
 import moment from 'moment'
-import { CompanyGoalResolver } from './CompanyMetas.yup'
+import { ExtrajudicialGoalResolver } from './ExtrajudicialMetas.yup'
 
-const CompanyMetas = () => {
+const ExtrajudicialMetas = () => {
   const {
     client: {
       customer: { id },
     },
   } = useLoloContext()
   const formMethods = useForm<GoalFormType>({
-    resolver: CompanyGoalResolver,
+    resolver: ExtrajudicialGoalResolver,
     defaultValues: {
       goals: [],
       goal: {
@@ -41,4 +41,4 @@ const CompanyMetas = () => {
   )
 }
 
-export default CompanyMetas
+export default ExtrajudicialMetas

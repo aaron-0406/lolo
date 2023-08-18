@@ -32,7 +32,7 @@ import ExtrajudicialCobranza from '../../../pages/Company/Extrajudicial/Extrajud
 import ExtrajudicialTemplate from '../../../pages/Company/Extrajudicial/ExtrajudicialTemplate'
 import ProtectedRoutesCompanyDash from '../ProtectedRoutesCompanyDash'
 import Dashboard from '../../../pages/Company/Extrajudicial/CompanyDashboard/Dashboard'
-import CompanyMetas from '../../../pages/Company/Extrajudicial/CompanyMetas/CompanyMetas'
+import ExtrajudicialMetas from '../../../pages/Company/Extrajudicial/ExtrajudicialMetas/ExtrajudicialMetas'
 
 const AppRouter = () => {
   return (
@@ -64,7 +64,7 @@ const AppRouter = () => {
         <Route path={paths.cobranza.perfil()} element={<ExtrajudicialProfile />} />
         <Route path={paths.cobranza.clientes()} element={<CompanyCustomers />} />
         <Route path={paths.cobranza.cobranza()} element={<ExtrajudicialCobranza />} />
-        <Route path={paths.cobranza.metas()} element={<CompanyMetas />} />
+        <Route path={paths.cobranza.metas()} element={<ExtrajudicialMetas />} />
         <Route path={paths.cobranza.document()} element={<ExtrajudicialTemplate />} />
         <Route element={<ProtectedRoutesCompanyDash pathname={paths.company.login()} />}>
           <Route path={paths.companyDashboard.dashboard()} element={<Dashboard />} />

@@ -23,9 +23,9 @@ import CompanyMetasModal from '../CompanyMetasModal/CompanyMetasModal'
 import useModal from '../../../../../shared/hooks/useModal'
 import { notification } from '../../../../../ui/notification/notification'
 import Progress from '../../../../../ui/Progress/Progress'
-import CompanyMetasModalView from '../CompanyMetasModalView/CompanyMetasModalView'
+import CompanyMetasModalView from '../MetasModalView/MetasModalView'
 
-const CompanyMetasTable = () => {
+const MetasTable = () => {
   const { watch, setValue } = useFormContext<GoalFormType>()
   const [opts, setOpts] = useState<Opts>({ filter: '', limit: 50, page: 1 })
 
@@ -173,4 +173,4 @@ const CompanyMetasTable = () => {
   )
 }
 
-export default CompanyMetasTable
+export default MetasTable

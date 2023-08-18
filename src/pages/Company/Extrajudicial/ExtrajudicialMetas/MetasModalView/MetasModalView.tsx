@@ -18,12 +18,12 @@ import moment from 'moment'
 import Button from '../../../../../ui/Button/Button'
 import { notification } from '../../../../../ui/notification/notification'
 
-type PModalAddGoal = {
+type MetasModalViewProps = {
   visible: boolean
   onClose: () => void
 }
 
-const CompanyMetasModalView = ({ onClose, visible }: PModalAddGoal) => {
+const MetasModalView = ({ onClose, visible }: MetasModalViewProps) => {
   const handleClickCloseModal = () => {
     onClose()
   }
@@ -160,4 +160,4 @@ const CompanyMetasModalView = ({ onClose, visible }: PModalAddGoal) => {
   )
 }
 
-export default CompanyMetasModalView
+export default MetasModalView
