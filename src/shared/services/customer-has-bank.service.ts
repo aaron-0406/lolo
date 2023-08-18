@@ -9,15 +9,11 @@ export const getAllCustomerBanks = async () => {
   return await axiosClient.get(`${url}/`)
 }
 
-export const getAllById = async (id: number) => {
-  return await axiosClient.get(`${url}/chb/${id}`)
+export const getAllByIdCustomer = async (id: number) => {
+  return await axiosClient.get(`${url}/customer/${id}`)
 }
 
-export const getAllByCustomerBank = async (idCustomer: number, idBank: number) => {
-  return await axiosClient.get(`${url}/${idCustomer}/${idBank}`)
-}
-
-export const createCustomerBank = async (chb: Omit<CustomerHasBankType, "id">) => {
+export const assingCustomerBank = async (chb: Omit<CustomerHasBankType, "id">) => {
   return await axiosClient.post(`${url}/`, chb)
 }
 
