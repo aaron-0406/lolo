@@ -15,8 +15,8 @@ import DashboardFuncionarios from '../../../pages/Dashboard/DashboardFuncionario
 //COMPANY
 import CompanyLogin from '../../../pages/Company/Login'
 import CompanyHome from '../../../pages/Company/Home'
-import CompanyCustomers from '../../../pages/Company/CompanyCustomers'
-import CompanyProfile from '../../../pages/Company/CompanyProfile'
+import CompanyCustomers from '../../../pages/Company/Extrajudicial/CompanyCustomers'
+import CompanyProfile from '../../../pages/Company/Extrajudicial/CompanyProfile'
 
 import ErrorPage from '../../../pages/ErrorPage'
 import NotFound from '../../../pages/NotFound'
@@ -28,11 +28,11 @@ import ProtectedRoutes from '../ProtectedRoutes'
 import ProtectedRoutesCompany from '../ProtectedRoutesCompany'
 
 import paths from '../paths'
-import CompanyCobranza from '../../../pages/Company/CompanyCobranza'
-import CompanyTemplate from '../../../pages/Company/CompanyTemplate'
+import CompanyCobranza from '../../../pages/Company/Extrajudicial/CompanyCobranza'
+import CompanyTemplate from '../../../pages/Company/Extrajudicial/CompanyTemplate'
 import ProtectedRoutesCompanyDash from '../ProtectedRoutesCompanyDash'
-import Dashboard from '../../../pages/Company/CompanyDashboard/Dashboard'
-import CompanyMetas from '../../../pages/Company/CompanyMetas/CompanyMetas'
+import Dashboard from '../../../pages/Company/Extrajudicial/CompanyDashboard/Dashboard'
+import CompanyMetas from '../../../pages/Company/Extrajudicial/CompanyMetas/CompanyMetas'
 
 const AppRouter = () => {
   return (
