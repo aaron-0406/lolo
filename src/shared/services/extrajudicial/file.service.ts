@@ -1,8 +1,8 @@
-import axiosClient from '../utils/api/clientAxios'
+import axiosClient from '../../utils/api/clientAxios'
 
 const API = axiosClient.getUri()
 
-const url = `${API}/file`
+const url = `${API}/cobranza/file`
 
 export const postCreateFile = async (formData: FormData, idCustomer: number, chb: number, code: number, id: number) => {
   return await axiosClient.post(`${url}/${idCustomer}/${chb}/${code}/${id}`, formData, {

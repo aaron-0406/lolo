@@ -8,7 +8,7 @@ import fileIcon from '../../../../../../../../shared/assets/icons/file.png'
 import Img from '../../../../../../../../ui/Img'
 import Text from '../../../../../../../../ui/Text'
 import Button from '../../../../../../../../ui/Button'
-import { deleteFile, getFileById } from '../../../../../../../../shared/services/file.service'
+import { deleteFile, getFileById } from '../../../../../../../../shared/services/extrajudicial/file.service'
 import { useQuery } from 'react-query'
 import { useLoloContext } from '../../../../../../../../shared/contexts/LoloProvider'
 

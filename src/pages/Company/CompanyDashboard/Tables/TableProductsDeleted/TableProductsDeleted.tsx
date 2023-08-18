@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { useMutation } from 'react-query'
-import { deleteProductsDash } from '../../../../../shared/services/dashboard.service'
+import { deleteProductsDash } from '../../../../../shared/services/extrajudicial/dashboard.service'
 import { DashFormType } from '../../Dashboard/hookform.type'
 import { Props } from '../Props.type'
 import { ProductType } from '../../../../../shared/types/product.type'

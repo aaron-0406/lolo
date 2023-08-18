@@ -1,4 +1,4 @@
-import { ClientType } from '../../../../shared/types/client.type'
+import { ClientType } from '../../../../shared/types/extrajudicial/client.type'
 import { ProductType, ProductTypeName } from '../../../../shared/types/product.type'
 
 export type DashFormType = {

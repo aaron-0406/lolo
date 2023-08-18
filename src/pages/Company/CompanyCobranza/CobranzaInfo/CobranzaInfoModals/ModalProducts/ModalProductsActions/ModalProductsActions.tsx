@@ -1,5 +1,9 @@
 import { useMutation } from 'react-query'
-import { createProduct, deleteProduct, editProduct } from '../../../../../../../shared/services/product.service'
+import {
+  createProduct,
+  deleteProduct,
+  editProduct,
+} from '../../../../../../../shared/services/extrajudicial/product.service'
 import Button from '../../../../../../../ui/Button'
 import Container from '../../../../../../../ui/Container'
 import { ProductFormType } from '../hookforms.interfaces'

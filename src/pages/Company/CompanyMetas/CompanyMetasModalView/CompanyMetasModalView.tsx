@@ -11,7 +11,7 @@ import {
   GoalCustomerUserResponse,
   getCustomerUserGoals,
   updateCustomerUserGoals,
-} from '../../../../shared/services/goal.service'
+} from '../../../../shared/services/extrajudicial/goal.service'
 import Progress from '../../../../ui/Progress/Progress'
 import Text from '../../../../ui/Text/Text'
 import moment from 'moment'

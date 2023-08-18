@@ -1,6 +1,6 @@
 import React from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
-import { DirectionType } from '../../../../../../../shared/types/direction.type'
+import { DirectionType } from '../../../../../../../shared/types/extrajudicial/direction.type'
 import Container from '../../../../../../../ui/Container'
 import TextAreaField from '../../../../../../../ui/fields/TextAreaField'
 import Label from '../../../../../../../ui/Label'

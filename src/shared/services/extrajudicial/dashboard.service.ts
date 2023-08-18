@@ -1,6 +1,6 @@
-import { ClientType } from '../types/client.type'
-import { ProductType, ProductTypeName } from '../types/product.type'
-import axiosClient from '../utils/api/clientAxios'
+import { ClientType } from '../../types/extrajudicial/client.type'
+import { ProductType, ProductTypeName } from '../../types/product.type'
+import axiosClient from '../../utils/api/clientAxios'
 
 interface Client {
   name: string
@@ -29,7 +29,7 @@ type SendEmail = {
 
 const API = axiosClient.getUri()
 
-const url = `${API}/dashboard`
+const url = `${API}/cobranza/dashboard`
 
 export const postDashboardXslx = async (formData: FormData) => {
   return await axiosClient.post(`${url}/xslx`, formData, {

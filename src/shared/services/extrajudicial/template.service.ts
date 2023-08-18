@@ -1,8 +1,8 @@
-import axiosClient from '../utils/api/clientAxios'
-import { DOMAIN } from '../utils/constant/api'
+import axiosClient from '../../utils/api/clientAxios'
+import { DOMAIN } from '../../utils/constant/api'
 const API = axiosClient.getUri()
 
-const url = `${API}/template`
+const url = `${API}/cobranza/template`
 
 export const getTemplatesByCustomerId = async (idCustomer: number) => {
   return await axiosClient.get(`${url}/customer/${idCustomer}`)

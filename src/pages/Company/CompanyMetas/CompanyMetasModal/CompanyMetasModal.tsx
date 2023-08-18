@@ -5,7 +5,11 @@ import Modal from '../../../../ui/Modal/Modal'
 import Container from '../../../../ui/Container/Container'
 import { GoalFormType } from '../hookform.type'
 import { useMutation } from 'react-query'
-import { GoalApiResponse, createGoalService, editGoalService } from '../../../../shared/services/goal.service'
+import {
+  GoalApiResponse,
+  createGoalService,
+  editGoalService,
+} from '../../../../shared/services/extrajudicial/goal.service'
 import { notification } from '../../../../ui/notification/notification'
 import TextField from '../../../../ui/fields/TextField/TextField'
 import DatePicker from '../../../../ui/DatePicker/DatePicker'

@@ -1,9 +1,9 @@
-import axiosClient from '../utils/api/clientAxios'
-import { ManagementActionType } from '../types/management-action.type'
+import axiosClient from '../../utils/api/clientAxios'
+import { ManagementActionType } from '../../types/management-action.type'
 
 const API = axiosClient.getUri()
 
-const url = `${API}/management-action`
+const url = `${API}/dash/management-action`
 
 export const getAll = async () => {
   return await axiosClient.get(`${url}/`)

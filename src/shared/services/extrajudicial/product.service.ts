@@ -1,9 +1,9 @@
-import { ProductType } from '../types/product.type'
-import axiosClient from '../utils/api/clientAxios'
+import { ProductType } from '../../types/product.type'
+import axiosClient from '../../utils/api/clientAxios'
 
 const API = axiosClient.getUri()
 
-const url = `${API}/product`
+const url = `${API}/cobranza/product`
 
 export const getProductsByClientCode = async (code: string) => {
   return await axiosClient.get(`${url}/client/${code}`)

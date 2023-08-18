@@ -6,7 +6,7 @@ import Container from '../../../../../ui/Container/Container'
 import TextField from '../../../../../ui/fields/TextField/TextField'
 import Button from '../../../../../ui/Button/Button'
 import { notification } from '../../../../../ui/notification/notification'
-import { changePasswordService } from '../../../../../shared/services/auth.service'
+import { changePasswordService } from '../../../../../shared/services/extrajudicial/auth.service'
 import { useMutation } from 'react-query'
 
 type CredentialModalProps = {

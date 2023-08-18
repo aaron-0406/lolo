@@ -2,12 +2,12 @@ import React from 'react'
 import { useFormContext } from 'react-hook-form'
 import { useMutation } from 'react-query'
 import styled from 'styled-components'
-import { generateDocumentService } from '../../../../shared/services/document.service'
+import { generateDocumentService } from '../../../../shared/services/extrajudicial/document.service'
 import {
   createTemplateHasValuesService,
   deleteTemplateHasValuesService,
   updateTemplateHasValuesService,
-} from '../../../../shared/services/template-has-values.service'
+} from '../../../../shared/services/extrajudicial/template-has-values.service'
 import { ECampoType } from '../../../../shared/types/ecampo.type'
 import { DOMAIN } from '../../../../shared/utils/constant/api'
 import Button from '../../../../ui/Button'

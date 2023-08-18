@@ -1,11 +1,11 @@
-import { GoalType } from '../types/goal-type'
-import { GoalUserType } from '../types/goal-user.type'
-import axiosClient from '../utils/api/clientAxios'
+import { GoalType } from '../../types/goal-type'
+import { GoalUserType } from '../../types/goal-user.type'
+import axiosClient from '../../utils/api/clientAxios'
 import { AxiosResponse } from 'axios'
 
 const API = axiosClient.getUri()
 
-const url = `${API}/goal`
+const url = `${API}/cobranza/goal`
 
 export type GoalApiResponse = AxiosResponse<GoalType, GoalType>
 export type GoalsApiResponse = AxiosResponse<

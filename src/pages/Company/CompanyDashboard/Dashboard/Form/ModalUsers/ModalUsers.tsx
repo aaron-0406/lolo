@@ -8,7 +8,7 @@ import { useMediaQuery } from '../../../../../../shared/hooks/useMediaQuery'
 import { device } from '../../../../../../shared/breakpoints/reponsive'
 import { useMutation } from 'react-query'
 import notification from '../../../../../../ui/notification'
-import { postDashboardSendXslx } from '../../../../../../shared/services/dashboard.service'
+import { postDashboardSendXslx } from '../../../../../../shared/services/extrajudicial/dashboard.service'
 import { DashFormType } from '../../hookform.type'
 
 const ModalUsers = () => {

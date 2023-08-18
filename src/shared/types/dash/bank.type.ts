@@ -1,4 +1,4 @@
-import { CustomerHasBankType } from './customer-has-bank'
+import { CustomerHasBankType } from './../dash/customer-has-bank'
 
 export type BankType = {
   id: number

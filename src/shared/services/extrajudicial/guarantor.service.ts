@@ -1,9 +1,9 @@
-import { GuarantorType } from '../types/guarantor.type'
-import axiosClient from '../utils/api/clientAxios'
+import { GuarantorType } from '../../types/guarantor.type'
+import axiosClient from '../../utils/api/clientAxios'
 
 const API = axiosClient.getUri()
 
-const url = `${API}/guarantor`
+const url = `${API}/cobranza/guarantor`
 
 export const getGuarantorsByClientID = async (clientId: number) => {
   return await axiosClient.get(`${url}/all-client/${clientId}`)

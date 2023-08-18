@@ -5,7 +5,7 @@ import Container from '../../../../ui/Container'
 import Progress from '../../../../ui/Progress/Progress'
 import Text from '../../../../ui/Text'
 import { useMutation } from 'react-query'
-import { GoalApiResponse, getGlobalGoal, getPersonalGoal } from '../../../../shared/services/goal.service'
+import { GoalApiResponse, getGlobalGoal, getPersonalGoal } from '../../../../shared/services/extrajudicial/goal.service'
 import { GoalType } from '../../../../shared/types/goal-type'
 import moment from 'moment'
 

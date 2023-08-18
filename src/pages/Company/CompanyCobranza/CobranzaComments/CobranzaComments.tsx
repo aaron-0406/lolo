@@ -5,18 +5,23 @@ import DatePicker from '../../../../ui/DatePicker/DatePicker'
 import TextAreaField from '../../../../ui/fields/TextAreaField'
 import moment from 'moment'
 import { Controller, useForm, useFormContext } from 'react-hook-form'
-import { CommentType } from '../../../../shared/types/comment.type'
+import { CommentType } from '../../../../shared/types/extrajudicial/comment.type'
 import { CompanyCobranzaCommentResolver } from '../CompanyCobranza.yup'
-import { ClientType } from '../../../../shared/types/client.type'
+import { ClientType } from '../../../../shared/types/extrajudicial/client.type'
 import Select from '../../../../ui/Select'
 import { SelectItemType } from '../../../../ui/Select/interfaces'
 import notification from '../../../../ui/notification'
 import { useQuery } from 'react-query'
-import { createComment, deleteComment, editComment, getComments } from '../../../../shared/services/comment.service'
+import {
+  createComment,
+  deleteComment,
+  editComment,
+  getComments,
+} from '../../../../shared/services/extrajudicial/comment.service'
 import { useEffect, useState } from 'react'
 import CommentItem from './CommentItem'
 import styled, { css } from 'styled-components'
-import { CustomerUserType } from '../../../../shared/types/customer-user.type'
+import { CustomerUserType } from '../../../../shared/types/dash/customer-user.type'
 import { useLoloContext } from '../../../../shared/contexts/LoloProvider'
 
 type Comment = CommentType & { customerUser: CustomerUserType }

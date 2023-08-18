@@ -1,9 +1,9 @@
-import { ClientType } from '../types/client.type'
-import axiosClient from '../utils/api/clientAxios'
+import { ClientType } from '../../types/extrajudicial/client.type'
+import axiosClient from '../../utils/api/clientAxios'
 
 const API = axiosClient.getUri()
 
-const url = `${API}/client`
+const url = `${API}/cobranza/client`
 
 export const getAllClientsByCHB = async (
   chb: string,

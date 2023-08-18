@@ -1,9 +1,9 @@
-import { CommentType } from '../types/comment.type'
-import axiosClient from '../utils/api/clientAxios'
+import { CommentType } from '../../types/extrajudicial/comment.type'
+import axiosClient from '../../utils/api/clientAxios'
 
 const API = axiosClient.getUri()
 
-const url = `${API}/comment`
+const url = `${API}/cobranza/comment`
 
 export const createComment = async (commentParam: CommentType) => {
   let dia = commentParam.date.split('-')

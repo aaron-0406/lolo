@@ -7,7 +7,7 @@ import {
   createFuncionario,
   getAllFuncionariosByID,
   editFuncionarioById,
-} from '../../../../../shared/services/funcionario.service'
+} from '../../../../../shared/services/dash/funcionario.service'
 import notification from '../../../../../ui/notification'
 import Modal from '../../../../../ui/Modal'
 import Container from '../../../../../ui/Container'

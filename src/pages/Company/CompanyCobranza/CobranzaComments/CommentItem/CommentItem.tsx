@@ -1,10 +1,10 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
-import { CommentType } from '../../../../../shared/types/comment.type'
+import { CommentType } from '../../../../../shared/types/extrajudicial/comment.type'
 import Container from '../../../../../ui/Container'
 import Text from '../../../../../ui/Text'
 import moment from 'moment'
-import { CustomerUserType } from '../../../../../shared/types/customer-user.type'
+import { CustomerUserType } from '../../../../../shared/types/dash/customer-user.type'
 
 type CommentItemProps = {
   comment: CommentType & { customerUser: CustomerUserType }

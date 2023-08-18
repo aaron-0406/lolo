@@ -7,7 +7,7 @@ import {
   createManagementAction,
   getManagementActionById,
   updateManagementAction,
-} from '../../../../../shared/services/management-action.service'
+} from '../../../../../shared/services/dash/management-action.service'
 import notification from '../../../../../ui/notification'
 import Modal from '../../../../../ui/Modal'
 import Container from '../../../../../ui/Container'

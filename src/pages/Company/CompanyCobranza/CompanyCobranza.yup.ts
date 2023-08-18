@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { ClientType } from '../../../shared/types/client.type'
-import { CommentType } from '../../../shared/types/comment.type'
+import { ClientType } from '../../../shared/types/extrajudicial/client.type'
+import { CommentType } from '../../../shared/types/extrajudicial/comment.type'
 import yup from '../../../shared/yupLocale'
 
 const CompanyCobranzaSchema: yup.SchemaOf<Omit<ClientType, 'id' | 'createdAt'>> = yup.object().shape({

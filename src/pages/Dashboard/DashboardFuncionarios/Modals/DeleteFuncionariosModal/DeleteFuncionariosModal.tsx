@@ -3,7 +3,7 @@ import Container from '../../../../../ui/Container'
 import Modal from '../../../../../ui/Modal'
 import notification from '../../../../../ui/notification'
 import Button from '../../../../../ui/Button'
-import { deleteFuncionario } from '../../../../../shared/services/funcionario.service'
+import { deleteFuncionario } from '../../../../../shared/services/dash/funcionario.service'
 import dashFuncionariosCache from '../../FuncionariosTable/utils/dash-funcionarios.cache'
 import { AxiosResponse } from 'axios'
 

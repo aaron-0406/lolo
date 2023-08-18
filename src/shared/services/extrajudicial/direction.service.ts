@@ -1,9 +1,9 @@
-import { DirectionType } from '../types/direction.type'
-import axiosClient from '../utils/api/clientAxios'
+import { DirectionType } from '../../types/extrajudicial/direction.type'
+import axiosClient from '../../utils/api/clientAxios'
 
 const API = axiosClient.getUri()
 
-const url = `${API}/direction`
+const url = `${API}/cobranza/direction`
 
 export const getDirectionsByClientID = async (clientId: number) => {
   return await axiosClient.get(`${url}/all-client/${clientId}`)

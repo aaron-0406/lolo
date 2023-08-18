@@ -1,4 +1,4 @@
-import { CustomerUserType } from '../../../../../../shared/types/customer-user.type'
+import { CustomerUserType } from '../../../../../../shared/types/dash/customer-user.type'
 import { Controller, useFormContext } from 'react-hook-form'
 import Container from '../../../../../../ui/Container'
 import Label from '../../../../../../ui/Label'
@@ -80,7 +80,13 @@ const UserInfoForm = () => {
           name="password"
           control={control}
           render={({ field }) => (
-            <TextField type="password" width="100%" value={field.value} onChange={field.onChange} hasError={!!errors.password} />
+            <TextField
+              type="password"
+              width="100%"
+              value={field.value}
+              onChange={field.onChange}
+              hasError={!!errors.password}
+            />
           )}
         />
       </Container>

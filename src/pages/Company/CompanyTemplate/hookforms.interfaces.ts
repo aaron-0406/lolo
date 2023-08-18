@@ -1,5 +1,5 @@
-import { ClientType } from '../../../shared/types/client.type'
-import { DirectionType } from '../../../shared/types/direction.type'
+import { ClientType } from '../../../shared/types/extrajudicial/client.type'
+import { DirectionType } from '../../../shared/types/extrajudicial/direction.type'
 import { ECampoType } from '../../../shared/types/ecampo.type'
 import { GuarantorType } from '../../../shared/types/guarantor.type'
 import { TemplateDocument } from '../../../shared/types/template-document.type'

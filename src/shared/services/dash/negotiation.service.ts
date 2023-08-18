@@ -1,9 +1,9 @@
-import axiosClient from '../utils/api/clientAxios'
-import { NegotiationType } from '../types/negotiation.type'
+import axiosClient from '../../utils/api/clientAxios'
+import { NegotiationType } from '../../types/negotiation.type'
 
 const API = axiosClient.getUri()
 
-const url = `${API}/negotiation`
+const url = `${API}/dash/negotiation`
 
 export const getAll = async () => {
   return await axiosClient.get(`${url}/`)

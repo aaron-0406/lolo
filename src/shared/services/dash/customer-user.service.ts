@@ -1,9 +1,9 @@
-import axiosClient from '../utils/api/clientAxios'
-import { CustomerUserType } from '../types/customer-user.type'
+import axiosClient from '../../utils/api/clientAxios'
+import { CustomerUserType } from '../../types/dash/customer-user.type'
 
 const API = axiosClient.getUri()
 
-const url = `${API}/customer-user`
+const url = `${API}/dash/customer-user`
 
 export const getAll = async () => {
   return await axiosClient.get(`${url}/`)

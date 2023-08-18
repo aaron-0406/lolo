@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useMutation } from 'react-query'
 import notification from '../../../../../ui/notification'
-import { generateExcelOnDailyManagementService } from '../../../../../shared/services/client.service'
+import { generateExcelOnDailyManagementService } from '../../../../../shared/services/extrajudicial/client.service'
 import DatePicker from '../../../../../ui/DatePicker/DatePicker'
 import moment from 'moment'
 import Container from '../../../../../ui/Container/Container'

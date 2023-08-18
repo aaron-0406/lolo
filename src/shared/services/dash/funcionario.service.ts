@@ -1,9 +1,9 @@
-import axiosClient from '../utils/api/clientAxios'
-import { FuncionarioType } from '../types/funcionario.type'
+import axiosClient from '../../utils/api/clientAxios'
+import { FuncionarioType } from '../../types/funcionario.type'
 
 const API = axiosClient.getUri()
 
-const url = `${API}/funcionario`
+const url = `${API}/dash/funcionario`
 
 export const getAllFuncionarios = async () => {
   return await axiosClient.get(`${url}/all/`)

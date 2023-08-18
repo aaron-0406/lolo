@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { device } from '../../../../../shared/breakpoints/reponsive'
 import { useLoloContext } from '../../../../../shared/contexts/LoloProvider'
 import { useMediaQuery } from '../../../../../shared/hooks/useMediaQuery'
-import { postDashboardXslx } from '../../../../../shared/services/dashboard.service'
+import { postDashboardXslx } from '../../../../../shared/services/extrajudicial/dashboard.service'
 import Button from '../../../../../ui/Button'
 import Container from '../../../../../ui/Container'
 import InputFile from '../../../../../ui/inputs/InputFile'
@@ -14,10 +14,10 @@ import useModal from '../../../../../shared/hooks/useModal'
 import ModalUsers from './ModalUsers'
 
 type FormProps = {
-  setLoading: (load: boolean)=> void
+  setLoading: (load: boolean) => void
 }
 
-const Form = ({setLoading}: FormProps) => {
+const Form = ({ setLoading }: FormProps) => {
   const [file, setFile] = useState<File>()
   const [loading, setloading] = useState<boolean>(false)
   const { setValue } = useFormContext<DashFormType>()

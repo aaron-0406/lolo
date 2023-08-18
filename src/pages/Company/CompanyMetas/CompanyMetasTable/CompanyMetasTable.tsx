@@ -17,7 +17,7 @@ import {
   GoalsApiResponse,
   deleteGoalService,
   getGoals,
-} from '../../../../shared/services/goal.service'
+} from '../../../../shared/services/extrajudicial/goal.service'
 import { useMutation, useQuery } from 'react-query'
 import CompanyMetasModal from '../CompanyMetasModal/CompanyMetasModal'
 import useModal from '../../../../shared/hooks/useModal'

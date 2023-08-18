@@ -1,9 +1,9 @@
-import { ValueType } from '../types/value.type'
-import axiosClient from '../utils/api/clientAxios'
+import { ValueType } from '../../types/value.type'
+import axiosClient from '../../utils/api/clientAxios'
 
 const API = axiosClient.getUri()
 
-const url = `${API}/template-has-values`
+const url = `${API}/cobranza/template-has-values`
 
 export const getTemplateHasValuesByTemplateId = async (idTemplate: number) => {
   return await axiosClient.get(`${url}/${idTemplate}`)

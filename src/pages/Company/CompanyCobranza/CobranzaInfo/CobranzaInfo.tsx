@@ -1,7 +1,7 @@
 import { Controller, useFormContext } from 'react-hook-form'
 import styled, { css } from 'styled-components'
 import { useLoloContext } from '../../../../shared/contexts/LoloProvider'
-import { ClientType } from '../../../../shared/types/client.type'
+import { ClientType } from '../../../../shared/types/extrajudicial/client.type'
 import Container from '../../../../ui/Container'
 import TextAreaField from '../../../../ui/fields/TextAreaField'
 import TextField from '../../../../ui/fields/TextField'

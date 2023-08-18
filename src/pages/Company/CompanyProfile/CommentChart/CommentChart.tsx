@@ -1,10 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Container from '../../../../ui/Container'
 import { Bar } from 'react-chartjs-2'
 import { Chart, registerables } from 'chart.js'
 import { useQuery } from 'react-query'
-import { getChart } from '../../../../shared/services/comment.service'
+import { getChart } from '../../../../shared/services/extrajudicial/comment.service'
 import { useLoloContext } from '../../../../shared/contexts/LoloProvider'
 import Text from '../../../../ui/Text'
 
