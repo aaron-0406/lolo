@@ -16,9 +16,11 @@ const BankActions = () => {
   } = useDashContext()
 
   return (
-    <Container width="10%" justifyContent="center" display="flex" alignItems="center" flexDirection="column">
-      <Button style={{ marginBottom: '10px' }} size="small" shape="round" trailingIcon="ri-arrow-right-line"></Button>
-      <Button style={{ marginTop: '10px' }} size="small" shape="round" trailingIcon="ri-arrow-left-line"></Button>
+    <Container width="10%" justifyContent="center" display="flex" alignItems="center">
+      <Container height="100px" display="flex" justifyContent="space-between" alignItems="center" flexDirection="column">
+        <Button size="small" shape="round" trailingIcon="ri-arrow-right-line" />
+        <Button size="small" shape="round" trailingIcon="ri-arrow-left-line" />
+      </Container>
     </Container>
   )
 }

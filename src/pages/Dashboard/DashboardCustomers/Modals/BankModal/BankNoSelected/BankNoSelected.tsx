@@ -59,7 +59,7 @@ const BankNoSelected = () => {
   return (
     <Container width="49%">
       <Table
-        top={greaterThanMobile ? '340px' : '200px'}
+        top={greaterThanMobile ? '280px' : '200px'}
         columns={banksNoSelectColumns}
         loading={isLoading}
         isArrayEmpty={!banks.length}
@@ -78,7 +78,7 @@ const BankNoSelected = () => {
             )
           })}
       </Table>
-      <Container display="flex" justifyContent="space-between" gap="10px">
+      <Container display="flex" justifyContent="space-between" padding="10px">
         <TextField onChange={onHandleChange} width="100%" placeholder="Agregar Banco: " />
         <Button size="small" shape="round" trailingIcon="ri-add-fill"></Button>
       </Container>

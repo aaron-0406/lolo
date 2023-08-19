@@ -1,11 +1,7 @@
 import { useDashContext } from '../../../../../../shared/contexts/DashProvider'
 import { banksSelectColumns } from './utils/columnsSelect'
-import { useState, useEffect } from 'react'
 import Table from '../../../../../../ui/Table'
 import Container from '../../../../../../ui/Container'
-import { getAllById } from '../../../../../../shared/services/customer-has-bank.service'
-import { useQuery } from 'react-query'
-import { CustomerHasBankType } from '../../../../../../shared/types/customer-has-bank'
 import { BankType } from '../../../../../../shared/types/bank.type'
 import { useMediaQuery } from '../../../../../../shared/hooks/useMediaQuery'
 import { device } from '../../../../../../shared/breakpoints/reponsive'
@@ -19,14 +15,12 @@ const BankSelected = () => {
 
   const greaterThanMobile = useMediaQuery(device.tabletS)
 
-  const [load, setLoad] = useState(false)
-
   return (
     <Container width="49%">
       <Table
-        top={greaterThanMobile ? '340px' : '200px'}
+        top={greaterThanMobile ? '230px' : '200px'}
         columns={banksSelectColumns}
-        loading={load}
+        loading={false}
         isArrayEmpty={!selectedCustomer.customerBanks.length}
         emptyState={
           <EmptyStateCell colSpan={banksSelectColumns.length}>

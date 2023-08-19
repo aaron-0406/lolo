@@ -1,6 +1,5 @@
 import Container from '../../../../../ui/Container'
 import Modal from '../../../../../ui/Modal'
-import { useDashContext } from '../../../../../shared/contexts/DashProvider'
 import BankActions from './BankActions'
 import BankNoSelected from './BankNoSelected'
 import BankSelected from './BankSelected'
@@ -11,10 +10,6 @@ type CustomersModalProps = {
 }
 
 const BankModal = ({ visible, onClose }: CustomersModalProps) => {
-  const {
-    dashCustomer: { selectedCustomer },
-  } = useDashContext()
-
   const handleClickCloseModal = () => {
     onClose()
   }
@@ -28,7 +23,7 @@ const BankModal = ({ visible, onClose }: CustomersModalProps) => {
       title="Bancos"
       contentOverflowY="auto"
     >
-      <Container width="100%" padding="20px" display="flex" justifyContent="space-between" gap="20px">
+      <Container width="100%" padding="20px" display="flex">
         <BankSelected />
         <BankActions />
         <BankNoSelected />
