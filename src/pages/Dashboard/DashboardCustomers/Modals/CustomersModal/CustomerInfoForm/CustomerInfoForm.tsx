@@ -1,5 +1,5 @@
 import { Controller, useFormContext } from 'react-hook-form'
-import { CustomerType } from '../../../../../../shared/types/customer.type'
+import { CustomerType } from '../../../../../../shared/types/dash/customer.type'
 import Container from '../../../../../../ui/Container'
 import TextAreaField from '../../../../../../ui/fields/TextAreaField'
 import Label from '../../../../../../ui/Label'
