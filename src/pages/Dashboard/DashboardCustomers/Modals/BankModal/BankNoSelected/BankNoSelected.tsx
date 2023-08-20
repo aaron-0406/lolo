@@ -25,33 +25,38 @@ const BankNoSelected = ({setGlobalBank}: BankNoSelectedType) => {
 
   const greaterThanMobile = useMediaQuery(device.tabletS)
 
-  const [banks, setBanks] = useState<Array<BankType>>([])
+  const queryClient = useQueryClient()
 
-  const onHandleClick = (bank: BankType) => {
-    setGlobalBank(bank)
-  }
+  const {
+    actions: { AddBankCache },
+    onMutateCache,
+    onSettledCache,
+    onErrorCache,
+  } = dashBanksCache(queryClient)
 
-  const { isLoading, refetch } = useQuery(
-    KEY_DASH_BANKS_CACHE,
+  const { isLoading, refetch, data } = useQuery(
+    [KEY_DASH_BANKS_CACHE, selectedCustomer.urlIdentifier],
     async () => {
       return await getAllBanks()
     },
     {
-      onSuccess: ({ data }) => {
-        data = data.filter(
-          (bank: BankType) => !selectedCustomer.customerBanks.some((bankSelect: BankType) => bankSelect.id === bank.id)
-        )
-        setBanks(data)
-      },
-      enabled: false,
+      // onSuccess: ({ data }) => {
+      //   data = data.filter((bank: BankType) => {
+      //     if (!banks.includes(bank)) {
+      //       return bank
+      //     }
+      //   })
+      //   setBanks(data)
+      //   AddBankCache(data)
+      // },
     }
   )
 
-  useEffect(() => {
-    refetch()
-    // eslint-disable-next-line
-  }, [])
-
+  const banksList =
+    data?.data.filter(
+      (bank: BankType) => !selectedCustomer.customerBanks.some((customerBank) => customerBank.id === bank.id)
+    ) ?? []
+    
   const onHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {}
 
   return (
@@ -60,21 +65,21 @@ const BankNoSelected = ({setGlobalBank}: BankNoSelectedType) => {
         top={greaterThanMobile ? '280px' : '200px'}
         columns={banksNoSelectColumns}
         loading={isLoading}
-        isArrayEmpty={!banks.length}
+        isArrayEmpty={!banksList.length}
         emptyState={
           <EmptyStateCell colSpan={banksNoSelectColumns.length}>
             <div>Vacio</div>
           </EmptyStateCell>
         }
       >
-        {!!banks.length &&
-          banks.map((record: BankType, key) => {
+        {!!banksList.length &&
+          banksList.map((record: BankType, key: number) => {
             return (
               <tr
                 className="styled-data-table-row"
                 key={key}
                 onClick={() => {
-                  onHandleClick(record)
+                  // onHandleClick(record)
                 }}
               >
                 <BodyCell textAlign="center">{`${record.name || ''}`}</BodyCell>

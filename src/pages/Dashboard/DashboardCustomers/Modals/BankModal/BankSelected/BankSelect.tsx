@@ -1,4 +1,8 @@
 import { useDashContext } from '../../../../../../shared/contexts/DashProvider'
+import { useState, useEffect } from 'react'
+import { getCHBById } from '../../../../../../shared/services/dash/customer-has-bank.service'
+import { useQuery } from 'react-query'
+import { CustomerHasBankType } from '../../../../../../shared/types/dash/customer-has-bank'
 import { BankType } from '../../../../../../shared/types/dash/bank.type'
 import { useMediaQuery } from '../../../../../../shared/hooks/useMediaQuery'
 import { device } from '../../../../../../shared/breakpoints/reponsive'
