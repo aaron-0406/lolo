@@ -1,5 +1,5 @@
 import { QueryClient } from 'react-query'
-import { CustomerUserType } from '../../../../../shared/types/customer-user.type'
+import { CustomerUserType } from '../../../../../shared/types/dash/customer-user.type'
 import { AxiosResponse } from 'axios'
 
 export const KEY_DASH_USUARIOS_CACHE = 'key-dash-usuarios-cache'

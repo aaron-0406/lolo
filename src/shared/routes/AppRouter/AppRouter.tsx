@@ -15,8 +15,16 @@ import DashboardFuncionarios from '../../../pages/Dashboard/DashboardFuncionario
 //COMPANY
 import CompanyLogin from '../../../pages/Company/Login'
 import CompanyHome from '../../../pages/Company/Home'
-import CompanyCustomers from '../../../pages/Company/CompanyCustomers'
-import CompanyProfile from '../../../pages/Company/CompanyProfile'
+
+//EXTRAJUDICIAL
+import ExtrajudicialProfile from '../../../pages/Company/Extrajudicial/ExtrajudicialProfile'
+import ExtrajudicialCobranza from '../../../pages/Company/Extrajudicial/ExtrajudicialCobranza'
+import ExtrajudicialTemplate from '../../../pages/Company/Extrajudicial/ExtrajudicialTemplate'
+import Dashboard from '../../../pages/Company/Extrajudicial/ExtrajudicialDashboard/Dashboard'
+import ExtrajudicialMetas from '../../../pages/Company/Extrajudicial/ExtrajudicialMetas'
+import ExtrajudicialCustomers from '../../../pages/Company/Extrajudicial/ExtrajudicialCustomers/ExtrajudicialCustomers'
+
+//JUDICIAL
 
 import ErrorPage from '../../../pages/ErrorPage'
 import NotFound from '../../../pages/NotFound'
@@ -26,13 +34,9 @@ import GuestRoute from '../GhestRoutes'
 import GuestRouteCompany from '../GuestRoutesCompany'
 import ProtectedRoutes from '../ProtectedRoutes'
 import ProtectedRoutesCompany from '../ProtectedRoutesCompany'
+import ProtectedRoutesCompanyDash from '../ProtectedRoutesCompanyDash'
 
 import paths from '../paths'
-import CompanyCobranza from '../../../pages/Company/CompanyCobranza'
-import CompanyTemplate from '../../../pages/Company/CompanyTemplate'
-import ProtectedRoutesCompanyDash from '../ProtectedRoutesCompanyDash'
-import Dashboard from '../../../pages/Company/CompanyDashboard/Dashboard'
-import CompanyMetas from '../../../pages/Company/CompanyMetas/CompanyMetas'
 
 const AppRouter = () => {
   return (
@@ -56,16 +60,16 @@ const AppRouter = () => {
       </Route>
 
       {/* COMPANY */}
-      <Route element={<GuestRouteCompany pathname={paths.company.cobranza()} />}>
+      <Route element={<GuestRouteCompany pathname={paths.cobranza.cobranza()} />}>
         <Route path={paths.company.login()} element={<CompanyLogin />} />
       </Route>
       <Route element={<ProtectedRoutesCompany pathname={paths.company.login()} />}>
         <Route path={paths.company.root()} element={<CompanyHome />} />
-        <Route path={paths.company.perfil()} element={<CompanyProfile />} />
-        <Route path={paths.company.clientes()} element={<CompanyCustomers />} />
-        <Route path={paths.company.cobranza()} element={<CompanyCobranza />} />
-        <Route path={paths.company.metas()} element={<CompanyMetas />} />
-        <Route path={paths.company.document()} element={<CompanyTemplate />} />
+        <Route path={paths.cobranza.perfil()} element={<ExtrajudicialProfile />} />
+        <Route path={paths.cobranza.clientes()} element={<ExtrajudicialCustomers />} />
+        <Route path={paths.cobranza.cobranza()} element={<ExtrajudicialCobranza />} />
+        <Route path={paths.cobranza.metas()} element={<ExtrajudicialMetas />} />
+        <Route path={paths.cobranza.document()} element={<ExtrajudicialTemplate />} />
         <Route element={<ProtectedRoutesCompanyDash pathname={paths.company.login()} />}>
           <Route path={paths.companyDashboard.dashboard()} element={<Dashboard />} />
         </Route>

@@ -1,7 +1,7 @@
 import { useQuery } from 'react-query'
 import { useParams, Outlet } from 'react-router-dom'
 import { useLoloContext } from '../../contexts/LoloProvider'
-import { getCustomerByUrl } from '../../services/customer.service'
+import { getCustomerByUrl } from '../../services/dash/customer.service'
 import paths from '../paths'
 import RedirectRoute from '../RedirectRoute'
 import { GuestParamsType } from './GuestRoutesCompany.interfaces'

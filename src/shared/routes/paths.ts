@@ -19,11 +19,16 @@ export default {
   company: {
     root: (urlIdentifier = ':urlIdentifier') => `/${urlIdentifier}`,
     login: (urlIdentifier = ':urlIdentifier') => `/${urlIdentifier}/login`,
-    perfil: (urlIdentifier = ':urlIdentifier') => `/${urlIdentifier}/perfil`,
-    clientes: (urlIdentifier = ':urlIdentifier') => `/${urlIdentifier}/clientes`,
-    cobranza: (urlIdentifier = ':urlIdentifier') => `/${urlIdentifier}/cobranza`,
-    metas: (urlIdentifier = ':urlIdentifier') => `/${urlIdentifier}/metas`,
-    document: (urlIdentifier = ':urlIdentifier') => `/${urlIdentifier}/document`,
+  },
+  cobranza: {
+    perfil: (urlIdentifier = ':urlIdentifier') => `/cobranza/${urlIdentifier}/perfil`,
+    clientes: (urlIdentifier = ':urlIdentifier') => `/cobranza/${urlIdentifier}/clientes`,
+    cobranza: (urlIdentifier = ':urlIdentifier') => `/cobranza/${urlIdentifier}/cobranza`,
+    metas: (urlIdentifier = ':urlIdentifier') => `/cobranza/${urlIdentifier}/metas`,
+    document: (urlIdentifier = ':urlIdentifier') => `/cobranza/${urlIdentifier}/document`,
+  },
+  judicial: {
+    perfil: (urlIdentifier = ':urlIdentifier') => `/judicial/${urlIdentifier}/perfil`,
   },
   companyDashboard: {
     root: (urlIdentifier = ':urlIdentifier') => `/${urlIdentifier}`,

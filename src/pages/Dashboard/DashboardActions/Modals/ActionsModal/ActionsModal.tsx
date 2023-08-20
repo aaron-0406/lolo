@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { ManagementActionType } from '../../../../../shared/types/management-action.type'
+import { ManagementActionType } from '../../../../../shared/types/dash/management-action.type'
 import { ModalActionsResolver } from './ActionsModal.yup'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
@@ -7,7 +7,7 @@ import {
   createManagementAction,
   getManagementActionById,
   updateManagementAction,
-} from '../../../../../shared/services/management-action.service'
+} from '../../../../../shared/services/dash/management-action.service'
 import notification from '../../../../../ui/notification'
 import Modal from '../../../../../ui/Modal'
 import Container from '../../../../../ui/Container'

@@ -3,7 +3,7 @@ import Container from '../../../../../ui/Container'
 import Modal from '../../../../../ui/Modal'
 import notification from '../../../../../ui/notification'
 import Button from '../../../../../ui/Button'
-import { deleteManagementAction } from '../../../../../shared/services/management-action.service'
+import { deleteManagementAction } from '../../../../../shared/services/dash/management-action.service'
 import dashAccionesCache from '../../ActionsTable/utils/dash-acciones.cache'
 
 type DeleteActionsModalProps = {
