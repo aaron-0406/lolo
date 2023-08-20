@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { FuncionarioType } from '../../../../../shared/types/funcionario.type'
+import { FuncionarioType } from '../../../../../shared/types/dash/funcionario.type'
 import { ModalFuncionariosResolver } from './FuncionariosModal.yup'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
@@ -7,7 +7,7 @@ import {
   createFuncionario,
   getAllFuncionariosByID,
   editFuncionarioById,
-} from '../../../../../shared/services/funcionario.service'
+} from '../../../../../shared/services/dash/funcionario.service'
 import notification from '../../../../../ui/notification'
 import Modal from '../../../../../ui/Modal'
 import Container from '../../../../../ui/Container'
