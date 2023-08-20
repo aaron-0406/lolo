@@ -27,7 +27,7 @@ const BankNoSelected = () => {
   const queryClient = useQueryClient()
 
   const {
-    actions: { createBankCache },
+    actions: { AddBankCache },
     onMutateCache,
     onSettledCache,
     onErrorCache,
@@ -40,8 +40,13 @@ const BankNoSelected = () => {
     },
     {
       onSuccess: ({ data }) => {
+        data = data.filter((bank: BankType) => {
+          if (!selectedCustomer.customerBanks.includes(bank)) {
+            return bank
+          }
+        })
         setBanks(data)
-        createBankCache(data)
+        AddBankCache(data)
       },
     }
   )
