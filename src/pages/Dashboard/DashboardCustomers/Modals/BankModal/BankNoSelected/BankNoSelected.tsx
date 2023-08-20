@@ -1,3 +1,4 @@
+import { useQuery, useQueryClient } from 'react-query'
 import { useDashContext } from '../../../../../../shared/contexts/DashProvider'
 import { banksNoSelectColumns } from './utils/columnsNoSelect'
 import { useState, useEffect } from 'react'
@@ -5,46 +6,42 @@ import Table from '../../../../../../ui/Table'
 import TextField from '../../../../../../ui/fields/TextField'
 import Container from '../../../../../../ui/Container'
 import Button from '../../../../../../ui/Button'
-import dashBanksCache from './utils/dash-banks.cache'
+import dashBanksCache, { KEY_DASH_BANKS_CACHE } from '../dash-banks.cache'
 import { getAllBanks } from '../../../../../../shared/services/bank.service'
-import { useQuery, useQueryClient } from 'react-query'
 import { BankType } from '../../../../../../shared/types/bank.type'
 import { useMediaQuery } from '../../../../../../shared/hooks/useMediaQuery'
 import { device } from '../../../../../../shared/breakpoints/reponsive'
 import BodyCell from '../../../../../../ui/Table/BodyCell'
 import EmptyStateCell from '../../../../../../ui/Table/EmptyStateCell'
 
-const BankNoSelected = () => {
+type BankNoSelectedType = {
+  setGlobalBank: (bank: BankType) => void
+}
+
+const BankNoSelected = ({setGlobalBank}: BankNoSelectedType) => {
   const {
     dashCustomer: { selectedCustomer },
   } = useDashContext()
 
   const greaterThanMobile = useMediaQuery(device.tabletS)
 
-  const [load, setLoad] = useState(false)
   const [banks, setBanks] = useState<Array<BankType>>([])
 
-  const queryClient = useQueryClient()
-
-  const {
-    actions: { createBankCache },
-    onMutateCache,
-    onSettledCache,
-    onErrorCache,
-  } = dashBanksCache(queryClient)
+  const onHandleClick = (bank: BankType) => {
+    setGlobalBank(bank)
+  }
 
   const { isLoading, refetch } = useQuery(
-    'KEY_DASH_BANKS_CACHE',
+    KEY_DASH_BANKS_CACHE,
     async () => {
       return await getAllBanks()
     },
     {
       onSuccess: ({ data }) => {
-        data = data.filter((bank: BankType) =>
-          !selectedCustomer.customerBanks.some((bankSelect: BankType) => bankSelect.id === bank.id)
+        data = data.filter(
+          (bank: BankType) => !selectedCustomer.customerBanks.some((bankSelect: BankType) => bankSelect.id === bank.id)
         )
         setBanks(data)
-        createBankCache(data)
       },
       enabled: false,
     }
@@ -52,7 +49,8 @@ const BankNoSelected = () => {
 
   useEffect(() => {
     refetch()
-  }, [refetch])
+    // eslint-disable-next-line
+  }, [])
 
   const onHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {}
 
@@ -72,7 +70,13 @@ const BankNoSelected = () => {
         {!!banks.length &&
           banks.map((record: BankType, key) => {
             return (
-              <tr className="styled-data-table-row" key={key}>
+              <tr
+                className="styled-data-table-row"
+                key={key}
+                onClick={() => {
+                  onHandleClick(record)
+                }}
+              >
                 <BodyCell textAlign="center">{`${record.name || ''}`}</BodyCell>
               </tr>
             )

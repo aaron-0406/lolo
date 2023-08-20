@@ -1,5 +1,5 @@
 import { QueryClient } from 'react-query'
-import { BankType } from '../../../../../../../shared/types/bank.type'
+import { BankType } from '../../../../../shared/types/bank.type'
 import { AxiosResponse } from 'axios'
 
 export const KEY_DASH_BANKS_CACHE = 'key-dash-banks-cache'
