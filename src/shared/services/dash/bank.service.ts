@@ -1,15 +1,15 @@
-import axiosClient from '../utils/api/clientAxios'
-import { BankType } from '../types/bank.type'
+import axiosClient from '../../utils/api/clientAxios'
+import { BankType } from '../../types/dash/bank.type'
 
 const API = axiosClient.getUri()
 
-const url = `${API}/bank`
+const url = `${API}/dash/bank`
 
 export const getAllBanks = async () => {
   return await axiosClient.get(`${url}/`)
 }
 
-export const getAllBankById = async (id: number) => {
+export const getBankById = async (id: number) => {
   return await axiosClient.get(`${url}/${id}`)
 }
 
