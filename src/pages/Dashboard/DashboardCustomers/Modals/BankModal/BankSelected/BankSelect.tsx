@@ -1,5 +1,5 @@
 import { useDashContext } from '../../../../../../shared/contexts/DashProvider'
-import { BankType } from '../../../../../../shared/types/bank.type'
+import { BankType } from '../../../../../../shared/types/dash/bank.type'
 import { useMediaQuery } from '../../../../../../shared/hooks/useMediaQuery'
 import { device } from '../../../../../../shared/breakpoints/reponsive'
 import BodyCell from '../../../../../../ui/Table/BodyCell'
