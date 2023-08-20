@@ -1,5 +1,5 @@
 import { Controller, useFormContext } from 'react-hook-form'
-import { ManagementActionType } from '../../../../../../shared/types/management-action.type'
+import { ManagementActionType } from '../../../../../../shared/types/dash/management-action.type'
 import Container from '../../../../../../ui/Container'
 import Label from '../../../../../../ui/Label'
 import TextField from '../../../../../../ui/fields/TextField'

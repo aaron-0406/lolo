@@ -3,8 +3,8 @@ import { FormProvider, useForm, Controller } from 'react-hook-form'
 import { ModalUsersResolver } from './UsersModal.yup'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import UserInfoForm from './UserInfoForm'
-import { CustomerUserType } from '../../../../../shared/types/customer-user.type'
-import { createUser, editUserById, getUserByUserId } from '../../../../../shared/services/customer-user.service'
+import { CustomerUserType } from '../../../../../shared/types/dash/customer-user.type'
+import { createUser, editUserById, getUserByUserId } from '../../../../../shared/services/dash/customer-user.service'
 import Container from '../../../../../ui/Container'
 import Modal from '../../../../../ui/Modal'
 import notification from '../../../../../ui/notification'
@@ -55,13 +55,7 @@ const UsersModal = ({ visible, onClose, idUser = 0, isEdit = false }: UsersModal
     defaultValues: defaultValuesCustomerUser,
   })
 
-  const {
-    setValue,
-    getValues,
-    control,
-    reset,
-    formState: { isValid },
-  } = formMethods
+  const { setValue, getValues, control, reset } = formMethods
 
   const { isLoading: loadingCreateUser, mutate: createCustomerUser } = useMutation<
     AxiosResponse<CustomerUserType>,
@@ -95,7 +89,7 @@ const UsersModal = ({ visible, onClose, idUser = 0, isEdit = false }: UsersModal
 
   const { isLoading: loadingEditUser, mutate: editUser } = useMutation<AxiosResponse<CustomerUserType>, Error>(
     async () => {
-      const { id, createdAt, password, email, customerId, ...restUser } = getValues()
+      const { id, createdAt, email, customerId, ...restUser } = getValues()
       return await editUserById(id, restUser)
     },
     {
@@ -209,7 +203,6 @@ const UsersModal = ({ visible, onClose, idUser = 0, isEdit = false }: UsersModal
               trailingIcon="ri-add-fill"
               onClick={isEdit ? onEditUser : onAddUser}
               loading={loadingCreateUser || loadingEditUser}
-              disabled={!isValid}
             />
           </Container>
         </Container>
