@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from 'react-query'
 import { AxiosResponse } from 'axios'
 import dashNegotiationCache from '../../NegotiationTable/utils/dash-negociaciones.cache'
-import { deleteNegotiation } from '../../../../../shared/services/negotiation.service'
+import { deleteNegotiation } from '../../../../../shared/services/dash/negotiation.service'
 import notification from '../../../../../ui/notification'
 import Modal from '../../../../../ui/Modal'
 import Container from '../../../../../ui/Container'
