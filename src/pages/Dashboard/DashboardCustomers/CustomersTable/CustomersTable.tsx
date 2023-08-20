@@ -222,7 +222,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
 
       {visibleModalUser && <UsersModal visible={visibleModalUser} onClose={onCloseUser} />}
 
-      <BankModal visible={visibleModalBank} onClose={onCloseBank} />
+      {visibleModalBank && <BankModal visible={visibleModalBank} onClose={onCloseBank} />}
     </Container>
   )
 }

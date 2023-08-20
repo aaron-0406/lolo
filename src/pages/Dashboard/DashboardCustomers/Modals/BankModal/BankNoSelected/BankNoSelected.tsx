@@ -5,10 +5,10 @@ import Table from '../../../../../../ui/Table'
 import TextField from '../../../../../../ui/fields/TextField'
 import Container from '../../../../../../ui/Container'
 import Button from '../../../../../../ui/Button'
-import dashBanksCache from './utils/dash-banks.cache'
-import { getAllBanks } from '../../../../../../shared/services/bank.service'
+import dashBanksCache, { KEY_DASH_BANKS_CACHE } from './utils/dash-banks.cache'
+import { getAllBanks } from '../../../../../../shared/services/dash/bank.service'
 import { useQuery, useQueryClient } from 'react-query'
-import { BankType } from '../../../../../../shared/types/bank.type'
+import { BankType } from '../../../../../../shared/types/dash/bank.type'
 import { useMediaQuery } from '../../../../../../shared/hooks/useMediaQuery'
 import { device } from '../../../../../../shared/breakpoints/reponsive'
 import BodyCell from '../../../../../../ui/Table/BodyCell'
@@ -21,9 +21,6 @@ const BankNoSelected = () => {
 
   const greaterThanMobile = useMediaQuery(device.tabletS)
 
-  const [load, setLoad] = useState(false)
-  const [banks, setBanks] = useState<Array<BankType>>([])
-
   const queryClient = useQueryClient()
 
   const {
@@ -33,24 +30,29 @@ const BankNoSelected = () => {
     onErrorCache,
   } = dashBanksCache(queryClient)
 
-  const { isLoading, refetch } = useQuery(
-    'KEY_DASH_BANKS_CACHE',
+  const { isLoading, refetch, data } = useQuery(
+    [KEY_DASH_BANKS_CACHE, selectedCustomer.urlIdentifier],
     async () => {
       return await getAllBanks()
     },
     {
-      onSuccess: ({ data }) => {
-        data = data.filter((bank: BankType) => {
-          if (!selectedCustomer.customerBanks.includes(bank)) {
-            return bank
-          }
-        })
-        setBanks(data)
-        AddBankCache(data)
-      },
+      // onSuccess: ({ data }) => {
+      //   data = data.filter((bank: BankType) => {
+      //     if (!banks.includes(bank)) {
+      //       return bank
+      //     }
+      //   })
+      //   setBanks(data)
+      //   AddBankCache(data)
+      // },
     }
   )
+  console.log('hola ', data)
 
+  const banksList =
+    data?.data.filter(
+      (bank: BankType) => !selectedCustomer.customerBanks.some((customerBank) => customerBank.id === bank.id)
+    ) ?? []
   const onHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {}
 
   return (
@@ -58,16 +60,16 @@ const BankNoSelected = () => {
       <Table
         top={greaterThanMobile ? '340px' : '200px'}
         columns={banksNoSelectColumns}
-        loading={load}
-        isArrayEmpty={!selectedCustomer.customerBanks.length}
+        loading={isLoading}
+        isArrayEmpty={!banksList.length}
         emptyState={
           <EmptyStateCell colSpan={banksNoSelectColumns.length}>
             <div>Vacio</div>
           </EmptyStateCell>
         }
       >
-        {!!selectedCustomer.customerBanks?.length &&
-          selectedCustomer.customerBanks.map((record: BankType, key) => {
+        {!!banksList.length &&
+          banksList.map((record: BankType, key: number) => {
             return (
               <tr className="styled-data-table-row" key={key}>
                 <BodyCell textAlign="center">{`${record.name || ''}`}</BodyCell>
