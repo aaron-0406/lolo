@@ -12,6 +12,7 @@ export default {
     clientes: '/dash/clientes',
     usuarios: '/dash/usuarios',
     funcionarios: 'dash/funcionarios',
+    permisos: 'dash/permisos',
     reportes: '/dash/reportes',
     negociaciones: '/dash/negociaciones',
     acciones: '/dash/acciones',
