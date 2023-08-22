@@ -4,7 +4,8 @@ import Modal from '../../../../../ui/Modal'
 import BankActions from './BankActions'
 import BankNoSelected from './BankNoSelected'
 import BankSelected from './BankSelected'
-import { BankType } from '../../../../../shared/types/bank.type'
+import elementSelect from './elementSelect'
+import { BankType } from '../../../../../shared/types/dash/bank.type'
 
 type CustomersModalProps = {
   visible: boolean
@@ -16,19 +17,22 @@ const BankModal = ({ visible, onClose }: CustomersModalProps) => {
     onClose()
   }
 
-  const defaultValuesBank = {
-    id: 0,
-    name: '',
-    state: false,
-    createdAt: new Date(),
-    CUSTOMER_HAS_BANK: {
+  const defaultValuesElement = {
+    bank: {
       id: 0,
-      idCustomer: 0,
-      idBank: 0,
+      name: '',
+      state: false,
+      createdAt: new Date(),
+      CUSTOMER_HAS_BANK: {
+        id: 0,
+        idCustomer: 0,
+        idBank: 0,
+      },
     },
+    key: '',
   }
 
-  const [bankSelected, setBankSelected] = useState<BankType>(defaultValuesBank)
+  const [elementSelect, setElementSelected] = useState<elementSelect>(defaultValuesElement)
 
   return (
     <Modal
@@ -41,14 +45,14 @@ const BankModal = ({ visible, onClose }: CustomersModalProps) => {
     >
       <Container width="100%" padding="20px" display="flex">
         <BankSelected
-          setGlobalBank={(bank: BankType) => {
-            setBankSelected(bank)
+          setGlobalElement={(element: elementSelect) => {
+            setElementSelected(element)
           }}
         />
-        <BankActions bankSelected={bankSelected} />
+        <BankActions elementSelected={elementSelect} />
         <BankNoSelected
-          setGlobalBank={(bank: BankType) => {
-            setBankSelected(bank)
+          setGlobalElement={(element: elementSelect) => {
+            setElementSelected(element)
           }}
         />
       </Container>

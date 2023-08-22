@@ -3,9 +3,14 @@ import { useState, useEffect } from 'react'
 import { useMediaQuery } from '../../../../../../shared/hooks/useMediaQuery'
 import { device } from '../../../../../../shared/breakpoints/reponsive'
 import { useDashContext } from '../../../../../../shared/contexts/DashProvider'
-import { BankType } from '../../../../../../shared/types/bank.type'
-import { CustomerHasBankType } from '../../../../../../shared/types/customer-has-bank'
-import { deleteCustomerBank, assingCustomerBank } from '../../../../../../shared/services/customer-has-bank.service'
+import { BankType } from '../../../../../../shared/types/dash/bank.type'
+import elementSelect from '../elementSelect'
+import { CustomerHasBankType } from '../../../../../../shared/types/dash/customer-has-bank'
+import {
+  getAllCHBsByCustomerId,
+  revokeCHB,
+  assingCHB,
+} from '../../../../../../shared/services/dash/customer-has-bank.service'
 import Container from '../../../../../../ui/Container'
 import Button from '../../../../../../ui/Button'
 import { AxiosResponse } from 'axios'
@@ -13,35 +18,35 @@ import notification from '../../../../../../ui/notification'
 import dashBanksCache from '../dash-banks.cache'
 
 type BankActionsType = {
-  bankSelected: BankType
+  elementSelected: elementSelect
 }
 
-const BankActions = ({ bankSelected }: BankActionsType) => {
+const BankActions = ({ elementSelected }: BankActionsType) => {
   const {
-    dashCustomer: { selectedCustomer, setSelectedCustomer },
+    dashCustomer: { selectedCustomer },
   } = useDashContext()
-  
+
   const queryClient = useQueryClient()
 
   const {
-    actions: { createBankCache },
+    actions: { AddBankCache },
     onMutateCache,
     onSettledCache,
     onErrorCache,
   } = dashBanksCache(queryClient)
 
   const onHandlClickRemove = () => {
-    remove()
+    elementSelected.key === 'BS' ? remove() : notification({ type: 'warning', message: 'El banco no está asignado' })
   }
 
   const onHandlClickAssing = () => {
-    assing()
+    elementSelected.key === 'BNS' ? assing() : notification({ type: 'warning', message: 'El banco ya está asignado' })
   }
 
   const { isLoading: loadingRemove, mutate: remove } = useMutation<AxiosResponse<CustomerHasBankType>, Error>(
     async () => {
-      const { idBank, idCustomer } = bankSelected.CUSTOMER_HAS_BANK
-      return await deleteCustomerBank(idCustomer, idBank)
+      const { idCustomer } = elementSelected.bank.CUSTOMER_HAS_BANK
+      return await revokeCHB(idCustomer)
     },
     {
       onSuccess: (result) => {
@@ -67,8 +72,8 @@ const BankActions = ({ bankSelected }: BankActionsType) => {
   const { isLoading: loadingAssing, mutate: assing } = useMutation<AxiosResponse<CustomerHasBankType>, Error>(
     async () => {
       const { id: idCustomer } = selectedCustomer
-      const { id: idBank } = bankSelected
-      return await assingCustomerBank({ idCustomer, idBank })
+      const { id: idBank } = elementSelected.bank
+      return await assingCHB({ idCustomer, idBank })
     },
     {
       onSuccess: (result) => {

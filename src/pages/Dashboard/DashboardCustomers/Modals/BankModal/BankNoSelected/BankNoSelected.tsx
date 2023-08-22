@@ -9,16 +9,17 @@ import Button from '../../../../../../ui/Button'
 import dashBanksCache, { KEY_DASH_BANKS_CACHE } from '../dash-banks.cache'
 import { getAllBanks } from '../../../../../../shared/services/dash/bank.service'
 import { BankType } from '../../../../../../shared/types/dash/bank.type'
+import elementSelect from '../elementSelect'
 import { useMediaQuery } from '../../../../../../shared/hooks/useMediaQuery'
 import { device } from '../../../../../../shared/breakpoints/reponsive'
 import BodyCell from '../../../../../../ui/Table/BodyCell'
 import EmptyStateCell from '../../../../../../ui/Table/EmptyStateCell'
 
 type BankNoSelectedType = {
-  setGlobalBank: (bank: BankType) => void
+  setGlobalElement: (element: elementSelect) => void
 }
 
-const BankNoSelected = ({setGlobalBank}: BankNoSelectedType) => {
+const BankNoSelected = ({setGlobalElement}: BankNoSelectedType) => {
   const {
     dashCustomer: { selectedCustomer },
   } = useDashContext()
@@ -38,17 +39,6 @@ const BankNoSelected = ({setGlobalBank}: BankNoSelectedType) => {
     [KEY_DASH_BANKS_CACHE, selectedCustomer.urlIdentifier],
     async () => {
       return await getAllBanks()
-    },
-    {
-      // onSuccess: ({ data }) => {
-      //   data = data.filter((bank: BankType) => {
-      //     if (!banks.includes(bank)) {
-      //       return bank
-      //     }
-      //   })
-      //   setBanks(data)
-      //   AddBankCache(data)
-      // },
     }
   )
 
@@ -58,6 +48,10 @@ const BankNoSelected = ({setGlobalBank}: BankNoSelectedType) => {
     ) ?? []
     
   const onHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {}
+
+  const onHandleClick = (element: elementSelect) => {
+    setGlobalElement(element)
+  }
 
   return (
     <Container width="49%">
@@ -79,7 +73,7 @@ const BankNoSelected = ({setGlobalBank}: BankNoSelectedType) => {
                 className="styled-data-table-row"
                 key={key}
                 onClick={() => {
-                  // onHandleClick(record)
+                  onHandleClick({bank: record, key: "BNS"})
                 }}
               >
                 <BodyCell textAlign="center">{`${record.name || ''}`}</BodyCell>
