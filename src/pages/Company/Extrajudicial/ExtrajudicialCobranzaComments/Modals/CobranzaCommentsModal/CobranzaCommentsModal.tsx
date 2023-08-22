@@ -3,47 +3,38 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { AxiosResponse } from 'axios'
 import { CommentType } from '../../../../../../shared/types/extrajudicial/comment.type'
-import { CustomerUserType } from '../../../../../../shared/types/dash/customer-user.type'
 import { notification } from '../../../../../../ui/notification/notification'
 import Modal from '../../../../../../ui/Modal/Modal'
 import Container from '../../../../../../ui/Container/Container'
 import Button from '../../../../../../ui/Button/Button'
-import companyComentariosCache from '../../CobranzaCommentsTable/utils/company-comentarios.cache'
+import companyComentariosCache, {
+  KEY_COBRANZA_URL_COBRANZA_CODE_CACHE,
+} from '../../CobranzaCommentsTable/utils/company-comentarios.cache'
 import { ModalCobranzaCommentsResolver } from './CobranzaCommentsModal.yup'
 import {
   createComment,
   editComment,
-  getComments,
+  getCommenById,
 } from '../../../../../../shared/services/extrajudicial/comment.service'
 import CobranzaCommentsInfoForm from './CobranzaCommentsInfoForm/CobranzaCommentsInfoForm'
 import { useLoloContext } from '../../../../../../shared/contexts/LoloProvider'
-
-type Comment = CommentType & { customerUser: CustomerUserType }
+import moment from 'moment'
 
 type CobranzaCommentsModalProps = {
   visible: boolean
   onClose: () => void
   isEdit?: boolean
   idComment?: number
+  clientId?: number
 }
 
-const defaultValuesCobranzaComments: Omit<CommentType, 'customerUserId' | 'clientId' | 'hour'> = {
-  id: 0,
-  comment: '',
-  negotiation: '',
-  managementActionId: 0,
-  date: '',
-}
-
-const CobranzaCommentsModal = ({ visible, onClose, isEdit = false, idComment = 0 }: CobranzaCommentsModalProps) => {
-  const {
-    bank: {
-      selectedBank: { idCHB },
-    },
-  } = useLoloContext()
-
-  const chb = parseInt(idCHB)
-
+const CobranzaCommentsModal = ({
+  visible,
+  onClose,
+  isEdit = false,
+  idComment = 0,
+  clientId = 0,
+}: CobranzaCommentsModalProps) => {
   const queryClient = useQueryClient()
   const {
     actions: { createCobranzaCommentCache, editCobranzaCommentCache },
@@ -52,18 +43,35 @@ const CobranzaCommentsModal = ({ visible, onClose, isEdit = false, idComment = 0
     onErrorCache,
   } = companyComentariosCache(queryClient)
 
-  const formMethods = useForm<CommentType>({
+  const {
+    customerUser: { user },
+    bank: {
+      selectedBank: { idCHB },
+    },
+  } = useLoloContext()
+
+  const chb = parseInt(idCHB)
+
+  const formMethods = useForm<Omit<CommentType, 'id' | 'hour'>>({
     resolver: ModalCobranzaCommentsResolver,
     mode: 'all',
-    defaultValues: defaultValuesCobranzaComments,
+    defaultValues: {
+      comment: '',
+      date: moment(new Date()).format('DD-MM-YYYY'),
+      clientId,
+      customerUserId: user.id,
+      negotiation: '',
+    },
   })
 
   const {
     setValue,
     getValues,
     reset,
+    watch,
     formState: { isValid },
   } = formMethods
+  console.log('🚀 ~ watch:', watch())
 
   const { isLoading: loadingCreateCobranzaComment, mutate: createCobranzaComment } = useMutation<
     AxiosResponse<CommentType>,
@@ -71,12 +79,12 @@ const CobranzaCommentsModal = ({ visible, onClose, isEdit = false, idComment = 0
   >(
     async () => {
       const { ...restClient } = getValues()
-      return await createComment({ ...restClient })
+      return await createComment({ ...restClient, id: idComment })
     },
     {
       onSuccess: (result) => {
         createCobranzaCommentCache(result.data)
-        notification({ type: 'success', message: 'Comentario creada' })
+        notification({ type: 'success', message: 'Comentario creado' })
         handleClickCloseModal()
       },
       onMutate: () => {
@@ -101,7 +109,7 @@ const CobranzaCommentsModal = ({ visible, onClose, isEdit = false, idComment = 0
   >(
     async () => {
       const { ...restClient } = getValues()
-      return await editComment({ ...restClient })
+      return await editComment({ ...restClient, id: idComment })
     },
     {
       onSuccess: (result) => {
@@ -126,33 +134,32 @@ const CobranzaCommentsModal = ({ visible, onClose, isEdit = false, idComment = 0
   )
 
   const { refetch: refetchGetCobranzaCommentById } = useQuery(
-    'get-cobranza-comment-by-id',
+    [`${KEY_COBRANZA_URL_COBRANZA_CODE_CACHE}_GET_COMMENT_BY_ID`],
     async () => {
-      return getComments(idComment)
+      return getCommenById(idComment)
     },
     {
       onSuccess: ({ data }) => {
         if (!!idComment) {
-          setValue('id', data.id)
           setValue('comment', data.comment)
           setValue('negotiation', data.negotiation)
           setValue('managementActionId', data.managementActionId)
-          setValue('date', data.date)
+          setValue('date', moment(data.date).format('DD-MM-YYYY'))
           setValue('customerUserId', data.customerUserId)
-          setValue('clientId', data.clientId)
+          setValue('clientId', data.clientId, { shouldValidate: true })
         } else {
-          reset(defaultValuesCobranzaComments)
+          reset()
         }
       },
       enabled: false,
     }
   )
 
-  const onAddAction = () => {
+  const onAddComment = () => {
     createCobranzaComment()
   }
 
-  const onEditAction = () => {
+  const onEditComment = () => {
     editCobranzaComment()
   }
 
@@ -173,10 +180,10 @@ const CobranzaCommentsModal = ({ visible, onClose, isEdit = false, idComment = 0
         visible={visible}
         onClose={handleClickCloseModal}
         id="modal-files"
-        title={isEdit ? 'Editar Accion' : 'Agregar Accion'}
+        title={isEdit ? 'Editar Comentario' : 'Agregar Comentario'}
         contentOverflowY="auto"
         size="small"
-        minHeight="400px"
+        minHeight="430px"
         footer={
           <Container width="100%" height="75px" display="flex" justifyContent="end" alignItems="center" gap="20px">
             <Button
@@ -184,7 +191,7 @@ const CobranzaCommentsModal = ({ visible, onClose, isEdit = false, idComment = 0
               label={isEdit ? 'Editar' : 'Agregar'}
               shape="default"
               trailingIcon="ri-add-fill"
-              onClick={isEdit ? onEditAction : onAddAction}
+              onClick={isEdit ? onEditComment : onAddComment}
               loading={loadingCreateCobranzaComment || loadingEditCobranzaComment}
               disabled={!isValid}
             />
@@ -193,15 +200,15 @@ const CobranzaCommentsModal = ({ visible, onClose, isEdit = false, idComment = 0
       >
         <Container
           width="100%"
-          height="260px"
+          height="430px"
           display="flex"
           justify-content="center"
           flexDirection="column"
           align-items="center"
           gap="20px"
         >
-          <Container width="100%" display="flex" flexDirection="column" gap="20px" padding="20px" margin="30px 0">
-            <CobranzaCommentsInfoForm />
+          <Container width="100%" display="flex" flexDirection="column" gap="10px" padding="20px">
+            <CobranzaCommentsInfoForm clientId={clientId} />
           </Container>
         </Container>
       </Modal>

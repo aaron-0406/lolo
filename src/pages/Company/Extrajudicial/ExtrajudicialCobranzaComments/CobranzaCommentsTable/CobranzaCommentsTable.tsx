@@ -14,6 +14,10 @@ import { CustomerUserType } from '../../../../../shared/types/dash/customer-user
 import Text from '../../../../../ui/Text/Text'
 import moment from 'moment'
 import { useLoloContext } from '../../../../../shared/contexts/LoloProvider'
+import CobranzaCommentsModal from '../Modals/CobranzaCommentsModal/CobranzaCommentsModal'
+import { useState } from 'react'
+import useModal from '../../../../../shared/hooks/useModal'
+import DeleteCobranzaCommentsModal from '../Modals/DeleteCobranzaCommentsModal'
 
 type CobranzaCommentsTableProps = {
   clientId?: number
@@ -23,6 +27,32 @@ const CobranzaCommentsTable = ({ clientId }: CobranzaCommentsTableProps) => {
   const {
     managementAction: { managementActions },
   } = useLoloContext()
+
+  const [idEdit, setIdEdit] = useState<number>(0)
+  const [idDeletedComment, setIdDeletedComment] = useState<number>(0)
+
+  const { visible: visibleModalComment, showModal: showModalComment, hideModal: hideModalComment } = useModal()
+  const { visible: visibleDeleteComment, showModal: showDeleteComment, hideModal: hideDeleteComment } = useModal()
+
+  const handleClickEdit = (id: number) => {
+    setIdEdit(id)
+    showModalComment()
+  }
+
+  const onCloseModalEdit = () => {
+    setIdEdit(0)
+    hideModalComment()
+  }
+
+  const handleClickDelete = (id: number) => {
+    setIdDeletedComment(id)
+    showDeleteComment()
+  }
+
+  const onCloseModalDelete = () => {
+    setIdDeletedComment(0)
+    hideDeleteComment()
+  }
 
   const { data, isLoading } = useQuery<AxiosResponse<Array<CommentType & { customerUser: CustomerUserType }>, Error>>(
     [KEY_COBRANZA_URL_COBRANZA_CODE_CACHE, clientId],
@@ -87,7 +117,7 @@ const CobranzaCommentsTable = ({ clientId }: CobranzaCommentsTableProps) => {
                       <Button
                         onClick={(event) => {
                           event.stopPropagation()
-                          //handleClickButtonEdit(record.id)
+                          handleClickEdit(record.id)
                         }}
                         messageTooltip="Editar comentario"
                         shape="round"
@@ -96,7 +126,7 @@ const CobranzaCommentsTable = ({ clientId }: CobranzaCommentsTableProps) => {
                       />
                       <Button
                         onClick={() => {
-                          //handleClickDeleteUser(record.id)
+                          handleClickDelete(record.id)
                         }}
                         messageTooltip="Eliminar comentario"
                         shape="round"
@@ -110,6 +140,20 @@ const CobranzaCommentsTable = ({ clientId }: CobranzaCommentsTableProps) => {
             )
           })}
       </Table>
+
+      <CobranzaCommentsModal
+        visible={visibleModalComment}
+        onClose={onCloseModalEdit}
+        idComment={idEdit}
+        clientId={clientId}
+        isEdit
+      />
+      <DeleteCobranzaCommentsModal
+        visible={visibleDeleteComment}
+        onClose={onCloseModalDelete}
+        idComment={idDeletedComment}
+        clientId={clientId}
+      />
     </Container>
   )
 }

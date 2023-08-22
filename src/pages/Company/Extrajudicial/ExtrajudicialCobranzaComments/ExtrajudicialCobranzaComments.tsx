@@ -20,7 +20,7 @@ const ExtrajudicialCobranzaComments = () => {
   } = useLoloContext()
 
   const { data } = useQuery<AxiosResponse<ClientType, Error>>(
-    [`${KEY_COBRANZA_URL_COBRANZA_CODE_CACHE}_CLIENT_BY_CODE`, `${code ?? ''}-${idCHB}`],
+    [`${KEY_COBRANZA_URL_COBRANZA_CODE_CACHE}_GET_CLIENT_BY_CODE`, `${code ?? ''}-${idCHB}`],
     async () => {
       return await getClientByCode(code ?? '', idCHB)
     },
@@ -47,7 +47,7 @@ const ExtrajudicialCobranzaComments = () => {
       justifyContent="center"
       gap="20px"
     >
-      <CobranzaCommentsInfo name={clientName} />
+      <CobranzaCommentsInfo name={clientName} clientId={clientId} />
       <CobranzaCommentsTable clientId={clientId} />
     </Container>
   )

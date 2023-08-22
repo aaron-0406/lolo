@@ -1,6 +1,5 @@
 import Container from '../../../../../ui/Container/Container'
 import Text from '../../../../../ui/Text'
-import { useQuery } from 'react-query'
 import Button from '../../../../../ui/Button/Button'
 import useModal from '../../../../../shared/hooks/useModal'
 import CobranzaCommentsModal from '../Modals/CobranzaCommentsModal/CobranzaCommentsModal'
@@ -8,9 +7,10 @@ import { useParams } from 'react-router-dom'
 
 type CobranzaCommentsInfoProps = {
   name?: string
+  clientId?: number
 }
 
-const CobranzaCommentsInfo = ({ name }: CobranzaCommentsInfoProps) => {
+const CobranzaCommentsInfo = ({ name, clientId }: CobranzaCommentsInfoProps) => {
   const { code } = useParams()
 
   const { visible: visibleModalAdd, showModal: showModalAdd, hideModal: hideModalAdd } = useModal()
@@ -31,11 +31,11 @@ const CobranzaCommentsInfo = ({ name }: CobranzaCommentsInfoProps) => {
       justifyContent="space-between"
       padding="0 20px"
     >
-      <Container display="flex" flexDirection="row" gap="20px" alignItems="center">
-        <Text.Body size="l" weight="bold" ellipsis>
+      <Container width="80%" display="flex" flexDirection="row" gap="20px" alignItems="center">
+        <Text.Body size="l" weight="bold">
           {code}
         </Text.Body>
-        <Text.Body size="l" weight="bold" ellipsis>
+        <Text.Body size="l" weight="bold">
           /
         </Text.Body>
         <Text.Body size="l" weight="regular" color="Primary5" ellipsis>
@@ -45,7 +45,8 @@ const CobranzaCommentsInfo = ({ name }: CobranzaCommentsInfoProps) => {
 
       <Container>
         <Button onClick={onShowModal} disabled={!name} width="100px" shape="round" trailingIcon="ri-add-fill" />
-        <CobranzaCommentsModal visible={visibleModalAdd} onClose={onCloseModal} />
+
+        {clientId && <CobranzaCommentsModal visible={visibleModalAdd} onClose={onCloseModal} clientId={clientId} />}
       </Container>
     </Container>
   )

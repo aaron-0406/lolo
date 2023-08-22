@@ -2,23 +2,59 @@ import { Controller, useFormContext } from 'react-hook-form'
 import { CommentType } from '../../../../../../../shared/types/extrajudicial/comment.type'
 import Container from '../../../../../../../ui/Container'
 import Label from '../../../../../../../ui/Label'
-import TextField from '../../../../../../../ui/fields/TextField'
+import DatePicker from '../../../../../../../ui/DatePicker/DatePicker'
+import Select from '../../../../../../../ui/Select'
+import { SelectItemType } from '../../../../../../../ui/Select/interfaces'
+import { useLoloContext } from '../../../../../../../shared/contexts/LoloProvider'
+import TextAreaField from '../../../../../../../ui/fields/TextAreaField'
 
-const CobranzaCommentsInfoForm = () => {
+type CobranzaCommentsInfoFormProps = {
+  clientId: number
+}
+
+const CobranzaCommentsInfoForm = ({ clientId }: CobranzaCommentsInfoFormProps) => {
+  const {
+    managementAction: { managementActions },
+  } = useLoloContext()
+
   const {
     control,
     formState: { errors },
   } = useFormContext<CommentType>()
 
+  const optionsStates: Array<SelectItemType> = [
+    { key: 'CORREO', label: 'CORREO' },
+    { key: 'VISITA', label: 'VISITA' },
+    { key: 'LLAMADA', label: 'LLAMADA' },
+    { key: 'REUNIÓN OFICINA', label: 'REUNIÓN OFICINA' },
+    { key: 'MENSAJE WHATSAPP', label: 'MENSAJE WHATSAPP' },
+  ]
+
+  const optionsActions: Array<SelectItemType> = managementActions.map((managementAction) => {
+    return {
+      key: String(managementAction.id),
+      label: managementAction.nameAction,
+    }
+  })
+
   return (
     <>
       <Container width="100%" display="flex" gap="10px">
-        <Label label="Fecha: " />
         <Controller
           name="date"
           control={control}
           render={({ field }) => (
-            <TextField width="100%" value={field.value} onChange={field.onChange} hasError={!!errors.date} />
+            <DatePicker
+              required
+              label="Fecha"
+              selectedDate={field.value}
+              placeholder="Ingrese la fecha:"
+              dateFormat="DD-MM-YYYY"
+              value={field.value}
+              getDate={(e) => {
+                field.onChange('date', e)
+              }}
+            />
           )}
         />
       </Container>
@@ -29,7 +65,36 @@ const CobranzaCommentsInfoForm = () => {
           name="negotiation"
           control={control}
           render={({ field }) => (
-            <TextField width="100%" value={field.value} onChange={field.onChange} hasError={!!errors.negotiation} />
+            <Select
+              disabled={!clientId}
+              width="100%"
+              value={field.value}
+              options={optionsStates}
+              onChange={(key) => {
+                field.onChange(key)
+              }}
+              hasError={!!errors.negotiation}
+            />
+          )}
+        />
+      </Container>
+
+      <Container width="100%" display="flex" gap="10px">
+        <Label label="Acción: " />
+        <Controller
+          name="managementActionId"
+          control={control}
+          render={({ field }) => (
+            <Select
+              disabled={!clientId}
+              width="100%"
+              value={!!field.value ? String(field.value) : ''}
+              options={optionsActions}
+              onChange={(key) => {
+                field.onChange(parseInt(key))
+              }}
+              hasError={!!errors.managementActionId}
+            />
           )}
         />
       </Container>
@@ -40,7 +105,16 @@ const CobranzaCommentsInfoForm = () => {
           name="comment"
           control={control}
           render={({ field }) => (
-            <TextField width="62%" value={field.value} onChange={field.onChange} hasError={!!errors.comment} />
+            <TextAreaField
+              disabled={!clientId}
+              width="100%"
+              rows={5}
+              value={field.value}
+              hasError={!!errors.comment}
+              onChange={(e) => {
+                field.onChange(e.target.value)
+              }}
+            />
           )}
         />
       </Container>
