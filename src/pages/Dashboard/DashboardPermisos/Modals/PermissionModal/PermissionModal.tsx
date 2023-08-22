@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { FormProvider, useForm } from 'react-hook-form'
 import Modal from '../../../../../ui/Modal/Modal'
 import { PermissionType } from '../../../../../shared/types/dash/permission.type'
@@ -7,13 +8,14 @@ import PermissionInfoForm from './PermissionInfoForm'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import {
   createPermission,
-  getAllPermissions,
+  getPermissionById,
   updatePermission,
 } from '../../../../../shared/services/dash/permission.service'
 import { notification } from '../../../../../ui/notification/notification'
 import dashPermissionCache from '../../PermissionsTable/utils/dash-permisos.cache'
 import { ModalPermissionResolver } from './PermissionInfoForm/PermissionModal.yup'
 import { useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 
 type PermissionModalProps = {
   visible: boolean
@@ -31,7 +33,9 @@ const defaultValuesPermission: PermissionType = {
 
 const PermissionModal = ({ visible, onClose, idPermission = 0 }: PermissionModalProps) => {
   const queryClient = useQueryClient()
-
+  const location = useLocation()
+  const searchParams = new URLSearchParams(location.search)
+  const code = searchParams.get('code')
   const formMethods = useForm<Omit<PermissionType, 'permissions'>>({
     resolver: ModalPermissionResolver,
     mode: 'all',
@@ -107,14 +111,16 @@ const PermissionModal = ({ visible, onClose, idPermission = 0 }: PermissionModal
   const { refetch: refetchPermissions } = useQuery(
     'get-all-permissions-by-code',
     async () => {
-      return getAllPermissions()
+      return getPermissionById(idPermission)
     },
     {
       onSuccess: ({ data }) => {
         if (idPermission !== 0) {
-          // setValue('name', data.name)
-          // setValue('customerHasBankId', data.customerHasBankId)
-          // setValue('id', data.id)
+          setValue('name', data.name)
+          setValue('code', data.code)
+          setValue('icon', data.icon)
+          setValue('link', data.link)
+          setValue('id', data.id)
         } else {
           reset(defaultValuesPermission)
         }
@@ -122,10 +128,13 @@ const PermissionModal = ({ visible, onClose, idPermission = 0 }: PermissionModal
       enabled: false,
     }
   )
+
   const handleClickCloseModal = () => {
-    reset()
     onClose()
+    setValue('code', code ? String(code) + '-' : '')
+    if (code) setValue('link', code.length >= 3 ? '#' : '')
   }
+
   const onAddPermission = () => {
     mutateCreatePermission()
   }
@@ -135,10 +144,9 @@ const PermissionModal = ({ visible, onClose, idPermission = 0 }: PermissionModal
   }
 
   useEffect(() => {
-    if (!!idPermission) {
-      refetchPermissions()
-    }
+    if (!!idPermission) refetchPermissions()
   }, [idPermission, refetchPermissions])
+
 
   return (
     <FormProvider {...formMethods}>
