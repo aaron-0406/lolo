@@ -68,10 +68,8 @@ const CobranzaCommentsModal = ({
     setValue,
     getValues,
     reset,
-    watch,
     formState: { isValid },
   } = formMethods
-  console.log('🚀 ~ watch:', watch())
 
   const { isLoading: loadingCreateCobranzaComment, mutate: createCobranzaComment } = useMutation<
     AxiosResponse<CommentType>,
@@ -88,13 +86,13 @@ const CobranzaCommentsModal = ({
         handleClickCloseModal()
       },
       onMutate: () => {
-        onMutateCache(chb)
+        onMutateCache(clientId)
       },
       onSettled: () => {
-        onSettledCache(chb)
+        onSettledCache(clientId)
       },
       onError: (error: any, _, context: any) => {
-        onErrorCache(context, chb)
+        onErrorCache(context, clientId)
         notification({
           type: 'error',
           message: error.response.data.message,
@@ -118,13 +116,13 @@ const CobranzaCommentsModal = ({
         onClose()
       },
       onMutate: () => {
-        onMutateCache(chb)
+        onMutateCache(clientId)
       },
       onSettled: () => {
-        onSettledCache(chb)
+        onSettledCache(clientId)
       },
       onError: (error: any, _, context: any) => {
-        onErrorCache(context, chb)
+        onErrorCache(context, clientId)
         notification({
           type: 'error',
           message: error.response.data.message,
