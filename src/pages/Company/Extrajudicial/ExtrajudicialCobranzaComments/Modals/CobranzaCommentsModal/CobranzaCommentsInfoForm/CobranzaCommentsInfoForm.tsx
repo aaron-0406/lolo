@@ -19,6 +19,7 @@ const CobranzaCommentsInfoForm = ({ clientId }: CobranzaCommentsInfoFormProps) =
 
   const {
     control,
+    setValue,
     formState: { errors },
   } = useFormContext<CommentType>()
 
@@ -52,7 +53,7 @@ const CobranzaCommentsInfoForm = ({ clientId }: CobranzaCommentsInfoFormProps) =
               dateFormat="DD-MM-YYYY"
               value={field.value}
               getDate={(e) => {
-                field.onChange('date', e)
+                setValue('date', e)
               }}
             />
           )}
