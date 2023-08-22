@@ -1,4 +1,5 @@
-import { useQuery, useQueryClient } from 'react-query'
+import { useQuery } from 'react-query'
+import { AxiosResponse } from 'axios'
 import Button from '../../../../../ui/Button'
 import Container from '../../../../../ui/Container'
 import Table from '../../../../../ui/Table'
@@ -6,40 +7,27 @@ import BodyCell from '../../../../../ui/Table/BodyCell'
 import EmptyStateCell from '../../../../../ui/Table/EmptyStateCell'
 import { commentsColumns } from './utils/columns'
 import { KEY_COBRANZA_URL_COBRANZA_CODE_CACHE } from './utils/company-comentarios.cache'
-import { useState } from 'react'
-import { AxiosResponse } from 'axios'
 import { CommentType } from '../../../../../shared/types/extrajudicial/comment.type'
 import { getComments } from '../../../../../shared/services/extrajudicial/comment.service'
-import { useParams } from 'react-router-dom'
-import { useLoloContext } from '../../../../../shared/contexts/LoloProvider'
-import { ClientType } from '../../../../../shared/types/extrajudicial/client.type'
 import notification from '../../../../../ui/notification'
 import { CustomerUserType } from '../../../../../shared/types/dash/customer-user.type'
 import Text from '../../../../../ui/Text/Text'
+import moment from 'moment'
+import { useLoloContext } from '../../../../../shared/contexts/LoloProvider'
 
-const CobranzaCommentsTable = () => {
-  const { code } = useParams()
+type CobranzaCommentsTableProps = {
+  clientId?: number
+}
 
+const CobranzaCommentsTable = ({ clientId }: CobranzaCommentsTableProps) => {
   const {
-    bank: {
-      selectedBank: { idCHB },
-    },
+    managementAction: { managementActions },
   } = useLoloContext()
 
-  const queryClient = useQueryClient()
-
-  const [idEdit, setIdEdit] = useState<number>(0)
-  const [idDeletedAction, setIdDeletedAction] = useState<number>(0)
-
-  const dataClient = queryClient.getQueryData<AxiosResponse<ClientType>>([
-    `${KEY_COBRANZA_URL_COBRANZA_CODE_CACHE}_CLIENT_BY_CODE`,
-    `${code}-${idCHB}`,
-  ])
-
   const { data, isLoading } = useQuery<AxiosResponse<Array<CommentType & { customerUser: CustomerUserType }>, Error>>(
-    [KEY_COBRANZA_URL_COBRANZA_CODE_CACHE, dataClient?.data.id ?? 0],
+    [KEY_COBRANZA_URL_COBRANZA_CODE_CACHE, clientId],
     async () => {
-      return await getComments(dataClient?.data.id ?? 0)
+      return await getComments(clientId ?? 0)
     },
     {
       onError: (error: any) => {
@@ -52,6 +40,10 @@ const CobranzaCommentsTable = () => {
   )
 
   const comments = data?.data ?? []
+
+  const getActionById = (id: number) => {
+    return managementActions.find((action) => action.id === id)
+  }
 
   return (
     <Container width="100%" height="calc(100% - 112px)" padding="20px">
@@ -70,17 +62,25 @@ const CobranzaCommentsTable = () => {
           comments.map((record: CommentType & { customerUser: CustomerUserType }, key) => {
             return (
               <tr className="styled-data-table-row" key={record.id}>
-                <BodyCell textAlign="center">{`${key + 1 || ''}`}</BodyCell>
+                <BodyCell textAlign="center">{key + 1 || ''}</BodyCell>
                 <BodyCell textAlign="left">
-                  <Container width="200px">
-                    <Text.Body size="m" weight="regular" ellipsis>{`${record.comment || ''}`}</Text.Body>
+                  <Container padding="5px 0" whiteSpace="normal" wordBreak="break-all">
+                    <Text.Body size="m" weight="regular">
+                      {record.comment || ''}
+                    </Text.Body>
                   </Container>
                 </BodyCell>
-                <BodyCell textAlign="center">{`${record.negotiation || ''}`}</BodyCell>
-                <BodyCell textAlign="center">{`${record.managementActionId || ''}`}</BodyCell>
-                <BodyCell textAlign="center">{`${record.date || ''}`}</BodyCell>
-                <BodyCell textAlign="center">{`${record.date || ''}`}</BodyCell>
-                <BodyCell textAlign="center">{`${record.customerUser.name || ''}`}</BodyCell>
+                <BodyCell textAlign="center">
+                  <Text.Body size="m" weight="bold" color="Primary5">
+                    {record.negotiation || ''}
+                  </Text.Body>
+                </BodyCell>
+                <BodyCell textAlign="center">
+                  {getActionById(record.managementActionId ?? 0)?.nameAction.toUpperCase() || '-'}
+                </BodyCell>
+                <BodyCell textAlign="center">{moment(record.date).format('DD-MM-YYYY') || ''}</BodyCell>
+                <BodyCell textAlign="center">{moment(record.hour).format('HH:mm:ss') || ''}</BodyCell>
+                <BodyCell textAlign="center">{record.customerUser.name || ''}</BodyCell>
                 <BodyCell textAlign="center">
                   {
                     <Container display="flex" gap="10px" justifyContent="space-around">

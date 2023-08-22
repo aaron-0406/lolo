@@ -4,19 +4,19 @@ export const commentsColumns: ColumProps[] = [
   {
     id: 'comments.datatable.header.id',
     title: 'ID',
-    width: '10%',
+    width: '5%',
     justifyContent: 'center',
   },
   {
     id: 'comments.datatable.header.comment',
     title: 'COMENTARIO',
-    width: '30%',
+    width: '50%',
     justifyContent: 'left',
   },
   {
     id: 'comments.datatable.header.negotiation',
     title: 'NEGOCIACIÓN',
-    width: '40%',
+    width: '10%',
     justifyContent: 'center',
   },
   {

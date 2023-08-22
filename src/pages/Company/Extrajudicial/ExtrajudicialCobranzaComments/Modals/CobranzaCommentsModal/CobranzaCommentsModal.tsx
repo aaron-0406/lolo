@@ -27,7 +27,7 @@ type CobranzaCommentsModalProps = {
   idComment?: number
 }
 
-const defaultValuesCobranzaComments: Omit<CommentType, 'customerUserId' | 'clientId'> = {
+const defaultValuesCobranzaComments: Omit<CommentType, 'customerUserId' | 'clientId' | 'hour'> = {
   id: 0,
   comment: '',
   negotiation: '',
