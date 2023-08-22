@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
-
 import { AxiosResponse } from 'axios'
 import { CommentType } from '../../../../../../shared/types/extrajudicial/comment.type'
 import { CustomerUserType } from '../../../../../../shared/types/dash/customer-user.type'
@@ -17,6 +16,7 @@ import {
   getComments,
 } from '../../../../../../shared/services/extrajudicial/comment.service'
 import CobranzaCommentsInfoForm from './CobranzaCommentsInfoForm/CobranzaCommentsInfoForm'
+import { useLoloContext } from '../../../../../../shared/contexts/LoloProvider'
 
 type Comment = CommentType & { customerUser: CustomerUserType }
 
@@ -25,7 +25,6 @@ type CobranzaCommentsModalProps = {
   onClose: () => void
   isEdit?: boolean
   idComment?: number
-  chb: number
 }
 
 const defaultValuesCobranzaComments: Omit<CommentType, 'customerUserId' | 'clientId'> = {
@@ -36,13 +35,15 @@ const defaultValuesCobranzaComments: Omit<CommentType, 'customerUserId' | 'clien
   date: '',
 }
 
-const CobranzaCommentsModal = ({
-  visible,
-  onClose,
-  isEdit = false,
-  idComment = 0,
-  chb,
-}: CobranzaCommentsModalProps) => {
+const CobranzaCommentsModal = ({ visible, onClose, isEdit = false, idComment = 0 }: CobranzaCommentsModalProps) => {
+  const {
+    bank: {
+      selectedBank: { idCHB },
+    },
+  } = useLoloContext()
+
+  const chb = parseInt(idCHB)
+
   const queryClient = useQueryClient()
   const {
     actions: { createCobranzaCommentCache, editCobranzaCommentCache },

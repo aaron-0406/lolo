@@ -1,1 +1,1 @@
-export {default} from './ExtrajudicialCobranzaComments'
+export { default } from './ExtrajudicialCobranzaComments'

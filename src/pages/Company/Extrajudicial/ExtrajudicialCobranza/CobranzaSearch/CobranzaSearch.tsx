@@ -94,8 +94,8 @@ const CobranzaSearch = ({ setLoadingGlobal }: CobranzaSearchProps) => {
   }, [])
 
   return (
-    <StyledContainer display="flex" flexDirection="column" width="50%"  gap="15px" justifyContent='center'>
-      <Container display="flex" gap="15px" >
+    <StyledContainer display="flex" flexDirection="column" width="100%" gap="15px" justifyContent="center">
+      <Container display="flex" gap="15px">
         <Label label="Buscar:" />
         <TextField
           width="100%"
@@ -115,22 +115,8 @@ export default CobranzaSearch
 
 const StyledContainer = styled(Container)`
   ${({ theme }) => css`
-    /* border-radius: 8px;
-    border: 1px solid ${theme.colors.Neutral4}; */
-
-    @media ${theme.device.mobile} {
-      width: 100%;
-    }
-    
     @media ${theme.device.tabletS} {
-      /* padding: 18px 0; */
-    }
-
-    @media ${theme.device.tabletL} {
-    }
-
-    @media ${theme.device.desktopS} {
-      /* padding: 18px 5px; */
+      width: 50%;
     }
   `}
 `

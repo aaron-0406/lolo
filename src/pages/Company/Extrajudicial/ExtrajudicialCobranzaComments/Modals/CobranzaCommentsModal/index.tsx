@@ -1,1 +1,1 @@
-// export {default} from './CobranzaCommentsModal'
+export { default } from './CobranzaCommentsModal'
