@@ -9,6 +9,10 @@ export const getAllPermissions = async (code?: string) => {
   return await axiosClient.get(`${url}${code ? '?code=' + code : ''}`)
 }
 
+export const getPermissionById = async (id: number) => {
+  return await axiosClient.get(`${url}/${id}`)
+}
+
 export const createPermission = async (permission: Omit<PermissionType, 'id'>) => {
   return await axiosClient.post(`${url}/`, permission)
 }
