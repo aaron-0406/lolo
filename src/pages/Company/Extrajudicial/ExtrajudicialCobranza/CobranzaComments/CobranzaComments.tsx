@@ -31,7 +31,7 @@ const CobranzaComments = () => {
   const [comments, setComments] = useState<Comment[]>([])
 
   const {
-    customerUser: { user },
+    customerUser: { user },//gestor
     managementAction: { managementActions },
   } = useLoloContext()
 

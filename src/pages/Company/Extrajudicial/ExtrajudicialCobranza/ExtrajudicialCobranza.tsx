@@ -7,6 +7,8 @@ import CobranzaComments from './CobranzaComments'
 import CobranzaInfo from './CobranzaInfo'
 import CobranzaSearch from './CobranzaSearch'
 import { ExtrajudicialCobranzaResolver } from './ExtrajudicialCobranza.yup'
+import LayoutCobranzaComments from '../../../../components/Layouts/LayoutCobranzaComments'
+import CobranzaInfoModals from './CobranzaInfo/CobranzaInfoModals/CobranzaInfoModals'
 
 const ExtrajudicialCobranza = () => {
   const formMethods = useForm<ClientType>({
@@ -35,10 +37,13 @@ const ExtrajudicialCobranza = () => {
     <FormProvider {...formMethods}>
       <LayoutCobranza
         leftHeader={<CobranzaSearch setLoadingGlobal={setLoadingGlobal} />}
-        leftActions={<CobranzaActions />}
+        rightActions={<CobranzaActions />}
         leftContent={<CobranzaInfo loading={loading} />}
+        buttonsContent={<CobranzaInfoModals/>}
+        />
+      {/* <LayoutCobranzaComments
         rightComments={<CobranzaComments />}
-      />
+      /> */}
     </FormProvider>
   )
 }

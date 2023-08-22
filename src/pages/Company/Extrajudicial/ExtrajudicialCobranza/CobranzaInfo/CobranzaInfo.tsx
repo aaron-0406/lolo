@@ -62,8 +62,10 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
   return (
     <StyledContainer
       width="100%"
+      height="100%"
+      // margin="10px 0"
       backgroundColor="#eff0f6ff"
-      padding="15px"
+      // padding="15px"
       display="flex"
       flexDirection="column"
       gap="20px"
@@ -240,8 +242,10 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
           )}
         />
       </div>
-
-      <CobranzaInfoModals />
+{/* 
+      <div className="container__buttons">
+        <CobranzaInfoModals />
+      </div> */}
     </StyledContainer>
   )
 }
@@ -252,6 +256,13 @@ const StyledContainer = styled(Container)`
   ${({ theme }) => css`
     border-radius: 8px;
     border: 1px solid ${theme.colors.Neutral4};
+
+    .container__buttons {
+      width: 100%;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+    }
 
     .fields-wrapper-container-t {
       width: 100%;
@@ -273,14 +284,26 @@ const StyledContainer = styled(Container)`
       gap: 15px;
     }
 
+    /* @media ${theme.device.mobile} { PREGUNTAR
+      .container__buttons {
+        width: 400px;
+      }
+    } */
+
     @media ${theme.device.tabletS} {
       padding: 30px 40px;
+      .container__buttons {
+        width: 500px;
+      }
     }
 
     @media ${theme.device.tabletL} {
       .fields-wrapper-container-t {
         flex-direction: row;
         gap: 15px;
+      }
+      .container__buttons {
+        width: auto;
       }
     }
 

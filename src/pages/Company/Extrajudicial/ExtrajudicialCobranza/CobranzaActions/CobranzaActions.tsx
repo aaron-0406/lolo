@@ -137,7 +137,7 @@ const CobranzaActions = () => {
   }
 
   return (
-    <StyledContainer width="100%" height="75px" display="flex" justifyContent="center" alignItems="center" gap="20px">
+    <StyledContainer width="50%" display="flex" justifyContent="center" alignItems="center" gap="20px">
       <Button
         width="125px"
         label={greaterThanDesktopS && 'Agregar'}
@@ -181,6 +181,10 @@ export default CobranzaActions
 
 const StyledContainer = styled(Container)`
   ${({ theme }) => css`
+    @media ${theme.device.mobile} {
+      gap: 5px;
+      width: 100%;
+    }
     @media ${theme.device.tabletL} {
       gap: 10px;
     }

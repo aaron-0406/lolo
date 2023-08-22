@@ -37,6 +37,7 @@ import ProtectedRoutesCompany from '../ProtectedRoutesCompany'
 import ProtectedRoutesCompanyDash from '../ProtectedRoutesCompanyDash'
 
 import paths from '../paths'
+import ExtrajudicialCobranzaComments from '../../../pages/Company/Extrajudicial/ExtrajudicialCobranzaComments/ExtrajudicialCobranzaComments'
 
 const AppRouter = () => {
   return (
@@ -68,6 +69,7 @@ const AppRouter = () => {
         <Route path={paths.cobranza.perfil()} element={<ExtrajudicialProfile />} />
         <Route path={paths.cobranza.clientes()} element={<ExtrajudicialCustomers />} />
         <Route path={paths.cobranza.cobranza()} element={<ExtrajudicialCobranza />} />
+        <Route path={paths.cobranza.cobranzaComments()} element={<ExtrajudicialCobranzaComments />} />
         <Route path={paths.cobranza.metas()} element={<ExtrajudicialMetas />} />
         <Route path={paths.cobranza.document()} element={<ExtrajudicialTemplate />} />
         <Route element={<ProtectedRoutesCompanyDash pathname={paths.company.login()} />}>
