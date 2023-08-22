@@ -31,8 +31,8 @@ const dashBanksCache = (queryClient: QueryClient) => {
     })
   }
 
-  const deleteBankCache = (idBank: string, chb: number) => {
-    queryClient.setQueryData<QueryDataType>([KEY_DASH_BANKS_CACHE, chb], (old) => {
+  const deleteBankCache = (idBank: string) => {
+    queryClient.setQueryData<QueryDataType>([KEY_DASH_BANKS_CACHE], (old) => {
       if (old) {
         const dataUpdated = old.data.filter((bank: BankType) => bank.id !== parseInt(idBank))
         return { ...old, data: dataUpdated }
@@ -40,25 +40,25 @@ const dashBanksCache = (queryClient: QueryClient) => {
     })
   }
 
-  const onRefetchQueryCache = async (chb: number) => {
-    await queryClient.refetchQueries([KEY_DASH_BANKS_CACHE, chb])
+  const onRefetchQueryCache = async () => {
+    await queryClient.refetchQueries([KEY_DASH_BANKS_CACHE])
   }
 
-  const onMutateCache = async (chb: number) => {
-    const old = queryClient.getQueryData([KEY_DASH_BANKS_CACHE, chb])
+  const onMutateCache = async () => {
+    const old = queryClient.getQueryData([KEY_DASH_BANKS_CACHE])
     if (!old) {
-      await queryClient.prefetchQuery([KEY_DASH_BANKS_CACHE, chb])
+      await queryClient.prefetchQuery([KEY_DASH_BANKS_CACHE])
     }
 
     return { old }
   }
 
-  const onSettledCache = (chb: number) => {
-    queryClient.cancelQueries([KEY_DASH_BANKS_CACHE, chb])
+  const onSettledCache = () => {
+    queryClient.cancelQueries([KEY_DASH_BANKS_CACHE])
   }
 
-  const onErrorCache = (context: { old: QueryDataType }, chb: number) => {
-    queryClient.setQueryData([KEY_DASH_BANKS_CACHE, chb], context.old)
+  const onErrorCache = (context: { old: QueryDataType }) => {
+    queryClient.setQueryData([KEY_DASH_BANKS_CACHE], context.old)
   }
 
   return {

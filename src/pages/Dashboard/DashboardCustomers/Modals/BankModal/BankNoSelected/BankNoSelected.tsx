@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from 'react-query'
+import { useQuery } from 'react-query'
 import { useDashContext } from '../../../../../../shared/contexts/DashProvider'
 import { banksNoSelectColumns } from './utils/columnsNoSelect'
 import { useState, useEffect } from 'react'
@@ -6,7 +6,7 @@ import Table from '../../../../../../ui/Table'
 import TextField from '../../../../../../ui/fields/TextField'
 import Container from '../../../../../../ui/Container'
 import Button from '../../../../../../ui/Button'
-import dashBanksCache, { KEY_DASH_BANKS_CACHE } from '../dash-banks.cache'
+import { KEY_DASH_BANKS_CACHE } from '../dash-banks.cache'
 import { getAllBanks } from '../../../../../../shared/services/dash/bank.service'
 import { BankType } from '../../../../../../shared/types/dash/bank.type'
 import elementSelect from '../elementSelect'
@@ -19,39 +19,46 @@ type BankNoSelectedType = {
   setGlobalElement: (element: elementSelect) => void
 }
 
-const BankNoSelected = ({setGlobalElement}: BankNoSelectedType) => {
+const BankNoSelected = ({ setGlobalElement }: BankNoSelectedType) => {
   const {
     dashCustomer: { selectedCustomer },
   } = useDashContext()
 
   const greaterThanMobile = useMediaQuery(device.tabletS)
 
-  const queryClient = useQueryClient()
+  const [banks, setBanks] = useState<Array<BankType>>(selectedCustomer.customerBanks)
 
-  const {
-    actions: { AddBankCache },
-    onMutateCache,
-    onSettledCache,
-    onErrorCache,
-  } = dashBanksCache(queryClient)
-
-  const { isLoading, refetch, data } = useQuery(
-    [KEY_DASH_BANKS_CACHE, selectedCustomer.urlIdentifier],
+  const { isLoading, refetch } = useQuery(
+    [KEY_DASH_BANKS_CACHE],
     async () => {
       return await getAllBanks()
+    },
+    {
+      onSuccess: ({ data }) => {
+        paintTable(data)
+      },
     }
   )
 
-  const banksList =
-    data?.data.filter(
-      (bank: BankType) => !selectedCustomer.customerBanks.some((customerBank) => customerBank.id === bank.id)
-    ) ?? []
-    
+  const paintTable = (data: BankType[]) => {
+    data =
+      data.filter(
+        (bank: BankType) => !selectedCustomer.customerBanks.some((customerBank) => customerBank.id === bank.id)
+      ) ?? []
+
+    setBanks(data)
+  }
+
   const onHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {}
 
   const onHandleClick = (element: elementSelect) => {
     setGlobalElement(element)
   }
+
+  useEffect(() => {
+    refetch()
+    // eslint-disable-next-line
+  }, [])
 
   return (
     <Container width="49%">
@@ -59,21 +66,21 @@ const BankNoSelected = ({setGlobalElement}: BankNoSelectedType) => {
         top={greaterThanMobile ? '280px' : '200px'}
         columns={banksNoSelectColumns}
         loading={isLoading}
-        isArrayEmpty={!banksList.length}
+        isArrayEmpty={!banks.length}
         emptyState={
           <EmptyStateCell colSpan={banksNoSelectColumns.length}>
             <div>Vacio</div>
           </EmptyStateCell>
         }
       >
-        {!!banksList.length &&
-          banksList.map((record: BankType, key: number) => {
+        {!!banks.length &&
+          banks.map((record: BankType, key: number) => {
             return (
               <tr
                 className="styled-data-table-row"
                 key={key}
                 onClick={() => {
-                  onHandleClick({bank: record, key: "BNS"})
+                  onHandleClick({ bank: record, key: 'BNS' })
                 }}
               >
                 <BodyCell textAlign="center">{`${record.name || ''}`}</BodyCell>

@@ -6,11 +6,7 @@ import { useDashContext } from '../../../../../../shared/contexts/DashProvider'
 import { BankType } from '../../../../../../shared/types/dash/bank.type'
 import elementSelect from '../elementSelect'
 import { CustomerHasBankType } from '../../../../../../shared/types/dash/customer-has-bank'
-import {
-  getAllCHBsByCustomerId,
-  revokeCHB,
-  assingCHB,
-} from '../../../../../../shared/services/dash/customer-has-bank.service'
+import { revokeCHB, assingCHB } from '../../../../../../shared/services/dash/customer-has-bank.service'
 import Container from '../../../../../../ui/Container'
 import Button from '../../../../../../ui/Button'
 import { AxiosResponse } from 'axios'
@@ -45,22 +41,17 @@ const BankActions = ({ elementSelected }: BankActionsType) => {
 
   const { isLoading: loadingRemove, mutate: remove } = useMutation<AxiosResponse<CustomerHasBankType>, Error>(
     async () => {
-      const { idCustomer } = elementSelected.bank.CUSTOMER_HAS_BANK
-      return await revokeCHB(idCustomer)
+      const { id } = elementSelected.bank.CUSTOMER_HAS_BANK
+      return await revokeCHB(id)
     },
     {
-      onSuccess: (result) => {
-        // createCustomerCache(result.data)
+      onMutate: () => {
+        
+      },
+      onSuccess: () => {
         notification({ type: 'success', message: 'El banco se removió del cliente' })
       },
-      // onMutate: () => {
-      //   onMutateCache()
-      // },
-      // onSettled: () => {
-      //   onSettledCache()
-      // },
-      onError: (error: any, _, context: any) => {
-        // onErrorCache(context)
+      onError: (error: any) => {
         notification({
           type: 'error',
           message: error.response.data.message,
@@ -79,14 +70,7 @@ const BankActions = ({ elementSelected }: BankActionsType) => {
       onSuccess: (result) => {
         notification({ type: 'success', message: 'El banco fue asignado al cliente' })
       },
-      // onMutate: () => {
-      //   onMutateCache()
-      // },
-      // onSettled: () => {
-      //   onSettledCache()
-      // },
-      onError: (error: any, _, context: any) => {
-        // onErrorCache(context)
+      onError: (error: any) => {
         notification({
           type: 'error',
           message: error.response.data.message,

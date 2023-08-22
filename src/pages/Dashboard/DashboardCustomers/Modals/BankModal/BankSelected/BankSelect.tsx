@@ -39,7 +39,18 @@ const BankSelected = ({ setGlobalElement }: BankSelectedType) => {
     },
     {
       onSuccess: ({ data }) => {
-        setBanks(data.map((e: response) => e.bank))
+        setBanks(
+          data.map((e: response) => {
+            return {
+              id: e.bank.id,
+              name: e.bank.name,
+              description: e.bank.description,
+              state: e.bank.state,
+              createdAt: e.bank.createdAt,
+              CUSTOMER_HAS_BANK: { id: e.id, idCustomer: e.idCustomer, idBank: e.idBank },
+            }
+          })
+        )
       },
     }
   )
