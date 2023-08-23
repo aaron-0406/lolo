@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient } from 'react-query'
+import { AxiosResponse } from 'axios'
 import Button from '../../../../../ui/Button/Button'
 import Container from '../../../../../ui/Container/Container'
 import Modal from '../../../../../ui/Modal/Modal'
 import dashPermissionCache from '../../PermissionsTable/utils/dash-permisos.cache'
-import { AxiosResponse } from 'axios'
 import { deletePermission } from '../../../../../shared/services/dash/permission.service'
 import { notification } from '../../../../../ui/notification/notification'
 
@@ -37,7 +37,7 @@ const DeletePermissionModal = ({ visible, idPermission = 0, onClose }: DeletePer
         onClose()
       },
       onMutate: () => {
-        onMutateCache()
+        return onMutateCache()
       },
       onSettled: () => {
         onSettledCache()
@@ -55,11 +55,12 @@ const DeletePermissionModal = ({ visible, idPermission = 0, onClose }: DeletePer
   const handleClickDelete = () => {
     if (idPermission !== 0) deletePermissionMutate()
   }
+
   return (
     <Modal
       visible={visible}
       onClose={onClose}
-      id="modal-delete-permiso"
+      id="modal-delete-permission"
       title="¿Desea eliminar este permiso?"
       contentOverflowY="auto"
       size="small"

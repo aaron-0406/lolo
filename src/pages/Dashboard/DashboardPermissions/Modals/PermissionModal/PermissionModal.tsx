@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import Modal from '../../../../../ui/Modal/Modal'
 import { PermissionType } from '../../../../../shared/types/dash/permission.type'
@@ -12,9 +13,8 @@ import {
   updatePermission,
 } from '../../../../../shared/services/dash/permission.service'
 import { notification } from '../../../../../ui/notification/notification'
-import dashPermissionCache from '../../PermissionsTable/utils/dash-permisos.cache'
+import dashPermissionCache, { KEY_DASH_PERMISOS_CACHE } from '../../PermissionsTable/utils/dash-permisos.cache'
 import { ModalPermissionResolver } from './PermissionInfoForm/PermissionModal.yup'
-import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 
 type PermissionModalProps = {
@@ -35,18 +35,22 @@ const PermissionModal = ({ visible, onClose, idPermission = 0 }: PermissionModal
   const queryClient = useQueryClient()
   const location = useLocation()
   const searchParams = new URLSearchParams(location.search)
+
   const code = searchParams.get('code')
+
   const formMethods = useForm<Omit<PermissionType, 'permissions'>>({
     resolver: ModalPermissionResolver,
     mode: 'all',
     defaultValues: defaultValuesPermission,
   })
+
   const {
     setValue,
     getValues,
     reset,
     formState: { isValid },
   } = formMethods
+
   const {
     actions: { createPermissionCache, editPermissionCache },
     onMutateCache,
@@ -62,11 +66,11 @@ const PermissionModal = ({ visible, onClose, idPermission = 0 }: PermissionModal
     {
       onSuccess: (result) => {
         createPermissionCache(result.data)
-        notification({ type: 'success', message: 'Permiso creada' })
+        notification({ type: 'success', message: 'Permiso creado' })
         handleClickCloseModal()
       },
       onMutate: () => {
-        onMutateCache()
+        return onMutateCache()
       },
       onSettled: () => {
         onSettledCache()
@@ -93,7 +97,7 @@ const PermissionModal = ({ visible, onClose, idPermission = 0 }: PermissionModal
         onClose()
       },
       onMutate: () => {
-        onMutateCache()
+        return onMutateCache()
       },
       onSettled: () => {
         onSettledCache()
@@ -109,7 +113,7 @@ const PermissionModal = ({ visible, onClose, idPermission = 0 }: PermissionModal
   )
 
   const { refetch: refetchPermissions } = useQuery(
-    'get-all-permissions-by-code',
+    `${KEY_DASH_PERMISOS_CACHE}_GET_PERMISSION_BY_ID`,
     async () => {
       return getPermissionById(idPermission)
     },
@@ -147,7 +151,6 @@ const PermissionModal = ({ visible, onClose, idPermission = 0 }: PermissionModal
     if (!!idPermission) refetchPermissions()
   }, [idPermission, refetchPermissions])
 
-
   return (
     <FormProvider {...formMethods}>
       <Modal
@@ -159,7 +162,7 @@ const PermissionModal = ({ visible, onClose, idPermission = 0 }: PermissionModal
         size="medium"
         minHeight="140px"
         footer={
-          <Container width="100%" height="75px" display="flex" justifyContent="center" alignItems="center" gap="20px">
+          <Container width="100%" height="75px" display="flex" justifyContent="right" alignItems="center" gap="20px">
             <Button
               width="125px"
               label={idPermission !== 0 ? 'Editar' : 'Agregar'}

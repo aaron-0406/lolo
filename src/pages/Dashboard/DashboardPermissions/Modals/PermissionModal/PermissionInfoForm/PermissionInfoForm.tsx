@@ -22,6 +22,7 @@ const PermissionInfoForm = () => {
           )}
         />
       </Container>
+
       <Container width="100%" display="flex" gap="10px">
         <Label label="Código: " />
         <Controller
@@ -32,6 +33,7 @@ const PermissionInfoForm = () => {
           )}
         />
       </Container>
+
       <Container width="100%" display="flex" gap="10px">
         <Label label="Ícono: " />
         <Controller
@@ -42,6 +44,7 @@ const PermissionInfoForm = () => {
           )}
         />
       </Container>
+
       <Container width="100%" display="flex" gap="10px">
         <Label label="Link: " />
         <Controller
