@@ -94,17 +94,17 @@ const CobranzaCommentsTable = ({ clientId }: CobranzaCommentsTableProps) => {
               <tr className="styled-data-table-row" key={record.id}>
                 <BodyCell textAlign="center">{key + 1 || ''}</BodyCell>
                 <BodyCell textAlign="left">
-                  <Container padding="15px 0" minHeight="100px" overFlowY="hidden" width="400px" position='relative'>
-                    <p
-                      style={{
-                        display: 'inlineBlock',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap',
-                      }}
-                    >
+                  <Container
+                    margin="20px 0"
+                    minWidth="300px"
+                    maxHeight="130px"
+                    whiteSpace="normal"
+                    wordBreak="break-all"
+                    overFlowY="auto"
+                  >
+                    <Text.Body size="m" weight="regular">
                       {record.comment || ''}
-                    </p>
+                    </Text.Body>
                   </Container>
                 </BodyCell>
                 <BodyCell textAlign="center">

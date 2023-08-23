@@ -34,7 +34,7 @@ const DeleteUsersModal = ({ visible, idUser = 0, onClose }: DeleteUsersModalProp
         onClose()
       },
       onMutate: () => {
-        onMutateCache()
+        return onMutateCache()
       },
       onSettled: () => {
         onSettledCache()

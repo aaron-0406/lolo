@@ -45,12 +45,7 @@ const CobranzaCommentsModal = ({
 
   const {
     customerUser: { user },
-    bank: {
-      selectedBank: { idCHB },
-    },
   } = useLoloContext()
-
-  const chb = parseInt(idCHB)
 
   const formMethods = useForm<Omit<CommentType, 'id' | 'hour'>>({
     resolver: ModalCobranzaCommentsResolver,
@@ -86,7 +81,7 @@ const CobranzaCommentsModal = ({
         handleClickCloseModal()
       },
       onMutate: () => {
-        onMutateCache(clientId)
+        return onMutateCache(clientId)
       },
       onSettled: () => {
         onSettledCache(clientId)
@@ -116,7 +111,7 @@ const CobranzaCommentsModal = ({
         onClose()
       },
       onMutate: () => {
-        onMutateCache(clientId)
+        return onMutateCache(clientId)
       },
       onSettled: () => {
         onSettledCache(clientId)

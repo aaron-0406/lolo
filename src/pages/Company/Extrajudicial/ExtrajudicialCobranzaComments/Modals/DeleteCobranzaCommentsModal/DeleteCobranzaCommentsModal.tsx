@@ -39,7 +39,7 @@ const DeleteCobranzaCommentsModal = ({
         onClose()
       },
       onMutate: () => {
-        onMutateCache(clientId)
+        return onMutateCache(clientId)
       },
       onSettled: () => {
         onSettledCache(clientId)

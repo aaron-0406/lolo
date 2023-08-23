@@ -63,7 +63,7 @@ const NegotiationModal = ({ visible, onClose, isEdit = false, idNegotiation = 0,
         handleClickCloseModal()
       },
       onMutate: () => {
-        onMutateCache(chb)
+        return onMutateCache(chb)
       },
       onSettled: () => {
         onSettledCache(chb)
@@ -90,7 +90,7 @@ const NegotiationModal = ({ visible, onClose, isEdit = false, idNegotiation = 0,
         onClose()
       },
       onMutate: () => {
-        onMutateCache(chb)
+        return onMutateCache(chb)
       },
       onSettled: () => {
         onSettledCache(chb)
