@@ -11,7 +11,7 @@ const ExtrajudicialProfile = () => {
 
   return (
     <Container
-      backgroundColor="#F2F2F2"
+      backgroundColor="#eff0f6ff"
       padding="15px"
       gap="15px"
       display="flex"

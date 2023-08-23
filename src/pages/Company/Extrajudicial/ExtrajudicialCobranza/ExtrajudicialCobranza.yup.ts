@@ -17,7 +17,7 @@ const ExtrajudicialCobranzaSchema: yup.SchemaOf<Omit<ClientType, 'id' | 'created
   customerHasBankId: yup.number().required().min(1),
 })
 
-const ExtrajudicialCobranzaCommentSchema: yup.SchemaOf<Omit<CommentType, 'id'>> = yup.object().shape({
+const ExtrajudicialCobranzaCommentSchema: yup.SchemaOf<Omit<CommentType, 'id' | 'hour'>> = yup.object().shape({
   clientId: yup.number().min(1).required(),
   customerUserId: yup.number().min(1).required(),
   comment: yup.string().required(),
