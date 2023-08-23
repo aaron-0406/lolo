@@ -66,9 +66,9 @@ const BankSelected = ({ setGlobalElement }: BankSelectedType) => {
   }, [])
 
   return (
-    <Container width="49%">
+    <Container width={greaterThanMobile ? "49%" : "100%"}>
       <Table
-        top={greaterThanMobile ? '230px' : '200px'}
+        top={greaterThanMobile ? '230px' : '410px'}
         columns={banksSelectColumns}
         loading={isLoading}
         isArrayEmpty={!banks.length}

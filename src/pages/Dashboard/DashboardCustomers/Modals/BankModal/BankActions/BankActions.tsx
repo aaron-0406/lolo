@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from 'react-query'
+import styled, { css } from 'styled-components'
 import { useDashContext } from '../../../../../../shared/contexts/DashProvider'
 import elementSelect from '../elementSelect'
 import { CustomerHasBankType } from '../../../../../../shared/types/dash/customer-has-bank'
@@ -75,7 +76,7 @@ const BankActions = ({ elementSelected }: BankActionsType) => {
       return await assingCHB({ idCustomer, idBank })
     },
     {
-      onSuccess: ({data}) => {
+      onSuccess: ({ data }) => {
         deleteBankCache(String(data.idBank))
         AddCHBCache(data)
         onRefetchQueryCHBCache()
@@ -98,14 +99,8 @@ const BankActions = ({ elementSelected }: BankActionsType) => {
   )
 
   return (
-    <Container width="10%" justifyContent="center" display="flex" alignItems="center">
-      <Container
-        height="100px"
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        flexDirection="column"
-      >
+    <StyledContainer height="60px" width="100%" justifyContent="center" display="flex" alignItems="center">
+      <StyledButtons width="100px" height="40px" display="flex" justifyContent="space-between" alignItems="center">
         <Button
           loading={loadingRemove}
           size="small"
@@ -120,9 +115,28 @@ const BankActions = ({ elementSelected }: BankActionsType) => {
           trailingIcon="ri-arrow-left-line"
           onClick={onHandlClickAssing}
         />
-      </Container>
-    </Container>
+      </StyledButtons>
+    </StyledContainer>
   )
 }
 
 export default BankActions
+
+const StyledButtons = styled(Container)`
+  ${({ theme }) => css`
+    @media ${theme.device.tabletS} {
+      width: 100%;
+      height: 100px;
+      flex-direction: column;
+    }
+  `}
+`
+
+const StyledContainer = styled(Container)`
+  ${({ theme }) => css`
+    @media ${theme.device.tabletS} {
+      width: 10%;
+      height: 100%;
+    }
+  `}
+`
