@@ -1,16 +1,18 @@
 import { FormProvider, useForm } from 'react-hook-form'
 import Breadcrumbs from '../../../ui/Breadcrumbs'
 import Container from '../../../ui/Container'
-import PermisosActions from './PermisosActions'
+import PermissionsActions from './PermissionsActions'
 import PermissionsTable from './PermissionsTable'
 import { LinkType } from '../../../ui/Breadcrumbs/Breadcrumbs.type'
 import { useLocation } from 'react-router-dom'
 import { useEffect } from 'react'
 
-const DashboardPermisos = () => {
+const DashboardPermissions = () => {
   const location = useLocation()
   const searchParams = new URLSearchParams(location.search)
+
   const code = searchParams.get('code')
+
   const formMethods = useForm<{ routers: LinkType[] }>({
     defaultValues: {
       routers: [
@@ -21,6 +23,7 @@ const DashboardPermisos = () => {
       ],
     },
   })
+
   const setBreadCrumbs = () => {
     const links: LinkType[] = [
       {
@@ -56,7 +59,7 @@ const DashboardPermisos = () => {
         alignItems="center"
         justifyContent="center"
       >
-        <PermisosActions />
+        <PermissionsActions />
         <Breadcrumbs routes={formMethods.watch('routers')} />
         <PermissionsTable />
       </Container>
@@ -64,4 +67,4 @@ const DashboardPermisos = () => {
   )
 }
 
-export default DashboardPermisos
+export default DashboardPermissions

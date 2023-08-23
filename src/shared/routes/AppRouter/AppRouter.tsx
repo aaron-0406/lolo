@@ -9,7 +9,7 @@ import DashHome from '../../../pages/Dashboard/Home'
 import DashboardCustomers from '../../../pages/Dashboard/DashboardCustomers'
 import DashboardActions from '../../../pages/Dashboard/DashboardActions'
 import DashboardUsers from '../../../pages/Dashboard/DashboardUsers'
-import DashboardPermisos from '../../../pages/Dashboard/DashboardPermisos'
+import DashboardPermissions from '../../../pages/Dashboard/DashboardPermissions'
 import DashboardNegotiations from '../../../pages/Dashboard/DashboardNegotiations'
 import DashboardFuncionarios from '../../../pages/Dashboard/DashboardFuncionarios'
 
@@ -20,6 +20,7 @@ import CompanyHome from '../../../pages/Company/Home'
 //EXTRAJUDICIAL
 import ExtrajudicialProfile from '../../../pages/Company/Extrajudicial/ExtrajudicialProfile'
 import ExtrajudicialCobranza from '../../../pages/Company/Extrajudicial/ExtrajudicialCobranza'
+import ExtrajudicialCobranzaComments from '../../../pages/Company/Extrajudicial/ExtrajudicialCobranzaComments/ExtrajudicialCobranzaComments'
 import ExtrajudicialTemplate from '../../../pages/Company/Extrajudicial/ExtrajudicialTemplate'
 import Dashboard from '../../../pages/Company/Extrajudicial/ExtrajudicialDashboard/Dashboard'
 import ExtrajudicialMetas from '../../../pages/Company/Extrajudicial/ExtrajudicialMetas'
@@ -38,7 +39,6 @@ import ProtectedRoutesCompany from '../ProtectedRoutesCompany'
 import ProtectedRoutesCompanyDash from '../ProtectedRoutesCompanyDash'
 
 import paths from '../paths'
-import ExtrajudicialCobranzaComments from '../../../pages/Company/Extrajudicial/ExtrajudicialCobranzaComments/ExtrajudicialCobranzaComments'
 
 const AppRouter = () => {
   return (
@@ -55,7 +55,7 @@ const AppRouter = () => {
         <Route path={paths.dash.root} element={<DashHome />} />
         <Route path={paths.dash.clientes} element={<DashboardCustomers />} />
         <Route path={paths.dash.usuarios} element={<DashboardUsers />} />
-        <Route path={paths.dash.permisos} element={<DashboardPermisos />} />
+        <Route path={paths.dash.permisos} element={<DashboardPermissions />} />
         <Route path={paths.dash.funcionarios} element={<DashboardFuncionarios />} />
         <Route path={paths.dash.reportes} element={<div>reportes</div>} />
         <Route path={paths.dash.acciones} element={<DashboardActions />} />

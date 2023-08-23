@@ -52,7 +52,7 @@ export const getDashItems = () => {
       admin: false,
     },
     {
-      id: 6,
+      id: 7,
       title: 'PERMISOS',
       remixClass: 'ri-key-2-line',
       path: paths.dash.permisos,

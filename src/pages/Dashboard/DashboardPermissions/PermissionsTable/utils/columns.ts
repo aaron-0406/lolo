@@ -16,20 +16,20 @@ export const permissionColumns: ColumProps[] = [
   {
     id: 'permission.datatable.header.name',
     title: 'Nombre',
-    width: '15%',
+    width: '20%',
     justifyContent: 'left',
   },
   {
     id: 'permission.datatable.header.link',
     title: 'Link',
-    width: '15%',
+    width: '20%',
     justifyContent: 'left',
   },
   {
     id: 'permission.datatable.header.code',
     title: 'Código',
     width: '20%',
-    justifyContent: 'left',
+    justifyContent: 'center',
   },
   {
     id: 'permission.datatable.header.actions',

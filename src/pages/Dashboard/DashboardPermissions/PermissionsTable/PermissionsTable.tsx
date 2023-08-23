@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import { getAllPermissions } from '../../../../shared/services/dash/permission.service'
 import { PermissionType } from '../../../../shared/types/dash/permission.type'
@@ -10,12 +11,13 @@ import PermissionModal from '../Modals/PermissionModal/PermissionModal'
 import { permissionColumns } from './utils/columns'
 import { KEY_DASH_PERMISOS_CACHE } from './utils/dash-permisos.cache'
 import useModal from '../../../../shared/hooks/useModal'
-import { useEffect, useState } from 'react'
 import Icon from '../../../../ui/Icon/Icon'
 import DeletePermissionModal from '../Modals/DeletePermissionModal/DeletePermissionModal'
 import { useNavigate, useLocation } from 'react-router-dom'
+import Text from '../../../../ui/Text/Text'
 
 const PermissionsTable = () => {
+  const navigate = useNavigate()
   const location = useLocation()
   const searchParams = new URLSearchParams(location.search)
   const code = searchParams.get('code')
@@ -23,7 +25,6 @@ const PermissionsTable = () => {
   const [permissions, setPermissions] = useState<Array<PermissionType>>([])
   const [permissionId, setPermissionId] = useState<number>(0)
   const [idDeletedPermission, setIdDeletedPermission] = useState<number>(0)
-  const navigate = useNavigate()
 
   const { visible: visibleModalEdit, showModal: showModalEdit, hideModal: hideModalEdit } = useModal()
   const {
@@ -92,11 +93,17 @@ const PermissionsTable = () => {
               <tr className="styled-data-table-row" key={record.id}>
                 <BodyCell textAlign="center">{`${key + 1 || ''}`}</BodyCell>
                 <BodyCell textAlign="left">
-                  <Icon remixClass={record.icon}></Icon>
+                  <Icon remixClass={record.icon} color="Primary5"></Icon>
                 </BodyCell>
                 <BodyCell textAlign="left">{`${record.name || ''}`}</BodyCell>
-                <BodyCell textAlign="left">{`${record.link || ''}`}</BodyCell>
-                <BodyCell textAlign="left">{`${record.code || ''}`}</BodyCell>
+                <BodyCell textAlign="left">
+                  <Text.Body size="m" weight="bold" color="Primary5">{`${record.link || ''}`}</Text.Body>
+                </BodyCell>
+                <BodyCell textAlign="center">
+                  <Text.Body size="m" weight="bold">
+                    {`${record.code || ''}`}
+                  </Text.Body>
+                </BodyCell>
                 <BodyCell textAlign="center">
                   {
                     <Container display="flex" gap="15px" justifyContent="space-around">
@@ -110,6 +117,7 @@ const PermissionsTable = () => {
                         size="small"
                         leadingIcon="ri-eye-line"
                       />
+
                       <Button
                         onClick={(event) => {
                           event.stopPropagation()
@@ -120,6 +128,7 @@ const PermissionsTable = () => {
                         size="small"
                         leadingIcon="ri-pencil-fill"
                       />
+
                       <Button
                         onClick={(event) => {
                           event.stopPropagation()
