@@ -117,7 +117,7 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({ children, urlIdentifier }) =>
         </Container>
 
         <Container margin="20px">
-          <Text.Body size="m" weight="bold" color="Success5" >
+          <Text.Body size="m" weight="bold" color="Success5">
             {customer.customerBanks[Number(selectedBank.idBank) - 1].name}
           </Text.Body>
         </Container>
