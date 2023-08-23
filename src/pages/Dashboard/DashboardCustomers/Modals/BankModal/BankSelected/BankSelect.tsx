@@ -52,6 +52,7 @@ const BankSelected = ({ setGlobalElement }: BankSelectedType) => {
         })
         setBanks(data)
       },
+      enabled: false,
     }
   )
 

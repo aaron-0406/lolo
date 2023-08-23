@@ -14,7 +14,7 @@ import { useMediaQuery } from '../../../../../../shared/hooks/useMediaQuery'
 import { device } from '../../../../../../shared/breakpoints/reponsive'
 import BodyCell from '../../../../../../ui/Table/BodyCell'
 import EmptyStateCell from '../../../../../../ui/Table/EmptyStateCell'
-import dashCustomerBankCache from '../BankSelected/utils/dash-customer-banks.cache'
+import { KEY_DASH_CUSTOMER_BANK_CACHE, QueryDataType } from '../BankSelected/utils/dash-customer-banks.cache'
 
 type BankNoSelectedType = {
   setGlobalElement: (element: elementSelect) => void
@@ -26,11 +26,6 @@ const BankNoSelected = ({ setGlobalElement }: BankNoSelectedType) => {
   } = useDashContext()
 
   const queryClient = useQueryClient()
-
-  const {
-    data: dataCHB,
-  } = dashCustomerBankCache(queryClient)
-
   const greaterThanMobile = useMediaQuery(device.tabletS)
 
   const [banks, setBanks] = useState<Array<BankType>>(selectedCustomer.customerBanks)
@@ -41,15 +36,13 @@ const BankNoSelected = ({ setGlobalElement }: BankNoSelectedType) => {
       return await getAllBanks()
     },
     {
-      onSuccess: (data) => {
-        console.log(data, "2")
-          setBanks(data?.data.filter((bank: BankType) => !dataCHB?.data.some((cb) => cb.idBank === bank.id)) ?? [])
+      onSuccess: async (data) => {
+        const dataCHB = await queryClient.getQueryData<QueryDataType>([KEY_DASH_CUSTOMER_BANK_CACHE])
+        setBanks(data?.data.filter((bank: BankType) => !dataCHB?.data.some((cb) => cb.idBank === bank.id)) ?? [])
       },
       enabled: false,
     }
   )
-
-  console.log(dataCHB?.data, "1")
 
   const onHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {}
 
@@ -58,10 +51,9 @@ const BankNoSelected = ({ setGlobalElement }: BankNoSelectedType) => {
   }
 
   useEffect(() => {
-    if(dataCHB?.data){
-      refetch()
-    }
-  }, [refetch, dataCHB?.data])
+    refetch()
+    // eslint-disable-next-line
+  }, [])
 
   return (
     <Container width="49%">

@@ -7,14 +7,13 @@ export const KEY_DASH_BANKS_CACHE = 'key-dash-banks-cache'
 type QueryDataType = AxiosResponse<BankType[]> | undefined
 
 const dashBanksCache = (queryClient: QueryClient) => {
-  
   const AddBankCache = (data: BankType) => {
     queryClient.setQueryData<QueryDataType>(KEY_DASH_BANKS_CACHE, (oldQueryData) => {
       if (oldQueryData) {
-        console.log("2")
+        const newData = oldQueryData?.data.filter((bank: BankType) => bank.name !== data.name)
         return {
           ...oldQueryData,
-          data: [...oldQueryData?.data, data],
+          data: [...newData, data],
         }
       }
     })
@@ -45,8 +44,6 @@ const dashBanksCache = (queryClient: QueryClient) => {
     })
   }
 
-  const data = queryClient.getQueryData<QueryDataType>([KEY_DASH_BANKS_CACHE])
-
   const onRefetchQueryBankCache = async () => {
     await queryClient.refetchQueries([KEY_DASH_BANKS_CACHE])
   }
@@ -74,7 +71,6 @@ const dashBanksCache = (queryClient: QueryClient) => {
       editBankCache,
       deleteBankCache,
     },
-    data,
     onRefetchQueryBankCache,
     onMutateBankCache,
     onSettledBankCache,

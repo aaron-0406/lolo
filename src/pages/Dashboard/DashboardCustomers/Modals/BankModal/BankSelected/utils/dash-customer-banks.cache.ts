@@ -11,7 +11,6 @@ const dashCustomerBankCache = (queryClient: QueryClient) => {
   const AddCHBCache = (data: CustomerHasBankType) => {
     queryClient.setQueryData<QueryDataType>(KEY_DASH_CUSTOMER_BANK_CACHE, (oldQueryData) => {
       if (oldQueryData) {
-        console.log("2")
         return {
           ...oldQueryData,
           data: [...oldQueryData?.data, data],
@@ -28,8 +27,6 @@ const dashCustomerBankCache = (queryClient: QueryClient) => {
       }
     })
   }
-
-  const data = queryClient.getQueryData<QueryDataType>([KEY_DASH_CUSTOMER_BANK_CACHE])
 
   const onRefetchQueryCHBCache = async () => {
     await queryClient.refetchQueries([KEY_DASH_CUSTOMER_BANK_CACHE])
@@ -57,7 +54,6 @@ const dashCustomerBankCache = (queryClient: QueryClient) => {
       AddCHBCache,
       deleteCHBCache,
     },
-    data,
     onRefetchQueryCHBCache,
     onMutateCHBCache,
     onSettledCHBCache,
