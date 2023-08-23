@@ -35,7 +35,7 @@ const DeleteCobranzaCommentsModal = ({
     {
       onSuccess: () => {
         deleteCobranzaCommentCache(idComment, clientId)
-        notification({ type: 'success', message: 'Acción eliminada' })
+        notification({ type: 'success', message: 'Comentario eliminado' })
         onClose()
       },
       onMutate: () => {
