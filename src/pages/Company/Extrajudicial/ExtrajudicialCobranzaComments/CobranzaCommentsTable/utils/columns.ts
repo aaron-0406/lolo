@@ -10,7 +10,7 @@ export const commentsColumns: ColumProps[] = [
   {
     id: 'comments.datatable.header.comment',
     title: 'COMENTARIO',
-    width: '50%',
+    width: '60%',
     justifyContent: 'left',
   },
   {
@@ -40,13 +40,13 @@ export const commentsColumns: ColumProps[] = [
   {
     id: 'comments.datatable.header.gestor',
     title: 'GESTOR',
-    width: '20%',
+    width: '10%',
     justifyContent: 'center',
   },
   {
     id: 'comments.datatable.header.actions',
     title: 'ACCIONES',
-    width: '20%',
+    width: '15%',
     justifyContent: 'center',
   },
 ]

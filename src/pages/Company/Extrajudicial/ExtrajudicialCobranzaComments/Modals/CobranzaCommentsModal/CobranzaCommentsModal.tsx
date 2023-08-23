@@ -139,11 +139,11 @@ const CobranzaCommentsModal = ({
     {
       onSuccess: ({ data }) => {
         if (!!idComment) {
-          setValue('comment', data.comment)
-          setValue('negotiation', data.negotiation)
-          setValue('managementActionId', data.managementActionId)
-          setValue('date', moment(data.date).format('DD-MM-YYYY'))
-          setValue('customerUserId', data.customerUserId)
+          setValue('comment', data.comment, { shouldValidate: true })
+          setValue('negotiation', data.negotiation, { shouldValidate: true })
+          setValue('managementActionId', data.managementActionId ?? undefined, { shouldValidate: true })
+          setValue('date', moment(data.date).format('DD-MM-YYYY'), { shouldValidate: true })
+          setValue('customerUserId', data.customerUserId, { shouldValidate: true })
           setValue('clientId', data.clientId, { shouldValidate: true })
         } else {
           reset()

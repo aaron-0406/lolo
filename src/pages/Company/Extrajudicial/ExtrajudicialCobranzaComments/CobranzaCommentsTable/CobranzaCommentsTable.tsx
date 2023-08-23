@@ -78,7 +78,7 @@ const CobranzaCommentsTable = ({ clientId }: CobranzaCommentsTableProps) => {
   return (
     <Container width="100%" height="calc(100% - 112px)" padding="20px">
       <Table
-        top="260px"
+        top="170px"
         columns={commentsColumns}
         loading={isLoading}
         isArrayEmpty={!comments.length}
@@ -94,10 +94,17 @@ const CobranzaCommentsTable = ({ clientId }: CobranzaCommentsTableProps) => {
               <tr className="styled-data-table-row" key={record.id}>
                 <BodyCell textAlign="center">{key + 1 || ''}</BodyCell>
                 <BodyCell textAlign="left">
-                  <Container padding="5px 0" whiteSpace="normal" wordBreak="break-all">
-                    <Text.Body size="m" weight="regular">
+                  <Container padding="15px 0" minHeight="100px" overFlowY="hidden" width="400px" position='relative'>
+                    <p
+                      style={{
+                        display: 'inlineBlock',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
                       {record.comment || ''}
-                    </Text.Body>
+                    </p>
                   </Container>
                 </BodyCell>
                 <BodyCell textAlign="center">
