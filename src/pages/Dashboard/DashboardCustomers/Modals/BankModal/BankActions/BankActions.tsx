@@ -1,9 +1,5 @@
-import { useMutation, useQuery, useQueryClient } from 'react-query'
-import { useState, useEffect } from 'react'
-import { useMediaQuery } from '../../../../../../shared/hooks/useMediaQuery'
-import { device } from '../../../../../../shared/breakpoints/reponsive'
+import { useMutation, useQueryClient } from 'react-query'
 import { useDashContext } from '../../../../../../shared/contexts/DashProvider'
-import { BankType } from '../../../../../../shared/types/dash/bank.type'
 import elementSelect from '../elementSelect'
 import { CustomerHasBankType } from '../../../../../../shared/types/dash/customer-has-bank'
 import { revokeCHB, assingCHB } from '../../../../../../shared/services/dash/customer-has-bank.service'
@@ -11,7 +7,8 @@ import Container from '../../../../../../ui/Container'
 import Button from '../../../../../../ui/Button'
 import { AxiosResponse } from 'axios'
 import notification from '../../../../../../ui/notification'
-import dashBanksCache from '../dash-banks.cache'
+import dashBanksCache from '../BankNoSelected/utils/dash-banks.cache'
+import dashCustomerBankCache from '../BankSelected/utils/dash-customer-banks.cache'
 
 type BankActionsType = {
   elementSelected: elementSelect
@@ -25,11 +22,16 @@ const BankActions = ({ elementSelected }: BankActionsType) => {
   const queryClient = useQueryClient()
 
   const {
-    actions: { AddBankCache },
-    onMutateCache,
-    onSettledCache,
-    onErrorCache,
+    actions: { AddBankCache, deleteBankCache },
   } = dashBanksCache(queryClient)
+
+  const {
+    actions: { AddCHBCache, deleteCHBCache },
+    onMutateCHBCache,
+    onSettledCHBCache,
+    onErrorCHBCache,
+    onRefetchQueryCHBCache,
+  } = dashCustomerBankCache(queryClient)
 
   const onHandlClickRemove = () => {
     elementSelected.key === 'BS' ? remove() : notification({ type: 'warning', message: 'El banco no está asignado' })
@@ -45,13 +47,19 @@ const BankActions = ({ elementSelected }: BankActionsType) => {
       return await revokeCHB(id)
     },
     {
-      onMutate: () => {
-        
-      },
-      onSuccess: () => {
+      onSuccess: (data) => {
+        AddBankCache(elementSelected.bank)
+        deleteCHBCache(String(data.data.id))
         notification({ type: 'success', message: 'El banco se removió del cliente' })
       },
-      onError: (error: any) => {
+      onMutate: () => {
+        onMutateCHBCache()
+      },
+      onSettled: () => {
+        onSettledCHBCache()
+      },
+      onError: (error: any, _, context: any) => {
+        onErrorCHBCache(context)
         notification({
           type: 'error',
           message: error.response.data.message,
@@ -67,10 +75,20 @@ const BankActions = ({ elementSelected }: BankActionsType) => {
       return await assingCHB({ idCustomer, idBank })
     },
     {
-      onSuccess: (result) => {
+      onSuccess: ({data}) => {
+        deleteBankCache(String(data.idBank))
+        AddCHBCache(data)
+        onRefetchQueryCHBCache()
         notification({ type: 'success', message: 'El banco fue asignado al cliente' })
       },
-      onError: (error: any) => {
+      onMutate: () => {
+        onMutateCHBCache()
+      },
+      onSettled: () => {
+        onSettledCHBCache()
+      },
+      onError: (error: any, _, context: any) => {
+        onErrorCHBCache(context)
         notification({
           type: 'error',
           message: error.response.data.message,

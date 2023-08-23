@@ -1,5 +1,5 @@
 import { QueryClient } from 'react-query'
-import { BankType } from '../../../../../shared/types/dash/bank.type'
+import { BankType } from '../../../../../../../shared/types/dash/bank.type'
 import { AxiosResponse } from 'axios'
 
 export const KEY_DASH_BANKS_CACHE = 'key-dash-banks-cache'
@@ -7,10 +7,15 @@ export const KEY_DASH_BANKS_CACHE = 'key-dash-banks-cache'
 type QueryDataType = AxiosResponse<BankType[]> | undefined
 
 const dashBanksCache = (queryClient: QueryClient) => {
+  
   const AddBankCache = (data: BankType) => {
-    queryClient.setQueryData<QueryDataType>(KEY_DASH_BANKS_CACHE, (old) => {
-      if (old) {
-        return { ...old, data: [...old.data, data] }
+    queryClient.setQueryData<QueryDataType>(KEY_DASH_BANKS_CACHE, (oldQueryData) => {
+      if (oldQueryData) {
+        console.log("2")
+        return {
+          ...oldQueryData,
+          data: [...oldQueryData?.data, data],
+        }
       }
     })
   }
@@ -40,11 +45,13 @@ const dashBanksCache = (queryClient: QueryClient) => {
     })
   }
 
-  const onRefetchQueryCache = async () => {
+  const data = queryClient.getQueryData<QueryDataType>([KEY_DASH_BANKS_CACHE])
+
+  const onRefetchQueryBankCache = async () => {
     await queryClient.refetchQueries([KEY_DASH_BANKS_CACHE])
   }
 
-  const onMutateCache = async () => {
+  const onMutateBankCache = async () => {
     const old = queryClient.getQueryData([KEY_DASH_BANKS_CACHE])
     if (!old) {
       await queryClient.prefetchQuery([KEY_DASH_BANKS_CACHE])
@@ -53,11 +60,11 @@ const dashBanksCache = (queryClient: QueryClient) => {
     return { old }
   }
 
-  const onSettledCache = () => {
+  const onSettledBankCache = () => {
     queryClient.cancelQueries([KEY_DASH_BANKS_CACHE])
   }
 
-  const onErrorCache = (context: { old: QueryDataType }) => {
+  const onErrorBankCache = (context: { old: QueryDataType }) => {
     queryClient.setQueryData([KEY_DASH_BANKS_CACHE], context.old)
   }
 
@@ -67,10 +74,11 @@ const dashBanksCache = (queryClient: QueryClient) => {
       editBankCache,
       deleteBankCache,
     },
-    onRefetchQueryCache,
-    onMutateCache,
-    onSettledCache,
-    onErrorCache,
+    data,
+    onRefetchQueryBankCache,
+    onMutateBankCache,
+    onSettledBankCache,
+    onErrorBankCache,
   }
 }
 
