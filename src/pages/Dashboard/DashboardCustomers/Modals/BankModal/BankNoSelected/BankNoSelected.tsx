@@ -16,6 +16,7 @@ import BodyCell from '../../../../../../ui/Table/BodyCell'
 import EmptyStateCell from '../../../../../../ui/Table/EmptyStateCell'
 import { KEY_DASH_CUSTOMER_BANK_CACHE, QueryDataType } from '../BankSelected/utils/dash-customer-banks.cache'
 import BankModalEdit from './BankModals/BankModalEdit'
+import BankModalDelete from './BankModals/BankModalDelete'
 import useModal from '../../../../../../shared/hooks/useModal'
 
 type BankNoSelectedType = {
@@ -32,8 +33,10 @@ const BankNoSelected = ({ setGlobalElement }: BankNoSelectedType) => {
 
   const [banks, setBanks] = useState<Array<BankType>>(selectedCustomer.customerBanks)
   const [idBank, setIdBank] = useState<number>(0)
+  const [idDeletedBank, setIdDeletedBank] = useState<number>(0)
 
   const { visible: visibleBankEdit, showModal: showBankEdit, hideModal: hideBankEdit } = useModal()
+  const { visible: visibleDeleteBank, showModal: showDeleteBank, hideModal: hideDeleteBank } = useModal()
 
   const { isLoading, refetch } = useQuery(
     [KEY_DASH_BANKS_CACHE],
@@ -56,7 +59,15 @@ const BankNoSelected = ({ setGlobalElement }: BankNoSelectedType) => {
     showBankEdit()
   }
 
-  const handleClickDelete = () => {}
+  const handleClickDelete = (idBank: number) => {
+    setIdDeletedBank(idBank)
+    showDeleteBank()
+  }
+
+  const onCloseDeleteBank = () => {
+    setIdDeletedBank(0)
+    hideDeleteBank()
+  }
 
   const onHandleClick = (element: elementSelect) => {
     setGlobalElement(element)
@@ -108,7 +119,7 @@ const BankNoSelected = ({ setGlobalElement }: BankNoSelectedType) => {
                     />
                     <Button
                       onClick={() => {
-                        handleClickDelete()
+                        handleClickDelete(record.id)
                       }}
                       messageTooltip="Eliminar Banco"
                       shape="round"
@@ -128,6 +139,14 @@ const BankNoSelected = ({ setGlobalElement }: BankNoSelectedType) => {
 
       {visibleBankEdit && (
         <BankModalEdit visible={visibleBankEdit} onClose={onCloseModal} idBank={idBank}></BankModalEdit>
+      )}
+
+      {visibleDeleteBank && (
+        <BankModalDelete
+          visible={visibleDeleteBank}
+          onClose={onCloseDeleteBank}
+          idBank={idDeletedBank}
+        ></BankModalDelete>
       )}
     </Container>
   )
