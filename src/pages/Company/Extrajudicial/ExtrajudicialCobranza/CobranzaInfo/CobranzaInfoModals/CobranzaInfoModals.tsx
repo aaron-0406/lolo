@@ -1,5 +1,6 @@
 import { useFormContext } from 'react-hook-form'
-import useModal from '../../../../../../shared/hooks/useModal'
+// import useModal from '@/shared/hooks/useModal'
+import useModal from '../../../../../.././shared/hooks/useModal'
 import { ClientType } from '../../../../../../shared/types/extrajudicial/client.type'
 import Button from '../../../../../../ui/Button'
 import Container from '../../../../../../ui/Container'

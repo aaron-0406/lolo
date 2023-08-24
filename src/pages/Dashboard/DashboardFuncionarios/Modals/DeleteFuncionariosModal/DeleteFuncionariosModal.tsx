@@ -63,7 +63,7 @@ const DeleteFuncionariosModal = ({ visible, idAction = 0, onClose, chb = 0 }: De
       visible={visible}
       onClose={onClose}
       id="modal-delete"
-      title="¿Desea eliminar la acción?"
+      title="¿Desea eliminar el funcionario?"
       contentOverflowY="auto"
       size="small"
       footer={

@@ -63,7 +63,7 @@ const FuncionariosModal = ({ visible, onClose, isEdit = false, idFuncionario = 0
     {
       onSuccess: (result) => {
         createFuncionarioCache(result.data)
-        notification({ type: 'success', message: 'Funcionario Creado' })
+        notification({ type: 'success', message: 'Funcionario creado' })
         handleClickCloseModal()
       },
       onMutate: () => {
@@ -93,7 +93,7 @@ const FuncionariosModal = ({ visible, onClose, isEdit = false, idFuncionario = 0
     {
       onSuccess: (result) => {
         editFuncionarioCache(result.data)
-        notification({ type: 'success', message: 'Funcionario Editado' })
+        notification({ type: 'success', message: 'Funcionario editado' })
         handleClickCloseModal()
       },
       onMutate: () => {

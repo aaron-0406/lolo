@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import ActionsSearch from './ActionsSearch/ActionsSearch'
-import { Opts } from '@/ui/Pagination/interfaces'
-import Container from '@/ui/Container'
+import { Opts } from '@ui/Pagination/interfaces'
+import Container from '@ui/Container'
 import ActionsTable from './ActionsTable/ActionsTable'
 
 const DashboardActions = () => {
