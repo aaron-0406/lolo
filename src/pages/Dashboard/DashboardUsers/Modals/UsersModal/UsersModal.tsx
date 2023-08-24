@@ -3,8 +3,8 @@ import { FormProvider, useForm, Controller } from 'react-hook-form'
 import { ModalUsersResolver } from './UsersModal.yup'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import UserInfoForm from './UserInfoForm'
-import { CustomerUserType } from '../../../../../shared/types/dash/customer-user.type'
-import { createUser, editUserById, getUserByUserId } from '../../../../../shared/services/dash/customer-user.service'
+import { CustomerUserType } from '@/types/dash/customer-user.type'
+import { createUser, editUserById, getUserByUserId } from '@/services/dash/customer-user.service'
 import Container from '../../../../../ui/Container'
 import Modal from '../../../../../ui/Modal'
 import notification from '../../../../../ui/notification'
@@ -72,7 +72,7 @@ const UsersModal = ({ visible, onClose, idUser = 0, isEdit = false }: UsersModal
         handleClickCloseModal()
       },
       onMutate: () => {
-        onMutateCache()
+        return onMutateCache()
       },
       onSettled: () => {
         onSettledCache()
@@ -99,7 +99,7 @@ const UsersModal = ({ visible, onClose, idUser = 0, isEdit = false }: UsersModal
         onClose()
       },
       onMutate: () => {
-        onMutateCache()
+        return onMutateCache()
       },
       onSettled: () => {
         onSettledCache()

@@ -67,7 +67,7 @@ const FuncionariosModal = ({ visible, onClose, isEdit = false, idFuncionario = 0
         handleClickCloseModal()
       },
       onMutate: () => {
-        onMutateCache(chb)
+        return onMutateCache(chb)
       },
       onSettled: () => {
         onSettledCache(chb)
@@ -97,7 +97,7 @@ const FuncionariosModal = ({ visible, onClose, isEdit = false, idFuncionario = 0
         handleClickCloseModal()
       },
       onMutate: () => {
-        onMutateCache(chb)
+        return onMutateCache(chb)
       },
       onSettled: () => {
         onSettledCache(chb)

@@ -51,5 +51,12 @@ export const getDashItems = () => {
       path: paths.dash.funcionarios,
       admin: false,
     },
+    {
+      id: 7,
+      title: 'PERMISOS',
+      remixClass: 'ri-key-2-line',
+      path: paths.dash.permisos,
+      admin: false,
+    },
   ]
 }

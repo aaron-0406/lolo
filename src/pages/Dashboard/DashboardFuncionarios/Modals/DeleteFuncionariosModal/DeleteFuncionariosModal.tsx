@@ -38,7 +38,7 @@ const DeleteFuncionariosModal = ({ visible, idAction = 0, onClose, chb = 0 }: De
         onClose()
       },
       onMutate: () => {
-        onMutateCache(chb)
+        return onMutateCache(chb)
       },
       onSettled: () => {
         onSettledCache(chb)
