@@ -87,7 +87,7 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts }) => {
         editUserCache(result.data)
       },
       onMutate: () => {
-        onMutateCache()
+        return onMutateCache()
       },
       onSettled: () => {
         onSettledCache()

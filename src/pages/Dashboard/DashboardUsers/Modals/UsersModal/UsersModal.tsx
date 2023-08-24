@@ -72,7 +72,7 @@ const UsersModal = ({ visible, onClose, idUser = 0, isEdit = false }: UsersModal
         handleClickCloseModal()
       },
       onMutate: () => {
-        onMutateCache()
+        return onMutateCache()
       },
       onSettled: () => {
         onSettledCache()
@@ -99,7 +99,7 @@ const UsersModal = ({ visible, onClose, idUser = 0, isEdit = false }: UsersModal
         onClose()
       },
       onMutate: () => {
-        onMutateCache()
+        return onMutateCache()
       },
       onSettled: () => {
         onSettledCache()

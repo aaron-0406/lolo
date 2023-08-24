@@ -38,7 +38,7 @@ const DeleteNegotiationModal = ({ visible, idNegociation = 0, onClose, chb }: De
         onClose()
       },
       onMutate: () => {
-        onMutateCache(chb)
+        return onMutateCache(chb)
       },
       onSettled: () => {
         onSettledCache(chb)

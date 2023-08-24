@@ -8,7 +8,6 @@ import TextField from '../../../../../ui/fields/TextField'
 import Label from '../../../../../ui/Label'
 import Select from '../../../../../ui/Select'
 import { SelectItemType } from '../../../../../ui/Select/interfaces'
-import CobranzaInfoModals from './CobranzaInfoModals'
 
 type CobranzaInfoProps = {
   loading: boolean
@@ -62,10 +61,10 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
   return (
     <StyledContainer
       width="100%"
-      backgroundColor="#eff0f6ff"
-      padding="15px"
+      height="100%"
       display="flex"
       flexDirection="column"
+      padding="20px 40px"
       gap="20px"
       overFlowY="auto"
     >
@@ -240,8 +239,6 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
           )}
         />
       </div>
-
-      <CobranzaInfoModals />
     </StyledContainer>
   )
 }
@@ -251,7 +248,6 @@ export default CobranzaInfo
 const StyledContainer = styled(Container)`
   ${({ theme }) => css`
     border-radius: 8px;
-    border: 1px solid ${theme.colors.Neutral4};
 
     .fields-wrapper-container-t {
       width: 100%;
@@ -273,19 +269,11 @@ const StyledContainer = styled(Container)`
       gap: 15px;
     }
 
-    @media ${theme.device.tabletS} {
-      padding: 30px 40px;
-    }
-
     @media ${theme.device.tabletL} {
       .fields-wrapper-container-t {
         flex-direction: row;
         gap: 15px;
       }
-    }
-
-    @media ${theme.device.desktopS} {
-      padding: 30px 50px;
     }
 
     @media ${theme.device.desktopL} {

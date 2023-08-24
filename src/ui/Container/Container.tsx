@@ -6,6 +6,8 @@ const OPACITY_0_8 = 0.8
 
 export type ContainerProps = React.HTMLAttributes<HTMLDivElement> & {
   display?: CSS.Property.Display
+  whiteSpace?: CSS.Property.WhiteSpace
+  wordBreak?: CSS.Property.WordBreak
   alignItems?: CSS.Property.AlignItems
   justifyContent?: CSS.Property.JustifyContent
   textAlign?: CSS.Property.TextAlign
@@ -185,5 +187,17 @@ export const StyledContainer = styled.div<ContainerProps>`
     !!backgroundColor &&
     css`
       background-color: ${backgroundColor};
+    `}
+
+    ${({ whiteSpace }) =>
+    !!whiteSpace &&
+    css`
+      white-space: ${whiteSpace};
+    `}
+
+    ${({ wordBreak }) =>
+    !!wordBreak &&
+    css`
+      word-break: ${wordBreak};
     `}
 `
