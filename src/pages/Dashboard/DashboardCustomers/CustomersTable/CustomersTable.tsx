@@ -14,6 +14,7 @@ import Button from '../../../../ui/Button'
 import CustomerModal from '../Modals/CustomersModal'
 import useModal from '../../../../shared/hooks/useModal'
 import UsersModal from '../Modals/UsersModal/UsersModal'
+import BankModal from '../Modals/BankModal'
 import { useDashContext } from '../../../../shared/contexts/DashProvider'
 import notification from '../../../../ui/notification'
 import dashCustomersCache, { KEY_DASH_CLIENTES_CACHE } from './utils/dash-clientes.cache'
@@ -63,6 +64,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
     editStateCustomer({ customerId, state })
   }
   const handleClickButtonBank = (customer: CustomerType) => {
+    setSelectedCustomer(customer)
     showModalBank()
   }
 
@@ -219,6 +221,8 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
       <CustomerModal visible={visibleModalCustomer} onClose={onCloseModal} url={urlEdit} isEdit />
 
       {visibleModalUser && <UsersModal visible={visibleModalUser} onClose={onCloseUser} />}
+
+      {visibleModalBank && <BankModal visible={visibleModalBank} onClose={onCloseBank} />}
     </Container>
   )
 }
