@@ -5,7 +5,8 @@ import BankActions from './BankActions'
 import BankNoSelected from './BankNoSelected'
 import BankSelected from './BankSelected'
 import elementSelect from './elementSelect'
-import { BankType } from '../../../../../shared/types/dash/bank.type'
+import { useMediaQuery } from '../../../../../shared/hooks/useMediaQuery'
+import { device } from '../../../../../shared/breakpoints/reponsive'
 
 type CustomersModalProps = {
   visible: boolean
@@ -32,6 +33,8 @@ const BankModal = ({ visible, onClose }: CustomersModalProps) => {
     key: '',
   }
 
+  const greaterThanMobile = useMediaQuery(device.tabletS)
+
   const [elementSelect, setElementSelected] = useState<elementSelect>(defaultValuesElement)
 
   return (
@@ -43,7 +46,7 @@ const BankModal = ({ visible, onClose }: CustomersModalProps) => {
       title="Bancos"
       contentOverflowY="auto"
     >
-      <Container width="100%" padding="20px" display="flex">
+      <Container width="100%" padding="20px" display={greaterThanMobile ? "flex" : "block"}>
         <BankSelected
           setGlobalElement={(element: elementSelect) => {
             setElementSelected(element)

@@ -11,6 +11,7 @@ import EmptyStateCell from '../../../../../../ui/Table/EmptyStateCell'
 import Table from '../../../../../../ui/Table'
 import Container from '../../../../../../ui/Container'
 import { banksSelectColumns } from './utils/columnsSelect'
+import { KEY_DASH_CUSTOMER_BANK_CACHE } from './utils/dash-customer-banks.cache'
 
 type BankSelectedType = {
   setGlobalElement: (element: elementSelect) => void
@@ -33,25 +34,25 @@ const BankSelected = ({ setGlobalElement }: BankSelectedType) => {
   const greaterThanMobile = useMediaQuery(device.tabletS)
 
   const { isLoading, refetch } = useQuery(
-    'customer-has-bank-type',
+    KEY_DASH_CUSTOMER_BANK_CACHE,
     async () => {
       return await getAllCHBsByCustomerId(selectedCustomer.id)
     },
     {
       onSuccess: ({ data }) => {
-        setBanks(
-          data.map((e: response) => {
-            return {
-              id: e.bank.id,
-              name: e.bank.name,
-              description: e.bank.description,
-              state: e.bank.state,
-              createdAt: e.bank.createdAt,
-              CUSTOMER_HAS_BANK: { id: e.id, idCustomer: e.idCustomer, idBank: e.idBank },
-            }
-          })
-        )
+        data = data.map((e: response) => {
+          return {
+            id: e.bank.id,
+            name: e.bank.name,
+            description: e.bank.description,
+            state: e.bank.state,
+            createdAt: e.bank.createdAt,
+            CUSTOMER_HAS_BANK: { id: e.id, idCustomer: e.idCustomer, idBank: e.idBank },
+          }
+        })
+        setBanks(data)
       },
+      enabled: false,
     }
   )
 
@@ -65,9 +66,9 @@ const BankSelected = ({ setGlobalElement }: BankSelectedType) => {
   }, [])
 
   return (
-    <Container width="49%">
+    <Container width={greaterThanMobile ? "49%" : "100%"}>
       <Table
-        top={greaterThanMobile ? '230px' : '200px'}
+        top={greaterThanMobile ? '230px' : '410px'}
         columns={banksSelectColumns}
         loading={isLoading}
         isArrayEmpty={!banks.length}

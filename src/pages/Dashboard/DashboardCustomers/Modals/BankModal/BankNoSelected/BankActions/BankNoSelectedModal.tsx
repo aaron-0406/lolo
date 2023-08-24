@@ -7,7 +7,7 @@ import notification from '../../../../../../../ui/notification'
 import Modal from '../../../../../../../ui/Modal'
 import Container from '../../../../../../../ui/Container'
 import Button from '../../../../../../../ui/Button'
-import dashBanksCache from '../../dash-banks.cache'
+import dashBanksCache from '../utils/dash-banks.cache'
 import { AxiosResponse } from 'axios'
 
 type BankNoSelectedModalProps = {
@@ -37,9 +37,9 @@ const BankNoSelectedModal = ({ visible, onClose, isEdit = false, idBank = 0, chb
   const queryClient = useQueryClient()
   const {
     actions: { editBankCache, AddBankCache },
-    onMutateCache,
-    onSettledCache,
-    onErrorCache,
+    onMutateBankCache,
+    onSettledBankCache,
+    onErrorBankCache,
   } = dashBanksCache(queryClient)
 
   const formMethods = useForm<BankType>({
