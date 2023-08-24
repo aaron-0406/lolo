@@ -14,7 +14,7 @@ import { AxiosResponse } from 'axios'
 type BankModalEditProps = {
   visible: boolean
   onClose: () => void
-  idBank?: number
+  idBank: number
 }
 
 const defaultValuesBank = {
@@ -140,15 +140,12 @@ const BankModalEdit = ({ visible, onClose, idBank = 0 }: BankModalEditProps) => 
         <Container
           width="100%"
           height="140px"
+          padding="20px"
           display="flex"
-          justify-content="center"
-          flexDirection="column"
-          align-items="center"
-          gap="20px"
+          justifyContent="center"
+          alignItems="center"
         >
-          <Container width="100%" display="flex" flexDirection="column" gap="20px" padding="20px" margin="30px 0">
-            <BankInfoForm />
-          </Container>
+          <BankInfoForm />
         </Container>
       </Modal>
     </FormProvider>

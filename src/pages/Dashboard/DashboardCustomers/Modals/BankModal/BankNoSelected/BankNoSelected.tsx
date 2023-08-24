@@ -105,7 +105,7 @@ const BankNoSelected = ({ setGlobalElement }: BankNoSelectedType) => {
                       shape="round"
                       size="small"
                       leadingIcon="ri-pencil-fill"
-                    ></Button>
+                    />
                     <Button
                       onClick={() => {
                         handleClickDelete()
@@ -114,7 +114,7 @@ const BankNoSelected = ({ setGlobalElement }: BankNoSelectedType) => {
                       shape="round"
                       size="small"
                       leadingIcon="ri-delete-bin-line"
-                    ></Button>
+                    />
                   </Container>
                 </BodyCell>
               </tr>
@@ -123,11 +123,12 @@ const BankNoSelected = ({ setGlobalElement }: BankNoSelectedType) => {
       </Table>
       <Container display="flex" justifyContent="space-between" padding="10px">
         <TextField onChange={onHandleChange} width="100%" placeholder="Agregar Banco: " />
-        <Button size="small" shape="round" trailingIcon="ri-add-fill"></Button>
+        <Button size="small" shape="round" trailingIcon="ri-add-fill" />
       </Container>
 
-      {visibleBankEdit && <BankModalEdit visible={visibleBankEdit} onClose={onCloseModal} idBank={idBank}></BankModalEdit>}
-      
+      {visibleBankEdit && (
+        <BankModalEdit visible={visibleBankEdit} onClose={onCloseModal} idBank={idBank}></BankModalEdit>
+      )}
     </Container>
   )
 }
