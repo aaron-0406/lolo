@@ -17,9 +17,8 @@ import BodyCell from '@/ui/Table/BodyCell'
 import EmptyStateCell from '@/ui/Table/EmptyStateCell'
 import { KEY_DASH_CUSTOMER_BANK_CACHE } from '../BankSelected/utils/dash-customer-banks.cache'
 import BankModalEdit from './BankModals/BankModalEdit'
-import useModal from '@/hooks/useModal'
-import notification from '@/ui/notification'
-import { CustomerHasBankType } from '@/types/dash/customer-has-bank'
+import BankModalDelete from './BankModals/BankModalDelete'
+import useModal from '../../../../../../shared/hooks/useModal'
 
 type BankNoSelectedProps = {
   setGlobalElement: (element: SelectedElementType) => void
@@ -34,8 +33,10 @@ const BankNoSelected = ({ setGlobalElement }: BankNoSelectedProps) => {
   const greaterThanMobile = useMediaQuery(device.tabletS)
 
   const [idBank, setIdBank] = useState<number>(0)
+  const [idDeletedBank, setIdDeletedBank] = useState<number>(0)
 
   const { visible: visibleBankEdit, showModal: showBankEdit, hideModal: hideBankEdit } = useModal()
+  const { visible: visibleDeleteBank, showModal: showDeleteBank, hideModal: hideDeleteBank } = useModal()
 
   const { data: dataBanks, isLoading } = useQuery<AxiosResponse<Array<BankType>, Error>>(
     KEY_DASH_BANKS_CACHE,
@@ -66,7 +67,15 @@ const BankNoSelected = ({ setGlobalElement }: BankNoSelectedProps) => {
     showBankEdit()
   }
 
-  const handleClickDelete = () => {}
+  const handleClickDelete = (idBank: number) => {
+    setIdDeletedBank(idBank)
+    showDeleteBank()
+  }
+
+  const onCloseDeleteBank = () => {
+    setIdDeletedBank(0)
+    hideDeleteBank()
+  }
 
   const onHandleClick = (element: SelectedElementType) => {
     setGlobalElement(element)
@@ -77,64 +86,70 @@ const BankNoSelected = ({ setGlobalElement }: BankNoSelectedProps) => {
   }
 
   return (
-    <Container width={greaterThanMobile ? '49%' : '100%'} height="100%">
-      <Container height="calc(100% - 60px)">
-        <Table
-          columns={banksNoSelectColumns}
-          loading={isLoading}
-          isArrayEmpty={!banks.length}
-          emptyState={
-            <EmptyStateCell colSpan={banksNoSelectColumns.length}>
-              <div>Vacio</div>
-            </EmptyStateCell>
-          }
-        >
-          {!!banks.length &&
-            banks.map((record: BankType, key: number) => {
-              return (
-                <tr
-                  className="styled-data-table-row"
-                  key={key}
-                  onClick={() => {
-                    onHandleClick({ bank: record, key: 'BANK_NOT_SELECTED' })
-                  }}
-                >
-                  <BodyCell textAlign="center">{`${record.name || ''}`}</BodyCell>
-                  <BodyCell>
-                    <Container width="100%" textAlign="center" display="flex" justifyContent="space-around">
-                      <Button
-                        onClick={() => {
-                          handleClickEdit(record.id)
-                        }}
-                        messageTooltip="Editar Banco"
-                        shape="round"
-                        size="small"
-                        leadingIcon="ri-pencil-fill"
-                      />
-                      <Button
-                        onClick={() => {
-                          handleClickDelete()
-                        }}
-                        messageTooltip="Eliminar Banco"
-                        shape="round"
-                        size="small"
-                        leadingIcon="ri-delete-bin-line"
-                      />
-                    </Container>
-                  </BodyCell>
-                </tr>
-              )
-            })}
-        </Table>
-      </Container>
-
-      <Container display="flex" justifyContent="space-between" gap="10px" padding="10px">
+    <Container width={greaterThanMobile ? '49%' : '100%'}>
+      <Table
+        top={greaterThanMobile ? '280px' : '410px'}
+        columns={banksNoSelectColumns}
+        loading={isLoading}
+        isArrayEmpty={!banks.length}
+        emptyState={
+          <EmptyStateCell colSpan={banksNoSelectColumns.length}>
+            <div>Vacio</div>
+          </EmptyStateCell>
+        }
+      >
+        {!!banks.length &&
+          banks.map((record: BankType, key: number) => {
+            return (
+              <tr
+                className="styled-data-table-row"
+                key={key}
+                onClick={() => {
+                  onHandleClick({ bank: record, key: 'BNS' })
+                }}
+              >
+                <BodyCell textAlign="center">{`${record.name || ''}`}</BodyCell>
+                <BodyCell>
+                  <Container width="100%" textAlign="center" display="flex" justifyContent="space-around">
+                    <Button
+                      onClick={() => {
+                        handleClickEdit(record.id)
+                      }}
+                      messageTooltip="Editar Banco"
+                      shape="round"
+                      size="small"
+                      leadingIcon="ri-pencil-fill"
+                    />
+                    <Button
+                      onClick={() => {
+                        handleClickDelete(record.id)
+                      }}
+                      messageTooltip="Eliminar Banco"
+                      shape="round"
+                      size="small"
+                      leadingIcon="ri-delete-bin-line"
+                    />
+                  </Container>
+                </BodyCell>
+              </tr>
+            )
+          })}
+      </Table>
+      <Container display="flex" justifyContent="space-between" padding="10px">
         <TextField onChange={onHandleChange} width="100%" placeholder="Agregar Banco: " />
         <Button size="small" shape="round" trailingIcon="ri-add-fill" />
       </Container>
 
       {visibleBankEdit && (
         <BankModalEdit visible={visibleBankEdit} onClose={onCloseModal} idBank={idBank}></BankModalEdit>
+      )}
+
+      {visibleDeleteBank && (
+        <BankModalDelete
+          visible={visibleDeleteBank}
+          onClose={onCloseDeleteBank}
+          idBank={idDeletedBank}
+        ></BankModalDelete>
       )}
     </Container>
   )
