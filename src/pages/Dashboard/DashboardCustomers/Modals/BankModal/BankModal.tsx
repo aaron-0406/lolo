@@ -4,38 +4,37 @@ import Modal from '../../../../../ui/Modal'
 import BankActions from './BankActions'
 import BankNoSelected from './BankNoSelected'
 import BankSelected from './BankSelected'
-import elementSelect from './elementSelect'
+import { SelectedElementType } from './bankModal.type'
 import { useMediaQuery } from '../../../../../shared/hooks/useMediaQuery'
 import { device } from '../../../../../shared/breakpoints/reponsive'
 
-type CustomersModalProps = {
+type BankModalProps = {
   visible: boolean
   onClose: () => void
 }
 
-const BankModal = ({ visible, onClose }: CustomersModalProps) => {
+const defaultValuesElement: SelectedElementType = {
+  bank: {
+    id: 0,
+    name: '',
+    state: false,
+    createdAt: new Date(),
+    CUSTOMER_HAS_BANK: {
+      id: 0,
+      idCustomer: 0,
+      idBank: 0,
+    },
+  },
+  key: 'BANK_NOT_SELECTED',
+}
+
+const BankModal = ({ visible, onClose }: BankModalProps) => {
+  const greaterThanMobile = useMediaQuery(device.tabletS)
+  const [elementSelect, setElementSelected] = useState<SelectedElementType>(defaultValuesElement)
+
   const handleClickCloseModal = () => {
     onClose()
   }
-
-  const defaultValuesElement = {
-    bank: {
-      id: 0,
-      name: '',
-      state: false,
-      createdAt: new Date(),
-      CUSTOMER_HAS_BANK: {
-        id: 0,
-        idCustomer: 0,
-        idBank: 0,
-      },
-    },
-    key: '',
-  }
-
-  const greaterThanMobile = useMediaQuery(device.tabletS)
-
-  const [elementSelect, setElementSelected] = useState<elementSelect>(defaultValuesElement)
 
   return (
     <Modal
@@ -46,15 +45,15 @@ const BankModal = ({ visible, onClose }: CustomersModalProps) => {
       title="Bancos"
       contentOverflowY="auto"
     >
-      <Container width="100%" padding="20px" display={greaterThanMobile ? "flex" : "block"}>
+      <Container width="100%" height="100%" padding="20px" display={greaterThanMobile ? 'flex' : 'block'}>
         <BankSelected
-          setGlobalElement={(element: elementSelect) => {
+          setGlobalElement={(element: SelectedElementType) => {
             setElementSelected(element)
           }}
         />
         <BankActions elementSelected={elementSelect} />
         <BankNoSelected
-          setGlobalElement={(element: elementSelect) => {
+          setGlobalElement={(element: SelectedElementType) => {
             setElementSelected(element)
           }}
         />

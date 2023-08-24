@@ -1,15 +1,15 @@
 import { useEffect } from 'react'
-import { BankType } from '../../../../../../../../shared/types/dash/bank.type'
 import { FormProvider, useForm } from 'react-hook-form'
+import { AxiosResponse } from 'axios'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
+import { BankType } from '../../../../../../../../shared/types/dash/bank.type'
 import { updateBank, getBankById } from '../../../../../../../../shared/services/dash/bank.service'
 import BankInfoForm from './BankInfoForm'
 import notification from '../../../../../../../../ui/notification'
 import Modal from '../../../../../../../../ui/Modal'
 import Container from '../../../../../../../../ui/Container'
 import Button from '../../../../../../../../ui/Button'
-import dashBanksCache from '../../utils/dash-banks.cache'
-import { AxiosResponse } from 'axios'
+import dashBanksCache, { KEY_DASH_BANKS_CACHE } from '../../utils/dash-banks.cache'
 
 type BankModalEditProps = {
   visible: boolean
@@ -53,7 +53,6 @@ const BankModalEdit = ({ visible, onClose, idBank = 0 }: BankModalEditProps) => 
   const { isLoading: loadingEditBank, mutate: editBank } = useMutation<AxiosResponse<BankType>, Error>(
     async () => {
       const { id, CUSTOMER_HAS_BANK, ...restClient } = getValues()
-      console.log(getValues())
       return await updateBank(id, { ...restClient })
     },
     {
@@ -79,7 +78,7 @@ const BankModalEdit = ({ visible, onClose, idBank = 0 }: BankModalEditProps) => 
   )
 
   const { refetch: refetchGetBankById } = useQuery(
-    'get-bank-by-id',
+    `${KEY_DASH_BANKS_CACHE}_GET_BANK_BY_ID`,
     async () => {
       return getBankById(idBank)
     },

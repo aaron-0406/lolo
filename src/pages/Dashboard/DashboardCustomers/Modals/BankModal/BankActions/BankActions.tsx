@@ -1,21 +1,21 @@
 import { useMutation, useQueryClient } from 'react-query'
+import { AxiosResponse } from 'axios'
 import styled, { css } from 'styled-components'
 import { useDashContext } from '../../../../../../shared/contexts/DashProvider'
-import elementSelect from '../elementSelect'
+import { SelectedElementType } from '../bankModal.type'
 import { CustomerHasBankType } from '../../../../../../shared/types/dash/customer-has-bank'
 import { revokeCHB, assingCHB } from '../../../../../../shared/services/dash/customer-has-bank.service'
 import Container from '../../../../../../ui/Container'
 import Button from '../../../../../../ui/Button'
-import { AxiosResponse } from 'axios'
 import notification from '../../../../../../ui/notification'
 import dashBanksCache from '../BankNoSelected/utils/dash-banks.cache'
 import dashCustomerBankCache from '../BankSelected/utils/dash-customer-banks.cache'
 
-type BankActionsType = {
-  elementSelected: elementSelect
+type BankActionsProps = {
+  elementSelected: SelectedElementType
 }
 
-const BankActions = ({ elementSelected }: BankActionsType) => {
+const BankActions = ({ elementSelected }: BankActionsProps) => {
   const {
     dashCustomer: { selectedCustomer },
   } = useDashContext()
@@ -23,11 +23,11 @@ const BankActions = ({ elementSelected }: BankActionsType) => {
   const queryClient = useQueryClient()
 
   const {
-    actions: { AddBankCache, deleteBankCache },
+    actions: { addBankCache, deleteBankCache },
   } = dashBanksCache(queryClient)
 
   const {
-    actions: { AddCHBCache, deleteCHBCache },
+    actions: { addCHBCache, deleteCHBCache },
     onMutateCHBCache,
     onSettledCHBCache,
     onErrorCHBCache,
@@ -35,11 +35,15 @@ const BankActions = ({ elementSelected }: BankActionsType) => {
   } = dashCustomerBankCache(queryClient)
 
   const onHandlClickRemove = () => {
-    elementSelected.key === 'BS' ? remove() : notification({ type: 'warning', message: 'El banco no está asignado' })
+    elementSelected.key === 'SELECTED_BANK'
+      ? remove()
+      : notification({ type: 'warning', message: 'El banco no está asignado' })
   }
 
   const onHandlClickAssing = () => {
-    elementSelected.key === 'BNS' ? assing() : notification({ type: 'warning', message: 'El banco ya está asignado' })
+    elementSelected.key === 'BANK_NOT_SELECTED'
+      ? assing()
+      : notification({ type: 'warning', message: 'El banco ya está asignado' })
   }
 
   const { isLoading: loadingRemove, mutate: remove } = useMutation<AxiosResponse<CustomerHasBankType>, Error>(
@@ -49,18 +53,18 @@ const BankActions = ({ elementSelected }: BankActionsType) => {
     },
     {
       onSuccess: (data) => {
-        AddBankCache(elementSelected.bank)
-        deleteCHBCache(String(data.data.id))
+        addBankCache(elementSelected.bank)
+        deleteCHBCache(String(data.data.id), selectedCustomer.id)
         notification({ type: 'success', message: 'El banco se removió del cliente' })
       },
       onMutate: () => {
-        onMutateCHBCache()
+        return onMutateCHBCache(selectedCustomer.id)
       },
       onSettled: () => {
-        onSettledCHBCache()
+        onSettledCHBCache(selectedCustomer.id)
       },
       onError: (error: any, _, context: any) => {
-        onErrorCHBCache(context)
+        onErrorCHBCache(context, selectedCustomer.id)
         notification({
           type: 'error',
           message: error.response.data.message,
@@ -78,18 +82,18 @@ const BankActions = ({ elementSelected }: BankActionsType) => {
     {
       onSuccess: ({ data }) => {
         deleteBankCache(String(data.idBank))
-        AddCHBCache(data)
-        onRefetchQueryCHBCache()
+        addCHBCache(data)
+        onRefetchQueryCHBCache(selectedCustomer.id)
         notification({ type: 'success', message: 'El banco fue asignado al cliente' })
       },
       onMutate: () => {
-        onMutateCHBCache()
+        return onMutateCHBCache(selectedCustomer.id)
       },
       onSettled: () => {
-        onSettledCHBCache()
+        onSettledCHBCache(selectedCustomer.id)
       },
       onError: (error: any, _, context: any) => {
-        onErrorCHBCache(context)
+        onErrorCHBCache(context, selectedCustomer.id)
         notification({
           type: 'error',
           message: error.response.data.message,

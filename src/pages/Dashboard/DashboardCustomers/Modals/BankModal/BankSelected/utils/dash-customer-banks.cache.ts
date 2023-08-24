@@ -1,15 +1,14 @@
-import { QueryClient } from 'react-query'
-import { CustomerHasBankType } from '../../../../../../../shared/types/dash/customer-has-bank'
+import { QueryClient, useQuery } from 'react-query'
 import { AxiosResponse } from 'axios'
+import { CustomerHasBankType } from '../../../../../../../shared/types/dash/customer-has-bank'
 
 export const KEY_DASH_CUSTOMER_BANK_CACHE = 'key-dash-customer-bank-cache'
 
 export type QueryDataType = AxiosResponse<CustomerHasBankType[]> | undefined
 
 const dashCustomerBankCache = (queryClient: QueryClient) => {
-  
-  const AddCHBCache = (data: CustomerHasBankType) => {
-    queryClient.setQueryData<QueryDataType>(KEY_DASH_CUSTOMER_BANK_CACHE, (oldQueryData) => {
+  const addCHBCache = (data: CustomerHasBankType) => {
+    queryClient.setQueryData<QueryDataType>([KEY_DASH_CUSTOMER_BANK_CACHE, data.idCustomer], (oldQueryData) => {
       if (oldQueryData) {
         return {
           ...oldQueryData,
@@ -19,8 +18,8 @@ const dashCustomerBankCache = (queryClient: QueryClient) => {
     })
   }
 
-  const deleteCHBCache = (idBank: string) => {
-    queryClient.setQueryData<QueryDataType>([KEY_DASH_CUSTOMER_BANK_CACHE], (old) => {
+  const deleteCHBCache = (idBank: string, customerId: number) => {
+    queryClient.setQueryData<QueryDataType>([KEY_DASH_CUSTOMER_BANK_CACHE, customerId], (old) => {
       if (old) {
         const dataUpdated = old.data.filter((bank: CustomerHasBankType) => bank.id !== parseInt(idBank))
         return { ...old, data: dataUpdated }
@@ -28,30 +27,30 @@ const dashCustomerBankCache = (queryClient: QueryClient) => {
     })
   }
 
-  const onRefetchQueryCHBCache = async () => {
-    await queryClient.refetchQueries([KEY_DASH_CUSTOMER_BANK_CACHE])
+  const onRefetchQueryCHBCache = async (customerId: number) => {
+    await queryClient.refetchQueries([KEY_DASH_CUSTOMER_BANK_CACHE, customerId])
   }
 
-  const onMutateCHBCache = async () => {
-    const old = queryClient.getQueryData([KEY_DASH_CUSTOMER_BANK_CACHE])
+  const onMutateCHBCache = async (customerId: number) => {
+    const old = queryClient.getQueryData([KEY_DASH_CUSTOMER_BANK_CACHE, customerId])
     if (!old) {
-      await queryClient.prefetchQuery([KEY_DASH_CUSTOMER_BANK_CACHE])
+      await queryClient.prefetchQuery([KEY_DASH_CUSTOMER_BANK_CACHE, customerId])
     }
 
     return { old }
   }
 
-  const onSettledCHBCache = () => {
-    queryClient.cancelQueries([KEY_DASH_CUSTOMER_BANK_CACHE])
+  const onSettledCHBCache = (customerId: number) => {
+    queryClient.cancelQueries([KEY_DASH_CUSTOMER_BANK_CACHE, customerId])
   }
 
-  const onErrorCHBCache = (context: { old: QueryDataType }) => {
-    queryClient.setQueryData([KEY_DASH_CUSTOMER_BANK_CACHE], context.old)
+  const onErrorCHBCache = (context: { old: QueryDataType }, customerId: number) => {
+    queryClient.setQueryData([KEY_DASH_CUSTOMER_BANK_CACHE, customerId], context.old)
   }
 
   return {
     actions: {
-      AddCHBCache,
+      addCHBCache,
       deleteCHBCache,
     },
     onRefetchQueryCHBCache,
