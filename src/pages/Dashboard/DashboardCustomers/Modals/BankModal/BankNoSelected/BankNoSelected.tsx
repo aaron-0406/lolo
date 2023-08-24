@@ -1,8 +1,7 @@
-import { Opts } from '../../../../../../ui/Pagination/interfaces'
 import { useQuery, useQueryClient } from 'react-query'
 import { useDashContext } from '../../../../../../shared/contexts/DashProvider'
 import { banksNoSelectColumns } from './utils/columnsNoSelect'
-import { Dispatch, FC, useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import Table from '../../../../../../ui/Table'
 import TextField from '../../../../../../ui/fields/TextField'
 import Container from '../../../../../../ui/Container'
@@ -16,6 +15,8 @@ import { device } from '../../../../../../shared/breakpoints/reponsive'
 import BodyCell from '../../../../../../ui/Table/BodyCell'
 import EmptyStateCell from '../../../../../../ui/Table/EmptyStateCell'
 import { KEY_DASH_CUSTOMER_BANK_CACHE, QueryDataType } from '../BankSelected/utils/dash-customer-banks.cache'
+import BankModalEdit from './BankModals/BankModalEdit'
+import useModal from '../../../../../../shared/hooks/useModal'
 
 type BankNoSelectedType = {
   setGlobalElement: (element: elementSelect) => void
@@ -30,6 +31,9 @@ const BankNoSelected = ({ setGlobalElement }: BankNoSelectedType) => {
   const greaterThanMobile = useMediaQuery(device.tabletS)
 
   const [banks, setBanks] = useState<Array<BankType>>(selectedCustomer.customerBanks)
+  const [idBank, setIdBank] = useState<number>(0)
+
+  const { visible: visibleBankEdit, showModal: showBankEdit, hideModal: hideBankEdit } = useModal()
 
   const { isLoading, refetch } = useQuery(
     [KEY_DASH_BANKS_CACHE],
@@ -47,8 +51,19 @@ const BankNoSelected = ({ setGlobalElement }: BankNoSelectedType) => {
 
   const onHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {}
 
+  const handleClickEdit = (idBank: number) => {
+    setIdBank(idBank)
+    showBankEdit()
+  }
+
+  const handleClickDelete = () => {}
+
   const onHandleClick = (element: elementSelect) => {
     setGlobalElement(element)
+  }
+
+  const onCloseModal = () => {
+    hideBankEdit()
   }
 
   useEffect(() => {
@@ -80,6 +95,28 @@ const BankNoSelected = ({ setGlobalElement }: BankNoSelectedType) => {
                 }}
               >
                 <BodyCell textAlign="center">{`${record.name || ''}`}</BodyCell>
+                <BodyCell>
+                  <Container width="100%" textAlign="center" display="flex" justifyContent="space-around">
+                    <Button
+                      onClick={() => {
+                        handleClickEdit(record.id)
+                      }}
+                      messageTooltip="Editar Banco"
+                      shape="round"
+                      size="small"
+                      leadingIcon="ri-pencil-fill"
+                    ></Button>
+                    <Button
+                      onClick={() => {
+                        handleClickDelete()
+                      }}
+                      messageTooltip="Eliminar Banco"
+                      shape="round"
+                      size="small"
+                      leadingIcon="ri-delete-bin-line"
+                    ></Button>
+                  </Container>
+                </BodyCell>
               </tr>
             )
           })}
@@ -88,6 +125,8 @@ const BankNoSelected = ({ setGlobalElement }: BankNoSelectedType) => {
         <TextField onChange={onHandleChange} width="100%" placeholder="Agregar Banco: " />
         <Button size="small" shape="round" trailingIcon="ri-add-fill"></Button>
       </Container>
+
+      <BankModalEdit visible={visibleBankEdit} onClose={onCloseModal} idBank={idBank}></BankModalEdit>
     </Container>
   )
 }
