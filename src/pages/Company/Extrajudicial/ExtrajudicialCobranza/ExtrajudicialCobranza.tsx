@@ -3,10 +3,10 @@ import { FormProvider, useForm } from 'react-hook-form'
 import LayoutCobranza from '../../../../components/Layouts/LayoutCobranza'
 import { ClientType } from '../../../../shared/types/extrajudicial/client.type'
 import CobranzaActions from './CobranzaActions'
-import CobranzaComments from './CobranzaComments'
 import CobranzaInfo from './CobranzaInfo'
 import CobranzaSearch from './CobranzaSearch'
 import { ExtrajudicialCobranzaResolver } from './ExtrajudicialCobranza.yup'
+import CobranzaInfoModals from './CobranzaInfo/CobranzaInfoModals/CobranzaInfoModals'
 
 const ExtrajudicialCobranza = () => {
   const formMethods = useForm<ClientType>({
@@ -34,10 +34,10 @@ const ExtrajudicialCobranza = () => {
   return (
     <FormProvider {...formMethods}>
       <LayoutCobranza
-        leftHeader={<CobranzaSearch setLoadingGlobal={setLoadingGlobal} />}
-        leftActions={<CobranzaActions />}
-        leftContent={<CobranzaInfo loading={loading} />}
-        rightComments={<CobranzaComments />}
+        leftTopContent={<CobranzaSearch setLoadingGlobal={setLoadingGlobal} />}
+        rightTopContent={<CobranzaActions />}
+        infoContent={<CobranzaInfo loading={loading} />}
+        downContent={<CobranzaInfoModals />}
       />
     </FormProvider>
   )

@@ -98,7 +98,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
         editCustomerCache(result.data)
       },
       onMutate: () => {
-        onMutateCache()
+        return onMutateCache()
       },
       onSettled: () => {
         onSettledCache()

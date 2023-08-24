@@ -9,6 +9,7 @@ import DashHome from '../../../pages/Dashboard/Home'
 import DashboardCustomers from '../../../pages/Dashboard/DashboardCustomers'
 import DashboardActions from '../../../pages/Dashboard/DashboardActions'
 import DashboardUsers from '../../../pages/Dashboard/DashboardUsers'
+import DashboardPermissions from '../../../pages/Dashboard/DashboardPermissions'
 import DashboardNegotiations from '../../../pages/Dashboard/DashboardNegotiations'
 import DashboardFuncionarios from '../../../pages/Dashboard/DashboardFuncionarios'
 
@@ -19,6 +20,7 @@ import CompanyHome from '../../../pages/Company/Home'
 //EXTRAJUDICIAL
 import ExtrajudicialProfile from '../../../pages/Company/Extrajudicial/ExtrajudicialProfile'
 import ExtrajudicialCobranza from '../../../pages/Company/Extrajudicial/ExtrajudicialCobranza'
+import ExtrajudicialCobranzaComments from '../../../pages/Company/Extrajudicial/ExtrajudicialCobranzaComments/ExtrajudicialCobranzaComments'
 import ExtrajudicialTemplate from '../../../pages/Company/Extrajudicial/ExtrajudicialTemplate'
 import Dashboard from '../../../pages/Company/Extrajudicial/ExtrajudicialDashboard/Dashboard'
 import ExtrajudicialMetas from '../../../pages/Company/Extrajudicial/ExtrajudicialMetas'
@@ -53,6 +55,7 @@ const AppRouter = () => {
         <Route path={paths.dash.root} element={<DashHome />} />
         <Route path={paths.dash.clientes} element={<DashboardCustomers />} />
         <Route path={paths.dash.usuarios} element={<DashboardUsers />} />
+        <Route path={paths.dash.permisos} element={<DashboardPermissions />} />
         <Route path={paths.dash.funcionarios} element={<DashboardFuncionarios />} />
         <Route path={paths.dash.reportes} element={<div>reportes</div>} />
         <Route path={paths.dash.acciones} element={<DashboardActions />} />
@@ -68,6 +71,7 @@ const AppRouter = () => {
         <Route path={paths.cobranza.perfil()} element={<ExtrajudicialProfile />} />
         <Route path={paths.cobranza.clientes()} element={<ExtrajudicialCustomers />} />
         <Route path={paths.cobranza.cobranza()} element={<ExtrajudicialCobranza />} />
+        <Route path={paths.cobranza.cobranzaComments()} element={<ExtrajudicialCobranzaComments />} />
         <Route path={paths.cobranza.metas()} element={<ExtrajudicialMetas />} />
         <Route path={paths.cobranza.document()} element={<ExtrajudicialTemplate />} />
         <Route element={<ProtectedRoutesCompanyDash pathname={paths.company.login()} />}>

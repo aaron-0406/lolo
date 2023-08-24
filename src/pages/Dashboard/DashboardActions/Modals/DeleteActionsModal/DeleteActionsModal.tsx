@@ -35,7 +35,7 @@ const DeleteActionsModal = ({ visible, idAction = 0, onClose, chb = 0 }: DeleteA
         onClose()
       },
       onMutate: () => {
-        onMutateCache(chb)
+        return onMutateCache(chb)
       },
       onSettled: () => {
         onSettledCache(chb)
