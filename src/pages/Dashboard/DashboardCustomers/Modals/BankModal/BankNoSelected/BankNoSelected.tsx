@@ -126,7 +126,8 @@ const BankNoSelected = ({ setGlobalElement }: BankNoSelectedType) => {
         <Button size="small" shape="round" trailingIcon="ri-add-fill"></Button>
       </Container>
 
-      <BankModalEdit visible={visibleBankEdit} onClose={onCloseModal} idBank={idBank}></BankModalEdit>
+      {visibleBankEdit && <BankModalEdit visible={visibleBankEdit} onClose={onCloseModal} idBank={idBank}></BankModalEdit>}
+      
     </Container>
   )
 }

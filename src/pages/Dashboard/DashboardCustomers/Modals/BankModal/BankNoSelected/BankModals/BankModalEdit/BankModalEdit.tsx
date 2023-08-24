@@ -52,7 +52,8 @@ const BankModalEdit = ({ visible, onClose, idBank = 0 }: BankModalEditProps) => 
 
   const { isLoading: loadingEditBank, mutate: editBank } = useMutation<AxiosResponse<BankType>, Error>(
     async () => {
-      const { id, ...restClient } = getValues()
+      const { id, CUSTOMER_HAS_BANK, ...restClient } = getValues()
+      console.log(getValues())
       return await updateBank(id, { ...restClient })
     },
     {
@@ -62,7 +63,7 @@ const BankModalEdit = ({ visible, onClose, idBank = 0 }: BankModalEditProps) => 
         handleClickCloseModal()
       },
       onMutate: () => {
-        onMutateBankCache()
+        return onMutateBankCache()
       },
       onSettled: () => {
         onSettledBankCache()
@@ -105,7 +106,7 @@ const BankModalEdit = ({ visible, onClose, idBank = 0 }: BankModalEditProps) => 
   }
 
   useEffect(() => {
-    if (idBank != 0) {
+    if (idBank !== 0) {
       refetchGetBankById()
     }
   }, [idBank, refetchGetBankById])
@@ -117,7 +118,7 @@ const BankModalEdit = ({ visible, onClose, idBank = 0 }: BankModalEditProps) => 
         onClose={() => {
           handleClickCloseModal()
         }}
-        id="modal-banco"
+        id="modal-dash-editar-banco"
         title="Editar Banco"
         contentOverflowY="auto"
         size="small"
