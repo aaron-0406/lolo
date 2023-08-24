@@ -1,5 +1,12 @@
 {
   "compilerOptions": {
+    "baseUrl": "./src",
+    "paths": {
+      "@/hooks/*": ["./shared/hooks/*"],
+      "@/services/*": ["./shared/services/*"],
+      "@/types/*": ["./shared/types/*"],
+      "@/ui/*": ["./ui/*"]
+    },
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
@@ -14,11 +21,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx",
-    "baseUrl": "./src",
-    "paths": {
-      "@/ui/*": ["./ui/*"]
-    }
+    "jsx": "react-jsx"
   },
   "include": ["src"]
 }

@@ -3,7 +3,9 @@ const { override, addWebpackAlias } = require('customize-cra')
 
 module.exports = override(
   addWebpackAlias({
-    '@': path.resolve(__dirname, 'src'),
-    '@/ui/*': path.resolve(__dirname, 'src/ui/*'),
+    '@/hooks': path.resolve(__dirname, 'src/shared/hooks'),
+    '@/services': path.resolve(__dirname, 'src/shared/services'),
+    '@/types': path.resolve(__dirname, 'src/shared/types'),
+    '@/ui': path.resolve(__dirname, 'src/ui'),
   })
 )
