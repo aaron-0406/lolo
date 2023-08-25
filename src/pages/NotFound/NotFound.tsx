@@ -1,6 +1,6 @@
 import Button from '@/ui/Button'
 import Container from '@/ui/Container'
-import ErrorIcon from '../../shared/assets/icons/404.png'
+import ErrorIcon from '@/assets/icons/404.png'
 import Img from '@/ui/Img'
 
 const NotFound = () => {

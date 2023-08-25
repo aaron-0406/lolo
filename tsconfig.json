@@ -4,6 +4,7 @@
     "paths": {
       "@/pages/extrajudicial/*": ["./pages/Company/Extrajudicial/*"],
       "@/pages/dashboard/*": ["./pages/Dashboard/*"],
+      "@/assets/*": ["./shared/assets/*"],
       "@/breakpoints/*": ["./shared/breakpoints/*"],
       "@/contexts/*": ["./shared/contexts/*"],
       "@/hooks/*": ["./shared/hooks/*"],
