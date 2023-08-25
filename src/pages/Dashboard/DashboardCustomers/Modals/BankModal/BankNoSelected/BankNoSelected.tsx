@@ -18,7 +18,9 @@ import EmptyStateCell from '@/ui/Table/EmptyStateCell'
 import { KEY_DASH_CUSTOMER_BANK_CACHE } from '../BankSelected/utils/dash-customer-banks.cache'
 import BankModalEdit from './BankModals/BankModalEdit'
 import BankModalDelete from './BankModals/BankModalDelete'
-import useModal from '../../../../../../shared/hooks/useModal'
+import useModal from '@/hooks/useModal'
+import notification from '@/ui/notification'
+import { CustomerHasBankType } from '@/types/dash/customer-has-bank'
 
 type BankNoSelectedProps = {
   setGlobalElement: (element: SelectedElementType) => void
@@ -105,7 +107,7 @@ const BankNoSelected = ({ setGlobalElement }: BankNoSelectedProps) => {
                 className="styled-data-table-row"
                 key={key}
                 onClick={() => {
-                  onHandleClick({ bank: record, key: 'BNS' })
+                  onHandleClick({ bank: record, key: 'BANK_NOT_SELECTED' })
                 }}
               >
                 <BodyCell textAlign="center">{`${record.name || ''}`}</BodyCell>
