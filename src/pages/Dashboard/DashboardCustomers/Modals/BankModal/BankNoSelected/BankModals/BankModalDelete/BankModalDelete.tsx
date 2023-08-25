@@ -65,8 +65,8 @@ const BankModalDelete = ({ visible, idBank = 0, onClose }: BankModalDeleteProps)
       size="small"
       footer={
         <Container width="100%" justifyContent="space-around" display="flex" alignItems="center">
-          {<Button onClick={deleteBanks} loading={loadingDeleteBank} display="danger" size="default" label="ACEPTAR" />}
-          {<Button onClick={onClose} size="default" label="CANCELAR" />}
+          <Button onClick={deleteBanks} loading={loadingDeleteBank} display="danger" size="default" label="ACEPTAR" />
+          <Button onClick={onClose} size="default" label="CANCELAR" />
         </Container>
       }
     ></Modal>
