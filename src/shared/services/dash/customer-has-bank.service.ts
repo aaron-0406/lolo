@@ -21,6 +21,6 @@ export const assingCHB = async (chb: Omit<CustomerHasBankType, 'id'>) => {
   return await axiosClient.post(`${url}/`, chb)
 }
 
-export const revokeCHB = async (id: number) => {
+export const revokeCHB = async (id: number | undefined) => {
   return await axiosClient.delete(`${url}/${id}`)
 }

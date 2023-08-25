@@ -16,6 +16,7 @@ import useModal from '@/hooks/useModal'
 import UsersModal from '../Modals/UsersModal/UsersModal'
 import { useDashContext } from '@/contexts/DashProvider'
 import notification from '@/ui/notification'
+import BankModal from '../Modals/BankModal'
 import dashCustomersCache, { KEY_DASH_CLIENTES_CACHE } from './utils/dash-clientes.cache'
 import { AxiosResponse } from 'axios'
 
@@ -43,6 +44,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
 
   const { visible: visibleModalCustomer, showModal: showModalCustomer, hideModal: hideModalCustomer } = useModal()
   const { visible: visibleModalUser, showModal: showModalUser, hideModal: hideModalUser } = useModal()
+  const { visible: visibleModalBank, showModal: showModalBank, hideModal: hideModalBank } = useModal()
 
   const handleClickButtonEdit = (url: string) => {
     setUrlEdit(url)
@@ -61,6 +63,10 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
   const handleClickButtonState = (state: boolean, customerId: number) => {
     editStateCustomer({ customerId, state })
   }
+  const handleClickButtonBank = (customer: CustomerType) => {
+    setSelectedCustomer(customer)
+    showModalBank()
+  }
 
   const onCloseModal = () => {
     setUrlEdit('')
@@ -69,6 +75,10 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
 
   const onCloseUser = () => {
     hideModalUser()
+  }
+
+  const onCloseBank = () => {
+    hideModalBank()
   }
 
   const { mutate: editStateCustomer } = useMutation<
@@ -189,6 +199,17 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
                         size="small"
                         leadingIcon="ri-user-search-fill"
                       />
+
+                      <Button
+                        onClick={(event) => {
+                          event.stopPropagation()
+                          handleClickButtonBank(record)
+                        }}
+                        shape="round"
+                        messageTooltip="Ver bancos"
+                        size="small"
+                        leadingIcon="ri-bank-line"
+                      />
                     </Container>
                   }
                 </BodyCell>
@@ -200,6 +221,8 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
       <CustomerModal visible={visibleModalCustomer} onClose={onCloseModal} url={urlEdit} isEdit />
 
       {visibleModalUser && <UsersModal visible={visibleModalUser} onClose={onCloseUser} />}
+
+      {visibleModalBank && <BankModal visible={visibleModalBank} onClose={onCloseBank} />}
     </Container>
   )
 }

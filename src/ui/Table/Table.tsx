@@ -138,7 +138,7 @@ const StyledContentTable = styled(Container)<{ top?: string; leftSpace?: number;
     width: 100%;
     overflow-x: auto;
     overflow-y: auto;
-    height: ${top ? `calc(100vh - ${top})` : '0'};
+    height: ${top ? `calc(100vh - ${top})` : '100%'};
 
     th:last-child,
     td:last-child {
