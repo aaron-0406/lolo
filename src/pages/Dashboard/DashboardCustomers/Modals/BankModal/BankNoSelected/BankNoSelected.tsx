@@ -41,7 +41,7 @@ const BankNoSelected = ({ setGlobalElement }: BankNoSelectedProps) => {
   const { visible: visibleDeleteBank, showModal: showDeleteBank, hideModal: hideDeleteBank } = useModal()
 
   const { data: dataBanks, isLoading } = useQuery<AxiosResponse<Array<BankType>, Error>>(
-    [KEY_DASH_BANKS_CACHE],
+    KEY_DASH_BANKS_CACHE,
     async () => {
       return await getAllBanks()
     },
