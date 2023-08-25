@@ -1,17 +1,13 @@
 import { useEffect } from 'react'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { FormProvider, useForm } from 'react-hook-form'
-import {
-  createNegotiation,
-  updateNegotiation,
-  getAllNegociacionesById,
-} from '../../../../../shared/services/dash/negotiation.service'
+import { createNegotiation, updateNegotiation, getAllNegociacionesById } from '@/services/dash/negotiation.service'
 import { ModalNegotiationResolver } from './NegotiationModal.yup'
-import { NegotiationType } from '../../../../../shared/types/dash/negotiation.type'
-import Modal from '../../../../../ui/Modal'
-import Container from '../../../../../ui/Container'
-import Button from '../../../../../ui/Button'
-import notification from '../../../../../ui/notification'
+import { NegotiationType } from '@/types/dash/negotiation.type'
+import Modal from '@/ui/Modal'
+import Container from '@/ui/Container'
+import Button from '@/ui/Button'
+import notification from '@/ui/notification'
 import NegotiationInfoForm from './NegotiationInfoForm'
 import dashNegotiationCache from '../../NegotiationTable/utils/dash-negociaciones.cache'
 

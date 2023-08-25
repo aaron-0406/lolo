@@ -1,14 +1,14 @@
 import CobranzaCommentsInfo from './CobranzaCommentsInfo/CobranzaCommentsInfo'
-import Container from '../../../../ui/Container/Container'
+import Container from '@/ui/Container/Container'
 import CobranzaCommentsTable from './CobranzaCommentsTable/CobranzaCommentsTable'
 import { useQuery } from 'react-query'
 import { useParams } from 'react-router-dom'
-import { useLoloContext } from '../../../../shared/contexts/LoloProvider'
+import { useLoloContext } from '@/contexts/LoloProvider'
 import { AxiosResponse } from 'axios'
-import { ClientType } from '../../../../shared/types/extrajudicial/client.type'
+import { ClientType } from '@/types/extrajudicial/client.type'
 import { KEY_COBRANZA_URL_COBRANZA_CODE_CACHE } from './CobranzaCommentsTable/utils/company-comentarios.cache'
-import { getClientByCode } from '../../../../shared/services/extrajudicial/client.service'
-import notification from '../../../../ui/notification'
+import { getClientByCode } from '@/services/extrajudicial/client.service'
+import notification from '@/ui/notification'
 
 const ExtrajudicialCobranzaComments = () => {
   const { code } = useParams()

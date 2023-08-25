@@ -1,5 +1,5 @@
 import axiosClient from '../../utils/api/clientAxios'
-import { BankType } from '../../types/dash/bank.type'
+import { BankType } from '@/types/dash/bank.type'
 
 const API = axiosClient.getUri()
 

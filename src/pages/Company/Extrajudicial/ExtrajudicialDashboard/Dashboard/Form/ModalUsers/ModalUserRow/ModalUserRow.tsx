@@ -1,8 +1,8 @@
 import { FC } from 'react'
-import Container from '../../../../../../../../ui/Container'
-import Text from '../../../../../../../../ui/Text'
+import Container from '@/ui/Container'
+import Text from '@/ui/Text'
 import { ModalUserRowProps } from './ModalUserRowType'
-import Checkbox from '../../../../../../../../ui/Checkbox'
+import Checkbox from '@/ui/Checkbox'
 import { UserFormType } from '../hookforms.type'
 import { useFormContext } from 'react-hook-form'
 

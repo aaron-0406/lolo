@@ -1,8 +1,8 @@
 import React from 'react'
 import { useFormContext } from 'react-hook-form'
 import styled, { css } from 'styled-components'
-import Container from '../../../../../../../../../ui/Container'
-import Text from '../../../../../../../../../ui/Text'
+import Container from '@/ui/Container'
+import Text from '@/ui/Text'
 import { DirectionFormType } from '../../hookforms.interfaces'
 
 type ModalAddressesRowProps = {

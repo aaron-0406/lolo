@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { BreadcrumbsProps } from './Breadcrumbs.type'
-import Container from '../Container'
-import Icon from '../Icon'
+import Container from '@/ui/Container'
+import Icon from '@/ui/Icon'
 import { useNavigate } from 'react-router-dom'
 import styled, { css } from 'styled-components'
 

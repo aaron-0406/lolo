@@ -1,7 +1,7 @@
-import Container from '../../../../../ui/Container/Container'
-import Text from '../../../../../ui/Text'
-import Button from '../../../../../ui/Button/Button'
-import useModal from '../../../../../shared/hooks/useModal'
+import Container from '@/ui/Container/Container'
+import Text from '@/ui/Text'
+import Button from '@/ui/Button/Button'
+import useModal from '@/hooks/useModal'
 import CobranzaCommentsModal from '../Modals/CobranzaCommentsModal/CobranzaCommentsModal'
 import { useParams } from 'react-router-dom'
 

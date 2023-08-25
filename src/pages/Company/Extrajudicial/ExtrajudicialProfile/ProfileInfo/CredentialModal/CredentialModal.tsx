@@ -1,12 +1,12 @@
-import Modal from '../../../../../../ui/Modal'
+import Modal from '@/ui/Modal'
 import { useForm, Controller } from 'react-hook-form'
 import { CredentialFormType } from './hookform.type'
 import { CredentialsResolver } from './Credentials.yup'
-import Container from '../../../../../../ui/Container/Container'
-import TextField from '../../../../../../ui/fields/TextField/TextField'
-import Button from '../../../../../../ui/Button/Button'
-import { notification } from '../../../../../../ui/notification/notification'
-import { changePasswordService } from '../../../../../../shared/services/extrajudicial/auth.service'
+import Container from '@/ui/Container/Container'
+import TextField from '@/ui/fields/TextField/TextField'
+import Button from '@/ui/Button/Button'
+import { notification } from '@/ui/notification/notification'
+import { changePasswordService } from '@/services/extrajudicial/auth.service'
 import { useMutation } from 'react-query'
 
 type CredentialModalProps = {

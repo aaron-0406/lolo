@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import type CSS from 'csstype'
 import styled, { css } from 'styled-components'
-import Container from '../../Container'
-import HelperText from '../../HelperText'
-import type { TextAreaSizeType } from '../../inputs/TextArea/TextArea'
-import type { HelperFieldProps, LabelFieldProps } from '../interfaces'
-import InputTextArea from '../../inputs/InputTextArea'
-import InputLabel from '../../Label'
+import Container from '@/ui/Container'
+import HelperText from '@/ui/HelperText'
+import type { TextAreaSizeType } from '@/ui/inputs/TextArea/TextArea'
+import type { HelperFieldProps, LabelFieldProps } from '@/ui/fields/interfaces'
+import InputTextArea from '@/ui/inputs/InputTextArea'
+import InputLabel from '@/ui/Label'
 
 type TextAreaFieldProps = Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, 'size'> &
   LabelFieldProps &

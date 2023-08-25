@@ -1,6 +1,6 @@
 import ReactDOM from 'react-dom/client'
 import App from './app/App'
-import { Providers } from './shared/contexts/Providers'
+import { Providers } from '@/contexts/Providers'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 

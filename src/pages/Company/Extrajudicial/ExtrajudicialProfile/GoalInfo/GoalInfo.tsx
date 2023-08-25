@@ -1,16 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from 'react'
-import { useLoloContext } from '../../../../../shared/contexts/LoloProvider'
-import Container from '../../../../../ui/Container'
-import Progress from '../../../../../ui/Progress/Progress'
-import Text from '../../../../../ui/Text'
+import { useLoloContext } from '@/contexts/LoloProvider'
+import Container from '@/ui/Container'
+import Progress from '@/ui/Progress/Progress'
+import Text from '@/ui/Text'
 import { useMutation } from 'react-query'
-import {
-  GoalApiResponse,
-  getGlobalGoal,
-  getPersonalGoal,
-} from '../../../../../shared/services/extrajudicial/goal.service'
-import { GoalType } from '../../../../../shared/types/extrajudicial/goal.type'
+import { GoalApiResponse, getGlobalGoal, getPersonalGoal } from '@/services/extrajudicial/goal.service'
+import { GoalType } from '@/types/extrajudicial/goal.type'
 import moment from 'moment'
 
 const GoalInfo = () => {

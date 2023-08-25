@@ -1,5 +1,5 @@
 import { QueryClient } from 'react-query'
-import { NegotiationType } from '../../../../../shared/types/dash/negotiation.type'
+import { NegotiationType } from '@/types/dash/negotiation.type'
 import { AxiosResponse } from 'axios'
 
 export const KEY_DASH_NEGOCIACIONES_CACHE = 'key-dash-negociaciones-cache'

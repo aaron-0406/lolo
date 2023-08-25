@@ -1,7 +1,7 @@
 import get from 'lodash/get'
 import type { IRegular, IThemeColor } from 'styled-components'
 import styled, { css, useTheme } from 'styled-components'
-import type { ITitleText, IBodyText, INumberText, SpanProps } from './interfaces'
+import type { ITitleText, IBodyText, INumberText, SpanProps } from '@/ui/Text/interfaces'
 
 type StyledTextProps = IRegular & {
   color?: keyof TextColor

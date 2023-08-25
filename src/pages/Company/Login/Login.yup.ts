@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { LoginType } from '../../../shared/types/extrajudicial/auth.type'
+import { LoginType } from '@/types/extrajudicial/auth.type'
 import yup from '../../../shared/yupLocale'
 
 const LoginSchema: yup.SchemaOf<LoginType> = yup.object().shape({

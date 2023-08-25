@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components'
-import Container from '../../ui/Container'
+import Container from '@/ui/Container'
 
 export const StyledLoginContainer = styled(Container)`
   ${({ theme }) => css`

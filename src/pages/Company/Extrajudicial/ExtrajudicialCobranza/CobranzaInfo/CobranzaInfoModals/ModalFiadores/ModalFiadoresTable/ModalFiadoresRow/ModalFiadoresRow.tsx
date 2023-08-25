@@ -1,7 +1,7 @@
 import { useFormContext } from 'react-hook-form'
 import styled, { css } from 'styled-components'
-import Container from '../../../../../../../../../ui/Container'
-import Text from '../../../../../../../../../ui/Text'
+import Container from '@/ui/Container'
+import Text from '@/ui/Text'
 import { GuarantorFormType } from '../../hookforms.interfaces'
 
 type ModalFiadoresRowProps = {

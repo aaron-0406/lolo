@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import NegotiationTable from './NegotiationTable'
-import Container from '../../../ui/Container'
-import { Opts } from '../../../ui/Pagination/interfaces'
+import Container from '@/ui/Container'
+import { Opts } from '@/ui/Pagination/interfaces'
 import NegotiationSearch from './NegotiationSearch'
 
 const DashboardNegotiations = () => {

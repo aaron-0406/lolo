@@ -2,7 +2,7 @@ import { Outlet } from 'react-router-dom'
 import storage from '../../utils/storage'
 import RedirectRoute from '../RedirectRoute'
 import MenuDash from '../../../components/Menus/MenuDash'
-import { useDashContext } from '../../contexts/DashProvider'
+import { useDashContext } from '@/contexts/DashProvider'
 
 type ProtectedRoutesProps = {
   pathname: string

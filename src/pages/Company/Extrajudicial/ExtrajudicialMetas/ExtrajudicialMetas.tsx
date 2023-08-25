@@ -1,9 +1,9 @@
-import Container from '../../../../ui/Container/Container'
+import Container from '@/ui/Container/Container'
 import MetasActions from './MetasActions/MetasActions'
 import MetasModalView from './MetasTable/MetasTable'
 import { useForm, FormProvider } from 'react-hook-form'
 import { GoalFormType } from './hookform.type'
-import { useLoloContext } from '../../../../shared/contexts/LoloProvider'
+import { useLoloContext } from '@/contexts/LoloProvider'
 import moment from 'moment'
 import { ExtrajudicialGoalResolver } from './ExtrajudicialMetas.yup'
 

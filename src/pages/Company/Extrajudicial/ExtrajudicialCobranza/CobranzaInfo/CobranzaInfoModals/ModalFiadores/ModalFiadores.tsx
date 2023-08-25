@@ -1,5 +1,5 @@
 import { FormProvider, useForm } from 'react-hook-form'
-import Container from '../../../../../../../ui/Container'
+import Container from '@/ui/Container'
 import { GuarantorFormType } from './hookforms.interfaces'
 import { ModalFiadoresResolver } from './ModalFiadores.yup'
 import ModalFiadoresActions from './ModalFiadoresActions'

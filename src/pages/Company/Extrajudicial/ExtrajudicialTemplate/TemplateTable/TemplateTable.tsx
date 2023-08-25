@@ -1,12 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { useMutation } from 'react-query'
 import styled, { css } from 'styled-components'
-import { useLoloContext } from '../../../../../shared/contexts/LoloProvider'
-import { getTemplatesHasValuesByCustomerId } from '../../../../../shared/services/extrajudicial/template-has-values.service'
-import { getTemplatesByCustomerId } from '../../../../../shared/services/extrajudicial/template.service'
-import Container from '../../../../../ui/Container'
+import { useLoloContext } from '@/contexts/LoloProvider'
+import { getTemplatesHasValuesByCustomerId } from '@/services/extrajudicial/template-has-values.service'
+import { getTemplatesByCustomerId } from '@/services/extrajudicial/template.service'
+import Container from '@/ui/Container'
 import { TemplateFormType } from '../hookforms.interfaces'
 import TemplateRow from './TemplateRow'
 // eff0f6ff

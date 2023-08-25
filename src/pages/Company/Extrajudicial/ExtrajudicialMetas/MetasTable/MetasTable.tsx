@@ -1,28 +1,23 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import moment from 'moment'
-import Button from '../../../../../ui/Button/Button'
-import Container from '../../../../../ui/Container/Container'
-import Pagination from '../../../../../ui/Pagination/Pagination'
-import BodyCell from '../../../../../ui/Table/BodyCell/BodyCell'
-import EmptyStateCell from '../../../../../ui/Table/EmptyStateCell/EmptyStateCell'
-import Table from '../../../../../ui/Table/Table'
+import Button from '@/ui/Button/Button'
+import Container from '@/ui/Container/Container'
+import Pagination from '@/ui/Pagination/Pagination'
+import BodyCell from '@/ui/Table/BodyCell/BodyCell'
+import EmptyStateCell from '@/ui/Table/EmptyStateCell/EmptyStateCell'
+import Table from '@/ui/Table/Table'
 import { useFormContext } from 'react-hook-form'
 import { GoalFormType } from '../hookform.type'
-import { Opts } from '../../../../../ui/Pagination/interfaces'
+import { Opts } from '@/ui/Pagination/interfaces'
 import { useEffect, useState } from 'react'
 import { goalsColumns } from './utils/columns'
-import { GoalType } from '../../../../../shared/types/extrajudicial/goal.type'
-import {
-  GoalApiResponse,
-  GoalsApiResponse,
-  deleteGoalService,
-  getGoals,
-} from '../../../../../shared/services/extrajudicial/goal.service'
+import { GoalType } from '@/types/extrajudicial/goal.type'
+import { GoalApiResponse, GoalsApiResponse, deleteGoalService, getGoals } from '@/services/extrajudicial/goal.service'
 import { useMutation, useQuery } from 'react-query'
 import MetasModal from '../MetasModal/MetasModal'
-import useModal from '../../../../../shared/hooks/useModal'
-import { notification } from '../../../../../ui/notification/notification'
-import Progress from '../../../../../ui/Progress/Progress'
+import useModal from '@/hooks/useModal'
+import { notification } from '@/ui/notification/notification'
+import Progress from '@/ui/Progress/Progress'
 import MetasModalView from '../MetasModalView/MetasModalView'
 
 const MetasTable = () => {

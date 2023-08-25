@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { ManagementActionType } from '../../../../../shared/types/dash/management-action.type'
+import { ManagementActionType } from '@/types/dash/management-action.type'
 import { ModalActionsResolver } from './ActionsModal.yup'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
@@ -7,11 +7,11 @@ import {
   createManagementAction,
   getManagementActionById,
   updateManagementAction,
-} from '../../../../../shared/services/dash/management-action.service'
-import notification from '../../../../../ui/notification'
-import Modal from '../../../../../ui/Modal'
-import Container from '../../../../../ui/Container'
-import Button from '../../../../../ui/Button'
+} from '@/services/dash/management-action.service'
+import notification from '@/ui/notification'
+import Modal from '@/ui/Modal'
+import Container from '@/ui/Container'
+import Button from '@/ui/Button'
 import ActionInfoForm from './ActionInfoForm/ActionInfoForm'
 import dashAccionesCache from '../../ActionsTable/utils/dash-acciones.cache'
 import { AxiosResponse } from 'axios'

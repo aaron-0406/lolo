@@ -1,5 +1,5 @@
 import { QueryClient } from 'react-query'
-import { ManagementActionType } from '../../../../../shared/types/dash/management-action.type'
+import { ManagementActionType } from '@/types/dash/management-action.type'
 import { AxiosResponse } from 'axios'
 
 export const KEY_DASH_ACCIONES_CACHE = 'key-dash-acciones-cache'

@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom'
 import RedirectRoute from '../RedirectRoute'
-import { useDashContext } from '../../contexts/DashProvider'
+import { useDashContext } from '@/contexts/DashProvider'
 
 type GuestRouteProps = {
   pathname: string

@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios'
-import { ChangePasswordType, LoginType } from '../../types/extrajudicial/auth.type'
-import { CustomerUserType } from '../../types/dash/customer-user.type'
+import { ChangePasswordType, LoginType } from '@/types/extrajudicial/auth.type'
+import { CustomerUserType } from '@/types/dash/customer-user.type'
 import axiosClient from '../../utils/api/clientAxios'
 
 const API = axiosClient.getUri()

@@ -1,10 +1,10 @@
 import type { HTMLAttributes } from 'react'
 import styled, { css } from 'styled-components'
-import Container from '../Container'
-import DropdownItem from '../DropdownItem'
-import Text from '../Text'
+import Container from '@/ui/Container'
+import DropdownItem from '@/ui/DropdownItem'
+import Text from '@/ui/Text'
 import emptyFolder from '../../shared/assets/icons/emptyFolder.svg'
-import type { SelectItem } from '../Select/interfaces'
+import type { SelectItem } from '@/ui/Select/interfaces'
 import type { DropdownListSize } from './interfaces'
 
 type DropdownListProps<T, K> = HTMLAttributes<HTMLUListElement> & {

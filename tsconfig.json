@@ -2,6 +2,9 @@
   "compilerOptions": {
     "baseUrl": "./src",
     "paths": {
+      "@/extrajudicial/*": ["./pages/Company/Extrajudicial/*"],
+      "@/dashboard/*": ["./pages/Dashboard/*"],
+      "@/contexts/*": ["./shared/contexts/*"],
       "@/hooks/*": ["./shared/hooks/*"],
       "@/services/*": ["./shared/services/*"],
       "@/types/*": ["./shared/types/*"],

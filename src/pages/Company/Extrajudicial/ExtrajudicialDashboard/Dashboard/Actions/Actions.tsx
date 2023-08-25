@@ -1,8 +1,8 @@
-import { useMediaQuery } from '../../../../../../shared/hooks/useMediaQuery'
+import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { device } from '../../../../../../shared/breakpoints/reponsive'
-import Button from '../../../../../../ui/Button'
-import Container from '../../../../../../ui/Container'
-import InputText from '../../../../../../ui/inputs/InputText'
+import Button from '@/ui/Button'
+import Container from '@/ui/Container'
+import InputText from '@/ui/inputs/InputText'
 
 type propsActions = {
   setFilter: (e: React.ChangeEvent<HTMLInputElement>) => void

@@ -1,12 +1,12 @@
 import { createRef, useState } from 'react'
 import type CSS from 'csstype'
 import styled, { css } from 'styled-components'
-import Container from '../../Container'
-import HelperText from '../../HelperText'
-import type { InputSize } from '../../inputs/Input/Input.interfaces'
-import type { HelperFieldProps, LabelFieldProps } from '../interfaces'
-import InputText from '../../inputs/InputText'
-import InputLabel from '../../Label'
+import Container from '@/ui/Container'
+import HelperText from '@/ui/HelperText'
+import type { InputSize } from '@/ui/inputs/Input/Input.interfaces'
+import type { HelperFieldProps, LabelFieldProps } from '@/ui/fields/interfaces'
+import InputText from '@/ui/inputs/InputText'
+import InputLabel from '@/ui/Label'
 
 type TextFieldProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> &
   LabelFieldProps &
