@@ -25,13 +25,13 @@ const CredentialsModal = ({ visible, onClose }: CredentialsModalProps) => {
   } = useLoloContext()
 
   const {
-    formState: { errors },
+    formState: { errors, isValid, isDirty },
     control,
-    handleSubmit,
     getValues,
-    resetField,
+    reset,
   } = useForm<CredentialsFormType>({
     resolver: CredentialsSchemaResolver,
+    mode: 'all',
     defaultValues: {
       name: name,
       lastname: lastName,
@@ -49,7 +49,12 @@ const CredentialsModal = ({ visible, onClose }: CredentialsModalProps) => {
       onSuccess: ({ data }) => {
         storage.set('token', data.token)
         setUser(data.user)
+        reset(
+          { name: data.user.name, lastname: data.user.lastName, dni: data.user.dni, phone: data.user.phone },
+          { keepDirty: false }
+        )
         notification({ type: 'success', message: 'Credenciales modificadas' })
+        onClose()
       },
       onError: (error: any) => {
         notification({
@@ -60,17 +65,14 @@ const CredentialsModal = ({ visible, onClose }: CredentialsModalProps) => {
     }
   )
 
-  const handleClickCloseModal = () => {
-    resetField('name')
-    resetField('lastname')
-    resetField('dni')
-    resetField('phone')
-    onClose()
+  const onUpdateCredentials = () => {
+    changeCredentialsQuery()
   }
+
   return (
     <Modal
       visible={visible}
-      onClose={handleClickCloseModal}
+      onClose={onClose}
       id="modal-update-credentials"
       title="Modificar Credenciales"
       contentOverflowY="auto"
@@ -83,12 +85,8 @@ const CredentialsModal = ({ visible, onClose }: CredentialsModalProps) => {
             label="Actualizar"
             shape="default"
             loading={isLoading}
-            disabled={isLoading}
-            onClick={() => {
-              handleSubmit(() => {
-                changeCredentialsQuery()
-              })()
-            }}
+            disabled={!isDirty || !isValid}
+            onClick={onUpdateCredentials}
           />
         </Container>
       }
@@ -119,6 +117,7 @@ const CredentialsModal = ({ visible, onClose }: CredentialsModalProps) => {
               />
             )}
           />
+
           <Controller
             name="lastname"
             control={control}
@@ -135,6 +134,7 @@ const CredentialsModal = ({ visible, onClose }: CredentialsModalProps) => {
               />
             )}
           />
+
           <Controller
             name="dni"
             control={control}
@@ -151,6 +151,7 @@ const CredentialsModal = ({ visible, onClose }: CredentialsModalProps) => {
               />
             )}
           />
+
           <Controller
             name="phone"
             control={control}

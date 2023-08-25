@@ -1,18 +1,19 @@
-import Modal from '@/ui/Modal'
 import { useForm, Controller } from 'react-hook-form'
+import { useMutation } from 'react-query'
+import Modal from '../../../../../../ui/Modal'
 import { PasswordFormType } from './hookform.type'
-import { PasswordSchemaResolver } from './Password.yup'
+import { PasswordSchemaResolver } from './updatePassword.yup'
 import Container from '../../../../../../ui/Container/Container'
 import TextField from '../../../../../../ui/fields/TextField/TextField'
 import Button from '../../../../../../ui/Button/Button'
 import { notification } from '../../../../../../ui/notification/notification'
 import { changePasswordService } from '../../../../../../shared/services/extrajudicial/auth.service'
-import { useMutation } from 'react-query'
 
 type UpdatePasswordModalProps = {
   visible: boolean
   onClose: () => void
 }
+
 const UpdatePasswordModal = ({ visible, onClose }: UpdatePasswordModalProps) => {
   const {
     formState: { errors },
