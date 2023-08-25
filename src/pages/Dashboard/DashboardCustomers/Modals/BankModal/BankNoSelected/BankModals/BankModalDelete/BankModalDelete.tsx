@@ -34,7 +34,7 @@ const BankModalDelete = ({ visible, idBank = 0, onClose }: BankModalDeleteProps)
         onClose()
       },
       onMutate: () => {
-        onMutateBankCache()
+        return onMutateBankCache()
       },
       onSettled: () => {
         onSettledBankCache()
