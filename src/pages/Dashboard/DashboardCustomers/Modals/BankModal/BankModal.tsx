@@ -1,12 +1,12 @@
 import { useState } from 'react'
-import Container from '../../../../../ui/Container'
-import Modal from '../../../../../ui/Modal'
+import Container from '@/ui/Container'
+import Modal from '@/ui/Modal'
 import BankActions from './BankActions'
 import BankNoSelected from './BankNoSelected'
 import BankSelected from './BankSelected'
 import { SelectedElementType } from './bankModal.type'
-import { useMediaQuery } from '../../../../../shared/hooks/useMediaQuery'
-import { device } from '../../../../../shared/breakpoints/responsive'
+import { useMediaQuery } from '@/hooks/useMediaQuery'
+import { device } from '@/breakpoints/responsive'
 
 type BankModalProps = {
   visible: boolean
