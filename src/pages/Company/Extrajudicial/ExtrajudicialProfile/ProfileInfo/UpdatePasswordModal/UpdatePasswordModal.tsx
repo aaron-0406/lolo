@@ -1,27 +1,27 @@
 import Modal from '@/ui/Modal'
 import { useForm, Controller } from 'react-hook-form'
-import { CredentialFormType } from './hookform.type'
-import { CredentialsResolver } from './Credentials.yup'
-import Container from '@/ui/Container/Container'
-import TextField from '@/ui/fields/TextField/TextField'
-import Button from '@/ui/Button/Button'
-import { notification } from '@/ui/notification/notification'
-import { changePasswordService } from '@/services/extrajudicial/auth.service'
+import { PasswordFormType } from './hookform.type'
+import { PasswordSchemaResolver } from './Password.yup'
+import Container from '../../../../../../ui/Container/Container'
+import TextField from '../../../../../../ui/fields/TextField/TextField'
+import Button from '../../../../../../ui/Button/Button'
+import { notification } from '../../../../../../ui/notification/notification'
+import { changePasswordService } from '../../../../../../shared/services/extrajudicial/auth.service'
 import { useMutation } from 'react-query'
 
-type CredentialModalProps = {
+type UpdatePasswordModalProps = {
   visible: boolean
   onClose: () => void
 }
-const CredentialModal = ({ visible, onClose }: CredentialModalProps) => {
+const UpdatePasswordModal = ({ visible, onClose }: UpdatePasswordModalProps) => {
   const {
     formState: { errors },
     control,
     handleSubmit,
     getValues,
     resetField,
-  } = useForm<CredentialFormType>({
-    resolver: CredentialsResolver,
+  } = useForm<PasswordFormType>({
+    resolver: PasswordSchemaResolver,
     defaultValues: {
       newPassword: '',
       repeatPassword: '',
@@ -56,8 +56,8 @@ const CredentialModal = ({ visible, onClose }: CredentialModalProps) => {
     <Modal
       visible={visible}
       onClose={handleClickCloseModal}
-      id="modal-credentials-edit"
-      title="Modificar Credenciales"
+      id="modal-update-password"
+      title="Actualizar Contraseña"
       contentOverflowY="auto"
       size="small"
       minHeight="240px"
@@ -65,7 +65,7 @@ const CredentialModal = ({ visible, onClose }: CredentialModalProps) => {
         <Container width="100%" height="75px" display="flex" justifyContent="flex-end" alignItems="center">
           <Button
             width="125px"
-            label="Modificar"
+            label="Actualizar"
             shape="default"
             loading={isLoading}
             disabled={isLoading}
@@ -126,4 +126,4 @@ const CredentialModal = ({ visible, onClose }: CredentialModalProps) => {
   )
 }
 
-export default CredentialModal
+export default UpdatePasswordModal

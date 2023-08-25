@@ -4,12 +4,13 @@ import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { device } from '@/breakpoints/responsive'
 import Container from '@/ui/Container'
 import styled, { css } from 'styled-components'
-import Text from '@/ui/Text'
-import Img from '@/ui/Img'
-import Icon from '@/ui/Icon/Icon'
-import Button from '@/ui/Button/Button'
-import useModal from '@/hooks/useModal'
-import CredentialModal from './CredentialModal/CredentialModal'
+import Text from '../../../../../ui/Text'
+import Img from '../../../../../ui/Img'
+import Icon from '../../../../../ui/Icon/Icon'
+import Button from '../../../../../ui/Button/Button'
+import useModal from '../../../../../shared/hooks/useModal'
+import UpdatePasswordModal from './UpdatePasswordModal'
+import CredentialsModal from './CredentialsModal/CredentialsModal'
 
 const ProfileInfo = () => {
   const {
@@ -17,13 +18,30 @@ const ProfileInfo = () => {
   } = useLoloContext()
 
   const greaterThanDesktopS = useMediaQuery(device.desktopS)
-  const { visible: visibleModalAdd, showModal: showModalAdd, hideModal: hideModalAdd } = useModal()
-  const handleClickButton = () => {
-    showModalAdd()
+
+  const { visible: visibleModalPassword, showModal: showModalPassword, hideModal: hideModalPassword } = useModal()
+  const {
+    visible: visibleModalCredentials,
+    showModal: showModalCredentials,
+    hideModal: hideModalCredentials,
+  } = useModal()
+
+  const handleClickButtonPassword = () => {
+    showModalPassword()
   }
-  const handleClickModal = () => {
-    hideModalAdd()
+
+  const handleClickModalPassword = () => {
+    hideModalPassword()
   }
+
+  const handleClickButtonCredentials = () => {
+    showModalCredentials()
+  }
+
+  const handleClickModalCredentials = () => {
+    hideModalCredentials()
+  }
+
   return (
     <Container
       minWidth={greaterThanDesktopS ? 'calc(40% - 7.5px)' : '100%'}
@@ -102,15 +120,23 @@ const ProfileInfo = () => {
           </Text.Body>
         </Container>
       </StyledContainer>
-      <StyledContainer gap="10px" display="flex" padding="1rem" flexDirection="column" backgroundColor="#fff">
+      <StyledContainer gap="10px" display="flex" padding="1rem" flexDirection="row" backgroundColor="#fff">
         <Button
-          onClick={handleClickButton}
-          messageTooltip="Modificar Credenciales"
+          onClick={handleClickButtonPassword}
+          messageTooltip="Actualizar Contraseña"
           width="140px"
           shape="round"
           trailingIcon="ri-shield-keyhole-line"
         />
-        <CredentialModal visible={visibleModalAdd} onClose={handleClickModal} />
+        <Button
+          onClick={handleClickButtonCredentials}
+          messageTooltip="Modificar Credenciales"
+          width="140px"
+          shape="round"
+          trailingIcon="ri-edit-2-line"
+        />
+        <UpdatePasswordModal visible={visibleModalPassword} onClose={handleClickModalPassword} />
+        <CredentialsModal visible={visibleModalCredentials} onClose={handleClickModalCredentials} />
       </StyledContainer>
     </Container>
   )
