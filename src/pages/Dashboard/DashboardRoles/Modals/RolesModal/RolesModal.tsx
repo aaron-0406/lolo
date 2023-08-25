@@ -10,13 +10,7 @@ import { createRole, getRoleById, updateRole } from '../../../../../shared/servi
 import dashRoleCache, { KEY_DASH_ROLES_CACHE } from '../../RolesTable/utils/dash-role.cache'
 import { ModalRoleResolver } from './RoleInfoForm/RoleModal.yup'
 import { useEffect } from 'react'
-
-const defaultValuesRole: RoleType = {
-  id: 0,
-  name: '',
-  customerId: 0,
-  permissions: [],
-}
+import { useDashContext } from '../../../../../shared/contexts/DashProvider'
 
 type RoleModalProps = {
   visible: boolean
@@ -26,19 +20,22 @@ type RoleModalProps = {
 
 const RolesModal = ({ visible, onClose, idRole = 0 }: RoleModalProps) => {
   const queryClient = useQueryClient()
-
+  const {
+    dashCustomer: { selectedCustomer },
+  } = useDashContext()
+  const defaultValuesRole: RoleType = {
+    id: 0,
+    name: '',
+    customerId: selectedCustomer.id,
+    permissions: [],
+  }
   const formMethods = useForm<RoleType>({
     resolver: ModalRoleResolver,
     mode: 'all',
     defaultValues: defaultValuesRole,
   })
 
-  const {
-    setValue,
-    getValues,
-    reset,
-    formState: { isValid },
-  } = formMethods
+  const { setValue, getValues, reset } = formMethods
 
   const {
     actions: { createRoleCache, editRoleCache },
@@ -76,7 +73,7 @@ const RolesModal = ({ visible, onClose, idRole = 0 }: RoleModalProps) => {
 
   const { isLoading: loadingEditRole, mutate: mutateEditRole } = useMutation<any, Error>(
     async () => {
-      const { id, ...restRole } = getValues()
+      const { id, customerId, ...restRole } = getValues()
       return await updateRole(id, { ...restRole })
     },
     {
@@ -141,10 +138,10 @@ const RolesModal = ({ visible, onClose, idRole = 0 }: RoleModalProps) => {
       <Modal
         visible={visible}
         onClose={handleClickCloseModal}
-        id="modal-permisos"
+        id="modal-roles"
         title={idRole !== 0 ? 'Editar Rol' : 'Agregar Rol'}
         contentOverflowY="auto"
-        size="medium"
+        size="large"
         minHeight="140px"
         footer={
           <Container width="100%" height="75px" display="flex" justifyContent="right" alignItems="center" gap="20px">
@@ -155,7 +152,6 @@ const RolesModal = ({ visible, onClose, idRole = 0 }: RoleModalProps) => {
               trailingIcon="ri-add-fill"
               onClick={idRole !== 0 ? onEditRole : onAddRole}
               loading={loadingCreateRole || loadingEditRole}
-              disabled={!isValid}
             />
           </Container>
         }

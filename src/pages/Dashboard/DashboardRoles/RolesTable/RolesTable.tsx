@@ -1,20 +1,47 @@
 import { useEffect, useState } from 'react'
+import { useQuery } from 'react-query'
+import RolesModal from '../Modals/RolesModal'
 import EmptyStateCell from '../../../../ui/Table/EmptyStateCell'
 import BodyCell from '../../../../ui/Table/BodyCell'
 import Button from '../../../../ui/Button/Button'
 import Container from '../../../../ui/Container'
 import Table from '../../../../ui/Table'
-import Text from '../../../../ui/Text'
-import Icon from '../../../../ui/Icon'
 import { RoleType } from '../../../../shared/types/dash/role.type'
 import { roleColumns } from './utils/columns'
-import { useQuery } from 'react-query'
 import { KEY_DASH_ROLES_CACHE } from './utils/dash-role.cache'
 import { getAllRolesByCustomerId } from '../../../../shared/services/dash/role.service'
 import { useDashContext } from '../../../../shared/contexts/DashProvider'
+import useModal from '../../../../shared/hooks/useModal'
+import DeleteRoleModal from '../Modals/DeleteRoleModal/DeleteRoleModal'
 
 const RolesTable = () => {
   const [roles, setRoles] = useState<Array<RoleType>>([])
+  const [roleId, setRoleId] = useState<number>(0)
+  const [idDeletedRole, setIdDeletedRole] = useState<number>(0)
+
+  const { visible: visibleModalEdit, showModal: showModalEdit, hideModal: hideModalEdit } = useModal()
+  const { visible: visibleDeleteRole, showModal: showDeleteRole, hideModal: hideDeleteRole } = useModal()
+
+  const handleClickButtonEdit = (id: number) => {
+    setRoleId(id)
+    showModalEdit()
+  }
+
+  const handleClickDeleteRole = (id: number) => {
+    setIdDeletedRole(id)
+    showDeleteRole()
+  }
+
+  const onCloseDeleteRole = () => {
+    setIdDeletedRole(0)
+    hideDeleteRole()
+  }
+
+  const onCloseModal = () => {
+    setRoleId(0)
+    hideModalEdit()
+  }
+
   const {
     dashCustomer: {
       selectedCustomer: { id },
@@ -63,7 +90,7 @@ const RolesTable = () => {
                       <Button
                         onClick={(event) => {
                           event.stopPropagation()
-                          // handleClickButtonEdit(record.id)
+                          handleClickButtonEdit(record.id)
                         }}
                         messageTooltip="Editar Rol"
                         shape="round"
@@ -74,7 +101,7 @@ const RolesTable = () => {
                       <Button
                         onClick={(event) => {
                           event.stopPropagation()
-                          // handleClickDeleteRole(recRoleTypeord.id)
+                          handleClickDeleteRole(record.id)
                         }}
                         messageTooltip="Eliminar Rol"
                         shape="round"
@@ -89,12 +116,8 @@ const RolesTable = () => {
           })}
       </Table>
 
-      {/* <DeleteRoleModaRoleTypel
-    visible={visibleDeleteRole}
-  RoleType  onClose={onCloseDeleteRole}
-  RoleType  idRole={idRoleTypeDeletedRole}
-  RoleType/>
-  <RoleModaRoleTypel visible={visibleModalEdit} onClose={onCloseModal} idRole={peRoleTyroleId} /> roleColumns*/}
+      <DeleteRoleModal visible={visibleDeleteRole} onClose={onCloseDeleteRole} idRole={idDeletedRole} />
+      <RolesModal visible={visibleModalEdit} onClose={onCloseModal} idRole={roleId} />
     </Container>
   )
 }

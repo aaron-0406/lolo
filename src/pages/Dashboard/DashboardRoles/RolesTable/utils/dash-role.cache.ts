@@ -2,7 +2,7 @@ import { QueryClient } from 'react-query'
 import { AxiosResponse } from 'axios'
 import { RoleType } from '../../../../../shared/types/dash/role.type'
 
-export const KEY_DASH_ROLES_CACHE = 'key-dash-permisos-cache'
+export const KEY_DASH_ROLES_CACHE = 'key-dash-roles-cache'
 
 type QueryDataType = AxiosResponse<RoleType[]> | undefined
 
