@@ -1,7 +1,7 @@
 import { useFormContext } from 'react-hook-form'
 import { useMutation } from 'react-query'
 import styled, { css } from 'styled-components'
-import { device } from '../../../../../shared/breakpoints/reponsive'
+import { device } from '@/breakpoints/responsive'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { createClient, deleteClient, updateClient } from '@/services/extrajudicial/client.service'

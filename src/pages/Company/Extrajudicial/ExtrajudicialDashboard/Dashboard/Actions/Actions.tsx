@@ -1,5 +1,5 @@
 import { useMediaQuery } from '@/hooks/useMediaQuery'
-import { device } from '../../../../../../shared/breakpoints/reponsive'
+import { device } from '@/breakpoints/responsive'
 import Button from '@/ui/Button'
 import Container from '@/ui/Container'
 import InputText from '@/ui/inputs/InputText'

@@ -4,27 +4,27 @@ import { Route } from 'react-router-dom'
 import Home from '../../../pages/Home'
 
 //DASHBOARD
-import DashLogin from '@/dashboard/Login'
-import DashHome from '@/dashboard/Home'
-import DashboardCustomers from '@/dashboard/DashboardCustomers'
-import DashboardActions from '@/dashboard/DashboardActions'
-import DashboardUsers from '@/dashboard/DashboardUsers'
-import DashboardPermissions from '@/dashboard/DashboardPermissions'
-import DashboardNegotiations from '@/dashboard/DashboardNegotiations'
-import DashboardFuncionarios from '@/dashboard/DashboardFuncionarios'
+import DashLogin from '@/pages/dashboard/Login'
+import DashHome from '@/pages/dashboard/Home'
+import DashboardCustomers from '@/pages/dashboard/DashboardCustomers'
+import DashboardActions from '@/pages/dashboard/DashboardActions'
+import DashboardUsers from '@/pages/dashboard/DashboardUsers'
+import DashboardPermissions from '@/pages/dashboard/DashboardPermissions'
+import DashboardNegotiations from '@/pages/dashboard/DashboardNegotiations'
+import DashboardFuncionarios from '@/pages/dashboard/DashboardFuncionarios'
 
 //COMPANY
 import CompanyLogin from '../../../pages/Company/Login'
 import CompanyHome from '../../../pages/Company/Home'
 
 //EXTRAJUDICIAL
-import ExtrajudicialProfile from '@/extrajudicial/ExtrajudicialProfile'
-import ExtrajudicialCobranza from '@/extrajudicial/ExtrajudicialCobranza'
-import ExtrajudicialCobranzaComments from '@/extrajudicial/ExtrajudicialCobranzaComments/ExtrajudicialCobranzaComments'
-import ExtrajudicialTemplate from '@/extrajudicial/ExtrajudicialTemplate'
-import Dashboard from '@/extrajudicial/ExtrajudicialDashboard/Dashboard'
-import ExtrajudicialMetas from '@/extrajudicial/ExtrajudicialMetas'
-import ExtrajudicialCustomers from '@/extrajudicial/ExtrajudicialCustomers/ExtrajudicialCustomers'
+import ExtrajudicialProfile from '@/pages/extrajudicial/ExtrajudicialProfile'
+import ExtrajudicialCobranza from '@/pages/extrajudicial/ExtrajudicialCobranza'
+import ExtrajudicialCobranzaComments from '@/pages/extrajudicial/ExtrajudicialCobranzaComments/ExtrajudicialCobranzaComments'
+import ExtrajudicialTemplate from '@/pages/extrajudicial/ExtrajudicialTemplate'
+import Dashboard from '@/pages/extrajudicial/ExtrajudicialDashboard/Dashboard'
+import ExtrajudicialMetas from '@/pages/extrajudicial/ExtrajudicialMetas'
+import ExtrajudicialCustomers from '@/pages/extrajudicial/ExtrajudicialCustomers/ExtrajudicialCustomers'
 
 //JUDICIAL
 import ErrorPage from '../../../pages/ErrorPage'

@@ -1,4 +1,4 @@
-import { device } from '../shared/breakpoints/reponsive'
+import { device } from '@/breakpoints/responsive'
 import colors from './json/colors.json'
 import t from './json/typography.json'
 import { shadows } from './shadows'

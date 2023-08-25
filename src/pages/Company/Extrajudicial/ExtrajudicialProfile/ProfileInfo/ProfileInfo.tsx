@@ -1,7 +1,7 @@
 import ProfilePicture from '../../../../../shared/assets/icons/ProfilePicture.png'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
-import { device } from '../../../../../shared/breakpoints/reponsive'
+import { device } from '@/breakpoints/responsive'
 import Container from '@/ui/Container'
 import styled, { css } from 'styled-components'
 import Text from '@/ui/Text'

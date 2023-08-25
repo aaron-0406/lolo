@@ -8,7 +8,7 @@ import storage from '../../../shared/utils/storage'
 import Container from '@/ui/Container'
 import Icon from '@/ui/Icon'
 import Text from '@/ui/Text'
-import { device } from '../../../shared/breakpoints/reponsive'
+import { device } from '@/breakpoints/responsive'
 import { getDashItems } from './utils/get-dash-items'
 
 type MenuProps = {

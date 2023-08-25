@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { device } from '../../../../../../shared/breakpoints/reponsive'
+import { device } from '@/breakpoints/responsive'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { postDashboardXslx } from '@/services/extrajudicial/dashboard.service'

@@ -10,7 +10,7 @@ import { Opts } from '@/ui/Pagination/interfaces'
 import useModal from '@/hooks/useModal'
 import ActionModal from '../Modals/ActionsModal/ActionsModal'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
-import { device } from '../../../../shared/breakpoints/reponsive'
+import { device } from '@/breakpoints/responsive'
 import { useQueryClient } from 'react-query'
 import dashAccionesCache from '../ActionsTable/utils/dash-acciones.cache'
 

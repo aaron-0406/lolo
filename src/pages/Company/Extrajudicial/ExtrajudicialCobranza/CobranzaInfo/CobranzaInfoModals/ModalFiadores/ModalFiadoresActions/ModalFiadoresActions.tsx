@@ -8,7 +8,7 @@ import {
 import Button from '@/ui/Button'
 import Container from '@/ui/Container'
 import notification from '@/ui/notification'
-import { GuarantorFormType } from '@/extrajudicial/ExtrajudicialCobranza/CobranzaInfo/CobranzaInfoModals/ModalFiadores/hookforms.interfaces'
+import { GuarantorFormType } from '@/pages/extrajudicial/ExtrajudicialCobranza/CobranzaInfo/CobranzaInfoModals/ModalFiadores/hookforms.interfaces'
 
 const ModalFiadoresActions = () => {
   const { setValue, getValues, handleSubmit, watch } = useFormContext<GuarantorFormType>()

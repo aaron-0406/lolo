@@ -1,6 +1,6 @@
 import { useForm, FormProvider } from 'react-hook-form'
 import styled, { css } from 'styled-components'
-import { device } from '../../../../../shared/breakpoints/reponsive'
+import { device } from '@/breakpoints/responsive'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import Button from '@/ui/Button'
 import Container from '@/ui/Container'

@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react'
 import Container from '@/ui/Container'
-import { device } from '../../../shared/breakpoints/reponsive'
+import { device } from '@/breakpoints/responsive'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import styled, { css } from 'styled-components'
 

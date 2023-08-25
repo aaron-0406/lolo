@@ -1,7 +1,7 @@
 import Container from '@/ui/Container'
 import CommentChart from './CommentChart'
 import ProfileInfo from './ProfileInfo'
-import { device } from '../../../../shared/breakpoints/reponsive'
+import { device } from '@/breakpoints/responsive'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import styled from 'styled-components'
 import GoalInfo from './GoalInfo'

@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { FC, useEffect, useState } from 'react'
 import styled, { css } from 'styled-components'
-import { device } from '../../shared/breakpoints/reponsive'
+import { device } from '@/breakpoints/responsive'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import Select from '@/ui/Select'
 import { PaginationProps } from '@/ui/Pagination/interfaces'
