@@ -67,7 +67,7 @@ const CustomersModal = ({ visible, onClose, isEdit = false, url = '' }: Customer
         handleClickCloseModal()
       },
       onMutate: () => {
-        onMutateCache()
+        return onMutateCache()
       },
       onSettled: () => {
         onSettledCache()
@@ -94,7 +94,7 @@ const CustomersModal = ({ visible, onClose, isEdit = false, url = '' }: Customer
         onClose()
       },
       onMutate: () => {
-        onMutateCache()
+        return onMutateCache()
       },
       onSettled: () => {
         onSettledCache()

@@ -68,7 +68,7 @@ const ActionsModal = ({ visible, onClose, isEdit = false, idAction = 0, chb }: A
         handleClickCloseModal()
       },
       onMutate: () => {
-        onMutateCache(chb)
+        return onMutateCache(chb)
       },
       onSettled: () => {
         onSettledCache(chb)
@@ -95,7 +95,7 @@ const ActionsModal = ({ visible, onClose, isEdit = false, idAction = 0, chb }: A
         onClose()
       },
       onMutate: () => {
-        onMutateCache(chb)
+        return onMutateCache(chb)
       },
       onSettled: () => {
         onSettledCache(chb)
