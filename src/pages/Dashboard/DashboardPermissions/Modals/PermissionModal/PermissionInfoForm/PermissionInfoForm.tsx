@@ -1,8 +1,8 @@
 import { Controller, useFormContext } from 'react-hook-form'
-import Container from '../../../../../../ui/Container/Container'
-import Label from '../../../../../../ui/Label/Label'
-import TextField from '../../../../../../ui/fields/TextField/TextField'
-import { PermissionType } from '../../../../../../shared/types/dash/permission.type'
+import Container from '@/ui/Container/Container'
+import Label from '@/ui/Label/Label'
+import TextField from '@/ui/fields/TextField/TextField'
+import { PermissionType } from '@/types/dash/permission.type'
 
 const PermissionInfoForm = () => {
   const {

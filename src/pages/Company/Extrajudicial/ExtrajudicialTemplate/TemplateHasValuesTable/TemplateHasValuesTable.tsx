@@ -1,7 +1,7 @@
 import React from 'react'
 import { useFormContext } from 'react-hook-form'
 import styled, { css } from 'styled-components'
-import Container from '../../../../../ui/Container'
+import Container from '@/ui/Container'
 import { TemplateFormType } from '../hookforms.interfaces'
 import TemplateHasValueRow from './TemplateHasValueRow'
 

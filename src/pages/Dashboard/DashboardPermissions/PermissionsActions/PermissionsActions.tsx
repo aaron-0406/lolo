@@ -1,6 +1,6 @@
-import useModal from '../../../../shared/hooks/useModal'
-import Button from '../../../../ui/Button/Button'
-import Container from '../../../../ui/Container/Container'
+import useModal from '@/hooks/useModal'
+import Button from '@/ui/Button/Button'
+import Container from '@/ui/Container/Container'
 import PermissionModal from '../Modals/PermissionModal'
 
 const PermissionsActions = () => {

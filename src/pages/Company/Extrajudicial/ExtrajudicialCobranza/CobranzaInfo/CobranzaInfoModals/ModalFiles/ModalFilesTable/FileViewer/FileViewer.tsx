@@ -1,12 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react'
-import { FileType } from '../../../../../../../../../shared/types/extrajudicial/file.type'
+import { FileType } from '@/types/extrajudicial/file.type'
 import DocViewer, { DocViewerRenderers, IDocument } from '@cyntler/react-doc-viewer'
 
 import { DOMAIN } from '../../../../../../../../../shared/utils/constant/api'
 import styled from 'styled-components'
-import Container from '../../../../../../../../../ui/Container'
-import Button from '../../../../../../../../../ui/Button'
+import Container from '@/ui/Container'
+import Button from '@/ui/Button'
 
 type FileViewerProps = {
   file?: FileType

@@ -1,14 +1,14 @@
 import { useState } from 'react'
 import { useMutation } from 'react-query'
-import notification from '../../../../../../ui/notification'
-import { generateExcelOnDailyManagementService } from '../../../../../../shared/services/extrajudicial/client.service'
-import DatePicker from '../../../../../../ui/DatePicker/DatePicker'
+import notification from '@/ui/notification'
+import { generateExcelOnDailyManagementService } from '@/services/extrajudicial/client.service'
+import DatePicker from '@/ui/DatePicker/DatePicker'
 import moment from 'moment'
-import Container from '../../../../../../ui/Container/Container'
-import Button from '../../../../../../ui/Button'
-import { useLoloContext } from '../../../../../../shared/contexts/LoloProvider'
-import Select from '../../../../../../ui/Select'
-import { SelectItemType } from '../../../../../../ui/Select/interfaces'
+import Container from '@/ui/Container/Container'
+import Button from '@/ui/Button'
+import { useLoloContext } from '@/contexts/LoloProvider'
+import Select from '@/ui/Select'
+import { SelectItemType } from '@/ui/Select/interfaces'
 
 const ModalManagementExcel = () => {
   const {

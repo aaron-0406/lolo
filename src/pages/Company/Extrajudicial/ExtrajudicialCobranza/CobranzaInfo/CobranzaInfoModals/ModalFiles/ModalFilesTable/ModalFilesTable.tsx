@@ -1,8 +1,8 @@
 import React, { Dispatch, useState } from 'react'
-import useModal from '../../../../../../../../shared/hooks/useModal'
-import { FileType } from '../../../../../../../../shared/types/extrajudicial/file.type'
-import Container from '../../../../../../../../ui/Container'
-import Modal from '../../../../../../../../ui/Modal'
+import useModal from '@/hooks/useModal'
+import { FileType } from '@/types/extrajudicial/file.type'
+import Container from '@/ui/Container'
+import Modal from '@/ui/Modal'
 import FileViewer from './FileViewer/FileViewer'
 import ModalFileRow from './ModalFileRow'
 

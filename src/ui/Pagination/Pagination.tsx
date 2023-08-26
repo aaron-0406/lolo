@@ -1,11 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { FC, useEffect, useState } from 'react'
 import styled, { css } from 'styled-components'
-import { device } from '../../shared/breakpoints/reponsive'
-import { useMediaQuery } from '../../shared/hooks/useMediaQuery'
-import Select from '../Select'
-import { PaginationProps } from './interfaces'
-import Container from '../Container'
+import { device } from '@/breakpoints/responsive'
+import { useMediaQuery } from '@/hooks/useMediaQuery'
+import Select from '@/ui/Select'
+import { PaginationProps } from '@/ui/Pagination/interfaces'
+import Container from '@/ui/Container'
 
 const Pagination: FC<PaginationProps> = (props) => {
   const { count, opts, setOpts } = props

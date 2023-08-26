@@ -1,6 +1,6 @@
 import { QueryClient } from 'react-query'
 import { AxiosResponse } from 'axios'
-import { CustomerHasBankType } from '../../../../../../../shared/types/dash/customer-has-bank'
+import { CustomerHasBankType } from '@/types/dash/customer-has-bank'
 
 export const KEY_DASH_CUSTOMER_BANK_CACHE = 'key-dash-customer-bank-cache'
 

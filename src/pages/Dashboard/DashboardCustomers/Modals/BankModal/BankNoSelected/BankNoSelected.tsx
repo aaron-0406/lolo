@@ -1,26 +1,26 @@
 import { useState } from 'react'
 import { AxiosResponse } from 'axios'
 import { useQuery, useQueryClient } from 'react-query'
-import { useDashContext } from '../../../../../../shared/contexts/DashProvider'
+import { useDashContext } from '@/contexts/DashProvider'
 import { banksNoSelectColumns } from './utils/columnsNoSelect'
-import Table from '../../../../../../ui/Table'
-import TextField from '../../../../../../ui/fields/TextField'
-import Container from '../../../../../../ui/Container'
-import Button from '../../../../../../ui/Button'
+import Table from '@/ui/Table'
+import TextField from '@/ui/fields/TextField'
+import Container from '@/ui/Container'
+import Button from '@/ui/Button'
 import { KEY_DASH_BANKS_CACHE } from './utils/dash-banks.cache'
-import { getAllBanks } from '../../../../../../shared/services/dash/bank.service'
-import { BankType } from '../../../../../../shared/types/dash/bank.type'
+import { getAllBanks } from '@/services/dash/bank.service'
+import { BankType } from '@/types/dash/bank.type'
 import { SelectedElementType } from '../bankModal.type'
-import { useMediaQuery } from '../../../../../../shared/hooks/useMediaQuery'
-import { device } from '../../../../../../shared/breakpoints/reponsive'
-import BodyCell from '../../../../../../ui/Table/BodyCell'
-import EmptyStateCell from '../../../../../../ui/Table/EmptyStateCell'
+import { useMediaQuery } from '@/hooks/useMediaQuery'
+import { device } from '@/breakpoints/responsive'
+import BodyCell from '@/ui/Table/BodyCell'
+import EmptyStateCell from '@/ui/Table/EmptyStateCell'
 import { KEY_DASH_CUSTOMER_BANK_CACHE } from '../BankSelected/utils/dash-customer-banks.cache'
 import BankModalEdit from './BankModals/BankModalEdit'
 import BankModalDelete from './BankModals/BankModalDelete'
-import useModal from '../../../../../../shared/hooks/useModal'
-import notification from '../../../../../../ui/notification'
-import { CustomerHasBankType } from '../../../../../../shared/types/dash/customer-has-bank'
+import useModal from '@/hooks/useModal'
+import notification from '@/ui/notification'
+import { CustomerHasBankType } from '@/types/dash/customer-has-bank'
 
 type BankNoSelectedProps = {
   setGlobalElement: (element: SelectedElementType) => void
@@ -143,6 +143,7 @@ const BankNoSelected = ({ setGlobalElement }: BankNoSelectedProps) => {
         <TextField onChange={onHandleChange} width="100%" placeholder="Agregar Banco: " />
         <Button size="small" shape="round" trailingIcon="ri-add-fill" />
       </Container>
+
       {visibleBankEdit && (
         <BankModalEdit visible={visibleBankEdit} onClose={onCloseModal} idBank={idBank}></BankModalEdit>
       )}

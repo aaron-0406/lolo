@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import Container from '../../../../ui/Container'
-import { Opts } from '../../../../ui/Pagination/interfaces'
+import Container from '@/ui/Container'
+import { Opts } from '@/ui/Pagination/interfaces'
 import CustomersActions from './CustomersActions'
 import CustomersTable from './CustomersTable'
 

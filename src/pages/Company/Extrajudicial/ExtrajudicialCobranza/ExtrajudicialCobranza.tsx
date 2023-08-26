@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import LayoutCobranza from '../../../../components/Layouts/LayoutCobranza'
-import { ClientType } from '../../../../shared/types/extrajudicial/client.type'
+import { ClientType } from '@/types/extrajudicial/client.type'
 import CobranzaActions from './CobranzaActions'
 import CobranzaInfo from './CobranzaInfo'
 import CobranzaSearch from './CobranzaSearch'

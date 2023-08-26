@@ -1,5 +1,5 @@
-import { ClientType } from '../../types/extrajudicial/client.type'
-import { ProductType, ProductTypeName } from '../../types/extrajudicial/product.type'
+import { ClientType } from '@/types/extrajudicial/client.type'
+import { ProductType, ProductTypeName } from '@/types/extrajudicial/product.type'
 import axiosClient from '../../utils/api/clientAxios'
 
 interface Client {

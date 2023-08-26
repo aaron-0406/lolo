@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import yup from '../../../../../../shared/yupLocale'
-import { CommentType } from '../../../../../../shared/types/extrajudicial/comment.type'
+import { CommentType } from '@/types/extrajudicial/comment.type'
 
 const ModalCobranzaComments: yup.SchemaOf<Omit<CommentType, 'id' | 'hour'>> = yup.object().shape({
   clientId: yup.number().required(),

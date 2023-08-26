@@ -1,13 +1,13 @@
 import { useForm, Controller } from 'react-hook-form'
 import { useMutation } from 'react-query'
-import Modal from '../../../../../../ui/Modal'
+import Modal from '@/ui/Modal'
 import { PasswordFormType } from './hookform.type'
 import { PasswordSchemaResolver } from './updatePassword.yup'
-import Container from '../../../../../../ui/Container/Container'
-import TextField from '../../../../../../ui/fields/TextField/TextField'
-import Button from '../../../../../../ui/Button/Button'
-import { notification } from '../../../../../../ui/notification/notification'
-import { changePasswordService } from '../../../../../../shared/services/extrajudicial/auth.service'
+import Container from '@/ui/Container/Container'
+import TextField from '@/ui/fields/TextField/TextField'
+import Button from '@/ui/Button/Button'
+import { notification } from '@/ui/notification/notification'
+import { changePasswordService } from '@/services/extrajudicial/auth.service'
 
 type UpdatePasswordModalProps = {
   visible: boolean

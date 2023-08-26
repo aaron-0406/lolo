@@ -1,9 +1,8 @@
 import React, { ReactNode } from 'react'
-// import styled, { css } from "styled-components";
-import Container from '../../../ui/Container'
-import { device } from '../../../shared/breakpoints/reponsive'
-import { useMediaQuery } from '../../../shared/hooks/useMediaQuery'
 import styled, { css } from 'styled-components'
+import Container from '@/ui/Container'
+import { device } from '@/breakpoints/responsive'
+import { useMediaQuery } from '@/hooks/useMediaQuery'
 
 type LayoutDocumenetProps = {
   firstChild: ReactNode

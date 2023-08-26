@@ -1,8 +1,8 @@
 import { Controller, useFormContext } from 'react-hook-form'
-import { GuarantorType } from '../../../../../../../../shared/types/extrajudicial/guarantor.type'
-import Container from '../../../../../../../../ui/Container'
-import TextAreaField from '../../../../../../../../ui/fields/TextAreaField'
-import Label from '../../../../../../../../ui/Label'
+import { GuarantorType } from '@/types/extrajudicial/guarantor.type'
+import Container from '@/ui/Container'
+import TextAreaField from '@/ui/fields/TextAreaField'
+import Label from '@/ui/Label'
 
 const ModalFiadoresInfo = () => {
   const {

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import styled, { css } from 'styled-components'
-import ClickOutSideComponent from '../../shared/hooks/useClickOutside'
-import Container from '../Container'
-import Text from '../Text'
+import ClickOutSideComponent from '@/hooks/useClickOutside'
+import Container from '@/ui/Container'
+import Text from '@/ui/Text'
 
 const MONTH_NAMES = [
   'Enero',

@@ -1,14 +1,10 @@
 import { useMutation } from 'react-query'
-import {
-  createProduct,
-  deleteProduct,
-  editProduct,
-} from '../../../../../../../../shared/services/extrajudicial/product.service'
-import Button from '../../../../../../../../ui/Button'
-import Container from '../../../../../../../../ui/Container'
+import { createProduct, deleteProduct, editProduct } from '@/services/extrajudicial/product.service'
+import Button from '@/ui/Button'
+import Container from '@/ui/Container'
 import { ProductFormType } from '../hookforms.interfaces'
 import { useFormContext } from 'react-hook-form'
-import notification from '../../../../../../../../ui/notification'
+import notification from '@/ui/notification'
 
 const ModalProductsActions = () => {
   const { setValue, getValues, handleSubmit, watch } = useFormContext<ProductFormType>()

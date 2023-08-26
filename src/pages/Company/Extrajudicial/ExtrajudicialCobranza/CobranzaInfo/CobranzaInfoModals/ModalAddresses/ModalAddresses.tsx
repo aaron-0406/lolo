@@ -1,6 +1,6 @@
 import React from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import Container from '../../../../../../../ui/Container'
+import Container from '@/ui/Container'
 import { DirectionFormType } from './hookforms.interfaces'
 import { ModalAddressesResolver } from './ModalAddresses.yup'
 import ModalAddressesActions from './ModalAddressesActions'

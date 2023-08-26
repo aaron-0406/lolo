@@ -1,4 +1,3 @@
-import React from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import LayoutDocuments from '../../../../components/Layouts/LayoutDocuments'
 import { TemplateFormType } from './hookforms.interfaces'

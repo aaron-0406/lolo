@@ -1,13 +1,13 @@
 import { Controller, useFormContext } from 'react-hook-form'
 import styled, { css } from 'styled-components'
-import { useLoloContext } from '../../../../../shared/contexts/LoloProvider'
-import { ClientType } from '../../../../../shared/types/extrajudicial/client.type'
-import Container from '../../../../../ui/Container'
-import TextAreaField from '../../../../../ui/fields/TextAreaField'
-import TextField from '../../../../../ui/fields/TextField'
-import Label from '../../../../../ui/Label'
-import Select from '../../../../../ui/Select'
-import { SelectItemType } from '../../../../../ui/Select/interfaces'
+import { useLoloContext } from '@/contexts/LoloProvider'
+import { ClientType } from '@/types/extrajudicial/client.type'
+import Container from '@/ui/Container'
+import TextAreaField from '@/ui/fields/TextAreaField'
+import TextField from '@/ui/fields/TextField'
+import Label from '@/ui/Label'
+import Select from '@/ui/Select'
+import { SelectItemType } from '@/ui/Select/interfaces'
 
 type CobranzaInfoProps = {
   loading: boolean

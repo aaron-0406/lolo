@@ -1,12 +1,12 @@
 import { Controller, useFormContext } from 'react-hook-form'
-import { CommentType } from '../../../../../../../shared/types/extrajudicial/comment.type'
-import Container from '../../../../../../../ui/Container'
-import Label from '../../../../../../../ui/Label'
-import DatePicker from '../../../../../../../ui/DatePicker/DatePicker'
-import Select from '../../../../../../../ui/Select'
-import { SelectItemType } from '../../../../../../../ui/Select/interfaces'
-import { useLoloContext } from '../../../../../../../shared/contexts/LoloProvider'
-import TextAreaField from '../../../../../../../ui/fields/TextAreaField'
+import { CommentType } from '@/types/extrajudicial/comment.type'
+import Container from '@/ui/Container'
+import Label from '@/ui/Label'
+import DatePicker from '@/ui/DatePicker/DatePicker'
+import Select from '@/ui/Select'
+import { SelectItemType } from '@/ui/Select/interfaces'
+import { useLoloContext } from '@/contexts/LoloProvider'
+import TextAreaField from '@/ui/fields/TextAreaField'
 
 type CobranzaCommentsInfoFormProps = {
   clientId: number

@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import yup from '../../../../../shared/yupLocale'
-import { CustomerUserType } from '../../../../../shared/types/dash/customer-user.type'
+import { CustomerUserType } from '@/types/dash/customer-user.type'
 
 const UsersModal: yup.SchemaOf<Omit<CustomerUserType, 'customerId' | 'createdAt' | 'password' | 'id'>> = yup
   .object()
