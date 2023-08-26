@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { useQuery } from 'react-query'
 import { getAllPermissions } from '@/services/dash/permission.service'
 import { PermissionType } from '@/types/dash/permission.type'
@@ -13,7 +14,6 @@ import { KEY_DASH_PERMISOS_CACHE } from './utils/dash-permisos.cache'
 import useModal from '@/hooks/useModal'
 import Icon from '@/ui/Icon/Icon'
 import DeletePermissionModal from '../Modals/DeletePermissionModal/DeletePermissionModal'
-import { useNavigate, useLocation } from 'react-router-dom'
 import Text from '@/ui/Text/Text'
 
 const PermissionsTable = () => {

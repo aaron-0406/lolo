@@ -1,8 +1,8 @@
+import { useFormContext } from 'react-hook-form'
 import Container from '@/ui/Container'
 import TemplateDocParagraph from './TemplateDocParagraph'
 import Img from '@/ui/Img'
 import styled from 'styled-components'
-import { useFormContext } from 'react-hook-form'
 import { TemplateFormType } from '../hookforms.interfaces'
 import Button from '@/ui/Button'
 // import {

@@ -1,5 +1,6 @@
 import { Dispatch, FC, useEffect, useState } from 'react'
 import moment from 'moment'
+import { AxiosResponse } from 'axios'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { getAllUsersByID, editUserState } from '@/services/dash/customer-user.service'
 import { CustomerUserType } from '@/types/dash/customer-user.type'
@@ -17,7 +18,6 @@ import useModal from '@/hooks/useModal'
 import DeleteUsersModal from '../Modals/DeleteUsersModal'
 import dashUsuariosCache, { KEY_DASH_USUARIOS_CACHE } from './utils/dash-usuarios.cache'
 import notification from '@/ui/notification'
-import { AxiosResponse } from 'axios'
 
 type UsersTableProps = {
   opts: Opts

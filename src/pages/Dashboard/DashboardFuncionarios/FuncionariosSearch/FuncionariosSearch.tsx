@@ -1,4 +1,5 @@
 import { Dispatch, FC } from 'react'
+import { useQueryClient } from 'react-query'
 import TextField from '@/ui/fields/TextField/TextField'
 import Container from '@/ui/Container/Container'
 import Select from '@/ui/Select/Select'
@@ -10,7 +11,6 @@ import { Opts } from '@/ui/Pagination/interfaces'
 import useModal from '@/hooks/useModal'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { device } from '@/breakpoints/responsive'
-import { useQueryClient } from 'react-query'
 import dashFuncionariosCache from '../FuncionariosTable/utils/dash-funcionarios.cache'
 import FuncionariosModal from '../Modals/FuncionariosModal'
 

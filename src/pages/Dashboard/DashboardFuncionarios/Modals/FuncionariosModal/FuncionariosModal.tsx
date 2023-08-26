@@ -1,8 +1,9 @@
 import { useEffect } from 'react'
-import { FuncionarioType } from '@/types/dash/funcionario.type'
-import { ModalFuncionariosResolver } from './FuncionariosModal.yup'
+import { AxiosResponse } from 'axios'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
+import { FuncionarioType } from '@/types/dash/funcionario.type'
+import { ModalFuncionariosResolver } from './FuncionariosModal.yup'
 import { createFuncionario, getAllFuncionariosByID, editFuncionarioById } from '@/services/dash/funcionario.service'
 import notification from '@/ui/notification'
 import Modal from '@/ui/Modal'
@@ -10,7 +11,6 @@ import Container from '@/ui/Container'
 import Button from '@/ui/Button'
 import FuncionarioInfoForm from './FuncionarioInfoForm/FuncionarioInfoForm'
 import dashFuncionariosCache from '../../FuncionariosTable/utils/dash-funcionarios.cache'
-import { AxiosResponse } from 'axios'
 
 type FuncionariosModalProps = {
   visible: boolean

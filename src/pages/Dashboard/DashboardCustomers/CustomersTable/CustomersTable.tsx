@@ -1,5 +1,6 @@
 import { Dispatch, FC, useState, useEffect } from 'react'
 import moment from 'moment'
+import { AxiosResponse } from 'axios'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { getCustomerAll, updateStateCustomer } from '@/services/dash/customer.service'
 import { CustomerType } from '@/types/dash/customer.type'
@@ -18,7 +19,6 @@ import { useDashContext } from '@/contexts/DashProvider'
 import notification from '@/ui/notification'
 import BankModal from '../Modals/BankModal'
 import dashCustomersCache, { KEY_DASH_CLIENTES_CACHE } from './utils/dash-clientes.cache'
-import { AxiosResponse } from 'axios'
 
 type CustomersTableProps = {
   opts: Opts

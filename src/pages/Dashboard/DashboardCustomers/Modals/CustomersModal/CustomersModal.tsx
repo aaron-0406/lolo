@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from 'react'
+import { AxiosResponse } from 'axios'
 import { Controller } from 'react-hook-form'
 import { FormProvider, useForm } from 'react-hook-form'
 import { ModalCustomersResolver } from './CustomersModal.yup'
@@ -14,7 +15,6 @@ import Button from '@/ui/Button'
 import Checkbox from '@/ui/Checkbox'
 import Label from '@/ui/Label'
 import dashCustomersCache from '../../CustomersTable/utils/dash-clientes.cache'
-import { AxiosResponse } from 'axios'
 
 type CustomersModalProps = {
   visible: boolean

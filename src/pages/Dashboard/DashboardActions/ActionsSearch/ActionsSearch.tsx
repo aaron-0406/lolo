@@ -1,4 +1,5 @@
 import { Dispatch, FC } from 'react'
+import { useQueryClient } from 'react-query'
 import TextField from '@/ui/fields/TextField/TextField'
 import Container from '@/ui/Container/Container'
 import Select from '@/ui/Select/Select'
@@ -11,7 +12,6 @@ import useModal from '@/hooks/useModal'
 import ActionModal from '../Modals/ActionsModal/ActionsModal'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { device } from '@/breakpoints/responsive'
-import { useQueryClient } from 'react-query'
 import dashAccionesCache from '../ActionsTable/utils/dash-acciones.cache'
 
 type ActionsSearchProps = {

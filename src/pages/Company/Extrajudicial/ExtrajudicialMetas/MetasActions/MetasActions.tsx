@@ -1,12 +1,12 @@
+import { useFormContext } from 'react-hook-form'
+import moment from 'moment'
 import useModal from '@/hooks/useModal'
 import Button from '@/ui/Button/Button'
 import Container from '@/ui/Container/Container'
 import Text from '@/ui/Text/Text'
 import MetasModal from '../MetasModal/MetasModal'
-import { useFormContext } from 'react-hook-form'
 import { GoalFormType } from '../hookform.type'
 import { useLoloContext } from '@/contexts/LoloProvider'
-import moment from 'moment'
 
 const MetasActions = () => {
   const {

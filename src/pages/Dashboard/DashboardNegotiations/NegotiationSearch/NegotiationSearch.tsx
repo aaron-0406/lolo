@@ -1,4 +1,5 @@
 import { Dispatch } from 'react'
+import { useQueryClient } from 'react-query'
 import Container from '@/ui/Container'
 import TextField from '@/ui/fields/TextField'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
@@ -11,7 +12,6 @@ import useModal from '@/hooks/useModal'
 import Label from '@/ui/Label/Label'
 import Select from '@/ui/Select'
 import { useDashContext } from '@/contexts/DashProvider'
-import { useQueryClient } from 'react-query'
 import dashNegotiationCache from '../NegotiationTable/utils/dash-negociaciones.cache'
 
 type NegotiationSearchProps = {

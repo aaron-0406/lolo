@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useForm, FormProvider } from 'react-hook-form'
 import styled, { css } from 'styled-components'
 import { device } from '@/breakpoints/responsive'
@@ -11,7 +12,6 @@ import TableClientsDeleted from '../Tables/TableClientsDeleted'
 import TableProductsCastigo from '../Tables/TableProductCastigo'
 import TableProductsAdded from '../Tables/TableProductsAdded'
 import TableProductsDeleted from '../Tables/TableProductsDeleted'
-import { useState } from 'react'
 
 const Dashboard = () => {
   const formMethods = useForm<DashFormType>({

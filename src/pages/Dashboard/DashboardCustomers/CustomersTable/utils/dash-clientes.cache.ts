@@ -1,6 +1,6 @@
+import { AxiosResponse } from 'axios'
 import { QueryClient } from 'react-query'
 import { CustomerType } from '@/types/dash/customer.type'
-import { AxiosResponse } from 'axios'
 
 export const KEY_DASH_CLIENTES_CACHE = 'key-dash-clientes-cache'
 

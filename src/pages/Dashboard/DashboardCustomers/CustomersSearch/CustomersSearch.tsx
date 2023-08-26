@@ -1,4 +1,5 @@
 import { Dispatch, FC } from 'react'
+import { useQueryClient } from 'react-query'
 import Container from '@/ui/Container'
 import TextField from '@/ui/fields/TextField'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
@@ -8,7 +9,6 @@ import CustomersModal from '../Modals/CustomersModal'
 import Button from '@/ui/Button'
 import useModal from '@/hooks/useModal'
 import Label from '@/ui/Label/Label'
-import { useQueryClient } from 'react-query'
 import dashCustomersCache from '../CustomersTable/utils/dash-clientes.cache'
 
 type CustomersTableProps = {

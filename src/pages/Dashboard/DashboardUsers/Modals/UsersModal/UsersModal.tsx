@@ -1,7 +1,8 @@
 import { useEffect } from 'react'
+import { AxiosResponse } from 'axios'
 import { FormProvider, useForm, Controller } from 'react-hook-form'
-import { ModalUsersResolver } from './UsersModal.yup'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
+import { ModalUsersResolver } from './UsersModal.yup'
 import UserInfoForm from './UserInfoForm'
 import { CustomerUserType } from '@/types/dash/customer-user.type'
 import { createUser, editUserById, getUserByUserId } from '@/services/dash/customer-user.service'
@@ -13,7 +14,6 @@ import Checkbox from '@/ui/Checkbox'
 import Label from '@/ui/Label'
 import { useDashContext } from '@/contexts/DashProvider'
 import dashUsuariosCache from '../../UsersTable/utils/dash-usuarios.cache'
-import { AxiosResponse } from 'axios'
 
 type UsersModalProps = {
   visible: boolean

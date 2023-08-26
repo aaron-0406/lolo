@@ -1,3 +1,4 @@
+import { AxiosResponse } from 'axios'
 import { useQuery } from 'react-query'
 import { useDashContext } from '@/contexts/DashProvider'
 import { getAllCHBsByCustomerId } from '@/services/dash/customer-has-bank.service'
@@ -12,7 +13,6 @@ import Container from '@/ui/Container'
 import { banksSelectColumns } from './utils/columnsSelect'
 import { KEY_DASH_CUSTOMER_BANK_CACHE } from './utils/dash-customer-banks.cache'
 import { CustomerHasBankType } from '@/types/dash/customer-has-bank'
-import { AxiosResponse } from 'axios'
 import notification from '@/ui/notification'
 
 type BankSelectedProps = {

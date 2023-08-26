@@ -1,3 +1,4 @@
+import { AxiosResponse } from 'axios'
 import { useMutation, useQueryClient } from 'react-query'
 import Container from '@/ui/Container'
 import Modal from '@/ui/Modal'
@@ -5,7 +6,6 @@ import notification from '@/ui/notification'
 import Button from '@/ui/Button'
 import { deleteFuncionario } from '@/services/dash/funcionario.service'
 import dashFuncionariosCache from '../../FuncionariosTable/utils/dash-funcionarios.cache'
-import { AxiosResponse } from 'axios'
 
 type DeleteFuncionariosModalProps = {
   visible: boolean

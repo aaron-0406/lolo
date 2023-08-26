@@ -1,17 +1,17 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from 'react'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
+import { useLocation } from 'react-router-dom'
 import { FormProvider, useForm } from 'react-hook-form'
 import Modal from '@/ui/Modal/Modal'
 import { PermissionType } from '@/types/dash/permission.type'
 import Container from '@/ui/Container/Container'
 import Button from '@/ui/Button/Button'
 import PermissionInfoForm from './PermissionInfoForm'
-import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { createPermission, getPermissionById, updatePermission } from '@/services/dash/permission.service'
 import { notification } from '@/ui/notification/notification'
 import dashPermissionCache, { KEY_DASH_PERMISOS_CACHE } from '../../PermissionsTable/utils/dash-permisos.cache'
 import { ModalPermissionResolver } from './PermissionInfoForm/PermissionModal.yup'
-import { useLocation } from 'react-router-dom'
 
 type PermissionModalProps = {
   visible: boolean

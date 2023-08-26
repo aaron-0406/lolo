@@ -1,15 +1,11 @@
+import { useMutation } from 'react-query'
+import { useFormContext, Controller } from 'react-hook-form'
 import styled, { css } from 'styled-components'
 import Button from '@/ui/Button/Button'
-import { useFormContext, Controller } from 'react-hook-form'
 import Modal from '@/ui/Modal/Modal'
 import Container from '@/ui/Container/Container'
 import { GoalFormType } from '../hookform.type'
-import { useMutation } from 'react-query'
-import {
-  GoalApiResponse,
-  createGoalService,
-  editGoalService,
-} from '@/services/extrajudicial/goal.service'
+import { GoalApiResponse, createGoalService, editGoalService } from '@/services/extrajudicial/goal.service'
 import { notification } from '@/ui/notification/notification'
 import TextField from '@/ui/fields/TextField/TextField'
 import DatePicker from '@/ui/DatePicker/DatePicker'

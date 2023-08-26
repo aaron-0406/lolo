@@ -1,5 +1,6 @@
 import React, { Dispatch, ReactNode } from 'react'
 import styled, { css } from 'styled-components'
+import { useQuery } from 'react-query'
 import { FileType } from '@/types/extrajudicial/file.type'
 import Container from '@/ui/Container'
 import pdfIcon from '@/assets/icons/pdf.png'
@@ -9,7 +10,6 @@ import Img from '@/ui/Img'
 import Text from '@/ui/Text'
 import Button from '@/ui/Button'
 import { deleteFile, getFileById } from '@/services/extrajudicial/file.service'
-import { useQuery } from 'react-query'
 import { useLoloContext } from '@/contexts/LoloProvider'
 
 type ModalFileRowProps = {

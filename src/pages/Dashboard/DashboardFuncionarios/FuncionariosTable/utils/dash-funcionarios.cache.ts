@@ -1,5 +1,5 @@
-import { QueryClient } from 'react-query'
 import { AxiosResponse } from 'axios'
+import { QueryClient } from 'react-query'
 import { FuncionarioType } from '@/types/dash/funcionario.type'
 
 export const KEY_DASH_FUNCIONARIOS_CACHE = 'key-dash-funcionarios-cache'

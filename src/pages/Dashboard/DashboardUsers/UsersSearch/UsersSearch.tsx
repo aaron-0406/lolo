@@ -1,4 +1,5 @@
 import { Dispatch, FC } from 'react'
+import { useQueryClient } from 'react-query'
 import Container from '@/ui/Container'
 import TextField from '@/ui/fields/TextField'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
@@ -9,7 +10,6 @@ import Button from '@/ui/Button'
 import useModal from '@/hooks/useModal'
 import Label from '@/ui/Label/Label'
 import dashUsuariosCache from '../UsersTable/utils/dash-usuarios.cache'
-import { useQueryClient } from 'react-query'
 
 type UsersSearchProps = {
   opts: Opts
