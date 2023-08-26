@@ -30,7 +30,8 @@ type BankNoSelectedProps = {
 const defaultValuesBank = {
   id: 0,
   name: '',
-  state: false,
+  description: '-',
+  state: true,
   createdAt: new Date(),
 }
 
@@ -54,7 +55,7 @@ const BankNoSelected = ({ setGlobalElement }: BankNoSelectedProps) => {
     defaultValues: defaultValuesBank,
   })
 
-  const { getValues } = formMethods
+  const { getValues, setValue } = formMethods
 
   const [idBank, setIdBank] = useState<number>(0)
   const [idDeletedBank, setIdDeletedBank] = useState<number>(0)
@@ -86,8 +87,8 @@ const BankNoSelected = ({ setGlobalElement }: BankNoSelectedProps) => {
 
   const { isLoading: loadingCreateBank, mutate: addBank } = useMutation<AxiosResponse<BankType>, Error>(
     async () => {
-      const { id, ...restClient } = getValues()
-      return await createBank({ ...restClient })
+      const { id, ...restBank } = getValues()
+      return await createBank({ ...restBank })
     },
     {
       onSuccess: (result) => {
@@ -110,7 +111,9 @@ const BankNoSelected = ({ setGlobalElement }: BankNoSelectedProps) => {
     }
   )
 
-  const onHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {}
+  const onHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValue('name', e.target.value)
+  }
 
   const handleClickEdit = (idBank: number) => {
     setIdBank(idBank)
