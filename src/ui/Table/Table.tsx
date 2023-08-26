@@ -130,6 +130,11 @@ const StyledOrderTable = styled.table`
     tr:not([role='row-error']):not([role='row-empty']):hover {
       background: ${theme.colors['Neutral2']};
     }
+
+    .active{
+      background: ${theme.colors['Neutral2']};
+    }
+    
   `}
 `
 
