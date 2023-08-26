@@ -31,6 +31,7 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({ children, urlIdentifier }) =>
     customerUser: { user },
     auth: { setAuthenticate },
     clearAll,
+    bank: { selectedBank },
   } = useLoloContext()
 
   const greaterThanTabletL = useMediaQuery(device.tabletL)
@@ -104,14 +105,23 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({ children, urlIdentifier }) =>
         height="50px"
         display="flex"
         alignItems="center"
+        justifyContent="space-between"
         gap="35px"
         padding="15px"
       >
-        <Icon remixClass="ri-menu-line" size={30} onClick={onClickToggle} />
+        <Container display="flex" gap="35px">
+          <Icon remixClass="ri-menu-line" size={30} onClick={onClickToggle} />
 
-        <Text.Body size="l" weight="bold" ellipsis>
-          {customer.companyName}
-        </Text.Body>
+          <Text.Body size="l" weight="bold" ellipsis>
+            {customer.companyName}
+          </Text.Body>
+        </Container>
+
+        <Container margin="20px">
+          <Text.Body size="m" weight="bold" color="Success5">
+            {customer.customerBanks[Number(selectedBank?.idBank) - 1]?.name ?? ''}
+          </Text.Body>
+        </Container>
       </Container>
 
       <Container width="100%" height="calc(100vh - 50px)" display="flex" flexDirection="row">
