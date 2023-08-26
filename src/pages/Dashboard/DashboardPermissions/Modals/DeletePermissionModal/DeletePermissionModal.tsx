@@ -1,11 +1,11 @@
 import { useMutation, useQueryClient } from 'react-query'
 import { AxiosResponse } from 'axios'
-import Button from '../../../../../ui/Button/Button'
-import Container from '../../../../../ui/Container/Container'
-import Modal from '../../../../../ui/Modal/Modal'
+import Button from '@/ui/Button/Button'
+import Container from '@/ui/Container/Container'
+import Modal from '@/ui/Modal/Modal'
 import dashPermissionCache from '../../PermissionsTable/utils/dash-permisos.cache'
-import { deletePermission } from '../../../../../shared/services/dash/permission.service'
-import { notification } from '../../../../../ui/notification/notification'
+import { deletePermission } from '@/services/dash/permission.service'
+import { notification } from '@/ui/notification/notification'
 
 type DeletePermissionModalProps = {
   visible: boolean

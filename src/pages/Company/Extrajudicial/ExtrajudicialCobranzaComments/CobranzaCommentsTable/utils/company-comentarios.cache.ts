@@ -1,6 +1,6 @@
 import { QueryClient } from 'react-query'
 import { AxiosResponse } from 'axios'
-import { CommentType } from '../../../../../../shared/types/extrajudicial/comment.type'
+import { CommentType } from '@/types/extrajudicial/comment.type'
 
 export const KEY_COBRANZA_URL_COBRANZA_CODE_CACHE = 'key-cobranza-url-cobranza-code-cache'
 

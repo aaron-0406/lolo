@@ -1,7 +1,7 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
-import Container from '../Container'
-import Text from '../Text'
+import Container from '@/ui/Container'
+import Text from '@/ui/Text'
 
 const INITIAL_COUNTER = 0
 

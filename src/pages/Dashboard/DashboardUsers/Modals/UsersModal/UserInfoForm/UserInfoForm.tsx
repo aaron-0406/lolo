@@ -1,10 +1,10 @@
-import { CustomerUserType } from '../../../../../../shared/types/dash/customer-user.type'
 import { Controller, useFormContext } from 'react-hook-form'
-import Container from '../../../../../../ui/Container'
-import Label from '../../../../../../ui/Label'
-import TextField from '../../../../../../ui/fields/TextField'
-import { SelectItemType } from '../../../../../../ui/Select/interfaces'
-import Select from '../../../../../../ui/Select'
+import { CustomerUserType } from '@/types/dash/customer-user.type'
+import Container from '@/ui/Container'
+import Label from '@/ui/Label'
+import TextField from '@/ui/fields/TextField'
+import { SelectItemType } from '@/ui/Select/interfaces'
+import Select from '@/ui/Select'
 
 const UserInfoForm = () => {
   const {

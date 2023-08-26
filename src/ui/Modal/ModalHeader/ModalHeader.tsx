@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components'
-import Button from '../../Button'
-import Container from '../../Container'
-import Text from '../../Text'
+import Button from '@/ui/Button'
+import Container from '@/ui/Container'
+import Text from '@/ui/Text'
 
 type ModalHeaderProps = {
   title?: React.ReactNode | string

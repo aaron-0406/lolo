@@ -1,4 +1,4 @@
-export type CredentialFormType = {
+export type PasswordFormType = {
   newPassword: string
   repeatPassword: string
 }

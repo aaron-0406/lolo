@@ -2,17 +2,18 @@ import { useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import { Link } from 'react-router-dom'
 import styled, { css } from 'styled-components'
-import { device } from '../../../shared/breakpoints/reponsive'
-import { useLoloContext } from '../../../shared/contexts/LoloProvider'
-import { useMediaQuery } from '../../../shared/hooks/useMediaQuery'
+import { device } from '@/breakpoints/responsive'
+import { useLoloContext } from '@/contexts/LoloProvider'
+import { useMediaQuery } from '@/hooks/useMediaQuery'
 import paths from '../../../shared/routes/paths'
-import { getAllCities } from '../../../shared/services/dash/city.service'
-import { getAllUsersByID } from '../../../shared/services/dash/customer-user.service'
+import { getAllCities } from '@/services/dash/city.service'
+import { getAllUsersByID } from '@/services/dash/customer-user.service'
 import storage from '../../../shared/utils/storage'
-import Container from '../../../ui/Container'
-import Icon from '../../../ui/Icon'
-import Text from '../../../ui/Text'
+import Container from '@/ui/Container'
+import Icon from '@/ui/Icon'
+import Text from '@/ui/Text'
 import { getMenuItems } from './utils/get-menu-items'
+
 type MenuCompanyProps = {
   children: JSX.Element
   urlIdentifier: string
@@ -30,6 +31,7 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({ children, urlIdentifier }) =>
     customerUser: { user },
     auth: { setAuthenticate },
     clearAll,
+    bank: { selectedBank },
   } = useLoloContext()
 
   const greaterThanTabletL = useMediaQuery(device.tabletL)
@@ -103,14 +105,23 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({ children, urlIdentifier }) =>
         height="50px"
         display="flex"
         alignItems="center"
+        justifyContent="space-between"
         gap="35px"
         padding="15px"
       >
-        <Icon remixClass="ri-menu-line" size={30} onClick={onClickToggle} />
+        <Container display="flex" gap="35px">
+          <Icon remixClass="ri-menu-line" size={30} onClick={onClickToggle} />
 
-        <Text.Body size="l" weight="bold" ellipsis>
-          {customer.companyName}
-        </Text.Body>
+          <Text.Body size="l" weight="bold" ellipsis>
+            {customer.companyName}
+          </Text.Body>
+        </Container>
+
+        <Container margin="20px">
+          <Text.Body size="m" weight="bold" color="Success5">
+            {customer.customerBanks[Number(selectedBank?.idBank) - 1]?.name ?? ''}
+          </Text.Body>
+        </Container>
       </Container>
 
       <Container width="100%" height="calc(100vh - 50px)" display="flex" flexDirection="row">

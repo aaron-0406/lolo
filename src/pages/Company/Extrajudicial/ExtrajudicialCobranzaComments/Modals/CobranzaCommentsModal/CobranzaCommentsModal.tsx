@@ -1,24 +1,20 @@
 import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
+import moment from 'moment'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { AxiosResponse } from 'axios'
-import { CommentType } from '../../../../../../shared/types/extrajudicial/comment.type'
-import { notification } from '../../../../../../ui/notification/notification'
-import Modal from '../../../../../../ui/Modal/Modal'
-import Container from '../../../../../../ui/Container/Container'
-import Button from '../../../../../../ui/Button/Button'
+import { CommentType } from '@/types/extrajudicial/comment.type'
+import { notification } from '@/ui/notification/notification'
+import Modal from '@/ui/Modal/Modal'
+import Container from '@/ui/Container/Container'
+import Button from '@/ui/Button/Button'
 import companyComentariosCache, {
   KEY_COBRANZA_URL_COBRANZA_CODE_CACHE,
 } from '../../CobranzaCommentsTable/utils/company-comentarios.cache'
 import { ModalCobranzaCommentsResolver } from './CobranzaCommentsModal.yup'
-import {
-  createComment,
-  editComment,
-  getCommenById,
-} from '../../../../../../shared/services/extrajudicial/comment.service'
+import { createComment, editComment, getCommenById } from '@/services/extrajudicial/comment.service'
 import CobranzaCommentsInfoForm from './CobranzaCommentsInfoForm/CobranzaCommentsInfoForm'
-import { useLoloContext } from '../../../../../../shared/contexts/LoloProvider'
-import moment from 'moment'
+import { useLoloContext } from '@/contexts/LoloProvider'
 
 type CobranzaCommentsModalProps = {
   visible: boolean

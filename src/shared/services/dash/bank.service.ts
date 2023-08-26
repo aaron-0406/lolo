@@ -1,5 +1,5 @@
 import axiosClient from '../../utils/api/clientAxios'
-import { BankType } from '../../types/dash/bank.type'
+import { BankType } from '@/types/dash/bank.type'
 
 const API = axiosClient.getUri()
 
@@ -17,7 +17,7 @@ export const createBank = async (bank: Omit<BankType, 'id'>) => {
   return await axiosClient.post(`${url}/`, bank)
 }
 
-export const updateBank = async (id: number, bank: Omit<BankType, 'id'>) => {
+export const updateBank = async (id: number, bank: Omit<BankType, 'id' | 'CUSTOMER_HAS_BANK'>) => {
   return await axiosClient.put(`${url}/${id}`, bank)
 }
 

@@ -1,9 +1,10 @@
+import { useState } from 'react'
 import { useForm, FormProvider } from 'react-hook-form'
 import styled, { css } from 'styled-components'
-import { device } from '../../../../../shared/breakpoints/reponsive'
-import { useMediaQuery } from '../../../../../shared/hooks/useMediaQuery'
-import Button from '../../../../../ui/Button'
-import Container from '../../../../../ui/Container'
+import { device } from '@/breakpoints/responsive'
+import { useMediaQuery } from '@/hooks/useMediaQuery'
+import Button from '@/ui/Button'
+import Container from '@/ui/Container'
 import Form from './Form'
 import { DashFormType } from './hookform.type'
 import TableClientsAdded from '../Tables/TableClientsAdded'
@@ -11,7 +12,6 @@ import TableClientsDeleted from '../Tables/TableClientsDeleted'
 import TableProductsCastigo from '../Tables/TableProductCastigo'
 import TableProductsAdded from '../Tables/TableProductsAdded'
 import TableProductsDeleted from '../Tables/TableProductsDeleted'
-import { useState } from 'react'
 
 const Dashboard = () => {
   const formMethods = useForm<DashFormType>({

@@ -1,16 +1,16 @@
 import { useFormContext } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-import useModal from '../../../../../../shared/hooks/useModal'
-import { ClientType } from '../../../../../../shared/types/extrajudicial/client.type'
-import Button from '../../../../../../ui/Button'
-import Container from '../../../../../../ui/Container'
-import Modal from '../../../../../../ui/Modal'
+import useModal from '@/hooks/useModal'
+import { ClientType } from '@/types/extrajudicial/client.type'
+import Button from '@/ui/Button'
+import Container from '@/ui/Container'
+import Modal from '@/ui/Modal'
 import ModalAddresses from './ModalAddresses'
 import ModalFiadores from './ModalFiadores'
 import ModalFiles from './ModalFiles/ModalFiles'
 import ModalProducts from './ModalProducts'
 import paths from '../../../../../../shared/routes/paths'
-import { useLoloContext } from '../../../../../../shared/contexts/LoloProvider'
+import { useLoloContext } from '@/contexts/LoloProvider'
 
 const CobranzaInfoModals = () => {
   const {

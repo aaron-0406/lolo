@@ -1,10 +1,10 @@
 import { useMutation, useQueryClient } from 'react-query'
-import Button from '../../../../../../ui/Button'
-import Container from '../../../../../../ui/Container/Container'
-import Modal from '../../../../../../ui/Modal'
+import Button from '@/ui/Button'
+import Container from '@/ui/Container/Container'
+import Modal from '@/ui/Modal'
 import companyComentariosCache from '../../CobranzaCommentsTable/utils/company-comentarios.cache'
-import { deleteComment } from '../../../../../../shared/services/extrajudicial/comment.service'
-import notification from '../../../../../../ui/notification'
+import { deleteComment } from '@/services/extrajudicial/comment.service'
+import notification from '@/ui/notification'
 
 type DeleteCobranzaCommentsModalProps = {
   visible: boolean

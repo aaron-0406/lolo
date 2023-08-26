@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import Spinner from '../Spinner'
+import Spinner from '@/ui/Spinner'
 
 type SwitchProps = {
   checked: boolean

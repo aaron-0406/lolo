@@ -1,11 +1,11 @@
 import type { IThemeColor } from 'styled-components'
 import styled, { css } from 'styled-components'
-import ReactPortal from '../ReactPortal'
-import { usePortal } from '../../shared/hooks/usePortal'
+import ReactPortal from '@/ui/ReactPortal'
+import { usePortal } from '@/hooks/usePortal'
 import type { ConfirmationModalType } from './interfaces'
-import Container from '../Container'
-import Icon from '../Icon'
-import Text from '../Text'
+import Container from '@/ui/Container'
+import Icon from '@/ui/Icon'
+import Text from '@/ui/Text'
 
 const actionsConfig: Record<ConfirmationModalType, { iconClass: string; color: keyof IThemeColor }> = {
   success: {

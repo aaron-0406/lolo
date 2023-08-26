@@ -4,10 +4,10 @@ import {
   createDirection,
   deleteDirection,
   editDirection,
-} from '../../../../../../../../shared/services/extrajudicial/direction.service'
-import Button from '../../../../../../../../ui/Button'
-import Container from '../../../../../../../../ui/Container'
-import notification from '../../../../../../../../ui/notification'
+} from '@/services/extrajudicial/direction.service'
+import Button from '@/ui/Button'
+import Container from '@/ui/Container'
+import notification from '@/ui/notification'
 import { DirectionFormType } from '../hookforms.interfaces'
 
 const ModalAddressesActions = () => {

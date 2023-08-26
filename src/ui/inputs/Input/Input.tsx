@@ -3,7 +3,7 @@ import type { InputHTMLAttributes } from 'react'
 import type { IRegular } from 'styled-components'
 import styled, { useTheme } from 'styled-components'
 import { css } from 'styled-components'
-import type { InputSize } from './Input.interfaces'
+import type { InputSize } from '@/ui/inputs/Input/Input.interfaces'
 
 export type InputProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> & {
   size?: InputSize

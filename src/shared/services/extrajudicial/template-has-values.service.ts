@@ -1,4 +1,4 @@
-import { ValueType } from '../../types/extrajudicial/value.type'
+import { ValueType } from '@/types/extrajudicial/value.type'
 import axiosClient from '../../utils/api/clientAxios'
 
 const API = axiosClient.getUri()

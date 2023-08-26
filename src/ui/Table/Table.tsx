@@ -1,9 +1,9 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
 import type CSS from 'csstype'
-import Container from '../Container'
-import HeaderCell from './HeaderCell'
-import { SelectItem } from '../Select/interfaces'
+import Container from '@/ui/Container'
+import HeaderCell from '@/ui/Table/HeaderCell'
+import { SelectItem } from '@/ui/Select/interfaces'
 
 export type ColumProps = {
   id: string
@@ -138,7 +138,7 @@ const StyledContentTable = styled(Container)<{ top?: string; leftSpace?: number;
     width: 100%;
     overflow-x: auto;
     overflow-y: auto;
-    height: ${top ? `calc(100vh - ${top})` : '0'};
+    height: ${top ? `calc(100vh - ${top})` : '100%'};
 
     th:last-child,
     td:last-child {

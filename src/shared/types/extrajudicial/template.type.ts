@@ -1,4 +1,4 @@
-import { TemplateHasValuesType } from './../extrajudicial/template-has-values.type'
+import { TemplateHasValuesType } from '@/types/extrajudicial/template-has-values.type'
 
 export type TemplateType = {
   id: number

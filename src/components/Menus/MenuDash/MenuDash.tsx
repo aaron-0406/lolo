@@ -1,14 +1,14 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import styled, { css } from 'styled-components'
-import { useMediaQuery } from '../../../shared/hooks/useMediaQuery'
-import { useDashContext } from '../../../shared/contexts/DashProvider'
+import { useMediaQuery } from '@/hooks/useMediaQuery'
+import { useDashContext } from '@/contexts/DashProvider'
 import paths from '../../../shared/routes/paths'
 import storage from '../../../shared/utils/storage'
-import Container from '../../../ui/Container'
-import Icon from '../../../ui/Icon'
-import Text from '../../../ui/Text'
-import { device } from '../../../shared/breakpoints/reponsive'
+import Container from '@/ui/Container'
+import Icon from '@/ui/Icon'
+import Text from '@/ui/Text'
+import { device } from '@/breakpoints/responsive'
 import { getDashItems } from './utils/get-dash-items'
 
 type MenuProps = {
@@ -60,6 +60,7 @@ const MenuDash: React.FC<MenuProps> = ({ children }) => {
             LOLO BANK
           </Text.Body>
         </Container>
+        
         <Container>
           <Text.Body size="m" weight="bold" color="Success5">
             {urlIdentifier}
