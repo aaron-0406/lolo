@@ -1,14 +1,15 @@
 import { useState } from 'react'
+import { useForm } from 'react-hook-form'
 import { AxiosResponse } from 'axios'
-import { useQuery, useQueryClient } from 'react-query'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { useDashContext } from '@/contexts/DashProvider'
 import { banksNoSelectColumns } from './utils/columnsNoSelect'
 import Table from '@/ui/Table'
 import TextField from '@/ui/fields/TextField'
 import Container from '@/ui/Container'
 import Button from '@/ui/Button'
-import { KEY_DASH_BANKS_CACHE } from './utils/dash-banks.cache'
-import { getAllBanks } from '@/services/dash/bank.service'
+import dashBanksCache, { KEY_DASH_BANKS_CACHE } from './utils/dash-banks.cache'
+import { createBank, getAllBanks } from '@/services/dash/bank.service'
 import { BankType } from '@/types/dash/bank.type'
 import { SelectedElementType } from '../bankModal.type'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
@@ -26,6 +27,14 @@ type BankNoSelectedProps = {
   setGlobalElement: (element: SelectedElementType) => void
 }
 
+const defaultValuesBank = {
+  id: 0,
+  name: '',
+  description: '-',
+  state: true,
+  createdAt: new Date(),
+}
+
 const BankNoSelected = ({ setGlobalElement }: BankNoSelectedProps) => {
   const {
     dashCustomer: { selectedCustomer },
@@ -33,6 +42,20 @@ const BankNoSelected = ({ setGlobalElement }: BankNoSelectedProps) => {
 
   const queryClient = useQueryClient()
   const greaterThanMobile = useMediaQuery(device.tabletS)
+
+  const {
+    actions: { addBankCache },
+    onMutateBankCache,
+    onSettledBankCache,
+    onErrorBankCache,
+  } = dashBanksCache(queryClient)
+
+  const formMethods = useForm<BankType>({
+    mode: 'all',
+    defaultValues: defaultValuesBank,
+  })
+
+  const { getValues, setValue } = formMethods
 
   const [idBank, setIdBank] = useState<number>(0)
   const [idDeletedBank, setIdDeletedBank] = useState<number>(0)
@@ -62,7 +85,35 @@ const BankNoSelected = ({ setGlobalElement }: BankNoSelectedProps) => {
   const chbs = dataCHBs as AxiosResponse<CustomerHasBankType[]>
   const banks = dataBanks?.data.filter((bank: BankType) => !chbs?.data.some((cb) => cb.idBank === bank.id)) ?? []
 
-  const onHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {}
+  const { isLoading: loadingCreateBank, mutate: addBank } = useMutation<AxiosResponse<BankType>, Error>(
+    async () => {
+      const { id, ...restBank } = getValues()
+      return await createBank({ ...restBank })
+    },
+    {
+      onSuccess: (result) => {
+        addBankCache(result.data)
+        notification({ type: 'success', message: 'Banco creado' })
+      },
+      onMutate: () => {
+        return onMutateBankCache()
+      },
+      onSettled: () => {
+        onSettledBankCache()
+      },
+      onError: (error: any, _, context: any) => {
+        onErrorBankCache(context)
+        notification({
+          type: 'error',
+          message: error.response.data.message,
+        })
+      },
+    }
+  )
+
+  const onHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValue('name', e.target.value)
+  }
 
   const handleClickEdit = (idBank: number) => {
     setIdBank(idBank)
@@ -72,6 +123,10 @@ const BankNoSelected = ({ setGlobalElement }: BankNoSelectedProps) => {
   const handleClickDelete = (idBank: number) => {
     setIdDeletedBank(idBank)
     showDeleteBank()
+  }
+
+  const onAddBank = () => {
+    addBank()
   }
 
   const onCloseDeleteBank = () => {
@@ -141,7 +196,7 @@ const BankNoSelected = ({ setGlobalElement }: BankNoSelectedProps) => {
 
       <Container display="flex" justifyContent="space-between" gap="10px" padding="10px">
         <TextField onChange={onHandleChange} width="100%" placeholder="Agregar Banco: " />
-        <Button size="small" shape="round" trailingIcon="ri-add-fill" />
+        <Button onClick={onAddBank} size="small" shape="round" trailingIcon="ri-add-fill" loading={loadingCreateBank} />
       </Container>
 
       {visibleBankEdit && (
