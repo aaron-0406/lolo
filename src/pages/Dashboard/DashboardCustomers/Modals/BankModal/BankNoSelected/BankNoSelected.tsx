@@ -88,56 +88,58 @@ const BankNoSelected = ({ setGlobalElement }: BankNoSelectedProps) => {
   }
 
   return (
-    <Container width={greaterThanMobile ? '49%' : '100%'}>
-      <Table
-        top={greaterThanMobile ? '280px' : '410px'}
-        columns={banksNoSelectColumns}
-        loading={isLoading}
-        isArrayEmpty={!banks.length}
-        emptyState={
-          <EmptyStateCell colSpan={banksNoSelectColumns.length}>
-            <div>Vacio</div>
-          </EmptyStateCell>
-        }
-      >
-        {!!banks.length &&
-          banks.map((record: BankType, key: number) => {
-            return (
-              <tr
-                className="styled-data-table-row"
-                key={key}
-                onClick={() => {
-                  onHandleClick({ bank: record, key: 'BANK_NOT_SELECTED' })
-                }}
-              >
-                <BodyCell textAlign="center">{`${record.name || ''}`}</BodyCell>
-                <BodyCell>
-                  <Container width="100%" textAlign="center" display="flex" justifyContent="space-around">
-                    <Button
-                      onClick={() => {
-                        handleClickEdit(record.id)
-                      }}
-                      messageTooltip="Editar Banco"
-                      shape="round"
-                      size="small"
-                      leadingIcon="ri-pencil-fill"
-                    />
-                    <Button
-                      onClick={() => {
-                        handleClickDelete(record.id)
-                      }}
-                      messageTooltip="Eliminar Banco"
-                      shape="round"
-                      size="small"
-                      leadingIcon="ri-delete-bin-line"
-                    />
-                  </Container>
-                </BodyCell>
-              </tr>
-            )
-          })}
-      </Table>
-      <Container display="flex" justifyContent="space-between" padding="10px">
+    <Container width={greaterThanMobile ? '49%' : '100%'} height="100%">
+      <Container height="calc(100% - 60px)">
+        <Table
+          columns={banksNoSelectColumns}
+          loading={isLoading}
+          isArrayEmpty={!banks.length}
+          emptyState={
+            <EmptyStateCell colSpan={banksNoSelectColumns.length}>
+              <div>Vacio</div>
+            </EmptyStateCell>
+          }
+        >
+          {!!banks.length &&
+            banks.map((record: BankType, key: number) => {
+              return (
+                <tr
+                  className="styled-data-table-row"
+                  key={key}
+                  onClick={() => {
+                    onHandleClick({ bank: record, key: 'BANK_NOT_SELECTED' })
+                  }}
+                >
+                  <BodyCell textAlign="center">{`${record.name || ''}`}</BodyCell>
+                  <BodyCell>
+                    <Container width="100%" textAlign="center" display="flex" justifyContent="space-around">
+                      <Button
+                        onClick={() => {
+                          handleClickEdit(record.id)
+                        }}
+                        messageTooltip="Editar Banco"
+                        shape="round"
+                        size="small"
+                        leadingIcon="ri-pencil-fill"
+                      />
+                      <Button
+                        onClick={() => {
+                          handleClickDelete(record.id)
+                        }}
+                        messageTooltip="Eliminar Banco"
+                        shape="round"
+                        size="small"
+                        leadingIcon="ri-delete-bin-line"
+                      />
+                    </Container>
+                  </BodyCell>
+                </tr>
+              )
+            })}
+        </Table>
+      </Container>
+
+      <Container display="flex" justifyContent="space-between" gap="10px" padding="10px">
         <TextField onChange={onHandleChange} width="100%" placeholder="Agregar Banco: " />
         <Button size="small" shape="round" trailingIcon="ri-add-fill" />
       </Container>
