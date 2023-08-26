@@ -1,11 +1,10 @@
-import React from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
-import { DirectionType } from '../../../../../../../../shared/types/extrajudicial/direction.type'
-import Container from '../../../../../../../../ui/Container'
-import TextAreaField from '../../../../../../../../ui/fields/TextAreaField'
-import Label from '../../../../../../../../ui/Label'
-import Select from '../../../../../../../../ui/Select'
-import { SelectItemType } from '../../../../../../../../ui/Select/interfaces'
+import { DirectionType } from '@/types/extrajudicial/direction.type'
+import Container from '@/ui/Container'
+import TextAreaField from '@/ui/fields/TextAreaField'
+import Label from '@/ui/Label'
+import Select from '@/ui/Select'
+import { SelectItemType } from '@/ui/Select/interfaces'
 
 const ModalAddressesInfo = () => {
   const {

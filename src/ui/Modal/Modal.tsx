@@ -1,11 +1,11 @@
 import type CSS from 'csstype'
 import styled, { css } from 'styled-components'
-import { usePortal } from '../../shared/hooks/usePortal'
+import { usePortal } from '@/hooks/usePortal'
 import type { ModalSize } from './interfaces'
-import ModalFooter from './ModalFooter'
-import ModalHeader from './ModalHeader'
-import ReactPortal from '../ReactPortal'
-import Container from '../Container'
+import ModalFooter from '@/ui/Modal/ModalFooter'
+import ModalHeader from '@/ui/Modal/ModalHeader'
+import ReactPortal from '@/ui/ReactPortal'
+import Container from '@/ui/Container'
 
 export type ModalProps = {
   id: string

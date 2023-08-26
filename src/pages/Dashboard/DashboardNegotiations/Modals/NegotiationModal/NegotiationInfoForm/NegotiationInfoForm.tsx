@@ -1,8 +1,8 @@
 import { Controller, useFormContext } from 'react-hook-form'
-import { NegotiationType } from '../../../../../../shared/types/dash/negotiation.type'
-import Label from '../../../../../../ui/Label'
-import TextField from '../../../../../../ui/fields/TextField'
-import Container from '../../../../../../ui/Container'
+import { NegotiationType } from '@/types/dash/negotiation.type'
+import Label from '@/ui/Label'
+import TextField from '@/ui/fields/TextField'
+import Container from '@/ui/Container'
 
 const NegotiationInfoForm = () => {
   const {

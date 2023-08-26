@@ -1,4 +1,4 @@
-import { CustomerType } from '../../types/dash/customer.type'
+import { CustomerType } from '@/types/dash/customer.type'
 import axiosClient from '../../utils/api/clientAxios'
 
 const API = axiosClient.getUri()

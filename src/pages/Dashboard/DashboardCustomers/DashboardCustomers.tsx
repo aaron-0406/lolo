@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import CustomersSearch from './CustomersSearch'
 import CustomersTable from './CustomersTable'
-import Container from '../../../ui/Container'
-import { Opts } from '../../../ui/Pagination/interfaces'
+import Container from '@/ui/Container'
+import { Opts } from '@/ui/Pagination/interfaces'
 
 const DashboardCustomers = () => {
   const [opts, setOpts] = useState<Opts>({ filter: '', limit: 50, page: 1 })

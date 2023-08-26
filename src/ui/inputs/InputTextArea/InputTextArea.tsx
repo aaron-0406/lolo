@@ -1,8 +1,8 @@
 import styled, { css } from 'styled-components'
-import Container from '../../Container'
-import Icon from '../../Icon'
-import TextArea from '../TextArea'
-import type { TextAreaProps } from '../TextArea'
+import Container from '@/ui/Container'
+import Icon from '@/ui/Icon'
+import TextArea from '@/ui/inputs/TextArea'
+import type { TextAreaProps } from '@/ui/inputs/TextArea'
 
 type InputTextAreaProps = TextAreaProps & {
   tooltipMessage?: string

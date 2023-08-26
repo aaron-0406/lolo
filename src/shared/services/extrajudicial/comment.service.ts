@@ -1,4 +1,4 @@
-import { CommentType } from '../../types/extrajudicial/comment.type'
+import { CommentType } from '@/types/extrajudicial/comment.type'
 import axiosClient from '../../utils/api/clientAxios'
 
 const API = axiosClient.getUri()

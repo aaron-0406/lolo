@@ -1,11 +1,11 @@
-import { useMutation, useQueryClient } from 'react-query'
-import { deleteBank } from '../../../../../../../../shared/services/dash/bank.service'
-import notification from '../../../../../../../../ui/notification'
-import Modal from '../../../../../../../../ui/Modal'
-import Container from '../../../../../../../../ui/Container'
-import Button from '../../../../../../../../ui/Button'
-import dashBanksCache from '../../utils/dash-banks.cache'
 import { AxiosResponse } from 'axios'
+import { useMutation, useQueryClient } from 'react-query'
+import { deleteBank } from '@/services/dash/bank.service'
+import notification from '@/ui/notification'
+import Modal from '@/ui/Modal'
+import Container from '@/ui/Container'
+import Button from '@/ui/Button'
+import dashBanksCache from '../../utils/dash-banks.cache'
 
 type BankModalDeleteProps = {
   visible: boolean
@@ -34,7 +34,7 @@ const BankModalDelete = ({ visible, idBank = 0, onClose }: BankModalDeleteProps)
         onClose()
       },
       onMutate: () => {
-        onMutateBankCache()
+        return onMutateBankCache()
       },
       onSettled: () => {
         onSettledBankCache()
@@ -65,8 +65,8 @@ const BankModalDelete = ({ visible, idBank = 0, onClose }: BankModalDeleteProps)
       size="small"
       footer={
         <Container width="100%" justifyContent="space-around" display="flex" alignItems="center">
-          {<Button onClick={deleteBanks} loading={loadingDeleteBank} display="danger" size="default" label="ACEPTAR" />}
-          {<Button onClick={onClose} size="default" label="CANCELAR" />}
+          <Button onClick={deleteBanks} loading={loadingDeleteBank} display="danger" size="default" label="ACEPTAR" />
+          <Button onClick={onClose} size="default" label="CANCELAR" />
         </Container>
       }
     ></Modal>

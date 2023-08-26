@@ -1,5 +1,5 @@
-import { GoalUserType } from '../../../../shared/types/extrajudicial/goal-user.type'
-import { GoalType } from '../../../../shared/types/extrajudicial/goal.type'
+import { GoalUserType } from '@/types/extrajudicial/goal-user.type'
+import { GoalType } from '@/types/extrajudicial/goal.type'
 
 export type GoalFormType = {
   goals: Array<GoalType>

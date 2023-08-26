@@ -1,20 +1,16 @@
 import { useEffect } from 'react'
-import { FuncionarioType } from '../../../../../shared/types/dash/funcionario.type'
-import { ModalFuncionariosResolver } from './FuncionariosModal.yup'
+import { AxiosResponse } from 'axios'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
-import {
-  createFuncionario,
-  getAllFuncionariosByID,
-  editFuncionarioById,
-} from '../../../../../shared/services/dash/funcionario.service'
-import notification from '../../../../../ui/notification'
-import Modal from '../../../../../ui/Modal'
-import Container from '../../../../../ui/Container'
-import Button from '../../../../../ui/Button'
+import { FuncionarioType } from '@/types/dash/funcionario.type'
+import { ModalFuncionariosResolver } from './FuncionariosModal.yup'
+import { createFuncionario, getAllFuncionariosByID, editFuncionarioById } from '@/services/dash/funcionario.service'
+import notification from '@/ui/notification'
+import Modal from '@/ui/Modal'
+import Container from '@/ui/Container'
+import Button from '@/ui/Button'
 import FuncionarioInfoForm from './FuncionarioInfoForm/FuncionarioInfoForm'
 import dashFuncionariosCache from '../../FuncionariosTable/utils/dash-funcionarios.cache'
-import { AxiosResponse } from 'axios'
 
 type FuncionariosModalProps = {
   visible: boolean
@@ -63,7 +59,7 @@ const FuncionariosModal = ({ visible, onClose, isEdit = false, idFuncionario = 0
     {
       onSuccess: (result) => {
         createFuncionarioCache(result.data)
-        notification({ type: 'success', message: 'Funcionario Creado' })
+        notification({ type: 'success', message: 'Funcionario creado' })
         handleClickCloseModal()
       },
       onMutate: () => {
@@ -93,7 +89,7 @@ const FuncionariosModal = ({ visible, onClose, isEdit = false, idFuncionario = 0
     {
       onSuccess: (result) => {
         editFuncionarioCache(result.data)
-        notification({ type: 'success', message: 'Funcionario Editado' })
+        notification({ type: 'success', message: 'Funcionario editado' })
         handleClickCloseModal()
       },
       onMutate: () => {

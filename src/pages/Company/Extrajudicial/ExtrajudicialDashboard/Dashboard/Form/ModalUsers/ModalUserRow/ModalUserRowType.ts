@@ -1,4 +1,4 @@
-import { CustomerUserType } from '../../../../../../../../shared/types/dash/customer-user.type'
+import { CustomerUserType } from '@/types/dash/customer-user.type'
 
 export type ModalUserRowProps = {
   user: CustomerUserType

@@ -1,11 +1,11 @@
-import { useMutation, useQueryClient } from 'react-query'
-import Container from '../../../../../ui/Container'
-import Modal from '../../../../../ui/Modal'
-import notification from '../../../../../ui/notification'
-import Button from '../../../../../ui/Button'
-import { deleteFuncionario } from '../../../../../shared/services/dash/funcionario.service'
-import dashFuncionariosCache from '../../FuncionariosTable/utils/dash-funcionarios.cache'
 import { AxiosResponse } from 'axios'
+import { useMutation, useQueryClient } from 'react-query'
+import Container from '@/ui/Container'
+import Modal from '@/ui/Modal'
+import notification from '@/ui/notification'
+import Button from '@/ui/Button'
+import { deleteFuncionario } from '@/services/dash/funcionario.service'
+import dashFuncionariosCache from '../../FuncionariosTable/utils/dash-funcionarios.cache'
 
 type DeleteFuncionariosModalProps = {
   visible: boolean
@@ -63,7 +63,7 @@ const DeleteFuncionariosModal = ({ visible, idAction = 0, onClose, chb = 0 }: De
       visible={visible}
       onClose={onClose}
       id="modal-delete"
-      title="¿Desea eliminar la acción?"
+      title="¿Desea eliminar el funcionario?"
       contentOverflowY="auto"
       size="small"
       footer={

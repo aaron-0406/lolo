@@ -1,4 +1,4 @@
-import { GuarantorType } from '../../types/extrajudicial/guarantor.type'
+import { GuarantorType } from '@/types/extrajudicial/guarantor.type'
 import axiosClient from '../../utils/api/clientAxios'
 
 const API = axiosClient.getUri()

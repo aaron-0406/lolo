@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components'
-import Container from '../../../ui/Container'
-import Text from '../../../ui/Text'
+import Container from '@/ui/Container'
+import Text from '@/ui/Text'
 
 type LoginHeaderProps = {
   title: string

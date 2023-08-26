@@ -1,8 +1,8 @@
 import * as React from 'react'
 import toast from 'react-hot-toast'
-import AlertNotification from '../AlertNotification'
-import { config } from '../AlertNotification'
-import type { AlertNotificationType } from '../AlertNotification/interfaces'
+import AlertNotification from '@/ui/AlertNotification'
+import { config } from '@/ui/AlertNotification'
+import type { AlertNotificationType } from '@/ui/AlertNotification/interfaces'
 
 type NotificationProps = {
   type: AlertNotificationType

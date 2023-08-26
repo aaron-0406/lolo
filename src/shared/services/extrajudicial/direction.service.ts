@@ -1,4 +1,4 @@
-import { DirectionType } from '../../types/extrajudicial/direction.type'
+import { DirectionType } from '@/types/extrajudicial/direction.type'
 import axiosClient from '../../utils/api/clientAxios'
 
 const API = axiosClient.getUri()

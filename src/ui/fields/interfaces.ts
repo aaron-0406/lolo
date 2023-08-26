@@ -1,5 +1,5 @@
-import type { HelperTextProps } from '../HelperText'
-import type { LabelProps } from '../Label'
+import type { HelperTextProps } from '@/ui/HelperText'
+import type { LabelProps } from '@/ui/Label'
 
 export type LabelFieldProps = Pick<
   LabelProps,

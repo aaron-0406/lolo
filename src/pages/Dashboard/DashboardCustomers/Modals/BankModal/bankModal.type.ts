@@ -1,4 +1,4 @@
-import { BankType } from '../../../../../shared/types/dash/bank.type'
+import { BankType } from '@/types/dash/bank.type'
 
 enum BankStatusEnum {
   SELECTED_BANK = 'SELECTED_BANK',

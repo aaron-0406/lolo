@@ -1,9 +1,9 @@
 import React from 'react'
 import { useFormContext } from 'react-hook-form'
 import styled, { css } from 'styled-components'
-import Checkbox from '../../../../../../ui/Checkbox'
-import Container from '../../../../../../ui/Container'
-import Text from '../../../../../../ui/Text'
+import Checkbox from '@/ui/Checkbox'
+import Container from '@/ui/Container'
+import Text from '@/ui/Text'
 import { ClientTypeForm, TemplateFormType } from '../../hookforms.interfaces'
 
 type TemplateUserRowProps = {

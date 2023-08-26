@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import styled, { css } from 'styled-components'
-import Container from '../Container'
-import Text from '../Text'
-import type { IOption } from './interfaces'
+import Container from '@/ui/Container'
+import Text from '@/ui/Text'
+import type { IOption } from '@/ui/SegmentedControl//interfaces'
 
 type SegmentedControlProps<T> = {
   name: string
