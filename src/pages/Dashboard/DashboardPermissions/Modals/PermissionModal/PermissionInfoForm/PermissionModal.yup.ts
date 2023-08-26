@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import yup from '../../../../../../shared/yupLocale'
-import { PermissionType } from '../../../../../../shared/types/dash/permission.type'
+import { PermissionType } from '@/types/dash/permission.type'
 
 const PermissionModal: yup.SchemaOf<Omit<PermissionType, 'id' | 'permissions'>> = yup.object().shape({
   name: yup.string().min(1).max(150).required(),

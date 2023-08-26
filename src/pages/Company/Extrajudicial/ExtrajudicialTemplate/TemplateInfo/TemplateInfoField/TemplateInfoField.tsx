@@ -1,9 +1,9 @@
 import React from 'react'
 import { useFormContext } from 'react-hook-form'
-import { ECampoType } from '../../../../../../shared/types/extrajudicial/ecampo.type'
-import Container from '../../../../../../ui/Container'
-import TextField from '../../../../../../ui/fields/TextField'
-import Label from '../../../../../../ui/Label'
+import { ECampoType } from '@/types/extrajudicial/ecampo.type'
+import Container from '@/ui/Container'
+import TextField from '@/ui/fields/TextField'
+import Label from '@/ui/Label'
 import { TemplateFormType } from '../../hookforms.interfaces'
 
 type ChangeEvent = React.ChangeEvent<HTMLInputElement>

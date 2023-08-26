@@ -1,12 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from 'react'
-import Container from '../../../../../ui/Container'
-import { Bar } from 'react-chartjs-2'
 import { Chart, registerables } from 'chart.js'
 import { useQuery } from 'react-query'
-import { getChart } from '../../../../../shared/services/extrajudicial/comment.service'
-import { useLoloContext } from '../../../../../shared/contexts/LoloProvider'
-import Text from '../../../../../ui/Text'
+import { Bar } from 'react-chartjs-2'
+import Container from '@/ui/Container'
+import { getChart } from '@/services/extrajudicial/comment.service'
+import { useLoloContext } from '@/contexts/LoloProvider'
+import Text from '@/ui/Text'
 
 Chart.register(...registerables)
 

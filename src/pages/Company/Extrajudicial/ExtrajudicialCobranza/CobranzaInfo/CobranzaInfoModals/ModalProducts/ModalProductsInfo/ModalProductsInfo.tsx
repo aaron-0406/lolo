@@ -1,10 +1,10 @@
-import Container from '../../../../../../../../ui/Container'
-import Label from '../../../../../../../../ui/Label'
+import Container from '@/ui/Container'
+import Label from '@/ui/Label'
 import { Controller, useFormContext } from 'react-hook-form'
-import TextAreaField from '../../../../../../../../ui/fields/TextAreaField'
+import TextAreaField from '@/ui/fields/TextAreaField'
 import { ProductFormType } from '../hookforms.interfaces'
-import { SelectItemType } from '../../../../../../../../ui/Select/interfaces'
-import Select from '../../../../../../../../ui/Select'
+import { SelectItemType } from '@/ui/Select/interfaces'
+import Select from '@/ui/Select'
 
 const ModalProductsInfo = () => {
   const {

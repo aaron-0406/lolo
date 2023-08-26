@@ -1,5 +1,5 @@
 import axiosClient from '../../utils/api/clientAxios'
-import { PermissionType } from '../../types/dash/permission.type'
+import { PermissionType } from '@/types/dash/permission.type'
 
 const API = axiosClient.getUri()
 

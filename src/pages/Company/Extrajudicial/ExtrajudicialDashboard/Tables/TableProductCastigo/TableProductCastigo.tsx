@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { DashFormType } from '../../Dashboard/hookform.type'
 import { Columns } from './utils/columns'
-import { ProductType } from '../../../../../../shared/types/extrajudicial/product.type'
+import { ProductType } from '@/types/extrajudicial/product.type'
 import { Props } from '../Props.type'
-import Container from '../../../../../../ui/Container'
-import Table from '../../../../../../ui/Table'
-import BodyCell from '../../../../../../ui/Table/BodyCell'
-import EmptyStateCell from '../../../../../../ui/Table/EmptyStateCell'
+import Container from '@/ui/Container'
+import Table from '@/ui/Table'
+import BodyCell from '@/ui/Table/BodyCell'
+import EmptyStateCell from '@/ui/Table/EmptyStateCell'
 
 const TableProductCastigo = ({ globalLoad }: Props) => {
   const { watch } = useFormContext<DashFormType>()

@@ -1,9 +1,9 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
 import type CSS from 'csstype'
-import Container from '../Container'
-import HeaderCell from './HeaderCell'
-import { SelectItem } from '../Select/interfaces'
+import Container from '@/ui/Container'
+import HeaderCell from '@/ui/Table/HeaderCell'
+import { SelectItem } from '@/ui/Select/interfaces'
 
 export type ColumProps = {
   id: string

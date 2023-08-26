@@ -1,10 +1,10 @@
 import type { LiHTMLAttributes } from 'react'
 import styled, { css } from 'styled-components'
-import Container from '../Container'
-import Icon from '../Icon'
-import Text from '../Text'
+import Container from '@/ui/Container'
+import Icon from '@/ui/Icon'
+import Text from '@/ui/Text'
 import type { DropdownItemSizeType } from './interfaces'
-import Checkbox from '../Checkbox'
+import Checkbox from '@/ui/Checkbox'
 
 type DropdownProps = LiHTMLAttributes<HTMLLIElement> & {
   leadingIcon?: string

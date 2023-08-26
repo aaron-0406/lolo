@@ -1,4 +1,4 @@
-import { ClientType } from '../../types/extrajudicial/client.type'
+import { ClientType } from '@/types/extrajudicial/client.type'
 import axiosClient from '../../utils/api/clientAxios'
 
 const API = axiosClient.getUri()

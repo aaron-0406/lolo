@@ -1,18 +1,17 @@
-import React from 'react'
 import { useFormContext } from 'react-hook-form'
 import { useMutation } from 'react-query'
 import styled from 'styled-components'
-import { generateDocumentService } from '../../../../../shared/services/extrajudicial/document.service'
+import { generateDocumentService } from '@/services/extrajudicial/document.service'
 import {
   createTemplateHasValuesService,
   deleteTemplateHasValuesService,
   updateTemplateHasValuesService,
-} from '../../../../../shared/services/extrajudicial/template-has-values.service'
-import { ECampoType } from '../../../../../shared/types/extrajudicial/ecampo.type'
+} from '@/services/extrajudicial/template-has-values.service'
+import { ECampoType } from '@/types/extrajudicial/ecampo.type'
 import { DOMAIN } from '../../../../../shared/utils/constant/api'
-import Button from '../../../../../ui/Button'
-import Container from '../../../../../ui/Container'
-import notification from '../../../../../ui/notification'
+import Button from '@/ui/Button'
+import Container from '@/ui/Container'
+import notification from '@/ui/notification'
 import { TemplateFormType } from '../hookforms.interfaces'
 
 const TemplateActions = () => {

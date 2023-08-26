@@ -1,11 +1,11 @@
+import { useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 import { FormProvider, useForm } from 'react-hook-form'
-import Breadcrumbs from '../../../ui/Breadcrumbs'
-import Container from '../../../ui/Container'
+import Breadcrumbs from '@/ui/Breadcrumbs'
+import Container from '@/ui/Container'
 import PermissionsActions from './PermissionsActions'
 import PermissionsTable from './PermissionsTable'
-import { LinkType } from '../../../ui/Breadcrumbs/Breadcrumbs.type'
-import { useLocation } from 'react-router-dom'
-import { useEffect } from 'react'
+import { LinkType } from '@/ui/Breadcrumbs/Breadcrumbs.type'
 
 const DashboardPermissions = () => {
   const location = useLocation()

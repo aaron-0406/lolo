@@ -1,8 +1,8 @@
 import { Controller, useFormContext } from 'react-hook-form'
-import { FuncionarioType } from '../../../../../../shared/types/dash/funcionario.type'
-import Container from '../../../../../../ui/Container'
-import Label from '../../../../../../ui/Label'
-import TextField from '../../../../../../ui/fields/TextField'
+import { FuncionarioType } from '@/types/dash/funcionario.type'
+import Container from '@/ui/Container'
+import Label from '@/ui/Label'
+import TextField from '@/ui/fields/TextField'
 
 const FuncionarioInfoForm = () => {
   const {

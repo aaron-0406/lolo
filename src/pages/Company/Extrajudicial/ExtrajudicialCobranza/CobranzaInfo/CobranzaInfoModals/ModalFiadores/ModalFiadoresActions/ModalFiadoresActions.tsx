@@ -1,14 +1,10 @@
 import { useFormContext } from 'react-hook-form'
 import { useMutation } from 'react-query'
-import {
-  createGuarantor,
-  deleteGuarantor,
-  editGuarantor,
-} from '../../../../../../../../shared/services/extrajudicial/guarantor.service'
-import Button from '../../../../../../../../ui/Button'
-import Container from '../../../../../../../../ui/Container'
-import notification from '../../../../../../../../ui/notification'
-import { GuarantorFormType } from '../hookforms.interfaces'
+import { createGuarantor, deleteGuarantor, editGuarantor } from '@/services/extrajudicial/guarantor.service'
+import Button from '@/ui/Button'
+import Container from '@/ui/Container'
+import notification from '@/ui/notification'
+import { GuarantorFormType } from '@/pages/extrajudicial/ExtrajudicialCobranza/CobranzaInfo/CobranzaInfoModals/ModalFiadores/hookforms.interfaces'
 
 const ModalFiadoresActions = () => {
   const { setValue, getValues, handleSubmit, watch } = useFormContext<GuarantorFormType>()

@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components'
-import Container from '../Container'
-import Icon from '../Icon'
-import Text from '../Text'
+import Container from '@/ui/Container'
+import Icon from '@/ui/Icon'
+import Text from '@/ui/Text'
 
 export type LabelProps = {
   label?: string

@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components'
-import Container from '../../Container'
+import Container from '@/ui/Container'
 
 type ModalFooterProps = {
   children?: React.ReactNode | boolean

@@ -1,22 +1,22 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useFormContext } from 'react-hook-form'
-import Container from '../../../../../ui/Container/Container'
-import Modal from '../../../../../ui/Modal/Modal'
-import TextField from '../../../../../ui/fields/TextField/TextField'
-import { GoalFormType } from '../hookform.type'
 import React, { useEffect } from 'react'
 import { useMutation } from 'react-query'
+import { useFormContext } from 'react-hook-form'
+import moment from 'moment'
+import Container from '@/ui/Container/Container'
+import Modal from '@/ui/Modal/Modal'
+import TextField from '@/ui/fields/TextField/TextField'
+import { GoalFormType } from '../hookform.type'
 import {
   GoalApiResponse,
   GoalCustomerUserResponse,
   getCustomerUserGoals,
   updateCustomerUserGoals,
-} from '../../../../../shared/services/extrajudicial/goal.service'
-import Progress from '../../../../../ui/Progress/Progress'
-import Text from '../../../../../ui/Text/Text'
-import moment from 'moment'
-import Button from '../../../../../ui/Button/Button'
-import { notification } from '../../../../../ui/notification/notification'
+} from '@/services/extrajudicial/goal.service'
+import Progress from '@/ui/Progress/Progress'
+import Text from '@/ui/Text/Text'
+import Button from '@/ui/Button/Button'
+import { notification } from '@/ui/notification/notification'
 
 type MetasModalViewProps = {
   visible: boolean

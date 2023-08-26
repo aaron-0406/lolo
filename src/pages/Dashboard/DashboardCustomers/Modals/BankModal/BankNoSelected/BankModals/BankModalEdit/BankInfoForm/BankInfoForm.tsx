@@ -1,8 +1,8 @@
 import { Controller, useFormContext } from 'react-hook-form'
-import { BankType } from '../../../../../../../../../shared/types/dash/bank.type'
-import Container from '../../../../../../../../../ui/Container'
-import Label from '../../../../../../../../../ui/Label'
-import TextField from '../../../../../../../../../ui/fields/TextField'
+import { BankType } from '@/types/dash/bank.type'
+import Container from '@/ui/Container'
+import Label from '@/ui/Label'
+import TextField from '@/ui/fields/TextField'
 
 const BankInfoForm = () => {
   const {

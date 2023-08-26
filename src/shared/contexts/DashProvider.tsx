@@ -1,9 +1,9 @@
 import { createContext, Dispatch, useContext, useEffect, useState } from 'react'
 import jwtDecode from 'jwt-decode'
-import { UserAppType } from '../types/dash/user-app'
-import { CustomerType } from '../types/dash/customer.type'
+import { UserAppType } from '@/types/dash/user-app'
+import { CustomerType } from '@/types/dash/customer.type'
 import storage from '../utils/storage'
-import { usePersistedState } from '../hooks/usePersistedState'
+import { usePersistedState } from '@/hooks/usePersistedState'
 
 const appDashSelectedCustomerStateKey = 'dash:customer'
 

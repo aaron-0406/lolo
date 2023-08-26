@@ -1,5 +1,5 @@
 import axiosClient from '../../utils/api/clientAxios'
-import { NegotiationType } from '../../types/dash/negotiation.type'
+import { NegotiationType } from '@/types/dash/negotiation.type'
 
 const API = axiosClient.getUri()
 

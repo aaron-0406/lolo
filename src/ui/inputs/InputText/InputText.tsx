@@ -1,12 +1,12 @@
 import { forwardRef } from 'react'
 import type { ReactNode } from 'react'
 import styled, { css } from 'styled-components'
-import Container from '../../Container'
-import Icon from '../../Icon'
-import type { InputProps } from '../Input/Input'
-import Input from '../Input'
-import type { InputSize } from '../Input/Input.interfaces'
-import Text from '../../Text'
+import Container from '@/ui/Container'
+import Icon from '@/ui/Icon'
+import type { InputProps } from '@/ui/inputs/Input/Input'
+import Input from '@/ui/inputs/Input/index'
+import type { InputSize } from '@/ui/inputs/Input/Input.interfaces'
+import Text from '@/ui/Text'
 
 type InputTextProps = InputProps & {
   tooltipMessage?: string

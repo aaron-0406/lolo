@@ -1,6 +1,6 @@
-import { QueryClient } from 'react-query'
-import { CustomerUserType } from '../../../../../shared/types/dash/customer-user.type'
 import { AxiosResponse } from 'axios'
+import { QueryClient } from 'react-query'
+import { CustomerUserType } from '@/types/dash/customer-user.type'
 
 export const KEY_DASH_USUARIOS_CACHE = 'key-dash-usuarios-cache'
 

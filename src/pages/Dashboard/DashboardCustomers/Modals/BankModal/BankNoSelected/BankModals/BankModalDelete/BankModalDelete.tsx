@@ -1,11 +1,11 @@
-import { useMutation, useQueryClient } from 'react-query'
-import { deleteBank } from '../../../../../../../../shared/services/dash/bank.service'
-import notification from '../../../../../../../../ui/notification'
-import Modal from '../../../../../../../../ui/Modal'
-import Container from '../../../../../../../../ui/Container'
-import Button from '../../../../../../../../ui/Button'
-import dashBanksCache from '../../utils/dash-banks.cache'
 import { AxiosResponse } from 'axios'
+import { useMutation, useQueryClient } from 'react-query'
+import { deleteBank } from '@/services/dash/bank.service'
+import notification from '@/ui/notification'
+import Modal from '@/ui/Modal'
+import Container from '@/ui/Container'
+import Button from '@/ui/Button'
+import dashBanksCache from '../../utils/dash-banks.cache'
 
 type BankModalDeleteProps = {
   visible: boolean

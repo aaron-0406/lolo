@@ -1,6 +1,6 @@
-import { ProgressProps } from './interfaces'
-import Container from '../Container/Container'
-import Text from '../Text/Text'
+import { ProgressProps } from '@/ui/Progress/interfaces'
+import Container from '@/ui/Container/Container'
+import Text from '@/ui/Text/Text'
 
 const Progress = ({
   bgColorInit = '#51AB2B',

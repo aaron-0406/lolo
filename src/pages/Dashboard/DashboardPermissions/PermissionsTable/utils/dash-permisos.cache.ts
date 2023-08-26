@@ -1,6 +1,6 @@
 import { QueryClient } from 'react-query'
 import { AxiosResponse } from 'axios'
-import { PermissionType } from '../../../../../shared/types/dash/permission.type'
+import { PermissionType } from '@/types/dash/permission.type'
 
 export const KEY_DASH_PERMISOS_CACHE = 'key-dash-permisos-cache'
 
