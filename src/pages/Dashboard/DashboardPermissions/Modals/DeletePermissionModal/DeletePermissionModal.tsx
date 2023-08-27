@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from 'react-query'
+import { useLocation } from 'react-router-dom'
 import { AxiosResponse } from 'axios'
 import Button from '@/ui/Button/Button'
 import Container from '@/ui/Container/Container'
@@ -14,6 +15,10 @@ type DeletePermissionModalProps = {
 }
 
 const DeletePermissionModal = ({ visible, idPermission = 0, onClose }: DeletePermissionModalProps) => {
+  const location = useLocation()
+  const searchParams = new URLSearchParams(location.search)
+  const code = searchParams.get('code') ?? ''
+
   const queryClient = useQueryClient()
 
   const {
@@ -32,18 +37,18 @@ const DeletePermissionModal = ({ visible, idPermission = 0, onClose }: DeletePer
     },
     {
       onSuccess: (result) => {
-        deletePermissionCache(result.data.id)
+        deletePermissionCache(result.data.id, code)
         notification({ type: 'success', message: 'Permiso eliminado' })
         onClose()
       },
       onMutate: () => {
-        return onMutateCache()
+        return onMutateCache(code)
       },
       onSettled: () => {
-        onSettledCache()
+        onSettledCache(code)
       },
       onError: (error: any, _, context: any) => {
-        onErrorCache(context)
+        onErrorCache(context, code)
         notification({
           type: 'error',
           message: error.response.data.message,

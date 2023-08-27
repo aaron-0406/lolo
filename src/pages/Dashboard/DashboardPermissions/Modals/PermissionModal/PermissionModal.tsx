@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from 'react'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
+import { AxiosResponse } from 'axios'
 import { useLocation } from 'react-router-dom'
 import { FormProvider, useForm } from 'react-hook-form'
 import Modal from '@/ui/Modal/Modal'
@@ -32,7 +33,7 @@ const PermissionModal = ({ visible, onClose, idPermission = 0 }: PermissionModal
   const location = useLocation()
   const searchParams = new URLSearchParams(location.search)
 
-  const code = searchParams.get('code')
+  const code = searchParams.get('code') ?? ''
 
   const formMethods = useForm<Omit<PermissionType, 'permissions'>>({
     resolver: ModalPermissionResolver,
@@ -44,7 +45,7 @@ const PermissionModal = ({ visible, onClose, idPermission = 0 }: PermissionModal
     setValue,
     getValues,
     reset,
-    formState: { isValid },
+    formState: { isValid, isDirty },
   } = formMethods
 
   const {
@@ -61,18 +62,18 @@ const PermissionModal = ({ visible, onClose, idPermission = 0 }: PermissionModal
     },
     {
       onSuccess: (result) => {
-        createPermissionCache(result.data)
+        createPermissionCache(result.data, code)
         notification({ type: 'success', message: 'Permiso creado' })
         handleClickCloseModal()
       },
       onMutate: () => {
-        return onMutateCache()
+        return onMutateCache(code)
       },
       onSettled: () => {
-        onSettledCache()
+        onSettledCache(code)
       },
       onError: (error: any, _, context: any) => {
-        onErrorCache(context)
+        onErrorCache(context, code)
         notification({
           type: 'error',
           message: error.response.data.message,
@@ -88,18 +89,18 @@ const PermissionModal = ({ visible, onClose, idPermission = 0 }: PermissionModal
     },
     {
       onSuccess: (result) => {
-        editPermissionCache(result.data)
+        editPermissionCache(result.data, code)
         notification({ type: 'success', message: 'Permiso editado' })
         onClose()
       },
       onMutate: () => {
-        return onMutateCache()
+        return onMutateCache(code)
       },
       onSettled: () => {
-        onSettledCache()
+        onSettledCache(code)
       },
       onError: (error: any, _, context: any) => {
-        onErrorCache(context)
+        onErrorCache(context, code)
         notification({
           type: 'error',
           message: error.response.data.message,
@@ -116,11 +117,10 @@ const PermissionModal = ({ visible, onClose, idPermission = 0 }: PermissionModal
     {
       onSuccess: ({ data }) => {
         if (idPermission !== 0) {
-          setValue('name', data.name)
-          setValue('code', data.code)
-          setValue('icon', data.icon)
-          setValue('link', data.link)
-          setValue('id', data.id)
+          reset(
+            { id: data.id, name: data.name, code: data.code, icon: data.icon, link: data.link },
+            { keepDirty: false }
+          )
         } else {
           reset(defaultValuesPermission)
         }
@@ -129,10 +129,22 @@ const PermissionModal = ({ visible, onClose, idPermission = 0 }: PermissionModal
     }
   )
 
-  const handleClickCloseModal = () => {
-    onClose()
-    setValue('code', code ? String(code) + '-' : '')
+  const { data: permissionsData } = useQuery<AxiosResponse<Array<PermissionType>>>([KEY_DASH_PERMISOS_CACHE, code])
+  const permissions = permissionsData?.data ?? []
+
+  const getCode = () => {
+    let lastNumber = ''
+    if (permissions.length < 10) {
+      lastNumber = `0${permissions.length + 1}`
+    }
+
+    setValue('code', code ? `${code}-${lastNumber}` : `P${lastNumber}`)
     if (code) setValue('link', code.length >= 3 ? '#' : '')
+  }
+
+  const handleClickCloseModal = () => {
+    reset()
+    onClose()
   }
 
   const onAddPermission = () => {
@@ -146,6 +158,12 @@ const PermissionModal = ({ visible, onClose, idPermission = 0 }: PermissionModal
   useEffect(() => {
     if (!!idPermission) refetchPermissions()
   }, [idPermission, refetchPermissions])
+
+  useEffect(() => {
+    if (!idPermission) {
+      getCode()
+    }
+  }, [permissions.length])
 
   return (
     <FormProvider {...formMethods}>
@@ -166,7 +184,7 @@ const PermissionModal = ({ visible, onClose, idPermission = 0 }: PermissionModal
               trailingIcon="ri-add-fill"
               onClick={idPermission !== 0 ? onEditPermission : onAddPermission}
               loading={loadingCreatePermission || loadingEditPermission}
-              disabled={!isValid}
+              disabled={!isDirty || !isValid}
             />
           </Container>
         }

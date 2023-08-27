@@ -29,7 +29,7 @@ const PermissionInfoForm = () => {
           name="code"
           control={control}
           render={({ field }) => (
-            <TextField width="100%" value={field.value} onChange={field.onChange} hasError={!!errors.code} />
+            <TextField width="100%" value={field.value} onChange={field.onChange} hasError={!!errors.code} disabled />
           )}
         />
       </Container>

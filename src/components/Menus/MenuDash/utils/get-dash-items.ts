@@ -58,5 +58,12 @@ export const getDashItems = () => {
       path: paths.dash.permisos,
       admin: false,
     },
+    {
+      id: 8,
+      title: 'ROLES',
+      remixClass: 'ri-shield-user-line',
+      path: paths.dash.roles,
+      admin: false,
+    },
   ]
 }

@@ -10,6 +10,7 @@ import Button from '@/ui/Button'
 import useModal from '@/hooks/useModal'
 import Label from '@/ui/Label/Label'
 import dashUsuariosCache from '../UsersTable/utils/dash-usuarios.cache'
+import { useDashContext } from '@/contexts/DashProvider'
 
 type UsersSearchProps = {
   opts: Opts
@@ -17,6 +18,10 @@ type UsersSearchProps = {
 }
 
 const UsersSearch: FC<UsersSearchProps> = ({ opts, setOpts }) => {
+  const {
+    dashCustomer: { selectedCustomer },
+  } = useDashContext()
+
   const greaterThanMobile = useMediaQuery(device.tabletS)
   const { visible: visibleModalAdd, showModal: showModalAdd, hideModal: hideModalAdd } = useModal()
 
@@ -53,7 +58,13 @@ const UsersSearch: FC<UsersSearchProps> = ({ opts, setOpts }) => {
         </Container>
         <TextField onChange={onChangeSearch} width="100%" placeholder="Buscar usuario por nombre" />
       </Container>
-      <Button shape="round" leadingIcon="ri-add-fill" size="small" onClick={handleClickModal} />
+      <Button
+        disabled={!selectedCustomer.id}
+        shape="round"
+        leadingIcon="ri-add-fill"
+        size="small"
+        onClick={handleClickModal}
+      />
 
       <UsersModal visible={visibleModalAdd} onClose={onCloseModal} />
     </Container>
