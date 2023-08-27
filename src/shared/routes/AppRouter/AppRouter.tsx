@@ -9,6 +9,7 @@ import DashHome from '@/pages/dashboard/Home'
 import DashboardCustomers from '@/pages/dashboard/DashboardCustomers'
 import DashboardActions from '@/pages/dashboard/DashboardActions'
 import DashboardUsers from '@/pages/dashboard/DashboardUsers'
+import DashboardRoles from '@/pages/dashboard/DashboardRoles'
 import DashboardPermissions from '@/pages/dashboard/DashboardPermissions'
 import DashboardNegotiations from '@/pages/dashboard/DashboardNegotiations'
 import DashboardFuncionarios from '@/pages/dashboard/DashboardFuncionarios'
@@ -55,6 +56,7 @@ const AppRouter = () => {
         <Route path={paths.dash.clientes} element={<DashboardCustomers />} />
         <Route path={paths.dash.usuarios} element={<DashboardUsers />} />
         <Route path={paths.dash.permisos} element={<DashboardPermissions />} />
+        <Route path={paths.dash.roles} element={<DashboardRoles />} />
         <Route path={paths.dash.funcionarios} element={<DashboardFuncionarios />} />
         <Route path={paths.dash.reportes} element={<div>reportes</div>} />
         <Route path={paths.dash.acciones} element={<DashboardActions />} />
