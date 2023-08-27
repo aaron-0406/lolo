@@ -1,8 +1,6 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { AxiosResponse } from 'axios'
-import type CSS from 'csstype'
-import styled, { css } from 'styled-components'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { useDashContext } from '@/contexts/DashProvider'
 import { banksNoSelectColumns } from './utils/columnsNoSelect'
@@ -12,7 +10,6 @@ import { BankType } from '@/types/dash/bank.type'
 import { SelectedElementType } from '../bankModal.type'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import useModal from '@/hooks/useModal'
-import ClickOutSideComponent from '@/hooks/useClickOutside'
 import { device } from '@/breakpoints/responsive'
 import { KEY_DASH_CUSTOMER_BANK_CACHE } from '../BankSelected/utils/dash-customer-banks.cache'
 import BankModalEdit from './BankModals/BankModalEdit'
@@ -28,6 +25,7 @@ import Button from '@/ui/Button'
 
 type BankNoSelectedProps = {
   setGlobalElement: (element: SelectedElementType) => void
+  elementSelected: SelectedElementType
 }
 
 const defaultValuesBank = {
@@ -38,7 +36,7 @@ const defaultValuesBank = {
   createdAt: new Date(),
 }
 
-const BankNoSelected = ({ setGlobalElement }: BankNoSelectedProps) => {
+const BankNoSelected = ({ setGlobalElement, elementSelected }: BankNoSelectedProps) => {
   const {
     dashCustomer: { selectedCustomer },
   } = useDashContext()
@@ -62,7 +60,6 @@ const BankNoSelected = ({ setGlobalElement }: BankNoSelectedProps) => {
 
   const [idBank, setIdBank] = useState<number>(0)
   const [idDeletedBank, setIdDeletedBank] = useState<number>(0)
-  const [rowKey, setRowKey] =  useState<number>(0)
 
   const { visible: visibleBankEdit, showModal: showBankEdit, hideModal: hideBankEdit } = useModal()
   const { visible: visibleDeleteBank, showModal: showDeleteBank, hideModal: hideDeleteBank } = useModal()
@@ -147,7 +144,7 @@ const BankNoSelected = ({ setGlobalElement }: BankNoSelectedProps) => {
   }
 
   return (
-    <StyledContainer callback={() => {setRowKey(0)}} width={greaterThanMobile ? '49%' : '100%'} height="100%">
+    <Container width={greaterThanMobile ? '49%' : '100%'} height="100%">
       <Container height="calc(100% - 60px)">
         <Table
           columns={banksNoSelectColumns}
@@ -161,13 +158,14 @@ const BankNoSelected = ({ setGlobalElement }: BankNoSelectedProps) => {
         >
           {!!banks.length &&
             banks.map((record: BankType, key: number) => {
-              const className = rowKey === key + 1 && "active"
+              const className =
+                elementSelected.bank.id === record.id && elementSelected.key === 'BANK_NOT_SELECTED' && 'active'
+
               return (
                 <tr
-                  className= {`styled-data-table-row ${className}`}
+                  className={`styled-data-table-row ${className}`}
                   key={key}
                   onClick={() => {
-                    setRowKey(key + 1)
                     onHandleClick({ bank: record, key: 'BANK_NOT_SELECTED' })
                   }}
                 >
@@ -210,21 +208,10 @@ const BankNoSelected = ({ setGlobalElement }: BankNoSelectedProps) => {
       )}
 
       {visibleDeleteBank && (
-        <BankModalDelete
-          visible={visibleDeleteBank}
-          onClose={onCloseDeleteBank}
-          idBank={idDeletedBank}
-        />
+        <BankModalDelete visible={visibleDeleteBank} onClose={onCloseDeleteBank} idBank={idDeletedBank} />
       )}
-    </StyledContainer>
+    </Container>
   )
 }
 
 export default BankNoSelected
-
-const StyledContainer = styled(ClickOutSideComponent)<{ width?: CSS.Property.Width, height?: CSS.Property.Height }>`
-  ${({ width, height }) => css`
-    width: ${!!width ? width : 'auto'};
-    height: ${!!height ? height : 'auto'};
-  `}
-`

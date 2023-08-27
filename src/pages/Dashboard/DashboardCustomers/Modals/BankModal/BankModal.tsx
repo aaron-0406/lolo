@@ -13,7 +13,7 @@ type BankModalProps = {
   onClose: () => void
 }
 
-const defaultValuesElement: SelectedElementType = {
+export const defaultValuesElement: SelectedElementType = {
   bank: {
     id: 0,
     name: '',
@@ -50,12 +50,14 @@ const BankModal = ({ visible, onClose }: BankModalProps) => {
           setGlobalElement={(element: SelectedElementType) => {
             setElementSelected(element)
           }}
+          elementSelected={elementSelect}
         />
-        <BankActions elementSelected={elementSelect} />
+        <BankActions setGlobalElement={setElementSelected} elementSelected={elementSelect} />
         <BankNoSelected
           setGlobalElement={(element: SelectedElementType) => {
             setElementSelected(element)
           }}
+          elementSelected={elementSelect}
         />
       </Container>
     </Modal>
