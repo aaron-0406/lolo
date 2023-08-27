@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { AxiosResponse } from 'axios'
 import { useQuery } from 'react-query'
 import { useDashContext } from '@/contexts/DashProvider'
@@ -9,17 +10,18 @@ import { device } from '@/breakpoints/responsive'
 import BodyCell from '@/ui/Table/BodyCell'
 import EmptyStateCell from '@/ui/Table/EmptyStateCell'
 import Table from '@/ui/Table'
-import Container from '@/ui/Container'
 import { banksSelectColumns } from './utils/columnsSelect'
 import { KEY_DASH_CUSTOMER_BANK_CACHE } from './utils/dash-customer-banks.cache'
 import { CustomerHasBankType } from '@/types/dash/customer-has-bank'
 import notification from '@/ui/notification'
+import Container from '@/ui/Container'
 
 type BankSelectedProps = {
   setGlobalElement: (element: SelectedElementType) => void
+  elementSelected: SelectedElementType
 }
 
-const BankSelected = ({ setGlobalElement }: BankSelectedProps) => {
+const BankSelected = ({ setGlobalElement, elementSelected }: BankSelectedProps) => {
   const {
     dashCustomer: { selectedCustomer },
   } = useDashContext()
@@ -71,9 +73,12 @@ const BankSelected = ({ setGlobalElement }: BankSelectedProps) => {
       >
         {!!banks?.length &&
           banks.map((record: BankType, key) => {
+            const className =
+              elementSelected.bank.id === record.id && elementSelected.key === 'SELECTED_BANK' && 'active'
+
             return (
               <tr
-                className="styled-data-table-row"
+                className={`styled-data-table-row ${className}`}
                 key={key}
                 onClick={() => {
                   onHandleClick({ bank: record, key: 'SELECTED_BANK' })

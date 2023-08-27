@@ -4,27 +4,28 @@ import { AxiosResponse } from 'axios'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { useDashContext } from '@/contexts/DashProvider'
 import { banksNoSelectColumns } from './utils/columnsNoSelect'
-import Table from '@/ui/Table'
-import TextField from '@/ui/fields/TextField'
-import Container from '@/ui/Container'
-import Button from '@/ui/Button'
 import dashBanksCache, { KEY_DASH_BANKS_CACHE } from './utils/dash-banks.cache'
 import { createBank, getAllBanks } from '@/services/dash/bank.service'
 import { BankType } from '@/types/dash/bank.type'
 import { SelectedElementType } from '../bankModal.type'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
+import useModal from '@/hooks/useModal'
 import { device } from '@/breakpoints/responsive'
-import BodyCell from '@/ui/Table/BodyCell'
-import EmptyStateCell from '@/ui/Table/EmptyStateCell'
 import { KEY_DASH_CUSTOMER_BANK_CACHE } from '../BankSelected/utils/dash-customer-banks.cache'
 import BankModalEdit from './BankModals/BankModalEdit'
 import BankModalDelete from './BankModals/BankModalDelete'
-import useModal from '@/hooks/useModal'
-import notification from '@/ui/notification'
 import { CustomerHasBankType } from '@/types/dash/customer-has-bank'
+import BodyCell from '@/ui/Table/BodyCell'
+import EmptyStateCell from '@/ui/Table/EmptyStateCell'
+import notification from '@/ui/notification'
+import Table from '@/ui/Table'
+import TextField from '@/ui/fields/TextField'
+import Container from '@/ui/Container'
+import Button from '@/ui/Button'
 
 type BankNoSelectedProps = {
   setGlobalElement: (element: SelectedElementType) => void
+  elementSelected: SelectedElementType
 }
 
 const defaultValuesBank = {
@@ -35,7 +36,7 @@ const defaultValuesBank = {
   createdAt: new Date(),
 }
 
-const BankNoSelected = ({ setGlobalElement }: BankNoSelectedProps) => {
+const BankNoSelected = ({ setGlobalElement, elementSelected }: BankNoSelectedProps) => {
   const {
     dashCustomer: { selectedCustomer },
   } = useDashContext()
@@ -157,9 +158,12 @@ const BankNoSelected = ({ setGlobalElement }: BankNoSelectedProps) => {
         >
           {!!banks.length &&
             banks.map((record: BankType, key: number) => {
+              const className =
+                elementSelected.bank.id === record.id && elementSelected.key === 'BANK_NOT_SELECTED' && 'active'
+
               return (
                 <tr
-                  className="styled-data-table-row"
+                  className={`styled-data-table-row ${className}`}
                   key={key}
                   onClick={() => {
                     onHandleClick({ bank: record, key: 'BANK_NOT_SELECTED' })
@@ -204,11 +208,7 @@ const BankNoSelected = ({ setGlobalElement }: BankNoSelectedProps) => {
       )}
 
       {visibleDeleteBank && (
-        <BankModalDelete
-          visible={visibleDeleteBank}
-          onClose={onCloseDeleteBank}
-          idBank={idDeletedBank}
-        ></BankModalDelete>
+        <BankModalDelete visible={visibleDeleteBank} onClose={onCloseDeleteBank} idBank={idDeletedBank} />
       )}
     </Container>
   )

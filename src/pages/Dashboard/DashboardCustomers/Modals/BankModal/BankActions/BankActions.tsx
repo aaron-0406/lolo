@@ -10,12 +10,14 @@ import Button from '@/ui/Button'
 import notification from '@/ui/notification'
 import dashBanksCache from '../BankNoSelected/utils/dash-banks.cache'
 import dashCustomerBankCache from '../BankSelected/utils/dash-customer-banks.cache'
+import { defaultValuesElement } from '../BankModal'
 
 type BankActionsProps = {
+  setGlobalElement: (element: SelectedElementType) => void
   elementSelected: SelectedElementType
 }
 
-const BankActions = ({ elementSelected }: BankActionsProps) => {
+const BankActions = ({ setGlobalElement, elementSelected }: BankActionsProps) => {
   const {
     dashCustomer: { selectedCustomer },
   } = useDashContext()
@@ -56,6 +58,7 @@ const BankActions = ({ elementSelected }: BankActionsProps) => {
         addBankCache(elementSelected.bank)
         deleteCHBCache(String(data.data.id), selectedCustomer.id)
         notification({ type: 'success', message: 'El banco se removió del cliente' })
+        setGlobalElement(defaultValuesElement)
       },
       onMutate: () => {
         return onMutateCHBCache(selectedCustomer.id)
@@ -85,6 +88,7 @@ const BankActions = ({ elementSelected }: BankActionsProps) => {
         addCHBCache(data)
         onRefetchQueryCHBCache(selectedCustomer.id)
         notification({ type: 'success', message: 'El banco fue asignado al cliente' })
+        setGlobalElement(defaultValuesElement)
       },
       onMutate: () => {
         return onMutateCHBCache(selectedCustomer.id)
@@ -111,6 +115,7 @@ const BankActions = ({ elementSelected }: BankActionsProps) => {
           shape="round"
           trailingIcon="ri-arrow-right-line"
           onClick={onHandlClickRemove}
+          disabled={elementSelected.bank.id ? elementSelected.key === 'BANK_NOT_SELECTED' : true}
         />
         <Button
           loading={loadingAssing}
@@ -118,6 +123,7 @@ const BankActions = ({ elementSelected }: BankActionsProps) => {
           shape="round"
           trailingIcon="ri-arrow-left-line"
           onClick={onHandlClickAssing}
+          disabled={elementSelected.bank.id ? elementSelected.key === 'SELECTED_BANK' : true}
         />
       </StyledButtons>
     </StyledContainer>
