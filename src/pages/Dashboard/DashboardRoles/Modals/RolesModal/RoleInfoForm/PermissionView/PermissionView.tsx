@@ -23,11 +23,12 @@ const PermissionView = (props: PermissionViewProps) => {
     if (watch('permissions').includes(id)) {
       return setValue(
         'permissions',
-        watch('permissions').filter((item) => item !== id)
+        watch('permissions').filter((item) => item !== id),
+        { shouldDirty: true }
       )
     }
 
-    return setValue('permissions', [...watch('permissions'), id])
+    return setValue('permissions', [...watch('permissions'), id], { shouldDirty: true })
   }
 
   return (
