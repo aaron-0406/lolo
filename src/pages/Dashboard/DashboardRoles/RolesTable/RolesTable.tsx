@@ -1,21 +1,21 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useQuery } from 'react-query'
 import RolesModal from '../Modals/RolesModal'
-import EmptyStateCell from '../../../../ui/Table/EmptyStateCell'
-import BodyCell from '../../../../ui/Table/BodyCell'
-import Button from '../../../../ui/Button/Button'
-import Container from '../../../../ui/Container'
-import Table from '../../../../ui/Table'
-import { RoleType } from '../../../../shared/types/dash/role.type'
+import EmptyStateCell from '@/ui/Table/EmptyStateCell'
+import BodyCell from '@/ui/Table/BodyCell'
+import Button from '@/ui/Button/Button'
+import Container from '@/ui/Container'
+import Table from '@/ui/Table'
+import { RoleType } from '@/types/dash/role.type'
 import { roleColumns } from './utils/columns'
 import { KEY_DASH_ROLES_CACHE } from './utils/dash-role.cache'
-import { getAllRolesByCustomerId } from '../../../../shared/services/dash/role.service'
-import { useDashContext } from '../../../../shared/contexts/DashProvider'
-import useModal from '../../../../shared/hooks/useModal'
+import { getAllRolesByCustomerId } from '@/services/dash/role.service'
+import { useDashContext } from '@/contexts/DashProvider'
+import useModal from '@/hooks/useModal'
 import DeleteRoleModal from '../Modals/DeleteRoleModal/DeleteRoleModal'
+import notification from '@/ui/notification'
 
 const RolesTable = () => {
-  const [roles, setRoles] = useState<Array<RoleType>>([])
   const [roleId, setRoleId] = useState<number>(0)
   const [idDeletedRole, setIdDeletedRole] = useState<number>(0)
 
@@ -48,22 +48,22 @@ const RolesTable = () => {
     },
   } = useDashContext()
 
-  const { isLoading, refetch } = useQuery(
-    [KEY_DASH_ROLES_CACHE],
+  const { data, isLoading } = useQuery(
+    KEY_DASH_ROLES_CACHE,
     async () => {
       return await getAllRolesByCustomerId(id)
     },
     {
-      onSuccess: ({ data }) => {
-        setRoles(data)
+      onError: (error: any) => {
+        notification({
+          type: 'error',
+          message: error.response.data.message,
+        })
       },
     }
   )
 
-  useEffect(() => {
-    refetch()
-    // eslint-disable-next-line
-  }, [])
+  const roles = data?.data ?? []
 
   return (
     <Container width="100%" height="calc(100% - 50px)" padding="20px">
@@ -79,7 +79,7 @@ const RolesTable = () => {
         }
       >
         {!!roles?.length &&
-          roles.map((record: RoleType, key) => {
+          roles.map((record: RoleType, key: number) => {
             return (
               <tr className="styled-data-table-row" key={record.id}>
                 <BodyCell textAlign="center">{`${key + 1 || ''}`}</BodyCell>

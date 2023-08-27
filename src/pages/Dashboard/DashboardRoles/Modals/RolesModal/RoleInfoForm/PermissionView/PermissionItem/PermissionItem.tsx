@@ -1,10 +1,10 @@
 import { useFormContext } from 'react-hook-form'
-import { PermissionType } from '../../../../../../../../shared/types/dash/permission.type'
-import Container from '../../../../../../../../ui/Container'
-import Icon from '../../../../../../../../ui/Icon'
-import Switch from '../../../../../../../../ui/Switch'
-import Text from '../../../../../../../../ui/Text'
-import { RoleType } from '../../../../../../../../shared/types/dash/role.type'
+import { PermissionType } from '@/types/dash/permission.type'
+import Container from '@/ui/Container'
+import Icon from '@/ui/Icon'
+import Switch from '@/ui/Switch'
+import Text from '@/ui/Text'
+import { RoleType } from '@/types/dash/role.type'
 
 type PermissionViewProps = {
   permissions?: Array<PermissionType>
@@ -12,7 +12,7 @@ type PermissionViewProps = {
 }
 const PermissionItem = (props: PermissionViewProps) => {
   const { permissions, padding = 0 } = props
-  
+
   const { watch, setValue } = useFormContext<RoleType>()
 
   const onChangeSwitch = (permission: PermissionType) => {
@@ -37,14 +37,16 @@ const PermissionItem = (props: PermissionViewProps) => {
                   {item.name}
                 </Text.Body>
               </Container>
+
               <Switch
                 checked={watch('permissions').includes(item.id)}
                 onChange={() => {
                   onChangeSwitch(item)
                 }}
-              ></Switch>
+              />
             </Container>
-            <PermissionItem padding={padding + 15} permissions={item.permissions}></PermissionItem>
+
+            <PermissionItem padding={padding + 15} permissions={item.permissions} />
           </Container>
         )
       })}

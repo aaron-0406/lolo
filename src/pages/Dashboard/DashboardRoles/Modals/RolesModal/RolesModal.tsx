@@ -1,16 +1,17 @@
+import { useEffect } from 'react'
+import { AxiosResponse } from 'axios'
 import { FormProvider, useForm } from 'react-hook-form'
-import Modal from '../../../../../ui/Modal'
-import { RoleType } from '../../../../../shared/types/dash/role.type'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
-import Button from '../../../../../ui/Button'
-import Container from '../../../../../ui/Container'
+import Modal from '@/ui/Modal'
+import { RoleType } from '@/types/dash/role.type'
+import Button from '@/ui/Button'
+import Container from '@/ui/Container'
 import RoleInfoForm from './RoleInfoForm'
-import { notification } from '../../../../../ui/notification/notification'
-import { createRole, getRoleById, updateRole } from '../../../../../shared/services/dash/role.service'
+import { notification } from '@/ui/notification/notification'
+import { createRole, getRoleById, updateRole } from '@/services/dash/role.service'
 import dashRoleCache, { KEY_DASH_ROLES_CACHE } from '../../RolesTable/utils/dash-role.cache'
 import { ModalRoleResolver } from './RoleInfoForm/RoleModal.yup'
-import { useEffect } from 'react'
-import { useDashContext } from '../../../../../shared/contexts/DashProvider'
+import { useDashContext } from '@/contexts/DashProvider'
 
 type RoleModalProps = {
   visible: boolean
@@ -23,19 +24,26 @@ const RolesModal = ({ visible, onClose, idRole = 0 }: RoleModalProps) => {
   const {
     dashCustomer: { selectedCustomer },
   } = useDashContext()
+
   const defaultValuesRole: RoleType = {
     id: 0,
     name: '',
     customerId: selectedCustomer.id,
     permissions: [],
   }
+
   const formMethods = useForm<RoleType>({
     resolver: ModalRoleResolver,
     mode: 'all',
     defaultValues: defaultValuesRole,
   })
 
-  const { setValue, getValues, reset } = formMethods
+  const {
+    setValue,
+    getValues,
+    reset,
+    formState: { isDirty, isValid },
+  } = formMethods
 
   const {
     actions: { createRoleCache, editRoleCache },
@@ -44,7 +52,7 @@ const RolesModal = ({ visible, onClose, idRole = 0 }: RoleModalProps) => {
     onErrorCache,
   } = dashRoleCache(queryClient)
 
-  const { isLoading: loadingCreateRole, mutate: mutateCreateRole } = useMutation<any, Error>(
+  const { isLoading: loadingCreateRole, mutate: mutateCreateRole } = useMutation<AxiosResponse<RoleType>, Error>(
     async () => {
       const { id, ...restRole } = getValues()
       return await createRole({ ...restRole })
@@ -71,7 +79,7 @@ const RolesModal = ({ visible, onClose, idRole = 0 }: RoleModalProps) => {
     }
   )
 
-  const { isLoading: loadingEditRole, mutate: mutateEditRole } = useMutation<any, Error>(
+  const { isLoading: loadingEditRole, mutate: mutateEditRole } = useMutation<AxiosResponse<RoleType>, Error>(
     async () => {
       const { id, customerId, ...restRole } = getValues()
       return await updateRole(id, { ...restRole })
@@ -106,10 +114,10 @@ const RolesModal = ({ visible, onClose, idRole = 0 }: RoleModalProps) => {
     {
       onSuccess: ({ data }) => {
         if (idRole !== 0) {
-          setValue('id', data.id)
-          setValue('name', data.name)
-          setValue('customerId', data.customerId)
-          setValue('permissions', data.permissions)
+          reset(
+            { id: data.id, name: data.name, customerId: data.customerId, permissions: data.permissions },
+            { keepDirty: false }
+          )
         } else {
           reset(defaultValuesRole)
         }
@@ -119,6 +127,7 @@ const RolesModal = ({ visible, onClose, idRole = 0 }: RoleModalProps) => {
   )
 
   const handleClickCloseModal = () => {
+    reset()
     onClose()
   }
   const onAddRole = () => {
@@ -152,6 +161,7 @@ const RolesModal = ({ visible, onClose, idRole = 0 }: RoleModalProps) => {
               trailingIcon="ri-add-fill"
               onClick={idRole !== 0 ? onEditRole : onAddRole}
               loading={loadingCreateRole || loadingEditRole}
+              disabled={!isDirty || !isValid}
             />
           </Container>
         }
@@ -165,7 +175,7 @@ const RolesModal = ({ visible, onClose, idRole = 0 }: RoleModalProps) => {
           align-items="center"
           gap="20px"
         >
-          <Container width="100%" display="flex" flexDirection="column" gap="20px" padding="20px" margin="30px 0">
+          <Container width="100%" display="flex" flexDirection="column" gap="20px" padding="20px">
             <RoleInfoForm />
           </Container>
         </Container>

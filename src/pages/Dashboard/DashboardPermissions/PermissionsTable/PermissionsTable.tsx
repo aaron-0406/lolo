@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
+import { AxiosResponse } from 'axios'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useQuery } from 'react-query'
 import { getAllPermissions } from '@/services/dash/permission.service'
@@ -15,14 +16,14 @@ import useModal from '@/hooks/useModal'
 import Icon from '@/ui/Icon/Icon'
 import DeletePermissionModal from '../Modals/DeletePermissionModal/DeletePermissionModal'
 import Text from '@/ui/Text/Text'
+import { notification } from '@/ui/notification/notification'
 
 const PermissionsTable = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const searchParams = new URLSearchParams(location.search)
-  const code = searchParams.get('code')
+  const code = searchParams.get('code') ?? ''
 
-  const [permissions, setPermissions] = useState<Array<PermissionType>>([])
   const [permissionId, setPermissionId] = useState<number>(0)
   const [idDeletedPermission, setIdDeletedPermission] = useState<number>(0)
 
@@ -53,26 +54,26 @@ const PermissionsTable = () => {
     hideModalEdit()
   }
 
-  const { isLoading, refetch } = useQuery(
-    [KEY_DASH_PERMISOS_CACHE],
-    async () => {
-      return await getAllPermissions(code === null ? '' : code)
-    },
-    {
-      onSuccess: ({ data }) => {
-        setPermissions(data)
-      },
-    }
-  )
-
   const onClickCell = (permission: PermissionType) => {
     navigate(`/dash/permisos?code=${permission.code}`)
   }
 
-  useEffect(() => {
-    refetch()
-    // eslint-disable-next-line
-  }, [code])
+  const { data, isLoading } = useQuery<AxiosResponse<Array<PermissionType>>>(
+    [KEY_DASH_PERMISOS_CACHE, code],
+    async () => {
+      return await getAllPermissions(code === null ? '' : code)
+    },
+    {
+      onError: (error: any) => {
+        notification({
+          type: 'error',
+          message: error.response.data.message,
+        })
+      },
+    }
+  )
+
+  const permissions = data?.data ?? []
 
   return (
     <Container width="100%" height="calc(100% - 50px)" padding="20px">
@@ -88,7 +89,7 @@ const PermissionsTable = () => {
         }
       >
         {!!permissions?.length &&
-          permissions.map((record: PermissionType, key) => {
+          permissions.map((record: PermissionType, key: number) => {
             return (
               <tr className="styled-data-table-row" key={record.id}>
                 <BodyCell textAlign="center">{`${key + 1 || ''}`}</BodyCell>
@@ -152,7 +153,10 @@ const PermissionsTable = () => {
         onClose={onCloseDeletePermission}
         idPermission={idDeletedPermission}
       />
-      <PermissionModal visible={visibleModalEdit} onClose={onCloseModal} idPermission={permissionId} />
+
+      {visibleModalEdit && (
+        <PermissionModal visible={visibleModalEdit} onClose={onCloseModal} idPermission={permissionId} />
+      )}
     </Container>
   )
 }

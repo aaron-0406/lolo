@@ -4,17 +4,19 @@ import { PermissionType } from '@/types/dash/permission.type'
 
 export const KEY_DASH_PERMISOS_CACHE = 'key-dash-permisos-cache'
 
-type QueryDataType = AxiosResponse<PermissionType[]> | undefined
+export type QueryDataType = AxiosResponse<PermissionType[]> | undefined
 
 const dashPermissionCache = (queryClient: QueryClient) => {
-  const createPermissionCache = (data: PermissionType) => {
-    queryClient.setQueryData<QueryDataType>([KEY_DASH_PERMISOS_CACHE], (old) => {
-      if (old) return { ...old, data: [...old.data, data] }
+  const createPermissionCache = (data: PermissionType, code: string) => {
+    queryClient.setQueryData<QueryDataType>([KEY_DASH_PERMISOS_CACHE, code], (old) => {
+      if (old) {
+        return { ...old, data: [...old.data, data] }
+      }
     })
   }
 
-  const editPermissionCache = (data: PermissionType) => {
-    queryClient.setQueryData<QueryDataType>([KEY_DASH_PERMISOS_CACHE], (old) => {
+  const editPermissionCache = (data: PermissionType, code: string) => {
+    queryClient.setQueryData<QueryDataType>([KEY_DASH_PERMISOS_CACHE, code], (old) => {
       if (old) {
         const dataUpdated = old.data.map((permission: PermissionType) => {
           if (permission.id === data.id) return data
@@ -26,8 +28,8 @@ const dashPermissionCache = (queryClient: QueryClient) => {
     })
   }
 
-  const deletePermissionCache = (idPermission: string) => {
-    queryClient.setQueryData<QueryDataType>([KEY_DASH_PERMISOS_CACHE], (old) => {
+  const deletePermissionCache = (idPermission: string, code: string) => {
+    queryClient.setQueryData<QueryDataType>([KEY_DASH_PERMISOS_CACHE, code], (old) => {
       if (old) {
         const dataUpdated = old.data.filter((permission: PermissionType) => permission.id !== parseInt(idPermission))
         return { ...old, data: dataUpdated }
@@ -35,25 +37,25 @@ const dashPermissionCache = (queryClient: QueryClient) => {
     })
   }
 
-  const onRefetchQueryCache = async () => {
-    await queryClient.refetchQueries([KEY_DASH_PERMISOS_CACHE])
+  const onRefetchQueryCache = async (code: string) => {
+    await queryClient.refetchQueries([KEY_DASH_PERMISOS_CACHE, code])
   }
 
-  const onMutateCache = async () => {
-    const old = queryClient.getQueryData([KEY_DASH_PERMISOS_CACHE])
+  const onMutateCache = async (code: string) => {
+    const old = queryClient.getQueryData([KEY_DASH_PERMISOS_CACHE, code])
     if (!old) {
-      await queryClient.prefetchQuery([KEY_DASH_PERMISOS_CACHE])
+      await queryClient.prefetchQuery([KEY_DASH_PERMISOS_CACHE, code])
     }
 
     return { old }
   }
 
-  const onSettledCache = () => {
-    queryClient.cancelQueries([KEY_DASH_PERMISOS_CACHE])
+  const onSettledCache = (code: string) => {
+    queryClient.cancelQueries([KEY_DASH_PERMISOS_CACHE, code])
   }
 
-  const onErrorCache = (context: { old: QueryDataType }) => {
-    queryClient.setQueryData([KEY_DASH_PERMISOS_CACHE], context.old)
+  const onErrorCache = (context: { old: QueryDataType }, code: string) => {
+    queryClient.setQueryData([KEY_DASH_PERMISOS_CACHE, code], context.old)
   }
 
   return {
