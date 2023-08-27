@@ -39,7 +39,6 @@ const RolesModal = ({ visible, onClose, idRole = 0 }: RoleModalProps) => {
   })
 
   const {
-    setValue,
     getValues,
     reset,
     formState: { isDirty, isValid },
