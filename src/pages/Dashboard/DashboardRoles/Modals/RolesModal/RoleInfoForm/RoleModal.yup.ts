@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import yup from '../../../../../../shared/yupLocale'
-import { RoleType } from '../../../../../../shared/types/dash/role.type'
+import { RoleType } from '@/types/dash/role.type'
 
 const RoleModal: yup.SchemaOf<Omit<RoleType, 'id'>> = yup.object().shape({
   name: yup.string().min(1).max(150).required(),

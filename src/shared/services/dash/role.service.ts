@@ -1,5 +1,5 @@
 import axiosClient from '../../utils/api/clientAxios'
-import { RoleType } from '../../types/dash/role.type'
+import { RoleType } from '@/types/dash/role.type'
 
 const API = axiosClient.getUri()
 
