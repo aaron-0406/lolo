@@ -61,6 +61,8 @@ const dashAccionesCache = (queryClient: QueryClient) => {
     queryClient.setQueryData([KEY_DASH_ACCIONES_CACHE, chb], context.old)
   }
 
+  // const data = queryClient.getQueryData([KEY_DASH_ACCIONES_CACHE])
+
   return {
     actions: {
       createActionCache,
@@ -71,6 +73,7 @@ const dashAccionesCache = (queryClient: QueryClient) => {
     onMutateCache,
     onSettledCache,
     onErrorCache,
+    // data
   }
 }
 
