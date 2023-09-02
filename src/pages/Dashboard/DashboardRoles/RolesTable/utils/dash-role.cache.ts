@@ -8,13 +8,13 @@ type QueryDataType = AxiosResponse<RoleType[]> | undefined
 
 const dashRoleCache = (queryClient: QueryClient) => {
   const createRoleCache = (data: RoleType) => {
-    queryClient.setQueryData<QueryDataType>(KEY_DASH_ROLES_CACHE, (old) => {
+    queryClient.setQueryData<QueryDataType>([KEY_DASH_ROLES_CACHE, data.customerId], (old) => {
       if (old) return { ...old, data: [...old.data, data] }
     })
   }
 
   const editRoleCache = (data: RoleType) => {
-    queryClient.setQueryData<QueryDataType>(KEY_DASH_ROLES_CACHE, (old) => {
+    queryClient.setQueryData<QueryDataType>([KEY_DASH_ROLES_CACHE, data.customerId], (old) => {
       if (old) {
         const dataUpdated = old.data.map((role: RoleType) => {
           if (role.id === data.id) return data
@@ -26,8 +26,8 @@ const dashRoleCache = (queryClient: QueryClient) => {
     })
   }
 
-  const deleteRoleCache = (idRole: string) => {
-    queryClient.setQueryData<QueryDataType>(KEY_DASH_ROLES_CACHE, (old) => {
+  const deleteRoleCache = (idRole: string, customerId: number) => {
+    queryClient.setQueryData<QueryDataType>([KEY_DASH_ROLES_CACHE, customerId], (old) => {
       if (old) {
         const dataUpdated = old.data.filter((role: RoleType) => role.id !== parseInt(idRole))
         return { ...old, data: dataUpdated }
@@ -35,25 +35,25 @@ const dashRoleCache = (queryClient: QueryClient) => {
     })
   }
 
-  const onRefetchQueryCache = async () => {
-    await queryClient.refetchQueries(KEY_DASH_ROLES_CACHE)
+  const onRefetchQueryCache = async (customerId: number) => {
+    await queryClient.refetchQueries([KEY_DASH_ROLES_CACHE, customerId])
   }
 
-  const onMutateCache = async () => {
-    const old = queryClient.getQueryData(KEY_DASH_ROLES_CACHE)
+  const onMutateCache = async (customerId: number) => {
+    const old = queryClient.getQueryData([KEY_DASH_ROLES_CACHE, customerId])
     if (!old) {
-      await queryClient.prefetchQuery(KEY_DASH_ROLES_CACHE)
+      await queryClient.prefetchQuery([KEY_DASH_ROLES_CACHE, customerId])
     }
 
     return { old }
   }
 
-  const onSettledCache = () => {
-    queryClient.cancelQueries(KEY_DASH_ROLES_CACHE)
+  const onSettledCache = (customerId: number) => {
+    queryClient.cancelQueries([KEY_DASH_ROLES_CACHE, customerId])
   }
 
-  const onErrorCache = (context: { old: QueryDataType }) => {
-    queryClient.setQueryData(KEY_DASH_ROLES_CACHE, context.old)
+  const onErrorCache = (context: { old: QueryDataType }, customerId: number) => {
+    queryClient.setQueryData([KEY_DASH_ROLES_CACHE, customerId], context.old)
   }
 
   return {

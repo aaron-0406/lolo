@@ -6,6 +6,7 @@ import Button from '@/ui/Button/Button'
 import { notification } from '@/ui/notification/notification'
 import dashRoleCache from '../../RolesTable/utils/dash-role.cache'
 import { deleteRole } from '@/services/dash/role.service'
+import { useDashContext } from '@/contexts/DashProvider'
 
 type DeleteRoleModalProps = {
   visible: boolean
@@ -13,6 +14,12 @@ type DeleteRoleModalProps = {
   idRole?: number
 }
 const DeleteRoleModal = ({ visible, idRole = 0, onClose }: DeleteRoleModalProps) => {
+  const {
+    dashCustomer: {
+      selectedCustomer: { id },
+    },
+  } = useDashContext()
+
   const queryClient = useQueryClient()
 
   const {
@@ -28,18 +35,18 @@ const DeleteRoleModal = ({ visible, idRole = 0, onClose }: DeleteRoleModalProps)
     },
     {
       onSuccess: (result) => {
-        deleteRoleCache(result.data.id)
+        deleteRoleCache(result.data.id, id)
         notification({ type: 'success', message: 'Rol eliminado' })
         onClose()
       },
       onMutate: () => {
-        return onMutateCache()
+        return onMutateCache(id)
       },
       onSettled: () => {
-        onSettledCache()
+        onSettledCache(id)
       },
       onError: (error: any, _, context: any) => {
-        onErrorCache(context)
+        onErrorCache(context, id)
         notification({
           type: 'error',
           message: error.response.data.message,
