@@ -6,12 +6,18 @@ import { CustomerHasBankType } from '@/types/dash/customer-has-bank'
 import { CustomerUserType } from '@/types/dash/customer-user.type'
 import { CustomerType } from '@/types/dash/customer.type'
 import storage from '../utils/storage'
+import { CourtType } from '@/types/judicial/court.type'
+import { SubjectType } from '@/types/judicial/subject.type'
+import { ProceduralWayType } from '@/types/judicial/procedural-way.type'
 
 const appLoloClientStateKey = 'lolo:client'
 const appLoloBankStateKey = 'lolo:bank'
 const appLoloCityStateKey = 'lolo:city'
 const appLoloUserStateKey = 'lolo:user'
 const appLoloSelectedBankStateKey = 'lolo:selected:bank'
+const appLoloJudicialCourtStateKey = 'lolo:court'
+const appLoloJudicialSubjectStateKey = 'lolo:subject'
+const appLoloJudicialProceduralWayStateKey = 'lolo:procedural-way'
 
 type SelectedBankType = {
   idBank: string
