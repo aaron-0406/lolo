@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from 'react'
-import { AxiosResponse } from 'axios'
+import { AxiosError, AxiosResponse } from 'axios'
 import { Controller } from 'react-hook-form'
 import { FormProvider, useForm } from 'react-hook-form'
 import { ModalCustomersResolver } from './CustomersModal.yup'
@@ -15,6 +15,7 @@ import Button from '@/ui/Button'
 import Checkbox from '@/ui/Checkbox'
 import Label from '@/ui/Label'
 import dashCustomersCache from '../../CustomersTable/utils/dash-clientes.cache'
+import { CustomErrorResponse } from 'types/customErrorResponse'
 
 type CustomersModalProps = {
   visible: boolean
@@ -55,7 +56,10 @@ const CustomersModal = ({ visible, onClose, isEdit = false, url = '' }: Customer
     formState: { isValid },
   } = formMethods
 
-  const { isLoading: loadingCreateCustomer, mutate: createCustomer } = useMutation<AxiosResponse<CustomerType>, Error>(
+  const { isLoading: loadingCreateCustomer, mutate: createCustomer } = useMutation<
+    AxiosResponse<CustomerType>,
+    AxiosError<CustomErrorResponse>
+  >(
     async () => {
       const { id, ...restClient } = getValues()
       return await createClient(restClient)
@@ -72,11 +76,12 @@ const CustomersModal = ({ visible, onClose, isEdit = false, url = '' }: Customer
       onSettled: () => {
         onSettledCache()
       },
-      onError: (error: any, _, context: any) => {
+      onError: (error, _, context: any) => {
         onErrorCache(context)
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data.errors.map((error) => error.message),
         })
       },
     }

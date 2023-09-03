@@ -37,6 +37,7 @@ export const notificationConfig: Record<
 type AlertNotificationProps = {
   type: AlertNotificationType
   message: React.ReactNode
+  list?: Array<string>
   idToast?: string
   visible?: boolean
   close?: boolean
@@ -44,7 +45,7 @@ type AlertNotificationProps = {
 }
 
 const AlertNotification: React.FC<AlertNotificationProps> = (props) => {
-  const { type, message, idToast, visible = false, icon = true, close = false } = props
+  const { type, message, idToast, visible = false, icon = true, close = false, list } = props
 
   const config = notificationConfig[type]
 
@@ -54,18 +55,37 @@ const AlertNotification: React.FC<AlertNotificationProps> = (props) => {
 
   return (
     <StyledNotification visible={visible}>
-      <StyledWrapper display="flex" gap="8px" justifyContent="space-between" type={type}>
-        <Container display="flex" gap="8px">
-          {icon && <Icon remixClass={config.iconClass} color={config.color} size={24} />}
+      <StyledWrapper display="flex" flexDirection="column" gap="8px" type={type}>
+        <Container display="flex" gap="8px" justifyContent="space-between">
+          <Container display="flex" gap="8px">
+            {icon && <Icon remixClass={config.iconClass} color={config.color} size={24} />}
 
-          <Text.Body size="m" weight="regular">
-            {message}
-          </Text.Body>
+            <Text.Body size="m" weight={list ? 'bold' : 'regular'}>
+              {message}
+            </Text.Body>
+          </Container>
+
+          {(config.duration === Infinity || close) && (
+            <StyledButtonClose onClick={onClose}>
+              <Icon remixClass="ri-close-line" size={24} />
+            </StyledButtonClose>
+          )}
         </Container>
-        {(config.duration === Infinity || close) && (
-          <StyledButtonClose onClick={onClose}>
-            <Icon remixClass="ri-close-line" size={24} />
-          </StyledButtonClose>
+
+        {list && (
+          <Container padding="10px 40px">
+            <StyledList>
+              {list.map((message, key: number) => {
+                return (
+                  <li key={key}>
+                    <Text.Body size="m" weight="regular">
+                      {message}
+                    </Text.Body>
+                  </li>
+                )
+              })}
+            </StyledList>
+          </Container>
         )}
       </StyledWrapper>
     </StyledNotification>
@@ -134,4 +154,9 @@ const StyledButtonClose = styled.div`
       }
     }
   `}
+`
+
+const StyledList = styled.ul`
+  list-style: initial;
+  display: block;
 `

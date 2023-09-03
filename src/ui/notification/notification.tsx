@@ -7,6 +7,7 @@ import type { AlertNotificationType } from '@/ui/AlertNotification/interfaces'
 type NotificationProps = {
   type: AlertNotificationType
   message: React.ReactNode
+  list?: Array<string>
   icon?: boolean
   close?: boolean
 }
@@ -21,10 +22,18 @@ type NotificationProps = {
  * @prop {string} message Text inside the notification
  * @prop {boolean} icon Whether to display the icon or not. The icons are already defined by the type of the alert
  */
-export const notification = ({ type, message, icon = true, close = false }: NotificationProps) => {
+export const notification = ({ type, message, icon = true, close = false, list }: NotificationProps) => {
   return toast.custom(
     ({ id, visible }) => (
-      <AlertNotification type={type} message={message} visible={visible} idToast={id} icon={icon} close={close} />
+      <AlertNotification
+        type={type}
+        message={message}
+        visible={visible}
+        idToast={id}
+        icon={icon}
+        close={close}
+        list={list}
+      />
     ),
     { duration: config[type].duration }
   )
