@@ -39,6 +39,7 @@ import ProtectedRoutesCompany from '../ProtectedRoutesCompany'
 import ProtectedRoutesCompanyDash from '../ProtectedRoutesCompanyDash'
 
 import paths from '../paths'
+import JudicialFileCase from 'pages/Company/Judicial/JudicialFileCase/JudicialFileCase'
 
 const AppRouter = () => {
   return (
@@ -78,6 +79,8 @@ const AppRouter = () => {
         <Route element={<ProtectedRoutesCompanyDash pathname={paths.company.login()} />}>
           <Route path={paths.companyDashboard.dashboard()} element={<Dashboard />} />
         </Route>
+        {/* JUDICIAL */}
+        <Route path={paths.cobranza.judicial()} element={<JudicialFileCase />} />
       </Route>
 
       <Route path="*" element={<NotFound />} />

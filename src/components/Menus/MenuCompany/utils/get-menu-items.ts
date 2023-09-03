@@ -32,6 +32,13 @@ export const getMenuItems = (urlIdentifier: string) => {
     },
     {
       id: 4,
+      title: 'JUDICIAL',
+      remixClass: 'ri-folder-info-fill',
+      path: paths.cobranza.judicial(urlIdentifier),
+      admin: false,
+    },
+    {
+      id: 5,
       title: 'METAS',
       remixClass: 'ri-bar-chart-fill',
       path: paths.cobranza.metas(urlIdentifier),
