@@ -32,6 +32,7 @@ const defaultValuesCustomerUser: Omit<CustomerUserType, 'customerId' | 'createdA
   password: '',
   privilege: '',
   state: true,
+  roleId: 0,
 }
 
 const UsersModal = ({ visible, onClose, idUser = 0, isEdit = false }: UsersModalProps) => {
@@ -114,7 +115,7 @@ const UsersModal = ({ visible, onClose, idUser = 0, isEdit = false }: UsersModal
     }
   )
 
-  const { refetch: refetchGetUserByUserId } = useQuery(
+  const { refetch: refetchGetUserByUserId } = useQuery<AxiosResponse<CustomerUserType>>(
     'get-user-by-user-id',
     async () => {
       return getUserByUserId(idUser)
@@ -129,6 +130,7 @@ const UsersModal = ({ visible, onClose, idUser = 0, isEdit = false }: UsersModal
           setValue('email', data.email)
           setValue('password', data.password)
           setValue('privilege', data.privilege)
+          setValue('roleId', data.roleId)
           setValue('id', data.id)
         } else {
           reset(defaultValuesCustomerUser)
@@ -166,6 +168,18 @@ const UsersModal = ({ visible, onClose, idUser = 0, isEdit = false }: UsersModal
         id="modal-files"
         title={isEdit ? 'Editar Usuario' : 'Agregar Usuario'}
         contentOverflowY="auto"
+        footer={
+          <Container width="100%" height="75px" display="flex" justifyContent="flex-end" alignItems="center" gap="20px">
+            <Button
+              width="125px"
+              label={isEdit ? 'Editar' : 'Agregar'}
+              shape="default"
+              trailingIcon="ri-add-fill"
+              onClick={isEdit ? onEditUser : onAddUser}
+              loading={loadingCreateUser || loadingEditUser}
+            />
+          </Container>
+        }
       >
         <Container
           width="100%"
@@ -194,16 +208,6 @@ const UsersModal = ({ visible, onClose, idUser = 0, isEdit = false }: UsersModal
                 )}
               />
             </Container>
-          </Container>
-          <Container width="100%" height="75px" display="flex" justifyContent="center" alignItems="center" gap="20px">
-            <Button
-              width="125px"
-              label={isEdit ? 'Editar' : 'Agregar'}
-              shape="default"
-              trailingIcon="ri-add-fill"
-              onClick={isEdit ? onEditUser : onAddUser}
-              loading={loadingCreateUser || loadingEditUser}
-            />
           </Container>
         </Container>
       </Modal>

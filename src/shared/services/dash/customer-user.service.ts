@@ -17,7 +17,7 @@ export const getUserByUserId = async (userID: number) => {
   return await axiosClient.get(`${url}/${userID}`)
 }
 
-export const createUser = async (user: Omit<CustomerUserType, 'id'>) => {
+export const createUser = async (user: Omit<CustomerUserType, 'id' | 'permissions'>) => {
   return await axiosClient.post(`${url}/`, user)
 }
 
@@ -27,7 +27,7 @@ export const editUserState = async (userID: number, state: boolean) => {
 
 export const editUserById = async (
   userID: number,
-  user: Omit<CustomerUserType, 'id' | 'email' | 'password' | 'customerId' | 'createdAt'>
+  user: Omit<CustomerUserType, 'id' | 'email' | 'password' | 'customerId' | 'createdAt' | 'permissions'>
 ) => {
   return await axiosClient.patch(`${url}/${userID}`, user)
 }

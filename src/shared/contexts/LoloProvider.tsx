@@ -44,6 +44,7 @@ const initialCustomerUserState: Omit<CustomerUserType, 'password'> = {
   phone: '',
   privilege: '',
   state: false,
+  roleId: 0,
 }
 
 export const LoloContext = createContext<{
