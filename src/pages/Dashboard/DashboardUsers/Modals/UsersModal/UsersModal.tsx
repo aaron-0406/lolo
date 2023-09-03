@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { AxiosResponse } from 'axios'
+import { AxiosError, AxiosResponse } from 'axios'
 import { FormProvider, useForm, Controller } from 'react-hook-form'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { ModalUsersResolver } from './UsersModal.yup'
@@ -14,6 +14,7 @@ import Checkbox from '@/ui/Checkbox'
 import Label from '@/ui/Label'
 import { useDashContext } from '@/contexts/DashProvider'
 import dashUsuariosCache from '../../UsersTable/utils/dash-usuarios.cache'
+import { CustomErrorResponse } from 'types/customErrorResponse'
 
 type UsersModalProps = {
   visible: boolean
@@ -59,7 +60,7 @@ const UsersModal = ({ visible, onClose, idUser = 0, isEdit = false }: UsersModal
 
   const { isLoading: loadingCreateUser, mutate: createCustomerUser } = useMutation<
     AxiosResponse<CustomerUserType>,
-    Error
+    AxiosError<CustomErrorResponse>
   >(
     async () => {
       const { id, ...restUser } = getValues()
@@ -77,17 +78,21 @@ const UsersModal = ({ visible, onClose, idUser = 0, isEdit = false }: UsersModal
       onSettled: () => {
         onSettledCache()
       },
-      onError: (error: any, _, context: any) => {
+      onError: (error, _, context: any) => {
         onErrorCache(context)
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data.errors.map((error) => error.message),
         })
       },
     }
   )
 
-  const { isLoading: loadingEditUser, mutate: editUser } = useMutation<AxiosResponse<CustomerUserType>, Error>(
+  const { isLoading: loadingEditUser, mutate: editUser } = useMutation<
+    AxiosResponse<CustomerUserType>,
+    AxiosError<CustomErrorResponse>
+  >(
     async () => {
       const { id, createdAt, email, customerId, ...restUser } = getValues()
       return await editUserById(id, restUser)
@@ -104,11 +109,12 @@ const UsersModal = ({ visible, onClose, idUser = 0, isEdit = false }: UsersModal
       onSettled: () => {
         onSettledCache()
       },
-      onError: (error: any, _, context: any) => {
+      onError: (error, _, context: any) => {
         onErrorCache(context)
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data.errors.map((error) => error.message),
         })
       },
     }

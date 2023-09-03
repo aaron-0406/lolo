@@ -1,8 +1,9 @@
 import { Dispatch, FC, useState, useEffect } from 'react'
 import moment from 'moment'
-import { AxiosResponse } from 'axios'
+import { AxiosError, AxiosResponse } from 'axios'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { getCustomerAll, updateStateCustomer } from '@/services/dash/customer.service'
+import { CustomErrorResponse } from 'types/customErrorResponse'
 import { CustomerType } from '@/types/dash/customer.type'
 import Container from '@/ui/Container'
 import Pagination from '@/ui/Pagination'
@@ -83,7 +84,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
 
   const { mutate: editStateCustomer } = useMutation<
     AxiosResponse<CustomerType>,
-    Error,
+    AxiosError<CustomErrorResponse>,
     { customerId: number; state: boolean }
   >(
     async ({ customerId, state }) => {
@@ -103,11 +104,12 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
       onSettled: () => {
         onSettledCache()
       },
-      onError: (error: any, _, context: any) => {
+      onError: (error, _, context: any) => {
         onErrorCache(context)
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data.errors.map((error) => error.message),
         })
       },
     }

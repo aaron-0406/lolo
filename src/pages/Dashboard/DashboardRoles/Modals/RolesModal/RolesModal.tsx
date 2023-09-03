@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { AxiosResponse } from 'axios'
+import { AxiosError, AxiosResponse } from 'axios'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import Modal from '@/ui/Modal'
@@ -12,6 +12,7 @@ import { createRole, getRoleById, updateRole } from '@/services/dash/role.servic
 import dashRoleCache, { KEY_DASH_ROLES_CACHE } from '../../RolesTable/utils/dash-role.cache'
 import { ModalRoleResolver } from './RoleInfoForm/RoleModal.yup'
 import { useDashContext } from '@/contexts/DashProvider'
+import { CustomErrorResponse } from 'types/customErrorResponse'
 
 type RoleModalProps = {
   visible: boolean
@@ -51,7 +52,10 @@ const RolesModal = ({ visible, onClose, idRole = 0 }: RoleModalProps) => {
     onErrorCache,
   } = dashRoleCache(queryClient)
 
-  const { isLoading: loadingCreateRole, mutate: mutateCreateRole } = useMutation<AxiosResponse<RoleType>, Error>(
+  const { isLoading: loadingCreateRole, mutate: mutateCreateRole } = useMutation<
+    AxiosResponse<RoleType>,
+    AxiosError<CustomErrorResponse>
+  >(
     async () => {
       const { id, ...restRole } = getValues()
       return await createRole({ ...restRole })
@@ -68,17 +72,21 @@ const RolesModal = ({ visible, onClose, idRole = 0 }: RoleModalProps) => {
       onSettled: () => {
         onSettledCache(selectedCustomer.id)
       },
-      onError: (error: any, _, context: any) => {
+      onError: (error, _, context: any) => {
         onErrorCache(context, selectedCustomer.id)
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data.errors.map((error) => error.message),
         })
       },
     }
   )
 
-  const { isLoading: loadingEditRole, mutate: mutateEditRole } = useMutation<AxiosResponse<RoleType>, Error>(
+  const { isLoading: loadingEditRole, mutate: mutateEditRole } = useMutation<
+    AxiosResponse<RoleType>,
+    AxiosError<CustomErrorResponse>
+  >(
     async () => {
       const { id, customerId, ...restRole } = getValues()
       return await updateRole(id, { ...restRole })
@@ -95,11 +103,12 @@ const RolesModal = ({ visible, onClose, idRole = 0 }: RoleModalProps) => {
       onSettled: () => {
         onSettledCache(selectedCustomer.id)
       },
-      onError: (error: any, _, context: any) => {
+      onError: (error, _, context: any) => {
         onErrorCache(context, selectedCustomer.id)
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data.errors.map((error) => error.message),
         })
       },
     }

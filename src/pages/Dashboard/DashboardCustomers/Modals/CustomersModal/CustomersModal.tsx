@@ -87,7 +87,10 @@ const CustomersModal = ({ visible, onClose, isEdit = false, url = '' }: Customer
     }
   )
 
-  const { isLoading: loadingEditCustomer, mutate: editCustomer } = useMutation<AxiosResponse<CustomerType>, Error>(
+  const { isLoading: loadingEditCustomer, mutate: editCustomer } = useMutation<
+    AxiosResponse<CustomerType>,
+    AxiosError<CustomErrorResponse>
+  >(
     async () => {
       const { id, customerBanks, createdAt, state, ...restClient } = getValues()
       return await editCustomerById(id, restClient)
@@ -104,11 +107,12 @@ const CustomersModal = ({ visible, onClose, isEdit = false, url = '' }: Customer
       onSettled: () => {
         onSettledCache()
       },
-      onError: (error: any, _, context: any) => {
+      onError: (error, _, context: any) => {
         onErrorCache(context)
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data.errors.map((error) => error.message),
         })
       },
     }

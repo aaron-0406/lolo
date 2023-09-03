@@ -1,4 +1,4 @@
-import { AxiosResponse } from 'axios'
+import { AxiosError, AxiosResponse } from 'axios'
 import { useMutation, useQueryClient } from 'react-query'
 import Modal from '@/ui/Modal/Modal'
 import Container from '@/ui/Container/Container'
@@ -7,6 +7,7 @@ import { notification } from '@/ui/notification/notification'
 import dashRoleCache from '../../RolesTable/utils/dash-role.cache'
 import { deleteRole } from '@/services/dash/role.service'
 import { useDashContext } from '@/contexts/DashProvider'
+import { CustomErrorResponse } from 'types/customErrorResponse'
 
 type DeleteRoleModalProps = {
   visible: boolean
@@ -29,7 +30,10 @@ const DeleteRoleModal = ({ visible, idRole = 0, onClose }: DeleteRoleModalProps)
     onErrorCache,
   } = dashRoleCache(queryClient)
 
-  const { isLoading: loadingDeleteRole, mutate: deleteRoleMutate } = useMutation<AxiosResponse<{ id: string }>, Error>(
+  const { isLoading: loadingDeleteRole, mutate: deleteRoleMutate } = useMutation<
+    AxiosResponse<{ id: string }>,
+    AxiosError<CustomErrorResponse>
+  >(
     async () => {
       return await deleteRole(idRole)
     },
@@ -45,11 +49,12 @@ const DeleteRoleModal = ({ visible, idRole = 0, onClose }: DeleteRoleModalProps)
       onSettled: () => {
         onSettledCache(id)
       },
-      onError: (error: any, _, context: any) => {
+      onError: (error, _, context: any) => {
         onErrorCache(context, id)
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data.errors.map((error) => error.message),
         })
       },
     }

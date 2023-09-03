@@ -1,4 +1,4 @@
-import { AxiosResponse } from 'axios'
+import { AxiosError, AxiosResponse } from 'axios'
 import { useMutation, useQueryClient } from 'react-query'
 import Container from '@/ui/Container'
 import { deleteUser } from '@/services/dash/customer-user.service'
@@ -6,6 +6,7 @@ import Modal from '@/ui/Modal'
 import notification from '@/ui/notification'
 import Button from '@/ui/Button'
 import dashUsuariosCache from '../../UsersTable/utils/dash-usuarios.cache'
+import { CustomErrorResponse } from 'types/customErrorResponse'
 
 type DeleteUsersModalProps = {
   visible: boolean
@@ -23,7 +24,10 @@ const DeleteUsersModal = ({ visible, idUser = 0, onClose }: DeleteUsersModalProp
     onErrorCache,
   } = dashUsuariosCache(queryClient)
 
-  const { isLoading: loadingDeleteUser, mutate: deleteUserMutate } = useMutation<AxiosResponse<{ id: string }>, Error>(
+  const { isLoading: loadingDeleteUser, mutate: deleteUserMutate } = useMutation<
+    AxiosResponse<{ id: string }>,
+    AxiosError<CustomErrorResponse>
+  >(
     async () => {
       return await deleteUser(idUser)
     },
@@ -39,11 +43,12 @@ const DeleteUsersModal = ({ visible, idUser = 0, onClose }: DeleteUsersModalProp
       onSettled: () => {
         onSettledCache()
       },
-      onError: (error: any, _, context: any) => {
+      onError: (error, _, context: any) => {
         onErrorCache(context)
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data.errors.map((error) => error.message),
         })
       },
     }

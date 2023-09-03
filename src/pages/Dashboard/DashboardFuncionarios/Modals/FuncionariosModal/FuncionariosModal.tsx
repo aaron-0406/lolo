@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { AxiosResponse } from 'axios'
+import { AxiosError, AxiosResponse } from 'axios'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { FuncionarioType } from '@/types/dash/funcionario.type'
@@ -11,6 +11,7 @@ import Container from '@/ui/Container'
 import Button from '@/ui/Button'
 import FuncionarioInfoForm from './FuncionarioInfoForm/FuncionarioInfoForm'
 import dashFuncionariosCache from '../../FuncionariosTable/utils/dash-funcionarios.cache'
+import { CustomErrorResponse } from 'types/customErrorResponse'
 
 type FuncionariosModalProps = {
   visible: boolean
@@ -50,7 +51,7 @@ const FuncionariosModal = ({ visible, onClose, isEdit = false, idFuncionario = 0
 
   const { isLoading: loadingCreateFuncionarios, mutate: createFuncionarios } = useMutation<
     AxiosResponse<FuncionarioType>,
-    Error
+    AxiosError<CustomErrorResponse>
   >(
     async () => {
       const { id, ...restClient } = getValues()
@@ -68,11 +69,12 @@ const FuncionariosModal = ({ visible, onClose, isEdit = false, idFuncionario = 0
       onSettled: () => {
         onSettledCache(chb)
       },
-      onError: (error: any, _, context: any) => {
+      onError: (error, _, context: any) => {
         onErrorCache(context, chb)
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data.errors.map((error) => error.message),
         })
       },
     }

@@ -1,12 +1,13 @@
 import { useMutation, useQueryClient } from 'react-query'
 import { useLocation } from 'react-router-dom'
-import { AxiosResponse } from 'axios'
+import { AxiosError, AxiosResponse } from 'axios'
 import Button from '@/ui/Button/Button'
 import Container from '@/ui/Container/Container'
 import Modal from '@/ui/Modal/Modal'
 import dashPermissionCache from '../../PermissionsTable/utils/dash-permisos.cache'
 import { deletePermission } from '@/services/dash/permission.service'
 import { notification } from '@/ui/notification/notification'
+import { CustomErrorResponse } from 'types/customErrorResponse'
 
 type DeletePermissionModalProps = {
   visible: boolean
@@ -30,7 +31,7 @@ const DeletePermissionModal = ({ visible, idPermission = 0, onClose }: DeletePer
 
   const { isLoading: loadingDeletePermission, mutate: deletePermissionMutate } = useMutation<
     AxiosResponse<{ id: string }>,
-    Error
+    AxiosError<CustomErrorResponse>
   >(
     async () => {
       return await deletePermission(idPermission)
@@ -47,11 +48,12 @@ const DeletePermissionModal = ({ visible, idPermission = 0, onClose }: DeletePer
       onSettled: () => {
         onSettledCache(code)
       },
-      onError: (error: any, _, context: any) => {
+      onError: (error, _, context: any) => {
         onErrorCache(context, code)
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data.errors.map((error) => error.message),
         })
       },
     }

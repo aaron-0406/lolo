@@ -10,6 +10,8 @@ import Button from '@/ui/Button'
 import notification from '@/ui/notification'
 import NegotiationInfoForm from './NegotiationInfoForm'
 import dashNegotiationCache from '../../NegotiationTable/utils/dash-negociaciones.cache'
+import { AxiosError } from 'axios'
+import { CustomErrorResponse } from 'types/customErrorResponse'
 
 type NegotiationModalProps = {
   visible: boolean
@@ -47,7 +49,10 @@ const NegotiationModal = ({ visible, onClose, isEdit = false, idNegotiation = 0,
     formState: { isValid },
   } = formMethods
 
-  const { isLoading: loadingCreateNegotiation, mutate: mutateCreateNegotiation } = useMutation<any, Error>(
+  const { isLoading: loadingCreateNegotiation, mutate: mutateCreateNegotiation } = useMutation<
+    any,
+    AxiosError<CustomErrorResponse>
+  >(
     async () => {
       const { id, ...restNegotiation } = getValues()
       return await createNegotiation({ ...restNegotiation, customerHasBankId: chb })
@@ -64,17 +69,21 @@ const NegotiationModal = ({ visible, onClose, isEdit = false, idNegotiation = 0,
       onSettled: () => {
         onSettledCache(chb)
       },
-      onError: (error: any, _, context: any) => {
+      onError: (error, _, context: any) => {
         onErrorCache(context, chb)
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data.errors.map((error) => error.message),
         })
       },
     }
   )
 
-  const { isLoading: loadingEditNegotiation, mutate: mutateEditNegotiation } = useMutation<any, Error>(
+  const { isLoading: loadingEditNegotiation, mutate: mutateEditNegotiation } = useMutation<
+    any,
+    AxiosError<CustomErrorResponse>
+  >(
     async () => {
       const { id, ...restNegotiation } = getValues()
       return await updateNegotiation(id, { ...restNegotiation, customerHasBankId: chb })
@@ -91,11 +100,12 @@ const NegotiationModal = ({ visible, onClose, isEdit = false, idNegotiation = 0,
       onSettled: () => {
         onSettledCache(chb)
       },
-      onError: (error: any, _, context: any) => {
+      onError: (error, _, context: any) => {
         onErrorCache(context, chb)
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data.errors.map((error) => error.message),
         })
       },
     }

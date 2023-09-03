@@ -1,4 +1,4 @@
-import { AxiosResponse } from 'axios'
+import { AxiosError, AxiosResponse } from 'axios'
 import { useMutation, useQueryClient } from 'react-query'
 import Container from '@/ui/Container'
 import Modal from '@/ui/Modal'
@@ -6,6 +6,7 @@ import notification from '@/ui/notification'
 import Button from '@/ui/Button'
 import { deleteFuncionario } from '@/services/dash/funcionario.service'
 import dashFuncionariosCache from '../../FuncionariosTable/utils/dash-funcionarios.cache'
+import { CustomErrorResponse } from 'types/customErrorResponse'
 
 type DeleteFuncionariosModalProps = {
   visible: boolean
@@ -26,7 +27,7 @@ const DeleteFuncionariosModal = ({ visible, idAction = 0, onClose, chb = 0 }: De
 
   const { isLoading: loadingDeleteFuncionario, mutate: deleteFuncionarioMutate } = useMutation<
     AxiosResponse<{ id: string }>,
-    Error
+    AxiosError<CustomErrorResponse>
   >(
     async () => {
       return await deleteFuncionario(idAction)
@@ -43,11 +44,12 @@ const DeleteFuncionariosModal = ({ visible, idAction = 0, onClose, chb = 0 }: De
       onSettled: () => {
         onSettledCache(chb)
       },
-      onError: (error: any, _, context: any) => {
+      onError: (error, _, context: any) => {
         onErrorCache(context, chb)
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data.errors.map((error) => error.message),
         })
       },
     }

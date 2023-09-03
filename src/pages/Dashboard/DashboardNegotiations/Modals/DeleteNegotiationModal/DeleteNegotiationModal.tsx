@@ -1,11 +1,12 @@
 import { useMutation, useQueryClient } from 'react-query'
-import { AxiosResponse } from 'axios'
+import { AxiosError, AxiosResponse } from 'axios'
 import dashNegotiationCache from '../../NegotiationTable/utils/dash-negociaciones.cache'
 import { deleteNegotiation } from '@/services/dash/negotiation.service'
 import notification from '@/ui/notification'
 import Modal from '@/ui/Modal'
 import Container from '@/ui/Container'
 import Button from '@/ui/Button'
+import { CustomErrorResponse } from 'types/customErrorResponse'
 
 type DeleteNegotiationModalProps = {
   visible: boolean
@@ -26,7 +27,7 @@ const DeleteNegotiationModal = ({ visible, idNegociation = 0, onClose, chb }: De
 
   const { isLoading: loadingDeleteNegotiation, mutate: deleteNegotiationMutate } = useMutation<
     AxiosResponse<{ id: string }>,
-    Error
+    AxiosError<CustomErrorResponse>
   >(
     async () => {
       return await deleteNegotiation(idNegociation)
@@ -43,11 +44,12 @@ const DeleteNegotiationModal = ({ visible, idNegociation = 0, onClose, chb }: De
       onSettled: () => {
         onSettledCache(chb)
       },
-      onError: (error: any, _, context: any) => {
+      onError: (error, _, context: any) => {
         onErrorCache(context, chb)
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data.errors.map((error) => error.message),
         })
       },
     }

@@ -1,6 +1,6 @@
 import { Dispatch, FC, useEffect, useState } from 'react'
 import moment from 'moment'
-import { AxiosResponse } from 'axios'
+import { AxiosError, AxiosResponse } from 'axios'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { getAllUsersByID, editUserState } from '@/services/dash/customer-user.service'
 import { CustomerUserType } from '@/types/dash/customer-user.type'
@@ -18,6 +18,7 @@ import useModal from '@/hooks/useModal'
 import DeleteUsersModal from '../Modals/DeleteUsersModal'
 import dashUsuariosCache, { KEY_DASH_USUARIOS_CACHE } from './utils/dash-usuarios.cache'
 import notification from '@/ui/notification'
+import { CustomErrorResponse } from 'types/customErrorResponse'
 
 type UsersTableProps = {
   opts: Opts
@@ -72,7 +73,7 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts }) => {
 
   const { mutate: editStateUser } = useMutation<
     AxiosResponse<CustomerUserType>,
-    Error,
+    AxiosError<CustomErrorResponse>,
     { idUser: number; state: boolean }
   >(
     async ({ idUser, state }) => {
@@ -92,11 +93,12 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts }) => {
       onSettled: () => {
         onSettledCache()
       },
-      onError: (error: any, _, context: any) => {
+      onError: (error, _, context: any) => {
         onErrorCache(context)
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data.errors.map((error) => error.message),
         })
       },
     }

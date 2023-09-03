@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { AxiosResponse } from 'axios'
+import { AxiosError, AxiosResponse } from 'axios'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { useDashContext } from '@/contexts/DashProvider'
 import { banksNoSelectColumns } from './utils/columnsNoSelect'
@@ -22,6 +22,7 @@ import Table from '@/ui/Table'
 import TextField from '@/ui/fields/TextField'
 import Container from '@/ui/Container'
 import Button from '@/ui/Button'
+import { CustomErrorResponse } from 'types/customErrorResponse'
 
 type BankNoSelectedProps = {
   setGlobalElement: (element: SelectedElementType) => void
@@ -86,7 +87,10 @@ const BankNoSelected = ({ setGlobalElement, elementSelected }: BankNoSelectedPro
   const chbs = dataCHBs as AxiosResponse<CustomerHasBankType[]>
   const banks = dataBanks?.data.filter((bank: BankType) => !chbs?.data.some((cb) => cb.idBank === bank.id)) ?? []
 
-  const { isLoading: loadingCreateBank, mutate: addBank } = useMutation<AxiosResponse<BankType>, Error>(
+  const { isLoading: loadingCreateBank, mutate: addBank } = useMutation<
+    AxiosResponse<BankType>,
+    AxiosError<CustomErrorResponse>
+  >(
     async () => {
       const { id, ...restBank } = getValues()
       return await createBank({ ...restBank })
@@ -102,11 +106,12 @@ const BankNoSelected = ({ setGlobalElement, elementSelected }: BankNoSelectedPro
       onSettled: () => {
         onSettledBankCache()
       },
-      onError: (error: any, _, context: any) => {
+      onError: (error, _, context: any) => {
         onErrorBankCache(context)
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data.errors.map((error) => error.message),
         })
       },
     }

@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { AxiosResponse } from 'axios'
+import { AxiosError, AxiosResponse } from 'axios'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { ManagementActionType } from '@/types/dash/management-action.type'
 import { ModalActionsResolver } from './ActionsModal.yup'
@@ -15,6 +15,7 @@ import Container from '@/ui/Container'
 import Button from '@/ui/Button'
 import ActionInfoForm from './ActionInfoForm/ActionInfoForm'
 import dashAccionesCache from '../../ActionsTable/utils/dash-acciones.cache'
+import { CustomErrorResponse } from 'types/customErrorResponse'
 
 type ActionsModalProps = {
   visible: boolean
@@ -55,7 +56,7 @@ const ActionsModal = ({ visible, onClose, isEdit = false, idAction = 0, chb }: A
 
   const { isLoading: loadingCreateAction, mutate: createAction } = useMutation<
     AxiosResponse<ManagementActionType>,
-    Error
+    AxiosError<CustomErrorResponse>
   >(
     async () => {
       const { id, ...restClient } = getValues()
@@ -73,17 +74,21 @@ const ActionsModal = ({ visible, onClose, isEdit = false, idAction = 0, chb }: A
       onSettled: () => {
         onSettledCache(chb)
       },
-      onError: (error: any, _, context: any) => {
+      onError: (error, _, context: any) => {
         onErrorCache(context, chb)
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data.errors.map((error) => error.message),
         })
       },
     }
   )
 
-  const { isLoading: loadingEditAction, mutate: editAction } = useMutation<AxiosResponse<ManagementActionType>, Error>(
+  const { isLoading: loadingEditAction, mutate: editAction } = useMutation<
+    AxiosResponse<ManagementActionType>,
+    AxiosError<CustomErrorResponse>
+  >(
     async () => {
       const { id, ...restClient } = getValues()
       return await updateManagementAction(id, { ...restClient, customerHasBankId: chb })
@@ -100,11 +105,12 @@ const ActionsModal = ({ visible, onClose, isEdit = false, idAction = 0, chb }: A
       onSettled: () => {
         onSettledCache(chb)
       },
-      onError: (error: any, _, context: any) => {
+      onError: (error, _, context: any) => {
         onErrorCache(context, chb)
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data.errors.map((error) => error.message),
         })
       },
     }
