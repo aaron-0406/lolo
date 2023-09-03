@@ -1,6 +1,7 @@
 import { useFormContext } from 'react-hook-form'
 import { useMutation } from 'react-query'
 import styled from 'styled-components'
+import { AxiosError } from 'axios'
 import { generateDocumentService } from '@/services/extrajudicial/document.service'
 import {
   createTemplateHasValuesService,
@@ -13,6 +14,7 @@ import Button from '@/ui/Button'
 import Container from '@/ui/Container'
 import notification from '@/ui/notification'
 import { TemplateFormType } from '../hookforms.interfaces'
+import { CustomErrorResponse } from 'types/customErrorResponse'
 
 const TemplateActions = () => {
   const { watch, setValue, getValues } = useFormContext<TemplateFormType>()
@@ -42,7 +44,7 @@ const TemplateActions = () => {
     )
   }
 
-  const { mutate: createTemplateHasValues } = useMutation<any, Error>(
+  const { mutate: createTemplateHasValues } = useMutation<any, AxiosError<CustomErrorResponse>>(
     async () => {
       const {
         templateHasValuesSelected: { id, createdAt, ...rest },
@@ -65,15 +67,16 @@ const TemplateActions = () => {
           message: 'Plantilla Creada',
         })
       },
-      onError: (error: any) => {
+      onError: (error) => {
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data.errors.map((error) => error.message),
         })
       },
     }
   )
-  const { mutate: deleteTemplateHasValues } = useMutation<any, Error>(
+  const { mutate: deleteTemplateHasValues } = useMutation<any, AxiosError<CustomErrorResponse>>(
     async () => {
       const {
         templateHasValuesSelected: { id },
@@ -115,15 +118,16 @@ const TemplateActions = () => {
           message: 'Plantilla eliminada',
         })
       },
-      onError: (error: any) => {
+      onError: (error) => {
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data.errors.map((error) => error.message),
         })
       },
     }
   )
-  const { mutate: updateTemplateHasValues } = useMutation<any, Error>(
+  const { mutate: updateTemplateHasValues } = useMutation<any, AxiosError<CustomErrorResponse>>(
     async () => {
       const {
         templateHasValuesSelected: { id },
@@ -147,15 +151,16 @@ const TemplateActions = () => {
           message: 'Plantilla editada',
         })
       },
-      onError: (error: any) => {
+      onError: (error) => {
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data.errors.map((error) => error.message),
         })
       },
     }
   )
-  const { mutate: generateDocument } = useMutation<any, Error>(
+  const { mutate: generateDocument } = useMutation<any, AxiosError<CustomErrorResponse>>(
     async () => {
       const {
         templateHasValuesSelected: { id },
@@ -176,10 +181,11 @@ const TemplateActions = () => {
           message: 'Documento creado',
         })
       },
-      onError: (error: any) => {
+      onError: (error) => {
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data.errors.map((error) => error.message),
         })
       },
     }

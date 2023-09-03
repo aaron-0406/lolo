@@ -1,14 +1,19 @@
 import { useMutation } from 'react-query'
+import { AxiosError } from 'axios'
 import { createProduct, deleteProduct, editProduct } from '@/services/extrajudicial/product.service'
 import Button from '@/ui/Button'
 import Container from '@/ui/Container'
 import { ProductFormType } from '../hookforms.interfaces'
 import { useFormContext } from 'react-hook-form'
 import notification from '@/ui/notification'
+import { CustomErrorResponse } from 'types/customErrorResponse'
 
 const ModalProductsActions = () => {
   const { setValue, getValues, handleSubmit, watch } = useFormContext<ProductFormType>()
-  const { isLoading: loadingCreateProduct, mutate: createProductMutate } = useMutation<any, Error>(
+  const { isLoading: loadingCreateProduct, mutate: createProductMutate } = useMutation<
+    any,
+    AxiosError<CustomErrorResponse>
+  >(
     async () => {
       const { id, products, ...restProduct } = getValues()
       return await createProduct(restProduct)
@@ -20,16 +25,20 @@ const ModalProductsActions = () => {
         onCleanFields()
         notification({ type: 'success', message: 'Producto creado' })
       },
-      onError: (error: any) => {
+      onError: (error) => {
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data.errors.map((error) => error.message),
         })
       },
     }
   )
 
-  const { isLoading: loadingEditProduct, mutate: editProductMutate } = useMutation<any, Error>(
+  const { isLoading: loadingEditProduct, mutate: editProductMutate } = useMutation<
+    any,
+    AxiosError<CustomErrorResponse>
+  >(
     async () => {
       const { id, products, clientCode, code, customerId, ...restProduct } = getValues()
       return await editProduct(restProduct, id)
@@ -46,15 +55,19 @@ const ModalProductsActions = () => {
         onCleanFields()
         notification({ type: 'success', message: 'Producto editado' })
       },
-      onError: (error: any) => {
+      onError: (error) => {
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data.errors.map((error) => error.message),
         })
       },
     }
   )
-  const { isLoading: loadingDeleteProduct, mutate: deleteProductMutate } = useMutation<any, Error>(
+  const { isLoading: loadingDeleteProduct, mutate: deleteProductMutate } = useMutation<
+    any,
+    AxiosError<CustomErrorResponse>
+  >(
     async () => {
       const { id } = getValues()
       return await deleteProduct(id)
@@ -65,10 +78,11 @@ const ModalProductsActions = () => {
         onCleanFields()
         notification({ type: 'success', message: 'Producto eliminado' })
       },
-      onError: (error: any) => {
+      onError: (error) => {
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data.errors.map((error) => error.message),
         })
       },
     }

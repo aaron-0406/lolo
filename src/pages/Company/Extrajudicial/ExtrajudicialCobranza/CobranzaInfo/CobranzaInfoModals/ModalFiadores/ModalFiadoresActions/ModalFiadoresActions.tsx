@@ -5,11 +5,16 @@ import Button from '@/ui/Button'
 import Container from '@/ui/Container'
 import notification from '@/ui/notification'
 import { GuarantorFormType } from '@/pages/extrajudicial/ExtrajudicialCobranza/CobranzaInfo/CobranzaInfoModals/ModalFiadores/hookforms.interfaces'
+import { AxiosError } from 'axios'
+import { CustomErrorResponse } from 'types/customErrorResponse'
 
 const ModalFiadoresActions = () => {
   const { setValue, getValues, handleSubmit, watch } = useFormContext<GuarantorFormType>()
 
-  const { isLoading: loadingCreateGuarantor, mutate: createGuarantorMutate } = useMutation<any, Error>(
+  const { isLoading: loadingCreateGuarantor, mutate: createGuarantorMutate } = useMutation<
+    any,
+    AxiosError<CustomErrorResponse>
+  >(
     async () => {
       const { id, guarantors, ...restClient } = getValues()
       return await createGuarantor(restClient)
@@ -21,16 +26,20 @@ const ModalFiadoresActions = () => {
         onCleanFields()
         notification({ type: 'success', message: 'Fiador creado' })
       },
-      onError: (error: any) => {
+      onError: (error) => {
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data.errors.map((error) => error.message),
         })
       },
     }
   )
 
-  const { isLoading: loadingEditGuarantor, mutate: editGuarantorMutate } = useMutation<any, Error>(
+  const { isLoading: loadingEditGuarantor, mutate: editGuarantorMutate } = useMutation<
+    any,
+    AxiosError<CustomErrorResponse>
+  >(
     async () => {
       const { id, guarantors, clientId, ...restClient } = getValues()
       return await editGuarantor(restClient, id)
@@ -47,15 +56,19 @@ const ModalFiadoresActions = () => {
         onCleanFields()
         notification({ type: 'success', message: 'Fiador editado' })
       },
-      onError: (error: any) => {
+      onError: (error) => {
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data.errors.map((error) => error.message),
         })
       },
     }
   )
-  const { isLoading: loadingDeleteGuarantor, mutate: deleteGuarantorMutate } = useMutation<any, Error>(
+  const { isLoading: loadingDeleteGuarantor, mutate: deleteGuarantorMutate } = useMutation<
+    any,
+    AxiosError<CustomErrorResponse>
+  >(
     async () => {
       const { id } = getValues()
       return await deleteGuarantor(id)
@@ -66,10 +79,11 @@ const ModalFiadoresActions = () => {
         onCleanFields()
         notification({ type: 'success', message: 'Fiador eliminado' })
       },
-      onError: (error: any) => {
+      onError: (error) => {
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data.errors.map((error) => error.message),
         })
       },
     }

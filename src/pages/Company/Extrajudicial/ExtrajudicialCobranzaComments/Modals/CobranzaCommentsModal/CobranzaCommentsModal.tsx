@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import moment from 'moment'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
-import { AxiosResponse } from 'axios'
+import { AxiosError, AxiosResponse } from 'axios'
 import { CommentType } from '@/types/extrajudicial/comment.type'
 import { notification } from '@/ui/notification/notification'
 import Modal from '@/ui/Modal/Modal'
@@ -15,6 +15,7 @@ import { ModalCobranzaCommentsResolver } from './CobranzaCommentsModal.yup'
 import { createComment, editComment, getCommenById } from '@/services/extrajudicial/comment.service'
 import CobranzaCommentsInfoForm from './CobranzaCommentsInfoForm/CobranzaCommentsInfoForm'
 import { useLoloContext } from '@/contexts/LoloProvider'
+import { CustomErrorResponse } from 'types/customErrorResponse'
 
 type CobranzaCommentsModalProps = {
   visible: boolean
@@ -64,7 +65,7 @@ const CobranzaCommentsModal = ({
 
   const { isLoading: loadingCreateCobranzaComment, mutate: createCobranzaComment } = useMutation<
     AxiosResponse<CommentType>,
-    Error
+    AxiosError<CustomErrorResponse>
   >(
     async () => {
       const { ...restClient } = getValues()
@@ -82,11 +83,12 @@ const CobranzaCommentsModal = ({
       onSettled: () => {
         onSettledCache(clientId)
       },
-      onError: (error: any, _, context: any) => {
+      onError: (error, _, context: any) => {
         onErrorCache(context, clientId)
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data.errors.map((error) => error.message),
         })
       },
     }
@@ -94,7 +96,7 @@ const CobranzaCommentsModal = ({
 
   const { isLoading: loadingEditCobranzaComment, mutate: editCobranzaComment } = useMutation<
     AxiosResponse<CommentType>,
-    Error
+    AxiosError<CustomErrorResponse>
   >(
     async () => {
       const { ...restClient } = getValues()
@@ -112,11 +114,12 @@ const CobranzaCommentsModal = ({
       onSettled: () => {
         onSettledCache(clientId)
       },
-      onError: (error: any, _, context: any) => {
+      onError: (error, _, context: any) => {
         onErrorCache(context, clientId)
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data.errors.map((error) => error.message),
         })
       },
     }

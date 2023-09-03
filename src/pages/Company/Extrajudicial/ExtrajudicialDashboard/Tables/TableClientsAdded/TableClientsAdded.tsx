@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { useMutation } from 'react-query'
+import { AxiosError } from 'axios'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import { createClientsDash } from '@/services/extrajudicial/dashboard.service'
 import { DashFormType } from '../../Dashboard/hookform.type'
@@ -14,6 +15,7 @@ import Table from '@/ui/Table'
 import BodyCell from '@/ui/Table/BodyCell'
 import EmptyStateCell from '@/ui/Table/EmptyStateCell'
 import Actions from '../../Dashboard/Actions'
+import { CustomErrorResponse } from 'types/customErrorResponse'
 
 const TableClientsAdded = ({ globalLoad }: Props) => {
   const { watch, setValue } = useFormContext<DashFormType>()
@@ -30,7 +32,7 @@ const TableClientsAdded = ({ globalLoad }: Props) => {
     },
   } = useLoloContext()
 
-  const { isLoading: isLoadingCreateC, mutate: createClients } = useMutation<any, Error>(
+  const { isLoading: isLoadingCreateC, mutate: createClients } = useMutation<any, AxiosError<CustomErrorResponse>>(
     async () => {
       const QUANTITY_DATA_SENT = 40
       const DATA_GROUPS = Math.ceil(watch('clientsAdded').length / QUANTITY_DATA_SENT)
@@ -55,16 +57,17 @@ const TableClientsAdded = ({ globalLoad }: Props) => {
         notification({ type: 'success', message: 'Productos Agregados' })
         setValue('clientsAdded', [])
       },
-      onError: (error: any) => {
+      onError: (error) => {
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data.errors.map((error) => error.message),
         })
       },
     }
   )
 
-  const { isLoading: isLoadingCreateP, mutate: createProducts } = useMutation<any, Error>(
+  const { isLoading: isLoadingCreateP, mutate: createProducts } = useMutation<any, AxiosError<CustomErrorResponse>>(
     async () => {
       return await createClientsDash(
         [
@@ -88,10 +91,11 @@ const TableClientsAdded = ({ globalLoad }: Props) => {
         )
         notification({ type: 'success', message: 'Cliente Agregado' })
       },
-      onError: (error: any) => {
+      onError: (error) => {
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data.errors.map((error) => error.message),
         })
       },
     }

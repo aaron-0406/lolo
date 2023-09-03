@@ -2,12 +2,15 @@
 import { useEffect, useState } from 'react'
 import { useMutation } from 'react-query'
 import moment from 'moment'
+import { AxiosError } from 'axios'
 import { useLoloContext } from '@/contexts/LoloProvider'
+import notification from '@/ui/notification'
 import Container from '@/ui/Container'
 import Progress from '@/ui/Progress/Progress'
 import Text from '@/ui/Text'
 import { GoalApiResponse, getGlobalGoal, getPersonalGoal } from '@/services/extrajudicial/goal.service'
 import { GoalType } from '@/types/extrajudicial/goal.type'
+import { CustomErrorResponse } from 'types/customErrorResponse'
 
 const GoalInfo = () => {
   const [personalGoal, setPersonalGoal] = useState<GoalType>({
@@ -38,7 +41,7 @@ const GoalInfo = () => {
     },
   } = useLoloContext()
 
-  const { mutate: onGetPersonalGoal } = useMutation<GoalApiResponse, Error>(
+  const { mutate: onGetPersonalGoal } = useMutation<GoalApiResponse, AxiosError<CustomErrorResponse>>(
     async () => {
       return await getPersonalGoal()
     },
@@ -46,11 +49,17 @@ const GoalInfo = () => {
       onSuccess: ({ data }) => {
         setPersonalGoal(data)
       },
-      onError: (error: any) => {},
+      onError: (error) => {
+        notification({
+          type: 'error',
+          message: error.response?.data.message,
+          list: error.response?.data.errors.map((error) => error.message),
+        })
+      },
     }
   )
 
-  const { mutate: onGetGlobalGoal } = useMutation<GoalApiResponse, Error>(
+  const { mutate: onGetGlobalGoal } = useMutation<GoalApiResponse, AxiosError<CustomErrorResponse>>(
     async () => {
       return await getGlobalGoal()
     },
@@ -58,7 +67,13 @@ const GoalInfo = () => {
       onSuccess: ({ data }) => {
         setGlobalGoal(data)
       },
-      onError: (error: any) => {},
+      onError: (error) => {
+        notification({
+          type: 'error',
+          message: error.response?.data.message,
+          list: error.response?.data.errors.map((error) => error.message),
+        })
+      },
     }
   )
   useEffect(() => {

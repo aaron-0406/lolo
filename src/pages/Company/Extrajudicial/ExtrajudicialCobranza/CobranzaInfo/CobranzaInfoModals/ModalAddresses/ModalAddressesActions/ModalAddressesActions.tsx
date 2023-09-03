@@ -1,10 +1,8 @@
 import { useFormContext } from 'react-hook-form'
 import { useMutation } from 'react-query'
-import {
-  createDirection,
-  deleteDirection,
-  editDirection,
-} from '@/services/extrajudicial/direction.service'
+import { AxiosError } from 'axios'
+import { createDirection, deleteDirection, editDirection } from '@/services/extrajudicial/direction.service'
+import { CustomErrorResponse } from 'types/customErrorResponse'
 import Button from '@/ui/Button'
 import Container from '@/ui/Container'
 import notification from '@/ui/notification'
@@ -12,7 +10,10 @@ import { DirectionFormType } from '../hookforms.interfaces'
 
 const ModalAddressesActions = () => {
   const { setValue, getValues, handleSubmit, watch } = useFormContext<DirectionFormType>()
-  const { isLoading: loadingCreateDirection, mutate: createDirectionMutate } = useMutation<any, Error>(
+  const { isLoading: loadingCreateDirection, mutate: createDirectionMutate } = useMutation<
+    any,
+    AxiosError<CustomErrorResponse>
+  >(
     async () => {
       const { id, directions, ...restClient } = getValues()
       return await createDirection(restClient)
@@ -24,16 +25,20 @@ const ModalAddressesActions = () => {
         onCleanFields()
         notification({ type: 'success', message: 'Dirección creada' })
       },
-      onError: (error: any) => {
+      onError: (error) => {
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data.errors.map((error) => error.message),
         })
       },
     }
   )
 
-  const { isLoading: loadingEditDirection, mutate: editDirectionMutate } = useMutation<any, Error>(
+  const { isLoading: loadingEditDirection, mutate: editDirectionMutate } = useMutation<
+    any,
+    AxiosError<CustomErrorResponse>
+  >(
     async () => {
       const { id, directions, clientId, ...restClient } = getValues()
       return await editDirection(restClient, id)
@@ -50,15 +55,19 @@ const ModalAddressesActions = () => {
         onCleanFields()
         notification({ type: 'success', message: 'Dirección editada' })
       },
-      onError: (error: any) => {
+      onError: (error) => {
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data.errors.map((error) => error.message),
         })
       },
     }
   )
-  const { isLoading: loadingDeleteDirection, mutate: deleteDirectionMutate } = useMutation<any, Error>(
+  const { isLoading: loadingDeleteDirection, mutate: deleteDirectionMutate } = useMutation<
+    any,
+    AxiosError<CustomErrorResponse>
+  >(
     async () => {
       const { id } = getValues()
       return await deleteDirection(id)
@@ -69,10 +78,11 @@ const ModalAddressesActions = () => {
         onCleanFields()
         notification({ type: 'success', message: 'Dirección eliminada' })
       },
-      onError: (error: any) => {
+      onError: (error) => {
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data.errors.map((error) => error.message),
         })
       },
     }

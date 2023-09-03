@@ -3,6 +3,7 @@ import React from 'react'
 import { useFormContext } from 'react-hook-form'
 import { useMutation } from 'react-query'
 import styled, { css } from 'styled-components'
+import { AxiosError } from 'axios'
 import { getEcampoByTemplateId } from '@/services/extrajudicial/ecampo.service'
 import { getTemplateJson, getTemplatesById } from '@/services/extrajudicial/template.service'
 import { ECampoType } from '@/types/extrajudicial/ecampo.type'
@@ -11,8 +12,10 @@ import { DOMAIN } from '../../../../../../shared/utils/constant/api'
 import Container from '@/ui/Container'
 import Icon from '@/ui/Icon'
 import Text from '@/ui/Text'
+import notification from '@/ui/notification'
 import { TemplateFormType } from '../../hookforms.interfaces'
 import TemplateHasValuesTable from '../../TemplateHasValuesTable'
+import { CustomErrorResponse } from 'types/customErrorResponse'
 
 type TemplateRowProps = {
   template: TemplateType
@@ -28,7 +31,7 @@ const TemplateRow: React.FC<TemplateRowProps> = (props) => {
   const { setValue } = useFormContext<TemplateFormType>()
 
   // OBTENER CAMPOS
-  const { mutate: getEcampos } = useMutation<any, Error>(
+  const { mutate: getEcampos } = useMutation<any, AxiosError<CustomErrorResponse>>(
     async () => {
       return await getEcampoByTemplateId(id)
     },
@@ -49,10 +52,17 @@ const TemplateRow: React.FC<TemplateRowProps> = (props) => {
           })
         )
       },
+      onError: (error) => {
+        notification({
+          type: 'error',
+          message: error.response?.data.message,
+          list: error.response?.data.errors.map((error) => error.message),
+        })
+      },
     }
   )
   // OBTENER PLANTILLA
-  const { mutate: getPlantilla } = useMutation<any, Error>(
+  const { mutate: getPlantilla } = useMutation<any, AxiosError<CustomErrorResponse>>(
     async () => {
       return await getTemplatesById(id)
     },
@@ -74,6 +84,13 @@ const TemplateRow: React.FC<TemplateRowProps> = (props) => {
           setValue('templateJson', { parrafos: [] })
           setValue('templatePhoto', '')
         }
+      },
+      onError: (error) => {
+        notification({
+          type: 'error',
+          message: error.response?.data.message,
+          list: error.response?.data.errors.map((error) => error.message),
+        })
       },
     }
   )
