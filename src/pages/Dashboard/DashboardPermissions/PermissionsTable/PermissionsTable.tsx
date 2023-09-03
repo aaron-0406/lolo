@@ -135,6 +135,7 @@ const PermissionsTable = () => {
                           event.stopPropagation()
                           handleClickDeletePermission(record.id)
                         }}
+                        disabled={key + 1 !== permissions?.length}
                         messageTooltip="Eliminar Permiso"
                         shape="round"
                         size="small"

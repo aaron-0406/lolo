@@ -49,7 +49,7 @@ const RolesTable = () => {
   } = useDashContext()
 
   const { data, isLoading } = useQuery(
-    KEY_DASH_ROLES_CACHE,
+    [KEY_DASH_ROLES_CACHE, id],
     async () => {
       return await getAllRolesByCustomerId(id)
     },

@@ -63,13 +63,13 @@ const RolesModal = ({ visible, onClose, idRole = 0 }: RoleModalProps) => {
         handleClickCloseModal()
       },
       onMutate: () => {
-        return onMutateCache()
+        return onMutateCache(selectedCustomer.id)
       },
       onSettled: () => {
-        onSettledCache()
+        onSettledCache(selectedCustomer.id)
       },
       onError: (error: any, _, context: any) => {
-        onErrorCache(context)
+        onErrorCache(context, selectedCustomer.id)
         notification({
           type: 'error',
           message: error.response.data.message,
@@ -90,13 +90,13 @@ const RolesModal = ({ visible, onClose, idRole = 0 }: RoleModalProps) => {
         onClose()
       },
       onMutate: () => {
-        return onMutateCache()
+        return onMutateCache(selectedCustomer.id)
       },
       onSettled: () => {
-        onSettledCache()
+        onSettledCache(selectedCustomer.id)
       },
       onError: (error: any, _, context: any) => {
-        onErrorCache(context)
+        onErrorCache(context, selectedCustomer.id)
         notification({
           type: 'error',
           message: error.response.data.message,

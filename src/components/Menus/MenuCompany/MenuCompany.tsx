@@ -109,7 +109,7 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({ children, urlIdentifier }) =>
         gap="35px"
         padding="15px"
       >
-        <Container display="flex" gap="35px">
+        <Container width="100%" display="flex" gap="35px">
           <Icon remixClass="ri-menu-line" size={30} onClick={onClickToggle} />
 
           <Text.Body size="l" weight="bold" ellipsis>
@@ -117,11 +117,9 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({ children, urlIdentifier }) =>
           </Text.Body>
         </Container>
 
-        <Container margin="20px">
-          <Text.Body size="m" weight="bold" color="Success5">
-            {customer.customerBanks[Number(selectedBank?.idBank) - 1]?.name ?? ''}
-          </Text.Body>
-        </Container>
+        <Text.Body className="layout__header-selected-bank" size="m" weight="bold" color="Success5">
+          {customer.customerBanks[Number(selectedBank?.idBank) - 1]?.name ?? ''}
+        </Text.Body>
       </Container>
 
       <Container width="100%" height="calc(100vh - 50px)" display="flex" flexDirection="row">
@@ -179,6 +177,10 @@ const StyledMenu = styled(Container)`
       box-shadow: ${theme.shadows.elevationMedium};
     }
 
+    .layout__header-selected-bank {
+      display: none;
+    }
+
     .layout__menu {
       transition: width 0.3s ease;
       background-color: ${theme.colors.Primary5};
@@ -217,6 +219,10 @@ const StyledMenu = styled(Container)`
         &:hover {
           width: 200px;
         }
+      }
+
+      .layout__header-selected-bank {
+        display: block;
       }
     }
   `}
