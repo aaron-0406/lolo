@@ -34,7 +34,8 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({ children, urlIdentifier }) =>
   } = useLoloContext()
 
   const greaterThanTabletL = useMediaQuery(device.tabletL)
-  const filtereditems = user.permissions?.filter((permission) => permission.link !== '#') ?? []
+  const filtereditems =
+    user.permissions?.filter((permission) => permission.link !== '#' && permission.code.length === 3) ?? []
   const items = filtereditems.map((item) => {
     return {
       ...item,

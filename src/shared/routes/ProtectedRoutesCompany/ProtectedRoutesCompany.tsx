@@ -26,7 +26,7 @@ const initialCustomerState: CustomerType = {
 const ProtectedRoutesCompany: React.FC<ProtectedRoutesCompanyProps> = ({ pathname }) => {
   const location = useLocation()
   const currentPath = location.pathname
-  const { urlIdentifier } = useParams<GuestParamsType>()
+  const { urlIdentifier, code } = useParams<GuestParamsType>()
 
   const {
     auth: { authenticate, setAuthenticate },
@@ -63,9 +63,11 @@ const ProtectedRoutesCompany: React.FC<ProtectedRoutesCompanyProps> = ({ pathnam
 
   const hasAccessToTheRoute = useMemo(() => {
     const permittedRoutes =
-      user.permissions?.map((permission) => permission.link.replace(':urlIdentifier', urlIdentifier + '')) ?? []
+      user.permissions?.map((permission) =>
+        permission.link.replace(':urlIdentifier', urlIdentifier + '').replace(':code', code ?? '')
+      ) ?? []
     return permittedRoutes.includes(currentPath)
-  }, [user.permissions, currentPath, urlIdentifier])
+  }, [user.permissions, currentPath, urlIdentifier, code])
 
   useEffect(() => {
     setIsLoading(true)
