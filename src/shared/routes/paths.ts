@@ -31,12 +31,9 @@ export default {
       `/cobranza/${urlIdentifier}/cobranza/${code}`,
     metas: (urlIdentifier = ':urlIdentifier') => `/cobranza/${urlIdentifier}/metas`,
     document: (urlIdentifier = ':urlIdentifier') => `/cobranza/${urlIdentifier}/document`,
+    dashboard: (urlIdentifier = ':urlIdentifier') => `/cobranza/${urlIdentifier}/dashboard`,
   },
   judicial: {
     perfil: (urlIdentifier = ':urlIdentifier') => `/judicial/${urlIdentifier}/perfil`,
-  },
-  companyDashboard: {
-    root: (urlIdentifier = ':urlIdentifier') => `/${urlIdentifier}`,
-    dashboard: (urlIdentifier = ':urlIdentifier') => `/${urlIdentifier}/dashboard`,
   },
 }

@@ -65,7 +65,7 @@ const ProtectedRoutesCompany: React.FC<ProtectedRoutesCompanyProps> = ({ pathnam
     const permittedRoutes =
       user.permissions?.map((permission) => permission.link.replace(':urlIdentifier', urlIdentifier + '')) ?? []
     return permittedRoutes.includes(currentPath)
-  }, [user.permissions?.length, currentPath, urlIdentifier])
+  }, [user.permissions, currentPath, urlIdentifier])
 
   useEffect(() => {
     setIsLoading(true)

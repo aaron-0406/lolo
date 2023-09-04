@@ -37,7 +37,6 @@ import GuestRoute from '../GhestRoutes'
 import GuestRouteCompany from '../GuestRoutesCompany'
 import ProtectedRoutes from '../ProtectedRoutes'
 import ProtectedRoutesCompany from '../ProtectedRoutesCompany'
-import ProtectedRoutesCompanyDash from '../ProtectedRoutesCompanyDash'
 
 import paths from '../paths'
 
@@ -77,9 +76,7 @@ const AppRouter = () => {
         <Route path={paths.cobranza.cobranzaComments()} element={<ExtrajudicialCobranzaComments />} />
         <Route path={paths.cobranza.metas()} element={<ExtrajudicialMetas />} />
         <Route path={paths.cobranza.document()} element={<ExtrajudicialTemplate />} />
-        <Route element={<ProtectedRoutesCompanyDash pathname={paths.company.login()} />}>
-          <Route path={paths.companyDashboard.dashboard()} element={<Dashboard />} />
-        </Route>
+        <Route path={paths.cobranza.dashboard()} element={<Dashboard />} />
       </Route>
 
       <Route path="*" element={<NotFound />} />
