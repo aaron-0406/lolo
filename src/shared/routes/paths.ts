@@ -5,6 +5,7 @@ export default {
   general: {
     validate: '/validate-token',
     notFound: '/not-found',
+    unauthorized: '/unauthorized',
   },
   dash: {
     root: '/dash',
@@ -26,7 +27,8 @@ export default {
     perfil: (urlIdentifier = ':urlIdentifier') => `/cobranza/${urlIdentifier}/perfil`,
     clientes: (urlIdentifier = ':urlIdentifier') => `/cobranza/${urlIdentifier}/clientes`,
     cobranza: (urlIdentifier = ':urlIdentifier') => `/cobranza/${urlIdentifier}/cobranza`,
-    cobranzaComments: (urlIdentifier = ':urlIdentifier', code=':code') => `/cobranza/${urlIdentifier}/cobranza/${code}`,
+    cobranzaComments: (urlIdentifier = ':urlIdentifier', code = ':code') =>
+      `/cobranza/${urlIdentifier}/cobranza/${code}`,
     metas: (urlIdentifier = ':urlIdentifier') => `/cobranza/${urlIdentifier}/metas`,
     document: (urlIdentifier = ':urlIdentifier') => `/cobranza/${urlIdentifier}/document`,
   },

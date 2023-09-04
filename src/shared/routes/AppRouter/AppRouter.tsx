@@ -30,6 +30,7 @@ import ExtrajudicialCustomers from '@/pages/extrajudicial/ExtrajudicialCustomers
 //JUDICIAL
 import ErrorPage from '../../../pages/ErrorPage'
 import NotFound from '../../../pages/NotFound'
+import Unauthorized from 'pages/Unauthorized'
 
 import AppSwitch from '../AppSwitch'
 import GuestRoute from '../GhestRoutes'
@@ -46,6 +47,7 @@ const AppRouter = () => {
       <Route path={paths.root} element={<Home />} />
       <Route path={paths.error} element={<ErrorPage />} />
       <Route path={paths.general.notFound} element={<NotFound />} />
+      <Route path={paths.general.unauthorized} element={<Unauthorized />} />
 
       {/* DASHBOARD */}
       <Route element={<GuestRoute pathname={paths.dash.root} />}>
