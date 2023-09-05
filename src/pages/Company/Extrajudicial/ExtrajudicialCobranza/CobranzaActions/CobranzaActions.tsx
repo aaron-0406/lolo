@@ -151,6 +151,7 @@ const CobranzaActions = () => {
         trailingIcon="ri-add-fill"
         onClick={onAddClient}
         loading={loadingCreateClient}
+        permission="P03-02"
       />
       <Button
         width="140px"
@@ -160,6 +161,7 @@ const CobranzaActions = () => {
         onClick={onUpdateClient}
         loading={loadingUpdateClient}
         disabled={!getValues('id')}
+        permission="P03-03"
       />
       <Button
         width="125px"
@@ -170,6 +172,7 @@ const CobranzaActions = () => {
         onClick={onDeleteClient}
         loading={loadingDeleteClient}
         disabled={!getValues('id')}
+        permission="P03-04"
       />
       <Button
         width="100px"
@@ -177,8 +180,16 @@ const CobranzaActions = () => {
         trailingIcon="ri-file-word-line"
         onClick={onGenerateWord}
         disabled={!getValues('id')}
+        permission="P03-05"
       />
-      <Button width="100px" shape="round" display="warning" trailingIcon="ri-brush-2-line" onClick={onClean} />
+      <Button
+        width="100px"
+        shape="round"
+        display="warning"
+        trailingIcon="ri-brush-2-line"
+        onClick={onClean}
+        permission="P03-06"
+      />
     </StyledContainer>
   )
 }

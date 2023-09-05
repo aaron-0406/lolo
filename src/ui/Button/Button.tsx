@@ -1,4 +1,4 @@
-import type { ButtonHTMLAttributes } from 'react'
+import { useMemo, type ButtonHTMLAttributes } from 'react'
 import { Tooltip } from 'react-tooltip'
 import type { IRegular } from 'styled-components'
 import styled, { css, useTheme } from 'styled-components'
@@ -7,6 +7,7 @@ import Icon from '@/ui/Icon'
 import Spinner from '@/ui/Spinner'
 import type { ButtonClassType, ButtonHierarchyType, ButtonShapeType, ButtonSizeType } from './interfaces'
 import style from './style'
+import { useLoloContext } from '@/contexts/LoloProvider'
 
 type ButtonProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'size'> & {
   counter?: number
@@ -56,9 +57,21 @@ const Button: React.FC<ButtonProps> = (props) => {
   } = props
 
   const theme = useTheme()
+  const {
+    customerUser: { user },
+  } = useLoloContext()
+
+  const hasAccessToTheButton = useMemo(() => {
+    const permissions = user.permissions?.map((permission) => permission.code) ?? []
+    return permissions.includes(permission ?? '')
+  }, [user.permissions, permission])
 
   const textStyle =
     hierarchy === 'link' && size === 'default' ? theme.typography.body.l.bold : theme.typography.body.m.bold
+
+  if (permission && !hasAccessToTheButton) {
+    return null
+  }
 
   return (
     <StyledButton
