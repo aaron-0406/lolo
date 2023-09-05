@@ -21,6 +21,7 @@ type ButtonProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'size'> & {
   maxWidth?: string
   label?: React.ReactNode
   messageTooltip?: string
+  permission?: string
 }
 
 /**
@@ -35,6 +36,7 @@ type ButtonProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'size'> & {
  * @prop {ButtonShapeType} shape   Can be set button shape "default" | "round"
  * @prop {string} width Can be set width of the button
  * @prop {string} label Can be set text of the button
+ * @prop {string} permission Can be set text of the button
  */
 const Button: React.FC<ButtonProps> = (props) => {
   const {
@@ -49,6 +51,7 @@ const Button: React.FC<ButtonProps> = (props) => {
     display = 'default',
     shape = 'default',
     loading = false,
+    permission,
     ...rest
   } = props
 
