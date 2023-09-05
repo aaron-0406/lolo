@@ -12,7 +12,6 @@ import storage from '../../../shared/utils/storage'
 import Container from '@/ui/Container'
 import Icon from '@/ui/Icon'
 import Text from '@/ui/Text'
-import { getMenuItems } from './utils/get-menu-items'
 
 type MenuCompanyProps = {
   children: JSX.Element
@@ -35,7 +34,14 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({ children, urlIdentifier }) =>
   } = useLoloContext()
 
   const greaterThanTabletL = useMediaQuery(device.tabletL)
-  const items = getMenuItems(urlIdentifier)
+  const filtereditems =
+    user.permissions?.filter((permission) => permission.link !== '#' && permission.code.length === 3) ?? []
+  const items = filtereditems.map((item) => {
+    return {
+      ...item,
+      link: item.link.replace(':urlIdentifier', urlIdentifier),
+    }
+  })
 
   const onClickToggle = () => {
     if (!greaterThanTabletL) {
@@ -125,28 +131,15 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({ children, urlIdentifier }) =>
       <Container width="100%" height="calc(100vh - 50px)" display="flex" flexDirection="row">
         <Container className={`layout__menu ${!greaterThanTabletL && !toggleMenu && 'hide-component'}`} width="100%">
           <ul className="nav">
-            {items.map((item) => {
-              if (user.privilege === 'EDITOR' && item.admin) {
-                return (
-                  <Link key={item.id} to={item.path} className="nav__items" onClick={onClickToggle}>
-                    <Icon remixClass={item.remixClass} />
-                    <Text.Body size="m" weight="bold" color="Neutral0">
-                      {item.title}
-                    </Text.Body>
-                  </Link>
-                )
-              }
-              if (!item.admin) {
-                return (
-                  <Link key={item.id} to={item.path} className="nav__items" onClick={onClickToggle}>
-                    <Icon remixClass={item.remixClass} />
-                    <Text.Body size="m" weight="bold" color="Neutral0">
-                      {item.title}
-                    </Text.Body>
-                  </Link>
-                )
-              }
-              return <div key={item.id}></div>
+            {items.map((item, key) => {
+              return (
+                <Link key={key} to={item.link} className="nav__items" onClick={onClickToggle}>
+                  <Icon remixClass={item.icon} />
+                  <Text.Body size="m" weight="bold" color="Neutral0">
+                    {item.name}
+                  </Text.Body>
+                </Link>
+              )
             })}
             <Link to={paths.company.login(urlIdentifier)} className="nav__items" onClick={logOut}>
               <Icon remixClass="ri-logout-circle-line" />

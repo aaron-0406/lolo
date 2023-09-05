@@ -30,13 +30,13 @@ import ExtrajudicialCustomers from '@/pages/extrajudicial/ExtrajudicialCustomers
 //JUDICIAL
 import ErrorPage from '../../../pages/ErrorPage'
 import NotFound from '../../../pages/NotFound'
+import Unauthorized from 'pages/Unauthorized'
 
 import AppSwitch from '../AppSwitch'
 import GuestRoute from '../GhestRoutes'
 import GuestRouteCompany from '../GuestRoutesCompany'
 import ProtectedRoutes from '../ProtectedRoutes'
 import ProtectedRoutesCompany from '../ProtectedRoutesCompany'
-import ProtectedRoutesCompanyDash from '../ProtectedRoutesCompanyDash'
 
 import paths from '../paths'
 
@@ -46,6 +46,7 @@ const AppRouter = () => {
       <Route path={paths.root} element={<Home />} />
       <Route path={paths.error} element={<ErrorPage />} />
       <Route path={paths.general.notFound} element={<NotFound />} />
+      <Route path={paths.general.unauthorized} element={<Unauthorized />} />
 
       {/* DASHBOARD */}
       <Route element={<GuestRoute pathname={paths.dash.root} />}>
@@ -75,9 +76,7 @@ const AppRouter = () => {
         <Route path={paths.cobranza.cobranzaComments()} element={<ExtrajudicialCobranzaComments />} />
         <Route path={paths.cobranza.metas()} element={<ExtrajudicialMetas />} />
         <Route path={paths.cobranza.document()} element={<ExtrajudicialTemplate />} />
-        <Route element={<ProtectedRoutesCompanyDash pathname={paths.company.login()} />}>
-          <Route path={paths.companyDashboard.dashboard()} element={<Dashboard />} />
-        </Route>
+        <Route path={paths.cobranza.dashboard()} element={<Dashboard />} />
       </Route>
 
       <Route path="*" element={<NotFound />} />
