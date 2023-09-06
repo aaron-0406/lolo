@@ -182,14 +182,7 @@ const CobranzaActions = () => {
         disabled={!getValues('id')}
         permission="P03-05"
       />
-      <Button
-        width="100px"
-        shape="round"
-        display="warning"
-        trailingIcon="ri-brush-2-line"
-        onClick={onClean}
-        permission="P03-06"
-      />
+      <Button width="100px" shape="round" display="warning" trailingIcon="ri-brush-2-line" onClick={onClean} />
     </StyledContainer>
   )
 }
