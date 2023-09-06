@@ -1,9 +1,12 @@
-import { Dispatch, FC, useState } from 'react'
-import { useQuery } from 'react-query'
+import { Dispatch, FC, useEffect, useState } from 'react'
+import { useInfiniteQuery, useQuery, useQueryClient } from 'react-query'
 import { Opts } from '@/ui/Pagination/interfaces'
 import { ManagementActionType } from '@/types/dash/management-action.type'
 import useModal from '@/hooks/useModal'
-import { getAllManagementActionsByCHB } from '@/services/dash/management-action.service'
+import {
+  getAllManagementActionsByCHB,
+  getAllManagementActionsByCHBPaginated,
+} from '@/services/dash/management-action.service'
 import Container from '@/ui/Container'
 import Pagination from '@/ui/Pagination'
 import Table from '@/ui/Table'
@@ -13,7 +16,7 @@ import Button from '@/ui/Button'
 import ActionsModal from '../Modals/ActionsModal/ActionsModal'
 import { actionsColumns } from './utils/columns'
 import DeleteActionsModal from '../Modals/DeleteActionsModal'
-import { KEY_DASH_ACCIONES_CACHE } from './utils/dash-acciones.cache'
+import dashAccionesCache, { KEY_DASH_ACCIONES_CACHE } from './utils/dash-acciones.cache'
 
 type ActionsTableProps = {
   opts: Opts
@@ -22,10 +25,13 @@ type ActionsTableProps = {
 }
 
 const ActionsTable: FC<ActionsTableProps> = ({ opts, setOpts, selectedBank: { chb } }) => {
-  const [actions, setActions] = useState<Array<ManagementActionType>>([])
   const [idEdit, setIdEdit] = useState<number>(0)
-  const [actionsCount, setActionsCount] = useState<number>(0)
   const [idDeletedAction, setIdDeletedAction] = useState<number>(0)
+
+  // const queryClient = useQueryClient()
+  // const {
+  //   data: page
+  // } = dashAccionesCache(queryClient)
 
   const { visible: visibleModalAction, showModal: showModalAction, hideModal: hideModalAction } = useModal()
   const { visible: visibleDeleteAction, showModal: showDeleteAction, hideModal: hideDeleteAction } = useModal()
@@ -48,43 +54,52 @@ const ActionsTable: FC<ActionsTableProps> = ({ opts, setOpts, selectedBank: { ch
     hideModalAction()
   }
 
-  const { isLoading } = useQuery(
-    [KEY_DASH_ACCIONES_CACHE, chb],
-    async () => {
-      return await getAllManagementActionsByCHB(String(chb))
+  const { data, isLoading, hasNextPage, fetchNextPage } = useInfiniteQuery(
+    [KEY_DASH_ACCIONES_CACHE, `${chb}, ${opts.limit}`],
+    async ({ pageParam = 1 }) => {
+      return await getAllManagementActionsByCHBPaginated(String(chb), pageParam, opts.limit)
     },
     {
-      onSuccess: ({ data }) => {
-        if (opts.filter !== '') {
-          data = data.filter((filt: ManagementActionType) => {
-            return filt.nameAction.substring(0, opts.filter.length).toUpperCase() === opts.filter.toUpperCase()
-          })
-        }
-        setActions(data)
-        setActionsCount(data.length)
+      getNextPageParam: (lastPage) => {
+        const nextPage = opts.page
+        return opts.page <= lastPage.data?.numberPages ? nextPage : undefined
       },
+      refetchOnMount: false,
+      enabled: chb !== 0,
     }
   )
 
+  const actions = data?.pages[0].data
+  console.log(data?.pages)
+  // console.log(page)
+
+  useEffect(() => {
+    if (chb !== 0) {
+      if (hasNextPage) {
+        fetchNextPage()
+      }
+    }
+  }, [opts.page])
+
   return (
     <Container width="100%" height="calc(100% - 112px)" padding="20px">
-      <Pagination count={actionsCount} opts={opts} setOpts={setOpts} />
+      <Pagination count={actions?.quantity} opts={opts} setOpts={setOpts} />
       <Table
         top="260px"
         columns={actionsColumns}
         loading={isLoading}
-        isArrayEmpty={!actions.length}
+        isArrayEmpty={!actions?.data?.length}
         emptyState={
           <EmptyStateCell colSpan={actionsColumns.length}>
             <div>Vacio</div>
           </EmptyStateCell>
         }
       >
-        {!!actions?.length &&
-          actions.map((record: ManagementActionType, key) => {
+        {!!actions?.data?.length &&
+          actions?.data.map((record: ManagementActionType) => {
             return (
               <tr className="styled-data-table-row" key={record.id}>
-                <BodyCell textAlign="center">{`${key + 1 || ''}`}</BodyCell>
+                <BodyCell textAlign="center">{`${record.id || ''}`}</BodyCell>
                 <BodyCell textAlign="center">{`${record.codeAction || ''}`}</BodyCell>
                 <BodyCell>{`${record.nameAction || ''}`}</BodyCell>
                 <BodyCell textAlign="center">{`${record.codeSubTypeManagement || ''}`}</BodyCell>

@@ -13,6 +13,10 @@ export const getAllManagementActionsByCHB = async (chb: string) => {
   return await axiosClient.get(`${url}/all/${chb}`)
 }
 
+export const getAllManagementActionsByCHBPaginated = async (chb: string, page: number, limit: number) => {
+  return await axiosClient.get(`${url}/paginated/${chb}?page=${page}&limit=${limit}`)
+}
+
 export const getManagementActionById = async (id: number) => {
   return await axiosClient.get(`${url}/${id}`)
 }
