@@ -122,6 +122,7 @@ const ModalFiadoresActions = () => {
         disabled={watch('id') !== 0}
         onClick={onAddFiador}
         loading={loadingCreateGuarantor}
+        permission="P03-07-01"
       />
       <Button
         width="100px"
@@ -130,6 +131,7 @@ const ModalFiadoresActions = () => {
         disabled={watch('id') === 0}
         onClick={onEditFiador}
         loading={loadingEditGuarantor}
+        permission="P03-07-02"
       />
       <Button
         width="100px"
@@ -139,6 +141,7 @@ const ModalFiadoresActions = () => {
         trailingIcon="ri-close-line"
         onClick={onDeleteFiador}
         loading={loadingDeleteGuarantor}
+        permission="P03-07-03"
       />
       <Button width="100px" shape="round" display="warning" trailingIcon="ri-brush-2-line" onClick={onCleanFields} />
     </Container>

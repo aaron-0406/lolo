@@ -119,6 +119,7 @@ const ModalAddressesActions = () => {
         disabled={watch('id') !== 0}
         onClick={onAddDirection}
         loading={loadingCreateDirection}
+        permission="P03-08-01"
       />
       <Button
         width="100px"
@@ -127,6 +128,7 @@ const ModalAddressesActions = () => {
         disabled={watch('id') === 0}
         onClick={onEditDirection}
         loading={loadingEditDirection}
+        permission="P03-08-02"
       />
       <Button
         width="100px"
@@ -136,6 +138,7 @@ const ModalAddressesActions = () => {
         trailingIcon="ri-close-line"
         onClick={onDeleteDirection}
         loading={loadingDeleteDirection}
+        permission="P03-08-03"
       />
       <Button width="100px" shape="round" display="warning" trailingIcon="ri-brush-2-line" onClick={onCleanFields} />
     </Container>

@@ -95,6 +95,7 @@ const MetasModalView = ({ onClose, visible }: MetasModalViewProps) => {
             }}
             leadingIcon="ri-save-line"
             label="Guardar"
+            permission="P04-04"
           />
         </Container>
       }

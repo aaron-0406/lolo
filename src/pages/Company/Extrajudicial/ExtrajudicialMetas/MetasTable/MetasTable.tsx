@@ -150,6 +150,7 @@ const MetasTable = () => {
                         }}
                         shape="round"
                         leadingIcon="ri-pencil-fill"
+                        permission="P04-02"
                       />
                       <Button
                         loading={loadingDeleteGoal}
@@ -160,6 +161,7 @@ const MetasTable = () => {
                         display="danger"
                         shape="round"
                         leadingIcon="ri-close-line"
+                        permission="P04-03"
                       />
                     </Container>
                   }

@@ -67,6 +67,7 @@ const CustomersActions: FC<CustomerActionsProps> = ({ opts, setOpts }) => {
           trailingIcon="ri-file-excel-line"
           onClick={showModalManagementExcel}
           disabled={!selectedBank.idBank}
+          permission="P02-01"
         />
       </Container>
 
