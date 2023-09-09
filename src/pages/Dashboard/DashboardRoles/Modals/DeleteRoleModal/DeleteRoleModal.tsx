@@ -54,7 +54,7 @@ const DeleteRoleModal = ({ visible, idRole = 0, onClose }: DeleteRoleModalProps)
         notification({
           type: 'error',
           message: error.response?.data.message,
-          list: error.response?.data.errors.map((error) => error.message),
+          list: error.response?.data?.errors?.map((error) => error.message),
         })
       },
     }

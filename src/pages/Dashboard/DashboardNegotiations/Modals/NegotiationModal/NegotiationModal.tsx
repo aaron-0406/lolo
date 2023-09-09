@@ -74,7 +74,7 @@ const NegotiationModal = ({ visible, onClose, isEdit = false, idNegotiation = 0,
         notification({
           type: 'error',
           message: error.response?.data.message,
-          list: error.response?.data.errors.map((error) => error.message),
+          list: error.response?.data?.errors?.map((error) => error.message),
         })
       },
     }
@@ -105,7 +105,7 @@ const NegotiationModal = ({ visible, onClose, isEdit = false, idNegotiation = 0,
         notification({
           type: 'error',
           message: error.response?.data.message,
-          list: error.response?.data.errors.map((error) => error.message),
+          list: error.response?.data?.errors?.map((error) => error.message),
         })
       },
     }

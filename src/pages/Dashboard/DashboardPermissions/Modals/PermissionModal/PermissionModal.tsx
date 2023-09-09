@@ -81,7 +81,7 @@ const PermissionModal = ({ visible, onClose, idPermission = 0 }: PermissionModal
         notification({
           type: 'error',
           message: error.response?.data.message,
-          list: error.response?.data.errors.map((error) => error.message),
+          list: error.response?.data?.errors?.map((error) => error.message),
         })
       },
     }

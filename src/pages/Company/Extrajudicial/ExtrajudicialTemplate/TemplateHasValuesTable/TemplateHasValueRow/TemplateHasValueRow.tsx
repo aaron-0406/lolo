@@ -51,7 +51,7 @@ const TableHasValueRow: React.FC<TableHasValueRoProps> = (props) => {
         notification({
           type: 'error',
           message: error.response?.data.message,
-          list: error.response?.data.errors.map((error) => error.message),
+          list: error.response?.data?.errors?.map((error) => error.message),
         })
       },
     }
@@ -85,7 +85,7 @@ const TableHasValueRow: React.FC<TableHasValueRoProps> = (props) => {
         notification({
           type: 'error',
           message: error.response?.data.message,
-          list: error.response?.data.errors.map((error) => error.message),
+          list: error.response?.data?.errors?.map((error) => error.message),
         })
       },
     }

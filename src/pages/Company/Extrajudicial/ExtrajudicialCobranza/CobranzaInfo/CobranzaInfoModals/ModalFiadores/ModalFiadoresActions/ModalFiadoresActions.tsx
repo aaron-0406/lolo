@@ -30,7 +30,7 @@ const ModalFiadoresActions = () => {
         notification({
           type: 'error',
           message: error.response?.data.message,
-          list: error.response?.data.errors.map((error) => error.message),
+          list: error.response?.data?.errors?.map((error) => error.message),
         })
       },
     }
@@ -60,7 +60,7 @@ const ModalFiadoresActions = () => {
         notification({
           type: 'error',
           message: error.response?.data.message,
-          list: error.response?.data.errors.map((error) => error.message),
+          list: error.response?.data?.errors?.map((error) => error.message),
         })
       },
     }
@@ -83,7 +83,7 @@ const ModalFiadoresActions = () => {
         notification({
           type: 'error',
           message: error.response?.data.message,
-          list: error.response?.data.errors.map((error) => error.message),
+          list: error.response?.data?.errors?.map((error) => error.message),
         })
       },
     }

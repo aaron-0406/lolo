@@ -53,7 +53,7 @@ const DeletePermissionModal = ({ visible, idPermission = 0, onClose }: DeletePer
         notification({
           type: 'error',
           message: error.response?.data.message,
-          list: error.response?.data.errors.map((error) => error.message),
+          list: error.response?.data?.errors?.map((error) => error.message),
         })
       },
     }

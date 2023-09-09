@@ -49,7 +49,7 @@ const DeleteNegotiationModal = ({ visible, idNegociation = 0, onClose, chb }: De
         notification({
           type: 'error',
           message: error.response?.data.message,
-          list: error.response?.data.errors.map((error) => error.message),
+          list: error.response?.data?.errors?.map((error) => error.message),
         })
       },
     }

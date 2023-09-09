@@ -77,7 +77,7 @@ const RolesModal = ({ visible, onClose, idRole = 0 }: RoleModalProps) => {
         notification({
           type: 'error',
           message: error.response?.data.message,
-          list: error.response?.data.errors.map((error) => error.message),
+          list: error.response?.data?.errors?.map((error) => error.message),
         })
       },
     }
@@ -108,7 +108,7 @@ const RolesModal = ({ visible, onClose, idRole = 0 }: RoleModalProps) => {
         notification({
           type: 'error',
           message: error.response?.data.message,
-          list: error.response?.data.errors.map((error) => error.message),
+          list: error.response?.data?.errors?.map((error) => error.message),
         })
       },
     }

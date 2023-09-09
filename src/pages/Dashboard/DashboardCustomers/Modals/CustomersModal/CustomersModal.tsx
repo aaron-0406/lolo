@@ -81,7 +81,7 @@ const CustomersModal = ({ visible, onClose, isEdit = false, url = '' }: Customer
         notification({
           type: 'error',
           message: error.response?.data.message,
-          list: error.response?.data.errors.map((error) => error.message),
+          list: error.response?.data?.errors?.map((error) => error.message),
         })
       },
     }
@@ -112,7 +112,7 @@ const CustomersModal = ({ visible, onClose, isEdit = false, url = '' }: Customer
         notification({
           type: 'error',
           message: error.response?.data.message,
-          list: error.response?.data.errors.map((error) => error.message),
+          list: error.response?.data?.errors?.map((error) => error.message),
         })
       },
     }

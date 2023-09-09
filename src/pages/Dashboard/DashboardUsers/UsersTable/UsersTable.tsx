@@ -98,7 +98,7 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts }) => {
         notification({
           type: 'error',
           message: error.response?.data.message,
-          list: error.response?.data.errors.map((error) => error.message),
+          list: error.response?.data?.errors?.map((error) => error.message),
         })
       },
     }

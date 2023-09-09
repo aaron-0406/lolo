@@ -79,7 +79,7 @@ const ActionsModal = ({ visible, onClose, isEdit = false, idAction = 0, chb }: A
         notification({
           type: 'error',
           message: error.response?.data.message,
-          list: error.response?.data.errors.map((error) => error.message),
+          list: error.response?.data?.errors?.map((error) => error.message),
         })
       },
     }
@@ -110,7 +110,7 @@ const ActionsModal = ({ visible, onClose, isEdit = false, idAction = 0, chb }: A
         notification({
           type: 'error',
           message: error.response?.data.message,
-          list: error.response?.data.errors.map((error) => error.message),
+          list: error.response?.data?.errors?.map((error) => error.message),
         })
       },
     }

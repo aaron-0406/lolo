@@ -48,7 +48,7 @@ const DeleteUsersModal = ({ visible, idUser = 0, onClose }: DeleteUsersModalProp
         notification({
           type: 'error',
           message: error.response?.data.message,
-          list: error.response?.data.errors.map((error) => error.message),
+          list: error.response?.data?.errors?.map((error) => error.message),
         })
       },
     }
