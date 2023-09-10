@@ -22,8 +22,10 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
   const {
     city: { cities },
     user: { users },
-    funcionario: { funcionarios },
-    negociacion: { negociaciones },
+    extrajudicial: {
+      funcionario: { funcionarios },
+      negociacion: { negociaciones },
+    },
   } = useLoloContext()
 
   const optionsCities: Array<SelectItemType> = cities.map((city) => {

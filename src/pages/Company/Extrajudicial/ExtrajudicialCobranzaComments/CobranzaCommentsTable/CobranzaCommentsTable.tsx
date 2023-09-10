@@ -25,7 +25,9 @@ type CobranzaCommentsTableProps = {
 
 const CobranzaCommentsTable = ({ clientId }: CobranzaCommentsTableProps) => {
   const {
-    managementAction: { managementActions },
+    extrajudicial: {
+      managementAction: { managementActions },
+    },
   } = useLoloContext()
 
   const [idEdit, setIdEdit] = useState<number>(0)

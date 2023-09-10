@@ -34,9 +34,11 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
       customer: { urlIdentifier },
     },
     bank: { selectedBank },
-    managementAction: { setManagementActions },
-    negociacion: { negociaciones, setNegociaciones },
-    funcionario: { funcionarios, setFuncionarios },
+    extrajudicial: {
+      managementAction: { setManagementActions },
+      negociacion: { negociaciones, setNegociaciones },
+      funcionario: { funcionarios, setFuncionarios },
+    },
     user: { users },
     city: { cities },
   } = useLoloContext()

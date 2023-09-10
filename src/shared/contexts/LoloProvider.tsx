@@ -67,18 +67,6 @@ export const LoloContext = createContext<{
     getUser: (userId: number) => CustomerUserType | undefined
     setUsers: (users: Array<CustomerUserType>) => void
   }
-  funcionario: {
-    funcionarios: Array<FuncionarioType>
-    setFuncionarios: (funcionarios: Array<FuncionarioType>) => void
-  }
-  managementAction: {
-    managementActions: Array<ManagementActionType>
-    setManagementActions: (managementActions: Array<ManagementActionType>) => void
-  }
-  negociacion: {
-    negociaciones: Array<NegotiationType>
-    setNegociaciones: (negociaciones: Array<NegotiationType>) => void
-  }
   auth: {
     authenticate: boolean
     setAuthenticate: Dispatch<boolean>
@@ -86,6 +74,20 @@ export const LoloContext = createContext<{
   customerUser: {
     user: Omit<CustomerUserType, 'password'>
     setUser: Dispatch<CustomerUserType>
+  }
+  extrajudicial: {
+    funcionario: {
+      funcionarios: Array<FuncionarioType>
+      setFuncionarios: (funcionarios: Array<FuncionarioType>) => void
+    }
+    managementAction: {
+      managementActions: Array<ManagementActionType>
+      setManagementActions: (managementActions: Array<ManagementActionType>) => void
+    }
+    negociacion: {
+      negociaciones: Array<NegotiationType>
+      setNegociaciones: (negociaciones: Array<NegotiationType>) => void
+    }
   }
   clearAll: () => void
 } | null>(null)
@@ -227,17 +229,19 @@ export const LoloProvider: React.FC<LoloProviderProps> = ({ children }) => {
           getUser,
           setUsers: setUsers,
         },
-        funcionario: {
-          funcionarios: funcionariosState,
-          setFuncionarios: setFuncionarios,
-        },
-        managementAction: {
-          managementActions: managementActionsState,
-          setManagementActions: setManagementActions,
-        },
-        negociacion: {
-          negociaciones: negociacionesState,
-          setNegociaciones: setNegociaciones,
+        extrajudicial: {
+          funcionario: {
+            funcionarios: funcionariosState,
+            setFuncionarios: setFuncionarios,
+          },
+          managementAction: {
+            managementActions: managementActionsState,
+            setManagementActions: setManagementActions,
+          },
+          negociacion: {
+            negociaciones: negociacionesState,
+            setNegociaciones: setNegociaciones,
+          },
         },
         auth: {
           authenticate,
