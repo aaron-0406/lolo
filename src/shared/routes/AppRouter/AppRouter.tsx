@@ -39,6 +39,8 @@ import ExtrajudicialAddressType from '@/pages/extrajudicial/ExtrajudicialAddress
 import ExtrajudicialContactType from '@/pages/extrajudicial/ExtrajudicialContactType'
 
 //JUDICIAL
+import JudicialFileCase from 'pages/Company/Judicial/JudicialFileCase/JudicialFileCase'
+
 import ErrorPage from '../../../pages/ErrorPage'
 import NotFound from '../../../pages/NotFound'
 import Unauthorized from 'pages/Unauthorized'
@@ -50,7 +52,6 @@ import ProtectedRoutes from '../ProtectedRoutes'
 import ProtectedRoutesCompany from '../ProtectedRoutesCompany'
 
 import paths from '../paths'
-import JudicialFileCase from 'pages/Company/Judicial/JudicialFileCase/JudicialFileCase'
 
 const AppRouter = () => {
   return (

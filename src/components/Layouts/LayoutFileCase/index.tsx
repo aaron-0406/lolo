@@ -1,1 +1,1 @@
-export { default } from './LayoutFileCase';
+export { default } from './LayoutFileCase'

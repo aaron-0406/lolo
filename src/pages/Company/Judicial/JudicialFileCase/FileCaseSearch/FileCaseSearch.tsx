@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
-import { useFormContext } from 'react-hook-form'
 import styled, { css } from 'styled-components'
 import { useQuery } from 'react-query'
+import { useSearchParams } from 'react-router-dom'
+import { useFormContext } from 'react-hook-form'
 import { notification } from '@/ui/notification/notification'
 import TextField from '@/ui/fields/TextField'
 import Container from '@/ui/Container'
@@ -16,34 +16,20 @@ type FileCaseSearchProps = {
 const FileCaseSearch = ({ setLoadingGlobal }: FileCaseSearchProps) => {
   const [params] = useSearchParams()
   const codeParams = params.get('numberCase') ?? ''
-  const [numberCase, setNumberCase] = useState<string>(codeParams)
+  const [filter, setFilter] = useState<string>('')
 
   const { setValue, reset } = useFormContext<FileCaseType>()
 
   const { refetch } = useQuery(
     'query-file-case-by-case-number',
     async () => {
-      return await getFileCaseByNumberFile(numberCase)
+      console.log(filter)
+      return await getFileCaseByNumberFile(filter)
     },
     {
-      enabled: false,
       onSuccess: (data) => {
-        // setValue('id', data.data.id)
-        // setValue('code', data.data.code)
-        // setValue('negotiationId', data.data.negotiationId)
-        // setValue('dniOrRuc', data.data.dniOrRuc ?? '')
-        // setValue('name', data.data.name)
-        // setValue('salePerimeter', data.data.salePerimeter ?? '')
-        // setValue('phone', data.data.phone ?? '')
-        // setValue('email', data.data.email ?? '')
-        // setValue('createdAt', data.data.createdAt)
-        // setValue('cityId', data.data.cityId)
-        // setValue('funcionarioId', data.data.funcionarioId)
-        // setValue('customerUserId', data.data.customerUserId)
-        // setValue('customerHasBankId', data.data.customerHasBankId)
-
         setLoadingGlobal(false)
-
+        console.log(data.data)
         notification({ type: 'success', message: 'Cliente encontrado' })
       },
       onError: (error: any) => {
@@ -51,16 +37,13 @@ const FileCaseSearch = ({ setLoadingGlobal }: FileCaseSearchProps) => {
           type: 'info',
           message: error.response.data.message,
         })
-
         reset()
-        // setValue('salePerimeter', '')
-        // setValue('phone', '')
-        // setValue('email', '')
-
         setLoadingGlobal(false)
       },
+      enabled: false,
     }
   )
+
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       setLoadingGlobal(true)
@@ -69,7 +52,7 @@ const FileCaseSearch = ({ setLoadingGlobal }: FileCaseSearchProps) => {
   }
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // setCode(e.target.value)
+    setFilter(e.target.value)
   }
 
   const onClickTrailing = () => {
@@ -84,6 +67,7 @@ const FileCaseSearch = ({ setLoadingGlobal }: FileCaseSearchProps) => {
     }
     // eslint-disable-next-line
   }, [])
+  
   return (
     <StyledContainer display="flex" flexDirection="column" width="100%" gap="15px" justifyContent="center">
       <Container display="flex" gap="15px">
@@ -92,7 +76,7 @@ const FileCaseSearch = ({ setLoadingGlobal }: FileCaseSearchProps) => {
           width="100%"
           placeholder="Nº Expediente"
           trailingIcon="ri-search-line"
-          defaultValue={numberCase}
+          defaultValue={filter}
           onKeyDown={onKeyDown}
           onChange={onChange}
           onClickTrailing={onClickTrailing}

@@ -9,8 +9,8 @@ export const getFileCaseByNumberFile = async (numberCase: string) => {
   return await axiosClient.get(`${url}/number-case/${numberCase}`)
 }
 
-export const createFileCase = async (fileCase: Omit<FileCaseType, 'id'>, idClient: number) => {
-  return await axiosClient.post(`${url}/${idClient}`, fileCase)
+export const createFileCase = async (fileCase: Omit<FileCaseType, 'id' | 'numberCaseFile'>) => {
+  return await axiosClient.post(`${url}/`, fileCase)
 }
 
 export const updateFileCase = async (id: number, fileCase: Omit<FileCaseType, 'id'>) => {

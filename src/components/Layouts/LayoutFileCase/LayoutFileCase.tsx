@@ -26,18 +26,20 @@ const LayoutFileCase = (props: LayoutFileCaseProps) => {
         {actionsContent}
       </Container>
 
-      <Container backgroundColor="#eff0f6ff" width="100%" display="flex" overFlowY="auto">
+      <Container backgroundColor="#eff0f6ff" width="100%" height="200px" display="flex" overFlowY="auto">
         {ownerContent}
       </Container>
-      <Container className="container__info" width="100%" height="calc(100% - 211px)" display="flex" overFlowY="auto">
+      <Container className="container__info" width="100%" height="calc(100% - 250px)" display="flex" overFlowY="auto">
         {infoContent}
       </Container>
 
       <Container
         className="container__down"
         width="100%"
-        height="78px"
-        padding="15px 40px"
+        height="88px"
+        display="flex"
+        alignItems="center"
+        padding="10px 40px"
         backgroundColor="#eff0f6ff"
         overFlowX="auto"
       >

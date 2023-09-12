@@ -1,22 +1,24 @@
 import { Controller, useFormContext } from 'react-hook-form'
 import styled, { css } from 'styled-components'
+import moment from 'moment'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import { FileCaseType } from '@/types/judicial/case-file.type'
 import Container from '@/ui/Container'
 import Label from '@/ui/Label'
 import Select from '@/ui/Select'
-import TextAreaField from '@/ui/fields/TextAreaField'
 import TextField from '@/ui/fields/TextField'
 import { SelectItemType } from '@/ui/Select/interfaces'
 
 type FileCaseInfoProps = {
   loading: boolean
 }
+
 const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
   const {
     control,
     formState: { errors },
   } = useFormContext<FileCaseType>()
+
   const {
     judicial: {
       judicialCourt: { judicialCourts },
@@ -31,22 +33,24 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
       label: court.court,
     }
   })
+
   const optionsJudicialSubjects: Array<SelectItemType> = judicialSubjects.map((subject) => {
     return {
       key: String(subject.id),
       label: subject.subject,
     }
   })
-  const optionsJudicialProceduralWays: Array<SelectItemType> = judicialProceduralWays.map((proceduralWay) => {
+
+  const optionsJudicialProceduralWays: Array<SelectItemType> = judicialProceduralWays.map((subject) => {
     return {
-      key: String(proceduralWay.id),
-      label: proceduralWay.proceduralWay,
+      key: String(subject.id),
+      label: subject.proceduralWay,
     }
   })
 
   if (loading) {
     return <div>Loading ...</div>
-  }
+  } 
 
   return (
     <StyledContainer
@@ -58,9 +62,9 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
       gap="20px"
       overFlowY="auto"
     >
-      <div className="fields-wrapper-container-t">
+      <Container className="fields-wrapper-container">
         <div className="field-wrapper">
-          <Label label="Nº Expediente:" />
+          <Label label="Nº Expediente" />
           <Controller
             name="numberCaseFile"
             control={control}
@@ -89,15 +93,15 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
             )}
           />
         </div>
-      </div>
-      <div className="fields-wrapper-container-d">
+      </Container>
+      <Container className="fields-wrapper-container">
         <div className="field-wrapper">
+          <Label label="Juzgado:" />
           <Controller
             name="judicialCourtId"
             control={control}
             render={({ field }) => (
               <Select
-                label="Juzgado:"
                 width="100%"
                 value={String(field.value)}
                 options={optionsJudicialCourts}
@@ -110,12 +114,24 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
           />
         </div>
         <div className="field-wrapper">
+          <Label label="Sede Judicial:" />
+          <Controller
+            name="judicialVenue"
+            control={control}
+            render={({ field }) => (
+              <TextField width="100%" value={field.value} onChange={field.onChange} hasError={!!errors.judicialVenue} />
+            )}
+          />
+        </div>
+      </Container>
+      <Container className="fields-wrapper-container">
+        <div className="field-wrapper">
+          <Label label="Materia:" />
           <Controller
             name="judicialSubjectId"
             control={control}
             render={({ field }) => (
               <Select
-                label="Materia:"
                 width="100%"
                 value={String(field.value)}
                 options={optionsJudicialSubjects}
@@ -127,182 +143,123 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
             )}
           />
         </div>
-      </div>
-      <div className="fields-wrapper-container-d"></div>
-      <div className="fields-wrapper-container-d"></div>
-      <div className="fields-wrapper-container-d"></div>
-      <div className="fields-wrapper-container-d"></div>
-      {/* <div className="fields-wrapper-container-t">
         <div className="field-wrapper">
-          <Label label="Código:" />
+          <Label label="Via Procedimental:" />
           <Controller
-            name="code"
-            control={control}
-            render={({ field }) => (
-              <TextField width="100%" value={field.value} onChange={field.onChange} hasError={!!errors.code} />
-            )}
-          />
-        </div>
-
-        <div className="field-wrapper">
-          <Label label="Estado:" />
-
-          <Controller
-            name="negotiationId"
+            name="judicialProceduralWayId"
             control={control}
             render={({ field }) => (
               <Select
                 width="100%"
                 value={String(field.value)}
-                options={optionsStates}
+                options={optionsJudicialProceduralWays}
                 onChange={(key) => {
                   field.onChange(parseInt(key))
                 }}
-                hasError={!!errors.negotiationId}
+                hasError={!!errors.judicialProceduralWayId}
               />
             )}
           />
         </div>
-      </div>
-
-      <div className="field-wrapper">
-        <Label label="DNI o RUC:" />
-        <Controller
-          name="dniOrRuc"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              width="calc(100% - 98px)"
-              value={field.value}
-              onChange={field.onChange}
-              hasError={!!errors.dniOrRuc}
-            />
-          )}
-        />
-      </div>
-
-      <div className="field-wrapper">
-        <Label label="Cliente:" />
-        <Controller
-          name="name"
-          control={control}
-          render={({ field }) => (
-            <TextAreaField
-              width="100%"
-              rows={2}
-              value={field.value}
-              onChange={field.onChange}
-              hasError={!!errors.name}
-            />
-          )}
-        />
-      </div>
-
-      <div className="fields-wrapper-container-d">
-        <Controller
-          name="salePerimeter"
-          control={control}
-          render={({ field }) => (
-            <TextAreaField
-              label="Perímetro venta:"
-              width="100%"
-              rows={1}
-              value={field.value}
-              onChange={field.onChange}
-              hasError={!!errors.salePerimeter}
-            />
-          )}
-        />
-
-        <Controller
-          name="customerUserId"
-          control={control}
-          render={({ field }) => (
-            <Select
-              label="Gestor:"
-              width="100%"
-              value={String(field.value)}
-              options={optionsUsers}
-              onChange={(key) => {
-                field.onChange(parseInt(key))
-              }}
-              hasError={!!errors.customerUserId}
-            />
-          )}
-        />
-      </div>
-
-      <div className="fields-wrapper-container-d">
+      </Container>
+      <Container className="fields-wrapper-container">
         <div className="field-wrapper">
-          <Label label="Funcionario:" />
+          <Label label="Secretario:" />
           <Controller
-            name="funcionarioId"
+            name="secretary"
             control={control}
             render={({ field }) => (
-              <Select
-                width="calc(100% - 108px)"
-                value={String(field.value)}
-                options={optionsFuncionarios}
-                onChange={(key) => {
-                  field.onChange(parseInt(key))
-                }}
-                hasError={!!errors.funcionarioId}
-              />
+              <TextField width="100%" value={field.value} onChange={field.onChange} hasError={!!errors.secretary} />
             )}
           />
         </div>
-
         <div className="field-wrapper">
-          <Label label="Jurisdicción:" />
+          <Label label="Juez:" />
           <Controller
-            name="cityId"
+            name="judge"
             control={control}
             render={({ field }) => (
-              <Select
+              <TextField width="100%" value={field.value} onChange={field.onChange} hasError={!!errors.judge} />
+            )}
+          />
+        </div>
+      </Container>
+      <Container className="fields-wrapper-container">
+        <div className="field-wrapper">
+          <Label label="Monto Demandado S/:" />
+          <Controller
+            name="amountDemandedSoles"
+            control={control}
+            render={({ field }) => (
+              <TextField
                 width="100%"
-                value={String(field.value)}
-                options={optionsCities}
-                onChange={(key) => {
-                  field.onChange(parseInt(key))
-                }}
-                hasError={!!errors.cityId}
+                value={field.value}
+                onChange={field.onChange}
+                hasError={!!errors.amountDemandedSoles}
               />
             )}
           />
         </div>
-      </div>
-
-      <div className="fields-wrapper-container-t">
-        <Controller
-          name="phone"
-          control={control}
-          render={({ field }) => (
-            <TextAreaField
-              width="100%"
-              label="Teléfonos:"
-              rows={2}
-              value={field.value}
-              onChange={field.onChange}
-              hasError={!!errors.phone}
-            />
-          )}
-        />
-
-        <Controller
-          name="email"
-          control={control}
-          render={({ field }) => (
-            <TextAreaField
-              width="100%"
-              label="Email:"
-              rows={2}
-              value={field.value}
-              onChange={field.onChange}
-              hasError={!!errors.email}
-            />
-          )}
-        />
-      </div> */}
+        <div className="field-wrapper">
+          <Label label="Monto Demandado US$:" />
+          <Controller
+            name="amountDemandedDollars"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                width="100%"
+                value={field.value}
+                onChange={field.onChange}
+                hasError={!!errors.amountDemandedDollars}
+              />
+            )}
+          />
+        </div>
+      </Container>
+      <Container className="fields-wrapper-container">
+        <div className="field-wrapper">
+          <Label label="Fecha de Demanda:" />
+          <Controller
+            name="demandDate"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                width="100%"
+                value={moment(field.value).format('DD-MM-YYYY')}
+                onChange={field.onChange}
+                hasError={!!errors.demandDate}
+              />
+            )}
+          />
+        </div>
+        <div className="field-wrapper">
+          <Label label="Nº de Juicio:" />
+          <Controller
+            name="judgmentNumber"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                width="100%"
+                value={field.value}
+                onChange={field.onChange}
+                hasError={!!errors.judgmentNumber}
+              />
+            )}
+          />
+        </div>
+      </Container>
+      <Container className="fields-wrapper-container">
+        <div className="field-wrapper">
+          <Label label="codemandado:" />
+          <Controller
+            name="errandCode"
+            control={control}
+            render={({ field }) => (
+              <TextField width="100%" value={field.value} onChange={field.onChange} hasError={!!errors.errandCode} />
+            )}
+          />
+        </div>
+      </Container>
     </StyledContainer>
   )
 }
@@ -313,14 +270,7 @@ const StyledContainer = styled(Container)`
   ${({ theme }) => css`
     border-radius: 8px;
 
-    .fields-wrapper-container-t {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .fields-wrapper-container-d {
+    .fields-wrapper-container {
       width: 100%;
       display: flex;
       flex-direction: column;
@@ -330,20 +280,18 @@ const StyledContainer = styled(Container)`
     .field-wrapper {
       width: 100%;
       display: flex;
+      flex-direction: column;
       gap: 15px;
     }
 
     @media ${theme.device.tabletL} {
-      .fields-wrapper-container-t {
+      .fields-wrapper-container {
         flex-direction: row;
         gap: 15px;
       }
-    }
 
-    @media ${theme.device.desktopL} {
-      .fields-wrapper-container-d {
+      .field-wrapper {
         flex-direction: row;
-        gap: 15px;
       }
     }
   `}
