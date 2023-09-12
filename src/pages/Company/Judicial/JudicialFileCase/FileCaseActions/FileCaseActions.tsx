@@ -1,49 +1,52 @@
 import styled, { css } from 'styled-components'
+import { AxiosError } from 'axios'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { device } from '@/breakpoints/responsive'
 import Container from '@/ui/Container'
 import Button from '@/ui/Button'
 import { notification } from '@/ui/notification/notification'
-import { useLoloContext } from '@/contexts/LoloProvider'
 import { useFormContext } from 'react-hook-form'
 import { FileCaseType } from '@/types/judicial/case-file.type'
 import { useMutation } from 'react-query'
 import { createFileCase, deleteFileCase, updateFileCase } from '@/services/judicial/file-case.service'
+import { CustomErrorResponse } from 'types/customErrorResponse'
 
 const FileCaseActions = () => {
-  const {
-    client: { customer },
-  } = useLoloContext()
 
   const greaterThanDesktopS = useMediaQuery(device.desktopS)
-  const { setValue, reset, handleSubmit, getValues } = useFormContext<FileCaseType>()
+  const { reset, getValues } = useFormContext<FileCaseType>()
 
   const onClean = () => {
     reset()
-    // setValue('salePerimeter', '')
-    // setValue('phone', '')
-    // setValue('email', '')
   }
-  const { isLoading: loadingCreateFileCase, mutate: createFileCaseMutate } = useMutation<any, Error>(
+
+  const { isLoading: loadingCreateFileCase, mutate: createFileCaseMutate } = useMutation<
+    any,
+    AxiosError<CustomErrorResponse>
+  >(
     async () => {
       const { id, ...restFileCase } = getValues()
-      return await createFileCase(restFileCase, Number(customer.id))
+      return await createFileCase(restFileCase)
     },
     {
       onSuccess: (data) => {
-        setValue('id', data.data.id)
+        reset()
         notification({ type: 'success', message: 'Expediente creado' })
       },
-      onError: (error: any) => {
+      onError: (error) => {
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data.errors.map((error) => error.message),
         })
       },
     }
   )
 
-  const { isLoading: loadingUpdateFileCase, mutate: updateFileCaseMutate } = useMutation<any, Error>(
+  const { isLoading: loadingUpdateFileCase, mutate: updateFileCaseMutate } = useMutation<
+    any,
+    AxiosError<CustomErrorResponse>
+  >(
     async () => {
       const { id, ...restFileCase } = getValues()
       return await updateFileCase(id, restFileCase)
@@ -52,16 +55,20 @@ const FileCaseActions = () => {
       onSuccess: () => {
         notification({ type: 'success', message: 'Expediente actualizado' })
       },
-      onError: (error: any) => {
+      onError: (error) => {
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data.errors.map((error) => error.message),
         })
       },
     }
   )
 
-  const { isLoading: loadingDeleteFileCase, mutate: deleteFileCaseMutate } = useMutation<any, Error>(
+  const { isLoading: loadingDeleteFileCase, mutate: deleteFileCaseMutate } = useMutation<
+    any,
+    AxiosError<CustomErrorResponse>
+  >(
     async () => {
       const { id } = getValues()
       return await deleteFileCase(id)
@@ -71,30 +78,25 @@ const FileCaseActions = () => {
         notification({ type: 'success', message: 'Expediente eliminado' })
         onClean()
       },
-      onError: (error: any) => {
+      onError: (error) => {
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data.errors.map((error) => error.message),
         })
       },
     }
   )
   const onAddFileCase = () => {
-    handleSubmit(() => {
-      createFileCaseMutate()
-    })()
+    createFileCaseMutate()
   }
 
   const onUpdateFileCase = () => {
-    handleSubmit(() => {
-      updateFileCaseMutate()
-    })()
+    updateFileCaseMutate()
   }
 
   const onDeleteFileCase = () => {
-    handleSubmit(() => {
-      deleteFileCaseMutate()
-    })()
+    deleteFileCaseMutate()
   }
 
   return (

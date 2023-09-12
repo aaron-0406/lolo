@@ -3,7 +3,7 @@ import { FileCaseType } from '@/types/judicial/case-file.type'
 import yup from '../../../../shared/yupLocale'
 
 const JudicialFileCaseSchema: yup.SchemaOf<Omit<FileCaseType, 'id' | 'createdAt'>> = yup.object().shape({
-  errandCode: yup.string().required().matches(/^\d*$/),
+  errandCode: yup.string().required(),
   numberCaseFile: yup.string().required().max(150),
   judgmentNumber: yup.number().required().min(1),
   secretary: yup.string().required().max(150),
@@ -11,7 +11,7 @@ const JudicialFileCaseSchema: yup.SchemaOf<Omit<FileCaseType, 'id' | 'createdAt'
   amountDemandedSoles: yup.number().required().min(1),
   cautionaryCode: yup.string().required().matches(/^\d*$/),
   clientId: yup.number().required().min(1),
-  customerUserId: yup.number().required().min(1),
+  customerUserId: yup.number().required().min(1),//
   demandDate: yup.date().required(),
   judge: yup.string().required().max(150),
   judicialCourtId: yup.number().required().min(1),

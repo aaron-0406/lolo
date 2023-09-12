@@ -28,6 +28,8 @@ import ExtrajudicialMetas from '@/pages/extrajudicial/ExtrajudicialMetas'
 import ExtrajudicialCustomers from '@/pages/extrajudicial/ExtrajudicialCustomers/ExtrajudicialCustomers'
 
 //JUDICIAL
+import JudicialFileCase from 'pages/Company/Judicial/JudicialFileCase/JudicialFileCase'
+
 import ErrorPage from '../../../pages/ErrorPage'
 import NotFound from '../../../pages/NotFound'
 
@@ -39,7 +41,6 @@ import ProtectedRoutesCompany from '../ProtectedRoutesCompany'
 import ProtectedRoutesCompanyDash from '../ProtectedRoutesCompanyDash'
 
 import paths from '../paths'
-import JudicialFileCase from 'pages/Company/Judicial/JudicialFileCase/JudicialFileCase'
 
 const AppRouter = () => {
   return (
@@ -73,7 +74,7 @@ const AppRouter = () => {
         <Route path={paths.cobranza.perfil()} element={<ExtrajudicialProfile />} />
         <Route path={paths.cobranza.clientes()} element={<ExtrajudicialCustomers />} />
         <Route path={paths.cobranza.cobranza()} element={<ExtrajudicialCobranza />} />
-        <Route path={paths.cobranza.cobranzaComments()} element={<ExtrajudicialCobranzaComments />} />
+        <Route path={paths.cobranza.cobranzaComments()} element={<ExtrajudicialCobranzaComments />} /> {/*vergestion*/}
         <Route path={paths.cobranza.metas()} element={<ExtrajudicialMetas />} />
         <Route path={paths.cobranza.document()} element={<ExtrajudicialTemplate />} />
         <Route element={<ProtectedRoutesCompanyDash pathname={paths.company.login()} />}>

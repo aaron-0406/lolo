@@ -3,7 +3,7 @@ import paths from '../../../../shared/routes/paths'
 export const getMenuItems = (urlIdentifier: string) => {
   return [
     {
-      id: 5,
+      id: 10,
       title: 'DASHBOARD',
       remixClass: 'ri-dashboard-line',
       path: paths.companyDashboard.dashboard(urlIdentifier),
@@ -26,7 +26,7 @@ export const getMenuItems = (urlIdentifier: string) => {
     {
       id: 3,
       title: 'COBRANZA',
-      remixClass: 'ri-folder-info-fill',
+      remixClass: 'ri-folder-chart-2-fill',
       path: paths.cobranza.cobranza(urlIdentifier),
       admin: false,
     },
