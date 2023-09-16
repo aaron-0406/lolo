@@ -65,7 +65,7 @@ const AppRouter = () => {
       </Route>
 
       {/* COMPANY */}
-      <Route element={<GuestRouteCompany pathname={paths.cobranza.cobranza()} />}>
+      <Route element={<GuestRouteCompany pathname={paths.cobranza.perfil()} />}>
         <Route path={paths.company.login()} element={<CompanyLogin />} />
       </Route>
       <Route element={<ProtectedRoutesCompany pathname={paths.company.login()} />}>
