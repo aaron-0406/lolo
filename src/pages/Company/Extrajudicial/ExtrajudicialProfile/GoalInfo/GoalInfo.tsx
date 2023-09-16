@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react'
 import { useMutation } from 'react-query'
 import moment from 'moment'
 import { AxiosError } from 'axios'
-import { useLoloContext } from '@/contexts/LoloProvider'
 import notification from '@/ui/notification'
 import Container from '@/ui/Container'
 import Progress from '@/ui/Progress/Progress'
@@ -34,12 +33,6 @@ const GoalInfo = () => {
     total: 0,
     totalMeta: 0,
   })
-
-  const {
-    customerUser: {
-      user: { privilege },
-    },
-  } = useLoloContext()
 
   const { mutate: onGetPersonalGoal } = useMutation<GoalApiResponse, AxiosError<CustomErrorResponse>>(
     async () => {
@@ -78,10 +71,11 @@ const GoalInfo = () => {
   )
   useEffect(() => {
     onGetPersonalGoal()
-    if (privilege === 'EDITOR') onGetGlobalGoal()
+    onGetGlobalGoal()
 
     return () => {}
   }, [])
+
   return (
     <Container width="100%" display="flex" flexDirection="column" justifyContent="center" gap="1rem">
       <Container display="flex" justifyContent="space-between" width="100%">
@@ -93,33 +87,33 @@ const GoalInfo = () => {
             : 'No hay meta registrada para esta semana!'}
         </Text.Body>
       </Container>
-      {privilege === 'EDITOR' && (
-        <Container width="100%" display="flex" flexDirection="column" gap="15px">
-          <Container width="100%" display="flex">
-            <Container display="flex" justifyContent="space-between" width="100%">
-              <Text.Body size="m" weight="bold">
-                Progreso Global
-              </Text.Body>
-              <Text.Body size="m" weight="bold">
-                Total: {globalGoal.totalMeta}
-              </Text.Body>
-            </Container>
+
+      <Container width="100%" display="flex" flexDirection="column" gap="15px">
+        <Container width="100%" display="flex">
+          <Container display="flex" justifyContent="space-between" width="100%">
+            <Text.Body size="m" weight="bold">
+              Progreso Global
+            </Text.Body>
+            <Text.Body size="m" weight="bold">
+              Total: {globalGoal.totalMeta}
+            </Text.Body>
           </Container>
-          <Progress
-            quantity={globalGoal.total}
-            value={
-              globalGoal.totalMeta === 0
-                ? 0
-                : Number(((Number(globalGoal.total) * 100) / Number(globalGoal.totalMeta)).toFixed(2)) >= 100
-                ? 100
-                : Number(((Number(globalGoal.total) * 100) / Number(globalGoal.totalMeta)).toFixed(2))
-            }
-            bgColorInit="#FF7875"
-            bgColorEnd="#51AB2B"
-            bgColorMid="#F3BD5B"
-          />
         </Container>
-      )}
+        <Progress
+          quantity={globalGoal.total}
+          value={
+            globalGoal.totalMeta === 0
+              ? 0
+              : Number(((Number(globalGoal.total) * 100) / Number(globalGoal.totalMeta)).toFixed(2)) >= 100
+              ? 100
+              : Number(((Number(globalGoal.total) * 100) / Number(globalGoal.totalMeta)).toFixed(2))
+          }
+          bgColorInit="#FF7875"
+          bgColorEnd="#51AB2B"
+          bgColorMid="#F3BD5B"
+        />
+      </Container>
+
       <Container width="100%" display="flex" flexDirection="column" gap="15px">
         <Container width="100%" display="flex">
           <Container display="flex" justifyContent="space-between" width="100%">

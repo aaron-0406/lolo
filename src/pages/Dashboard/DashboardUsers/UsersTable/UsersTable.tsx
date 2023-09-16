@@ -151,7 +151,7 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts }) => {
                 <BodyCell>{`${record.phone || ''}`}</BodyCell>
                 <BodyCell>{`${record.dni || ''}`}</BodyCell>
                 <BodyCell>{`${record.email || ''}`}</BodyCell>
-                <BodyCell textAlign="center">{`${record.privilege || ''}`}</BodyCell>
+                <BodyCell textAlign="center">{`${record.role?.name || ''}`}</BodyCell>
                 <BodyCell textAlign="center">{`${record.state ? 'activo' : 'inactivo'}`}</BodyCell>
                 <BodyCell textAlign="center">{`${moment(record.createdAt).format('DD-MM-YYYY') || ''}`}</BodyCell>
                 <BodyCell textAlign="center">

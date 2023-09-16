@@ -23,7 +23,7 @@ type UsersModalProps = {
   idUser?: number
 }
 
-const defaultValuesCustomerUser: Omit<CustomerUserType, 'customerId' | 'createdAt'> = {
+const defaultValuesCustomerUser: Omit<CustomerUserType, 'customerId' | 'createdAt' | 'role'> = {
   id: 0,
   name: '',
   lastName: '',
@@ -31,7 +31,6 @@ const defaultValuesCustomerUser: Omit<CustomerUserType, 'customerId' | 'createdA
   dni: '',
   email: '',
   password: '',
-  privilege: '',
   state: true,
   roleId: 0,
 }
@@ -135,7 +134,6 @@ const UsersModal = ({ visible, onClose, idUser = 0, isEdit = false }: UsersModal
           setValue('dni', data.dni)
           setValue('email', data.email)
           setValue('password', data.password)
-          setValue('privilege', data.privilege)
           setValue('roleId', data.roleId)
           setValue('id', data.id)
         } else {

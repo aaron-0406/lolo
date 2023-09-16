@@ -99,7 +99,7 @@ const UsersModal = ({ visible, onClose }: CustomersModalProps) => {
                     <BodyCell>{`${record.phone || ''}`}</BodyCell>
                     <BodyCell>{`${record.dni || ''}`}</BodyCell>
                     <BodyCell>{`${record.email || ''}`}</BodyCell>
-                    <BodyCell>{`${record.privilege || ''}`}</BodyCell>
+                    <BodyCell>{`${record.role?.name || ''}`}</BodyCell>
                     <BodyCell textAlign="center">{`${record.state ? 'activo' : 'inactivo'}`}</BodyCell>
                     <BodyCell textAlign="center">{`${moment(record.createdAt).format('DD-MM-YYYY') || ''}`}</BodyCell>
                   </tr>
