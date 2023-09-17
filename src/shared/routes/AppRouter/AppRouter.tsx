@@ -27,6 +27,7 @@ import Dashboard from '@/pages/extrajudicial/ExtrajudicialDashboard/Dashboard'
 import ExtrajudicialMetas from '@/pages/extrajudicial/ExtrajudicialMetas'
 import ExtrajudicialCustomers from '@/pages/extrajudicial/ExtrajudicialCustomers/ExtrajudicialCustomers'
 import ExtrajudicialRoles from '@/pages/extrajudicial/ExtrajudicialRoles'
+import ExtrajudicialdUsers from '@/pages/extrajudicial/ExtrajudicialUsers/ExtrajudicialdUsers'
 
 //JUDICIAL
 import ErrorPage from '../../../pages/ErrorPage'
@@ -69,6 +70,7 @@ const AppRouter = () => {
       <Route element={<ProtectedRoutesCompany pathname={paths.company.login()} />}>
         <Route path={paths.company.root()} element={<CompanyHome />} />
         <Route path={paths.company.roles()} element={<ExtrajudicialRoles />} />
+        <Route path={paths.company.usuarios()} element={<ExtrajudicialdUsers />} />
         <Route path={paths.cobranza.perfil()} element={<ExtrajudicialProfile />} />
         <Route path={paths.cobranza.clientes()} element={<ExtrajudicialCustomers />} />
         <Route path={paths.cobranza.cobranza()} element={<ExtrajudicialCobranza />} />
