@@ -28,9 +28,7 @@ const ActionsTable: FC<ActionsTableProps> = ({ opts, setOpts }) => {
     },
   } = useLoloContext()
 
-  const [actions, setActions] = useState<Array<ManagementActionType>>([])
   const [idEdit, setIdEdit] = useState<number>(0)
-  const [actionsCount, setActionsCount] = useState<number>(0)
   const [idDeletedAction, setIdDeletedAction] = useState<number>(0)
 
   const { visible: visibleModalAction, showModal: showModalAction, hideModal: hideModalAction } = useModal()
@@ -54,23 +52,21 @@ const ActionsTable: FC<ActionsTableProps> = ({ opts, setOpts }) => {
     hideModalAction()
   }
 
-  const { isLoading } = useQuery(
-    [KEY_EXT_COBRANZA_ACCIONES_CACHE, idCHB],
+  const { isLoading, data } = useQuery(
+    [KEY_EXT_COBRANZA_ACCIONES_CACHE, parseInt(idCHB.length ? idCHB : '0')],
     async () => {
       return await getAllManagementActionsByCHB(idCHB.length ? idCHB : '0')
-    },
-    {
-      onSuccess: ({ data }) => {
-        if (opts.filter !== '') {
-          data = data.filter((filt: ManagementActionType) => {
-            return filt.nameAction.substring(0, opts.filter.length).toUpperCase() === opts.filter.toUpperCase()
-          })
-        }
-        setActions(data)
-        setActionsCount(data.length)
-      },
     }
   )
+
+  let result = data?.data ?? []
+  if (opts.filter !== '') {
+    result = result.filter((filt: ManagementActionType) => {
+      return filt.nameAction.substring(0, opts.filter.length).toUpperCase() === opts.filter.toUpperCase()
+    })
+  }
+  const actions = result ?? []
+  const actionsCount = actions.length
 
   return (
     <Container width="100%" height="calc(100% - 112px)" padding="20px">
@@ -87,7 +83,7 @@ const ActionsTable: FC<ActionsTableProps> = ({ opts, setOpts }) => {
         }
       >
         {!!actions?.length &&
-          actions.map((record: ManagementActionType, key) => {
+          actions.map((record: ManagementActionType, key: number) => {
             return (
               <tr className="styled-data-table-row" key={record.id}>
                 <BodyCell textAlign="center">{`${key + 1 || ''}`}</BodyCell>

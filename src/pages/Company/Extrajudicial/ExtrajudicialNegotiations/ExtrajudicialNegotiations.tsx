@@ -6,11 +6,6 @@ import NegotiationSearch from './NegotiationSearch'
 
 const ExtrajudicialNegotiations = () => {
   const [opts, setOpts] = useState<Opts>({ filter: '', limit: 50, page: 1 })
-  const [chb, setChb] = useState<number>(0)
-
-  const setChbGlobal = (chb: number) => {
-    setChb(chb)
-  }
 
   return (
     <Container
@@ -22,8 +17,8 @@ const ExtrajudicialNegotiations = () => {
       justifyContent="center"
       gap="20px"
     >
-      <NegotiationSearch opts={opts} setOpts={setOpts} selectedBank={{ chb, setChb: setChbGlobal }} />
-      <NegotiationTable opts={opts} setOpts={setOpts} selectedBank={{ chb, setChb: setChbGlobal }} />
+      <NegotiationSearch opts={opts} setOpts={setOpts} />
+      <NegotiationTable opts={opts} setOpts={setOpts} />
     </Container>
   )
 }

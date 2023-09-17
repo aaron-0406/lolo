@@ -7,15 +7,21 @@ import Modal from '@/ui/Modal'
 import Container from '@/ui/Container'
 import Button from '@/ui/Button'
 import { CustomErrorResponse } from 'types/customErrorResponse'
+import { useLoloContext } from '@/contexts/LoloProvider'
 
 type DeleteNegotiationModalProps = {
   visible: boolean
   onClose: () => void
   idNegociation?: number
-  chb: number
 }
 
-const DeleteNegotiationModal = ({ visible, idNegociation = 0, onClose, chb }: DeleteNegotiationModalProps) => {
+const DeleteNegotiationModal = ({ visible, idNegociation = 0, onClose }: DeleteNegotiationModalProps) => {
+  const {
+    bank: {
+      selectedBank: { idCHB: chb },
+    },
+  } = useLoloContext()
+
   const queryClient = useQueryClient()
 
   const {
@@ -34,18 +40,18 @@ const DeleteNegotiationModal = ({ visible, idNegociation = 0, onClose, chb }: De
     },
     {
       onSuccess: (result) => {
-        deleteNegotiationCache(result.data.id, chb)
+        deleteNegotiationCache(result.data.id, parseInt(chb))
         notification({ type: 'success', message: 'Usuario eliminado' })
         onClose()
       },
       onMutate: () => {
-        return onMutateCache(chb)
+        return onMutateCache(parseInt(chb))
       },
       onSettled: () => {
-        onSettledCache(chb)
+        onSettledCache(parseInt(chb))
       },
       onError: (error, _, context: any) => {
-        onErrorCache(context, chb)
+        onErrorCache(context, parseInt(chb))
         notification({
           type: 'error',
           message: error.response?.data.message,

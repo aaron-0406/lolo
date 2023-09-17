@@ -16,13 +16,13 @@ import NegotiationInfoForm from './NegotiationInfoForm'
 import extNegotiationCache from '../../NegotiationTable/utils/ext-negociaciones.cache'
 import { AxiosError } from 'axios'
 import { CustomErrorResponse } from 'types/customErrorResponse'
+import { useLoloContext } from '@/contexts/LoloProvider'
 
 type NegotiationModalProps = {
   visible: boolean
   onClose: () => void
   isEdit?: boolean
   idNegotiation?: number
-  chb: number
 }
 
 const defaultValuesNegotiation: Omit<NegotiationType, 'createdAt'> = {
@@ -31,8 +31,15 @@ const defaultValuesNegotiation: Omit<NegotiationType, 'createdAt'> = {
   customerHasBankId: 0,
 }
 
-const NegotiationModal = ({ visible, onClose, isEdit = false, idNegotiation = 0, chb }: NegotiationModalProps) => {
+const NegotiationModal = ({ visible, onClose, isEdit = false, idNegotiation = 0 }: NegotiationModalProps) => {
+  const {
+    bank: {
+      selectedBank: { idCHB: chb },
+    },
+  } = useLoloContext()
+
   const queryClient = useQueryClient()
+
   const {
     actions: { createNegotiationCache, editNegotiationCache },
     onMutateCache,
@@ -59,7 +66,7 @@ const NegotiationModal = ({ visible, onClose, isEdit = false, idNegotiation = 0,
   >(
     async () => {
       const { id, ...restNegotiation } = getValues()
-      return await createNegotiation({ ...restNegotiation, customerHasBankId: chb })
+      return await createNegotiation({ ...restNegotiation, customerHasBankId: parseInt(chb) })
     },
     {
       onSuccess: (result) => {
@@ -68,13 +75,13 @@ const NegotiationModal = ({ visible, onClose, isEdit = false, idNegotiation = 0,
         handleClickCloseModal()
       },
       onMutate: () => {
-        return onMutateCache(chb)
+        return onMutateCache(parseInt(chb))
       },
       onSettled: () => {
-        onSettledCache(chb)
+        onSettledCache(parseInt(chb))
       },
       onError: (error, _, context: any) => {
-        onErrorCache(context, chb)
+        onErrorCache(context, parseInt(chb))
         notification({
           type: 'error',
           message: error.response?.data.message,
@@ -90,7 +97,7 @@ const NegotiationModal = ({ visible, onClose, isEdit = false, idNegotiation = 0,
   >(
     async () => {
       const { id, ...restNegotiation } = getValues()
-      return await updateNegotiation(id, { ...restNegotiation, customerHasBankId: chb })
+      return await updateNegotiation(id, { ...restNegotiation, customerHasBankId: parseInt(chb) })
     },
     {
       onSuccess: (result) => {
@@ -99,13 +106,13 @@ const NegotiationModal = ({ visible, onClose, isEdit = false, idNegotiation = 0,
         onClose()
       },
       onMutate: () => {
-        return onMutateCache(chb)
+        return onMutateCache(parseInt(chb))
       },
       onSettled: () => {
-        onSettledCache(chb)
+        onSettledCache(parseInt(chb))
       },
       onError: (error, _, context: any) => {
-        onErrorCache(context, chb)
+        onErrorCache(context, parseInt(chb))
         notification({
           type: 'error',
           message: error.response?.data.message,

@@ -15,15 +15,20 @@ import Button from '@/ui/Button'
 import NegotiationModal from '../Modals/NegotiationModal'
 import useModal from '@/hooks/useModal'
 import DeleteNegotiationModal from '../Modals/DeleteNegotiationModal/DeleteNegotiationModal'
+import { useLoloContext } from '@/contexts/LoloProvider'
 
 type NegotiationTableProps = {
   opts: Opts
   setOpts: Dispatch<Opts>
-  selectedBank: { chb: number; setChb: (chb: number) => void }
 }
 
-const NegotiationTable = ({ opts, setOpts, selectedBank: { chb } }: NegotiationTableProps) => {
-  const [negotiations, setNegotiations] = useState<Array<NegotiationType>>([])
+const NegotiationTable = ({ opts, setOpts }: NegotiationTableProps) => {
+  const {
+    bank: {
+      selectedBank: { idCHB: chb },
+    },
+  } = useLoloContext()
+
   const [negotiationId, setNegotiationId] = useState<number>(0)
   const [idDeletedNegotiation, setIdDeletedNegotiation] = useState<number>(0)
 
@@ -54,22 +59,20 @@ const NegotiationTable = ({ opts, setOpts, selectedBank: { chb } }: NegotiationT
     hideModalEdit()
   }
 
-  const { isLoading } = useQuery(
-    [KEY_EXT_COBRANZA_NEGOCIACIONES_CACHE, chb],
+  const { isLoading, data } = useQuery(
+    [KEY_EXT_COBRANZA_NEGOCIACIONES_CACHE, parseInt(chb.length ? chb : '0')],
     async () => {
-      return await getAllNegociacionesByCHB(chb)
-    },
-    {
-      onSuccess: ({ data }) => {
-        if (opts.filter !== '') {
-          data = data.filter((filt: NegotiationType) => {
-            return filt.name.substring(0, opts.filter.length).toUpperCase() === opts.filter.toUpperCase()
-          })
-        }
-        setNegotiations(data)
-      },
+      return await getAllNegociacionesByCHB(parseInt(chb.length ? chb : '0'))
     }
   )
+
+  let result = data?.data ?? []
+  if (opts.filter !== '') {
+    result = result.filter((filt: NegotiationType) => {
+      return filt.name.substring(0, opts.filter.length).toUpperCase() === opts.filter.toUpperCase()
+    })
+  }
+  const negotiations = result
 
   return (
     <Container width="100%" height="calc(100% - 112px)" padding="20px">
@@ -86,7 +89,7 @@ const NegotiationTable = ({ opts, setOpts, selectedBank: { chb } }: NegotiationT
         }
       >
         {!!negotiations?.length &&
-          negotiations.map((record: NegotiationType, key) => {
+          negotiations.map((record: NegotiationType, key: number) => {
             return (
               <tr className="styled-data-table-row" key={record.id}>
                 <BodyCell textAlign="center">{`${key + 1 || ''}`}</BodyCell>
@@ -127,15 +130,8 @@ const NegotiationTable = ({ opts, setOpts, selectedBank: { chb } }: NegotiationT
         visible={visibleDeleteNegotiation}
         onClose={onCloseDeleteNegotiation}
         idNegociation={idDeletedNegotiation}
-        chb={chb}
       />
-      <NegotiationModal
-        visible={visibleModalEdit}
-        onClose={onCloseModal}
-        idNegotiation={negotiationId}
-        chb={chb}
-        isEdit
-      />
+      <NegotiationModal visible={visibleModalEdit} onClose={onCloseModal} idNegotiation={negotiationId} isEdit />
     </Container>
   )
 }
