@@ -30,7 +30,7 @@ export const getDashItems = () => {
       path: paths.dash.reportes,
       admin: false,
     },
-    {
+    /* {
       id: 4,
       title: 'ACCIONES',
       remixClass: 'ri-pencil-ruler-2-fill',
@@ -50,7 +50,7 @@ export const getDashItems = () => {
       remixClass: 'ri-briefcase-fill',
       path: paths.dash.funcionarios,
       admin: false,
-    },
+    }, */
     {
       id: 7,
       title: 'PERMISOS',

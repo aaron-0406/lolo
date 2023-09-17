@@ -58,10 +58,7 @@ const AppRouter = () => {
         <Route path={paths.dash.usuarios} element={<DashboardUsers />} />
         <Route path={paths.dash.permisos} element={<DashboardPermissions />} />
         <Route path={paths.dash.roles} element={<DashboardRoles />} />
-        <Route path={paths.dash.funcionarios} element={<DashboardFuncionarios />} />
         <Route path={paths.dash.reportes} element={<div>reportes</div>} />
-        <Route path={paths.dash.acciones} element={<DashboardActions />} />
-        <Route path={paths.dash.negociaciones} element={<DashboardNegotiations />} />
       </Route>
 
       {/* COMPANY */}
@@ -77,6 +74,9 @@ const AppRouter = () => {
         <Route path={paths.cobranza.metas()} element={<ExtrajudicialMetas />} />
         <Route path={paths.cobranza.document()} element={<ExtrajudicialTemplate />} />
         <Route path={paths.cobranza.dashboard()} element={<Dashboard />} />
+        <Route path={paths.cobranza.funcionarios()} element={<DashboardFuncionarios />} />
+        <Route path={paths.cobranza.acciones()} element={<DashboardActions />} />
+        <Route path={paths.cobranza.negociaciones()} element={<DashboardNegotiations />} />
       </Route>
 
       <Route path="*" element={<NotFound />} />
