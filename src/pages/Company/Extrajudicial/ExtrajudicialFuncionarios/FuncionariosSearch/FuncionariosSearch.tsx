@@ -61,7 +61,14 @@ const FuncionariosSearch: FC<FuncionariosSearchProps> = ({ opts, setOpts }) => {
         <TextField onChange={onChangeSearch} width="100%" placeholder="Buscar cliente por nombre" />
       </Container>
 
-      <Button shape="round" leadingIcon="ri-add-fill" size="small" onClick={onShowModal} disabled={!idCHB} />
+      <Button
+        shape="round"
+        leadingIcon="ri-add-fill"
+        size="small"
+        onClick={onShowModal}
+        disabled={!idCHB}
+        permission="P08-01"
+      />
       <FuncionariosModal visible={visibleModalAdd} onClose={onCloseModal} />
     </Container>
   )

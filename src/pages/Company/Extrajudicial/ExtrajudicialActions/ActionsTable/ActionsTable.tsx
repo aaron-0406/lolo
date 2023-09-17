@@ -102,6 +102,7 @@ const ActionsTable: FC<ActionsTableProps> = ({ opts, setOpts }) => {
                         shape="round"
                         size="small"
                         leadingIcon="ri-pencil-fill"
+                        permission="P07-02"
                       />
                       <Button
                         onClick={() => {
@@ -110,7 +111,8 @@ const ActionsTable: FC<ActionsTableProps> = ({ opts, setOpts }) => {
                         messageTooltip={'Eliminar acción'}
                         shape="round"
                         size="small"
-                        leadingIcon={'ri-delete-bin-line'}
+                        leadingIcon="ri-delete-bin-line"
+                        permission="P07-03"
                       />
                     </Container>
                   }

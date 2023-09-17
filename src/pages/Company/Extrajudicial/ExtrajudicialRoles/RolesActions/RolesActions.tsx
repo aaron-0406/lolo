@@ -13,7 +13,14 @@ const RolesActions = () => {
 
   return (
     <Container display="flex" justifyContent="end" width="100%" padding="20px 20px 0px 20px">
-      <Button disabled={!customer.id} onClick={showModalAdd} leadingIcon="ri-add-fill" shape="round" size="small" />
+      <Button
+        disabled={!customer.id}
+        onClick={showModalAdd}
+        leadingIcon="ri-add-fill"
+        shape="round"
+        size="small"
+        permission="P11-01"
+      />
 
       <RolesModal visible={visibleModalAdd} onClose={hideModalAdd} />
     </Container>

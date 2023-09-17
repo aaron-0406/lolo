@@ -96,6 +96,7 @@ const RolesTable = () => {
                         shape="round"
                         size="small"
                         leadingIcon="ri-pencil-fill"
+                        permission="P11-02"
                       />
 
                       <Button
@@ -107,6 +108,7 @@ const RolesTable = () => {
                         shape="round"
                         size="small"
                         leadingIcon="ri-user-unfollow-fill"
+                        permission="P11-03"
                       />
                     </Container>
                   }

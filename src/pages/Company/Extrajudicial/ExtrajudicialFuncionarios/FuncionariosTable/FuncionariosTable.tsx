@@ -110,6 +110,7 @@ const FuncionariosTable: FC<FuncionariosTableProps> = ({ opts, setOpts }) => {
                         shape="round"
                         size="small"
                         leadingIcon="ri-pencil-fill"
+                        permission="P08-02"
                       />
                       <Button
                         onClick={() => {
@@ -119,6 +120,7 @@ const FuncionariosTable: FC<FuncionariosTableProps> = ({ opts, setOpts }) => {
                         shape="round"
                         size="small"
                         leadingIcon="ri-delete-bin-line"
+                        permission="P08-03"
                       />
                     </Container>
                   }

@@ -53,7 +53,14 @@ const NegotiationSearch = ({ opts, setOpts }: NegotiationSearchProps) => {
         <TextField onChange={onChangeSearch} width="100%" placeholder="Buscar negociación por nombre" />
       </Container>
 
-      <Button shape="round" leadingIcon="ri-add-fill" size="small" onClick={showModalAdd} disabled={!chb} />
+      <Button
+        shape="round"
+        leadingIcon="ri-add-fill"
+        size="small"
+        onClick={showModalAdd}
+        disabled={!chb}
+        permission="P09-01"
+      />
       <NegotiationModal visible={visibleModalAdd} onClose={hideModalAdd} />
     </Container>
   )

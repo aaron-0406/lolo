@@ -156,16 +156,15 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts }) => {
                 <BodyCell textAlign="center">{`${moment(record.createdAt).format('DD-MM-YYYY') || ''}`}</BodyCell>
                 <BodyCell textAlign="center">
                   <Container justifyContent="space-around" gap="15px" display="flex">
-                    {
-                      <Button
-                        onClick={() => {
-                          handleClickEditUser(record.id)
-                        }}
-                        shape="round"
-                        size="small"
-                        leadingIcon="ri-pencil-fill"
-                      />
-                    }
+                    <Button
+                      onClick={() => {
+                        handleClickEditUser(record.id)
+                      }}
+                      shape="round"
+                      size="small"
+                      leadingIcon="ri-pencil-fill"
+                      permission="P10-02"
+                    />
                     <Button
                       onClick={() => {
                         handleClickButtonState(record.state, record.id)
@@ -175,17 +174,17 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts }) => {
                       shape="round"
                       size="small"
                       leadingIcon={record.state ? 'ri-shield-user-fill' : 'ri-shield-user-line'}
+                      permission="P10-04"
                     />
-                    {
-                      <Button
-                        onClick={() => {
-                          handleClickDeleteUser(record.id)
-                        }}
-                        shape="round"
-                        size="small"
-                        leadingIcon="ri-user-unfollow-fill"
-                      />
-                    }
+                    <Button
+                      onClick={() => {
+                        handleClickDeleteUser(record.id)
+                      }}
+                      shape="round"
+                      size="small"
+                      leadingIcon="ri-user-unfollow-fill"
+                      permission="P10-03"
+                    />
                   </Container>
                 </BodyCell>
               </tr>

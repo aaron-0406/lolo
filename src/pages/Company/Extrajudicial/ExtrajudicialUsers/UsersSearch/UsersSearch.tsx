@@ -58,7 +58,14 @@ const UsersSearch: FC<UsersSearchProps> = ({ opts, setOpts }) => {
         </Container>
         <TextField onChange={onChangeSearch} width="100%" placeholder="Buscar usuario por nombre" />
       </Container>
-      <Button disabled={!customer.id} shape="round" leadingIcon="ri-add-fill" size="small" onClick={handleClickModal} />
+      <Button
+        disabled={!customer.id}
+        shape="round"
+        leadingIcon="ri-add-fill"
+        size="small"
+        onClick={handleClickModal}
+        permission="P10-01"
+      />
 
       <UsersModal visible={visibleModalAdd} onClose={onCloseModal} />
     </Container>

@@ -107,6 +107,7 @@ const NegotiationTable = ({ opts, setOpts }: NegotiationTableProps) => {
                         shape="round"
                         size="small"
                         leadingIcon="ri-pencil-fill"
+                        permission="P09-02"
                       />
                       <Button
                         onClick={(event) => {
@@ -117,6 +118,7 @@ const NegotiationTable = ({ opts, setOpts }: NegotiationTableProps) => {
                         shape="round"
                         size="small"
                         leadingIcon="ri-user-unfollow-fill"
+                        permission="P09-03"
                       />
                     </Container>
                   }

@@ -61,7 +61,14 @@ const ActionsSearch: FC<ActionsSearchProps> = ({ opts, setOpts }) => {
         <TextField onChange={onChangeSearch} width="100%" placeholder="Buscar cliente por nombre" />
       </Container>
 
-      <Button shape="round" leadingIcon="ri-add-fill" size="small" onClick={onShowModal} disabled={!idCHB} />
+      <Button
+        shape="round"
+        leadingIcon="ri-add-fill"
+        size="small"
+        onClick={onShowModal}
+        disabled={!idCHB}
+        permission="P07-01"
+      />
       <ActionModal visible={visibleModalAdd} onClose={onCloseModal} />
     </Container>
   )
