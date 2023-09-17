@@ -10,7 +10,7 @@ import Table from '@/ui/Table'
 import EmptyStateCell from '@/ui/Table/EmptyStateCell'
 import BodyCell from '@/ui/Table/BodyCell'
 import { negotiationColumns } from './utils/columns'
-import { KEY_DASH_NEGOCIACIONES_CACHE } from './utils/dash-negociaciones.cache'
+import { KEY_EXT_COBRANZA_NEGOCIACIONES_CACHE } from './utils/ext-negociaciones.cache'
 import Button from '@/ui/Button'
 import NegotiationModal from '../Modals/NegotiationModal'
 import useModal from '@/hooks/useModal'
@@ -55,7 +55,7 @@ const NegotiationTable = ({ opts, setOpts, selectedBank: { chb } }: NegotiationT
   }
 
   const { isLoading } = useQuery(
-    [KEY_DASH_NEGOCIACIONES_CACHE, chb],
+    [KEY_EXT_COBRANZA_NEGOCIACIONES_CACHE, chb],
     async () => {
       return await getAllNegociacionesByCHB(chb)
     },

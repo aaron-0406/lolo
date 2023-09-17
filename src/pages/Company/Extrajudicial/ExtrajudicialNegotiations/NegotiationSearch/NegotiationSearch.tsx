@@ -11,8 +11,8 @@ import Button from '@/ui/Button'
 import useModal from '@/hooks/useModal'
 import Label from '@/ui/Label/Label'
 import Select from '@/ui/Select'
-import { useDashContext } from '@/contexts/DashProvider'
-import dashNegotiationCache from '../NegotiationTable/utils/dash-negociaciones.cache'
+import extNegotiationCache from '../NegotiationTable/utils/ext-negociaciones.cache'
+import { useLoloContext } from '@/contexts/LoloProvider'
 
 type NegotiationSearchProps = {
   opts: Opts
@@ -22,16 +22,16 @@ type NegotiationSearchProps = {
 
 const NegotiationSearch = ({ opts, setOpts, selectedBank: { chb, setChb } }: NegotiationSearchProps) => {
   const {
-    dashCustomer: { selectedCustomer },
-  } = useDashContext()
+    client: { customer },
+  } = useLoloContext()
 
   const queryClient = useQueryClient()
-  const { onRefetchQueryCache } = dashNegotiationCache(queryClient)
+  const { onRefetchQueryCache } = extNegotiationCache(queryClient)
 
   const greaterThanMobile = useMediaQuery(device.tabletS)
   const { visible: visibleModalAdd, showModal: showModalAdd, hideModal: hideModalAdd } = useModal()
 
-  const optionsSelect: Array<SelectItemType> = selectedCustomer.customerBanks.map((customerBank) => {
+  const optionsSelect: Array<SelectItemType> = customer.customerBanks.map((customerBank) => {
     return {
       key: String(customerBank.CUSTOMER_HAS_BANK.id),
       label: customerBank.name,

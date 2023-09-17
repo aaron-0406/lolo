@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from 'react-query'
 import { AxiosError, AxiosResponse } from 'axios'
-import dashNegotiationCache from '../../NegotiationTable/utils/dash-negociaciones.cache'
+import extNegotiationCache from '../../NegotiationTable/utils/ext-negociaciones.cache'
 import { deleteNegotiation } from '@/services/extrajudicial/negotiation.service'
 import notification from '@/ui/notification'
 import Modal from '@/ui/Modal'
@@ -23,7 +23,7 @@ const DeleteNegotiationModal = ({ visible, idNegociation = 0, onClose, chb }: De
     onMutateCache,
     onSettledCache,
     onErrorCache,
-  } = dashNegotiationCache(queryClient)
+  } = extNegotiationCache(queryClient)
 
   const { isLoading: loadingDeleteNegotiation, mutate: deleteNegotiationMutate } = useMutation<
     AxiosResponse<{ id: string }>,

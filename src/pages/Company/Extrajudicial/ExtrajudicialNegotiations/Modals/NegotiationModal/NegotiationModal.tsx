@@ -13,7 +13,7 @@ import Container from '@/ui/Container'
 import Button from '@/ui/Button'
 import notification from '@/ui/notification'
 import NegotiationInfoForm from './NegotiationInfoForm'
-import dashNegotiationCache from '../../NegotiationTable/utils/dash-negociaciones.cache'
+import extNegotiationCache from '../../NegotiationTable/utils/ext-negociaciones.cache'
 import { AxiosError } from 'axios'
 import { CustomErrorResponse } from 'types/customErrorResponse'
 
@@ -38,7 +38,7 @@ const NegotiationModal = ({ visible, onClose, isEdit = false, idNegotiation = 0,
     onMutateCache,
     onSettledCache,
     onErrorCache,
-  } = dashNegotiationCache(queryClient)
+  } = extNegotiationCache(queryClient)
 
   const formMethods = useForm<NegotiationType>({
     resolver: ModalNegotiationResolver,
