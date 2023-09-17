@@ -19,6 +19,8 @@ export default {
   company: {
     root: (urlIdentifier = ':urlIdentifier') => `/${urlIdentifier}`,
     login: (urlIdentifier = ':urlIdentifier') => `/${urlIdentifier}/login`,
+    usuarios: (urlIdentifier = ':urlIdentifier') => `/${urlIdentifier}/usuarios`,
+    roles: (urlIdentifier = ':urlIdentifier') => `/${urlIdentifier}/roles`,
   },
   cobranza: {
     perfil: (urlIdentifier = ':urlIdentifier') => `/cobranza/${urlIdentifier}/perfil`,
