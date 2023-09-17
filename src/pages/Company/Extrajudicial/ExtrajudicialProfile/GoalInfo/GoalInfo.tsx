@@ -42,13 +42,6 @@ const GoalInfo = () => {
       onSuccess: ({ data }) => {
         setPersonalGoal(data)
       },
-      onError: (error) => {
-        notification({
-          type: 'error',
-          message: error.response?.data.message,
-          list: error.response?.data?.errors?.map((error) => error.message),
-        })
-      },
     }
   )
 
@@ -59,13 +52,6 @@ const GoalInfo = () => {
     {
       onSuccess: ({ data }) => {
         setGlobalGoal(data)
-      },
-      onError: (error) => {
-        notification({
-          type: 'error',
-          message: error.response?.data.message,
-          list: error.response?.data?.errors?.map((error) => error.message),
-        })
       },
     }
   )
