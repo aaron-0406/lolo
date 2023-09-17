@@ -14,14 +14,20 @@ import ActionsModal from '../Modals/ActionsModal/ActionsModal'
 import { actionsColumns } from './utils/columns'
 import DeleteActionsModal from '../Modals/DeleteActionsModal'
 import { KEY_EXT_COBRANZA_ACCIONES_CACHE } from './utils/ext-acciones.cache'
+import { useLoloContext } from '@/contexts/LoloProvider'
 
 type ActionsTableProps = {
   opts: Opts
   setOpts: Dispatch<Opts>
-  selectedBank: { chb: number; setChb: (chb: number) => void }
 }
 
-const ActionsTable: FC<ActionsTableProps> = ({ opts, setOpts, selectedBank: { chb } }) => {
+const ActionsTable: FC<ActionsTableProps> = ({ opts, setOpts }) => {
+  const {
+    bank: {
+      selectedBank: { idCHB },
+    },
+  } = useLoloContext()
+
   const [actions, setActions] = useState<Array<ManagementActionType>>([])
   const [idEdit, setIdEdit] = useState<number>(0)
   const [actionsCount, setActionsCount] = useState<number>(0)
@@ -49,9 +55,9 @@ const ActionsTable: FC<ActionsTableProps> = ({ opts, setOpts, selectedBank: { ch
   }
 
   const { isLoading } = useQuery(
-    [KEY_EXT_COBRANZA_ACCIONES_CACHE, chb],
+    [KEY_EXT_COBRANZA_ACCIONES_CACHE, idCHB],
     async () => {
-      return await getAllManagementActionsByCHB(String(chb))
+      return await getAllManagementActionsByCHB(idCHB.length ? idCHB : '0')
     },
     {
       onSuccess: ({ data }) => {
@@ -118,13 +124,8 @@ const ActionsTable: FC<ActionsTableProps> = ({ opts, setOpts, selectedBank: { ch
           })}
       </Table>
 
-      <ActionsModal visible={visibleModalAction} onClose={onCloseModal} idAction={idEdit} chb={chb} isEdit />
-      <DeleteActionsModal
-        visible={visibleDeleteAction}
-        onClose={onCloseDeleteAction}
-        chb={chb}
-        idAction={idDeletedAction}
-      />
+      <ActionsModal visible={visibleModalAction} onClose={onCloseModal} idAction={idEdit} isEdit />
+      <DeleteActionsModal visible={visibleDeleteAction} onClose={onCloseDeleteAction} idAction={idDeletedAction} />
     </Container>
   )
 }

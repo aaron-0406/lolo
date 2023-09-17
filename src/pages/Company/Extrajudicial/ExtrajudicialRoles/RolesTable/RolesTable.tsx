@@ -10,10 +10,10 @@ import { RoleType } from '@/types/dash/role.type'
 import { roleColumns } from './utils/columns'
 import { KEY_EXT_ROLES_CACHE } from './utils/ext-role.cache'
 import { getAllRolesByCustomerId } from '@/services/dash/role.service'
-import { useDashContext } from '@/contexts/DashProvider'
 import useModal from '@/hooks/useModal'
 import DeleteRoleModal from '../Modals/DeleteRoleModal/DeleteRoleModal'
 import notification from '@/ui/notification'
+import { useLoloContext } from '@/contexts/LoloProvider'
 
 const RolesTable = () => {
   const [roleId, setRoleId] = useState<number>(0)
@@ -43,10 +43,10 @@ const RolesTable = () => {
   }
 
   const {
-    dashCustomer: {
-      selectedCustomer: { id },
+    client: {
+      customer: { id },
     },
-  } = useDashContext()
+  } = useLoloContext()
 
   const { data, isLoading } = useQuery(
     [KEY_EXT_ROLES_CACHE, id],

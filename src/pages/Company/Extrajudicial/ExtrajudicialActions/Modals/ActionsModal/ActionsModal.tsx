@@ -16,13 +16,13 @@ import Button from '@/ui/Button'
 import ActionInfoForm from './ActionInfoForm/ActionInfoForm'
 import extAccionesCache from '../../ActionsTable/utils/ext-acciones.cache'
 import { CustomErrorResponse } from 'types/customErrorResponse'
+import { useLoloContext } from '@/contexts/LoloProvider'
 
 type ActionsModalProps = {
   visible: boolean
   onClose: () => void
   isEdit?: boolean
   idAction?: number
-  chb: number
 }
 
 const defaultValuesActions: Omit<ManagementActionType, 'customerHasBankId'> = {
@@ -32,8 +32,15 @@ const defaultValuesActions: Omit<ManagementActionType, 'customerHasBankId'> = {
   codeSubTypeManagement: '',
 }
 
-const ActionsModal = ({ visible, onClose, isEdit = false, idAction = 0, chb }: ActionsModalProps) => {
+const ActionsModal = ({ visible, onClose, isEdit = false, idAction = 0 }: ActionsModalProps) => {
+  const {
+    bank: {
+      selectedBank: { idCHB: chb },
+    },
+  } = useLoloContext()
+
   const queryClient = useQueryClient()
+
   const {
     actions: { createActionCache, editActionCache },
     onMutateCache,
@@ -60,7 +67,7 @@ const ActionsModal = ({ visible, onClose, isEdit = false, idAction = 0, chb }: A
   >(
     async () => {
       const { id, ...restClient } = getValues()
-      return await createManagementAction({ ...restClient, customerHasBankId: chb })
+      return await createManagementAction({ ...restClient, customerHasBankId: parseInt(chb) })
     },
     {
       onSuccess: (result) => {
@@ -69,13 +76,13 @@ const ActionsModal = ({ visible, onClose, isEdit = false, idAction = 0, chb }: A
         handleClickCloseModal()
       },
       onMutate: () => {
-        return onMutateCache(chb)
+        return onMutateCache(parseInt(chb))
       },
       onSettled: () => {
-        onSettledCache(chb)
+        onSettledCache(parseInt(chb))
       },
       onError: (error, _, context: any) => {
-        onErrorCache(context, chb)
+        onErrorCache(context, parseInt(chb))
         notification({
           type: 'error',
           message: error.response?.data.message,
@@ -91,7 +98,7 @@ const ActionsModal = ({ visible, onClose, isEdit = false, idAction = 0, chb }: A
   >(
     async () => {
       const { id, ...restClient } = getValues()
-      return await updateManagementAction(id, { ...restClient, customerHasBankId: chb })
+      return await updateManagementAction(id, { ...restClient, customerHasBankId: parseInt(chb) })
     },
     {
       onSuccess: (result) => {
@@ -100,13 +107,13 @@ const ActionsModal = ({ visible, onClose, isEdit = false, idAction = 0, chb }: A
         onClose()
       },
       onMutate: () => {
-        return onMutateCache(chb)
+        return onMutateCache(parseInt(chb))
       },
       onSettled: () => {
-        onSettledCache(chb)
+        onSettledCache(parseInt(chb))
       },
       onError: (error, _, context: any) => {
-        onErrorCache(context, chb)
+        onErrorCache(context, parseInt(chb))
         notification({
           type: 'error',
           message: error.response?.data.message,

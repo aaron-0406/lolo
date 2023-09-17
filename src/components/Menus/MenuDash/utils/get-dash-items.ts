@@ -30,27 +30,6 @@ export const getDashItems = () => {
       path: paths.dash.reportes,
       admin: false,
     },
-    /* {
-      id: 4,
-      title: 'ACCIONES',
-      remixClass: 'ri-pencil-ruler-2-fill',
-      path: paths.dash.acciones,
-      admin: false,
-    },
-    {
-      id: 5,
-      title: 'NEGOCIACIONES',
-      remixClass: 'ri-folder-2-fill',
-      path: paths.dash.negociaciones,
-      admin: false,
-    },
-    {
-      id: 6,
-      title: 'FUNCIONARIOS',
-      remixClass: 'ri-briefcase-fill',
-      path: paths.dash.funcionarios,
-      admin: false,
-    }, */
     {
       id: 7,
       title: 'PERMISOS',

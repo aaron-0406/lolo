@@ -5,16 +5,22 @@ import notification from '@/ui/notification'
 import Button from '@/ui/Button'
 import { deleteManagementAction } from '@/services/extrajudicial/management-action.service'
 import extAccionesCache from '../../ActionsTable/utils/ext-acciones.cache'
+import { useLoloContext } from '@/contexts/LoloProvider'
 
 type DeleteActionsModalProps = {
   visible: boolean
   onClose: () => void
   isEdit?: boolean
   idAction?: number
-  chb: number
 }
 
-const DeleteActionsModal = ({ visible, idAction = 0, onClose, chb = 0 }: DeleteActionsModalProps) => {
+const DeleteActionsModal = ({ visible, idAction = 0, onClose }: DeleteActionsModalProps) => {
+  const {
+    bank: {
+      selectedBank: { idCHB: chb },
+    },
+  } = useLoloContext()
+
   const queryClient = useQueryClient()
 
   const {
@@ -30,18 +36,18 @@ const DeleteActionsModal = ({ visible, idAction = 0, onClose, chb = 0 }: DeleteA
     },
     {
       onSuccess: () => {
-        deleteActionCache(String(idAction), chb)
+        deleteActionCache(String(idAction), parseInt(chb))
         notification({ type: 'success', message: 'Acción eliminada' })
         onClose()
       },
       onMutate: () => {
-        return onMutateCache(chb)
+        return onMutateCache(parseInt(chb))
       },
       onSettled: () => {
-        onSettledCache(chb)
+        onSettledCache(parseInt(chb))
       },
       onError: (error: any, _, context: any) => {
-        onErrorCache(context, chb)
+        onErrorCache(context, parseInt(chb))
         notification({
           type: 'error',
           message: error.response.data.message,

@@ -6,11 +6,6 @@ import ActionsTable from './ActionsTable/ActionsTable'
 
 const ExtrajudicialActions = () => {
   const [opts, setOpts] = useState<Opts>({ filter: '', limit: 50, page: 1 })
-  const [chb, setChb] = useState<number>(0)
-
-  const setChbGlobal = (chb: number) => {
-    setChb(chb)
-  }
 
   return (
     <Container
@@ -22,8 +17,8 @@ const ExtrajudicialActions = () => {
       justifyContent="center"
       gap="20px"
     >
-      <ActionsSearch opts={opts} setOpts={setOpts} selectedBank={{ chb, setChb: setChbGlobal }} />
-      <ActionsTable opts={opts} setOpts={setOpts} selectedBank={{ chb, setChb: setChbGlobal }} />
+      <ActionsSearch opts={opts} setOpts={setOpts} />
+      <ActionsTable opts={opts} setOpts={setOpts} />
     </Container>
   )
 }
