@@ -3,8 +3,8 @@ import Container from '@/ui/Container'
 import Modal from '@/ui/Modal'
 import notification from '@/ui/notification'
 import Button from '@/ui/Button'
-import { deleteManagementAction } from '@/services/dash/management-action.service'
-import dashAccionesCache from '../../ActionsTable/utils/dash-acciones.cache'
+import { deleteManagementAction } from '@/services/extrajudicial/management-action.service'
+import extAccionesCache from '../../ActionsTable/utils/ext-acciones.cache'
 
 type DeleteActionsModalProps = {
   visible: boolean
@@ -22,7 +22,7 @@ const DeleteActionsModal = ({ visible, idAction = 0, onClose, chb = 0 }: DeleteA
     onMutateCache,
     onSettledCache,
     onErrorCache,
-  } = dashAccionesCache(queryClient)
+  } = extAccionesCache(queryClient)
 
   const { isLoading: loadingDeleteAction, mutate: deleteActionMutate } = useMutation<any, Error>(
     async () => {

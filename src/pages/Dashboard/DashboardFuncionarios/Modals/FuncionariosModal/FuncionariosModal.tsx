@@ -2,9 +2,13 @@ import { useEffect } from 'react'
 import { AxiosError, AxiosResponse } from 'axios'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
-import { FuncionarioType } from '@/types/dash/funcionario.type'
+import { FuncionarioType } from '@/types/extrajudicial/funcionario.type'
 import { ModalFuncionariosResolver } from './FuncionariosModal.yup'
-import { createFuncionario, getAllFuncionariosByID, editFuncionarioById } from '@/services/dash/funcionario.service'
+import {
+  createFuncionario,
+  getAllFuncionariosByID,
+  editFuncionarioById,
+} from '@/services/extrajudicial/funcionario.service'
 import notification from '@/ui/notification'
 import Modal from '@/ui/Modal'
 import Container from '@/ui/Container'

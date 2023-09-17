@@ -4,7 +4,7 @@ import { Opts } from '@/ui/Pagination/interfaces'
 import Container from '@/ui/Container'
 import ActionsTable from './ActionsTable/ActionsTable'
 
-const DashboardActions = () => {
+const ExtrajudicialActions = () => {
   const [opts, setOpts] = useState<Opts>({ filter: '', limit: 50, page: 1 })
   const [chb, setChb] = useState<number>(0)
 
@@ -28,4 +28,4 @@ const DashboardActions = () => {
   )
 }
 
-export default DashboardActions
+export default ExtrajudicialActions

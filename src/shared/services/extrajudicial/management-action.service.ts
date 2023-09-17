@@ -1,5 +1,5 @@
 import axiosClient from '../../utils/api/clientAxios'
-import { ManagementActionType } from '@/types/dash/management-action.type'
+import { ManagementActionType } from '@/types/extrajudicial/management-action.type'
 
 const API = axiosClient.getUri()
 

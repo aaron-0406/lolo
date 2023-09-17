@@ -2,19 +2,19 @@ import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { AxiosError, AxiosResponse } from 'axios'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
-import { ManagementActionType } from '@/types/dash/management-action.type'
+import { ManagementActionType } from '@/types/extrajudicial/management-action.type'
 import { ModalActionsResolver } from './ActionsModal.yup'
 import {
   createManagementAction,
   getManagementActionById,
   updateManagementAction,
-} from '@/services/dash/management-action.service'
+} from '@/services/extrajudicial/management-action.service'
 import notification from '@/ui/notification'
 import Modal from '@/ui/Modal'
 import Container from '@/ui/Container'
 import Button from '@/ui/Button'
 import ActionInfoForm from './ActionInfoForm/ActionInfoForm'
-import dashAccionesCache from '../../ActionsTable/utils/dash-acciones.cache'
+import extAccionesCache from '../../ActionsTable/utils/ext-acciones.cache'
 import { CustomErrorResponse } from 'types/customErrorResponse'
 
 type ActionsModalProps = {
@@ -39,7 +39,7 @@ const ActionsModal = ({ visible, onClose, isEdit = false, idAction = 0, chb }: A
     onMutateCache,
     onSettledCache,
     onErrorCache,
-  } = dashAccionesCache(queryClient)
+  } = extAccionesCache(queryClient)
 
   const formMethods = useForm<ManagementActionType>({
     resolver: ModalActionsResolver,

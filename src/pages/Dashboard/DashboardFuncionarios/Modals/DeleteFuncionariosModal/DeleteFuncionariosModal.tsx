@@ -4,7 +4,7 @@ import Container from '@/ui/Container'
 import Modal from '@/ui/Modal'
 import notification from '@/ui/notification'
 import Button from '@/ui/Button'
-import { deleteFuncionario } from '@/services/dash/funcionario.service'
+import { deleteFuncionario } from '@/services/extrajudicial/funcionario.service'
 import dashFuncionariosCache from '../../FuncionariosTable/utils/dash-funcionarios.cache'
 import { CustomErrorResponse } from 'types/customErrorResponse'
 

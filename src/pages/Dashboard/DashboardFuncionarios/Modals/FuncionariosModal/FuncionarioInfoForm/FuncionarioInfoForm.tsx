@@ -1,5 +1,5 @@
 import { Controller, useFormContext } from 'react-hook-form'
-import { FuncionarioType } from '@/types/dash/funcionario.type'
+import { FuncionarioType } from '@/types/extrajudicial/funcionario.type'
 import Container from '@/ui/Container'
 import Label from '@/ui/Label'
 import TextField from '@/ui/fields/TextField'

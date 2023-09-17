@@ -1,9 +1,13 @@
 import { useEffect } from 'react'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { FormProvider, useForm } from 'react-hook-form'
-import { createNegotiation, updateNegotiation, getAllNegociacionesById } from '@/services/dash/negotiation.service'
+import {
+  createNegotiation,
+  updateNegotiation,
+  getAllNegociacionesById,
+} from '@/services/extrajudicial/negotiation.service'
 import { ModalNegotiationResolver } from './NegotiationModal.yup'
-import { NegotiationType } from '@/types/dash/negotiation.type'
+import { NegotiationType } from '@/types/extrajudicial/negotiation.type'
 import Modal from '@/ui/Modal'
 import Container from '@/ui/Container'
 import Button from '@/ui/Button'

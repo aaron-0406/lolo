@@ -1,9 +1,9 @@
 import { Dispatch, FC, useState } from 'react'
 import { useQuery } from 'react-query'
 import { Opts } from '@/ui/Pagination/interfaces'
-import { ManagementActionType } from '@/types/dash/management-action.type'
+import { ManagementActionType } from '@/types/extrajudicial/management-action.type'
 import useModal from '@/hooks/useModal'
-import { getAllManagementActionsByCHB } from '@/services/dash/management-action.service'
+import { getAllManagementActionsByCHB } from '@/services/extrajudicial/management-action.service'
 import Container from '@/ui/Container'
 import Pagination from '@/ui/Pagination'
 import Table from '@/ui/Table'
@@ -13,7 +13,7 @@ import Button from '@/ui/Button'
 import ActionsModal from '../Modals/ActionsModal/ActionsModal'
 import { actionsColumns } from './utils/columns'
 import DeleteActionsModal from '../Modals/DeleteActionsModal'
-import { KEY_DASH_ACCIONES_CACHE } from './utils/dash-acciones.cache'
+import { KEY_EXT_COBRANZA_ACCIONES_CACHE } from './utils/ext-acciones.cache'
 
 type ActionsTableProps = {
   opts: Opts
@@ -49,7 +49,7 @@ const ActionsTable: FC<ActionsTableProps> = ({ opts, setOpts, selectedBank: { ch
   }
 
   const { isLoading } = useQuery(
-    [KEY_DASH_ACCIONES_CACHE, chb],
+    [KEY_EXT_COBRANZA_ACCIONES_CACHE, chb],
     async () => {
       return await getAllManagementActionsByCHB(String(chb))
     },
