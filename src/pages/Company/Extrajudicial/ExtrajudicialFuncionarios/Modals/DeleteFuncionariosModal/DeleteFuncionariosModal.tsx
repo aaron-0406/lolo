@@ -5,7 +5,7 @@ import Modal from '@/ui/Modal'
 import notification from '@/ui/notification'
 import Button from '@/ui/Button'
 import { deleteFuncionario } from '@/services/extrajudicial/funcionario.service'
-import dashFuncionariosCache from '../../FuncionariosTable/utils/dash-funcionarios.cache'
+import extFuncionariosCache from '../../FuncionariosTable/utils/ext-funcionarios.cache'
 import { CustomErrorResponse } from 'types/customErrorResponse'
 
 type DeleteFuncionariosModalProps = {
@@ -23,7 +23,7 @@ const DeleteFuncionariosModal = ({ visible, idAction = 0, onClose, chb = 0 }: De
     onMutateCache,
     onSettledCache,
     onErrorCache,
-  } = dashFuncionariosCache(queryClient)
+  } = extFuncionariosCache(queryClient)
 
   const { isLoading: loadingDeleteFuncionario, mutate: deleteFuncionarioMutate } = useMutation<
     AxiosResponse<{ id: string }>,

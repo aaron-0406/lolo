@@ -4,7 +4,7 @@ import Container from '@/ui/Container'
 import FuncionariosSearch from './FuncionariosSearch/FuncionariosSearch'
 import FuncionariosTable from './FuncionariosTable/FuncionariosTable'
 
-const DashboardFuncionarios = () => {
+const ExtrajudicialFuncionarios = () => {
   const [opts, setOpts] = useState<Opts>({ filter: '', limit: 50, page: 1 })
   const [chb, setChb] = useState<number>(0)
 
@@ -28,4 +28,4 @@ const DashboardFuncionarios = () => {
   )
 }
 
-export default DashboardFuncionarios
+export default ExtrajudicialFuncionarios

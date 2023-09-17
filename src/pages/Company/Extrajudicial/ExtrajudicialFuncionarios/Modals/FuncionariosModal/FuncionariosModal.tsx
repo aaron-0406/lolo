@@ -14,7 +14,7 @@ import Modal from '@/ui/Modal'
 import Container from '@/ui/Container'
 import Button from '@/ui/Button'
 import FuncionarioInfoForm from './FuncionarioInfoForm/FuncionarioInfoForm'
-import dashFuncionariosCache from '../../FuncionariosTable/utils/dash-funcionarios.cache'
+import extFuncionariosCache from '../../FuncionariosTable/utils/ext-funcionarios.cache'
 import { CustomErrorResponse } from 'types/customErrorResponse'
 
 type FuncionariosModalProps = {
@@ -38,7 +38,7 @@ const FuncionariosModal = ({ visible, onClose, isEdit = false, idFuncionario = 0
     onMutateCache,
     onSettledCache,
     onErrorCache,
-  } = dashFuncionariosCache(queryClient)
+  } = extFuncionariosCache(queryClient)
 
   const formMethods = useForm<FuncionarioType>({
     resolver: ModalFuncionariosResolver,

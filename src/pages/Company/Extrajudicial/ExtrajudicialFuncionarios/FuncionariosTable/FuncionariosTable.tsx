@@ -14,7 +14,7 @@ import Button from '@/ui/Button'
 import FuncionariosModal from '../Modals/FuncionariosModal'
 import { funcionariosColumns } from './utils/columns'
 import DeleteFuncionariosModal from '../Modals/DeleteFuncionariosModal'
-import { KEY_DASH_FUNCIONARIOS_CACHE } from './utils/dash-funcionarios.cache'
+import { KEY_EXT_COBRANZA_FUNCIONARIOS_CACHE } from './utils/ext-funcionarios.cache'
 
 type FuncionariosTableProps = {
   opts: Opts
@@ -59,7 +59,7 @@ const FuncionariosTable: FC<FuncionariosTableProps> = ({ opts, setOpts, selected
   }
 
   const { isLoading } = useQuery(
-    [KEY_DASH_FUNCIONARIOS_CACHE, chb],
+    [KEY_EXT_COBRANZA_FUNCIONARIOS_CACHE, chb],
     async () => {
       return await getAllFuncionariosByCHB(chb)
     },

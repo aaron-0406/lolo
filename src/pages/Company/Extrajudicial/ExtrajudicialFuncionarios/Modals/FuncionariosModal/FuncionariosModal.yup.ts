@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import yup from '../../../../../shared/yupLocale'
+import yup from '../../../../../../shared/yupLocale'
 import { FuncionarioType } from '@/types/extrajudicial/funcionario.type'
 
 const ModalFuncionarios: yup.SchemaOf<Omit<FuncionarioType, 'id' | 'createdAt'>> = yup.object().shape({

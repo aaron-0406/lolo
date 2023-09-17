@@ -4,15 +4,15 @@ import TextField from '@/ui/fields/TextField/TextField'
 import Container from '@/ui/Container/Container'
 import Select from '@/ui/Select/Select'
 import Button from '@/ui/Button/Button'
-import { useDashContext } from '@/contexts/DashProvider'
 import { SelectItemType } from '@/ui/Select/interfaces'
 import Label from '@/ui/Label/Label'
 import { Opts } from '@/ui/Pagination/interfaces'
 import useModal from '@/hooks/useModal'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { device } from '@/breakpoints/responsive'
-import dashFuncionariosCache from '../FuncionariosTable/utils/dash-funcionarios.cache'
+import extFuncionariosCache from '../FuncionariosTable/utils/ext-funcionarios.cache'
 import FuncionariosModal from '../Modals/FuncionariosModal'
+import { useLoloContext } from '@/contexts/LoloProvider'
 
 type FuncionariosSearchProps = {
   opts: Opts
@@ -22,16 +22,16 @@ type FuncionariosSearchProps = {
 
 const FuncionariosSearch: FC<FuncionariosSearchProps> = ({ opts, setOpts, selectedBank: { chb, setChb } }) => {
   const {
-    dashCustomer: { selectedCustomer },
-  } = useDashContext()
+    client: { customer },
+  } = useLoloContext()
 
   const queryClient = useQueryClient()
-  const { onRefetchQueryCache } = dashFuncionariosCache(queryClient)
+  const { onRefetchQueryCache } = extFuncionariosCache(queryClient)
 
   const greaterThanMobile = useMediaQuery(device.tabletS)
   const { visible: visibleModalAdd, showModal: showModalAdd, hideModal: hideModalAdd } = useModal()
 
-  const options: Array<SelectItemType> = selectedCustomer.customerBanks.map((customerBank) => {
+  const options: Array<SelectItemType> = customer.customerBanks.map((customerBank) => {
     return {
       key: String(customerBank.CUSTOMER_HAS_BANK.id),
       label: customerBank.name,

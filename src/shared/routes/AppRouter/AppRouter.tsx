@@ -11,7 +11,6 @@ import DashboardUsers from '@/pages/dashboard/DashboardUsers'
 import DashboardRoles from '@/pages/dashboard/DashboardRoles'
 import DashboardPermissions from '@/pages/dashboard/DashboardPermissions'
 import DashboardNegotiations from '@/pages/dashboard/DashboardNegotiations'
-import DashboardFuncionarios from '@/pages/dashboard/DashboardFuncionarios'
 
 //COMPANY
 import CompanyLogin from '../../../pages/Company/Login'
@@ -19,6 +18,7 @@ import CompanyHome from '../../../pages/Company/Home'
 
 //EXTRAJUDICIAL
 import ExtrajudicialActions from '@/pages/extrajudicial/ExtrajudicialActions'
+import ExtrajudicialFuncionarios from '@/pages/extrajudicial/ExtrajudicialFuncionarios'
 import ExtrajudicialProfile from '@/pages/extrajudicial/ExtrajudicialProfile'
 import ExtrajudicialCobranza from '@/pages/extrajudicial/ExtrajudicialCobranza'
 import ExtrajudicialCobranzaComments from '@/pages/extrajudicial/ExtrajudicialCobranzaComments/ExtrajudicialCobranzaComments'
@@ -74,7 +74,7 @@ const AppRouter = () => {
         <Route path={paths.cobranza.metas()} element={<ExtrajudicialMetas />} />
         <Route path={paths.cobranza.document()} element={<ExtrajudicialTemplate />} />
         <Route path={paths.cobranza.dashboard()} element={<Dashboard />} />
-        <Route path={paths.cobranza.funcionarios()} element={<DashboardFuncionarios />} />
+        <Route path={paths.cobranza.funcionarios()} element={<ExtrajudicialFuncionarios />} />
         <Route path={paths.cobranza.acciones()} element={<ExtrajudicialActions />} />
         <Route path={paths.cobranza.negociaciones()} element={<DashboardNegotiations />} />
       </Route>
