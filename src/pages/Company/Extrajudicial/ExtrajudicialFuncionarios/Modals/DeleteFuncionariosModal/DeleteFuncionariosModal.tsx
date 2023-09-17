@@ -7,15 +7,21 @@ import Button from '@/ui/Button'
 import { deleteFuncionario } from '@/services/extrajudicial/funcionario.service'
 import extFuncionariosCache from '../../FuncionariosTable/utils/ext-funcionarios.cache'
 import { CustomErrorResponse } from 'types/customErrorResponse'
+import { useLoloContext } from '@/contexts/LoloProvider'
 
 type DeleteFuncionariosModalProps = {
   visible: boolean
   onClose: () => void
   idAction?: number
-  chb: number
 }
 
-const DeleteFuncionariosModal = ({ visible, idAction = 0, onClose, chb = 0 }: DeleteFuncionariosModalProps) => {
+const DeleteFuncionariosModal = ({ visible, idAction = 0, onClose }: DeleteFuncionariosModalProps) => {
+  const {
+    bank: {
+      selectedBank: { idCHB: chb },
+    },
+  } = useLoloContext()
+
   const queryClient = useQueryClient()
 
   const {
@@ -34,18 +40,18 @@ const DeleteFuncionariosModal = ({ visible, idAction = 0, onClose, chb = 0 }: De
     },
     {
       onSuccess: () => {
-        deleteFuncionarioCache(String(idAction), chb)
+        deleteFuncionarioCache(String(idAction), parseInt(chb))
         notification({ type: 'success', message: 'Funcionario eliminado' })
         onClose()
       },
       onMutate: () => {
-        return onMutateCache(chb)
+        return onMutateCache(parseInt(chb))
       },
       onSettled: () => {
-        onSettledCache(chb)
+        onSettledCache(parseInt(chb))
       },
       onError: (error, _, context: any) => {
-        onErrorCache(context, chb)
+        onErrorCache(context, parseInt(chb))
         notification({
           type: 'error',
           message: error.response?.data.message,

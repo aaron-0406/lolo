@@ -16,13 +16,13 @@ import Button from '@/ui/Button'
 import FuncionarioInfoForm from './FuncionarioInfoForm/FuncionarioInfoForm'
 import extFuncionariosCache from '../../FuncionariosTable/utils/ext-funcionarios.cache'
 import { CustomErrorResponse } from 'types/customErrorResponse'
+import { useLoloContext } from '@/contexts/LoloProvider'
 
 type FuncionariosModalProps = {
   visible: boolean
   onClose: () => void
   isEdit?: boolean
   idFuncionario?: number
-  chb: number
 }
 const defaultValuesFuncionarios: Omit<FuncionarioType, ''> = {
   id: 0,
@@ -31,8 +31,15 @@ const defaultValuesFuncionarios: Omit<FuncionarioType, ''> = {
   customerHasBankId: 0,
 }
 
-const FuncionariosModal = ({ visible, onClose, isEdit = false, idFuncionario = 0, chb }: FuncionariosModalProps) => {
+const FuncionariosModal = ({ visible, onClose, isEdit = false, idFuncionario = 0 }: FuncionariosModalProps) => {
+  const {
+    bank: {
+      selectedBank: { idCHB: chb },
+    },
+  } = useLoloContext()
+
   const queryClient = useQueryClient()
+
   const {
     actions: { createFuncionarioCache, editFuncionarioCache },
     onMutateCache,
@@ -59,7 +66,7 @@ const FuncionariosModal = ({ visible, onClose, isEdit = false, idFuncionario = 0
   >(
     async () => {
       const { id, ...restClient } = getValues()
-      return await createFuncionario({ ...restClient, customerHasBankId: chb })
+      return await createFuncionario({ ...restClient, customerHasBankId: parseInt(chb) })
     },
     {
       onSuccess: (result) => {
@@ -68,13 +75,13 @@ const FuncionariosModal = ({ visible, onClose, isEdit = false, idFuncionario = 0
         handleClickCloseModal()
       },
       onMutate: () => {
-        return onMutateCache(chb)
+        return onMutateCache(parseInt(chb))
       },
       onSettled: () => {
-        onSettledCache(chb)
+        onSettledCache(parseInt(chb))
       },
       onError: (error, _, context: any) => {
-        onErrorCache(context, chb)
+        onErrorCache(context, parseInt(chb))
         notification({
           type: 'error',
           message: error.response?.data.message,
@@ -90,7 +97,7 @@ const FuncionariosModal = ({ visible, onClose, isEdit = false, idFuncionario = 0
   >(
     async () => {
       const { id, ...restClient } = getValues()
-      return await editFuncionarioById(id, { ...restClient, customerHasBankId: chb })
+      return await editFuncionarioById(id, { ...restClient, customerHasBankId: parseInt(chb) })
     },
     {
       onSuccess: (result) => {
@@ -99,13 +106,13 @@ const FuncionariosModal = ({ visible, onClose, isEdit = false, idFuncionario = 0
         handleClickCloseModal()
       },
       onMutate: () => {
-        return onMutateCache(chb)
+        return onMutateCache(parseInt(chb))
       },
       onSettled: () => {
-        onSettledCache(chb)
+        onSettledCache(parseInt(chb))
       },
       onError: (error: any, _, context: any) => {
-        onErrorCache(context, chb)
+        onErrorCache(context, parseInt(chb))
         notification({
           type: 'error',
           message: error.response.data.message,

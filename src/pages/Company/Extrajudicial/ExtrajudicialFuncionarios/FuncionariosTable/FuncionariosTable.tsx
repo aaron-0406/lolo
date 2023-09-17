@@ -15,15 +15,20 @@ import FuncionariosModal from '../Modals/FuncionariosModal'
 import { funcionariosColumns } from './utils/columns'
 import DeleteFuncionariosModal from '../Modals/DeleteFuncionariosModal'
 import { KEY_EXT_COBRANZA_FUNCIONARIOS_CACHE } from './utils/ext-funcionarios.cache'
+import { useLoloContext } from '@/contexts/LoloProvider'
 
 type FuncionariosTableProps = {
   opts: Opts
   setOpts: Dispatch<Opts>
-  selectedBank: { chb: number; setChb: (chb: number) => void }
 }
 
-const FuncionariosTable: FC<FuncionariosTableProps> = ({ opts, setOpts, selectedBank: { chb } }) => {
-  const [funcionarios, setFuncionarios] = useState<Array<FuncionarioType>>([])
+const FuncionariosTable: FC<FuncionariosTableProps> = ({ opts, setOpts }) => {
+  const {
+    bank: {
+      selectedBank: { idCHB: chb },
+    },
+  } = useLoloContext()
+
   const [idFuncionario, setIdFuncionario] = useState<number>(0)
   const [idDeletedFuncionario, setIdDeletedFuncionario] = useState<number>(0)
 
@@ -58,22 +63,20 @@ const FuncionariosTable: FC<FuncionariosTableProps> = ({ opts, setOpts, selected
     hideModalFuncionario()
   }
 
-  const { isLoading } = useQuery(
-    [KEY_EXT_COBRANZA_FUNCIONARIOS_CACHE, chb],
+  const { isLoading, data } = useQuery(
+    [KEY_EXT_COBRANZA_FUNCIONARIOS_CACHE, parseInt(chb.length ? chb : '0')],
     async () => {
-      return await getAllFuncionariosByCHB(chb)
-    },
-    {
-      onSuccess: ({ data }) => {
-        if (opts.filter !== '') {
-          data = data.filter((filt: FuncionarioType) => {
-            return filt.name.substring(0, opts.filter.length).toUpperCase() === opts.filter.toUpperCase()
-          })
-        }
-        setFuncionarios(data)
-      },
+      return await getAllFuncionariosByCHB(parseInt(chb.length ? chb : '0'))
     }
   )
+
+  let result = data?.data ?? []
+  if (opts.filter !== '') {
+    result = result.filter((filt: FuncionarioType) => {
+      return filt.name.substring(0, opts.filter.length).toUpperCase() === opts.filter.toUpperCase()
+    })
+  }
+  const funcionarios = result
 
   return (
     <Container width="100%" height="calc(100% - 112px)" padding="20px">
@@ -90,7 +93,7 @@ const FuncionariosTable: FC<FuncionariosTableProps> = ({ opts, setOpts, selected
         }
       >
         {!!funcionarios?.length &&
-          funcionarios.map((record: FuncionarioType, key) => {
+          funcionarios.map((record: FuncionarioType, key: number) => {
             return (
               <tr className="styled-data-table-row" key={record.id}>
                 <BodyCell textAlign="center">{`${key + 1 || ''}`}</BodyCell>
@@ -129,13 +132,11 @@ const FuncionariosTable: FC<FuncionariosTableProps> = ({ opts, setOpts, selected
         visible={visibleModalFuncionario}
         onClose={onCloseModal}
         idFuncionario={idFuncionario}
-        chb={chb}
         isEdit
       />
       <DeleteFuncionariosModal
         visible={visibleDeleteFuncionario}
         onClose={onCloseDeleteFuncionario}
-        chb={chb}
         idAction={idDeletedFuncionario}
       />
     </Container>

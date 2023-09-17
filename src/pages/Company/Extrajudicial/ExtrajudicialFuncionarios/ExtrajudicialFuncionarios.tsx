@@ -6,11 +6,6 @@ import FuncionariosTable from './FuncionariosTable/FuncionariosTable'
 
 const ExtrajudicialFuncionarios = () => {
   const [opts, setOpts] = useState<Opts>({ filter: '', limit: 50, page: 1 })
-  const [chb, setChb] = useState<number>(0)
-
-  const setChbGlobal = (chb: number) => {
-    setChb(chb)
-  }
 
   return (
     <Container
@@ -22,8 +17,8 @@ const ExtrajudicialFuncionarios = () => {
       justifyContent="center"
       gap="20px"
     >
-      <FuncionariosSearch opts={opts} setOpts={setOpts} selectedBank={{ chb, setChb: setChbGlobal }} />
-      <FuncionariosTable opts={opts} setOpts={setOpts} selectedBank={{ chb, setChb: setChbGlobal }} />
+      <FuncionariosSearch opts={opts} setOpts={setOpts} />
+      <FuncionariosTable opts={opts} setOpts={setOpts} />
     </Container>
   )
 }
