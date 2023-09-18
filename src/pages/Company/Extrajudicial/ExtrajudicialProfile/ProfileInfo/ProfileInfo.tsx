@@ -127,13 +127,15 @@ const ProfileInfo = () => {
           width="140px"
           shape="round"
           trailingIcon="ri-shield-keyhole-line"
+          permission="P01-01"
         />
         <Button
           onClick={handleClickButtonCredentials}
-          messageTooltip="Modificar Credenciales"
+          messageTooltip="Actualizar Credenciales"
           width="140px"
           shape="round"
           trailingIcon="ri-edit-2-line"
+          permission="P01-02"
         />
         <UpdatePasswordModal visible={visibleModalPassword} onClose={handleClickModalPassword} />
         <CredentialsModal visible={visibleModalCredentials} onClose={handleClickModalCredentials} />

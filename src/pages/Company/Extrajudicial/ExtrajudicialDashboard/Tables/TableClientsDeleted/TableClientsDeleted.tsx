@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { useMutation } from 'react-query'
+import { AxiosError } from 'axios'
 import { DashFormType } from '../../Dashboard/hookform.type'
 import { Columns } from './utils/columns'
 import { ClientType } from '@/types/extrajudicial/client.type'
@@ -14,6 +15,7 @@ import Button from '@/ui/Button'
 import Actions from '../../Dashboard/Actions'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import notification from '@/ui/notification'
+import { CustomErrorResponse } from 'types/customErrorResponse'
 
 const TableClientDeleted = ({ globalLoad }: Props) => {
   const {
@@ -27,7 +29,7 @@ const TableClientDeleted = ({ globalLoad }: Props) => {
   const [clients, setclients] = useState(watch('clientsDeleted'))
   const [client, setClient] = useState<ClientType>(clients[0])
 
-  const { isLoading: loadingDeleteClients, mutate: deleteClients } = useMutation<any, Error>(
+  const { isLoading: loadingDeleteClients, mutate: deleteClients } = useMutation<any, AxiosError<CustomErrorResponse>>(
     async () => {
       const QUANTITY_DATA_SENT = 40
       const DATA_GROUPS = Math.ceil(clients.length / QUANTITY_DATA_SENT)
@@ -47,16 +49,17 @@ const TableClientDeleted = ({ globalLoad }: Props) => {
         notification({ type: 'success', message: 'Clientes Eliminados' })
         setValue('clientsDeleted', [])
       },
-      onError: (error: any) => {
+      onError: (error) => {
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data?.errors?.map((error) => error.message),
         })
       },
     }
   )
 
-  const { isLoading: loadingDeleteClient, mutate: deleteClient } = useMutation<any, Error>(
+  const { isLoading: loadingDeleteClient, mutate: deleteClient } = useMutation<any, AxiosError<CustomErrorResponse>>(
     async () => {
       return await deleteClientsDash([client.code], +idCHB, +idBank)
     },
@@ -68,10 +71,11 @@ const TableClientDeleted = ({ globalLoad }: Props) => {
         )
         notification({ type: 'success', message: 'Cliente Eliminado' })
       },
-      onError: (error: any) => {
+      onError: (error) => {
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data?.errors?.map((error) => error.message),
         })
       },
     }

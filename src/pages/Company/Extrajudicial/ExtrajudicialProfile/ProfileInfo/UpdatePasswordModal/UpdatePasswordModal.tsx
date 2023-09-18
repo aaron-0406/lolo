@@ -1,5 +1,6 @@
 import { useForm, Controller } from 'react-hook-form'
 import { useMutation } from 'react-query'
+import { AxiosError } from 'axios'
 import Modal from '@/ui/Modal'
 import { PasswordFormType } from './hookform.type'
 import { PasswordSchemaResolver } from './updatePassword.yup'
@@ -8,6 +9,7 @@ import TextField from '@/ui/fields/TextField/TextField'
 import Button from '@/ui/Button/Button'
 import { notification } from '@/ui/notification/notification'
 import { changePasswordService } from '@/services/extrajudicial/auth.service'
+import { CustomErrorResponse } from 'types/customErrorResponse'
 
 type UpdatePasswordModalProps = {
   visible: boolean
@@ -35,7 +37,7 @@ const UpdatePasswordModal = ({ visible, onClose }: UpdatePasswordModalProps) => 
     onClose()
   }
 
-  const { mutate: changePasswordQuery, isLoading } = useMutation<any, Error>(
+  const { mutate: changePasswordQuery, isLoading } = useMutation<any, AxiosError<CustomErrorResponse>>(
     async (): Promise<any> => {
       notification({ type: 'info', message: 'Espere por favor...' })
       return await changePasswordService(getValues())
@@ -44,10 +46,11 @@ const UpdatePasswordModal = ({ visible, onClose }: UpdatePasswordModalProps) => 
       onSuccess: () => {
         notification({ type: 'success', message: 'Contraseña modificada' })
       },
-      onError: (error: any) => {
+      onError: (error) => {
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data?.errors?.map((error) => error.message),
         })
       },
     }

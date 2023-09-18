@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from 'react-query'
-import { AxiosResponse } from 'axios'
+import { AxiosError, AxiosResponse } from 'axios'
 import styled, { css } from 'styled-components'
 import { useDashContext } from '@/contexts/DashProvider'
 import { SelectedElementType } from '../bankModal.type'
@@ -11,6 +11,7 @@ import notification from '@/ui/notification'
 import dashBanksCache from '../BankNoSelected/utils/dash-banks.cache'
 import dashCustomerBankCache from '../BankSelected/utils/dash-customer-banks.cache'
 import { defaultValuesElement } from '../BankModal'
+import { CustomErrorResponse } from 'types/customErrorResponse'
 
 type BankActionsProps = {
   setGlobalElement: (element: SelectedElementType) => void
@@ -48,7 +49,10 @@ const BankActions = ({ setGlobalElement, elementSelected }: BankActionsProps) =>
       : notification({ type: 'warning', message: 'El banco ya está asignado' })
   }
 
-  const { isLoading: loadingRemove, mutate: remove } = useMutation<AxiosResponse<CustomerHasBankType>, Error>(
+  const { isLoading: loadingRemove, mutate: remove } = useMutation<
+    AxiosResponse<CustomerHasBankType>,
+    AxiosError<CustomErrorResponse>
+  >(
     async () => {
       const { id } = elementSelected.bank.CUSTOMER_HAS_BANK
       return await revokeCHB(id)
@@ -66,17 +70,21 @@ const BankActions = ({ setGlobalElement, elementSelected }: BankActionsProps) =>
       onSettled: () => {
         onSettledCHBCache(selectedCustomer.id)
       },
-      onError: (error: any, _, context: any) => {
+      onError: (error, _, context: any) => {
         onErrorCHBCache(context, selectedCustomer.id)
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data?.errors?.map((error) => error.message),
         })
       },
     }
   )
 
-  const { isLoading: loadingAssing, mutate: assing } = useMutation<AxiosResponse<CustomerHasBankType>, Error>(
+  const { isLoading: loadingAssing, mutate: assing } = useMutation<
+    AxiosResponse<CustomerHasBankType>,
+    AxiosError<CustomErrorResponse>
+  >(
     async () => {
       const { id: idCustomer } = selectedCustomer
       const { id: idBank } = elementSelected.bank
@@ -96,11 +104,12 @@ const BankActions = ({ setGlobalElement, elementSelected }: BankActionsProps) =>
       onSettled: () => {
         onSettledCHBCache(selectedCustomer.id)
       },
-      onError: (error: any, _, context: any) => {
+      onError: (error, _, context: any) => {
         onErrorCHBCache(context, selectedCustomer.id)
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data?.errors?.map((error) => error.message),
         })
       },
     }

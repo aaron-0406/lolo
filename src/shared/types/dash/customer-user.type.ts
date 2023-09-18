@@ -1,3 +1,5 @@
+import { RoleType } from './role.type'
+
 export type CustomerUserType = {
   id: number
   name: string
@@ -6,10 +8,10 @@ export type CustomerUserType = {
   dni: string
   email: string
   password: string
-  privilege: string
   state: boolean
   createdAt: Date
-  roleId: number
   permissions?: Array<{ code: string; link: string; name: string; icon: string }>
   customerId: number
+  roleId: number
+  role: RoleType
 }

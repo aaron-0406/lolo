@@ -31,10 +31,10 @@ const PermissionItem = (props: PermissionViewProps) => {
       {permissions?.map((item) => {
         return (
           <Container key={item.code} padding="10px 0px 0px 0px">
-            <Container display="flex" justifyContent="space-between">
-              <Container display="flex" flexDirection="row" gap="10px">
+            <Container width="100%" display="flex" justifyContent="space-between">
+              <Container width="calc(100% - 44px)" display="flex" flexDirection="row" gap="10px">
                 <Icon remixClass={item.icon} />
-                <Text.Body size="m" weight="bold">
+                <Text.Body size="m" weight="bold" ellipsis>
                   {item.name}
                 </Text.Body>
               </Container>

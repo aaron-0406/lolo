@@ -1,6 +1,7 @@
 import { useMutation } from 'react-query'
 import { useFormContext, Controller } from 'react-hook-form'
 import styled, { css } from 'styled-components'
+import { AxiosError } from 'axios'
 import Button from '@/ui/Button/Button'
 import Modal from '@/ui/Modal/Modal'
 import Container from '@/ui/Container/Container'
@@ -9,6 +10,7 @@ import { GoalApiResponse, createGoalService, editGoalService } from '@/services/
 import { notification } from '@/ui/notification/notification'
 import TextField from '@/ui/fields/TextField/TextField'
 import DatePicker from '@/ui/DatePicker/DatePicker'
+import { CustomErrorResponse } from 'types/customErrorResponse'
 
 type PModalAddGoal = {
   visible: boolean
@@ -25,7 +27,10 @@ const MetasModal = ({ visible, onClose }: PModalAddGoal) => {
     formState: { errors },
   } = useFormContext<GoalFormType>()
 
-  const { isLoading: loadingCreateGoal, mutate: onCreateGoal } = useMutation<GoalApiResponse, Error>(
+  const { isLoading: loadingCreateGoal, mutate: onCreateGoal } = useMutation<
+    GoalApiResponse,
+    AxiosError<CustomErrorResponse>
+  >(
     async () => {
       const {
         goal: { id, createdAt, customerId, endDate, ...rest },
@@ -38,16 +43,20 @@ const MetasModal = ({ visible, onClose }: PModalAddGoal) => {
         notification({ type: 'success', message: 'Meta creada' })
         onClose()
       },
-      onError: (error: any) => {
+      onError: (error) => {
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data?.errors?.map((error) => error.message),
         })
       },
     }
   )
 
-  const { isLoading: loadingEditGoal, mutate: onEditGoal } = useMutation<GoalApiResponse, Error>(
+  const { isLoading: loadingEditGoal, mutate: onEditGoal } = useMutation<
+    GoalApiResponse,
+    AxiosError<CustomErrorResponse>
+  >(
     async () => {
       const {
         goal: { id, createdAt, customerId, endDate, total, totalMeta, ...rest },
@@ -66,10 +75,11 @@ const MetasModal = ({ visible, onClose }: PModalAddGoal) => {
         notification({ type: 'success', message: 'Meta editada' })
         onClose()
       },
-      onError: (error: any) => {
+      onError: (error) => {
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data?.errors?.map((error) => error.message),
         })
       },
     }

@@ -1,10 +1,12 @@
 import { useMutation, useQueryClient } from 'react-query'
+import { AxiosError } from 'axios'
 import Button from '@/ui/Button'
 import Container from '@/ui/Container/Container'
 import Modal from '@/ui/Modal'
 import companyComentariosCache from '../../CobranzaCommentsTable/utils/company-comentarios.cache'
 import { deleteComment } from '@/services/extrajudicial/comment.service'
 import notification from '@/ui/notification'
+import { CustomErrorResponse } from 'types/customErrorResponse'
 
 type DeleteCobranzaCommentsModalProps = {
   visible: boolean
@@ -28,7 +30,10 @@ const DeleteCobranzaCommentsModal = ({
     onErrorCache,
   } = companyComentariosCache(queryClient)
 
-  const { isLoading: loadingDeleteComment, mutate: deleteCommentMutate } = useMutation<any, Error>(
+  const { isLoading: loadingDeleteComment, mutate: deleteCommentMutate } = useMutation<
+    any,
+    AxiosError<CustomErrorResponse>
+  >(
     async () => {
       return await deleteComment(idComment)
     },
@@ -44,11 +49,12 @@ const DeleteCobranzaCommentsModal = ({
       onSettled: () => {
         onSettledCache(clientId)
       },
-      onError: (error: any, _, context: any) => {
+      onError: (error, _, context: any) => {
         onErrorCache(context, clientId)
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data?.errors?.map((error) => error.message),
         })
       },
     }

@@ -26,6 +26,7 @@ const TemplateInfoField: React.FC<TemplateInfoFieldType> = (props) => {
   const {
     ecampo: { field, name },
   } = props
+  
   return (
     <Container>
       <Label label={name} name={field} />

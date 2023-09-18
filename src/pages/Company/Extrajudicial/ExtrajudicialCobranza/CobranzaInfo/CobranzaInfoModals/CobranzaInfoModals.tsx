@@ -40,11 +40,11 @@ const CobranzaInfoModals = () => {
 
   return (
     <Container width="100%" height="100%" display="flex" flexDirection="row" gap="10px">
-      <Button width="150px" label="Comentarios" disabled={!clientId} onClick={onClickComment} />
-      <Button width="150px" label="Archivos" disabled={!clientId} onClick={showModalFiles} />
-      <Button width="150px" label="Fiadores" disabled={!clientId} onClick={showModalFiadores} />
-      <Button width="150px" label="Direcciones" disabled={!clientId} onClick={showModalAddresses} />
-      <Button width="150px" label="Productos" disabled={!clientId} onClick={showModalProducts} />
+      <Button width="150px" label="Comentarios" disabled={!clientId} onClick={onClickComment} permission="P03-01" />
+      <Button width="150px" label="Archivos" disabled={!clientId} onClick={showModalFiles} permission="P03-06" />
+      <Button width="150px" label="Fiadores" disabled={!clientId} onClick={showModalFiadores} permission="P03-07" />
+      <Button width="150px" label="Direcciones" disabled={!clientId} onClick={showModalAddresses} permission="P03-08" />
+      <Button width="150px" label="Productos" disabled={!clientId} onClick={showModalProducts} permission="P03-09" />
 
       <Modal
         id="modal-fiadores"

@@ -3,12 +3,15 @@ import { useEffect } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { useMutation } from 'react-query'
 import styled, { css } from 'styled-components'
+import { AxiosError } from 'axios'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import { getTemplatesHasValuesByCustomerId } from '@/services/extrajudicial/template-has-values.service'
 import { getTemplatesByCustomerId } from '@/services/extrajudicial/template.service'
 import Container from '@/ui/Container'
+import notification from '@/ui/notification'
 import { TemplateFormType } from '../hookforms.interfaces'
 import TemplateRow from './TemplateRow'
+import { CustomErrorResponse } from 'types/customErrorResponse'
 // eff0f6ff
 const TemplateTable = () => {
   const {
@@ -20,7 +23,7 @@ const TemplateTable = () => {
   const { setValue, watch } = useFormContext<TemplateFormType>()
 
   // GET TEMPLATES
-  const { mutate: getTemplatesQuery } = useMutation<any, Error>(
+  const { mutate: getTemplatesQuery } = useMutation<any, AxiosError<CustomErrorResponse>>(
     async () => {
       return await getTemplatesByCustomerId(id)
     },
@@ -28,17 +31,31 @@ const TemplateTable = () => {
       onSuccess: (response) => {
         setValue('templates', response.data)
       },
+      onError: (error) => {
+        notification({
+          type: 'error',
+          message: error.response?.data.message,
+          list: error.response?.data?.errors?.map((error) => error.message),
+        })
+      },
     }
   )
 
   // GET TEMPLATES HAS VALUES
-  const { mutate: getTemplatesHasValuesQuery } = useMutation<any, Error>(
+  const { mutate: getTemplatesHasValuesQuery } = useMutation<any, AxiosError<CustomErrorResponse>>(
     async () => {
       return await getTemplatesHasValuesByCustomerId(id)
     },
     {
       onSuccess: ({ data }) => {
         setValue('templateHasValues', data)
+      },
+      onError: (error) => {
+        notification({
+          type: 'error',
+          message: error.response?.data.message,
+          list: error.response?.data?.errors?.map((error) => error.message),
+        })
       },
     }
   )

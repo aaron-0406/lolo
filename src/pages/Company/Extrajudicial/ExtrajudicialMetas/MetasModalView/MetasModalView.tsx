@@ -3,6 +3,7 @@ import React, { useEffect } from 'react'
 import { useMutation } from 'react-query'
 import { useFormContext } from 'react-hook-form'
 import moment from 'moment'
+import { AxiosError } from 'axios'
 import Container from '@/ui/Container/Container'
 import Modal from '@/ui/Modal/Modal'
 import TextField from '@/ui/fields/TextField/TextField'
@@ -17,6 +18,7 @@ import Progress from '@/ui/Progress/Progress'
 import Text from '@/ui/Text/Text'
 import Button from '@/ui/Button/Button'
 import { notification } from '@/ui/notification/notification'
+import { CustomErrorResponse } from 'types/customErrorResponse'
 
 type MetasModalViewProps = {
   visible: boolean
@@ -29,7 +31,7 @@ const MetasModalView = ({ onClose, visible }: MetasModalViewProps) => {
   }
   const { watch, setValue } = useFormContext<GoalFormType>()
 
-  const { mutate: getGoalsCustomers } = useMutation<GoalCustomerUserResponse>(
+  const { mutate: getGoalsCustomers } = useMutation<GoalCustomerUserResponse, AxiosError<CustomErrorResponse>>(
     async () => {
       return await getCustomerUserGoals(watch('goal').id)
     },
@@ -37,9 +39,16 @@ const MetasModalView = ({ onClose, visible }: MetasModalViewProps) => {
       onSuccess: ({ data }) => {
         setValue('goalUsers', data)
       },
+      onError: (error) => {
+        notification({
+          type: 'error',
+          message: error.response?.data.message,
+          list: error.response?.data?.errors?.map((error) => error.message),
+        })
+      },
     }
   )
-  const { mutate: onUpdateGoalUsers } = useMutation<GoalApiResponse>(
+  const { mutate: onUpdateGoalUsers } = useMutation<GoalApiResponse, AxiosError<CustomErrorResponse>>(
     async () => {
       return await updateCustomerUserGoals(watch('goal').id, watch('goalUsers'))
     },
@@ -55,10 +64,11 @@ const MetasModalView = ({ onClose, visible }: MetasModalViewProps) => {
         )
         handleClickCloseModal()
       },
-      onError: (error: any) => {
+      onError: (error) => {
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data?.errors?.map((error) => error.message),
         })
         handleClickCloseModal()
       },
@@ -85,6 +95,7 @@ const MetasModalView = ({ onClose, visible }: MetasModalViewProps) => {
             }}
             leadingIcon="ri-save-line"
             label="Guardar"
+            permission="P04-04"
           />
         </Container>
       }
