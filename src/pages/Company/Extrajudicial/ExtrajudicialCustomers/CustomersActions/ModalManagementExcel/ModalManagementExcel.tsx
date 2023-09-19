@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useMutation } from 'react-query'
+import { AxiosError } from 'axios'
 import notification from '@/ui/notification'
 import { generateExcelOnDailyManagementService } from '@/services/extrajudicial/client.service'
 import DatePicker from '@/ui/DatePicker/DatePicker'
@@ -9,6 +10,7 @@ import Button from '@/ui/Button'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import Select from '@/ui/Select'
 import { SelectItemType } from '@/ui/Select/interfaces'
+import { CustomErrorResponse } from 'types/customErrorResponse'
 
 const ModalManagementExcel = () => {
   const {
@@ -20,7 +22,7 @@ const ModalManagementExcel = () => {
   const [currentDate, setCurrentDate] = useState(moment(new Date()).format('DD-MM-YYYY'))
   const [loadingGenerateExcel, setLoadingGenerateExcel] = useState<boolean>(false)
 
-  const { mutate: generateExcel } = useMutation<any, Error>(
+  const { mutate: generateExcel } = useMutation<any, AxiosError<CustomErrorResponse>>(
     async () => {
       return await generateExcelOnDailyManagementService(
         moment(currentDate, 'DD-MM-YYYY').toDate(),
@@ -43,11 +45,12 @@ const ModalManagementExcel = () => {
           message: 'Excel generado',
         })
       },
-      onError: () => {
+      onError: (error) => {
         setLoadingGenerateExcel(false)
         notification({
           type: 'error',
-          message: 'No se encontraron suficientes gestiones para exportar.',
+          message: error.response?.data.message,
+          list: error.response?.data?.errors?.map((error) => error.message),
         })
       },
     }

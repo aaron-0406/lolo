@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import moment from 'moment'
 import { useMutation, useQuery } from 'react-query'
 import { useFormContext } from 'react-hook-form'
+import { AxiosError } from 'axios'
 import Button from '@/ui/Button/Button'
 import Container from '@/ui/Container/Container'
 import Pagination from '@/ui/Pagination/Pagination'
@@ -19,6 +20,7 @@ import useModal from '@/hooks/useModal'
 import { notification } from '@/ui/notification/notification'
 import Progress from '@/ui/Progress/Progress'
 import MetasModalView from '../MetasModalView/MetasModalView'
+import { CustomErrorResponse } from 'types/customErrorResponse'
 
 const MetasTable = () => {
   const { watch, setValue } = useFormContext<GoalFormType>()
@@ -58,7 +60,10 @@ const MetasTable = () => {
     }
   )
 
-  const { isLoading: loadingDeleteGoal, mutate: onDeleteGoal } = useMutation<GoalApiResponse, Error>(
+  const { isLoading: loadingDeleteGoal, mutate: onDeleteGoal } = useMutation<
+    GoalApiResponse,
+    AxiosError<CustomErrorResponse>
+  >(
     async () => {
       const {
         goal: { id },
@@ -75,10 +80,11 @@ const MetasTable = () => {
         )
         notification({ type: 'success', message: 'Meta eliminada' })
       },
-      onError: (error: any) => {
+      onError: (error) => {
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data?.errors?.map((error) => error.message),
         })
       },
     }
@@ -144,6 +150,7 @@ const MetasTable = () => {
                         }}
                         shape="round"
                         leadingIcon="ri-pencil-fill"
+                        permission="P04-02"
                       />
                       <Button
                         loading={loadingDeleteGoal}
@@ -154,6 +161,7 @@ const MetasTable = () => {
                         display="danger"
                         shape="round"
                         leadingIcon="ri-close-line"
+                        permission="P04-03"
                       />
                     </Container>
                   }

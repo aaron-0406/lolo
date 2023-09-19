@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { useMutation } from 'react-query'
+import { AxiosError } from 'axios'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import { createProductsDash } from '@/services/extrajudicial/dashboard.service'
 import { DashFormType } from '../../Dashboard/hookform.type'
@@ -14,6 +15,7 @@ import Actions from '../../Dashboard/Actions'
 import { Columns } from './utils/columns'
 import EmptyStateCell from '@/ui/Table/EmptyStateCell'
 import BodyCell from '@/ui/Table/BodyCell'
+import { CustomErrorResponse } from 'types/customErrorResponse'
 
 const TableProductsAdded = ({ globalLoad }: Props) => {
   const { watch, setValue } = useFormContext<DashFormType>()
@@ -33,7 +35,7 @@ const TableProductsAdded = ({ globalLoad }: Props) => {
     },
   } = useLoloContext()
 
-  const { isLoading: loadCreateProducts, mutate: createProducts } = useMutation<any, Error>(
+  const { isLoading: loadCreateProducts, mutate: createProducts } = useMutation<any, AxiosError<CustomErrorResponse>>(
     async () => {
       const QUANTITY_DATA_SENT = 40
       const DATA_GROUPS = Math.ceil(watch('productsAdded').length / QUANTITY_DATA_SENT)
@@ -66,16 +68,17 @@ const TableProductsAdded = ({ globalLoad }: Props) => {
         )
         setValue('productsAdded', [])
       },
-      onError: (error: any) => {
+      onError: (error) => {
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data?.errors?.map((error) => error.message),
         })
       },
     }
   )
 
-  const { isLoading: loadCreateProduct, mutate: createProduct } = useMutation<any, Error>(
+  const { isLoading: loadCreateProduct, mutate: createProduct } = useMutation<any, AxiosError<CustomErrorResponse>>(
     async () => {
       return await createProductsDash(
         [
@@ -101,10 +104,11 @@ const TableProductsAdded = ({ globalLoad }: Props) => {
         )
         notification({ type: 'success', message: 'Producto Agregado' })
       },
-      onError: (error: any) => {
+      onError: (error) => {
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data?.errors?.map((error) => error.message),
         })
       },
     }

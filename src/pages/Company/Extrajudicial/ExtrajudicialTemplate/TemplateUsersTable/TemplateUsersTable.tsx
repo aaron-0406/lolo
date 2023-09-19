@@ -2,12 +2,15 @@
 import React, { useEffect } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { useMutation } from 'react-query'
+import { AxiosError } from 'axios'
 import styled, { css } from 'styled-components'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import { getAllClientsByCHBDetails } from '@/services/extrajudicial/client.service'
 import Container from '@/ui/Container'
+import notification from '@/ui/notification'
 import { TemplateFormType } from '../hookforms.interfaces'
 import TemplateUserRow from './TemplateUserRow'
+import { CustomErrorResponse } from 'types/customErrorResponse'
 
 const TemplateUsersTable = () => {
   const {
@@ -15,13 +18,20 @@ const TemplateUsersTable = () => {
   } = useLoloContext()
   const { setValue, watch } = useFormContext<TemplateFormType>()
 
-  const { mutate: getClients } = useMutation<any, Error>(
+  const { mutate: getClients } = useMutation<any, AxiosError<CustomErrorResponse>>(
     async () => {
       return await getAllClientsByCHBDetails(selectedBank.idCHB)
     },
     {
       onSuccess: ({ data }) => {
         setValue('clients', data)
+      },
+      onError: (error) => {
+        notification({
+          type: 'error',
+          message: error.response?.data.message,
+          list: error.response?.data?.errors?.map((error) => error.message),
+        })
       },
     }
   )

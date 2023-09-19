@@ -44,7 +44,14 @@ const CobranzaCommentsInfo = ({ name, clientId }: CobranzaCommentsInfoProps) => 
       </Container>
 
       <Container>
-        <Button onClick={onShowModal} disabled={!name} width="100px" shape="round" trailingIcon="ri-add-fill" />
+        <Button
+          onClick={onShowModal}
+          disabled={!name}
+          width="100px"
+          shape="round"
+          trailingIcon="ri-add-fill"
+          permission="P03-01-01"
+        />
 
         {clientId && <CobranzaCommentsModal visible={visibleModalAdd} onClose={onCloseModal} clientId={clientId} />}
       </Container>

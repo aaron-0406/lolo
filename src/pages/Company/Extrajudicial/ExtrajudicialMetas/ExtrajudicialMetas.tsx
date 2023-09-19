@@ -2,7 +2,7 @@ import { useForm, FormProvider } from 'react-hook-form'
 import moment from 'moment'
 import Container from '@/ui/Container/Container'
 import MetasActions from './MetasActions/MetasActions'
-import MetasModalView from './MetasTable/MetasTable'
+import MetasTable from './MetasTable/MetasTable'
 import { GoalFormType } from './hookform.type'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import { ExtrajudicialGoalResolver } from './ExtrajudicialMetas.yup'
@@ -35,7 +35,7 @@ const ExtrajudicialMetas = () => {
     <FormProvider {...formMethods}>
       <Container width="100%" height="100%" display="flex" flexDirection="column" padding="20px" gap="30px">
         <MetasActions />
-        <MetasModalView />
+        <MetasTable />
       </Container>
     </FormProvider>
   )

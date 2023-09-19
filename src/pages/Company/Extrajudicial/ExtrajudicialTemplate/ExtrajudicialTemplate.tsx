@@ -33,6 +33,7 @@ const ExtrajudicialTemplate = () => {
       clientSelected: {},
     },
   })
+  
   return (
     <FormProvider {...formMethods}>
       <LayoutDocuments

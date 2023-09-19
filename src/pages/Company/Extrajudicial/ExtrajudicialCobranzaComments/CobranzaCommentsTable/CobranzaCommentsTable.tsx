@@ -25,7 +25,9 @@ type CobranzaCommentsTableProps = {
 
 const CobranzaCommentsTable = ({ clientId }: CobranzaCommentsTableProps) => {
   const {
-    managementAction: { managementActions },
+    extrajudicial: {
+      managementAction: { managementActions },
+    },
   } = useLoloContext()
 
   const [idEdit, setIdEdit] = useState<number>(0)
@@ -130,6 +132,7 @@ const CobranzaCommentsTable = ({ clientId }: CobranzaCommentsTableProps) => {
                         shape="round"
                         size="small"
                         leadingIcon="ri-pencil-fill"
+                        permission="P03-01-02"
                       />
                       <Button
                         onClick={() => {
@@ -139,6 +142,7 @@ const CobranzaCommentsTable = ({ clientId }: CobranzaCommentsTableProps) => {
                         shape="round"
                         size="small"
                         leadingIcon="ri-delete-bin-line"
+                        permission="P03-01-03"
                       />
                     </Container>
                   }

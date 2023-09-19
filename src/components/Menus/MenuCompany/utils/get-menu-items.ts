@@ -6,7 +6,7 @@ export const getMenuItems = (urlIdentifier: string) => {
       id: 10,
       title: 'DASHBOARD',
       remixClass: 'ri-dashboard-line',
-      path: paths.companyDashboard.dashboard(urlIdentifier),
+      path: paths.cobranza.dashboard(urlIdentifier),
       admin: true,
     },
     {

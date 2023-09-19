@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { useMutation } from 'react-query'
+import { AxiosError } from 'axios'
 import { deleteProductsDash } from '@/services/extrajudicial/dashboard.service'
 import { DashFormType } from '../../Dashboard/hookform.type'
 import { Props } from '../Props.type'
@@ -13,6 +14,7 @@ import Actions from '../../Dashboard/Actions'
 import { Columns } from './utils/columns'
 import EmptyStateCell from '@/ui/Table/EmptyStateCell'
 import BodyCell from '@/ui/Table/BodyCell'
+import { CustomErrorResponse } from 'types/customErrorResponse'
 
 const TableProductsDeleted = ({ globalLoad }: Props) => {
   const { watch, setValue } = useFormContext<DashFormType>()
@@ -20,7 +22,10 @@ const TableProductsDeleted = ({ globalLoad }: Props) => {
   const [products, setProducts] = useState(watch('productsDeleted'))
   const [product, setProduct] = useState<ProductType>(products[0])
 
-  const { isLoading: loadingDeleteProducts, mutate: deleteProducts } = useMutation<any, Error>(
+  const { isLoading: loadingDeleteProducts, mutate: deleteProducts } = useMutation<
+    any,
+    AxiosError<CustomErrorResponse>
+  >(
     async () => {
       const QUANTITY_DATA_SENT = 40
       const DATA_GROUPS = Math.ceil(watch('productsDeleted').length / QUANTITY_DATA_SENT)
@@ -40,16 +45,17 @@ const TableProductsDeleted = ({ globalLoad }: Props) => {
         notification({ type: 'success', message: 'Productos Eliminados' })
         setValue('productsDeleted', [])
       },
-      onError: (error: any) => {
+      onError: (error) => {
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data?.errors?.map((error) => error.message),
         })
       },
     }
   )
 
-  const { isLoading: loadingDeleteProduct, mutate: deleteProduct } = useMutation<any, Error>(
+  const { isLoading: loadingDeleteProduct, mutate: deleteProduct } = useMutation<any, AxiosError<CustomErrorResponse>>(
     async () => {
       return await deleteProductsDash([product.code])
     },
@@ -61,10 +67,11 @@ const TableProductsDeleted = ({ globalLoad }: Props) => {
         )
         notification({ type: 'success', message: 'Producto Eliminado' })
       },
-      onError: (error: any) => {
+      onError: (error) => {
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data?.errors?.map((error) => error.message),
         })
       },
     }

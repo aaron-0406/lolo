@@ -5,9 +5,9 @@ import { CityType } from '@/types/dash/city.type'
 import { CustomerHasBankType } from '@/types/dash/customer-has-bank'
 import { CustomerUserType } from '@/types/dash/customer-user.type'
 import { CustomerType } from '@/types/dash/customer.type'
-import { FuncionarioType } from '@/types/dash/funcionario.type'
-import { NegotiationType } from '@/types/dash/negotiation.type'
-import { ManagementActionType } from '@/types/dash/management-action.type'
+import { FuncionarioType } from '@/types/extrajudicial/funcionario.type'
+import { NegotiationType } from '@/types/extrajudicial/negotiation.type'
+import { ManagementActionType } from '@/types/extrajudicial/management-action.type'
 import storage from '../utils/storage'
 import { CourtType } from '@/types/judicial/court.type'
 import { SubjectType } from '@/types/judicial/subject.type'
@@ -48,9 +48,14 @@ const initialCustomerUserState: Omit<CustomerUserType, 'password'> = {
   lastName: '',
   name: '',
   phone: '',
-  privilege: '',
   state: false,
   roleId: 0,
+  role: {
+    id: 0,
+    name: '',
+    customerId: 0,
+    permissions: [],
+  },
 }
 
 export const LoloContext = createContext<{
@@ -73,18 +78,6 @@ export const LoloContext = createContext<{
     getUser: (userId: number) => CustomerUserType | undefined
     setUsers: (users: Array<CustomerUserType>) => void
   }
-  funcionario: {
-    funcionarios: Array<FuncionarioType>
-    setFuncionarios: (funcionarios: Array<FuncionarioType>) => void
-  }
-  managementAction: {
-    managementActions: Array<ManagementActionType>
-    setManagementActions: (managementActions: Array<ManagementActionType>) => void
-  }
-  negociacion: {
-    negociaciones: Array<NegotiationType>
-    setNegociaciones: (negociaciones: Array<NegotiationType>) => void
-  }
   auth: {
     authenticate: boolean
     setAuthenticate: Dispatch<boolean>
@@ -105,6 +98,20 @@ export const LoloContext = createContext<{
     judicialProceduralWay: {
       judicialProceduralWays: Array<ProceduralWayType>
       setJudicialProceduralWays: (judicialProceduralWays: Array<ProceduralWayType>) => void
+    }
+  }
+  extrajudicial: {
+    funcionario: {
+      funcionarios: Array<FuncionarioType>
+      setFuncionarios: (funcionarios: Array<FuncionarioType>) => void
+    }
+    managementAction: {
+      managementActions: Array<ManagementActionType>
+      setManagementActions: (managementActions: Array<ManagementActionType>) => void
+    }
+    negociacion: {
+      negociaciones: Array<NegotiationType>
+      setNegociaciones: (negociaciones: Array<NegotiationType>) => void
     }
   }
   clearAll: () => void
@@ -262,17 +269,19 @@ export const LoloProvider: React.FC<LoloProviderProps> = ({ children }) => {
           getUser,
           setUsers: setUsers,
         },
-        funcionario: {
-          funcionarios: funcionariosState,
-          setFuncionarios: setFuncionarios,
-        },
-        managementAction: {
-          managementActions: managementActionsState,
-          setManagementActions: setManagementActions,
-        },
-        negociacion: {
-          negociaciones: negociacionesState,
-          setNegociaciones: setNegociaciones,
+        extrajudicial: {
+          funcionario: {
+            funcionarios: funcionariosState,
+            setFuncionarios: setFuncionarios,
+          },
+          managementAction: {
+            managementActions: managementActionsState,
+            setManagementActions: setManagementActions,
+          },
+          negociacion: {
+            negociaciones: negociacionesState,
+            setNegociaciones: setNegociaciones,
+          },
         },
         auth: {
           authenticate,

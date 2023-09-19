@@ -23,11 +23,6 @@ const UserInfoForm = () => {
     formState: { errors },
   } = useFormContext<CustomerUserType>()
 
-  const optionsStates: Array<SelectItemType> = [
-    { key: 'EDITOR', label: 'EDITOR' },
-    { key: 'LECTOR', label: 'LECTOR' },
-  ]
-
   const { data } = useQuery<AxiosResponse<Array<RoleType>>>(
     [KEY_DASH_ROLES_CACHE, selectedCustomer.id],
     async () => {
@@ -136,25 +131,6 @@ const UserInfoForm = () => {
                 field.onChange(parseInt(key))
               }}
               hasError={!!errors.roleId}
-            />
-          )}
-        />
-      </Container>
-
-      <Container width="100%" display="flex" gap="10%">
-        <Label label="Privilegio: " />
-        <Controller
-          name="privilege"
-          control={control}
-          render={({ field }) => (
-            <Select
-              width="100%"
-              value={field.value}
-              options={optionsStates}
-              onChange={(key) => {
-                field.onChange(key)
-              }}
-              hasError={!!errors.privilege}
             />
           )}
         />

@@ -17,6 +17,7 @@ import Icon from '@/ui/Icon/Icon'
 import DeletePermissionModal from '../Modals/DeletePermissionModal/DeletePermissionModal'
 import Text from '@/ui/Text/Text'
 import { notification } from '@/ui/notification/notification'
+import paths from 'shared/routes/paths'
 
 const PermissionsTable = () => {
   const navigate = useNavigate()
@@ -55,7 +56,7 @@ const PermissionsTable = () => {
   }
 
   const onClickCell = (permission: PermissionType) => {
-    navigate(`/dash/permisos?code=${permission.code}`)
+    navigate(`${paths.dash.permisos}?code=${permission.code}`)
   }
 
   const { data, isLoading } = useQuery<AxiosResponse<Array<PermissionType>>>(

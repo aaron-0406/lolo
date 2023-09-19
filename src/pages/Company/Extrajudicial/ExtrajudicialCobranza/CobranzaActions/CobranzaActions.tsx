@@ -1,7 +1,9 @@
 import { useFormContext } from 'react-hook-form'
 import { useMutation } from 'react-query'
 import styled, { css } from 'styled-components'
+import { AxiosError } from 'axios'
 import { device } from '@/breakpoints/responsive'
+import { CustomErrorResponse } from 'types/customErrorResponse'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { createClient, deleteClient, updateClient } from '@/services/extrajudicial/client.service'
@@ -22,7 +24,7 @@ const CobranzaActions = () => {
 
   const greaterThanDesktopS = useMediaQuery(device.desktopS)
 
-  const { isLoading: loadingCreateClient, mutate: createCustomer } = useMutation<any, Error>(
+  const { isLoading: loadingCreateClient, mutate: createCustomer } = useMutation<any, AxiosError<CustomErrorResponse>>(
     async () => {
       const { id, ...restClient } = getValues()
       return await createClient(restClient, Number(customer.id))
@@ -32,16 +34,17 @@ const CobranzaActions = () => {
         setValue('id', data.data.id)
         notification({ type: 'success', message: 'Cliente creado' })
       },
-      onError: (error: any) => {
+      onError: (error) => {
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data?.errors?.map((error) => error.message),
         })
       },
     }
   )
 
-  const { isLoading: loadingUpdateClient, mutate: updateCustomer } = useMutation<any, Error>(
+  const { isLoading: loadingUpdateClient, mutate: updateCustomer } = useMutation<any, AxiosError<CustomErrorResponse>>(
     async () => {
       const { id, code, customerHasBankId, ...restClient } = getValues()
       return await updateClient(code, customerHasBankId, restClient)
@@ -50,16 +53,17 @@ const CobranzaActions = () => {
       onSuccess: () => {
         notification({ type: 'success', message: 'Cliente actualizado' })
       },
-      onError: (error: any) => {
+      onError: (error) => {
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data?.errors?.map((error) => error.message),
         })
       },
     }
   )
 
-  const { isLoading: loadingDeleteClient, mutate: deleteCustomer } = useMutation<any, Error>(
+  const { isLoading: loadingDeleteClient, mutate: deleteCustomer } = useMutation<any, AxiosError<CustomErrorResponse>>(
     async () => {
       const { code, customerHasBankId } = getValues()
       return await deleteClient(code, customerHasBankId, Number(customer.id))
@@ -69,16 +73,17 @@ const CobranzaActions = () => {
         notification({ type: 'success', message: 'Cliente eliminado' })
         onClean()
       },
-      onError: (error: any) => {
+      onError: (error) => {
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data?.errors?.map((error) => error.message),
         })
       },
     }
   )
 
-  const { mutate: generateDocument } = useMutation<any, Error>(
+  const { mutate: generateDocument } = useMutation<any, AxiosError<CustomErrorResponse>>(
     async () => {
       return await generateDocumentService(3, [getValues('id')])
     },
@@ -92,10 +97,11 @@ const CobranzaActions = () => {
           message: 'Documento creado',
         })
       },
-      onError: (error: any) => {
+      onError: (error) => {
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data?.errors?.map((error) => error.message),
         })
       },
     }
@@ -145,6 +151,7 @@ const CobranzaActions = () => {
         trailingIcon="ri-add-fill"
         onClick={onAddClient}
         loading={loadingCreateClient}
+        permission="P03-02"
       />
       <Button
         width="140px"
@@ -154,6 +161,7 @@ const CobranzaActions = () => {
         onClick={onUpdateClient}
         loading={loadingUpdateClient}
         disabled={!getValues('id')}
+        permission="P03-03"
       />
       <Button
         width="125px"
@@ -164,6 +172,7 @@ const CobranzaActions = () => {
         onClick={onDeleteClient}
         loading={loadingDeleteClient}
         disabled={!getValues('id')}
+        permission="P03-04"
       />
       <Button
         width="100px"
@@ -171,6 +180,7 @@ const CobranzaActions = () => {
         trailingIcon="ri-file-word-line"
         onClick={onGenerateWord}
         disabled={!getValues('id')}
+        permission="P03-05"
       />
       <Button width="100px" shape="round" display="warning" trailingIcon="ri-brush-2-line" onClick={onClean} />
     </StyledContainer>

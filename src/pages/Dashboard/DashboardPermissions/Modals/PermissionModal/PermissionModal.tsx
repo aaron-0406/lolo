@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from 'react'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
-import { AxiosResponse } from 'axios'
+import { AxiosError, AxiosResponse } from 'axios'
 import { useLocation } from 'react-router-dom'
 import { FormProvider, useForm } from 'react-hook-form'
 import Modal from '@/ui/Modal/Modal'
@@ -13,6 +13,7 @@ import { createPermission, getPermissionById, updatePermission } from '@/service
 import { notification } from '@/ui/notification/notification'
 import dashPermissionCache, { KEY_DASH_PERMISOS_CACHE } from '../../PermissionsTable/utils/dash-permisos.cache'
 import { ModalPermissionResolver } from './PermissionInfoForm/PermissionModal.yup'
+import { CustomErrorResponse } from 'types/customErrorResponse'
 
 type PermissionModalProps = {
   visible: boolean
@@ -55,7 +56,10 @@ const PermissionModal = ({ visible, onClose, idPermission = 0 }: PermissionModal
     onErrorCache,
   } = dashPermissionCache(queryClient)
 
-  const { isLoading: loadingCreatePermission, mutate: mutateCreatePermission } = useMutation<any, Error>(
+  const { isLoading: loadingCreatePermission, mutate: mutateCreatePermission } = useMutation<
+    any,
+    AxiosError<CustomErrorResponse>
+  >(
     async () => {
       const { id, ...restPermission } = getValues()
       return await createPermission({ ...restPermission })
@@ -72,11 +76,12 @@ const PermissionModal = ({ visible, onClose, idPermission = 0 }: PermissionModal
       onSettled: () => {
         onSettledCache(code)
       },
-      onError: (error: any, _, context: any) => {
+      onError: (error, _, context: any) => {
         onErrorCache(context, code)
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data?.errors?.map((error) => error.message),
         })
       },
     }

@@ -6,6 +6,7 @@ import Container from '@/ui/Container'
 import PermissionsActions from './PermissionsActions'
 import PermissionsTable from './PermissionsTable'
 import { LinkType } from '@/ui/Breadcrumbs/Breadcrumbs.type'
+import paths from 'shared/routes/paths'
 
 const DashboardPermissions = () => {
   const location = useLocation()
@@ -17,7 +18,7 @@ const DashboardPermissions = () => {
     defaultValues: {
       routers: [
         {
-          link: '/dash/permisos',
+          link: paths.dash.permisos,
           name: 'Permisos',
         },
       ],
@@ -27,7 +28,7 @@ const DashboardPermissions = () => {
   const setBreadCrumbs = () => {
     const links: LinkType[] = [
       {
-        link: '/dash/permisos',
+        link: paths.dash.permisos,
         name: 'Permisos',
       },
     ]
@@ -36,7 +37,7 @@ const DashboardPermissions = () => {
       link += code[i]
       if (link.length % 3 === 0) {
         links.push({
-          link: `/dash/permisos?code=${link}`,
+          link: `${paths.dash.permisos}?code=${link}`,
           name: link,
         })
       }

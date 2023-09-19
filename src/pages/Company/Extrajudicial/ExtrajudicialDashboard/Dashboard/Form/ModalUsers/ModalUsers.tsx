@@ -1,5 +1,6 @@
 import { useMutation } from 'react-query'
 import { useForm, FormProvider, useFormContext } from 'react-hook-form'
+import { AxiosError } from 'axios'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import Container from '@/ui/Container'
 import ModalUserRow from './ModalUserRow'
@@ -10,6 +11,7 @@ import { device } from '@/breakpoints/responsive'
 import notification from '@/ui/notification'
 import { postDashboardSendXslx } from '@/services/extrajudicial/dashboard.service'
 import { DashFormType } from '../../hookform.type'
+import { CustomErrorResponse } from 'types/customErrorResponse'
 
 const ModalUsers = () => {
   const {
@@ -32,7 +34,7 @@ const ModalUsers = () => {
     })()
   }
 
-  const { isLoading, mutate: sendEmailXlsx } = useMutation<any, Error>(
+  const { isLoading, mutate: sendEmailXlsx } = useMutation<any, AxiosError<CustomErrorResponse>>(
     async () => {
       return await postDashboardSendXslx({
         usersId: formMethods.watch('users'),
@@ -44,13 +46,14 @@ const ModalUsers = () => {
       })
     },
     {
-      onSuccess: (data) => {
+      onSuccess: () => {
         notification({ type: 'success', message: 'Email enviado' })
       },
-      onError: (error: any) => {
+      onError: (error) => {
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data?.errors?.map((error) => error.message),
         })
       },
     }

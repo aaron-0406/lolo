@@ -1,5 +1,6 @@
 import { useMutation } from 'react-query'
 import { Controller, useForm } from 'react-hook-form'
+import { AxiosError } from 'axios'
 import { CredentialsSchemaResolver } from './Credentials.yup'
 import { CredentialsFormType } from './hookform.type'
 import Modal from '@/ui/Modal'
@@ -10,6 +11,7 @@ import { notification } from '@/ui/notification/notification'
 import { changeCredentialsService } from '@/services/extrajudicial/auth.service'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import storage from '../../../../../../shared/utils/storage'
+import { CustomErrorResponse } from 'types/customErrorResponse'
 
 type CredentialsModalProps = {
   visible: boolean
@@ -40,7 +42,7 @@ const CredentialsModal = ({ visible, onClose }: CredentialsModalProps) => {
     },
   })
 
-  const { mutate: changeCredentialsQuery, isLoading } = useMutation<any, Error>(
+  const { mutate: changeCredentialsQuery, isLoading } = useMutation<any, AxiosError<CustomErrorResponse>>(
     async (): Promise<any> => {
       notification({ type: 'info', message: 'Espere por favor...' })
       return await changeCredentialsService(getValues())
@@ -56,10 +58,11 @@ const CredentialsModal = ({ visible, onClose }: CredentialsModalProps) => {
         notification({ type: 'success', message: 'Credenciales modificadas' })
         onClose()
       },
-      onError: (error: any) => {
+      onError: (error) => {
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data?.errors?.map((error) => error.message),
         })
       },
     }

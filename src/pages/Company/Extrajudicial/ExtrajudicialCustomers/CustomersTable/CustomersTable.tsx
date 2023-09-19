@@ -6,13 +6,13 @@ import moment from 'moment'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import paths from '../../../../../shared/routes/paths'
 import { getAllClientsByCHB } from '@/services/extrajudicial/client.service'
-import { getAllFuncionariosByCHB } from '@/services/dash/funcionario.service'
-import { getAllNegociacionesByCHB } from '@/services/dash/negotiation.service'
 import { getCourtByCHB } from '@/services/judicial/court.service'
 import { getProceduralWayByCHB } from '@/services/judicial/procedural-way.service'
 import { getSubjectByCHB } from '@/services/judicial/subject.service'
+import { getAllFuncionariosByCHB } from '@/services/extrajudicial/funcionario.service'
+import { getAllNegociacionesByCHB } from '@/services/extrajudicial/negotiation.service'
 import { ClientType } from '@/types/extrajudicial/client.type'
-import { NegotiationType } from '@/types/dash/negotiation.type'
+import { NegotiationType } from '@/types/extrajudicial/negotiation.type'
 import Container from '@/ui/Container'
 import Pagination from '@/ui/Pagination'
 import { Opts } from '@/ui/Pagination/interfaces'
@@ -21,10 +21,10 @@ import { customersColumns } from './utils/columns'
 import EmptyStateCell from '@/ui/Table/EmptyStateCell'
 import BodyCell from '@/ui/Table/BodyCell'
 import { FilterOptionsProps } from '@/ui/Table/Table'
-import { FuncionarioType } from '@/types/dash/funcionario.type'
+import { FuncionarioType } from '@/types/extrajudicial/funcionario.type'
 import { CustomerUserType } from '@/types/dash/customer-user.type'
 import { CityType } from '@/types/dash/city.type'
-import { getAllManagementActionsByCHB } from '@/services/dash/management-action.service'
+import { getAllManagementActionsByCHB } from '@/services/extrajudicial/management-action.service'
 
 type CustomersTableProps = {
   opts: Opts
@@ -42,9 +42,11 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
       judicialSubject: { setJudicialSubjects },
     },
     bank: { selectedBank },
-    managementAction: { setManagementActions },
-    negociacion: { negociaciones, setNegociaciones },
-    funcionario: { funcionarios, setFuncionarios },
+    extrajudicial: {
+      managementAction: { setManagementActions },
+      negociacion: { negociaciones, setNegociaciones },
+      funcionario: { funcionarios, setFuncionarios },
+    },
     user: { users },
     city: { cities },
   } = useLoloContext()

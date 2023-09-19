@@ -5,22 +5,22 @@ export default {
   general: {
     validate: '/validate-token',
     notFound: '/not-found',
+    unauthorized: '/unauthorized',
   },
   dash: {
     root: '/dash',
     login: '/dash/login',
     clientes: '/dash/clientes',
     usuarios: '/dash/usuarios',
-    funcionarios: 'dash/funcionarios',
-    permisos: 'dash/permisos',
-    roles: 'dash/roles',
+    permisos: '/dash/permisos',
+    roles: '/dash/roles',
     reportes: '/dash/reportes',
-    negociaciones: '/dash/negociaciones',
-    acciones: '/dash/acciones',
   },
   company: {
     root: (urlIdentifier = ':urlIdentifier') => `/${urlIdentifier}`,
     login: (urlIdentifier = ':urlIdentifier') => `/${urlIdentifier}/login`,
+    usuarios: (urlIdentifier = ':urlIdentifier') => `/${urlIdentifier}/usuarios`,
+    roles: (urlIdentifier = ':urlIdentifier') => `/${urlIdentifier}/roles`,
   },
   cobranza: {
     perfil: (urlIdentifier = ':urlIdentifier') => `/cobranza/${urlIdentifier}/perfil`,
@@ -31,12 +31,12 @@ export default {
       `/cobranza/${urlIdentifier}/cobranza/${code}`,
     metas: (urlIdentifier = ':urlIdentifier') => `/cobranza/${urlIdentifier}/metas`,
     document: (urlIdentifier = ':urlIdentifier') => `/cobranza/${urlIdentifier}/document`,
+    dashboard: (urlIdentifier = ':urlIdentifier') => `/cobranza/${urlIdentifier}/dashboard`,
+    funcionarios: (urlIdentifier = ':urlIdentifier') => `/cobranza/${urlIdentifier}/funcionarios`,
+    negociaciones: (urlIdentifier = ':urlIdentifier') => `/cobranza/${urlIdentifier}/negociaciones`,
+    acciones: (urlIdentifier = ':urlIdentifier') => `/cobranza/${urlIdentifier}/acciones`,
   },
   judicial: {
     perfil: (urlIdentifier = ':urlIdentifier') => `/judicial/${urlIdentifier}/perfil`,
-  },
-  companyDashboard: {
-    root: (urlIdentifier = ':urlIdentifier') => `/${urlIdentifier}`,
-    dashboard: (urlIdentifier = ':urlIdentifier') => `/${urlIdentifier}/dashboard`,
   },
 }

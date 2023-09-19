@@ -14,7 +14,9 @@ type CobranzaCommentsInfoFormProps = {
 
 const CobranzaCommentsInfoForm = ({ clientId }: CobranzaCommentsInfoFormProps) => {
   const {
-    managementAction: { managementActions },
+    extrajudicial: {
+      managementAction: { managementActions },
+    },
   } = useLoloContext()
 
   const {
