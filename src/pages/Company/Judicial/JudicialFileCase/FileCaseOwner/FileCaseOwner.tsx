@@ -10,9 +10,13 @@ import { getClientByCode, getClientByName } from '@/services/extrajudicial/clien
 import notification from '@/ui/notification'
 import { FileCaseType } from '@/types/judicial/case-file.type'
 import { useLoloContext } from '@/contexts/LoloProvider'
+import useModal from '@/hooks/useModal'
+import ModalManagement from './Modal/ModalManagement'
 
 const FileCaseOwner = () => {
   const { setValue, reset } = useFormContext<FileCaseType>()
+
+  const { visible: visibleModalManagement, showModal: showModalManagement, hideModal: hideModalManagement } = useModal()
 
   const {
     customerUser: { user },
@@ -67,6 +71,10 @@ const FileCaseOwner = () => {
       enabled: false,
     }
   )
+
+  const handleClickGestion = () => {
+    showModalManagement()
+  }
 
   const onChangeIDC = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIdc(e.target.value)
@@ -143,10 +151,21 @@ const FileCaseOwner = () => {
           <Label label="Gestor:" />
           <Container display="flex" width="100%" justifyContent="space-between">
             <Label label={user.name.concat(' ' + user.lastName)} />
-            <Button label="Ver gestión" size="small" />
+            <Button
+              onClick={(event) => {
+                event.stopPropagation()
+                handleClickGestion()
+              }}
+              label="Ver gestión"
+              size="small"
+            />
           </Container>
         </div>
       </Container>
+
+      {visibleModalManagement && (
+        <ModalManagement clientId={user.id} visible={visibleModalManagement} onClose={hideModalManagement} />
+      )}
     </StyledContainer>
   )
 }
