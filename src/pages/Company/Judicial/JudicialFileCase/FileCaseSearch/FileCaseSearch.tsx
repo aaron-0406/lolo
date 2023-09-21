@@ -3,12 +3,12 @@ import styled, { css } from 'styled-components'
 import { useQuery } from 'react-query'
 import { useSearchParams } from 'react-router-dom'
 import { useFormContext } from 'react-hook-form'
+import { getFileCaseByNumberFile } from '@/services/judicial/file-case.service'
+import { FileCaseType } from '@/types/judicial/case-file.type'
 import { notification } from '@/ui/notification/notification'
 import TextField from '@/ui/fields/TextField'
 import Container from '@/ui/Container'
 import Label from '@/ui/Label'
-import { getFileCaseByNumberFile } from '@/services/judicial/file-case.service'
-import { FileCaseType } from '@/types/judicial/case-file.type'
 
 type FileCaseSearchProps = {
   setLoadingGlobal: (state: boolean) => void
@@ -26,24 +26,26 @@ const FileCaseSearch = ({ setLoadingGlobal }: FileCaseSearchProps) => {
       return await getFileCaseByNumberFile(filter)
     },
     {
-      onSuccess: ({data}) => {
+      onSuccess: ({ data }) => {
         setLoadingGlobal(false)
         notification({ type: 'success', message: 'Cliente encontrado' })
-        console.log(data)
-        setValue("id", data.id)
-        setValue("numberCaseFile", data.numberCaseFile)
-        setValue("judgmentNumber", data.judgmentNumber)
-        setValue("secretary", data.secretary)
-        setValue("amountDemandedDollars", data.amountDemandedSoles)
-        setValue("amountDemandedSoles", data.amountDemandedDollars)
-        setValue("cautionaryCode", data.cautionaryCode)
-        setValue("errandCode", data.errandCode)
-        setValue("judicialVenue", data.judicialVenue)
-        setValue("judge", data.judge)
-        setValue("demandDate", data.demandDate)
-        setValue("judicialCourtId", data.judicialCourtId)
-        setValue("judicialSubjectId", data.judicialSubjectId)
-        setValue("judicialProceduralWayId", data.judicialProceduralWayId)
+        setValue('id', data.id)
+        setValue('clientId', data.clientId)
+        setValue('customerUserId', data.customerUserId)
+        setValue('createdAt', data.createdAt)
+        setValue('numberCaseFile', data.numberCaseFile)
+        setValue('judgmentNumber', data.judgmentNumber)
+        setValue('secretary', data.secretary)
+        setValue('amountDemandedDollars', data.amountDemandedSoles)
+        setValue('amountDemandedSoles', data.amountDemandedDollars)
+        setValue('cautionaryCode', data.cautionaryCode)
+        setValue('errandCode', data.errandCode)
+        setValue('judicialVenue', data.judicialVenue)
+        setValue('judge', data.judge)
+        setValue('demandDate', data.demandDate)
+        setValue('judicialCourtId', data.judicialCourtId)
+        setValue('judicialSubjectId', data.judicialSubjectId)
+        setValue('judicialProceduralWayId', data.judicialProceduralWayId)
       },
       onError: (error: any) => {
         notification({
@@ -80,7 +82,7 @@ const FileCaseSearch = ({ setLoadingGlobal }: FileCaseSearchProps) => {
     }
     // eslint-disable-next-line
   }, [])
-  
+
   return (
     <StyledContainer display="flex" flexDirection="column" width="100%" gap="15px" justifyContent="center">
       <Container display="flex" gap="15px">

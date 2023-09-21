@@ -50,7 +50,7 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
 
   if (loading) {
     return <div>Loading ...</div>
-  } 
+  }
 
   return (
     <StyledContainer

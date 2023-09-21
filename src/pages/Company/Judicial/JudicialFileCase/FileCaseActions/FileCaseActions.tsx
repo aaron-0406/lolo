@@ -98,8 +98,6 @@ const FileCaseActions = () => {
     deleteFileCaseMutate()
   }
 
-  console.log(getValues("id"))
-
   return (
     <StyledContainer width="100%" display="flex" justifyContent="center" alignItems="center" gap="20px">
       <Button
