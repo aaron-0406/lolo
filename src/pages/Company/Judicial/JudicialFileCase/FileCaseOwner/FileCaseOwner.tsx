@@ -15,6 +15,7 @@ const FileCaseOwner = () => {
   const { setValue, reset } = useFormContext<FileCaseType>()
 
   const {
+    customerUser: {user},
     bank: { selectedBank },
   } = useLoloContext()
 
@@ -141,7 +142,7 @@ const FileCaseOwner = () => {
         <div className="field-wrapper">
           <Label label="Gestor:" />
           <Container display="flex" width="100%" justifyContent="space-between">
-            <Label label="Brayan" />
+            <Label label={user.name.concat(" " + user.lastName)} />
             <Button label="Ver gestión" size="small" />
           </Container>
         </div>

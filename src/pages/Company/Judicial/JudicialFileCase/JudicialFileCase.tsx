@@ -12,7 +12,6 @@ import { useLoloContext } from '@/contexts/LoloProvider'
 
 const JudicialFileCase = () => {
   const {
-    client: { customer },
     customerUser: { user },
   } = useLoloContext()
 
@@ -24,7 +23,7 @@ const JudicialFileCase = () => {
     clientId: 0,
     customerUserId: user.id,
     demandDate: new Date(),
-    errandCode: '', //
+    errandCode: '',
     judge: '',
     judgmentNumber: 0,
     judicialCourtId: 0,

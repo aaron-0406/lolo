@@ -12,7 +12,6 @@ import { createFileCase, deleteFileCase, updateFileCase } from '@/services/judic
 import { CustomErrorResponse } from 'types/customErrorResponse'
 
 const FileCaseActions = () => {
-
   const greaterThanDesktopS = useMediaQuery(device.desktopS)
   const { reset, getValues } = useFormContext<FileCaseType>()
 
@@ -37,7 +36,7 @@ const FileCaseActions = () => {
         notification({
           type: 'error',
           message: error.response?.data.message,
-          list: error.response?.data.errors.map((error) => error.message),
+          list: error.response?.data.errors?.map((error) => error.message),
         })
       },
     }
@@ -59,7 +58,7 @@ const FileCaseActions = () => {
         notification({
           type: 'error',
           message: error.response?.data.message,
-          list: error.response?.data.errors.map((error) => error.message),
+          list: error.response?.data.errors?.map((error) => error.message),
         })
       },
     }
@@ -82,7 +81,7 @@ const FileCaseActions = () => {
         notification({
           type: 'error',
           message: error.response?.data.message,
-          list: error.response?.data.errors.map((error) => error.message),
+          list: error.response?.data.errors?.map((error) => error.message),
         })
       },
     }
@@ -98,6 +97,8 @@ const FileCaseActions = () => {
   const onDeleteFileCase = () => {
     deleteFileCaseMutate()
   }
+
+  console.log(getValues("id"))
 
   return (
     <StyledContainer width="100%" display="flex" justifyContent="center" alignItems="center" gap="20px">
