@@ -23,14 +23,27 @@ const FileCaseSearch = ({ setLoadingGlobal }: FileCaseSearchProps) => {
   const { refetch } = useQuery(
     'query-file-case-by-case-number',
     async () => {
-      console.log(filter)
       return await getFileCaseByNumberFile(filter)
     },
     {
-      onSuccess: (data) => {
+      onSuccess: ({data}) => {
         setLoadingGlobal(false)
-        console.log(data.data)
         notification({ type: 'success', message: 'Cliente encontrado' })
+        console.log(data)
+        setValue("id", data.id)
+        setValue("numberCaseFile", data.numberCaseFile)
+        setValue("judgmentNumber", data.judgmentNumber)
+        setValue("secretary", data.secretary)
+        setValue("amountDemandedDollars", data.amountDemandedSoles)
+        setValue("amountDemandedSoles", data.amountDemandedDollars)
+        setValue("cautionaryCode", data.cautionaryCode)
+        setValue("errandCode", data.errandCode)
+        setValue("judicialVenue", data.judicialVenue)
+        setValue("judge", data.judge)
+        setValue("demandDate", data.demandDate)
+        setValue("judicialCourtId", data.judicialCourtId)
+        setValue("judicialSubjectId", data.judicialSubjectId)
+        setValue("judicialProceduralWayId", data.judicialProceduralWayId)
       },
       onError: (error: any) => {
         notification({
