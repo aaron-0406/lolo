@@ -28,7 +28,7 @@ const FileCaseActions = () => {
       return await createFileCase(restFileCase)
     },
     {
-      onSuccess: (data) => {
+      onSuccess: () => {
         reset()
         notification({ type: 'success', message: 'Expediente creado' })
       },
@@ -107,6 +107,7 @@ const FileCaseActions = () => {
         trailingIcon="ri-add-fill"
         onClick={onAddFileCase}
         loading={loadingCreateFileCase}
+        permission="P12-01"
       />
       <Button
         width="140px"
@@ -116,6 +117,7 @@ const FileCaseActions = () => {
         onClick={onUpdateFileCase}
         loading={loadingUpdateFileCase}
         disabled={!getValues('id')}
+        permission="P12-02"
       />
       <Button
         width="125px"
@@ -126,6 +128,7 @@ const FileCaseActions = () => {
         onClick={onDeleteFileCase}
         loading={loadingDeleteFileCase}
         disabled={!getValues('id')}
+        permission="P12-03"
       />
       <Button width="100px" shape="round" display="warning" trailingIcon="ri-brush-2-line" onClick={onClean} />
     </StyledContainer>
