@@ -4,6 +4,7 @@ import Container from '@/ui/Container'
 import Label from '@/ui/Label'
 import TextField from '@/ui/fields/TextField'
 import { SelectItemType } from '@/ui/Select/interfaces'
+import Text from '@/ui/Text'
 import Select from '@/ui/Select'
 import { useDashContext } from '@/contexts/DashProvider'
 import { useQuery } from 'react-query'
@@ -101,23 +102,6 @@ const UserInfoForm = () => {
       </Container>
 
       <Container width="100%" display="flex" gap="10%">
-        <Label label="CONTRASEÑA: " />
-        <Controller
-          name="password"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              type="password"
-              width="100%"
-              value={field.value}
-              onChange={field.onChange}
-              hasError={!!errors.password}
-            />
-          )}
-        />
-      </Container>
-
-      <Container width="100%" display="flex" gap="10%">
         <Label label="Rol: " />
         <Controller
           name="roleId"
@@ -134,6 +118,28 @@ const UserInfoForm = () => {
             />
           )}
         />
+      </Container>
+
+      <Container width="100%" display="flex" flexDirection="column" gap="10%">
+        <Container width="100%" display="flex" gap="10%">
+          <Label label="CONTRASEÑA: " />
+          <Controller
+            name="password"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                type="password"
+                width="100%"
+                value={field.value}
+                onChange={field.onChange}
+                hasError={!!errors.password}
+              />
+            )}
+          />
+        </Container>
+        <Text.Body size="s" color="Danger5" weight="bold">
+          {errors.password ? errors.password?.message : ''}
+        </Text.Body>
       </Container>
     </>
   )
