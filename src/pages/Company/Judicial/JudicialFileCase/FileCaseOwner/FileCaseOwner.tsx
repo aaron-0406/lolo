@@ -164,7 +164,7 @@ const FileCaseOwner = () => {
       </Container>
 
       {visibleModalManagement && (
-        <ModalManagement clientId={user.id} visible={visibleModalManagement} onClose={hideModalManagement} />
+        <ModalManagement userId={user.id} visible={visibleModalManagement} onClose={hideModalManagement} />
       )}
     </StyledContainer>
   )

@@ -28,7 +28,7 @@ const FileCaseSearch = ({ setLoadingGlobal }: FileCaseSearchProps) => {
     {
       onSuccess: ({ data }) => {
         setLoadingGlobal(false)
-        notification({ type: 'success', message: 'Cliente encontrado' })
+        notification({ type: 'success', message: 'expediente encontrado' })
         setValue('id', data.id)
         setValue('clientId', data.clientId)
         setValue('customerUserId', data.customerUserId)
