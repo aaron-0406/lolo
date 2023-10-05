@@ -23,8 +23,8 @@ const ModalHeader: React.FC<ModalHeaderProps> = (props) => {
       height="56px"
       padding="8px"
     >
-      <Container display="flex" alignItems="center" position="absolute">
-        <Text.Body size="l" weight="bold">
+      <Container width="83%" display="flex" alignItems="center" position="absolute">
+        <Text.Body size="l" weight="bold" ellipsis>
           {title}
         </Text.Body>
       </Container>
