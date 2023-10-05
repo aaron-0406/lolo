@@ -51,6 +51,7 @@ const ModalManagement = ({ userId, visible, onClose }: ModalManagementType) => {
           message: error.response.data.message,
         })
       },
+      enabled: filter !== '' ? true : false
     }
   )
 
