@@ -142,9 +142,9 @@ const FileCaseOwner = () => {
       </Container>
       <Container className="fields-wrapper-container">
         <div className="field-wrapper">
-          <Label label="Abogado:" />
+          <Label label="id:" />
           <Container display="flex" justifyContent="center" width="80%">
-            <Label label="Brayan" />
+            <Label label={String(user.id)} />
           </Container>
         </div>
         <div className="field-wrapper">

@@ -1,15 +1,15 @@
+import { useMutation } from 'react-query'
+import { useFormContext } from 'react-hook-form'
 import styled, { css } from 'styled-components'
 import { AxiosError } from 'axios'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { device } from '@/breakpoints/responsive'
+import { FileCaseType } from '@/types/judicial/case-file.type'
+import { CustomErrorResponse } from 'types/customErrorResponse'
+import { createFileCase, deleteFileCase, updateFileCase } from '@/services/judicial/file-case.service'
 import Container from '@/ui/Container'
 import Button from '@/ui/Button'
 import { notification } from '@/ui/notification/notification'
-import { useFormContext } from 'react-hook-form'
-import { FileCaseType } from '@/types/judicial/case-file.type'
-import { useMutation } from 'react-query'
-import { createFileCase, deleteFileCase, updateFileCase } from '@/services/judicial/file-case.service'
-import { CustomErrorResponse } from 'types/customErrorResponse'
 
 const FileCaseActions = () => {
   const greaterThanDesktopS = useMediaQuery(device.desktopS)
@@ -107,7 +107,7 @@ const FileCaseActions = () => {
         trailingIcon="ri-add-fill"
         onClick={onAddFileCase}
         loading={loadingCreateFileCase}
-        permission="P12-01"
+        permission="P13-01"
       />
       <Button
         width="140px"
@@ -117,7 +117,7 @@ const FileCaseActions = () => {
         onClick={onUpdateFileCase}
         loading={loadingUpdateFileCase}
         disabled={!getValues('id')}
-        permission="P12-02"
+        permission="P13-02"
       />
       <Button
         width="125px"
@@ -128,7 +128,7 @@ const FileCaseActions = () => {
         onClick={onDeleteFileCase}
         loading={loadingDeleteFileCase}
         disabled={!getValues('id')}
-        permission="P12-03"
+        permission="P13-03"
       />
       <Button width="100px" shape="round" display="warning" trailingIcon="ri-brush-2-line" onClick={onClean} />
     </StyledContainer>
