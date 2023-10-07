@@ -45,6 +45,7 @@ const UpdatePasswordModal = ({ visible, onClose }: UpdatePasswordModalProps) => 
     {
       onSuccess: () => {
         notification({ type: 'success', message: 'Contraseña modificada' })
+        handleClickCloseModal()
       },
       onError: (error) => {
         notification({

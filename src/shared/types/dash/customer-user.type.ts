@@ -14,4 +14,5 @@ export type CustomerUserType = {
   customerId: number
   roleId: number
   role: RoleType
+  loginAttempts?: number
 }
