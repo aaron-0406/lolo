@@ -15,9 +15,10 @@ const appLoloBankStateKey = 'lolo:bank'
 const appLoloCityStateKey = 'lolo:city'
 const appLoloUserStateKey = 'lolo:user'
 const appLoloSelectedBankStateKey = 'lolo:selected:bank'
-const appLoloJudicialCourtStateKey = 'lolo:court'
-const appLoloJudicialSubjectStateKey = 'lolo:subject'
-const appLoloJudicialProceduralWayStateKey = 'lolo:procedural-way'
+
+const appLoloJudicialCourtStateKey = 'lolo:judicial:court'
+const appLoloJudicialSubjectStateKey = 'lolo:judicial:subject'
+const appLoloJudicialProceduralWayStateKey = 'lolo:judicial:procedural-way'
 
 type SelectedBankType = {
   idBank: string

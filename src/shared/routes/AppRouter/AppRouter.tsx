@@ -79,6 +79,7 @@ const AppRouter = () => {
         <Route path={paths.company.login()} element={<CompanyLogin />} />
       </Route>
       <Route element={<ProtectedRoutesCompany pathname={paths.company.login()} />}>
+        {/* COMPANY */}
         <Route path={paths.company.root()} element={<CompanyHome />} />
         <Route path={paths.company.roles()} element={<ExtrajudicialRoles />} />
         <Route path={paths.company.usuarios()} element={<ExtrajudicialdUsers />} />
