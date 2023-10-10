@@ -9,9 +9,9 @@ import { FuncionarioType } from '@/types/extrajudicial/funcionario.type'
 import { NegotiationType } from '@/types/extrajudicial/negotiation.type'
 import { ManagementActionType } from '@/types/extrajudicial/management-action.type'
 import storage from '../utils/storage'
-import { CourtType } from '@/types/judicial/court.type'
-import { SubjectType } from '@/types/judicial/subject.type'
-import { ProceduralWayType } from '@/types/judicial/procedural-way.type'
+import { JudicialCourtType } from '@/types/judicial/judicial-court.type'
+import { JudicialSubjectType } from '@/types/judicial/judicial-subject.type'
+import { JudicialProceduralWayType } from '@/types/judicial/judicial-procedural-way.type'
 
 const appLoloClientStateKey = 'lolo:client'
 const appLoloBankStateKey = 'lolo:bank'
@@ -88,16 +88,16 @@ export const LoloContext = createContext<{
   }
   judicial: {
     judicialCourt: {
-      judicialCourts: Array<CourtType>
-      setJudicialCourts: (judicialCourts: Array<CourtType>) => void
+      judicialCourts: Array<JudicialCourtType>
+      setJudicialCourts: (judicialCourts: Array<JudicialCourtType>) => void
     }
     judicialSubject: {
-      judicialSubjects: Array<SubjectType>
-      setJudicialSubjects: (judicialSubjects: Array<SubjectType>) => void
+      judicialSubjects: Array<JudicialSubjectType>
+      setJudicialSubjects: (judicialSubjects: Array<JudicialSubjectType>) => void
     }
     judicialProceduralWay: {
-      judicialProceduralWays: Array<ProceduralWayType>
-      setJudicialProceduralWays: (judicialProceduralWays: Array<ProceduralWayType>) => void
+      judicialProceduralWays: Array<JudicialProceduralWayType>
+      setJudicialProceduralWays: (judicialProceduralWays: Array<JudicialProceduralWayType>) => void
     }
   }
   extrajudicial: {
@@ -154,9 +154,12 @@ export const LoloProvider: React.FC<LoloProviderProps> = ({ children }) => {
     appLoloNegotiationStateKey,
     []
   )
-  const [courtsState, setCourtsState] = usePersistedState<Array<CourtType>>(appLoloJudicialCourtStateKey, [])
-  const [subjectsState, setSubjectsState] = usePersistedState<Array<SubjectType>>(appLoloJudicialSubjectStateKey, [])
-  const [proceduralWaysState, setProceduralWaysState] = usePersistedState<Array<ProceduralWayType>>(
+  const [courtsState, setCourtsState] = usePersistedState<Array<JudicialCourtType>>(appLoloJudicialCourtStateKey, [])
+  const [subjectsState, setSubjectsState] = usePersistedState<Array<JudicialSubjectType>>(
+    appLoloJudicialSubjectStateKey,
+    []
+  )
+  const [proceduralWaysState, setProceduralWaysState] = usePersistedState<Array<JudicialProceduralWayType>>(
     appLoloJudicialProceduralWayStateKey,
     []
   )
@@ -202,13 +205,13 @@ export const LoloProvider: React.FC<LoloProviderProps> = ({ children }) => {
   const setNegociaciones = (negociaciones: Array<NegotiationType>) => {
     setNegociacionesState(negociaciones)
   }
-  const setCourts = (courts: Array<CourtType>) => {
+  const setCourts = (courts: Array<JudicialCourtType>) => {
     setCourtsState(courts)
   }
-  const setSubjects = (subjects: Array<SubjectType>) => {
+  const setSubjects = (subjects: Array<JudicialSubjectType>) => {
     setSubjectsState(subjects)
   }
-  const setProceduralWays = (proceduralWays: Array<ProceduralWayType>) => {
+  const setProceduralWays = (proceduralWays: Array<JudicialProceduralWayType>) => {
     setProceduralWaysState(proceduralWays)
   }
 

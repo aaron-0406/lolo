@@ -1,4 +1,4 @@
-import { FileCaseType } from '@/types/judicial/case-file.type'
+import { JudicialCaseFileType } from '@/types/judicial/judicial-case-file.type'
 import axiosClient from '../../utils/api/clientAxios'
 
 const API = axiosClient.getUri()
@@ -13,11 +13,11 @@ export const getFileCaseByClientId = async (id: number) => {
   return await axiosClient.get(`${url}/client/${id}`)
 }
 
-export const createFileCase = async (fileCase: Omit<FileCaseType, 'id' | 'numberCaseFile'>) => {
+export const createFileCase = async (fileCase: Omit<JudicialCaseFileType, 'id' | 'numberCaseFile'>) => {
   return await axiosClient.post(`${url}/`, fileCase)
 }
 
-export const updateFileCase = async (id: number, fileCase: Omit<FileCaseType, 'id'>) => {
+export const updateFileCase = async (id: number, fileCase: Omit<JudicialCaseFileType, 'id'>) => {
   return await axiosClient.patch(`${url}/${id}`, fileCase)
 }
 

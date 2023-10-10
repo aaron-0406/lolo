@@ -2,7 +2,7 @@ import { Controller, useFormContext } from 'react-hook-form'
 import styled, { css } from 'styled-components'
 import moment from 'moment'
 import { useLoloContext } from '@/contexts/LoloProvider'
-import { FileCaseType } from '@/types/judicial/case-file.type'
+import { JudicialCaseFileType } from '@/types/judicial/judicial-case-file.type'
 import Container from '@/ui/Container'
 import Label from '@/ui/Label'
 import Select from '@/ui/Select'
@@ -17,7 +17,7 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
   const {
     control,
     formState: { errors },
-  } = useFormContext<FileCaseType>()
+  } = useFormContext<JudicialCaseFileType>()
 
   const {
     judicial: {

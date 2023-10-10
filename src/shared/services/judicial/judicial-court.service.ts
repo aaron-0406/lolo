@@ -1,4 +1,4 @@
-import { CourtType } from '@/types/judicial/court.type'
+import { JudicialCourtType } from '@/types/judicial/judicial-court.type'
 import axiosClient from '../../utils/api/clientAxios'
 
 const API = axiosClient.getUri()
@@ -9,11 +9,11 @@ export const getCourtByCHB = async (chb: number) => {
   return await axiosClient.get(`${url}/chb/${chb}`)
 }
 
-export const createCourt = async (court: Omit<CourtType, 'id'>) => {
+export const createCourt = async (court: Omit<JudicialCourtType, 'id'>) => {
   return await axiosClient.post(`${url}/`, court)
 }
 
-export const updateCourt = async (id: number, court: Omit<CourtType, 'id' | 'customerHasBankId'>) => {
+export const updateCourt = async (id: number, court: Omit<JudicialCourtType, 'id' | 'customerHasBankId'>) => {
   return await axiosClient.patch(`${url}/${id}`, court)
 }
 

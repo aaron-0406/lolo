@@ -1,4 +1,4 @@
-import { FileCaseType } from '@/types/judicial/case-file.type'
+import { JudicialCaseFileType } from '@/types/judicial/judicial-case-file.type'
 import { FormProvider, useForm } from 'react-hook-form'
 import { JudicialFileCaseResolver } from './JudicialFileCase.yup'
 import { useState } from 'react'
@@ -34,7 +34,7 @@ const JudicialFileCase = () => {
     secretary: '',
   }
 
-  const formMethods = useForm<FileCaseType>({
+  const formMethods = useForm<JudicialCaseFileType>({
     resolver: JudicialFileCaseResolver,
     mode: 'all',
     defaultValues: defaultValuesFileCase,
