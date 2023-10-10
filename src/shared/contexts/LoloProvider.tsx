@@ -21,9 +21,10 @@ const appLoloFuncionarioStateKey = 'lolo:funcionario'
 const appLoloManagementActionStateKey = 'lolo:management:action'
 const appLoloNegotiationStateKey = 'lolo:negotiation'
 const appLoloSelectedBankStateKey = 'lolo:selected:bank'
-const appLoloJudicialCourtStateKey = 'lolo:court'
-const appLoloJudicialSubjectStateKey = 'lolo:subject'
-const appLoloJudicialProceduralWayStateKey = 'lolo:procedural-way'
+
+const appLoloJudicialCourtStateKey = 'lolo:judicial:court'
+const appLoloJudicialSubjectStateKey = 'lolo:judicial:subject'
+const appLoloJudicialProceduralWayStateKey = 'lolo:judicial:procedural-way'
 
 type SelectedBankType = {
   idBank: string
@@ -154,15 +155,20 @@ export const LoloProvider: React.FC<LoloProviderProps> = ({ children }) => {
     appLoloNegotiationStateKey,
     []
   )
-  const [courtsState, setCourtsState] = usePersistedState<Array<JudicialCourtType>>(appLoloJudicialCourtStateKey, [])
-  const [subjectsState, setSubjectsState] = usePersistedState<Array<JudicialSubjectType>>(
+
+  const [judicialCourtsState, setJudicialCourtsState] = usePersistedState<Array<JudicialCourtType>>(
+    appLoloJudicialCourtStateKey,
+    []
+  )
+
+  const [judicialSubjectsState, setJudicialSubjectsState] = usePersistedState<Array<JudicialSubjectType>>(
     appLoloJudicialSubjectStateKey,
     []
   )
-  const [proceduralWaysState, setProceduralWaysState] = usePersistedState<Array<JudicialProceduralWayType>>(
-    appLoloJudicialProceduralWayStateKey,
-    []
-  )
+
+  const [judicialProceduralWaysState, setJudicialProceduralWaysState] = usePersistedState<
+    Array<JudicialProceduralWayType>
+  >(appLoloJudicialProceduralWayStateKey, [])
 
   const [selectedBankState, setSelectedBankState] = usePersistedState(appLoloSelectedBankStateKey, {
     idBank: '',
@@ -205,14 +211,17 @@ export const LoloProvider: React.FC<LoloProviderProps> = ({ children }) => {
   const setNegociaciones = (negociaciones: Array<NegotiationType>) => {
     setNegociacionesState(negociaciones)
   }
-  const setCourts = (courts: Array<JudicialCourtType>) => {
-    setCourtsState(courts)
+
+  const setJudicialCourts = (courts: Array<JudicialCourtType>) => {
+    setJudicialCourtsState(courts)
   }
-  const setSubjects = (subjects: Array<JudicialSubjectType>) => {
-    setSubjectsState(subjects)
+
+  const setJudicialSubjects = (subjects: Array<JudicialSubjectType>) => {
+    setJudicialSubjectsState(subjects)
   }
-  const setProceduralWays = (proceduralWays: Array<JudicialProceduralWayType>) => {
-    setProceduralWaysState(proceduralWays)
+
+  const setJudicialProceduralWays = (proceduralWays: Array<JudicialProceduralWayType>) => {
+    setJudicialProceduralWaysState(proceduralWays)
   }
 
   const setSelectedBank = (selectedBank: SelectedBankType) => {
@@ -272,6 +281,14 @@ export const LoloProvider: React.FC<LoloProviderProps> = ({ children }) => {
           getUser,
           setUsers: setUsers,
         },
+        auth: {
+          authenticate,
+          setAuthenticate,
+        },
+        customerUser: {
+          user,
+          setUser,
+        },
         extrajudicial: {
           funcionario: {
             funcionarios: funcionariosState,
@@ -286,26 +303,18 @@ export const LoloProvider: React.FC<LoloProviderProps> = ({ children }) => {
             setNegociaciones: setNegociaciones,
           },
         },
-        auth: {
-          authenticate,
-          setAuthenticate,
-        },
-        customerUser: {
-          user,
-          setUser,
-        },
         judicial: {
           judicialCourt: {
-            judicialCourts: courtsState,
-            setJudicialCourts: setCourts,
+            judicialCourts: judicialCourtsState,
+            setJudicialCourts: setJudicialCourts,
           },
           judicialSubject: {
-            judicialSubjects: subjectsState,
-            setJudicialSubjects: setSubjects,
+            judicialSubjects: judicialSubjectsState,
+            setJudicialSubjects: setJudicialSubjects,
           },
           judicialProceduralWay: {
-            judicialProceduralWays: proceduralWaysState,
-            setJudicialProceduralWays: setProceduralWays,
+            judicialProceduralWays: judicialProceduralWaysState,
+            setJudicialProceduralWays: setJudicialProceduralWays,
           },
         },
         clearAll,

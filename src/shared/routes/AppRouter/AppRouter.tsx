@@ -71,22 +71,24 @@ const AppRouter = () => {
         <Route path={paths.company.login()} element={<CompanyLogin />} />
       </Route>
       <Route element={<ProtectedRoutesCompany pathname={paths.company.login()} />}>
+        {/* COMPANY */}
         <Route path={paths.company.root()} element={<CompanyHome />} />
         <Route path={paths.company.roles()} element={<ExtrajudicialRoles />} />
         <Route path={paths.company.usuarios()} element={<ExtrajudicialdUsers />} />
         <Route path={paths.company.userLogs()} element={<ExtrajudicialUserLogs />} />
+        {/* COBRANZA */}
         <Route path={paths.cobranza.perfil()} element={<ExtrajudicialProfile />} />
         <Route path={paths.cobranza.clientes()} element={<ExtrajudicialCustomers />} />
         <Route path={paths.cobranza.cobranza()} element={<ExtrajudicialCobranza />} />
         <Route path={paths.cobranza.cobranzaComments()} element={<ExtrajudicialCobranzaComments />} /> {/*vergestion*/}
         <Route path={paths.cobranza.metas()} element={<ExtrajudicialMetas />} />
         <Route path={paths.cobranza.document()} element={<ExtrajudicialTemplate />} />
-        {/* JUDICIAL */}
-        <Route path={paths.cobranza.judicial()} element={<JudicialFileCase />} />
         <Route path={paths.cobranza.dashboard()} element={<Dashboard />} />
         <Route path={paths.cobranza.funcionarios()} element={<ExtrajudicialFuncionarios />} />
         <Route path={paths.cobranza.acciones()} element={<ExtrajudicialActions />} />
         <Route path={paths.cobranza.negociaciones()} element={<ExtrajudicialNegotiations />} />
+        {/* JUDICIAL */}
+        <Route path={paths.judicial.judicial()} element={<JudicialFileCase />} />
       </Route>
 
       <Route path="*" element={<NotFound />} />

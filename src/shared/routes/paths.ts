@@ -27,7 +27,6 @@ export default {
     perfil: (urlIdentifier = ':urlIdentifier') => `/cobranza/${urlIdentifier}/perfil`,
     clientes: (urlIdentifier = ':urlIdentifier') => `/cobranza/${urlIdentifier}/clientes`,
     cobranza: (urlIdentifier = ':urlIdentifier') => `/cobranza/${urlIdentifier}/cobranza`,
-    judicial: (urlIdentifier = ':urlIdentifier') => `/cobranza/${urlIdentifier}/judicial`,
     cobranzaComments: (urlIdentifier = ':urlIdentifier', code = ':code') =>
       `/cobranza/${urlIdentifier}/cobranza/${code}`,
     metas: (urlIdentifier = ':urlIdentifier') => `/cobranza/${urlIdentifier}/metas`,
@@ -39,5 +38,6 @@ export default {
   },
   judicial: {
     perfil: (urlIdentifier = ':urlIdentifier') => `/judicial/${urlIdentifier}/perfil`,
+    judicial: (urlIdentifier = ':urlIdentifier') => `/judicial/${urlIdentifier}/judicial`,
   },
 }
