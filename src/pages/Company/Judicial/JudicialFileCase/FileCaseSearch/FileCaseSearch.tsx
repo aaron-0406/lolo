@@ -3,8 +3,8 @@ import styled, { css } from 'styled-components'
 import { useQuery } from 'react-query'
 import { useSearchParams } from 'react-router-dom'
 import { useFormContext } from 'react-hook-form'
-import { getFileCaseByNumberFile } from '@/services/judicial/file-case.service'
-import { FileCaseType } from '@/types/judicial/case-file.type'
+import { getFileCaseByNumberFile } from '@/services/judicial/judicial-file-case.service'
+import { JudicialCaseFileType } from '@/types/judicial/judicial-case-file.type'
 import { notification } from '@/ui/notification/notification'
 import TextField from '@/ui/fields/TextField'
 import Container from '@/ui/Container'
@@ -18,7 +18,7 @@ const FileCaseSearch = ({ setLoadingGlobal }: FileCaseSearchProps) => {
   const codeParams = params.get('numberCase') ?? ''
   const [filter, setFilter] = useState<string>('')
 
-  const { setValue, reset } = useFormContext<FileCaseType>()
+  const { setValue, reset } = useFormContext<JudicialCaseFileType>()
 
   const { refetch } = useQuery(
     'query-file-case-by-case-number',

@@ -8,13 +8,13 @@ import TextField from '@/ui/fields/TextField'
 import Button from '@/ui/Button/Button'
 import { getClientByCode, getClientByName } from '@/services/extrajudicial/client.service'
 import notification from '@/ui/notification'
-import { FileCaseType } from '@/types/judicial/case-file.type'
+import { JudicialCaseFileType } from '@/types/judicial/judicial-case-file.type'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import useModal from '@/hooks/useModal'
 import ModalManagement from './Modal/ModalManagement'
 
 const FileCaseOwner = () => {
-  const { setValue, reset } = useFormContext<FileCaseType>()
+  const { setValue, reset } = useFormContext<JudicialCaseFileType>()
 
   const { visible: visibleModalManagement, showModal: showModalManagement, hideModal: hideModalManagement } = useModal()
 

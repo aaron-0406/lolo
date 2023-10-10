@@ -1,4 +1,4 @@
-export type ProceduralWayType = {
+export type JudicialProceduralWayType = {
   id: number
   proceduralWay: string
   customerHasBankId: number

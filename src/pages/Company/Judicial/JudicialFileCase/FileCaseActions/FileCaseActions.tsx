@@ -4,16 +4,16 @@ import styled, { css } from 'styled-components'
 import { AxiosError } from 'axios'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { device } from '@/breakpoints/responsive'
-import { FileCaseType } from '@/types/judicial/case-file.type'
+import { JudicialCaseFileType } from '@/types/judicial/judicial-case-file.type'
 import { CustomErrorResponse } from 'types/customErrorResponse'
-import { createFileCase, deleteFileCase, updateFileCase } from '@/services/judicial/file-case.service'
+import { createFileCase, deleteFileCase, updateFileCase } from '@/services/judicial/judicial-file-case.service'
 import Container from '@/ui/Container'
 import Button from '@/ui/Button'
 import { notification } from '@/ui/notification/notification'
 
 const FileCaseActions = () => {
   const greaterThanDesktopS = useMediaQuery(device.desktopS)
-  const { reset, getValues } = useFormContext<FileCaseType>()
+  const { reset, getValues } = useFormContext<JudicialCaseFileType>()
 
   const onClean = () => {
     reset()

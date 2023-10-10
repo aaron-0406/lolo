@@ -1,4 +1,4 @@
-import { ProceduralWayType } from '@/types/judicial/procedural-way.type'
+import { JudicialProceduralWayType } from '@/types/judicial/judicial-procedural-way.type'
 import axiosClient from '../../utils/api/clientAxios'
 
 const API = axiosClient.getUri()
@@ -9,13 +9,13 @@ export const getProceduralWayByCHB = async (chb: number) => {
   return await axiosClient.get(`${url}/chb/${chb}`)
 }
 
-export const createProceduralWay = async (proceduralWay: Omit<ProceduralWayType, 'id'>) => {
+export const createProceduralWay = async (proceduralWay: Omit<JudicialProceduralWayType, 'id'>) => {
   return await axiosClient.post(`${url}/`, proceduralWay)
 }
 
 export const updateProceduralWay = async (
   id: number,
-  proceduralWay: Omit<ProceduralWayType, 'id' | 'customerHasBankId'>
+  proceduralWay: Omit<JudicialProceduralWayType, 'id' | 'customerHasBankId'>
 ) => {
   return await axiosClient.patch(`${url}/${id}`, proceduralWay)
 }

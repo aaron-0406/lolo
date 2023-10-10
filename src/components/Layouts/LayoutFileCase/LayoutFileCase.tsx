@@ -1,5 +1,5 @@
-import Container from '@/ui/Container/Container'
 import styled, { css } from 'styled-components'
+import Container from '@/ui/Container/Container'
 
 type LayoutFileCaseProps = {
   searchContent: React.ReactNode
@@ -11,6 +11,7 @@ type LayoutFileCaseProps = {
 
 const LayoutFileCase = (props: LayoutFileCaseProps) => {
   const { actionsContent, infoContent, modalsContent, ownerContent, searchContent } = props
+
   return (
     <StyledContainer width="100%" height="100%" display="flex" flexDirection="column">
       <Container

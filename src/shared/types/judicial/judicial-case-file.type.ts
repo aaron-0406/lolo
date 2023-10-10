@@ -1,4 +1,4 @@
-export type FileCaseType = {
+export type JudicialCaseFileType = {
   id: number
   numberCaseFile: string
   judgmentNumber: number
