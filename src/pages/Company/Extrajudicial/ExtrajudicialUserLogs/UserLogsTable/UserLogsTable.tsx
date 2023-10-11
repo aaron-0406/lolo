@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import moment from 'moment'
 import { useLoloContext } from '@/contexts/LoloProvider'
-import { getAllUserLogsByCustomerId } from '@/services/dash/user-log.service'
+import { getAllUserFilterLogsByCustomerId } from '@/services/dash/user-log.service'
 import { UserLogType } from '@/types/dash/user-log.type'
 import { CustomerUserType } from '@/types/dash/customer-user.type'
 import Container from '@/ui/Container'
@@ -27,16 +27,36 @@ const UserLogsTable = () => {
   const [filterOptions, setFilterOptions] = useState<Array<FilterOptionsProps>>([])
   const [resetFilters, setResetFilters] = useState<boolean>(false)
   const [selectedFilterOptions, setSelectedFilterOptions] = useState<Array<FilterOptionsProps>>([])
+  const [userLogs, setUserLogs] = useState([])
 
   const getPermission = (code: string) => {
     return permissions?.find((permission) => permission.code === code)
   }
 
-  const { isLoading, data } = useQuery(['key-ext-user-logs-cache', customerId], async () => {
-    return await getAllUserLogsByCustomerId(customerId)
-  })
+  const { refetch, isLoading } = useQuery(
+    ['key-ext-user-logs-cache', customerId],
+    async () => {
+      const entities = selectedFilterOptions
+        .find((filterOption) => filterOption.identifier === 'user.logs.datatable.header.action')
+        ?.options.map((option) => {
+          return option.key
+        })
 
-  let userLogs = data?.data ?? []
+      const users = selectedFilterOptions
+        .find((filterOption) => filterOption.identifier === 'user.logs.datatable.header.user')
+        ?.options.map((option) => {
+          return option.key
+        })
+
+      return await getAllUserFilterLogsByCustomerId(customerId, JSON.stringify(entities), JSON.stringify(users))
+    },
+    {
+      enabled: !!selectedBank.idCHB.length,
+      onSuccess: ({ data }) => {
+        setUserLogs(data)
+      },
+    }
+  )
 
   const onChangeFilterOptions = (filterOption: FilterOptionsProps) => {
     setTimeout(() => {
@@ -132,6 +152,12 @@ const UserLogsTable = () => {
     })
   }, [selectedBank.idCHB])
 
+  useEffect(() => {
+    if (selectedBank.idCHB.length) {
+      refetch()
+    }
+  }, [refetch, selectedFilterOptions])
+
   return (
     <Container width="100%" height="calc(100% - 112px)" padding="20px">
       <Table
@@ -141,7 +167,7 @@ const UserLogsTable = () => {
         onChangeFilterOptions={onChangeFilterOptions}
         resetFilters={resetFilters}
         loading={isLoading}
-        isArrayEmpty={!userLogs.length}
+        isArrayEmpty={!userLogs?.length}
         emptyState={
           <EmptyStateCell colSpan={userLogsColumns.length}>
             <div>Vacio</div>
@@ -157,8 +183,8 @@ const UserLogsTable = () => {
                 <BodyCell textAlign="center">{`${getPermission(record.codeAction)?.name || '-'}`}</BodyCell>
                 <BodyCell textAlign="center">{`${record.entity || '-'}`}</BodyCell>
                 <BodyCell textAlign="center">{`${record.entityId || '-'}`}</BodyCell>
-                <BodyCell textAlign="center">{`${record.customerUser.name || '-'} ${
-                  record.customerUser.lastName || '-'
+                <BodyCell textAlign="center">{`${record.customerUser?.name || '-'} ${
+                  record.customerUser?.lastName || '-'
                 }`}</BodyCell>
                 <BodyCell textAlign="center">{moment(record.createAt).format('DD-MM-YYYY') || ''}</BodyCell>
                 <BodyCell textAlign="center">{moment(record.createAt).format('HH:mm:ss') || ''}</BodyCell>
