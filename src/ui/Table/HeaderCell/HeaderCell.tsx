@@ -6,6 +6,7 @@ import Container from '@/ui/Container'
 import Icon from '@/ui/Icon'
 import DropdownList from '@/ui/DropdownList'
 import { SelectItem } from '@/ui/Select/interfaces'
+import ClickOutSideComponent from '@/hooks/useClickOutside'
 
 type HeaderCellProps = {
   width?: string
@@ -63,55 +64,57 @@ const HeaderCell: React.FC<HeaderCellProps> = ({
 
   return (
     <StyledTh width={width} isThereFilter={isThereFilter} textTransform={textTransform} onClick={onSelectToogle}>
-      <Container
-        width="100%"
-        height="100%"
-        display="flex"
-        flexDirection="row"
-        justifyContent={justifyContent}
-        padding="0 16px"
-        alignItems="center"
-        backgroundColor={toggleSelect ? '#d9dbe9ff' : ''}
-      >
-        <Text.Body size="m" weight="bold" ellipsis>
-          {children}
-        </Text.Body>
+      <ClickOutSideComponent callback={() => setToggleSelect(false)}>
+        <Container
+          width="100%"
+          height="100%"
+          display="flex"
+          flexDirection="row"
+          justifyContent={justifyContent}
+          padding="0 16px"
+          alignItems="center"
+          backgroundColor={toggleSelect ? '#d9dbe9ff' : ''}
+        >
+          <Text.Body size="m" weight="bold" ellipsis>
+            {children}
+          </Text.Body>
 
-        {isThereFilter && (
-          <Container
-            display="flex"
-            justifyContent="space-around"
-            alignItems="center"
-            margin="0 0 0 10px"
-            width="60px"
-            height="24px"
-            className="arrow__icon"
-          >
-            {selectedFilterOptions.length > 0 ? (
-              <Icon
-                size={20}
-                remixClass="ri-delete-bin-line"
-                color="Warning3"
-                onClick={() => {
-                  setSelectedFilterOptions([])
-                  onChangeFilterOptions?.([])
-                }}
-              />
-            ) : null}
-            <Icon size={20} remixClass="ri-arrow-down-s-line" color="Neutral6" />
-          </Container>
+          {isThereFilter && (
+            <Container
+              display="flex"
+              justifyContent="space-around"
+              alignItems="center"
+              margin="0 0 0 10px"
+              width="60px"
+              height="24px"
+              className="arrow__icon"
+            >
+              {selectedFilterOptions.length > 0 ? (
+                <Icon
+                  size={20}
+                  remixClass="ri-delete-bin-line"
+                  color="Warning3"
+                  onClick={() => {
+                    setSelectedFilterOptions([])
+                    onChangeFilterOptions?.([])
+                  }}
+                />
+              ) : null}
+              <Icon size={20} remixClass="ri-arrow-down-s-line" color="Neutral6" />
+            </Container>
+          )}
+        </Container>
+
+        {toggleSelect && (
+          <DropdownList
+            onSelectItem={onSelectItem}
+            options={options}
+            value={selectedFilterOptions}
+            top="50px"
+            withCheckbox={isThereFilter}
+          />
         )}
-      </Container>
-
-      {toggleSelect && (
-        <DropdownList
-          onSelectItem={onSelectItem}
-          options={options}
-          value={selectedFilterOptions}
-          top="50px"
-          withCheckbox={isThereFilter}
-        />
-      )}
+      </ClickOutSideComponent>
     </StyledTh>
   )
 }

@@ -150,13 +150,14 @@ const UserLogsTable = () => {
         ]
       }
     })
+    // eslint-disable-next-line
   }, [selectedBank.idCHB])
 
   useEffect(() => {
     if (selectedBank.idCHB.length) {
       refetch()
     }
-  }, [refetch, selectedFilterOptions])
+  }, [refetch, selectedFilterOptions, selectedBank.idCHB.length])
 
   return (
     <Container width="100%" height="calc(100% - 112px)" padding="20px">
