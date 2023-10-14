@@ -182,8 +182,9 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts }) => {
                       }}
                       shape="round"
                       size="small"
-                      leadingIcon="ri-user-unfollow-fill"
+                      leadingIcon="ri-delete-bin-line"
                       permission="P10-03"
+                      display='danger'
                     />
                   </Container>
                 </BodyCell>

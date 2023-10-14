@@ -30,10 +30,10 @@ const InputFile: React.FC<InputFileProps> = (props) => {
       gap="10px"
     >
       <StyledInput onChange={handleChangeInput} type="file" {...rest} />
-      <StyledButton>Choose File</StyledButton>
       <StyledContainerNameFile width="100%" display="flex" alignItems="center">
-        {file?.name || filename || 'Upload Your File'}
+        {file?.name || filename || 'Carga tu archivo'}
       </StyledContainerNameFile>
+      <StyledButton>Seleccionar archivo</StyledButton>
     </ContainerInput>
   )
 }
@@ -59,7 +59,7 @@ const StyledButton = styled.button`
   ${({ theme }) => css`
     background-color: ${theme.colors.Primary5};
   `}
-  width: 8rem;
+  width: 12rem;
   height: 2rem;
   border-radius: 8px;
   transition: all 0.6s ease-in-out;

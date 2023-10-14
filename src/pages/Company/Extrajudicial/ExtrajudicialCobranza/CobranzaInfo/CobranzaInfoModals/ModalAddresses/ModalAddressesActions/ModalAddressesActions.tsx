@@ -135,7 +135,7 @@ const ModalAddressesActions = () => {
         shape="round"
         disabled={watch('id') === 0}
         display="danger"
-        trailingIcon="ri-close-line"
+        trailingIcon="ri-delete-bin-line"
         onClick={onDeleteDirection}
         loading={loadingDeleteDirection}
         permission="P03-08-03"

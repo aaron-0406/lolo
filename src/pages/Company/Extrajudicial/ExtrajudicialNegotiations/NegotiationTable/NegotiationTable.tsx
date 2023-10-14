@@ -117,8 +117,9 @@ const NegotiationTable = ({ opts, setOpts }: NegotiationTableProps) => {
                         messageTooltip="Eliminar Negociación"
                         shape="round"
                         size="small"
-                        leadingIcon="ri-user-unfollow-fill"
+                        leadingIcon="ri-delete-bin-line"
                         permission="P09-03"
+                        display="danger"
                       />
                     </Container>
                   }

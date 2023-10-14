@@ -113,6 +113,7 @@ const ActionsTable: FC<ActionsTableProps> = ({ opts, setOpts }) => {
                         size="small"
                         leadingIcon="ri-delete-bin-line"
                         permission="P07-03"
+                        display="danger"
                       />
                     </Container>
                   }

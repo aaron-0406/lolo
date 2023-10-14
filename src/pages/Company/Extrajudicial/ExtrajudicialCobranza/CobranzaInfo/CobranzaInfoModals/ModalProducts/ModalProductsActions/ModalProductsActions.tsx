@@ -135,7 +135,7 @@ const ModalProductsActions = () => {
         shape="round"
         disabled={watch('id') === 0}
         display="danger"
-        trailingIcon="ri-close-line"
+        trailingIcon="ri-delete-bin-line"
         onClick={onDeleteProduct}
         loading={loadingDeleteProduct}
         permission="P03-09-03"

@@ -168,7 +168,7 @@ const CobranzaActions = () => {
         label={greaterThanDesktopS && 'Eliminar'}
         shape={greaterThanDesktopS ? 'default' : 'round'}
         display="danger"
-        trailingIcon="ri-close-line"
+        trailingIcon="ri-delete-bin-line"
         onClick={onDeleteClient}
         loading={loadingDeleteClient}
         disabled={!getValues('id')}

@@ -138,7 +138,7 @@ const ModalFiadoresActions = () => {
         shape="round"
         disabled={watch('id') === 0}
         display="danger"
-        trailingIcon="ri-close-line"
+        trailingIcon="ri-delete-bin-line"
         onClick={onDeleteFiador}
         loading={loadingDeleteGuarantor}
         permission="P03-07-03"

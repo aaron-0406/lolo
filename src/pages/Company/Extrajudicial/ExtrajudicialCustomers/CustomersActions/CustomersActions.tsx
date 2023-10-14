@@ -53,6 +53,15 @@ const CustomersActions: FC<CustomerActionsProps> = ({ opts, setOpts }) => {
 
   return (
     <StyledContainer width="100%" display="flex" flexDirection="column" alignItems="center" padding="20px" gap="20px">
+      <Container className="actions__select" width="100%">
+        <Select
+          width="100%"
+          label="Seleccionar banco:"
+          value={selectedBank.idBank}
+          options={options}
+          onChange={onChangeBank}
+        />
+      </Container>
       <Container className="actions__textfield" width="100%" display="flex" alignItems="center" gap="10px">
         <TextField
           onChange={onChangeSearch}
@@ -62,22 +71,13 @@ const CustomersActions: FC<CustomerActionsProps> = ({ opts, setOpts }) => {
         />
 
         <Button
+          className='btn-excel'
           width="100px"
           shape="round"
           trailingIcon="ri-file-excel-line"
           onClick={showModalManagementExcel}
           disabled={!selectedBank.idBank}
           permission="P02-01"
-        />
-      </Container>
-
-      <Container className="actions__select" width="100%">
-        <Select
-          width="100%"
-          label="Seleccionar banco:"
-          value={selectedBank.idBank}
-          options={options}
-          onChange={onChangeBank}
         />
       </Container>
 
@@ -100,7 +100,11 @@ export default CustomersActions
 
 const StyledContainer = styled(Container)`
   ${({ theme }) => css`
-    @media ${theme.device.tabletS} {
+  .btn-excel{
+    background-color: ${theme.colors.Success5};
+    border: none;
+  }
+  @media ${theme.device.tabletS} {
       flex-direction: row;
 
       .actions__textfield .actions_select {
