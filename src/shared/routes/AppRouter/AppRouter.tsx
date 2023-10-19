@@ -31,6 +31,7 @@ import ExtrajudicialdUsers from '@/pages/extrajudicial/ExtrajudicialUsers/Extraj
 import ExtrajudicialUserLogs from '@/pages/extrajudicial/ExtrajudicialUserLogs'
 
 //JUDICIAL
+import JudicialFileCasesList from 'pages/Company/Judicial/JudicialFileCasesList'
 import JudicialFileCase from 'pages/Company/Judicial/JudicialFileCase/JudicialFileCase'
 
 import ErrorPage from '../../../pages/ErrorPage'
@@ -88,7 +89,8 @@ const AppRouter = () => {
         <Route path={paths.cobranza.acciones()} element={<ExtrajudicialActions />} />
         <Route path={paths.cobranza.negociaciones()} element={<ExtrajudicialNegotiations />} />
         {/* JUDICIAL */}
-        <Route path={paths.judicial.judicial()} element={<JudicialFileCase />} />
+        <Route path={paths.judicial.expedientes()} element={<JudicialFileCasesList />} />
+        <Route path={paths.judicial.detallesExpediente()} element={<JudicialFileCase />} />
       </Route>
 
       <Route path="*" element={<NotFound />} />
