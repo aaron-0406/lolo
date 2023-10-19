@@ -97,7 +97,7 @@ const ModalFileRow: React.FC<ModalFileRowProps> = (props) => {
           disabled={isFetching}
           shape="round"
           display="danger"
-          trailingIcon="ri-close-line"
+          trailingIcon="ri-delete-bin-line"
           permission="P03-06-03"
         />
       </Container>

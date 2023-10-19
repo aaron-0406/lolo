@@ -85,6 +85,10 @@ const ModalFiles: React.FC<ModalFilesProps> = (props) => {
       justifyContent="space-between"
       padding="0 0 2rem 0"
     >
+      <Container width="100%" display="flex" justifyContent="center" alignItems="center" padding="1rem 3rem">
+        <InputFile multiple onChange={handleInputChange} />
+      </Container>
+
       <ContainerTableFile
         backgroundColor={'#eff0f6ff'}
         width="100%"
@@ -107,9 +111,6 @@ const ModalFiles: React.FC<ModalFilesProps> = (props) => {
           </Container>
         )}
       </ContainerTableFile>
-      <Container width="100%" display="flex" justifyContent="center" alignItems="center" padding="0 3rem">
-        <InputFile multiple onChange={handleInputChange} />
-      </Container>
     </Container>
   )
 }

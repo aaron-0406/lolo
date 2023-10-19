@@ -107,8 +107,9 @@ const RolesTable = () => {
                         messageTooltip="Eliminar Rol"
                         shape="round"
                         size="small"
-                        leadingIcon="ri-user-unfollow-fill"
+                        leadingIcon="ri-delete-bin-line"
                         permission="P11-03"
+                        display='danger'
                       />
                     </Container>
                   }

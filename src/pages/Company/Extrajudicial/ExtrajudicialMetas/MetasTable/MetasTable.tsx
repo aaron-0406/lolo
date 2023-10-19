@@ -140,7 +140,6 @@ const MetasTable = () => {
                   {
                     <Container display="flex" justifyContent="center" gap="15px">
                       <Button
-                        display="warning"
                         onClick={() => {
                           handleClickButton()
                           const dia = record.startDate.split('-')
@@ -160,7 +159,7 @@ const MetasTable = () => {
                         }}
                         display="danger"
                         shape="round"
-                        leadingIcon="ri-close-line"
+                        leadingIcon="ri-delete-bin-line"
                         permission="P04-03"
                       />
                     </Container>

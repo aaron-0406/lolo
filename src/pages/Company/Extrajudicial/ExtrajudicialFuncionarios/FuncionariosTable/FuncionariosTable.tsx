@@ -121,6 +121,7 @@ const FuncionariosTable: FC<FuncionariosTableProps> = ({ opts, setOpts }) => {
                         size="small"
                         leadingIcon="ri-delete-bin-line"
                         permission="P08-03"
+                        display="danger"
                       />
                     </Container>
                   }

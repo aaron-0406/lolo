@@ -143,6 +143,7 @@ const CobranzaCommentsTable = ({ clientId }: CobranzaCommentsTableProps) => {
                         size="small"
                         leadingIcon="ri-delete-bin-line"
                         permission="P03-01-03"
+                        display='danger'
                       />
                     </Container>
                   }
