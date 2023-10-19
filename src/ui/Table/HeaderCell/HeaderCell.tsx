@@ -64,7 +64,7 @@ const HeaderCell: React.FC<HeaderCellProps> = ({
 
   return (
     <StyledTh width={width} isThereFilter={isThereFilter} textTransform={textTransform} onClick={onSelectToogle}>
-      <ClickOutSideComponent callback={() => setToggleSelect(false)}>
+      <ClickOutSideComponent className="main-container" callback={() => setToggleSelect(false)}>
         <Container
           width="100%"
           height="100%"
@@ -140,4 +140,8 @@ const StyledTh = styled.th<HeaderCellProps>`
       text-transform: ${textTransform};
     `}
   `}
+
+  .main-container {
+    height: 100%;
+  }
 `
