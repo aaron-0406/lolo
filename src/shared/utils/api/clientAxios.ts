@@ -29,8 +29,20 @@ clientAxios.interceptors.request.use(async (config: any) => {
 })
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-clientAxios.interceptors.response.use(async (response: any) => {
-  return response
-})
+clientAxios.interceptors.response.use(
+  async (response: any) => {
+    return response
+  },
+  async (error: any) => {
+    if (error.response && error.response.status === 401) {
+      if (error.response.data.message === 'El token ha expirado') {
+        storage.clear()
+        window.location.reload()
+      }
+      return Promise.reject(error)
+    }
+    return Promise.reject(error)
+  }
+)
 
 export default clientAxios
