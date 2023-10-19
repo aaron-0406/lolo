@@ -18,6 +18,7 @@ export const userLogsColumns: ColumProps[] = [
     title: 'ACCIÓN',
     width: '30%',
     justifyContent: 'center',
+    isThereFilter: true,  
   },
   {
     id: 'user.logs.datatable.header.entity',
@@ -36,6 +37,7 @@ export const userLogsColumns: ColumProps[] = [
     title: 'USUARIO',
     width: '30%',
     justifyContent: 'center',
+    isThereFilter: true,
   },
   {
     id: 'user.logs.datatable.header.date',
