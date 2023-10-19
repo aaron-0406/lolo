@@ -31,7 +31,6 @@ clientAxios.interceptors.request.use(async (config: any) => {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 clientAxios.interceptors.response.use(
   async (response: any) => {
-    console.log(response, 'token')
     return response
   },
   async (error: any) => {
