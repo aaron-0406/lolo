@@ -1,4 +1,5 @@
 import React, { Dispatch, FC } from 'react'
+import { useNavigate } from 'react-router-dom'
 import styled, { css } from 'styled-components'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import Container from '@/ui/Container'
@@ -10,6 +11,7 @@ import Button from '@/ui/Button/Button'
 import Modal from '@/ui/Modal'
 import useModal from '@/hooks/useModal'
 import ModalManagementExcel from './ModalManagementExcel/ModalManagementExcel'
+import paths from 'shared/routes/paths'
 
 type CustomerActionsProps = {
   opts: Opts
@@ -27,6 +29,8 @@ const CustomersActions: FC<CustomerActionsProps> = ({ opts, setOpts }) => {
     showModal: showModalManagementExcel,
     hideModal: hideModalManagementExcel,
   } = useModal()
+
+  const navigate = useNavigate()
 
   const options: Array<SelectItemType> = customer.customerBanks.map((bank) => {
     return {
@@ -51,6 +55,10 @@ const CustomersActions: FC<CustomerActionsProps> = ({ opts, setOpts }) => {
     return setOpts({ ...opts, filter: value.trim(), page: 1 })
   }
 
+  const handleClickAddClient = () => {
+    navigate(`${paths.cobranza.cobranza(customer.urlIdentifier, '000000000')}`)
+  }
+
   return (
     <StyledContainer width="100%" display="flex" flexDirection="column" alignItems="center" padding="20px" gap="20px">
       <Container className="actions__select" width="100%">
@@ -71,13 +79,24 @@ const CustomersActions: FC<CustomerActionsProps> = ({ opts, setOpts }) => {
         />
 
         <Button
-          className='btn-excel'
+          className="btn-excel"
           width="100px"
           shape="round"
           trailingIcon="ri-file-excel-line"
           onClick={showModalManagementExcel}
           disabled={!selectedBank.idBank}
+          messageTooltip="Exportar excel"
           permission="P02-01"
+        />
+
+        <Button
+          width="100px"
+          shape="round"
+          trailingIcon="ri-add-fill"
+          onClick={handleClickAddClient}
+          disabled={!selectedBank.idBank}
+          permission="P02-01"
+          messageTooltip="Agregar cliente"
         />
       </Container>
 
@@ -100,11 +119,11 @@ export default CustomersActions
 
 const StyledContainer = styled(Container)`
   ${({ theme }) => css`
-  .btn-excel{
-    background-color: ${theme.colors.Success5};
-    border: none;
-  }
-  @media ${theme.device.tabletS} {
+    .btn-excel {
+      background-color: ${theme.colors.Success5};
+      border: none;
+    }
+    @media ${theme.device.tabletS} {
       flex-direction: row;
 
       .actions__textfield .actions_select {

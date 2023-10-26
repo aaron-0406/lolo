@@ -119,7 +119,7 @@ const ModalProductsActions = () => {
         disabled={watch('id') !== 0}
         onClick={onAddProduct}
         loading={loadingCreateProduct}
-        permission="P03-09-01"
+        permission="P02-02-06-01"
       />
       <Button
         width="100px"
@@ -128,7 +128,7 @@ const ModalProductsActions = () => {
         disabled={watch('id') === 0}
         onClick={onEditProduct}
         loading={loadingEditProduct}
-        permission="P03-09-02"
+        permission="P02-02-06-02"
       />
       <Button
         width="100px"
@@ -138,7 +138,7 @@ const ModalProductsActions = () => {
         trailingIcon="ri-delete-bin-line"
         onClick={onDeleteProduct}
         loading={loadingDeleteProduct}
-        permission="P03-09-03"
+        permission="P02-02-06-03"
       />
       <Button width="100px" shape="round" display="warning" trailingIcon="ri-brush-2-line" onClick={onCleanFields} />
     </Container>

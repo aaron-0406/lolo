@@ -2,14 +2,13 @@ import styled, { css } from 'styled-components'
 import Container from '@/ui/Container'
 
 type LayoutCobranzaProps = {
-  leftTopContent: React.ReactNode
   rightTopContent: React.ReactNode
   infoContent: React.ReactNode
   downContent: React.ReactNode
 }
 
 const LayoutCobranza: React.FC<LayoutCobranzaProps> = (props) => {
-  const { leftTopContent, rightTopContent, infoContent, downContent } = props
+  const { rightTopContent, infoContent, downContent } = props
 
   return (
     <StyledContainer width="100%" height="100%" display="flex" flexDirection="column">
@@ -19,15 +18,15 @@ const LayoutCobranza: React.FC<LayoutCobranzaProps> = (props) => {
         height="133px"
         display="flex"
         flexDirection="row"
+        justifyContent="end"
         gap="15px"
         padding="15px 40px"
         backgroundColor="#eff0f6ff"
       >
-        {leftTopContent}
         {rightTopContent}
       </Container>
 
-      <Container className="container__info" width="100%" height="calc(100% - 211px)" display="flex" overFlowY="auto">
+      <Container className="container__info" width="100%" height="calc(100% - 170px)" display="flex" overFlowY="auto">
         {infoContent}
       </Container>
 
@@ -51,7 +50,7 @@ const StyledContainer = styled(Container)`
   ${({ theme }) => css`
     @media ${theme.device.mobile} {
       .container__top {
-        flex-direction: column;
+        height: 90px;
       }
     }
 
@@ -64,6 +63,12 @@ const StyledContainer = styled(Container)`
 
       .container__info {
         height: calc(100% - 156px);
+      }
+    }
+
+    @media ${theme.device.desktopS} {
+      .container__top {
+        padding-right: 60px;
       }
     }
   `}

@@ -4,7 +4,6 @@ import LayoutCobranza from '../../../../components/Layouts/LayoutCobranza'
 import { ClientType } from '@/types/extrajudicial/client.type'
 import CobranzaActions from './CobranzaActions'
 import CobranzaInfo from './CobranzaInfo'
-import CobranzaSearch from './CobranzaSearch'
 import { ExtrajudicialCobranzaResolver } from './ExtrajudicialCobranza.yup'
 import CobranzaInfoModals from './CobranzaInfo/CobranzaInfoModals/CobranzaInfoModals'
 
@@ -34,8 +33,7 @@ const ExtrajudicialCobranza = () => {
   return (
     <FormProvider {...formMethods}>
       <LayoutCobranza
-        leftTopContent={<CobranzaSearch setLoadingGlobal={setLoadingGlobal} />}
-        rightTopContent={<CobranzaActions />}
+        rightTopContent={<CobranzaActions setLoadingGlobal={setLoadingGlobal} />}
         infoContent={<CobranzaInfo loading={loading} />}
         downContent={<CobranzaInfoModals />}
       />
