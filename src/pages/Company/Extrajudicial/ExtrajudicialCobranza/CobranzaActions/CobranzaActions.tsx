@@ -11,7 +11,7 @@ import { device } from '@/breakpoints/responsive'
 import { CustomErrorResponse } from 'types/customErrorResponse'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
-import { createClient, updateClient } from '@/services/extrajudicial/client.service'
+import { saveClient } from '@/services/extrajudicial/client.service'
 import { ClientType } from '@/types/extrajudicial/client.type'
 import Button from '@/ui/Button'
 import Container from '@/ui/Container'
@@ -75,34 +75,17 @@ const CobranzaActions = ({ setLoadingGlobal }: CobranzaActionsProps) => {
 
   const greaterThanDesktopS = useMediaQuery(device.desktopS)
 
-  const { isLoading: loadingCreateClient, mutate: createCustomer } = useMutation<any, AxiosError<CustomErrorResponse>>(
+  const { isLoading: loadingSaveClient, mutate: saveCustomer } = useMutation<any, AxiosError<CustomErrorResponse>>(
     async () => {
       const { id, ...restClient } = getValues()
-      return await createClient(restClient, Number(customer.id))
+      const action = id === 0 ? "add" : "edit"
+      return await saveClient(restClient, Number(customer.id), action)
     },
     {
       onSuccess: (data) => {
+        const notificationMessage = getValues().id === 0 ? 'Cliente creado' : 'Cliente actualizado'
+        notification({ type: 'success', message: `${notificationMessage}` })
         setValue('id', data.data.id)
-        notification({ type: 'success', message: 'Cliente creado' })
-      },
-      onError: (error) => {
-        notification({
-          type: 'error',
-          message: error.response?.data.message,
-          list: error.response?.data?.errors?.map((error) => error.message),
-        })
-      },
-    }
-  )
-
-  const { isLoading: loadingUpdateClient, mutate: updateCustomer } = useMutation<any, AxiosError<CustomErrorResponse>>(
-    async () => {
-      const { id, code, customerHasBankId, ...restClient } = getValues()
-      return await updateClient(code, customerHasBankId, restClient)
-    },
-    {
-      onSuccess: () => {
-        notification({ type: 'success', message: 'Cliente actualizado' })
       },
       onError: (error) => {
         notification({
@@ -145,19 +128,11 @@ const CobranzaActions = ({ setLoadingGlobal }: CobranzaActionsProps) => {
     setValue('email', '')
   }
 
-  const onAddClient = () => {
+  const onSaveClient = () => {
     setValue('customerHasBankId', parseInt(selectedBank.idCHB))
 
     handleSubmit(() => {
-      createCustomer()
-    })()
-  }
-
-  const onUpdateClient = () => {
-    setValue('customerHasBankId', parseInt(selectedBank.idCHB))
-
-    handleSubmit(() => {
-      updateCustomer()
+      saveCustomer()
     })()
   }
 
@@ -179,10 +154,10 @@ const CobranzaActions = ({ setLoadingGlobal }: CobranzaActionsProps) => {
         width="130px"
         label={greaterThanDesktopS && 'Guardar'}
         shape={greaterThanDesktopS ? 'default' : 'round'}
-        trailingIcon="ri--fill"
-        onClick={onAddClient}
-        loading={loadingCreateClient}
-        permission="P02-03"
+        trailingIcon="ri-edit-fill"
+        onClick={onSaveClient}
+        loading={loadingSaveClient}
+        permission={codeParams === '000000000' ? 'P02-03' : 'P02-04'}
       />
       <Button
         width="100px"
