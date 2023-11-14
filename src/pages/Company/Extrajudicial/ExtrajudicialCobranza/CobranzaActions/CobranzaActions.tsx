@@ -78,8 +78,7 @@ const CobranzaActions = ({ setLoadingGlobal }: CobranzaActionsProps) => {
   const { isLoading: loadingSaveClient, mutate: saveCustomer } = useMutation<any, AxiosError<CustomErrorResponse>>(
     async () => {
       const { id, ...restClient } = getValues()
-      const action = id === 0 ? "add" : "edit"
-      return await saveClient(restClient, Number(customer.id), action)
+      return await saveClient(restClient, Number(customer.id))
     },
     {
       onSuccess: (data) => {

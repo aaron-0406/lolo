@@ -33,8 +33,8 @@ export const getAllClientsByCHBDetails = async (chb: string) => {
   return await axiosClient.get(`${url}/${chb}/details`)
 }
 
-export const saveClient = async (client: Omit<ClientType, 'id'>, idCustomer: number, action: string) => {
-  return await axiosClient.post(`${url}/${idCustomer}?permission=${action}`, client)
+export const saveClient = async (client: Omit<ClientType, 'id'>, idCustomer: number) => {
+  return await axiosClient.post(`${url}/${idCustomer}`, client)
 }
 
 export const deleteClient = async (code: string, chb: number, idCustomer: number) => {
