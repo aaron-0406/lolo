@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Dispatch, FC, useEffect, useState } from 'react'
+import { Dispatch, FC, useEffect, useMemo, useState } from 'react'
 import { useQuery } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 import moment from 'moment'
@@ -39,6 +39,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
       negociacion: { negociaciones, setNegociaciones },
       funcionario: { funcionarios, setFuncionarios },
     },
+    customerUser: { user },
     user: { users },
     city: { cities },
   } = useLoloContext()
@@ -81,8 +82,13 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
     })
   }
 
+  const hasAccessToTheButton = useMemo(() => {
+    const permissions = user.permissions?.map((permission) => permission.code) ?? []
+    return permissions.includes('P02-02' ?? '')
+  }, [user.permissions])
+
   const onClickRow = (code: string) => {
-    navigate(`${paths.cobranza.cobranza(urlIdentifier)}?code=${code}`)
+    navigate(`${paths.cobranza.cobranza(urlIdentifier, code)}`)
   }
 
   const { refetch } = useQuery(
@@ -350,7 +356,13 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
               } & { city: CityType }
             ) => {
               return (
-                <tr className="styled-data-table-row" key={record.id} onClick={() => onClickRow(record.code)}>
+                <tr
+                  className="styled-data-table-row"
+                  key={record.id}
+                  onClick={() => {
+                    hasAccessToTheButton && onClickRow(record.code)
+                  }}
+                >
                   <BodyCell textAlign="center">{`${record.code || ''}`}</BodyCell>
                   <BodyCell>{`${record.name || ''}`}</BodyCell>
                   <BodyCell>{`${record.negotiation.name.toUpperCase() || ''}`}</BodyCell>

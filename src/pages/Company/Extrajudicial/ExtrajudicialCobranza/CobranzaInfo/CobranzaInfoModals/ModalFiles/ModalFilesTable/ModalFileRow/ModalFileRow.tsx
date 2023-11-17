@@ -90,7 +90,7 @@ const ModalFileRow: React.FC<ModalFileRowProps> = (props) => {
           trailingIcon="ri-eye-line"
           onClick={onViewFile}
           loading={isFetchingGet}
-          permission="P03-06-01"
+          permission="P02-02-03-01"
         />
         <Button
           onClick={onDeleteFile}
@@ -98,7 +98,7 @@ const ModalFileRow: React.FC<ModalFileRowProps> = (props) => {
           shape="round"
           display="danger"
           trailingIcon="ri-delete-bin-line"
-          permission="P03-06-03"
+          permission="P02-02-03-03"
         />
       </Container>
     </StyledRow>

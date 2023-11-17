@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { useQuery } from 'react-query'
-import { useSearchParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import styled, { css } from 'styled-components'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import { getClientByCode } from '@/services/extrajudicial/client.service'
@@ -16,8 +16,7 @@ type CobranzaSearchProps = {
 }
 
 const CobranzaSearch = ({ setLoadingGlobal }: CobranzaSearchProps) => {
-  const [params] = useSearchParams()
-  const codeParams = params.get('code') ?? ''
+  const codeParams = useParams().code ?? ''
 
   const { setValue, reset } = useFormContext<ClientType>()
 

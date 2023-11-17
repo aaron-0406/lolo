@@ -132,7 +132,7 @@ const CobranzaCommentsTable = ({ clientId }: CobranzaCommentsTableProps) => {
                         shape="round"
                         size="small"
                         leadingIcon="ri-pencil-fill"
-                        permission="P03-01-02"
+                        permission="P02-02-01-02"
                       />
                       <Button
                         onClick={() => {
@@ -142,7 +142,7 @@ const CobranzaCommentsTable = ({ clientId }: CobranzaCommentsTableProps) => {
                         shape="round"
                         size="small"
                         leadingIcon="ri-delete-bin-line"
-                        permission="P03-01-03"
+                        permission="P02-02-01-03"
                         display='danger'
                       />
                     </Container>
