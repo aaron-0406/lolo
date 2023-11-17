@@ -50,7 +50,7 @@ const CobranzaCommentsInfo = ({ name, clientId }: CobranzaCommentsInfoProps) => 
           width="100px"
           shape="round"
           trailingIcon="ri-add-fill"
-          permission="P03-01-01"
+          permission="P02-02-01-01"
         />
 
         {clientId && <CobranzaCommentsModal visible={visibleModalAdd} onClose={onCloseModal} clientId={clientId} />}
