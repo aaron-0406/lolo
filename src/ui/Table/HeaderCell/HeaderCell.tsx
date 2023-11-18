@@ -100,7 +100,7 @@ const HeaderCell: React.FC<HeaderCellProps> = ({
                   }}
                 />
               ) : null}
-              <Icon size={20} remixClass="ri-arrow-down-s-line" color="Neutral6" />
+              <Icon size={20} remixClass="ri-filter-2-line" color="Neutral6" />
             </Container>
           )}
         </Container>

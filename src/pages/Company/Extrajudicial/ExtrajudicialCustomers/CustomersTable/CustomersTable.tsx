@@ -22,6 +22,9 @@ import { FuncionarioType } from '@/types/extrajudicial/funcionario.type'
 import { CustomerUserType } from '@/types/dash/customer-user.type'
 import { CityType } from '@/types/dash/city.type'
 import { getAllManagementActionsByCHB } from '@/services/extrajudicial/management-action.service'
+import Button from '@/ui/Button'
+import useModal from '@/hooks/useModal'
+import DeleteClientModal from './DeleteClientModal'
 
 type CustomersTableProps = {
   opts: Opts
@@ -46,6 +49,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
 
   const navigate = useNavigate()
 
+  const [codeClient, setCodeClient] = useState('')
   const [customers, setCustomers] = useState([])
   const [customersCount, setCustomersCount] = useState<number>(0)
 
@@ -57,6 +61,13 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
   const [filterOptions, setFilterOptions] = useState<Array<FilterOptionsProps>>([])
   const [selectedFilterOptions, setSelectedFilterOptions] = useState<Array<FilterOptionsProps>>([])
   const [resetFilters, setResetFilters] = useState<boolean>(false)
+
+  const { visible: visibleDeleteClient, showModal: showDeleteClient, hideModal: hideDeleteClient } = useModal()
+
+  const handleClickDeleteClient = (code: string) => {
+    setCodeClient(code)
+    showDeleteClient()
+  }
 
   const onChangeFilterOptions = (filterOption: FilterOptionsProps) => {
     setTimeout(() => {
@@ -370,11 +381,30 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
                   <BodyCell>{`${record.customerUser.name.toUpperCase() || ''}`}</BodyCell>
                   <BodyCell>{`${record.city.name.toUpperCase() || ''}`}</BodyCell>
                   <BodyCell textAlign="center">{`${moment(record.createdAt).format('DD-MM-YYYY') || ''}`}</BodyCell>
+                  <BodyCell textAlign="center">
+                    {
+                      <Container display="flex" gap="15px" justifyContent="space-around">
+                        <Button
+                          width="125px"
+                          shape="round"
+                          display="danger"
+                          trailingIcon="ri-delete-bin-line"
+                          onClick={(event) => {
+                            event.stopPropagation()
+                            handleClickDeleteClient(record.code)
+                          }}
+                          permission="P02-05"
+                          messageTooltip="Eliminar cliente"
+                        />
+                      </Container>
+                    }
+                  </BodyCell>
                 </tr>
               )
             }
           )}
       </Table>
+      <DeleteClientModal visible={visibleDeleteClient} onClose={hideDeleteClient} code={codeClient} />
     </Container>
   )
 }
