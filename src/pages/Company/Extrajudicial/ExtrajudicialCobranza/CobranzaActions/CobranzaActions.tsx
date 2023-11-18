@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { useQuery } from 'react-query'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useMutation } from 'react-query'
 import styled, { css } from 'styled-components'
 import { AxiosError } from 'axios'
@@ -30,6 +30,8 @@ const CobranzaActions = ({ setLoadingGlobal }: CobranzaActionsProps) => {
     client: { customer },
     bank: { selectedBank },
   } = useLoloContext()
+
+  const navigate = useNavigate()
 
   const codeParams = useParams().code ?? ''
   const { setValue, reset, handleSubmit, getValues } = useFormContext<ClientType>()
@@ -85,6 +87,8 @@ const CobranzaActions = ({ setLoadingGlobal }: CobranzaActionsProps) => {
         const notificationMessage = getValues().id === 0 ? 'Cliente creado' : 'Cliente actualizado'
         notification({ type: 'success', message: `${notificationMessage}` })
         setValue('id', data.data.id)
+
+        navigate(`${paths.cobranza.cobranza(customer.urlIdentifier, getValues().code)}`)
       },
       onError: (error) => {
         notification({
@@ -159,7 +163,7 @@ const CobranzaActions = ({ setLoadingGlobal }: CobranzaActionsProps) => {
           width="130px"
           label={greaterThanDesktopS && 'Guardar'}
           shape={greaterThanDesktopS ? 'default' : 'round'}
-          trailingIcon="ri-edit-fill"
+          trailingIcon="ri-save-3-line"
           onClick={onSaveClient}
           loading={loadingSaveClient}
         />
