@@ -16,8 +16,10 @@ import { ClientType } from '@/types/extrajudicial/client.type'
 import Button from '@/ui/Button'
 import Container from '@/ui/Container'
 import notification from '@/ui/notification'
+import Breadcrumbs from '@/ui/Breadcrumbs'
 import { DOMAIN } from '../../../../../shared/utils/constant/api'
 import paths from 'shared/routes/paths'
+import { LinkType } from '@/ui/Breadcrumbs/Breadcrumbs.type'
 
 type CobranzaActionsProps = {
   setLoadingGlobal: (state: boolean) => void
@@ -134,6 +136,17 @@ const CobranzaActions = ({ setLoadingGlobal }: CobranzaActionsProps) => {
     generateDocument()
   }
 
+  const routers: LinkType[] = [
+    {
+      link: paths.cobranza.clientes(customer.urlIdentifier),
+      name: 'Clientes',
+    },
+    {
+      link: paths.cobranza.cobranza(customer.urlIdentifier, codeParams),
+      name: codeParams,
+    },
+  ]
+
   useEffect(() => {
     if (!!codeParams.length && codeParams !== '000000000') {
       setLoadingGlobal(true)
@@ -143,46 +156,29 @@ const CobranzaActions = ({ setLoadingGlobal }: CobranzaActionsProps) => {
   }, [])
 
   return (
-    <StyledContainer width="100%" display="flex" justifyContent="center" alignItems="center" gap="20px">
-      <Button
-        width="130px"
-        label={greaterThanDesktopS && 'Guardar'}
-        shape={greaterThanDesktopS ? 'default' : 'round'}
-        trailingIcon="ri-save-3-line"
-        onClick={onSaveClient}
-        loading={loadingSaveClient}
-      />
-      <Button
-        width="100px"
-        shape="round"
-        trailingIcon="ri-file-word-line"
-        onClick={onGenerateWord}
-        disabled={!getValues('id')}
-        permission="P02-02-02"
-        messageTooltip="(WORD) Descargar información del cliente!"
-      />
-    </StyledContainer>
+    <Container width="100%" display="flex" justifyContent="space-between" alignItems="center" gap="20px">
+      <Breadcrumbs routes={routers} />
+      <Container width="230px" display="flex" justifyContent="space-between" alignItems="center" gap="10px">
+        <Button
+          width="130px"
+          label={greaterThanDesktopS && 'Guardar'}
+          shape={greaterThanDesktopS ? 'default' : 'round'}
+          trailingIcon="ri-save-3-line"
+          onClick={onSaveClient}
+          loading={loadingSaveClient}
+        />
+        <Button
+          width="100px"
+          shape="round"
+          trailingIcon="ri-file-word-line"
+          onClick={onGenerateWord}
+          disabled={!getValues('id')}
+          permission="P02-02-02"
+          messageTooltip="(WORD) Descargar información del cliente!"
+        />
+      </Container>
+    </Container>
   )
 }
 
 export default CobranzaActions
-
-const StyledContainer = styled(Container)`
-  ${({ theme }) => css`
-    @media ${theme.device.mobile} {
-      gap: 5px;
-    }
-
-    @media ${theme.device.tabletS} {
-      justify-content: end;
-    }
-
-    @media ${theme.device.tabletL} {
-      gap: 10px;
-    }
-
-    @media ${theme.device.desktopL} {
-      gap: 30px;
-    }
-  `}
-`
