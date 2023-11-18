@@ -40,7 +40,13 @@ const Breadcrumbs: FC<BreadcrumbsProps> = (props) => {
             key={item.name}
             onClick={handleClickContainer}
           >
-            {item.name}
+            <div
+              style={{ cursor: 'pointer' }}
+              onMouseOver={(e) => (e.currentTarget.style.textDecoration = 'underline')}
+              onMouseOut={(e) => (e.currentTarget.style.textDecoration = 'none')}
+            >
+              {item.name}
+            </div>
             <Icon
               remixClass="ri-arrow-right-s-line"
               style={{
