@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { useQuery } from 'react-query'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useMutation } from 'react-query'
 import styled, { css } from 'styled-components'
 import { AxiosError } from 'axios'
@@ -17,6 +17,7 @@ import Button from '@/ui/Button'
 import Container from '@/ui/Container'
 import notification from '@/ui/notification'
 import { DOMAIN } from '../../../../../shared/utils/constant/api'
+import paths from 'shared/routes/paths'
 
 type CobranzaActionsProps = {
   setLoadingGlobal: (state: boolean) => void
@@ -27,6 +28,8 @@ const CobranzaActions = ({ setLoadingGlobal }: CobranzaActionsProps) => {
     client: { customer },
     bank: { selectedBank },
   } = useLoloContext()
+
+  const navigate = useNavigate()
 
   const codeParams = useParams().code ?? ''
   const { setValue, reset, handleSubmit, getValues } = useFormContext<ClientType>()
@@ -82,6 +85,8 @@ const CobranzaActions = ({ setLoadingGlobal }: CobranzaActionsProps) => {
         const notificationMessage = getValues().id === 0 ? 'Cliente creado' : 'Cliente actualizado'
         notification({ type: 'success', message: `${notificationMessage}` })
         setValue('id', data.data.id)
+
+        navigate(`${paths.cobranza.cobranza(customer.urlIdentifier, getValues().code)}`)
       },
       onError: (error) => {
         notification({
