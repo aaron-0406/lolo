@@ -1,9 +1,12 @@
 import { useParams } from 'react-router-dom'
 import Container from '@/ui/Container/Container'
-import Text from '@/ui/Text'
 import Button from '@/ui/Button/Button'
+import Breadcrumbs from '@/ui/Breadcrumbs'
 import useModal from '@/hooks/useModal'
+import { useLoloContext } from '@/contexts/LoloProvider'
 import CobranzaCommentsModal from '../Modals/CobranzaCommentsModal/CobranzaCommentsModal'
+import paths from 'shared/routes/paths'
+import { LinkType } from '@/ui/Breadcrumbs/Breadcrumbs.type'
 
 type CobranzaCommentsInfoProps = {
   name?: string
@@ -11,7 +14,11 @@ type CobranzaCommentsInfoProps = {
 }
 
 const CobranzaCommentsInfo = ({ name, clientId }: CobranzaCommentsInfoProps) => {
-  const { code } = useParams()
+  const code = useParams().code ?? ''
+
+  const {
+    client: { customer },
+  } = useLoloContext()
 
   const { visible: visibleModalAdd, showModal: showModalAdd, hideModal: hideModalAdd } = useModal()
 
@@ -22,26 +29,30 @@ const CobranzaCommentsInfo = ({ name, clientId }: CobranzaCommentsInfoProps) => 
     hideModalAdd()
   }
 
+  const routers: LinkType[] = [
+    {
+      link: paths.cobranza.clientes(customer.urlIdentifier),
+      name: 'Clientes',
+    },
+    {
+      link: paths.cobranza.cobranza(customer.urlIdentifier, code),
+      name: code,
+    },
+    {
+      link: paths.cobranza.cobranzaComments(customer.urlIdentifier, code),
+      name: 'Comentarios',
+    },
+  ]
+
   return (
     <Container
       width="100%"
       display="flex"
-      flexDirection="row"
-      gap="20px"
       justifyContent="space-between"
-      padding="0 20px"
+      alignItems="center"
+      padding="15px 40px"
     >
-      <Container width="80%" display="flex" flexDirection="row" gap="20px" alignItems="center">
-        <Text.Body size="l" weight="bold">
-          {code}
-        </Text.Body>
-        <Text.Body size="l" weight="bold">
-          /
-        </Text.Body>
-        <Text.Body size="l" weight="regular" color="Primary5" ellipsis>
-          {name ?? '-'}
-        </Text.Body>
-      </Container>
+      <Breadcrumbs routes={routers} />
 
       <Container>
         <Button

@@ -78,9 +78,9 @@ const CobranzaCommentsTable = ({ clientId }: CobranzaCommentsTableProps) => {
   }
 
   return (
-    <Container width="100%" height="calc(100% - 112px)" padding="20px">
+    <Container width="100%" height="calc(100% - 80px)" padding="20px">
       <Table
-        top="170px"
+        top="200px"
         columns={commentsColumns}
         loading={isLoading}
         isArrayEmpty={!comments.length}

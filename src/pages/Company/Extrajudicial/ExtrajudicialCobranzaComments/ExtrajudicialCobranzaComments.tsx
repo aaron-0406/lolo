@@ -43,8 +43,7 @@ const ExtrajudicialCobranzaComments = () => {
       height="100%"
       display="flex"
       flexDirection="column"
-      alignItems="center"
-      justifyContent="center"
+      justifyContent="space-between"
     >
       <CobranzaCommentsInfo name={clientName} clientId={clientId} />
       <CobranzaCommentsTable clientId={clientId} />
