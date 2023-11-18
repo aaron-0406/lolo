@@ -148,7 +148,7 @@ const CobranzaActions = ({ setLoadingGlobal }: CobranzaActionsProps) => {
         width="130px"
         label={greaterThanDesktopS && 'Guardar'}
         shape={greaterThanDesktopS ? 'default' : 'round'}
-        trailingIcon="ri-edit-fill"
+        trailingIcon="ri-save-3-line"
         onClick={onSaveClient}
         loading={loadingSaveClient}
       />
