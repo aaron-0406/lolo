@@ -6,6 +6,9 @@ import moment from 'moment'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import paths from '../../../../../shared/routes/paths'
 import { getAllClientsByCHB } from '@/services/extrajudicial/client.service'
+import { getCourtByCHB } from '@/services/judicial/judicial-court.service'
+import { getProceduralWayByCHB } from '@/services/judicial/judicial-procedural-way.service'
+import { getSubjectByCHB } from '@/services/judicial/judicial-subject.service'
 import { getAllFuncionariosByCHB } from '@/services/extrajudicial/funcionario.service'
 import { getAllNegociacionesByCHB } from '@/services/extrajudicial/negotiation.service'
 import { ClientType } from '@/types/extrajudicial/client.type'
@@ -35,6 +38,11 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
   const {
     client: {
       customer: { urlIdentifier },
+    },
+    judicial: {
+      judicialCourt: { setJudicialCourts },
+      judicialProceduralWay: { setJudicialProceduralWays },
+      judicialSubject: { setJudicialSubjects },
     },
     bank: { selectedBank },
     extrajudicial: {
@@ -146,6 +154,42 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
         setCustomers(data.clients)
         setCustomersCount(data.quantity)
         setIsLoading(false)
+      },
+    }
+  )
+
+  useQuery(
+    'get-court-by-chb',
+    async () => {
+      return await getCourtByCHB(Number(selectedBank.idCHB))
+    },
+    {
+      onSuccess: ({ data }) => {
+        setJudicialCourts(data)
+      },
+    }
+  )
+
+  useQuery(
+    'get-procedural-way-by-chb',
+    async () => {
+      return await getProceduralWayByCHB(Number(selectedBank.idCHB))
+    },
+    {
+      onSuccess: ({ data }) => {
+        setJudicialProceduralWays(data)
+      },
+    }
+  )
+
+  useQuery(
+    'get-subject-by-chb',
+    async () => {
+      return await getSubjectByCHB(Number(selectedBank.idCHB))
+    },
+    {
+      onSuccess: ({ data }) => {
+        setJudicialSubjects(data)
       },
     }
   )

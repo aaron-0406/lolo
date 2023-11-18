@@ -9,6 +9,9 @@ import { FuncionarioType } from '@/types/extrajudicial/funcionario.type'
 import { NegotiationType } from '@/types/extrajudicial/negotiation.type'
 import { ManagementActionType } from '@/types/extrajudicial/management-action.type'
 import storage from '../utils/storage'
+import { JudicialCourtType } from '@/types/judicial/judicial-court.type'
+import { JudicialSubjectType } from '@/types/judicial/judicial-subject.type'
+import { JudicialProceduralWayType } from '@/types/judicial/judicial-procedural-way.type'
 
 const appLoloClientStateKey = 'lolo:client'
 const appLoloBankStateKey = 'lolo:bank'
@@ -18,6 +21,10 @@ const appLoloFuncionarioStateKey = 'lolo:funcionario'
 const appLoloManagementActionStateKey = 'lolo:management:action'
 const appLoloNegotiationStateKey = 'lolo:negotiation'
 const appLoloSelectedBankStateKey = 'lolo:selected:bank'
+
+const appLoloJudicialCourtStateKey = 'lolo:judicial:court'
+const appLoloJudicialSubjectStateKey = 'lolo:judicial:subject'
+const appLoloJudicialProceduralWayStateKey = 'lolo:judicial:procedural-way'
 
 type SelectedBankType = {
   idBank: string
@@ -80,6 +87,20 @@ export const LoloContext = createContext<{
     user: Omit<CustomerUserType, 'password'>
     setUser: Dispatch<CustomerUserType>
   }
+  judicial: {
+    judicialCourt: {
+      judicialCourts: Array<JudicialCourtType>
+      setJudicialCourts: (judicialCourts: Array<JudicialCourtType>) => void
+    }
+    judicialSubject: {
+      judicialSubjects: Array<JudicialSubjectType>
+      setJudicialSubjects: (judicialSubjects: Array<JudicialSubjectType>) => void
+    }
+    judicialProceduralWay: {
+      judicialProceduralWays: Array<JudicialProceduralWayType>
+      setJudicialProceduralWays: (judicialProceduralWays: Array<JudicialProceduralWayType>) => void
+    }
+  }
   extrajudicial: {
     funcionario: {
       funcionarios: Array<FuncionarioType>
@@ -135,6 +156,20 @@ export const LoloProvider: React.FC<LoloProviderProps> = ({ children }) => {
     []
   )
 
+  const [judicialCourtsState, setJudicialCourtsState] = usePersistedState<Array<JudicialCourtType>>(
+    appLoloJudicialCourtStateKey,
+    []
+  )
+
+  const [judicialSubjectsState, setJudicialSubjectsState] = usePersistedState<Array<JudicialSubjectType>>(
+    appLoloJudicialSubjectStateKey,
+    []
+  )
+
+  const [judicialProceduralWaysState, setJudicialProceduralWaysState] = usePersistedState<
+    Array<JudicialProceduralWayType>
+  >(appLoloJudicialProceduralWayStateKey, [])
+
   const [selectedBankState, setSelectedBankState] = usePersistedState(appLoloSelectedBankStateKey, {
     idBank: '',
     idCHB: '',
@@ -175,6 +210,18 @@ export const LoloProvider: React.FC<LoloProviderProps> = ({ children }) => {
 
   const setNegociaciones = (negociaciones: Array<NegotiationType>) => {
     setNegociacionesState(negociaciones)
+  }
+
+  const setJudicialCourts = (courts: Array<JudicialCourtType>) => {
+    setJudicialCourtsState(courts)
+  }
+
+  const setJudicialSubjects = (subjects: Array<JudicialSubjectType>) => {
+    setJudicialSubjectsState(subjects)
+  }
+
+  const setJudicialProceduralWays = (proceduralWays: Array<JudicialProceduralWayType>) => {
+    setJudicialProceduralWaysState(proceduralWays)
   }
 
   const setSelectedBank = (selectedBank: SelectedBankType) => {
@@ -234,6 +281,14 @@ export const LoloProvider: React.FC<LoloProviderProps> = ({ children }) => {
           getUser,
           setUsers: setUsers,
         },
+        auth: {
+          authenticate,
+          setAuthenticate,
+        },
+        customerUser: {
+          user,
+          setUser,
+        },
         extrajudicial: {
           funcionario: {
             funcionarios: funcionariosState,
@@ -248,13 +303,19 @@ export const LoloProvider: React.FC<LoloProviderProps> = ({ children }) => {
             setNegociaciones: setNegociaciones,
           },
         },
-        auth: {
-          authenticate,
-          setAuthenticate,
-        },
-        customerUser: {
-          user,
-          setUser,
+        judicial: {
+          judicialCourt: {
+            judicialCourts: judicialCourtsState,
+            setJudicialCourts: setJudicialCourts,
+          },
+          judicialSubject: {
+            judicialSubjects: judicialSubjectsState,
+            setJudicialSubjects: setJudicialSubjects,
+          },
+          judicialProceduralWay: {
+            judicialProceduralWays: judicialProceduralWaysState,
+            setJudicialProceduralWays: setJudicialProceduralWays,
+          },
         },
         clearAll,
       }}

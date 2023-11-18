@@ -3,6 +3,7 @@ const { override, addWebpackAlias } = require('customize-cra')
 
 module.exports = override(
   addWebpackAlias({
+    '@/pages/judicial': path.resolve(__dirname, 'src/pages/Company/Judicial'),
     '@/pages/extrajudicial': path.resolve(__dirname, 'src/pages/Company/Extrajudicial'),
     '@/pages/dashboard': path.resolve(__dirname, 'src/pages/Dashboard'),
     '@/assets': path.resolve(__dirname, 'src/shared/assets'),

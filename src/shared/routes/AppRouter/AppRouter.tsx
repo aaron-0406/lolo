@@ -31,6 +31,9 @@ import ExtrajudicialdUsers from '@/pages/extrajudicial/ExtrajudicialUsers/Extraj
 import ExtrajudicialUserLogs from '@/pages/extrajudicial/ExtrajudicialUserLogs'
 
 //JUDICIAL
+import JudicialFileCasesList from 'pages/Company/Judicial/JudicialFileCasesList'
+import JudicialFileCase from 'pages/Company/Judicial/JudicialFileCase/JudicialFileCase'
+
 import ErrorPage from '../../../pages/ErrorPage'
 import NotFound from '../../../pages/NotFound'
 import Unauthorized from 'pages/Unauthorized'
@@ -69,20 +72,25 @@ const AppRouter = () => {
         <Route path={paths.company.login()} element={<CompanyLogin />} />
       </Route>
       <Route element={<ProtectedRoutesCompany pathname={paths.company.login()} />}>
+        {/* COMPANY */}
         <Route path={paths.company.root()} element={<CompanyHome />} />
         <Route path={paths.company.roles()} element={<ExtrajudicialRoles />} />
         <Route path={paths.company.usuarios()} element={<ExtrajudicialdUsers />} />
         <Route path={paths.company.userLogs()} element={<ExtrajudicialUserLogs />} />
+        {/* COBRANZA */}
         <Route path={paths.cobranza.perfil()} element={<ExtrajudicialProfile />} />
         <Route path={paths.cobranza.clientes()} element={<ExtrajudicialCustomers />} />
         <Route path={paths.cobranza.cobranza()} element={<ExtrajudicialCobranza />} />
-        <Route path={paths.cobranza.cobranzaComments()} element={<ExtrajudicialCobranzaComments />} />
+        <Route path={paths.cobranza.cobranzaComments()} element={<ExtrajudicialCobranzaComments />} /> {/*vergestion*/}
         <Route path={paths.cobranza.metas()} element={<ExtrajudicialMetas />} />
         <Route path={paths.cobranza.document()} element={<ExtrajudicialTemplate />} />
         <Route path={paths.cobranza.dashboard()} element={<Dashboard />} />
         <Route path={paths.cobranza.funcionarios()} element={<ExtrajudicialFuncionarios />} />
         <Route path={paths.cobranza.acciones()} element={<ExtrajudicialActions />} />
         <Route path={paths.cobranza.negociaciones()} element={<ExtrajudicialNegotiations />} />
+        {/* JUDICIAL */}
+        <Route path={paths.judicial.expedientes()} element={<JudicialFileCasesList />} />
+        <Route path={paths.judicial.detallesExpediente()} element={<JudicialFileCase />} />
       </Route>
 
       <Route path="*" element={<NotFound />} />
