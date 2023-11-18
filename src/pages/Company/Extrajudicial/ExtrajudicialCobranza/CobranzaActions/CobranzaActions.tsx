@@ -158,7 +158,7 @@ const CobranzaActions = ({ setLoadingGlobal }: CobranzaActionsProps) => {
   return (
     <Container width="100%" display="flex" justifyContent="space-between" alignItems="center" gap="20px">
       <Breadcrumbs routes={routers} />
-      <Container width="130px" display="flex" justifyContent="space-between" alignItems="center">
+      <Container width="230px" display="flex" justifyContent="space-between" alignItems="center" gap="10px">
         <Button
           width="130px"
           label={greaterThanDesktopS && 'Guardar'}
