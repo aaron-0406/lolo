@@ -54,8 +54,6 @@ const CobranzaActions = ({ setLoadingGlobal }: CobranzaActionsProps) => {
         setValue('customerHasBankId', data.data.customerHasBankId)
 
         setLoadingGlobal(false)
-
-        notification({ type: 'success', message: 'Cliente encontrado' })
       },
       onError: (error: any) => {
         notification({
@@ -77,8 +75,7 @@ const CobranzaActions = ({ setLoadingGlobal }: CobranzaActionsProps) => {
 
   const { isLoading: loadingSaveClient, mutate: saveCustomer } = useMutation<any, AxiosError<CustomErrorResponse>>(
     async () => {
-      const { id, ...restClient } = getValues()
-      return await saveClient(restClient, Number(customer.id))
+      return await saveClient(getValues(), Number(customer.id))
     },
     {
       onSuccess: (data) => {
@@ -120,13 +117,6 @@ const CobranzaActions = ({ setLoadingGlobal }: CobranzaActionsProps) => {
     }
   )
 
-  const onClean = () => {
-    reset()
-    setValue('salePerimeter', '')
-    setValue('phone', '')
-    setValue('email', '')
-  }
-
   const onSaveClient = () => {
     setValue('customerHasBankId', parseInt(selectedBank.idCHB))
 
@@ -156,7 +146,6 @@ const CobranzaActions = ({ setLoadingGlobal }: CobranzaActionsProps) => {
         trailingIcon="ri-edit-fill"
         onClick={onSaveClient}
         loading={loadingSaveClient}
-        permission={codeParams === '000000000' ? 'P02-03' : 'P02-04'}
       />
       <Button
         width="100px"
@@ -165,8 +154,8 @@ const CobranzaActions = ({ setLoadingGlobal }: CobranzaActionsProps) => {
         onClick={onGenerateWord}
         disabled={!getValues('id')}
         permission="P02-02-02"
+        messageTooltip="(WORD) Descargar información del cliente!"
       />
-      <Button width="100px" shape="round" display="warning" trailingIcon="ri-brush-2-line" onClick={onClean} />
     </StyledContainer>
   )
 }
