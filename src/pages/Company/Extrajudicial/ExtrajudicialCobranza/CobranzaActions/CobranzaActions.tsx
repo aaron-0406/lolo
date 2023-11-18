@@ -182,23 +182,3 @@ const CobranzaActions = ({ setLoadingGlobal }: CobranzaActionsProps) => {
 }
 
 export default CobranzaActions
-
-const StyledContainer = styled(Container)`
-  ${({ theme }) => css`
-    @media ${theme.device.mobile} {
-      gap: 5px;
-    }
-
-    @media ${theme.device.tabletS} {
-      justify-content: end;
-    }
-
-    @media ${theme.device.tabletL} {
-      gap: 10px;
-    }
-
-    @media ${theme.device.desktopL} {
-      gap: 30px;
-    }
-  `}
-`
