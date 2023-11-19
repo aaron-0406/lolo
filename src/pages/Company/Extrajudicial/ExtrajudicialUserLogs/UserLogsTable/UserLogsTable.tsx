@@ -38,11 +38,13 @@ const UserLogsTable: FC<UserLogsTableProps> = ({ opts, setOpts }) => {
   const [userLogs, setUserLogs] = useState([])
   const [userLogsCount, setUserLogsCount] = useState<number>(0)
 
+  const [isLoading, setIsLoading] = useState(false)
+
   const getPermission = (code: string) => {
     return permissions?.find((permission) => permission.code === code)
   }
 
-  const { refetch, isLoading } = useQuery(
+  const { refetch } = useQuery(
     ['key-ext-user-logs-cache', customerId],
     async () => {
       const entities = selectedFilterOptions
@@ -70,6 +72,7 @@ const UserLogsTable: FC<UserLogsTableProps> = ({ opts, setOpts }) => {
       onSuccess: ({ data }) => {
         setUserLogs(data.logs)
         setUserLogsCount(data.quantity)
+        setIsLoading(false)
       },
     }
   )
@@ -171,6 +174,7 @@ const UserLogsTable: FC<UserLogsTableProps> = ({ opts, setOpts }) => {
 
   useEffect(() => {
     if (selectedBank.idCHB.length) {
+      setIsLoading(true)
       refetch()
     }
   }, [refetch, opts, selectedFilterOptions, selectedBank.idCHB.length])
