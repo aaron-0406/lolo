@@ -18,7 +18,7 @@ export const Providers: React.FC<ProvidersProps> = ({ children }) => {
         refetchOnWindowFocus: false,
         refetchOnReconnect: true,
         retry: false,
-        staleTime: 5 * 60 * 1000,
+        staleTime: 5000,
       },
     },
   })
