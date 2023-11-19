@@ -1,20 +1,16 @@
+import { useState } from 'react'
 import Container from '@/ui/Container'
 import UserLogsActions from './UserLogsActions'
 import UserLogsTable from './UserLogsTable'
+import { Opts } from '@/ui/Pagination/interfaces'
 
 const ExtrajudicialUserLogs = () => {
+  const [opts, setOpts] = useState<Opts>({ filter: '', limit: 50, page: 1 })
+
   return (
-    <Container
-      width="100%"
-      height="100%"
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-      justifyContent="center"
-      gap="20px"
-    >
+    <Container width="100%" height="100%" display="flex" flexDirection="column">
       <UserLogsActions />
-      <UserLogsTable />
+      <UserLogsTable opts={opts} setOpts={setOpts} />
     </Container>
   )
 }

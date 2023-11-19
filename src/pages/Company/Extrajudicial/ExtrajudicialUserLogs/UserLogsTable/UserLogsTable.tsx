@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { Dispatch, FC, useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import moment from 'moment'
 import { useLoloContext } from '@/contexts/LoloProvider'
@@ -11,8 +11,15 @@ import BodyCell from '@/ui/Table/BodyCell'
 import EmptyStateCell from '@/ui/Table/EmptyStateCell'
 import { userLogsColumns } from './utils/columns'
 import { FilterOptionsProps } from '@/ui/Table/Table'
+import { Opts } from '@/ui/Pagination/interfaces'
+import Pagination from '@/ui/Pagination'
 
-const UserLogsTable = () => {
+type UserLogsTableProps = {
+  opts: Opts
+  setOpts: Dispatch<Opts>
+}
+
+const UserLogsTable: FC<UserLogsTableProps> = ({ opts, setOpts }) => {
   const {
     bank: { selectedBank },
     client: {
@@ -27,7 +34,9 @@ const UserLogsTable = () => {
   const [filterOptions, setFilterOptions] = useState<Array<FilterOptionsProps>>([])
   const [resetFilters, setResetFilters] = useState<boolean>(false)
   const [selectedFilterOptions, setSelectedFilterOptions] = useState<Array<FilterOptionsProps>>([])
+
   const [userLogs, setUserLogs] = useState([])
+  const [userLogsCount, setUserLogsCount] = useState<number>(0)
 
   const getPermission = (code: string) => {
     return permissions?.find((permission) => permission.code === code)
@@ -48,12 +57,19 @@ const UserLogsTable = () => {
           return option.key
         })
 
-      return await getAllUserFilterLogsByCustomerId(customerId, JSON.stringify(entities), JSON.stringify(users))
+      return await getAllUserFilterLogsByCustomerId(
+        opts.page,
+        opts.limit,
+        customerId,
+        JSON.stringify(entities),
+        JSON.stringify(users)
+      )
     },
     {
       enabled: !!selectedBank.idCHB.length,
       onSuccess: ({ data }) => {
-        setUserLogs(data)
+        setUserLogs(data.logs)
+        setUserLogsCount(data.quantity)
       },
     }
   )
@@ -157,12 +173,13 @@ const UserLogsTable = () => {
     if (selectedBank.idCHB.length) {
       refetch()
     }
-  }, [refetch, selectedFilterOptions, selectedBank.idCHB.length])
+  }, [refetch, opts, selectedFilterOptions, selectedBank.idCHB.length])
 
   return (
     <Container width="100%" height="calc(100% - 112px)" padding="20px">
+      <Pagination count={userLogsCount} opts={opts} setOpts={setOpts} />
       <Table
-        top="160px"
+        top="200px"
         columns={userLogsColumns}
         filterOptions={filterOptions}
         onChangeFilterOptions={onChangeFilterOptions}

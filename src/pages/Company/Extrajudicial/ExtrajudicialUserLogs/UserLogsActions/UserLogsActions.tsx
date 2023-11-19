@@ -3,9 +3,9 @@ import Text from '@/ui/Text'
 
 const UserLogsActions = () => {
   return (
-    <Container display="flex" width="100%" padding=" 0 20px" justify-content="space-around">
+    <Container width="100%" display="flex" padding="20px" justify-content="space-around">
       <Text.Body size="m" weight="bold">
-        LOGS DE USUARIOS
+        AUDITORÍA
       </Text.Body>
     </Container>
   )
