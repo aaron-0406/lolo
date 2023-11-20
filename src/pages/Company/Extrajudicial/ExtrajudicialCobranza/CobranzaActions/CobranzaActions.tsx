@@ -3,7 +3,6 @@ import { useFormContext } from 'react-hook-form'
 import { useQuery } from 'react-query'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useMutation } from 'react-query'
-import styled, { css } from 'styled-components'
 import { AxiosError } from 'axios'
 import { generateDocumentService } from '@/services/extrajudicial/document.service'
 import { getClientByCode } from '@/services/extrajudicial/client.service'
@@ -76,7 +75,7 @@ const CobranzaActions = ({ setLoadingGlobal }: CobranzaActionsProps) => {
     }
   )
 
-  const greaterThanDesktopS = useMediaQuery(device.desktopS)
+  const greaterThanTableS = useMediaQuery(device.tabletS)
 
   const { isLoading: loadingSaveClient, mutate: saveCustomer } = useMutation<any, AxiosError<CustomErrorResponse>>(
     async () => {
@@ -161,11 +160,12 @@ const CobranzaActions = ({ setLoadingGlobal }: CobranzaActionsProps) => {
       <Container width="230px" display="flex" justifyContent="space-between" alignItems="center" gap="10px">
         <Button
           width="130px"
-          label={greaterThanDesktopS && 'Guardar'}
-          shape={greaterThanDesktopS ? 'default' : 'round'}
+          label={greaterThanTableS && 'Guardar'}
+          shape={greaterThanTableS ? 'default' : 'round'}
           trailingIcon="ri-save-3-line"
           onClick={onSaveClient}
           loading={loadingSaveClient}
+          messageTooltip="Guardar cambios"
         />
         <Button
           width="100px"

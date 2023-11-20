@@ -49,8 +49,7 @@ const ModalManagementExcel = () => {
         setLoadingGenerateExcel(false)
         notification({
           type: 'error',
-          message: error.response?.data.message,
-          list: error.response?.data?.errors?.map((error) => error.message),
+          message: 'No se encontraron suficientes gestiones para exportar',
         })
       },
     }

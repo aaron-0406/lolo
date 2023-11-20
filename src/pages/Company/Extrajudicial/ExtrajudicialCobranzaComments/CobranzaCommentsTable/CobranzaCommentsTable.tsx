@@ -80,7 +80,7 @@ const CobranzaCommentsTable = ({ clientId }: CobranzaCommentsTableProps) => {
   return (
     <Container width="100%" height="calc(100% - 80px)" padding="20px">
       <Table
-        top="200px"
+        top="180px"
         columns={commentsColumns}
         loading={isLoading}
         isArrayEmpty={!comments.length}
@@ -143,7 +143,7 @@ const CobranzaCommentsTable = ({ clientId }: CobranzaCommentsTableProps) => {
                         size="small"
                         leadingIcon="ri-delete-bin-line"
                         permission="P02-02-01-03"
-                        display='danger'
+                        display="danger"
                       />
                     </Container>
                   }

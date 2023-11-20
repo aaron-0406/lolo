@@ -15,12 +15,12 @@ const LayoutCobranza: React.FC<LayoutCobranzaProps> = (props) => {
       <Container
         className="container__top"
         width="100%"
-        height="133px"
+        height="88px"
         display="flex"
         flexDirection="row"
         justifyContent="end"
         gap="15px"
-        padding="15px 40px"
+        padding="20px"
         backgroundColor="#eff0f6ff"
       >
         {rightTopContent}
@@ -48,27 +48,18 @@ export default LayoutCobranza
 
 const StyledContainer = styled(Container)`
   ${({ theme }) => css`
-    @media ${theme.device.mobile} {
-      .container__top {
-        height: 90px;
-      }
+    .container__top {
+      padding-right: 60px !important;
     }
 
     @media ${theme.device.tabletS} {
       .container__top {
         flex-direction: row;
-        height: 78px;
         gap: 30px;
       }
 
       .container__info {
         height: calc(100% - 156px);
-      }
-    }
-
-    @media ${theme.device.desktopS} {
-      .container__top {
-        padding-right: 60px;
       }
     }
   `}

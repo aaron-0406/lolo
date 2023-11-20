@@ -45,13 +45,7 @@ const CobranzaCommentsInfo = ({ name, clientId }: CobranzaCommentsInfoProps) => 
   ]
 
   return (
-    <Container
-      width="100%"
-      display="flex"
-      justifyContent="space-between"
-      alignItems="center"
-      padding="15px 40px"
-    >
+    <Container width="100%" display="flex" justifyContent="space-between" alignItems="center" padding="20px">
       <Breadcrumbs routes={routers} />
 
       <Container>
@@ -62,6 +56,7 @@ const CobranzaCommentsInfo = ({ name, clientId }: CobranzaCommentsInfoProps) => 
           shape="round"
           trailingIcon="ri-add-fill"
           permission="P02-02-01-01"
+          messageTooltip="Agregar comentario"
         />
 
         {clientId && <CobranzaCommentsModal visible={visibleModalAdd} onClose={onCloseModal} clientId={clientId} />}
