@@ -211,7 +211,7 @@ const StyledWrapper = styled(ClickOutSideComponent)<{ width?: CSS.Property.Width
     width: ${!!width ? width : 'auto'};
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 8px;
     color: ${theme.colors.Neutral6};
   `}
 `

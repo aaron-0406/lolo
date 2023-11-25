@@ -1,9 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from 'react'
 import moment from 'moment'
-import { useMutation, useQuery } from 'react-query'
+import { useQuery } from 'react-query'
 import { useFormContext } from 'react-hook-form'
-import { AxiosError } from 'axios'
 import Button from '@/ui/Button/Button'
 import Container from '@/ui/Container/Container'
 import Pagination from '@/ui/Pagination/Pagination'
@@ -14,13 +13,12 @@ import { GoalFormType } from '../hookform.type'
 import { Opts } from '@/ui/Pagination/interfaces'
 import { goalsColumns } from './utils/columns'
 import { GoalType } from '@/types/extrajudicial/goal.type'
-import { GoalApiResponse, GoalsApiResponse, deleteGoalService, getGoals } from '@/services/extrajudicial/goal.service'
+import { GoalsApiResponse, getGoals } from '@/services/extrajudicial/goal.service'
 import MetasModal from '../MetasModal/MetasModal'
 import useModal from '@/hooks/useModal'
-import { notification } from '@/ui/notification/notification'
 import Progress from '@/ui/Progress/Progress'
 import MetasModalView from '../MetasModalView/MetasModalView'
-import { CustomErrorResponse } from 'types/customErrorResponse'
+import DeleteMetaModal from './DeleteMetaModal'
 
 const MetasTable = () => {
   const { watch, setValue } = useFormContext<GoalFormType>()
@@ -28,6 +26,7 @@ const MetasTable = () => {
 
   const { visible: visibleModalAdd, showModal: showModalAdd, hideModal: hideModalAdd } = useModal()
   const { visible: visibleModalView, showModal: showModalView, hideModal: hideModalView } = useModal()
+  const { visible: visibleModalDelete, showModal: showModalDelete, hideModal: hideModalDelete } = useModal()
 
   const handleClickButton = () => {
     showModalAdd()
@@ -60,35 +59,10 @@ const MetasTable = () => {
     }
   )
 
-  const { isLoading: loadingDeleteGoal, mutate: onDeleteGoal } = useMutation<
-    GoalApiResponse,
-    AxiosError<CustomErrorResponse>
-  >(
-    async () => {
-      const {
-        goal: { id },
-      } = watch()
-      return await deleteGoalService(id)
-    },
-    {
-      onSuccess: ({ data }) => {
-        setValue(
-          'goals',
-          watch('goals').filter((goal) => {
-            return goal.id !== data.id
-          })
-        )
-        notification({ type: 'success', message: 'Meta eliminada' })
-      },
-      onError: (error) => {
-        notification({
-          type: 'error',
-          message: error.response?.data.message,
-          list: error.response?.data?.errors?.map((error) => error.message),
-        })
-      },
-    }
-  )
+  const handleClickDeleteGoal = (data: GoalType) => {
+    setValue('goal', data)
+    showModalDelete()
+  }
 
   useEffect(() => {
     refetch()
@@ -119,10 +93,6 @@ const MetasTable = () => {
                 <BodyCell textAlign="center">
                   <Container onClick={() => {}} width="100%" display="flex" justifyContent="center">
                     <Progress
-                      onClick={() => {
-                        setValue('goal', record)
-                        handleClickProgress()
-                      }}
                       value={
                         record.totalMeta === 0
                           ? 0
@@ -141,23 +111,33 @@ const MetasTable = () => {
                     <Container display="flex" justifyContent="center" gap="15px">
                       <Button
                         onClick={() => {
+                          setValue('goal', record)
+                          handleClickProgress()
+                        }}
+                        shape="round"
+                        messageTooltip="Ver resultados"
+                        leadingIcon="ri-eye-line"
+                        permission=""
+                      />
+                      <Button
+                        onClick={() => {
                           handleClickButton()
                           const dia = record.startDate.split('-')
                           const fecha = `${dia[2]}-${dia[1]}-${dia[0]}`
                           setValue('goal', record)
                           setValue('goal.startDate', fecha)
                         }}
+                        messageTooltip="Actualizar meta"
                         shape="round"
                         leadingIcon="ri-pencil-fill"
                         permission="P04-02"
                       />
                       <Button
-                        loading={loadingDeleteGoal}
                         onClick={() => {
-                          setValue('goal', record)
-                          onDeleteGoal()
+                          handleClickDeleteGoal(record)
                         }}
                         display="danger"
+                        messageTooltip="Eliminar meta"
                         shape="round"
                         leadingIcon="ri-delete-bin-line"
                         permission="P04-03"
@@ -171,6 +151,7 @@ const MetasTable = () => {
       </Table>
       <MetasModal visible={visibleModalAdd} onClose={handleClickModal} />
       <MetasModalView visible={visibleModalView} onClose={handleClickModalView} />
+      <DeleteMetaModal visible={visibleModalDelete} onClose={hideModalDelete} />
     </Container>
   )
 }

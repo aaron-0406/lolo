@@ -168,12 +168,13 @@ const CobranzaActions = ({ setLoadingGlobal }: CobranzaActionsProps) => {
           messageTooltip="Guardar cambios"
         />
         <Button
-          width="100px"
-          shape="round"
+          width="130px"
+          shape={greaterThanTableS ? 'default' : 'round'}
           trailingIcon="ri-file-word-line"
           onClick={onGenerateWord}
           disabled={!getValues('id')}
           permission="P02-02-02"
+          label={greaterThanTableS && 'Datos'}
           messageTooltip="(WORD) Descargar información del cliente!"
         />
       </Container>

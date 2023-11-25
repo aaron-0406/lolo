@@ -5,7 +5,6 @@ import { ClientType } from '@/types/extrajudicial/client.type'
 import Container from '@/ui/Container'
 import TextAreaField from '@/ui/fields/TextAreaField'
 import TextField from '@/ui/fields/TextField'
-import Label from '@/ui/Label'
 import Select from '@/ui/Select'
 import { SelectItemType } from '@/ui/Select/interfaces'
 
@@ -71,66 +70,33 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
       overFlowY="auto"
     >
       <div className="fields-wrapper-container-t">
-        <div className="field-wrapper">
-          <Label label="Código:" />
-          <Controller
-            name="code"
-            control={control}
-            render={({ field }) => (
-              <TextField width="100%" value={field.value} onChange={field.onChange} hasError={!!errors.code} />
-            )}
-          />
-        </div>
-
-        <div className="field-wrapper">
-          <Label label="Estado:" />
-
-          <Controller
-            name="negotiationId"
-            control={control}
-            render={({ field }) => (
-              <Select
-                width="100%"
-                value={String(field.value)}
-                options={optionsStates}
-                onChange={(key) => {
-                  field.onChange(parseInt(key))
-                }}
-                hasError={!!errors.negotiationId}
-              />
-            )}
-          />
-        </div>
-      </div>
-
-      <div className="field-wrapper">
-        <Label label="DNI o RUC:" />
         <Controller
-          name="dniOrRuc"
+          name="code"
           control={control}
           render={({ field }) => (
             <TextField
-              width="calc(100% - 98px)"
+              width="100%"
+              label="Código"
               value={field.value}
               onChange={field.onChange}
-              hasError={!!errors.dniOrRuc}
+              hasError={!!errors.code}
             />
           )}
         />
-      </div>
 
-      <div className="field-wrapper">
-        <Label label="Cliente:" />
         <Controller
-          name="name"
+          name="negotiationId"
           control={control}
           render={({ field }) => (
-            <TextAreaField
+            <Select
               width="100%"
-              rows={2}
-              value={field.value}
-              onChange={field.onChange}
-              hasError={!!errors.name}
+              label="Estado:"
+              value={String(field.value)}
+              options={optionsStates}
+              onChange={(key) => {
+                field.onChange(parseInt(key))
+              }}
+              hasError={!!errors.negotiationId}
             />
           )}
         />
@@ -138,16 +104,15 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
 
       <div className="fields-wrapper-container-d">
         <Controller
-          name="salePerimeter"
+          name="dniOrRuc"
           control={control}
           render={({ field }) => (
-            <TextAreaField
-              label="Perímetro venta:"
+            <TextField
               width="100%"
-              rows={1}
+              label="DNI o RUC:"
               value={field.value}
               onChange={field.onChange}
-              hasError={!!errors.salePerimeter}
+              hasError={!!errors.dniOrRuc}
             />
           )}
         />
@@ -171,43 +136,71 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
       </div>
 
       <div className="fields-wrapper-container-d">
-        <div className="field-wrapper">
-          <Label label="Funcionario:" />
-          <Controller
-            name="funcionarioId"
-            control={control}
-            render={({ field }) => (
-              <Select
-                width="calc(100% - 108px)"
-                value={String(field.value)}
-                options={optionsFuncionarios}
-                onChange={(key) => {
-                  field.onChange(parseInt(key))
-                }}
-                hasError={!!errors.funcionarioId}
-              />
-            )}
-          />
-        </div>
+        <Controller
+          name="name"
+          control={control}
+          render={({ field }) => (
+            <TextAreaField
+              width="100%"
+              label="Cliente:"
+              rows={2}
+              value={field.value}
+              onChange={field.onChange}
+              hasError={!!errors.name}
+            />
+          )}
+        />
 
-        <div className="field-wrapper">
-          <Label label="Jurisdicción:" />
-          <Controller
-            name="cityId"
-            control={control}
-            render={({ field }) => (
-              <Select
-                width="100%"
-                value={String(field.value)}
-                options={optionsCities}
-                onChange={(key) => {
-                  field.onChange(parseInt(key))
-                }}
-                hasError={!!errors.cityId}
-              />
-            )}
-          />
-        </div>
+        <Controller
+          name="salePerimeter"
+          control={control}
+          render={({ field }) => (
+            <TextAreaField
+              label="Perímetro venta:"
+              width="100%"
+              rows={2}
+              value={field.value}
+              onChange={field.onChange}
+              hasError={!!errors.salePerimeter}
+            />
+          )}
+        />
+      </div>
+
+      <div className="fields-wrapper-container-d">
+        <Controller
+          name="funcionarioId"
+          control={control}
+          render={({ field }) => (
+            <Select
+              width="100%"
+              label="Funcionario:"
+              value={String(field.value)}
+              options={optionsFuncionarios}
+              onChange={(key) => {
+                field.onChange(parseInt(key))
+              }}
+              hasError={!!errors.funcionarioId}
+            />
+          )}
+        />
+
+        <Controller
+          name="cityId"
+          control={control}
+          render={({ field }) => (
+            <Select
+              width="100%"
+              label="Jurisdicción:"
+              value={String(field.value)}
+              options={optionsCities}
+              onChange={(key) => {
+                field.onChange(parseInt(key))
+              }}
+              hasError={!!errors.cityId}
+            />
+          )}
+        />
       </div>
 
       <div className="fields-wrapper-container-t">

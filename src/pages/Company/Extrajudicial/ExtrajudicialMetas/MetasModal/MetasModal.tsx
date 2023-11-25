@@ -161,7 +161,13 @@ const MetasModal = ({ visible, onClose }: PModalAddGoal) => {
                 value={field.value}
                 helperText={errors.goal?.week?.message ? errors.goal?.week.message : ''}
                 hasError={!!errors.goal?.week}
-                onChange={field.onChange}
+                onChange={(data) => {
+                  if (parseInt(data.target.value) % 1 === 0) {
+                    field.onChange(parseInt(data.target.value))
+                  } else if (data.target.value === '') {
+                    field.onChange(0)
+                  }
+                }}
               />
             )}
           />

@@ -39,7 +39,13 @@ const MetasActions = () => {
         </Text.Body>
       </Container>
       <Container>
-        <Button onClick={handleClickButton} trailingIcon="ri-add-fill" shape="round" permission="P04-01" />
+        <Button
+          onClick={handleClickButton}
+          messageTooltip="Agregar meta"
+          trailingIcon="ri-add-fill"
+          shape="round"
+          permission="P04-01"
+        />
         <MetasModal visible={visibleModalAdd} onClose={handleClickModal} />
       </Container>
     </Container>

@@ -40,11 +40,46 @@ const CobranzaInfoModals = () => {
 
   return (
     <Container width="100%" height="100%" display="flex" flexDirection="row" gap="10px">
-      <Button width="150px" label="Comentarios" disabled={!clientId} onClick={onClickComment} permission="P02-02-01" />
-      <Button width="150px" label="Archivos" disabled={!clientId} onClick={showModalFiles} permission="P02-02-03" />
-      <Button width="150px" label="Fiadores" disabled={!clientId} onClick={showModalFiadores} permission="P02-02-04" />
-      <Button width="150px" label="Direcciones" disabled={!clientId} onClick={showModalAddresses} permission="P02-02-05" />
-      <Button width="150px" label="Productos" disabled={!clientId} onClick={showModalProducts} permission="P02-02-06" />
+      <Button
+        trailingIcon="ri-discuss-line"
+        width="170px"
+        label="Comentarios"
+        disabled={!clientId}
+        onClick={onClickComment}
+        permission="P02-02-01"
+      />
+      <Button
+        trailingIcon="ri-file-line"
+        width="150px"
+        label="Archivos"
+        disabled={!clientId}
+        onClick={showModalFiles}
+        permission="P02-02-03"
+      />
+      <Button
+        trailingIcon="ri-group-line"
+        width="150px"
+        label="Fiadores"
+        disabled={!clientId}
+        onClick={showModalFiadores}
+        permission="P02-02-04"
+      />
+      <Button
+        trailingIcon="ri-map-pin-user-line"
+        width="160px"
+        label="Direcciones"
+        disabled={!clientId}
+        onClick={showModalAddresses}
+        permission="P02-02-05"
+      />
+      <Button
+        trailingIcon="ri-bank-card-line"
+        width="150px"
+        label="Productos"
+        disabled={!clientId}
+        onClick={showModalProducts}
+        permission="P02-02-06"
+      />
 
       <Modal
         id="modal-fiadores"

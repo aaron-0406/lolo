@@ -5,28 +5,37 @@ import Modal from '@/ui/Modal'
 import notification from '@/ui/notification'
 import Button from '@/ui/Button'
 import { CustomErrorResponse } from 'types/customErrorResponse'
-import { deleteClient } from '@/services/extrajudicial/client.service'
-import { useLoloContext } from '@/contexts/LoloProvider'
+import { GoalApiResponse, deleteGoalService } from '@/services/extrajudicial/goal.service'
+import { GoalFormType } from '../../hookform.type'
+import { useFormContext } from 'react-hook-form'
 
-type DeleteClientModalProps = {
+type DeleteMetaModalProps = {
   visible: boolean
   onClose: () => void
-  code: string
 }
 
-const DeleteClientModal = ({ visible, onClose, code }: DeleteClientModalProps) => {
-  const {
-    client: { customer },
-    bank: { selectedBank },
-  } = useLoloContext()
+const DeleteMetaModal = ({ visible, onClose }: DeleteMetaModalProps) => {
+  const { watch, setValue } = useFormContext<GoalFormType>()
 
-  const { isLoading: loadingDeleteClient, mutate: deleteCustomer } = useMutation<any, AxiosError<CustomErrorResponse>>(
+  const { isLoading: loadingDeleteGoal, mutate: deleteGoal } = useMutation<
+    GoalApiResponse,
+    AxiosError<CustomErrorResponse>
+  >(
     async () => {
-      return await deleteClient(code, Number(selectedBank.idCHB), Number(customer.id))
+      const {
+        goal: { id },
+      } = watch()
+      return await deleteGoalService(id)
     },
     {
-      onSuccess: () => {
-        notification({ type: 'success', message: 'Cliente eliminado' })
+      onSuccess: ({ data }) => {
+        setValue(
+          'goals',
+          watch('goals').filter((goal) => {
+            return goal.id !== data.id
+          })
+        )
+        notification({ type: 'success', message: 'Meta eliminada' })
         onClose()
       },
       onError: (error) => {
@@ -39,8 +48,8 @@ const DeleteClientModal = ({ visible, onClose, code }: DeleteClientModalProps) =
     }
   )
 
-  const onDeleteClient = () => {
-    deleteCustomer()
+  const onDeleteGoal = () => {
+    deleteGoal()
   }
 
   return (
@@ -48,15 +57,15 @@ const DeleteClientModal = ({ visible, onClose, code }: DeleteClientModalProps) =
       visible={visible}
       onClose={onClose}
       id="modal-delete"
-      title="Desea eliminar al cliente?"
+      title="Desea eliminar la meta?"
       contentOverflowY="auto"
       size="small"
       footer={
         <Container width="100%" justifyContent="space-around" display="flex" alignItems="center">
           {
             <Button
-              onClick={onDeleteClient}
-              loading={loadingDeleteClient}
+              onClick={onDeleteGoal}
+              loading={loadingDeleteGoal}
               display="danger"
               size="default"
               label="ACEPTAR"
@@ -69,4 +78,4 @@ const DeleteClientModal = ({ visible, onClose, code }: DeleteClientModalProps) =
   )
 }
 
-export default DeleteClientModal
+export default DeleteMetaModal
