@@ -13,6 +13,7 @@ import { CustomErrorResponse } from 'types/customErrorResponse'
 const GoalInfo = () => {
   const [personalGoal, setPersonalGoal] = useState<GoalType>({
     id: 0,
+    name: '',
     createdAt: moment(new Date()).format('DD-MM-YYYY'),
     customerId: 0,
     endDate: moment(new Date()).format('DD-MM-YYYY'),
@@ -24,6 +25,7 @@ const GoalInfo = () => {
 
   const [globalGoal, setGlobalGoal] = useState<GoalType>({
     id: 0,
+    name: '',
     createdAt: moment(new Date()).format('DD-MM-YYYY'),
     customerId: 0,
     endDate: moment(new Date()).format('DD-MM-YYYY'),

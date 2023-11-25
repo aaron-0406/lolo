@@ -8,6 +8,11 @@ export const goalsColumns: ColumProps[] = [
     justifyContent: 'center',
   },
   {
+    id: 'goals.datatable.header.name',
+    title: 'NAME',
+    width: '30%',
+  },
+  {
     id: 'goals.datatable.header.startDate',
     title: 'INICIO',
     width: '20%',
@@ -20,7 +25,7 @@ export const goalsColumns: ColumProps[] = [
   {
     id: 'goals.datatable.header.total',
     title: 'TOTAL',
-    width: '20%',
+    width: '10%',
     justifyContent: 'space-between',
   },
   {

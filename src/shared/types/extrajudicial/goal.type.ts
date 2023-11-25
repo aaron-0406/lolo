@@ -1,5 +1,6 @@
 export type GoalType = {
   id: number
+  name: string
   startDate: string
   endDate?: string
   week: number

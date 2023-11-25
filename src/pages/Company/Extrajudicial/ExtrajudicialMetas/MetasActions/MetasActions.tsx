@@ -22,6 +22,7 @@ const MetasActions = () => {
   const handleClickButton = () => {
     setValue('goal', {
       id: 0,
+      name: '',
       createdAt: moment(new Date()).format('DD-MM-YYYY'),
       customerId: id,
       endDate: moment(new Date()).format('DD-MM-YYYY'),

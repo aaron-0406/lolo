@@ -134,12 +134,28 @@ const MetasModal = ({ visible, onClose }: PModalAddGoal) => {
       >
         <Container width="100%" display="flex" flexDirection="column" gap="15px">
           <Controller
+            name="goal.name"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                width="100%"
+                label="Nombre:"
+                required
+                value={field.value}
+                helperText={errors.goal?.name?.message ? errors.goal?.name.message : ''}
+                hasError={!!errors.goal?.name}
+                onChange={field.onChange}
+              />
+            )}
+          />
+
+          <Controller
             name="goal.startDate"
             control={control}
             render={({ field }) => (
               <DatePicker
                 required
-                label="Fecha de Inicio"
+                label="Fecha de Inicio:"
                 selectedDate={field.value}
                 placeholder="Ingrese la fecha"
                 dateFormat="DD-MM-YYYY"
@@ -150,13 +166,14 @@ const MetasModal = ({ visible, onClose }: PModalAddGoal) => {
               />
             )}
           />
+
           <Controller
             name="goal.week"
             control={control}
             render={({ field }) => (
               <TextField
                 width="100%"
-                label="Cantidad de Semanas"
+                label="Cantidad de Semanas:"
                 required
                 value={field.value}
                 helperText={errors.goal?.week?.message ? errors.goal?.week.message : ''}

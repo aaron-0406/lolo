@@ -134,15 +134,17 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({ children, urlIdentifier }) =>
             {items.map((item, key) => {
               return (
                 <Link key={key} to={item.link} className="nav__items" onClick={onClickToggle}>
-                  <Icon remixClass={item.icon} color="Neutral9" />
-                  <Text.Body size="m" weight="bold" color="Neutral0">
-                    {item.name}
-                  </Text.Body>
+                  <Container display="flex" gap="22px">
+                    <Icon remixClass={item.icon} size={20} color="Neutral3" />
+                    <Text.Body size="m" weight="bold" color="Neutral0">
+                      {item.name}
+                    </Text.Body>
+                  </Container>
                 </Link>
               )
             })}
             <Link to={paths.company.login(urlIdentifier)} className="nav__items" onClick={logOut}>
-              <Icon remixClass="ri-logout-circle-line" />
+              <Icon remixClass="ri-logout-circle-line" color="Neutral3" />
               <Text.Body size="m" weight="bold" color="Neutral0">
                 CERRAR SESIÓN
               </Text.Body>

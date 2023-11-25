@@ -87,6 +87,7 @@ const MetasTable = () => {
             return (
               <tr className="styled-data-table-row" key={record.id}>
                 <BodyCell textAlign="center">{`${i + 1}`}</BodyCell>
+                <BodyCell>{`${record.name || '-'}`}</BodyCell>
                 <BodyCell>{`${moment(record.startDate).format('DD-MM-YYYY') || ''}`}</BodyCell>
                 <BodyCell>{`${moment(record.endDate).format('DD-MM-YYYY') || ''}`}</BodyCell>
                 <BodyCell>{`${record.totalMeta}`}</BodyCell>
