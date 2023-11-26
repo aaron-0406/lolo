@@ -102,7 +102,7 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
         />
       </div>
 
-      <div className="fields-wrapper-container-d">
+      <div className="fields-wrapper-container-t">
         <Controller
           name="dniOrRuc"
           control={control}
@@ -135,7 +135,7 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
         />
       </div>
 
-      <div className="fields-wrapper-container-d">
+      <div className="fields-wrapper-container-t">
         <Controller
           name="name"
           control={control}
@@ -167,7 +167,7 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
         />
       </div>
 
-      <div className="fields-wrapper-container-d">
+      <div className="fields-wrapper-container-t">
         <Controller
           name="funcionarioId"
           control={control}

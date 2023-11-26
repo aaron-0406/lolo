@@ -1,7 +1,6 @@
 import { Controller, useFormContext } from 'react-hook-form'
 import { CommentType } from '@/types/extrajudicial/comment.type'
 import Container from '@/ui/Container'
-import Label from '@/ui/Label'
 import DatePicker from '@/ui/DatePicker/DatePicker'
 import Select from '@/ui/Select'
 import { SelectItemType } from '@/ui/Select/interfaces'
@@ -62,65 +61,59 @@ const CobranzaCommentsInfoForm = ({ clientId }: CobranzaCommentsInfoFormProps) =
         />
       </Container>
 
-      <Container width="100%" display="flex" gap="10px">
-        <Label label="Negociación: " />
-        <Controller
-          name="negotiation"
-          control={control}
-          render={({ field }) => (
-            <Select
-              disabled={!clientId}
-              width="100%"
-              value={field.value}
-              options={optionsStates}
-              onChange={(key) => {
-                field.onChange(key)
-              }}
-              hasError={!!errors.negotiation}
-            />
-          )}
-        />
-      </Container>
+      <Controller
+        name="negotiation"
+        control={control}
+        render={({ field }) => (
+          <Select
+            disabled={!clientId}
+            width="100%"
+            label="Negociación:"
+            value={field.value}
+            options={optionsStates}
+            onChange={(key) => {
+              field.onChange(key)
+            }}
+            hasError={!!errors.negotiation}
+          />
+        )}
+      />
 
-      <Container width="100%" display="flex" gap="10px">
-        <Label label="Acción: " />
-        <Controller
-          name="managementActionId"
-          control={control}
-          render={({ field }) => (
-            <Select
-              disabled={!clientId}
-              width="100%"
-              value={!!field.value ? String(field.value) : ''}
-              options={optionsActions}
-              onChange={(key) => {
-                field.onChange(parseInt(key))
-              }}
-              hasError={!!errors.managementActionId}
-            />
-          )}
-        />
-      </Container>
+      <Controller
+        name="managementActionId"
+        control={control}
+        render={({ field }) => (
+          <Select
+            disabled={!clientId}
+            width="100%"
+            label="Acción:"
+            value={!!field.value ? String(field.value) : ''}
+            options={optionsActions}
+            onChange={(key) => {
+              field.onChange(parseInt(key))
+            }}
+            hasError={!!errors.managementActionId}
+          />
+        )}
+      />
 
-      <Container width="100%" display="flex" gap="10px">
-        <Label label="Comentario: " />
-        <Controller
-          name="comment"
-          control={control}
-          render={({ field }) => (
-            <TextAreaField
-              disabled={!clientId}
-              width="100%"
-              rows={5}
-              value={field.value}
-              hasError={!!errors.comment}
-              onChange={(e) => {
-                field.onChange(e.target.value)
-              }}
-            />
-          )}
-        />
-      </Container>
+      <Controller
+        name="comment"
+        control={control}
+        render={({ field }) => (
+          <TextAreaField
+            disabled={!clientId}
+            width="100%"
+            label="Comentario:"
+            rows={5}
+            value={field.value}
+            hasError={!!errors.comment}
+            onChange={(e) => {
+              field.onChange(e.target.value)
+            }}
+          />
+        )}
+      />
     </>
   )
 }
