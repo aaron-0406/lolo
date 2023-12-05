@@ -29,6 +29,8 @@ export default {
     cobranza: (urlIdentifier = ':urlIdentifier', code = ':code') => `/cobranza/${urlIdentifier}/clientes/${code}`,
     cobranzaComments: (urlIdentifier = ':urlIdentifier', code = ':code') =>
       `/cobranza/${urlIdentifier}/clientes/${code}/gestion`,
+    cobranzaContacts: (urlIdentifier = ':urlIdentifier', code = ':code') =>
+      `/cobranza/${urlIdentifier}/clientes/${code}/contactos`,
     metas: (urlIdentifier = ':urlIdentifier') => `/cobranza/${urlIdentifier}/metas`,
     document: (urlIdentifier = ':urlIdentifier') => `/cobranza/${urlIdentifier}/document`,
     dashboard: (urlIdentifier = ':urlIdentifier') => `/cobranza/${urlIdentifier}/dashboard`,

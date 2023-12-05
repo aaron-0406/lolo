@@ -38,6 +38,10 @@ const CobranzaInfoModals = () => {
     navigate(`${paths.cobranza.cobranzaComments(urlIdentifier, code)}`)
   }
 
+  const onClickContact = () => {
+    navigate(`${paths.cobranza.cobranzaContacts(urlIdentifier, code)}`)
+  }
+
   return (
     <Container width="100%" height="100%" display="flex" flexDirection="row" gap="10px">
       <Button
@@ -47,6 +51,14 @@ const CobranzaInfoModals = () => {
         disabled={!clientId}
         onClick={onClickComment}
         permission="P02-02-01"
+      />
+      <Button
+        trailingIcon="ri-customer-service-2-line"
+        width="150px"
+        label="Contactos"
+        disabled={!clientId}
+        onClick={onClickContact}
+        permission="P02-02-07"
       />
       <Button
         trailingIcon="ri-file-line"

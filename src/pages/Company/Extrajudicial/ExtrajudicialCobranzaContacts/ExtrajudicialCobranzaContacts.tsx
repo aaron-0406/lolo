@@ -1,16 +1,16 @@
-import { useQuery } from 'react-query'
-import { AxiosResponse } from 'axios'
-import CobranzaCommentsInfo from './CobranzaCommentsInfo/CobranzaCommentsInfo'
-import Container from '@/ui/Container/Container'
-import CobranzaCommentsTable from './CobranzaCommentsTable/CobranzaCommentsTable'
-import { useParams } from 'react-router-dom'
 import { useLoloContext } from '@/contexts/LoloProvider'
-import { ClientType } from '@/types/extrajudicial/client.type'
-import { KEY_COBRANZA_URL_COBRANZA_CODE_CACHE } from './CobranzaCommentsTable/utils/company-comentarios.cache'
-import { getClientByCode } from '@/services/extrajudicial/client.service'
 import notification from '@/ui/notification'
+import { AxiosResponse } from 'axios'
+import { useQuery } from 'react-query'
+import { useParams } from 'react-router-dom'
+import Container from '@/ui/Container'
+import CobranzaContactsTable from './CobranzaContactsTable'
+import CobranzaContactsInfo from './CobranzaContactsInfo'
+import { KEY_COBRANZA_URL_COBRANZA_CODE_CACHE } from '../ExtrajudicialCobranzaComments/CobranzaCommentsTable/utils/company-comentarios.cache'
+import { ClientType } from '@/types/extrajudicial/client.type'
+import { getClientByCode } from '@/services/extrajudicial/client.service'
 
-const ExtrajudicialCobranzaComments = () => {
+const ExtrajudicialCobranzaContacts = () => {
   const { code } = useParams()
 
   const {
@@ -39,10 +39,10 @@ const ExtrajudicialCobranzaComments = () => {
 
   return (
     <Container width="100%" height="100%" display="flex" flexDirection="column" justifyContent="space-between">
-      <CobranzaCommentsInfo name={clientName} clientId={clientId} />
-      <CobranzaCommentsTable clientId={clientId} />
+      <CobranzaContactsInfo name={clientName} clientId={clientId} />
+      <CobranzaContactsTable clientId={clientId} />
     </Container>
   )
 }
 
-export default ExtrajudicialCobranzaComments
+export default ExtrajudicialCobranzaContacts

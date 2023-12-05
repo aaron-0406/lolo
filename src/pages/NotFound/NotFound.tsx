@@ -2,6 +2,7 @@ import Button from '@/ui/Button'
 import Container from '@/ui/Container'
 import ErrorIcon from '@/assets/icons/404.png'
 import Img from '@/ui/Img'
+import Text from '@/ui/Text'
 
 const NotFound = () => {
   const PreviusPage = () => {
@@ -22,13 +23,16 @@ const NotFound = () => {
       <Container alignItems="center" maxWidth="85%">
         <Img placeholderImage="" src={ErrorIcon} />
       </Container>
-      <Container textAlign="center" padding={'1%'}>
-        <text style={{ fontSize: '90%' }}>PÁGINA NO ENCONTRADA</text> <br />
-        <text style={{ fontSize: '80%' }}>
+      <Container textAlign="center" padding="1">
+        <Text.Title size="l" weight="bold" style={{ fontSize: '90%' }}>
+          PÁGINA NO ENCONTRADA
+        </Text.Title>{' '}
+        <br />
+        <Text.Body size="m" weight="regular" style={{ fontSize: '80%' }}>
           La página que está buscando podría haber sido eliminada,
           <br />
           cambió su nombre o no está disponible temporalmente.
-        </text>
+        </Text.Body>
       </Container>
       <Container>
         <Button width="" label="Página anterior" onClick={PreviusPage} />
