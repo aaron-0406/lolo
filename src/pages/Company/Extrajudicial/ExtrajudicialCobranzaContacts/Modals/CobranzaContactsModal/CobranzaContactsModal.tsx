@@ -43,7 +43,6 @@ const CobranzaContactsModal = ({
     bank: {
       selectedBank: { idCHB },
     },
-    customerUser: { user },
   } = useLoloContext()
 
   const formMethods = useForm<Omit<ExtContactType, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'>>({

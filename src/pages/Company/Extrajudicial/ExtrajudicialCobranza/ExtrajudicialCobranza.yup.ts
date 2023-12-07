@@ -6,8 +6,16 @@ import yup from '../../../../shared/yupLocale'
 const ExtrajudicialCobranzaSchema: yup.SchemaOf<Omit<ClientType, 'id' | 'createdAt'>> = yup.object().shape({
   code: yup.string().required().matches(/^\d*$/),
   negotiationId: yup.number().required().min(1),
-  dniOrRuc: yup.string().optional().max(20),
-  name: yup.string().required().min(5).max(200),
+  dniOrRuc: yup
+    .string()
+    .optional()
+    .matches(/^\d{8}$|^\d{11}$/),
+  name: yup
+    .string()
+    .required()
+    .min(5)
+    .max(200)
+    .matches(/^[^\d]+$/),
   salePerimeter: yup.string().optional(),
   phone: yup.string().optional(),
   email: yup.string().optional(),
