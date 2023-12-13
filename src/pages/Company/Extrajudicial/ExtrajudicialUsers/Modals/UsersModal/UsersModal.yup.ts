@@ -5,8 +5,16 @@ import { CustomerUserType } from '@/types/dash/customer-user.type'
 const UsersModal: yup.SchemaOf<
   Omit<CustomerUserType, 'customerId' | 'createdAt' | 'id' | 'permissions' | 'role' | 'loginAttempts'>
 > = yup.object().shape({
-  name: yup.string().min(3).required(),
-  lastName: yup.string().min(3).required(),
+  name: yup
+    .string()
+    .min(3)
+    .required()
+    .matches(/^[^\d]+$/),
+  lastName: yup
+    .string()
+    .min(3)
+    .required()
+    .matches(/^[^\d]+$/),
   phone: yup.string().min(9).max(9).required(),
   dni: yup.string().min(8).max(8).required(),
   email: yup.string().email('No tiene un formato válido').required('Este campo es requerido'),

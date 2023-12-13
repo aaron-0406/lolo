@@ -4,7 +4,11 @@ import { ManagementActionType } from '@/types/extrajudicial/management-action.ty
 
 const ModalActions: yup.SchemaOf<Omit<ManagementActionType, 'customerHasBankId' | 'id'>> = yup.object().shape({
   codeAction: yup.string().required().max(10),
-  nameAction: yup.string().required().max(150),
+  nameAction: yup
+    .string()
+    .required()
+    .max(150)
+    .matches(/^[^\d]+$/),
   codeSubTypeManagement: yup.string().required().max(10),
 })
 

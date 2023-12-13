@@ -3,7 +3,12 @@ import yup from '../../../../../../../shared/yupLocale'
 import { RoleType } from '@/types/dash/role.type'
 
 const RoleModal: yup.SchemaOf<Omit<RoleType, 'id'>> = yup.object().shape({
-  name: yup.string().min(1).max(150).required(),
+  name: yup
+    .string()
+    .min(1)
+    .max(150)
+    .required()
+    .matches(/^[^\d]+$/),
   customerId: yup.number().min(1).required(),
   permissions: yup.array().of(yup.number()).optional(),
 })
