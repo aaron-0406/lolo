@@ -8,7 +8,6 @@ import Modal from '@/ui/Modal'
 import ModalAddresses from './ModalAddresses'
 import ModalFiadores from './ModalFiadores'
 import ModalFiles from './ModalFiles/ModalFiles'
-import ModalProducts from './ModalProducts'
 import paths from '../../../../../../shared/routes/paths'
 import { useLoloContext } from '@/contexts/LoloProvider'
 
@@ -29,8 +28,6 @@ const CobranzaInfoModals = () => {
 
   const { visible: visibleModalFiles, showModal: showModalFiles, hideModal: hideModalFiles } = useModal()
 
-  const { visible: visibleModalProducts, showModal: showModalProducts, hideModal: hideModalProducts } = useModal()
-
   const clientId = getValues('id')
   const code = watch('code')
 
@@ -40,6 +37,10 @@ const CobranzaInfoModals = () => {
 
   const onClickContact = () => {
     navigate(`${paths.cobranza.cobranzaContacts(urlIdentifier, code)}`)
+  }
+
+  const onClickProduct = () => {
+    navigate(`${paths.cobranza.cobranzaProducts(urlIdentifier, code)}`)
   }
 
   return (
@@ -89,7 +90,7 @@ const CobranzaInfoModals = () => {
         width="150px"
         label="Productos"
         disabled={!clientId}
-        onClick={showModalProducts}
+        onClick={onClickProduct}
         permission="P02-02-06"
       />
 
@@ -102,6 +103,7 @@ const CobranzaInfoModals = () => {
       >
         <ModalFiadores clientId={clientId} />
       </Modal>
+
       <Modal
         id="modal-files"
         title="Archivos"
@@ -122,18 +124,6 @@ const CobranzaInfoModals = () => {
           width="100%"
         >
           <ModalAddresses clientId={clientId} />
-        </Container>
-      </Modal>
-      <Modal id="modal-products" title="Productos" visible={visibleModalProducts} onClose={hideModalProducts}>
-        <Container
-          display="flex"
-          flexDirection="column"
-          position="relative"
-          overFlowY="auto"
-          height="100%"
-          width="100%"
-        >
-          <ModalProducts clientCode={code} />
         </Container>
       </Modal>
     </Container>

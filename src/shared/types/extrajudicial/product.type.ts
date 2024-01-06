@@ -5,8 +5,6 @@ export type ProductType = {
   state: string
   clientCode: string
   customerId: number
-  funcionarioId: string
-  cityId: string
 }
 
-export type ProductTypeName = ProductType & { clientName: string }
+export type ProductTypeName = ProductType & { clientName: string; funcionarioId: string; cityId: string }

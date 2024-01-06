@@ -5,6 +5,10 @@ const API = axiosClient.getUri()
 
 const url = `${API}/cobranza/product`
 
+export const getProductById = async (id: number) => {
+  return await axiosClient.get(`${url}/client-by-id/${id}`)
+}
+
 export const getProductsByClientCode = async (code: string) => {
   return await axiosClient.get(`${url}/client/${code}`)
 }

@@ -21,7 +21,6 @@ import ExtrajudicialFuncionarios from '@/pages/extrajudicial/ExtrajudicialFuncio
 import ExtrajudicialNegotiations from '@/pages/extrajudicial/ExtrajudicialNegotiations'
 import ExtrajudicialProfile from '@/pages/extrajudicial/ExtrajudicialProfile'
 import ExtrajudicialCobranza from '@/pages/extrajudicial/ExtrajudicialCobranza'
-import ExtrajudicialCobranzaComments from '@/pages/extrajudicial/ExtrajudicialCobranzaComments/ExtrajudicialCobranzaComments'
 import ExtrajudicialTemplate from '@/pages/extrajudicial/ExtrajudicialTemplate'
 import Dashboard from '@/pages/extrajudicial/ExtrajudicialDashboard/Dashboard'
 import ExtrajudicialMetas from '@/pages/extrajudicial/ExtrajudicialMetas'
@@ -29,7 +28,9 @@ import ExtrajudicialCustomers from '@/pages/extrajudicial/ExtrajudicialCustomers
 import ExtrajudicialRoles from '@/pages/extrajudicial/ExtrajudicialRoles'
 import ExtrajudicialdUsers from '@/pages/extrajudicial/ExtrajudicialUsers/ExtrajudicialdUsers'
 import ExtrajudicialUserLogs from '@/pages/extrajudicial/ExtrajudicialUserLogs'
+import ExtrajudicialCobranzaComments from '@/pages/extrajudicial/ExtrajudicialCobranzaComments/ExtrajudicialCobranzaComments'
 import ExtrajudicialCobranzaContacts from '@/pages/extrajudicial/ExtrajudicialCobranzaContacts'
+import ExtrajudicialCobranzaProducts from '@/pages/extrajudicial/ExtrajudicialCobranzaProducts'
 
 //JUDICIAL
 import ErrorPage from '../../../pages/ErrorPage'
@@ -79,6 +80,7 @@ const AppRouter = () => {
         <Route path={paths.cobranza.cobranza()} element={<ExtrajudicialCobranza />} />
         <Route path={paths.cobranza.cobranzaComments()} element={<ExtrajudicialCobranzaComments />} />
         <Route path={paths.cobranza.cobranzaContacts()} element={<ExtrajudicialCobranzaContacts />} />
+        <Route path={paths.cobranza.cobranzaProducts()} element={<ExtrajudicialCobranzaProducts />} />
         <Route path={paths.cobranza.metas()} element={<ExtrajudicialMetas />} />
         <Route path={paths.cobranza.document()} element={<ExtrajudicialTemplate />} />
         <Route path={paths.cobranza.dashboard()} element={<Dashboard />} />

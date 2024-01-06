@@ -1,16 +1,19 @@
-import Container from '@/ui/Container'
-import Label from '@/ui/Label'
-import { Controller, useFormContext } from 'react-hook-form'
-import TextAreaField from '@/ui/fields/TextAreaField'
-import { ProductFormType } from '../hookforms.interfaces'
-import { SelectItemType } from '@/ui/Select/interfaces'
+import { ProductType } from '@/types/extrajudicial/product.type'
 import Select from '@/ui/Select'
+import { SelectItemType } from '@/ui/Select/interfaces'
+import TextField from '@/ui/fields/TextField'
+import { Controller, useFormContext } from 'react-hook-form'
 
-const ModalProductsInfo = () => {
+type CobranzaProductsInfoFormProps = {
+  clientId: number
+  isEdit: boolean
+}
+
+const CobranzaProductsInfoForm = ({ clientId, isEdit }: CobranzaProductsInfoFormProps) => {
   const {
     control,
     formState: { errors },
-  } = useFormContext<ProductFormType>()
+  } = useFormContext<ProductType>()
 
   const optionsNames: Array<SelectItemType> = [
     { key: 'ADELANTO SUELDO ATRASO', label: 'ADELANTO SUELDO ATRASO' },
@@ -45,70 +48,69 @@ const ModalProductsInfo = () => {
     { key: 'VISA PLATINUM LAN', label: 'VISA PLATINUM LAN' },
     { key: 'VISA SIGNATURE', label: 'VISA SIGNATURE' },
   ]
+
   const optionsStates: Array<SelectItemType> = [
     { key: 'ACTIVA', label: 'ACTIVA' },
     { key: 'CASTIGO', label: 'CASTIGO' },
   ]
+
   return (
-    <Container width="100%" display="flex" flexDirection="column" gap="10px">
-      <Container width="100%" display="flex" gap="10px">
-        <Label label="Código: " />
-        <Controller
-          name="code"
-          control={control}
-          render={({ field }) => (
-            <TextAreaField
-              width="100%"
-              rows={1}
-              value={field.value}
-              onChange={field.onChange}
-              hasError={!!errors.code}
-            />
-          )}
-        />
-      </Container>
+    <>
+      <Controller
+        name="code"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            disabled={!clientId}
+            readOnly={isEdit}
+            width="100%"
+            label="Código:"
+            value={field.value}
+            hasError={!!errors.code}
+            onChange={(e) => {
+              field.onChange(e.target.value)
+            }}
+          />
+        )}
+      />
 
-      <Container width="100%" display="flex" gap="10px">
-        <Label label="Nombre:" />
+      <Controller
+        name="name"
+        control={control}
+        render={({ field }) => (
+          <Select
+            disabled={!clientId}
+            width="100%"
+            label="Nombre:"
+            value={field.value}
+            options={optionsNames}
+            onChange={(key) => {
+              field.onChange(key)
+            }}
+            hasError={!!errors.name}
+          />
+        )}
+      />
 
-        <Controller
-          name="name"
-          control={control}
-          render={({ field }) => (
-            <Select
-              width="100%"
-              value={String(field.value)}
-              options={optionsNames}
-              onChange={(key) => {
-                field.onChange(key)
-              }}
-              hasError={!!errors.name}
-            />
-          )}
-        />
-      </Container>
-
-      <Container width="100%" display="flex" gap="10px">
-        <Label label="Estado:" />
-
-        <Controller
-          name="state"
-          control={control}
-          render={({ field }) => (
-            <Select
-              width="100%"
-              value={String(field.value)}
-              options={optionsStates}
-              onChange={(key) => {
-                field.onChange(key)
-              }}
-              hasError={!!errors.state}
-            />
-          )}
-        />
-      </Container>
-    </Container>
+      <Controller
+        name="state"
+        control={control}
+        render={({ field }) => (
+          <Select
+            disabled={!clientId}
+            width="100%"
+            label="Estado:"
+            value={field.value}
+            options={optionsStates}
+            onChange={(key) => {
+              field.onChange(key)
+            }}
+            hasError={!!errors.state}
+          />
+        )}
+      />
+    </>
   )
 }
 
-export default ModalProductsInfo
+export default CobranzaProductsInfoForm
