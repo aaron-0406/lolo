@@ -5,7 +5,6 @@ import { ClientType } from '@/types/extrajudicial/client.type'
 import Button from '@/ui/Button'
 import Container from '@/ui/Container'
 import Modal from '@/ui/Modal'
-import ModalAddresses from './ModalAddresses'
 import ModalFiadores from './ModalFiadores'
 import ModalFiles from './ModalFiles/ModalFiles'
 import paths from '../../../../../../shared/routes/paths'
@@ -24,8 +23,6 @@ const CobranzaInfoModals = () => {
 
   const { visible: visibleModalFiadores, showModal: showModalFiadores, hideModal: hideModalFiadores } = useModal()
 
-  const { visible: visibleModalAddresses, showModal: showModalAddresses, hideModal: hideModalAddresses } = useModal()
-
   const { visible: visibleModalFiles, showModal: showModalFiles, hideModal: hideModalFiles } = useModal()
 
   const clientId = getValues('id')
@@ -41,6 +38,10 @@ const CobranzaInfoModals = () => {
 
   const onClickProduct = () => {
     navigate(`${paths.cobranza.cobranzaProducts(urlIdentifier, code)}`)
+  }
+
+  const onClickAddress = () => {
+    navigate(`${paths.cobranza.cobranzaAddresses(urlIdentifier, code)}`)
   }
 
   return (
@@ -82,7 +83,7 @@ const CobranzaInfoModals = () => {
         width="160px"
         label="Direcciones"
         disabled={!clientId}
-        onClick={showModalAddresses}
+        onClick={onClickAddress}
         permission="P02-02-05"
       />
       <Button
@@ -112,19 +113,6 @@ const CobranzaInfoModals = () => {
         contentOverflowY="auto"
       >
         <ModalFiles clientId={clientId} code={Number(code)} />
-      </Modal>
-
-      <Modal id="modal-addresses" title="Direcciones" visible={visibleModalAddresses} onClose={hideModalAddresses}>
-        <Container
-          display="flex"
-          flexDirection="column"
-          position="relative"
-          overFlowY="auto"
-          height="100%"
-          width="100%"
-        >
-          <ModalAddresses clientId={clientId} />
-        </Container>
       </Modal>
     </Container>
   )
