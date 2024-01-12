@@ -8,16 +8,16 @@ export const addressesColumns: ColumProps[] = [
     justifyContent: 'center',
   },
   {
-    id: 'addresses.datatable.header.direction',
-    title: 'NOMBRE',
-    width: '60%',
-    justifyContent: 'left',
-  },
-  {
     id: 'addresses.datatable.header.type',
     title: 'TIPO',
     width: '10%',
     justifyContent: 'center',
+  },
+  {
+    id: 'addresses.datatable.header.direction',
+    title: 'NOMBRE',
+    width: '60%',
+    justifyContent: 'left',
   },
   {
     id: 'addresses.datatable.header.createdat',

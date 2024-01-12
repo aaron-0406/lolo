@@ -87,8 +87,8 @@ const CobranzaAddressesTable = ({ clientId }: CobranzaAddressesTableProps) => {
                     {record.type || ''}
                   </Text.Body>
                 </BodyCell>
-                <BodyCell textAlign="center">
-                  <Text.Body size="m" weight="bold" color="Primary5">
+                <BodyCell textAlign="left">
+                  <Text.Body size="m" weight="regular">
                     {record.direction || ''}
                   </Text.Body>
                 </BodyCell>
