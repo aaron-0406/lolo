@@ -123,8 +123,6 @@ const CobranzaFilesModal = ({
     onClose()
   }
 
-  //comment test
-
   useEffect(() => {
     if (!!idFile) {
       refetchGetCobranzaFileById()
