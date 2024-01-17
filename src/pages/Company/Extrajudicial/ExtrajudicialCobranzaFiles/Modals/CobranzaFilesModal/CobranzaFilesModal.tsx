@@ -123,6 +123,8 @@ const CobranzaFilesModal = ({
     onClose()
   }
 
+  const isThereFile = formData.getAll('file').length
+
   useEffect(() => {
     if (!!idFile) {
       refetchGetCobranzaFileById()
@@ -138,7 +140,7 @@ const CobranzaFilesModal = ({
         title={isEdit ? 'Editar Archivo' : 'Agregar Archivo'}
         contentOverflowY="auto"
         size="small"
-        minHeight="430px"
+        minHeight="150px"
         footer={
           <Container width="100%" height="75px" display="flex" justifyContent="end" alignItems="center" gap="20px">
             <Button
@@ -148,14 +150,14 @@ const CobranzaFilesModal = ({
               trailingIcon="ri-add-fill"
               onClick={isEdit ? onAddFile : onAddFile}
               loading={loadingCreateCobranzaFile}
-              disabled={!isValid}
+              disabled={!isThereFile || !isValid}
             />
           </Container>
         }
       >
         <Container
           width="100%"
-          height="430px"
+          height="150px"
           display="flex"
           justify-content="center"
           flexDirection="column"
