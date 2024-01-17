@@ -6,7 +6,6 @@ import Button from '@/ui/Button'
 import Container from '@/ui/Container'
 import Modal from '@/ui/Modal'
 import ModalFiadores from './ModalFiadores'
-import ModalFiles from './ModalFiles/ModalFiles'
 import paths from '../../../../../../shared/routes/paths'
 import { useLoloContext } from '@/contexts/LoloProvider'
 
@@ -22,8 +21,6 @@ const CobranzaInfoModals = () => {
   const { getValues, watch } = useFormContext<ClientType>()
 
   const { visible: visibleModalFiadores, showModal: showModalFiadores, hideModal: hideModalFiadores } = useModal()
-
-  const { visible: visibleModalFiles, showModal: showModalFiles, hideModal: hideModalFiles } = useModal()
 
   const clientId = getValues('id')
   const code = watch('code')
@@ -42,6 +39,10 @@ const CobranzaInfoModals = () => {
 
   const onClickAddress = () => {
     navigate(`${paths.cobranza.cobranzaAddresses(urlIdentifier, code)}`)
+  }
+
+  const onClickFile = () => {
+    navigate(`${paths.cobranza.cobranzaFiles(urlIdentifier, code)}`)
   }
 
   return (
@@ -67,7 +68,7 @@ const CobranzaInfoModals = () => {
         width="150px"
         label="Archivos"
         disabled={!clientId}
-        onClick={showModalFiles}
+        onClick={onClickFile}
         permission="P02-02-03"
       />
       <Button
@@ -103,16 +104,6 @@ const CobranzaInfoModals = () => {
         contentOverflowY="auto"
       >
         <ModalFiadores clientId={clientId} />
-      </Modal>
-
-      <Modal
-        id="modal-files"
-        title="Archivos"
-        visible={visibleModalFiles}
-        onClose={hideModalFiles}
-        contentOverflowY="auto"
-      >
-        <ModalFiles clientId={clientId} code={Number(code)} />
       </Modal>
     </Container>
   )
