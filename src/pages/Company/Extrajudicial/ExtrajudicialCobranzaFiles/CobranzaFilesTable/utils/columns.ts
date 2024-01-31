@@ -20,6 +20,12 @@ export const filesColumns: ColumProps[] = [
     justifyContent: 'left',
   },
   {
+    id: 'files.datatable.header.tag',
+    title: 'ETIQUETAS',
+    width: '10%',
+    justifyContent: 'center',
+  },
+  {
     id: 'files.datatable.header.date',
     title: 'FECHA DE CREACIÓN',
     width: '10%',

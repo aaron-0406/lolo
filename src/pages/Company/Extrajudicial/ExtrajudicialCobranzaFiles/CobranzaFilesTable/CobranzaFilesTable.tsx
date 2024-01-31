@@ -20,6 +20,7 @@ import pdfIcon from '@/assets/icons/pdf.png'
 import wordIcon from '@/assets/icons/word-doc.png'
 import fileIcon from '@/assets/icons/file.png'
 import CobranzaFilesSeeModal from '../Modals/CobranzaFilesSeeModal'
+import Tag from '@/ui/Tag'
 
 type CobranzaFilesTableProps = {
   clientId?: number
@@ -99,6 +100,9 @@ const CobranzaFilesTable = ({ clientId, clientCode = 0 }: CobranzaFilesTableProp
                   <Text.Body size="m" weight="regular">
                     {record.originalName || ''}
                   </Text.Body>
+                </BodyCell>
+                <BodyCell textAlign="center">
+                  <Tag text="CONFIDENCIAL" color="#bbbb" />
                 </BodyCell>
                 <BodyCell textAlign="center">
                   <Text.Body size="m" weight="bold">
