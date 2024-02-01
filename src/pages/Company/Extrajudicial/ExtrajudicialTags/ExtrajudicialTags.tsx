@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import Container from '@/ui/Container'
 import TagsActions from './TagsActions'
 import TagsTable from './TagsTable'

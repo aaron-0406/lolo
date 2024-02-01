@@ -73,7 +73,7 @@ const CobranzaTagsModal = ({ visible, onClose, isEdit = false, idTag = 0 }: Cobr
   const tagGroups = data?.data ?? []
 
   const findTagGroupName = (id: number) => {
-    return tagGroups.find((group) => group.id == id)?.name
+    return tagGroups.find((group) => group.id === id)?.name
   }
 
   const { isLoading: loadingCreateCobranzaTag, mutate: createCobranzaTag } = useMutation<
