@@ -1,43 +1,34 @@
-import { useMutation, useQuery, useQueryClient } from 'react-query'
-import companyContactsCache, {
-  KEY_COBRANZA_URL_CONTACT_CODE_CACHE,
-} from '../../CobranzaContactsTable/utils/company-contacts.cache'
+import { useEffect } from 'react'
 import { useLoloContext } from '@/contexts/LoloProvider'
+import Button from '@/ui/Button'
+import Container from '@/ui/Container'
+import Modal from '@/ui/Modal'
 import { FormProvider, useForm } from 'react-hook-form'
-import { ExtContactType } from '@/types/extrajudicial/ext-contact.type'
-import { ModalCobranzaContactsResolver } from './CobranzaContactsModal.yup'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
+import companyTagsCache, { KEY_COBRANZA_URL_TAG_CODE_CACHE } from '../../TagsTable/utils/company-tags.cache'
+import { ExtTagType } from '@/types/extrajudicial/ext-tag.type'
+import { ModalCobranzaTagsResolver } from './CobranzaTagsModal.yup'
 import { AxiosError, AxiosResponse } from 'axios'
 import { CustomErrorResponse } from 'types/customErrorResponse'
-import { createExtContact, editExtContact, getExtContactsByID } from '@/services/extrajudicial/ext-contact.service'
+import { createExtTag, editExtTag, getExtTagByID } from '@/services/extrajudicial/ext-tag.service'
 import notification from '@/ui/notification'
-import { useEffect } from 'react'
-import Modal from '@/ui/Modal'
-import Container from '@/ui/Container'
-import Button from '@/ui/Button'
-import CobranzaContactsInfoForm from './CobranzaContactsInfoForm'
+import CobranzaTagsInfoForm from './CobranzaTagsInfoForm'
 
-type CobranzaContactsModalProps = {
+type CobranzaTagsModalProps = {
   visible: boolean
   onClose: () => void
   isEdit?: boolean
-  idContact?: number
-  clientId?: number
+  idTag?: number
 }
 
-const CobranzaContactsModal = ({
-  visible,
-  onClose,
-  isEdit = false,
-  idContact = 0,
-  clientId = 0,
-}: CobranzaContactsModalProps) => {
+const CobranzaTagsModal = ({ visible, onClose, isEdit = false, idTag = 0 }: CobranzaTagsModalProps) => {
   const queryClient = useQueryClient()
   const {
-    actions: { createCobranzaContactCache, editCobranzaContactCache },
+    actions: { createCobranzaTagCache, editCobranzaTagCache },
     onMutateCache,
     onSettledCache,
     onErrorCache,
-  } = companyContactsCache(queryClient)
+  } = companyTagsCache(queryClient)
 
   const {
     bank: {
@@ -45,15 +36,13 @@ const CobranzaContactsModal = ({
     },
   } = useLoloContext()
 
-  const formMethods = useForm<Omit<ExtContactType, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'>>({
-    resolver: ModalCobranzaContactsResolver,
+  const formMethods = useForm<Omit<ExtTagType, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'>>({
+    resolver: ModalCobranzaTagsResolver,
     mode: 'all',
     defaultValues: {
       name: '',
-      phone: '',
-      email: '',
-      state: 0,
-      clientId,
+      color: '',
+      tagGroupId: 0,
       customerHasBankId: parseInt(idCHB),
     },
   })
@@ -65,28 +54,28 @@ const CobranzaContactsModal = ({
     formState: { isValid },
   } = formMethods
 
-  const { isLoading: loadingCreateCobranzaContact, mutate: createCobranzaContact } = useMutation<
-    AxiosResponse<ExtContactType>,
+  const { isLoading: loadingCreateCobranzaTag, mutate: createCobranzaTag } = useMutation<
+    AxiosResponse<ExtTagType>,
     AxiosError<CustomErrorResponse>
   >(
     async () => {
       const { ...restClient } = getValues()
-      return await createExtContact({ ...restClient })
+      return await createExtTag({ ...restClient })
     },
     {
       onSuccess: (result) => {
-        createCobranzaContactCache(result.data)
-        notification({ type: 'success', message: 'Contacto creado' })
+        createCobranzaTagCache(result.data)
+        notification({ type: 'success', message: 'Etiqueta creada' })
         handleClickCloseModal()
       },
       onMutate: () => {
-        return onMutateCache(clientId)
+        return onMutateCache(parseInt(idCHB))
       },
       onSettled: () => {
-        onSettledCache(clientId)
+        onSettledCache(parseInt(idCHB))
       },
       onError: (error, _, context: any) => {
-        onErrorCache(context, clientId)
+        onErrorCache(context, parseInt(idCHB))
         notification({
           type: 'error',
           message: error.response?.data.message,
@@ -96,28 +85,28 @@ const CobranzaContactsModal = ({
     }
   )
 
-  const { isLoading: loadingEditCobranzaContact, mutate: editCobranzaContact } = useMutation<
-    AxiosResponse<ExtContactType>,
+  const { isLoading: loadingEditCobranzaTag, mutate: editCobranzaTag } = useMutation<
+    AxiosResponse<ExtTagType>,
     AxiosError<CustomErrorResponse>
   >(
     async () => {
       const { ...restClient } = getValues()
-      return await editExtContact({ ...restClient }, idContact)
+      return await editExtTag({ ...restClient }, idTag)
     },
     {
       onSuccess: (result) => {
-        editCobranzaContactCache(result.data)
-        notification({ type: 'success', message: 'Contacto editado' })
+        editCobranzaTagCache(result.data)
+        notification({ type: 'success', message: 'Etiqueta editada' })
         onClose()
       },
       onMutate: () => {
-        return onMutateCache(clientId)
+        return onMutateCache(parseInt(idCHB))
       },
       onSettled: () => {
-        onSettledCache(clientId)
+        onSettledCache(parseInt(idCHB))
       },
       onError: (error, _, context: any) => {
-        onErrorCache(context, clientId)
+        onErrorCache(context, parseInt(idCHB))
         notification({
           type: 'error',
           message: error.response?.data.message,
@@ -127,20 +116,18 @@ const CobranzaContactsModal = ({
     }
   )
 
-  const { refetch: refetchGetCobranzaContactById } = useQuery(
-    [`${KEY_COBRANZA_URL_CONTACT_CODE_CACHE}_GET_COMMENT_BY_ID`],
+  const { refetch: refetchGetCobranzaTagById } = useQuery(
+    [`${KEY_COBRANZA_URL_TAG_CODE_CACHE}_GET_TAG_BY_ID`],
     async () => {
-      return getExtContactsByID(idContact)
+      return getExtTagByID(idTag)
     },
     {
       onSuccess: ({ data }) => {
-        if (!!idContact) {
+        if (!!idTag) {
           setValue('name', data.name, { shouldValidate: true })
-          setValue('phone', data.phone, { shouldValidate: true })
-          setValue('email', data.email, { shouldValidate: true })
-          setValue('state', data.state, { shouldValidate: true })
+          setValue('color', data.color, { shouldValidate: true })
+          setValue('tagGroupId', data.tagGroupId, { shouldValidate: true })
           setValue('customerHasBankId', data.customerHasBankId, { shouldValidate: true })
-          setValue('clientId', data.clientId, { shouldValidate: true })
         } else {
           reset()
         }
@@ -149,12 +136,12 @@ const CobranzaContactsModal = ({
     }
   )
 
-  const onAddContact = () => {
-    createCobranzaContact()
+  const onAddTag = () => {
+    createCobranzaTag()
   }
 
-  const onEditContact = () => {
-    editCobranzaContact()
+  const onEditTag = () => {
+    editCobranzaTag()
   }
 
   const handleClickCloseModal = () => {
@@ -163,10 +150,10 @@ const CobranzaContactsModal = ({
   }
 
   useEffect(() => {
-    if (!!idContact) {
-      refetchGetCobranzaContactById()
+    if (!!idTag) {
+      refetchGetCobranzaTagById()
     }
-  }, [idContact, refetchGetCobranzaContactById])
+  }, [idTag, refetchGetCobranzaTagById])
 
   return (
     <FormProvider {...formMethods}>
@@ -174,7 +161,7 @@ const CobranzaContactsModal = ({
         visible={visible}
         onClose={handleClickCloseModal}
         id="modal-files"
-        title={isEdit ? 'Editar Contacto' : 'Agregar Contacto'}
+        title={isEdit ? 'Editar Etiqueta' : 'Agregar Etiqueta'}
         contentOverflowY="auto"
         size="small"
         minHeight="430px"
@@ -185,8 +172,8 @@ const CobranzaContactsModal = ({
               label={isEdit ? 'Editar' : 'Agregar'}
               shape="default"
               trailingIcon="ri-add-fill"
-              onClick={isEdit ? onEditContact : onAddContact}
-              loading={loadingCreateCobranzaContact || loadingEditCobranzaContact}
+              onClick={isEdit ? onEditTag : onAddTag}
+              loading={loadingCreateCobranzaTag || loadingEditCobranzaTag}
               disabled={!isValid}
             />
           </Container>
@@ -202,7 +189,7 @@ const CobranzaContactsModal = ({
           gap="20px"
         >
           <Container width="100%" display="flex" flexDirection="column" gap="10px" padding="20px">
-            <CobranzaContactsInfoForm clientId={clientId} />
+            <CobranzaTagsInfoForm />
           </Container>
         </Container>
       </Modal>
@@ -210,4 +197,4 @@ const CobranzaContactsModal = ({
   )
 }
 
-export default CobranzaContactsModal
+export default CobranzaTagsModal
