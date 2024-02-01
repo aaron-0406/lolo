@@ -4,7 +4,7 @@ import { ExtTagType } from '@/types/extrajudicial/ext-tag.type'
 
 export const KEY_COBRANZA_URL_TAG_CODE_CACHE = 'key-cobranza-url-tag-code-cache'
 
-type QueryDataType = AxiosResponse<ExtTagType[]> | undefined
+type QueryDataType = AxiosResponse<Array<ExtTagType>> | undefined
 
 const companyTagsCache = (queryClient: QueryClient) => {
   const createCobranzaTagCache = (data: ExtTagType) => {

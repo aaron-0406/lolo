@@ -52,7 +52,7 @@ const TagsTable = () => {
   }
 
   const { data, isLoading } = useQuery<AxiosResponse<Array<ExtTagType>, Error>>(
-    [KEY_COBRANZA_URL_TAG_CODE_CACHE, idCHB],
+    [KEY_COBRANZA_URL_TAG_CODE_CACHE, parseInt(idCHB)],
     async () => {
       return await getExtTagsByCHB(parseInt(idCHB))
     },
@@ -98,7 +98,7 @@ const TagsTable = () => {
                 </BodyCell>
                 <BodyCell textAlign="center">
                   <Text.Body size="m" weight="bold" color="Primary5">
-                    {record.tagGroupId || ''}
+                    {record?.extTagGroup?.name || ''}
                   </Text.Body>
                 </BodyCell>
                 <BodyCell textAlign="center">{moment(record.createdAt).format('DD-MM-YYYY') || ''}</BodyCell>

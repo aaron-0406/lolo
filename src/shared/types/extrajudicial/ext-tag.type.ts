@@ -1,3 +1,5 @@
+import { ExtTagGroupType } from './ext-tag-group.type'
+
 export type ExtTagType = {
   id: number
   name: string
@@ -7,4 +9,5 @@ export type ExtTagType = {
   createdAt: Date
   updatedAt: Date
   deletedAt: Date
+  extTagGroup?: ExtTagGroupType
 }
