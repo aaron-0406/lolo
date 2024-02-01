@@ -9,5 +9,5 @@ export type ExtTagType = {
   createdAt: Date
   updatedAt: Date
   deletedAt: Date
-  extTagGroup?: ExtTagGroupType
+  extTagGroup?: { name: string }
 }

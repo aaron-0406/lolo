@@ -13,6 +13,7 @@ import { CustomErrorResponse } from 'types/customErrorResponse'
 import { createExtTag, editExtTag, getExtTagByID } from '@/services/extrajudicial/ext-tag.service'
 import notification from '@/ui/notification'
 import CobranzaTagsInfoForm from './CobranzaTagsInfoForm'
+import { getExtTagGroupsByCHB } from '@/services/extrajudicial/ext-tag-group.service'
 
 type CobranzaTagsModalProps = {
   visible: boolean
@@ -54,6 +55,27 @@ const CobranzaTagsModal = ({ visible, onClose, isEdit = false, idTag = 0 }: Cobr
     formState: { isValid },
   } = formMethods
 
+  const { data } = useQuery<AxiosResponse<Array<ExtTagType>, Error>>(
+    [`${KEY_COBRANZA_URL_TAG_CODE_CACHE}-TAG-GROUP-BY-CHB`],
+    async () => {
+      return await getExtTagGroupsByCHB(parseInt(idCHB.length ? idCHB : '0'))
+    },
+    {
+      onError: (error: any) => {
+        notification({
+          type: 'error',
+          message: error.response.data.message,
+        })
+      },
+    }
+  )
+
+  const tagGroups = data?.data ?? []
+
+  const findTagGroupName = (id: number) => {
+    return tagGroups.find((group) => group.id == id)?.name
+  }
+
   const { isLoading: loadingCreateCobranzaTag, mutate: createCobranzaTag } = useMutation<
     AxiosResponse<ExtTagType>,
     AxiosError<CustomErrorResponse>
@@ -64,7 +86,10 @@ const CobranzaTagsModal = ({ visible, onClose, isEdit = false, idTag = 0 }: Cobr
     },
     {
       onSuccess: (result) => {
-        createCobranzaTagCache(result.data)
+        createCobranzaTagCache({
+          ...result.data,
+          extTagGroup: { name: findTagGroupName(result.data.tagGroupId) ?? '' },
+        })
         notification({ type: 'success', message: 'Etiqueta creada' })
         handleClickCloseModal()
       },
@@ -95,7 +120,7 @@ const CobranzaTagsModal = ({ visible, onClose, isEdit = false, idTag = 0 }: Cobr
     },
     {
       onSuccess: (result) => {
-        editCobranzaTagCache(result.data)
+        editCobranzaTagCache({ ...result.data, extTagGroup: { name: findTagGroupName(result.data.tagGroupId) ?? '' } })
         notification({ type: 'success', message: 'Etiqueta editada' })
         onClose()
       },
@@ -189,7 +214,7 @@ const CobranzaTagsModal = ({ visible, onClose, isEdit = false, idTag = 0 }: Cobr
           gap="20px"
         >
           <Container width="100%" display="flex" flexDirection="column" gap="10px" padding="20px">
-            <CobranzaTagsInfoForm />
+            <CobranzaTagsInfoForm tagGroups={tagGroups} />
           </Container>
         </Container>
       </Modal>

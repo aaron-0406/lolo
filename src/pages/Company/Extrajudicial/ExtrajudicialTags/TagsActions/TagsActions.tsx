@@ -3,8 +3,15 @@ import Button from '@/ui/Button'
 import Container from '@/ui/Container'
 import Text from '@/ui/Text'
 import CobranzaTagsModal from '../Modals/CobranzaTagsModal'
+import { useLoloContext } from '@/contexts/LoloProvider'
 
 const TagsActions = () => {
+  const {
+    bank: {
+      selectedBank: { idCHB },
+    },
+  } = useLoloContext()
+
   const { visible: visibleModalAdd, showModal: showModalAdd, hideModal: hideModalAdd } = useModal()
 
   const handleClickModal = () => {
@@ -31,11 +38,12 @@ const TagsActions = () => {
       </Container>
       <Container>
         <Button
+          disabled={!idCHB}
           onClick={handleClickButton}
           messageTooltip="Agregar etiqueta"
           trailingIcon="ri-add-fill"
           shape="round"
-          permission="P04-01"
+          permission="P14-01"
         />
         <CobranzaTagsModal visible={visibleModalAdd} onClose={handleClickModal} />
       </Container>

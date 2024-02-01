@@ -17,6 +17,7 @@ import { tagsColumns } from './utils/columns'
 import moment from 'moment'
 import CobranzaTagsModal from '../Modals/CobranzaTagsModal'
 import DeleteCobranzaTagsModal from '../Modals/DeleteCobranzaTagsModal'
+import Tag from '@/ui/Tag'
 
 const TagsTable = () => {
   const {
@@ -54,7 +55,7 @@ const TagsTable = () => {
   const { data, isLoading } = useQuery<AxiosResponse<Array<ExtTagType>, Error>>(
     [KEY_COBRANZA_URL_TAG_CODE_CACHE, parseInt(idCHB)],
     async () => {
-      return await getExtTagsByCHB(parseInt(idCHB))
+      return await getExtTagsByCHB(parseInt(idCHB.length ? idCHB : '0'))
     },
     {
       onError: (error: any) => {
@@ -93,7 +94,7 @@ const TagsTable = () => {
                 </BodyCell>
                 <BodyCell textAlign="center">
                   <Text.Body size="m" weight="bold" color="Primary5">
-                    {record.color || ''}
+                    <Tag color={record.color} text={record.color} />
                   </Text.Body>
                 </BodyCell>
                 <BodyCell textAlign="center">
