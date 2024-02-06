@@ -42,6 +42,7 @@ const CobranzaTagsModal = ({ visible, onClose, isEdit = false, idTag = 0 }: Cobr
     mode: 'all',
     defaultValues: {
       name: '',
+      action: false,
       color: '',
       tagGroupId: 0,
       customerHasBankId: parseInt(idCHB),
@@ -151,6 +152,7 @@ const CobranzaTagsModal = ({ visible, onClose, isEdit = false, idTag = 0 }: Cobr
         if (!!idTag) {
           setValue('name', data.name, { shouldValidate: true })
           setValue('color', data.color, { shouldValidate: true })
+          setValue('action', Boolean(data.action), { shouldValidate: true })
           setValue('tagGroupId', data.tagGroupId, { shouldValidate: true })
           setValue('customerHasBankId', data.customerHasBankId, { shouldValidate: true })
         } else {

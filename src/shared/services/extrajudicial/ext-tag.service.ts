@@ -21,6 +21,10 @@ export const editExtTag = async (tag: Omit<ExtTagType, 'id' | 'createdAt' | 'upd
   return await axiosClient.patch(`${url}/${id}`, tag)
 }
 
+export const updateExtTagAction = async (id: number, action: boolean) => {
+  return await axiosClient.patch(`${url}/action/${id}`, { action })
+}
+
 export const deleteExtTag = async (id: number) => {
   return await axiosClient.delete(`${url}/${id}`)
 }

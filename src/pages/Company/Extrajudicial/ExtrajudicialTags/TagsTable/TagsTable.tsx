@@ -18,6 +18,7 @@ import moment from 'moment'
 import CobranzaTagsModal from '../Modals/CobranzaTagsModal'
 import DeleteCobranzaTagsModal from '../Modals/DeleteCobranzaTagsModal'
 import Tag from '@/ui/Tag'
+import TagsSwitch from './TagsSwitch'
 
 const TagsTable = () => {
   const {
@@ -101,6 +102,9 @@ const TagsTable = () => {
                   <Text.Body size="m" weight="bold" color="Primary5">
                     {record?.extTagGroup?.name || ''}
                   </Text.Body>
+                </BodyCell>
+                <BodyCell textAlign="center">
+                  <TagsSwitch id={record.id} value={record.action} groupName={record?.extTagGroup?.name || ''} />
                 </BodyCell>
                 <BodyCell textAlign="center">{moment(record.createdAt).format('DD-MM-YYYY') || ''}</BodyCell>
                 <BodyCell textAlign="center">

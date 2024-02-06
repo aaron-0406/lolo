@@ -26,6 +26,12 @@ export const tagsColumns: ColumProps[] = [
     justifyContent: 'center',
   },
   {
+    id: 'tags.datatable.header.action',
+    title: 'ACTION',
+    width: '10%',
+    justifyContent: 'center',
+  },
+  {
     id: 'tags.datatable.header.date',
     title: 'FECHA DE CREACIÓN',
     width: '10%',
