@@ -22,6 +22,7 @@ export default {
     usuarios: (urlIdentifier = ':urlIdentifier') => `/${urlIdentifier}/usuarios`,
     roles: (urlIdentifier = ':urlIdentifier') => `/${urlIdentifier}/roles`,
     userLogs: (urlIdentifier = ':urlIdentifier') => `/${urlIdentifier}/usuario-logs`,
+    direccionesIp: (urlIdentifier = ':urlIdentifier') => `/${urlIdentifier}/banco-direcciones-ip`,
   },
   cobranza: {
     perfil: (urlIdentifier = ':urlIdentifier') => `/cobranza/${urlIdentifier}/perfil`,

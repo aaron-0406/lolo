@@ -1,9 +1,9 @@
 import axiosClient from '../../utils/api/clientAxios'
-import { DashIpAddressBankType } from '@/types/dash/dash-ip-address-bank.type'
+import { ExtIpAddressBankType } from '@/types/extrajudicial/ext-ip-address-bank.type'
 
 const API = axiosClient.getUri()
 
-const url = `${API}/dash/dash-ip-address-bank`
+const url = `${API}/cobranza/ip-address-bank`
 
 export const getAllIpAddress = async () => {
   return await axiosClient.get(`${url}`)
@@ -18,20 +18,20 @@ export const getIpAddressByIp = async (ip: number) => {
 }
 
 export const createIpAddress = async (
-  ipAddress: Omit<DashIpAddressBankType, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'>
+  ipAddress: Omit<ExtIpAddressBankType, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'>
 ) => {
   return await axiosClient.post(url, ipAddress)
 }
 
 export const editIpAddress = async (
-  ipAddress: Omit<DashIpAddressBankType, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'>,
+  ipAddress: Omit<ExtIpAddressBankType, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'>,
   id: number
 ) => {
-  return await axiosClient.patch(`${url}/${id}`, ipAddress)
+  return await axiosClient.put(`${url}/${id}`, ipAddress)
 }
 
 export const editStateIpAddress = async (id: number, state: boolean) => {
-  return await axiosClient.put(`${url}/state/${id}`, { state })
+  return await axiosClient.patch(`${url}/state/${id}`, { state })
 }
 
 export const deleteIpAddress = async (id: number) => {

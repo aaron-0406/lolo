@@ -16,17 +16,25 @@ export const ipAddressBankColumns: ColumProps[] = [
   {
     id: 'users.datatable.header.ip',
     title: 'IP',
-    width: '20%',
+    width: '15%',
+    justifyContent: 'center',
   },
   {
     id: 'users.datatable.header.state',
     title: 'ESTADO',
-    width: '20%',
+    width: '15%',
+    justifyContent: 'center',
   },
   {
     id: 'users.datatable.header.date',
     title: 'FECHA DE CREACIÓN',
     width: '20%',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
+  },
+  {
+    id: 'users.datatable.header.actions',
+    title: 'ACCIONES',
+    width: '20%',
+    justifyContent: 'center',
   },
 ]

@@ -33,6 +33,7 @@ import ExtrajudicialCobranzaContacts from '@/pages/extrajudicial/ExtrajudicialCo
 import ExtrajudicialCobranzaProducts from '@/pages/extrajudicial/ExtrajudicialCobranzaProducts'
 import ExtrajudicialCobranzaAddresses from '@/pages/extrajudicial/ExtrajudicialCobranzaAddresses'
 import ExtrajudicialCobranzaFiles from '@/pages/extrajudicial/ExtrajudicialCobranzaFiles'
+import ExtrajudicialIpAddressBank from '@/pages/extrajudicial/ExtrajudicialIpAddressBank'
 
 //JUDICIAL
 import ErrorPage from '../../../pages/ErrorPage'
@@ -77,6 +78,7 @@ const AppRouter = () => {
         <Route path={paths.company.roles()} element={<ExtrajudicialRoles />} />
         <Route path={paths.company.usuarios()} element={<ExtrajudicialdUsers />} />
         <Route path={paths.company.userLogs()} element={<ExtrajudicialUserLogs />} />
+        <Route path={paths.company.direccionesIp()} element={<ExtrajudicialIpAddressBank />} />
         <Route path={paths.cobranza.perfil()} element={<ExtrajudicialProfile />} />
         <Route path={paths.cobranza.clientes()} element={<ExtrajudicialCustomers />} />
         <Route path={paths.cobranza.cobranza()} element={<ExtrajudicialCobranza />} />
