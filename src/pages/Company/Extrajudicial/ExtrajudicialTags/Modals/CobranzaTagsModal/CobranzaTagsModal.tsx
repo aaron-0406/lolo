@@ -58,9 +58,6 @@ const CobranzaTagsModal = ({ visible, onClose, isEdit = false, idTag = 0 }: Cobr
 
   const { data } = useQuery<AxiosResponse<Array<ExtTagType>, Error>>(
     [`${KEY_COBRANZA_URL_TAG_CODE_CACHE}-TAG-GROUP-BY-CHB`],
-    async () => {
-      return await getExtTagGroupsByCHB(parseInt(idCHB.length ? idCHB : '0'))
-    },
     {
       onError: (error: any) => {
         notification({

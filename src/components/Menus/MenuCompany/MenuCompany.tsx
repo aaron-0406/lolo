@@ -12,6 +12,11 @@ import storage from '../../../shared/utils/storage'
 import Container from '@/ui/Container'
 import Icon from '@/ui/Icon'
 import Text from '@/ui/Text'
+import { AxiosResponse } from 'axios'
+import { ExtTagType } from '@/types/extrajudicial/ext-tag.type'
+import { KEY_COBRANZA_URL_TAG_CODE_CACHE } from '@/pages/extrajudicial/ExtrajudicialTags/TagsTable/utils/company-tags.cache'
+import { getExtTagGroupsByCHB } from '@/services/extrajudicial/ext-tag-group.service'
+import notification from '@/ui/notification'
 
 type MenuCompanyProps = {
   children: JSX.Element
@@ -86,6 +91,21 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({ children, urlIdentifier }) =>
       },
       onError: () => {
         setIsLoadingUsers(false)
+      },
+    }
+  )
+
+  useQuery<AxiosResponse<Array<ExtTagType>, Error>>(
+    [`${KEY_COBRANZA_URL_TAG_CODE_CACHE}-TAG-GROUP-BY-CHB`],
+    async () => {
+      return await getExtTagGroupsByCHB(parseInt(selectedBank.idCHB.length ? selectedBank.idCHB : '0'))
+    },
+    {
+      onError: (error: any) => {
+        notification({
+          type: 'error',
+          message: error.response.data.message,
+        })
       },
     }
   )
