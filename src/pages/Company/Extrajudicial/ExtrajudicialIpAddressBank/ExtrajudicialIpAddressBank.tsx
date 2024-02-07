@@ -3,7 +3,6 @@ import IpAddressBankTable from './IpAddressBankTable'
 import IpAddressBankActions from './IpAddressBankActions'
 
 const ExtrajudicialIpAddressBank = () => {
-  
   return (
     <Container
       width="100%"

@@ -9,7 +9,7 @@ export const getAllIpAddress = async () => {
   return await axiosClient.get(`${url}`)
 }
 
-export const getIpAddressByID = async (id: number) => {
+export const getIpAddressById = async (id: number) => {
   return await axiosClient.get(`${url}/${id}`)
 }
 
@@ -27,7 +27,7 @@ export const editIpAddress = async (
   ipAddress: Omit<ExtIpAddressBankType, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'>,
   id: number
 ) => {
-  return await axiosClient.put(`${url}/${id}`, ipAddress)
+  return await axiosClient.patch(`${url}/${id}`, ipAddress)
 }
 
 export const editStateIpAddress = async (id: number, state: boolean) => {

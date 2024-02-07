@@ -1,4 +1,5 @@
-import { useEffect } from 'react'
+import { AxiosError, AxiosResponse } from 'axios'
+import { useEffect, useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import moment from 'moment'
 import { ExtIpAddressBankType } from '@/types/extrajudicial/ext-ip-address-bank.type'
@@ -9,10 +10,12 @@ import Table from '@/ui/Table'
 import BodyCell from '@/ui/Table/BodyCell'
 import EmptyStateCell from '@/ui/Table/EmptyStateCell'
 import Button from '@/ui/Button'
-import { AxiosError, AxiosResponse } from 'axios'
 import { CustomErrorResponse } from 'types/customErrorResponse'
 import notification from '@/ui/notification'
-import dashIpAddressBankCache from './utils/dash-ip-address-bank.cache'
+import useModal from '@/hooks/useModal'
+import dashIpAddressBankCache, { KEY_EXT_IP_ADDRESS_BANK_CACHE } from './utils/dash-ip-address-bank.cache'
+import IpAddressBankModal from '../Modals/IpAddressBankModal'
+import DeleteIpAddressBankModal from '../Modals/DeleteIpAddressBankModal'
 
 const IpAddressBankTable = () => {
   const queryClient = useQueryClient()
@@ -23,11 +26,33 @@ const IpAddressBankTable = () => {
     onErrorCache,
   } = dashIpAddressBankCache(queryClient)
 
+  const [idIpAddress, setIdIpAddress] = useState<number>(0)
+
+  const { visible: visibleModalIpAddress, showModal: showModalIpAddress, hideModal: hideModalIpAddress } = useModal()
+  const { visible: visibleDeleteIpAddress, showModal: showDeleteIpAddress, hideModal: hideDeleteIpAddress } = useModal()
+
   const handleClickButtonState = (state: boolean, id: number) => {
     editStateIp({ id, state })
   }
 
-  const { isLoading, refetch, data } = useQuery('get-all-ip-address', async () => {
+  const handleClickEditIpAddress = (id: number) => {
+    setIdIpAddress(id)
+    showModalIpAddress()
+  }
+
+  const handleClickDeleteIpAddress = (id: number) => {
+    setIdIpAddress(id)
+    showDeleteIpAddress()
+  }
+
+  const onCloseDeleteIpAddress = () => {
+    hideDeleteIpAddress()
+  }
+  const onCloseIpAddress = () => {
+    hideModalIpAddress()
+  }
+
+  const { isLoading, refetch, data } = useQuery(KEY_EXT_IP_ADDRESS_BANK_CACHE, async () => {
     return await getAllIpAddress()
   })
 
@@ -43,7 +68,7 @@ const IpAddressBankTable = () => {
     },
     {
       onSuccess: (result, { state }) => {
-        state
+        !state
           ? notification({ type: 'success', message: 'IP habilitada' })
           : notification({ type: 'success', message: 'IP inhabilitada' })
 
@@ -98,7 +123,7 @@ const IpAddressBankTable = () => {
                     {
                       <Button
                         onClick={() => {
-                          //   handleClickEditUser(record.id)
+                          handleClickEditIpAddress(record.id)
                         }}
                         shape="round"
                         size="small"
@@ -118,7 +143,7 @@ const IpAddressBankTable = () => {
                     {
                       <Button
                         onClick={() => {
-                          //   handleClickDeleteUser(record.id)
+                          handleClickDeleteIpAddress(record.id)
                         }}
                         shape="round"
                         size="small"
@@ -131,6 +156,14 @@ const IpAddressBankTable = () => {
             )
           })}
       </Table>
+
+      <IpAddressBankModal visible={visibleModalIpAddress} onClose={onCloseIpAddress} idIpAddress={idIpAddress} isEdit />
+
+      <DeleteIpAddressBankModal
+        visible={visibleDeleteIpAddress}
+        onClose={onCloseDeleteIpAddress}
+        idIpAddress={idIpAddress}
+      />
     </Container>
   )
 }
