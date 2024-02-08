@@ -9,6 +9,10 @@ export const getExtTagsByCHB = async (chb: number) => {
   return await axiosClient.get(`${url}/all-data-by-chb/${chb}`)
 }
 
+export const getExtTagsByCHBAndTagGroupId = async (chb: number, tagGroupId: number) => {
+  return await axiosClient.get(`${url}/all-data-by-chb-and-tag-group-id/${chb}/${tagGroupId}`)
+}
+
 export const getExtTagByID = async (id: number) => {
   return await axiosClient.get(`${url}/${id}`)
 }

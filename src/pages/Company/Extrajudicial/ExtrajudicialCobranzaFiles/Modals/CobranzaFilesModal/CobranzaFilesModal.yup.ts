@@ -6,6 +6,7 @@ const ModalCobranzaFiles: yup.SchemaOf<Omit<FileType, 'id' | 'name' | 'originalN
   .object()
   .shape({
     clientId: yup.number().required(),
+    tagId: yup.number().required(),
   })
 
 export const ModalCobranzaFilesResolver = yupResolver(ModalCobranzaFiles)

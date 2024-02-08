@@ -13,7 +13,6 @@ import { CustomErrorResponse } from 'types/customErrorResponse'
 import { createExtTag, editExtTag, getExtTagByID } from '@/services/extrajudicial/ext-tag.service'
 import notification from '@/ui/notification'
 import CobranzaTagsInfoForm from './CobranzaTagsInfoForm'
-import { getExtTagGroupsByCHB } from '@/services/extrajudicial/ext-tag-group.service'
 
 type CobranzaTagsModalProps = {
   visible: boolean

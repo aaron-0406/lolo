@@ -57,6 +57,7 @@ const CobranzaFilesModal = ({
   })
 
   const {
+    getValues,
     setValue,
     reset,
     formState: { isValid },
@@ -67,7 +68,15 @@ const CobranzaFilesModal = ({
     AxiosError<CustomErrorResponse>
   >(
     async () => {
-      return await postCreateFile(formData, Number(customer.id), Number(selectedBank.idCHB), clientCode, clientId)
+      const { tagId } = getValues()
+      return await postCreateFile(
+        formData,
+        Number(customer.id),
+        Number(selectedBank.idCHB),
+        clientCode,
+        clientId,
+        tagId
+      )
     },
     {
       onSuccess: (result) => {
@@ -140,7 +149,7 @@ const CobranzaFilesModal = ({
         title={isEdit ? 'Editar Archivo' : 'Agregar Archivo'}
         contentOverflowY="auto"
         size="small"
-        minHeight="150px"
+        minHeight="60vh"
         footer={
           <Container width="100%" height="75px" display="flex" justifyContent="end" alignItems="center" gap="20px">
             <Button
@@ -150,14 +159,14 @@ const CobranzaFilesModal = ({
               trailingIcon="ri-add-fill"
               onClick={isEdit ? onAddFile : onAddFile}
               loading={loadingCreateCobranzaFile}
-              disabled={!isThereFile || !isValid}
+              disabled={!isValid || !isThereFile}
             />
           </Container>
         }
       >
         <Container
           width="100%"
-          height="150px"
+          height="60vh"
           display="flex"
           justify-content="center"
           flexDirection="column"
@@ -165,11 +174,7 @@ const CobranzaFilesModal = ({
           gap="20px"
         >
           <Container width="100%" display="flex" flexDirection="column" gap="10px" padding="20px">
-            <CobranzaFilesInfoForm
-              clientId={clientId}
-              setStateFormData={setStateFormData}
-              loading={loadingCreateCobranzaFile}
-            />
+            <CobranzaFilesInfoForm setStateFormData={setStateFormData} />
           </Container>
         </Container>
       </Modal>

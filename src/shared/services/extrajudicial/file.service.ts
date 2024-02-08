@@ -4,8 +4,15 @@ const API = axiosClient.getUri()
 
 const url = `${API}/cobranza/file`
 
-export const postCreateFile = async (formData: FormData, idCustomer: number, chb: number, code: number, id: number) => {
-  return await axiosClient.post(`${url}/${idCustomer}/${chb}/${code}/${id}`, formData, {
+export const postCreateFile = async (
+  formData: FormData,
+  idCustomer: number,
+  chb: number,
+  code: number,
+  id: number,
+  tagId: number
+) => {
+  return await axiosClient.post(`${url}/${idCustomer}/${chb}/${code}/${id}/${tagId}`, formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
   })
 }

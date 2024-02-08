@@ -6,7 +6,6 @@ import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { postDashboardXslx } from '@/services/extrajudicial/dashboard.service'
 import Button from '@/ui/Button'
 import Container from '@/ui/Container'
-import InputFile from '@/ui/inputs/InputFile'
 import notification from '@/ui/notification'
 import { DashFormType } from '../hookform.type'
 import Modal from '@/ui/Modal'
@@ -31,6 +30,7 @@ const Form = ({ setLoading }: FormProps) => {
 
   const { visible: visibleModalUsers, showModal: showModalUsers, hideModal: hideModalUsers } = useModal()
 
+  // eslint-disable-next-line
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) setFile(e.target.files[0])
   }
@@ -68,7 +68,7 @@ const Form = ({ setLoading }: FormProps) => {
 
   return (
     <Container display="flex" padding="10px 0 0 0" justifyContent="center" alignItems="center" gap="20px">
-      <InputFile onChange={handleChangeInput}></InputFile>
+      {/* <InputFile onChange={handleChangeInput}></InputFile> */}
       <Button
         onClick={handleSubmitForm}
         label={greaterThanDesktopS && 'Enviar Archivo'}
