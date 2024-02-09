@@ -5,4 +5,5 @@ export type FileType = {
   createdAt: Date
   clientId: number
   tagId: number
+  classificationTag?: { name: string; color: string }
 }

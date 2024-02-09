@@ -102,7 +102,14 @@ const CobranzaFilesTable = ({ clientId, clientCode = 0 }: CobranzaFilesTableProp
                   </Text.Body>
                 </BodyCell>
                 <BodyCell textAlign="center">
-                  <Tag text="CONFIDENCIAL" color="#bbbb" />
+                  {record.tagId ? (
+                    <Tag
+                      text={record.classificationTag?.name ?? 'SIN CLASIFICAR'}
+                      color={record.classificationTag?.color ?? '#bbbb'}
+                    />
+                  ) : (
+                    <Tag text="SIN CLASIFICAR" color="#bbbb" />
+                  )}
                 </BodyCell>
                 <BodyCell textAlign="center">
                   <Text.Body size="m" weight="bold">
