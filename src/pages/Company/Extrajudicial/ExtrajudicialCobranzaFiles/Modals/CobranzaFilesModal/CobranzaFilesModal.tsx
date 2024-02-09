@@ -15,6 +15,9 @@ import Container from '@/ui/Container'
 import Button from '@/ui/Button'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import CobranzaFilesInfoForm from './CobranzaFilesInfoForm'
+import { ExtTagType } from '@/types/extrajudicial/ext-tag.type'
+import { KEY_COBRANZA_URL_TAG_CODE_CACHE } from '@/pages/extrajudicial/ExtrajudicialTags/TagsTable/utils/company-tags.cache'
+import { getExtTagsByCHBAndTagGroupId } from '@/services/extrajudicial/ext-tag.service'
 
 type CobranzaFilesModalProps = {
   visible: boolean
@@ -80,7 +83,15 @@ const CobranzaFilesModal = ({
     },
     {
       onSuccess: (result) => {
-        createCobranzaFilesCache(result.data, clientId)
+        const { tagId } = getValues()
+        const tagsList = result.data.map((file) => {
+          return {
+            ...file,
+            classificationTag: { name: findTag(tagId)?.name ?? '', color: findTag(tagId)?.color ?? '' },
+          }
+        })
+
+        createCobranzaFilesCache(tagsList, clientId)
         notification({ type: 'success', message: 'Archivo creado' })
         handleClickCloseModal()
       },
@@ -118,6 +129,27 @@ const CobranzaFilesModal = ({
     }
   )
 
+  const { data } = useQuery<AxiosResponse<Array<ExtTagType>, Error>>(
+    [`${KEY_COBRANZA_URL_TAG_CODE_CACHE}-TAGS-BY-CHB-AND-TAG-GROUP-ID`],
+    async () => {
+      return await getExtTagsByCHBAndTagGroupId(parseInt(selectedBank.idCHB.length ? selectedBank.idCHB : '0'), 1)
+    },
+    {
+      onError: (error: any) => {
+        notification({
+          type: 'error',
+          message: error.response.data.message,
+        })
+      },
+    }
+  )
+
+  const tags = data?.data ?? []
+
+  const findTag = (id: number) => {
+    return tags.find((tag) => tag.id === id)
+  }
+
   const onAddFile = () => {
     createCobranzaFile()
   }
@@ -146,7 +178,7 @@ const CobranzaFilesModal = ({
         visible={visible}
         onClose={handleClickCloseModal}
         id="modal-files"
-        title={isEdit ? 'Editar Archivo' : 'Agregar Archivo'}
+        title={isEdit ? 'Editar Archivo' : 'Agregar Archivos'}
         contentOverflowY="auto"
         size="small"
         minHeight="60vh"
@@ -174,7 +206,7 @@ const CobranzaFilesModal = ({
           gap="20px"
         >
           <Container width="100%" display="flex" flexDirection="column" gap="10px" padding="20px">
-            <CobranzaFilesInfoForm setStateFormData={setStateFormData} />
+            <CobranzaFilesInfoForm setStateFormData={setStateFormData} tags={tags} />
           </Container>
         </Container>
       </Modal>
