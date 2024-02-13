@@ -97,9 +97,11 @@ const CobranzaFilesTable = ({ clientId, clientCode = 0 }: CobranzaFilesTableProp
                 <BodyCell textAlign="center">{key + 1 || ''}</BodyCell>
                 <BodyCell textAlign="center">{getIconFile(record.name)}</BodyCell>
                 <BodyCell textAlign="left">
-                  <Text.Body size="m" weight="regular">
-                    {record.originalName || ''}
-                  </Text.Body>
+                  <Container width="40vw" whiteSpace="nowrap" overFlowX="hidden" textOverflow="ellipsis">
+                    <Text.Body size="m" weight="regular">
+                      {record.originalName || ''}
+                    </Text.Body>
+                  </Container>
                 </BodyCell>
                 <BodyCell textAlign="center">
                   {record.tagId ? (
