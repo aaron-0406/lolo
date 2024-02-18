@@ -58,6 +58,7 @@ const CobranzaFilesInfoForm = ({ setStateFormData, tags }: CobranzaFilesInfoForm
           <Select
             width="100%"
             label="Clasificación de archivo:"
+            placeholder="Selecciona una clasificación"
             value={!!field.value ? String(field.value) : ''}
             options={optionsTags}
             onChange={(key) => {
