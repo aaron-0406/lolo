@@ -3,7 +3,7 @@ import companyFilesCache, {
   KEY_COBRANZA_URL_FILES_CODE_CACHE,
 } from '../../CobranzaFilesTable/utils/company-files.cache'
 import { editFile, getFileById } from '@/services/extrajudicial/file.service'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { FileType } from '@/types/extrajudicial/file.type'
 import { ModalCobranzaFilesEditResolver } from './CobranzaFilesEditModal.yup'
@@ -18,6 +18,7 @@ import { ExtTagType } from '@/types/extrajudicial/ext-tag.type'
 import { KEY_COBRANZA_URL_TAG_CODE_CACHE } from '@/pages/extrajudicial/ExtrajudicialTags/TagsTable/utils/company-tags.cache'
 import { getExtTagsByCHBAndTagGroupId } from '@/services/extrajudicial/ext-tag.service'
 import CobranzaFilesEditInfoForm from './CobranzaFilesEditInfoForm'
+import _ from 'lodash'
 
 type CobranzaFilesEditModalProps = {
   visible: boolean
@@ -35,6 +36,8 @@ const CobranzaFilesEditModal = ({
   clientCode = 0,
 }: CobranzaFilesEditModalProps) => {
   const queryClient = useQueryClient()
+  const [fileExtension, setFileExtension] = useState<string | null>(null)
+
   const {
     actions: { editCobranzaFilesCache },
     onMutateCache,
@@ -70,7 +73,8 @@ const CobranzaFilesEditModal = ({
   >(
     async () => {
       const { tagId, originalName } = getValues()
-      return await editFile({ originalName, tagId }, idFile)
+      const originalNameFile = addExtension(originalName)
+      return await editFile({ originalName: originalNameFile, tagId }, idFile)
     },
     {
       onSuccess: (result) => {
@@ -109,8 +113,11 @@ const CobranzaFilesEditModal = ({
     {
       onSuccess: ({ data }) => {
         if (!!idFile) {
+          const originalName = removeExtension(data.originalName)
+          setFileExtension(getExtension(data.originalName))
+
           setValue('clientId', data.clientId, { shouldValidate: true })
-          setValue('originalName', data.originalName, { shouldValidate: true })
+          setValue('originalName', originalName, { shouldValidate: true })
           setValue('tagId', data.tagId, { shouldValidate: true })
         } else {
           reset()
@@ -148,6 +155,19 @@ const CobranzaFilesEditModal = ({
   const handleClickCloseModal = () => {
     reset()
     onClose()
+  }
+
+  const removeExtension = (nameFile: string): string => {
+    return nameFile.replace(/\.[^.]+$/, '')
+  }
+
+  const addExtension = (fileName: string) => {
+    return `${fileName}.${fileExtension}`
+  }
+
+  const getExtension = (nameFile: string): string | null => {
+    const match = /\.([^.]+)$/.exec(nameFile)
+    return match ? match[1].toLowerCase() : null
   }
 
   useEffect(() => {
