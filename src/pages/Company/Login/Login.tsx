@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useMutation } from 'react-query'
 import LoginHeader from '../../../components/Login/LoginHeader'
@@ -12,6 +13,8 @@ import TextField from '@/ui/fields/TextField'
 import Icon from '@/ui/Icon'
 import notification from '@/ui/notification'
 import { LoginResolver } from './Login.yup'
+import QRCode from 'react-qr-code'
+import Text from '@/ui/Text'
 
 const Login = () => {
   const {
@@ -19,6 +22,8 @@ const Login = () => {
     customerUser: { setUser },
     auth: { setAuthenticate },
   } = useLoloContext()
+
+  const [qrCodeUrl, setQrCodeUrl] = useState('')
 
   const {
     handleSubmit,
@@ -33,6 +38,7 @@ const Login = () => {
       email: '',
       password: '',
       customerId: 0,
+      code2fa: '',
     },
   })
 
@@ -43,10 +49,15 @@ const Login = () => {
     },
     {
       onSuccess: ({ data }) => {
-        storage.set('token', data.token)
-        setUser(data.user)
-        setAuthenticate(true)
-        notification({ type: 'success', message: 'Bienvenido' })
+        if (data.qr) {
+          setQrCodeUrl(data.qr)
+          notification({ type: 'success', message: data.message })
+        } else {
+          storage.set('token', data.token)
+          setUser(data.user)
+          setAuthenticate(true)
+          notification({ type: 'success', message: 'Bienvenido' })
+        }
       },
       onError: (error: any) => {
         setAuthenticate(false)
@@ -57,17 +68,20 @@ const Login = () => {
       },
     }
   )
+
   const onLogin = () => {
     setValue('customerId', customer.id)
     handleSubmit(() => {
       loginQuery()
     })()
   }
+
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       onLogin()
     }
   }
+
   return (
     <StyledLoginContainer width="100%" height="100vh" display="flex" justifyContent="center" alignItems="center">
       <Container className="login__container" width="100%" height="100%">
@@ -80,10 +94,19 @@ const Login = () => {
           justifyContent="center"
           flexDirection="column"
           alignItems="center"
-          gap="52px"
+          gap="25px"
           padding="23px"
         >
-          <Icon remixClass="ri-user-line" size={120} color="Primary5" />
+          {qrCodeUrl ? (
+            <Container width="100%" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
+              <Text.Body size="s" weight="bold">
+                Escanea el código QR:
+              </Text.Body>
+              <QRCode value={qrCodeUrl} size={150} />
+            </Container>
+          ) : (
+            <Icon remixClass="ri-user-line" size={120} color="Primary5" />
+          )}
           <Container width="100%" display="flex" flexDirection="column" gap="30px">
             <Controller
               name="email"
@@ -101,6 +124,7 @@ const Login = () => {
                 />
               )}
             />
+
             <Controller
               name="password"
               control={control}
@@ -112,6 +136,23 @@ const Login = () => {
                   value={field.value}
                   helperText={errors.password?.message}
                   hasError={!!errors.password}
+                  onChange={field.onChange}
+                  onKeyPress={handleKeyPress}
+                />
+              )}
+            />
+
+            <Controller
+              name="code2fa"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  width="100%"
+                  label="Código de 6 dígitos"
+                  type="text"
+                  value={field.value}
+                  helperText={errors.code2fa?.message}
+                  hasError={!!errors.code2fa}
                   onChange={field.onChange}
                   onKeyPress={handleKeyPress}
                 />
