@@ -18,7 +18,6 @@ import { ExtTagType } from '@/types/extrajudicial/ext-tag.type'
 import { KEY_COBRANZA_URL_TAG_CODE_CACHE } from '@/pages/extrajudicial/ExtrajudicialTags/TagsTable/utils/company-tags.cache'
 import { getExtTagsByCHBAndTagGroupId } from '@/services/extrajudicial/ext-tag.service'
 import CobranzaFilesEditInfoForm from './CobranzaFilesEditInfoForm'
-import _ from 'lodash'
 
 type CobranzaFilesEditModalProps = {
   visible: boolean
