@@ -131,10 +131,9 @@ const StyledOrderTable = styled.table`
       background: ${theme.colors['Neutral2']};
     }
 
-    .active{
+    .active {
       background: ${theme.colors['Neutral2']};
     }
-    
   `}
 `
 

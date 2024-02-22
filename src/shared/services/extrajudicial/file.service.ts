@@ -20,6 +20,10 @@ export const getFiles = async (id: number) => {
   return await axiosClient.get(`${url}/${id}`)
 }
 
+export const editFile = async (data: { originalName: string; tagId: number }, id: number) => {
+  return await axiosClient.patch(`${url}/${id}`, data)
+}
+
 export const deleteFile = async (idCustomer: number, chb: number, code: number, id: number) => {
   return await axiosClient.delete(`${url}/${idCustomer}/${chb}/${code}/${id}`)
 }

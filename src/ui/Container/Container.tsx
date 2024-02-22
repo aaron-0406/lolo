@@ -31,6 +31,7 @@ export type ContainerProps = React.HTMLAttributes<HTMLDivElement> & {
   overFlowY?: CSS.Property.OverflowY
   cursor?: CSS.Property.Cursor
   backgroundColor?: CSS.Property.BackgroundColor
+  textOverflow?: CSS.Property.TextOverflow
 }
 
 const Container: React.FC<ContainerProps> = (props) => {
@@ -199,5 +200,11 @@ export const StyledContainer = styled.div<ContainerProps>`
     !!wordBreak &&
     css`
       word-break: ${wordBreak};
+    `}
+
+    ${({ textOverflow }) =>
+    !!textOverflow &&
+    css`
+      text-overflow: ${textOverflow};
     `}
 `

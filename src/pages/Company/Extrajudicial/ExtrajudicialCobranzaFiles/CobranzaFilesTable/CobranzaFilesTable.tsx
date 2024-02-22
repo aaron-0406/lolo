@@ -21,6 +21,7 @@ import wordIcon from '@/assets/icons/word-doc.png'
 import fileIcon from '@/assets/icons/file.png'
 import CobranzaFilesSeeModal from '../Modals/CobranzaFilesSeeModal'
 import Tag from '@/ui/Tag'
+import CobranzaFilesEditModal from '../Modals/CobranzaFilesEditModal'
 
 type CobranzaFilesTableProps = {
   clientId?: number
@@ -30,7 +31,9 @@ type CobranzaFilesTableProps = {
 const CobranzaFilesTable = ({ clientId, clientCode = 0 }: CobranzaFilesTableProps) => {
   const [idDeletedFile, setIdDeletedFile] = useState<number>(0)
   const [idSeeFile, setIdSeeFile] = useState<number>(0)
+  const [idEditFile, setIdEditFile] = useState<number>(0)
 
+  const { visible: visibleEditFile, showModal: showEditFile, hideModal: hideEditFile } = useModal()
   const { visible: visibleDeleteFile, showModal: showDeleteFile, hideModal: hideDeleteFile } = useModal()
   const { visible: visibleModalFile, showModal: showModalFile, hideModal: hideModalFile } = useModal()
 
@@ -52,6 +55,16 @@ const CobranzaFilesTable = ({ clientId, clientCode = 0 }: CobranzaFilesTableProp
   const onCloseModalSeeFile = () => {
     setIdSeeFile(0)
     hideModalFile()
+  }
+
+  const handleClickEditFile = (id: number) => {
+    setIdEditFile(id)
+    showEditFile()
+  }
+
+  const onCloseModalEditFile = () => {
+    setIdEditFile(0)
+    hideEditFile()
   }
 
   const getIconFile = (name: string): ReactNode => {
@@ -97,12 +110,21 @@ const CobranzaFilesTable = ({ clientId, clientCode = 0 }: CobranzaFilesTableProp
                 <BodyCell textAlign="center">{key + 1 || ''}</BodyCell>
                 <BodyCell textAlign="center">{getIconFile(record.name)}</BodyCell>
                 <BodyCell textAlign="left">
-                  <Text.Body size="m" weight="regular">
-                    {record.originalName || ''}
-                  </Text.Body>
+                  <Container width="40vw" whiteSpace="nowrap" overFlowX="hidden" textOverflow="ellipsis">
+                    <Text.Body size="m" weight="regular">
+                      {record.originalName || ''}
+                    </Text.Body>
+                  </Container>
                 </BodyCell>
                 <BodyCell textAlign="center">
-                  <Tag text="CONFIDENCIAL" color="#bbbb" />
+                  {record.tagId ? (
+                    <Tag
+                      text={record.classificationTag?.name ?? 'SIN CLASIFICAR'}
+                      color={record.classificationTag?.color ?? '#bbbb'}
+                    />
+                  ) : (
+                    <Tag text="SIN CLASIFICAR" color="#bbbb" />
+                  )}
                 </BodyCell>
                 <BodyCell textAlign="center">
                   <Text.Body size="m" weight="bold">
@@ -122,6 +144,16 @@ const CobranzaFilesTable = ({ clientId, clientCode = 0 }: CobranzaFilesTableProp
                         leadingIcon="ri-eye-line"
                         permission="P02-02-03-01"
                         display="default"
+                      />
+                      <Button
+                        onClick={(event) => {
+                          handleClickEditFile(record.id)
+                        }}
+                        messageTooltip="Editar archivo"
+                        shape="round"
+                        size="small"
+                        leadingIcon="ri-pencil-fill"
+                        permission="P02-02-03-04"
                       />
                       <Button
                         onClick={() => {
@@ -146,6 +178,14 @@ const CobranzaFilesTable = ({ clientId, clientCode = 0 }: CobranzaFilesTableProp
         visible={visibleModalFile}
         onClose={onCloseModalSeeFile}
         idFile={idSeeFile}
+        clientCode={clientCode}
+      />
+
+      <CobranzaFilesEditModal
+        visible={visibleEditFile}
+        onClose={onCloseModalEditFile}
+        idFile={idEditFile}
+        clientId={clientId}
         clientCode={clientCode}
       />
 

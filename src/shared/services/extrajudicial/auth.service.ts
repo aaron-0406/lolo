@@ -11,6 +11,7 @@ export type LoginAPI = {
   user: CustomerUserType
   token: string
   message: string
+  qr?: string
 }
 
 export type ResponseLogin = AxiosResponse<LoginAPI, LoginAPI>
