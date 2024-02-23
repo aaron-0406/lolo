@@ -24,13 +24,10 @@ type AddressTypeModalProps = {
   isEdit?: boolean
   idAddressType?: number
 }
-const defaultValuesAddressType: Omit<ExtAddressType, ''> = {
+const defaultValuesAddressType: Omit<ExtAddressType, 'createdAt' | 'updatedAt' | 'deletedAt'> = {
   id: 0,
   type: '',
   customerHasBankId: 0,
-  createdAt: new Date(),
-  updatedAt: new Date(),
-  deletedAt: new Date(),
 }
 
 const FuncionariosModal = ({ visible, onClose, isEdit = false, idAddressType = 0 }: AddressTypeModalProps) => {

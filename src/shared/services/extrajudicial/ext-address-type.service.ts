@@ -10,7 +10,7 @@ export const getAddressTypeByID = async (id: number) => {
 }
 
 export const getAddressesTypeByCHB = async (chb: number) => {
-  return await axiosClient.get(`${url}/chb/${chb}`)
+  return await axiosClient.get(`${url}/all/${chb}`)
 }
 
 export const createAddressType = async (

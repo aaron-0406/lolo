@@ -91,7 +91,7 @@ const ModalAddressesActions = () => {
   const onCleanFields = () => {
     setValue('id', 0)
     setValue('direction', '')
-    setValue('type', '')
+    setValue('addressTypeId', 0)
     setValue('createdAt', undefined)
   }
 

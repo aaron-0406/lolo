@@ -1,6 +1,7 @@
 import Container from '@/ui/Container/Container'
 import Button from '@/ui/Button/Button'
 import useModal from '@/hooks/useModal'
+import Text from '@/ui/Text'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import AddressTypeModal from '../Modals/AddressTypeModal'
 
@@ -22,7 +23,10 @@ const FuncionariosSearch = () => {
   }
 
   return (
-    <Container display="flex" width="100%" padding=" 0 20px">
+    <Container display="flex" width="100%" padding=" 0 20px" justifyContent="space-between" alignItems="center">
+      <Text.Body size="m" weight="bold">
+        TIPO DE DIRECCIONES
+      </Text.Body>
       <Button
         shape="round"
         leadingIcon="ri-add-fill"

@@ -80,7 +80,7 @@ const AddressesTypeTable = () => {
             return (
               <tr className="styled-data-table-row" key={record.id}>
                 <BodyCell textAlign="center">{`${key + 1 || ''}`}</BodyCell>
-                <BodyCell textAlign="left">{`${record.type || ''}`}</BodyCell>
+                <BodyCell textAlign="center">{`${record.type || ''}`}</BodyCell>
                 <BodyCell textAlign="center">{`${moment(record.createdAt).format('DD-MM-YYYY') || ''}`}</BodyCell>
                 <BodyCell textAlign="center">
                   {

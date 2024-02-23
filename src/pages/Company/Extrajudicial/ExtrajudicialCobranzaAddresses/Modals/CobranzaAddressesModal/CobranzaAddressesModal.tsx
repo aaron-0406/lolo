@@ -43,7 +43,7 @@ const CobranzaAddressesModal = ({
     mode: 'all',
     defaultValues: {
       direction: '',
-      type: '',
+      addressTypeId: 0,
       clientId,
     },
   })
@@ -126,7 +126,7 @@ const CobranzaAddressesModal = ({
       onSuccess: ({ data }) => {
         if (!!idAddress) {
           setValue('direction', data.direction, { shouldValidate: true })
-          setValue('type', data.type, { shouldValidate: true })
+          setValue('addressTypeId', data.type, { shouldValidate: true })
           setValue('clientId', data.clientId, { shouldValidate: true })
         } else {
           reset()
