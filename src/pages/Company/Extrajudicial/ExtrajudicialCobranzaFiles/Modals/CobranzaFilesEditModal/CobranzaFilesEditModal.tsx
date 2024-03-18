@@ -133,7 +133,7 @@ const CobranzaFilesEditModal = ({
       let tagId = 0
       if (selectedBank.idCHB == '1') {
         tagId = 1
-      } else if (selectedBank.idCHB == '4') {
+      } else if (selectedBank.idCHB == '7') {
         tagId = 4
       }
 
