@@ -13,7 +13,6 @@ import { CustomErrorResponse } from 'types/customErrorResponse'
 import { createExtTag, editExtTag, getExtTagByID } from '@/services/extrajudicial/ext-tag.service'
 import notification from '@/ui/notification'
 import CobranzaTagsInfoForm from './CobranzaTagsInfoForm'
-import { getExtTagGroupsByCHB } from '@/services/extrajudicial/ext-tag-group.service'
 
 type CobranzaTagsModalProps = {
   visible: boolean
@@ -42,6 +41,7 @@ const CobranzaTagsModal = ({ visible, onClose, isEdit = false, idTag = 0 }: Cobr
     mode: 'all',
     defaultValues: {
       name: '',
+      action: false,
       color: '',
       tagGroupId: 0,
       customerHasBankId: parseInt(idCHB),
@@ -57,9 +57,6 @@ const CobranzaTagsModal = ({ visible, onClose, isEdit = false, idTag = 0 }: Cobr
 
   const { data } = useQuery<AxiosResponse<Array<ExtTagType>, Error>>(
     [`${KEY_COBRANZA_URL_TAG_CODE_CACHE}-TAG-GROUP-BY-CHB`],
-    async () => {
-      return await getExtTagGroupsByCHB(parseInt(idCHB.length ? idCHB : '0'))
-    },
     {
       onError: (error: any) => {
         notification({
@@ -151,6 +148,7 @@ const CobranzaTagsModal = ({ visible, onClose, isEdit = false, idTag = 0 }: Cobr
         if (!!idTag) {
           setValue('name', data.name, { shouldValidate: true })
           setValue('color', data.color, { shouldValidate: true })
+          setValue('action', Boolean(data.action), { shouldValidate: true })
           setValue('tagGroupId', data.tagGroupId, { shouldValidate: true })
           setValue('customerHasBankId', data.customerHasBankId, { shouldValidate: true })
         } else {

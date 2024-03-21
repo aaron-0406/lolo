@@ -1,24 +1,28 @@
-import Container from '@/ui/Container'
-import Icon from '@/ui/Icon'
+import { ExtTagType } from '@/types/extrajudicial/ext-tag.type'
+import { FileType } from '@/types/extrajudicial/file.type'
+import Select from '@/ui/Select'
+import { SelectItemType } from '@/ui/Select/interfaces'
 import InputFile from '@/ui/inputs/InputFile'
 import notification from '@/ui/notification'
-import styled, { css } from 'styled-components'
-
-type ChangeEvent = React.ChangeEvent<HTMLInputElement>
+import { Controller, useFormContext } from 'react-hook-form'
 
 type CobranzaFilesInfoFormProps = {
-  clientId: number
   setStateFormData: (formData: FormData) => void
-  loading: boolean
+  tags: ExtTagType[]
 }
 
-const CobranzaFilesInfoForm = ({ clientId, setStateFormData, loading }: CobranzaFilesInfoFormProps) => {
-  const handleInputFileChange = async (e: ChangeEvent) => {
-    if (e.target.files) {
+const CobranzaFilesInfoForm = ({ setStateFormData, tags }: CobranzaFilesInfoFormProps) => {
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext<Omit<FileType, 'id' | 'name' | 'originalName' | 'createdAt'>>()
+
+  const handleInputFileChange = async (files: FileList | null) => {
+    if (files) {
       try {
         const formData = new FormData()
-        if (e.target.files.length > 0) {
-          const archivos = e.target.files
+        if (files.length > 0) {
+          const archivos = files
 
           for (let i = 0; i < archivos.length; i += 1) {
             const element = archivos[i]
@@ -26,6 +30,8 @@ const CobranzaFilesInfoForm = ({ clientId, setStateFormData, loading }: Cobranza
           }
 
           setStateFormData(formData)
+        } else {
+          setStateFormData(new FormData())
         }
       } catch (error: any) {
         notification({
@@ -36,63 +42,36 @@ const CobranzaFilesInfoForm = ({ clientId, setStateFormData, loading }: Cobranza
     }
   }
 
+  const optionsTags: Array<SelectItemType> = tags.map((tag) => {
+    return {
+      key: String(tag.id),
+      label: tag.name,
+    }
+  })
+
   return (
     <>
-      <InputFile onChange={handleInputFileChange} multiple />
-
-      <ContainerTableFile
-        backgroundColor={'#eff0f6ff'}
-        width="100%"
-        minHeight="90%"
-        padding="1rem"
-        overFlowY="auto"
-        maxHeight="90%"
-      >
-        {loading && (
-          <Container
-            backgroundColor="#eff0f6ff"
+      <Controller
+        name="tagId"
+        control={control}
+        render={({ field }) => (
+          <Select
             width="100%"
-            height="20%"
-            display="flex"
-            justifyContent="center"
-            padding="2rem 0"
-          >
-            <StyledIcon remixClass="ri-loader-line"></StyledIcon>
-          </Container>
+            label="Clasificación de archivo:"
+            placeholder="Selecciona una clasificación"
+            value={!!field.value ? String(field.value) : ''}
+            options={optionsTags}
+            onChange={(key) => {
+              field.onChange(parseInt(key))
+            }}
+            hasError={!!errors.tagId}
+          />
         )}
-      </ContainerTableFile>
+      />
+
+      <InputFile onChangeFiles={handleInputFileChange} multiple />
     </>
   )
 }
 
 export default CobranzaFilesInfoForm
-
-const StyledIcon = styled(Icon)`
-  animation: rotate 2s linear infinite;
-  @keyframes rotate {
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-`
-
-const ContainerTableFile = styled(Container)`
-  ${({ theme }) =>
-    css`
-      border: 2px solid ${theme.colors.Neutral4};
-      ::-webkit-scrollbar-thumb {
-        background: ${theme.colors.Neutral5};
-        border-radius: 10px;
-      }
-      ::-webkit-scrollbar-thumb:hover {
-        background: ${theme.colors.Neutral4};
-      }
-      ::-webkit-scrollbar-track {
-        background-color: transparent;
-      }
-      ::-webkit-scrollbar {
-        width: 10px;
-        background-color: transparent;
-      }
-    `}
-`

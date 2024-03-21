@@ -1,33 +1,44 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query'
-import companyFilesCache from '../../CobranzaFilesTable/utils/company-files.cache'
-import { FileType } from '@/types/extrajudicial/file.type'
+import companyFilesCache, {
+  KEY_COBRANZA_URL_FILES_CODE_CACHE,
+} from '../../CobranzaFilesTable/utils/company-files.cache'
+import { editFile, getFileById } from '@/services/extrajudicial/file.service'
+import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { ModalCobranzaFilesResolver } from './CobranzaFilesModal.yup'
-import { useState } from 'react'
-import { AxiosError, AxiosResponse } from 'axios'
-import { CustomErrorResponse } from 'types/customErrorResponse'
-import { postCreateFile } from '@/services/extrajudicial/file.service'
-import notification from '@/ui/notification'
+import { FileType } from '@/types/extrajudicial/file.type'
+import { ModalCobranzaFilesEditResolver } from './CobranzaFilesEditModal.yup'
+import { useLoloContext } from '@/contexts/LoloProvider'
 import Modal from '@/ui/Modal'
 import Container from '@/ui/Container'
 import Button from '@/ui/Button'
-import { useLoloContext } from '@/contexts/LoloProvider'
-import CobranzaFilesInfoForm from './CobranzaFilesInfoForm'
+import { AxiosError, AxiosResponse } from 'axios'
+import { CustomErrorResponse } from 'types/customErrorResponse'
+import notification from '@/ui/notification'
 import { ExtTagType } from '@/types/extrajudicial/ext-tag.type'
 import { KEY_COBRANZA_URL_TAG_CODE_CACHE } from '@/pages/extrajudicial/ExtrajudicialTags/TagsTable/utils/company-tags.cache'
 import { getExtTagsByCHBAndTagGroupId } from '@/services/extrajudicial/ext-tag.service'
+import CobranzaFilesEditInfoForm from './CobranzaFilesEditInfoForm'
 
-type CobranzaFilesModalProps = {
+type CobranzaFilesEditModalProps = {
   visible: boolean
   onClose: () => void
+  idFile?: number
   clientId?: number
   clientCode?: number
 }
 
-const CobranzaFilesModal = ({ visible, onClose, clientId = 0, clientCode = 0 }: CobranzaFilesModalProps) => {
+const CobranzaFilesEditModal = ({
+  visible,
+  onClose,
+  idFile = 0,
+  clientId = 0,
+  clientCode = 0,
+}: CobranzaFilesEditModalProps) => {
   const queryClient = useQueryClient()
+  const [fileExtension, setFileExtension] = useState<string | null>(null)
+
   const {
-    actions: { createCobranzaFilesCache },
+    actions: { editCobranzaFilesCache },
     onMutateCache,
     onSettledCache,
     onErrorCache,
@@ -38,48 +49,41 @@ const CobranzaFilesModal = ({ visible, onClose, clientId = 0, clientCode = 0 }: 
     client: { customer },
   } = useLoloContext()
 
-  const [formData, setFormData] = useState<FormData>(new FormData())
-
-  const formMethods = useForm<Omit<FileType, 'id' | 'name' | 'originalName' | 'createdAt'>>({
-    resolver: ModalCobranzaFilesResolver,
+  const formMethods = useForm<Omit<FileType, 'id' | 'name' | 'createdAt'>>({
+    resolver: ModalCobranzaFilesEditResolver,
     mode: 'all',
     defaultValues: {
+      originalName: '',
+      tagId: 0,
       clientId,
     },
   })
 
   const {
+    setValue,
     getValues,
     reset,
     formState: { isValid },
   } = formMethods
 
-  const { isLoading: loadingCreateCobranzaFile, mutate: createCobranzaFile } = useMutation<
-    AxiosResponse<FileType[]>,
+  const { isLoading: loadingEditCobranzaFile, mutate: editCobranzaFile } = useMutation<
+    AxiosResponse<FileType>,
     AxiosError<CustomErrorResponse>
   >(
     async () => {
-      const { tagId } = getValues()
-      return await postCreateFile(
-        formData,
-        Number(customer.id),
-        Number(selectedBank.idCHB),
-        clientCode,
-        clientId,
-        tagId
-      )
+      const { tagId, originalName } = getValues()
+      const originalNameFile = addExtension(originalName)
+      return await editFile({ originalName: originalNameFile, tagId }, idFile)
     },
     {
       onSuccess: (result) => {
         const { tagId } = getValues()
-        const tagsList = result.data.map((file) => {
-          return {
-            ...file,
-            classificationTag: { name: findTag(tagId)?.name ?? '', color: findTag(tagId)?.color ?? '' },
-          }
-        })
+        const file = {
+          ...result.data,
+          classificationTag: { name: findTag(tagId)?.name ?? '', color: findTag(tagId)?.color ?? '' },
+        }
 
-        createCobranzaFilesCache(tagsList, clientId)
+        editCobranzaFilesCache(file)
         notification({ type: 'success', message: 'Archivo creado' })
         handleClickCloseModal()
       },
@@ -100,14 +104,36 @@ const CobranzaFilesModal = ({ visible, onClose, clientId = 0, clientCode = 0 }: 
     }
   )
 
+  const { refetch: refetchGetCobranzaFileById } = useQuery(
+    [`${KEY_COBRANZA_URL_FILES_CODE_CACHE}_GET_FILE_BY_ID`],
+    async () => {
+      return getFileById(Number(customer.id), Number(selectedBank.idCHB), clientCode, idFile)
+    },
+    {
+      onSuccess: ({ data }) => {
+        if (!!idFile) {
+          const originalName = removeExtension(data.originalName)
+          setFileExtension(getExtension(data.originalName))
+
+          setValue('clientId', data.clientId, { shouldValidate: true })
+          setValue('originalName', originalName, { shouldValidate: true })
+          setValue('tagId', data.tagId, { shouldValidate: true })
+        } else {
+          reset()
+        }
+      },
+      enabled: false,
+    }
+  )
+
   const { data } = useQuery<AxiosResponse<Array<ExtTagType>, Error>>(
     [`${KEY_COBRANZA_URL_TAG_CODE_CACHE}-TAGS-BY-CHB-AND-TAG-GROUP-ID`],
     async () => {
       //TODO: Improve this logic to get the tagId
       let tagId = 0
-      if (selectedBank.idCHB == '1') {
+      if (selectedBank.idCHB === '1') {
         tagId = 1
-      } else if (selectedBank.idCHB == '4') {
+      } else if (selectedBank.idCHB === '7') {
         tagId = 4
       }
 
@@ -129,21 +155,33 @@ const CobranzaFilesModal = ({ visible, onClose, clientId = 0, clientCode = 0 }: 
     return tags.find((tag) => tag.id === id)
   }
 
-  const onAddFile = () => {
-    createCobranzaFile()
-  }
-
-  const setStateFormData = (formData: FormData) => {
-    setFormData(formData)
+  const onEditFile = () => {
+    editCobranzaFile()
   }
 
   const handleClickCloseModal = () => {
-    setFormData(new FormData())
     reset()
     onClose()
   }
 
-  const isThereFile = formData.getAll('file').length
+  const removeExtension = (nameFile: string): string => {
+    return nameFile.replace(/\.[^.]+$/, '')
+  }
+
+  const addExtension = (fileName: string) => {
+    return `${fileName}.${fileExtension}`
+  }
+
+  const getExtension = (nameFile: string): string | null => {
+    const match = /\.([^.]+)$/.exec(nameFile)
+    return match ? match[1].toLowerCase() : null
+  }
+
+  useEffect(() => {
+    if (!!idFile) {
+      refetchGetCobranzaFileById()
+    }
+  }, [idFile, refetchGetCobranzaFileById])
 
   return (
     <FormProvider {...formMethods}>
@@ -151,7 +189,7 @@ const CobranzaFilesModal = ({ visible, onClose, clientId = 0, clientCode = 0 }: 
         visible={visible}
         onClose={handleClickCloseModal}
         id="modal-files"
-        title="Agregar Archivos"
+        title="Editar Archivo"
         contentOverflowY="auto"
         size="small"
         minHeight="60vh"
@@ -159,12 +197,12 @@ const CobranzaFilesModal = ({ visible, onClose, clientId = 0, clientCode = 0 }: 
           <Container width="100%" height="75px" display="flex" justifyContent="end" alignItems="center" gap="20px">
             <Button
               width="125px"
-              label="Agregar"
+              label="Editar"
               shape="default"
               trailingIcon="ri-add-fill"
-              onClick={onAddFile}
-              loading={loadingCreateCobranzaFile}
-              disabled={!isValid || !isThereFile}
+              onClick={onEditFile}
+              loading={loadingEditCobranzaFile}
+              disabled={!isValid}
             />
           </Container>
         }
@@ -179,7 +217,7 @@ const CobranzaFilesModal = ({ visible, onClose, clientId = 0, clientCode = 0 }: 
           gap="20px"
         >
           <Container width="100%" display="flex" flexDirection="column" gap="10px" padding="20px">
-            <CobranzaFilesInfoForm setStateFormData={setStateFormData} tags={tags} />
+            <CobranzaFilesEditInfoForm tags={tags} />
           </Container>
         </Container>
       </Modal>
@@ -187,4 +225,4 @@ const CobranzaFilesModal = ({ visible, onClose, clientId = 0, clientCode = 0 }: 
   )
 }
 
-export default CobranzaFilesModal
+export default CobranzaFilesEditModal

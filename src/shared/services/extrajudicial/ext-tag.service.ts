@@ -9,6 +9,10 @@ export const getExtTagsByCHB = async (chb: number) => {
   return await axiosClient.get(`${url}/all-data-by-chb/${chb}`)
 }
 
+export const getExtTagsByCHBAndTagGroupId = async (chb: number, tagGroupId: number) => {
+  return await axiosClient.get(`${url}/all-data-by-chb-and-tag-group-id/${chb}/${tagGroupId}`)
+}
+
 export const getExtTagByID = async (id: number) => {
   return await axiosClient.get(`${url}/${id}`)
 }
@@ -19,6 +23,10 @@ export const createExtTag = async (tag: Omit<ExtTagType, 'id' | 'createdAt' | 'u
 
 export const editExtTag = async (tag: Omit<ExtTagType, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'>, id: number) => {
   return await axiosClient.patch(`${url}/${id}`, tag)
+}
+
+export const updateExtTagAction = async (id: number, action: boolean) => {
+  return await axiosClient.patch(`${url}/action/${id}`, { action })
 }
 
 export const deleteExtTag = async (id: number) => {
