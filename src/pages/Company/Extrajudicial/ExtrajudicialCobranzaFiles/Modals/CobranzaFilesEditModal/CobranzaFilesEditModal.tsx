@@ -131,9 +131,9 @@ const CobranzaFilesEditModal = ({
     async () => {
       //TODO: Improve this logic to get the tagId
       let tagId = 0
-      if (selectedBank.idCHB == '1') {
+      if (selectedBank.idCHB === '1') {
         tagId = 1
-      } else if (selectedBank.idCHB == '7') {
+      } else if (selectedBank.idCHB === '7') {
         tagId = 4
       }
 
