@@ -16,13 +16,30 @@ const IpAddressBankActions = () => {
   }
 
   return (
-    <Container width="100%" display="flex" padding="20px" alignItems="center" justifyContent="space-between">
-      <Text.Body size="m" weight="bold">
-        BANCO DE DIRECCIONES IP
-      </Text.Body>
-      <Button onClick={handleClickModal} leadingIcon="ri-add-fill" shape="round" size="small" permission="P15-01" />
+    <Container
+      width="100%"
+      display="flex"
+      alignItems="center"
+      justifyContent="space-between"
+      flexDirection="row"
+      padding="20px"
+    >
+      <Container>
+        <Text.Body size="m" weight="bold" className="label__text">
+          BANCO DE DIRECCIONES IP
+        </Text.Body>
+      </Container>
 
-      <IpAddressBankModal visible={visibleModalAdd} onClose={onCloseModal} />
+      <Container>
+        <Button
+          onClick={handleClickModal}
+          messageTooltip="Agregar Dirección IP"
+          leadingIcon="ri-add-fill"
+          shape="round"
+          permission="P15-01"
+        />
+        <IpAddressBankModal visible={visibleModalAdd} onClose={onCloseModal} />
+      </Container>
     </Container>
   )
 }

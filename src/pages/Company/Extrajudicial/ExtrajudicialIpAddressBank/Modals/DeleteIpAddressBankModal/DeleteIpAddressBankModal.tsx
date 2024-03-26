@@ -7,6 +7,7 @@ import { notification } from '@/ui/notification/notification'
 import extIpAddressCache from '../../IpAddressBankTable/utils/dash-ip-address-bank.cache'
 import { deleteIpAddress } from '@/services/extrajudicial/ext-ip-address-bank.service'
 import { CustomErrorResponse } from 'types/customErrorResponse'
+import { useLoloContext } from '@/contexts/LoloProvider'
 
 type DeleteRoleModalProps = {
   visible: boolean
@@ -23,17 +24,21 @@ const DeleteIpAddressBankModal = ({ visible, idIpAddress = 0, onClose }: DeleteR
     onErrorCache,
   } = extIpAddressCache(queryClient)
 
+  const {
+    client: { customer },
+  } = useLoloContext()
+
   const { isLoading: loadingDeleteAddress, mutate: deleteIpAddressMutate } = useMutation<
     AxiosResponse<{ id: string }>,
     AxiosError<CustomErrorResponse>
   >(
     async () => {
-      return await deleteIpAddress(idIpAddress)
+      return await deleteIpAddress(idIpAddress, customer.id)
     },
     {
       onSuccess: (result) => {
         deleteIpAddressBankCache(result.data.id)
-        notification({ type: 'success', message: 'dirección IP eliminada' })
+        notification({ type: 'success', message: 'Dirección IP eliminada' })
         onClose()
       },
       onMutate: () => {

@@ -3,18 +3,18 @@ import { ExtIpAddressBankType } from '@/types/extrajudicial/ext-ip-address-bank.
 
 const API = axiosClient.getUri()
 
-const url = `${API}/cobranza/ip-address-bank`
+const url = `${API}/cobranza/ext-ip-address-bank`
 
-export const getAllIpAddress = async () => {
-  return await axiosClient.get(`${url}`)
+export const getAllIpAddress = async (customerId: number) => {
+  return await axiosClient.get(`${url}/${customerId}`)
 }
 
-export const getIpAddressById = async (id: number) => {
-  return await axiosClient.get(`${url}/${id}`)
+export const getIpAddressById = async (id: number, customerId: number) => {
+  return await axiosClient.get(`${url}/id-address/${id}/${customerId}`)
 }
 
-export const getIpAddressByIp = async (ip: number) => {
-  return await axiosClient.get(`${url}/${ip}`)
+export const getIpAddressByIp = async (ip: number, customerId: number) => {
+  return await axiosClient.get(`${url}/ip-address/${ip}/${customerId}`)
 }
 
 export const createIpAddress = async (
@@ -30,10 +30,10 @@ export const editIpAddress = async (
   return await axiosClient.patch(`${url}/${id}`, ipAddress)
 }
 
-export const editStateIpAddress = async (id: number, state: boolean) => {
-  return await axiosClient.patch(`${url}/state/${id}`, { state })
+export const editStateIpAddress = async (id: number, customerId: number, state: boolean) => {
+  return await axiosClient.patch(`${url}/state/${id}/${customerId}`, { state })
 }
 
-export const deleteIpAddress = async (id: number) => {
-  return await axiosClient.delete(`${url}/${id}`)
+export const deleteIpAddress = async (id: number, customerId: number) => {
+  return await axiosClient.delete(`${url}/${id}/${customerId}`)
 }

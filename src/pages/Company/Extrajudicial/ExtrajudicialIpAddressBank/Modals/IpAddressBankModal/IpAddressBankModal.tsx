@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { AxiosError, AxiosResponse } from 'axios'
-import { FormProvider, useForm, Controller } from 'react-hook-form'
+import { FormProvider, useForm } from 'react-hook-form'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { ModalIpAddressBankResolver } from './ipAddressBankModal.yup'
 import { ExtIpAddressBankType } from '@/types/extrajudicial/ext-ip-address-bank.type'
@@ -9,24 +9,18 @@ import Container from '@/ui/Container'
 import Modal from '@/ui/Modal'
 import notification from '@/ui/notification'
 import Button from '@/ui/Button'
-import Checkbox from '@/ui/Checkbox'
-import Label from '@/ui/Label'
 import { CustomErrorResponse } from 'types/customErrorResponse'
 import IpAddressInfoForm from './IpAddressInfoForm'
-import ipAddressBankCache from '../../IpAddressBankTable/utils/dash-ip-address-bank.cache'
+import ipAddressBankCache, {
+  KEY_EXT_IP_ADDRESS_BANK_CACHE,
+} from '../../IpAddressBankTable/utils/dash-ip-address-bank.cache'
+import { useLoloContext } from '@/contexts/LoloProvider'
 
 type IpAddressModalProps = {
   visible: boolean
   onClose: () => void
   isEdit?: boolean
   idIpAddress?: number
-}
-
-const defaultValuesIpAddress: Omit<ExtIpAddressBankType, 'createdAt' | 'updatedAt' | 'deletedAt'> = {
-  id: 0,
-  addressName: '',
-  ip: '',
-  state: false,
 }
 
 const IpAddressBankModal = ({ visible, onClose, idIpAddress = 0, isEdit = false }: IpAddressModalProps) => {
@@ -38,16 +32,24 @@ const IpAddressBankModal = ({ visible, onClose, idIpAddress = 0, isEdit = false 
     onErrorCache,
   } = ipAddressBankCache(queryClient)
 
-  const formMethods = useForm<ExtIpAddressBankType>({
+  const {
+    client: { customer },
+  } = useLoloContext()
+
+  const formMethods = useForm<Omit<ExtIpAddressBankType, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'>>({
     resolver: ModalIpAddressBankResolver,
     mode: 'all',
-    defaultValues: defaultValuesIpAddress,
+    defaultValues: {
+      addressName: '',
+      ip: '',
+      state: true,
+      customerId: customer.id,
+    },
   })
 
   const {
     setValue,
     getValues,
-    control,
     reset,
     formState: { isValid },
   } = formMethods
@@ -57,8 +59,8 @@ const IpAddressBankModal = ({ visible, onClose, idIpAddress = 0, isEdit = false 
     AxiosError<CustomErrorResponse>
   >(
     async () => {
-      const { id, ...restIpAddress } = getValues()
-      return await createIpAddress({ ...restIpAddress })
+      const ipAddress = getValues()
+      return await createIpAddress(ipAddress)
     },
     {
       onSuccess: (result) => {
@@ -88,9 +90,8 @@ const IpAddressBankModal = ({ visible, onClose, idIpAddress = 0, isEdit = false 
     AxiosError<CustomErrorResponse>
   >(
     async () => {
-      console.log(idIpAddress)
-      const { id, createdAt, updatedAt, deletedAt, ...restIpAddress } = getValues()
-      return await editIpAddress(restIpAddress, idIpAddress)
+      const ipAddress = getValues()
+      return await editIpAddress(ipAddress, idIpAddress)
     },
     {
       onSuccess: (result) => {
@@ -116,19 +117,19 @@ const IpAddressBankModal = ({ visible, onClose, idIpAddress = 0, isEdit = false 
   )
 
   const { refetch: refetchGetIpAddressById } = useQuery<AxiosResponse<ExtIpAddressBankType>>(
-    'get-ip-address-by-id',
+    [`${KEY_EXT_IP_ADDRESS_BANK_CACHE}_GET_IP_ADDRESS_BY_ID`],
     async () => {
-      return getIpAddressById(idIpAddress)
+      return getIpAddressById(idIpAddress, customer.id)
     },
     {
       onSuccess: ({ data }) => {
-        if (idIpAddress !== 0) {
-          setValue('addressName', data.addressName)
-          setValue('state', !!(data.state))
-          setValue('ip', data.ip)
-          setValue('id', data.id)
+        if (!!idIpAddress) {
+          setValue('addressName', data.addressName, { shouldValidate: true })
+          setValue('state', !!data.state, { shouldValidate: true })
+          setValue('ip', data.ip, { shouldValidate: true })
+          setValue('customerId', data.customerId, { shouldValidate: true })
         } else {
-          reset(defaultValuesIpAddress)
+          reset()
         }
       },
       enabled: false,
@@ -149,11 +150,10 @@ const IpAddressBankModal = ({ visible, onClose, idIpAddress = 0, isEdit = false 
   }
 
   useEffect(() => {
-    if (idIpAddress !== 0) {
+    if (!!idIpAddress) {
       refetchGetIpAddressById()
     }
-    // eslint-disable-next-line
-  }, [idIpAddress])
+  }, [idIpAddress, refetchGetIpAddressById])
 
   return (
     <FormProvider {...formMethods}>
@@ -162,8 +162,9 @@ const IpAddressBankModal = ({ visible, onClose, idIpAddress = 0, isEdit = false 
         visible={visible}
         onClose={handleClickCloseModal}
         id="modal-files"
-        title={isEdit ? 'Editar dirección ip' : 'Agregar dirección ip'}
+        title={isEdit ? 'Editar dirección IP' : 'Agregar dirección IP'}
         contentOverflowY="auto"
+        minHeight="210px"
         footer={
           <Container width="100%" height="75px" display="flex" justifyContent="flex-end" alignItems="center" gap="20px">
             <Button
@@ -180,7 +181,7 @@ const IpAddressBankModal = ({ visible, onClose, idIpAddress = 0, isEdit = false 
       >
         <Container
           width="100%"
-          height="410px"
+          height="210px"
           display="flex"
           justify-content="center"
           flexDirection="column"
@@ -189,22 +190,6 @@ const IpAddressBankModal = ({ visible, onClose, idIpAddress = 0, isEdit = false 
         >
           <Container width="100%" display="flex" flexDirection="column" gap="10px" padding="20px">
             <IpAddressInfoForm />
-            <Container width="100%" display={isEdit ? 'none' : 'flex'} gap="10px">
-              <Label label="Estado:" />
-              <Controller
-                name="state"
-                control={control}
-                render={({ field }) => (
-                  <Checkbox
-                    width="100%"
-                    value={String(field.value)}
-                    onChange={(key) => {
-                      field.onChange(key)
-                    }}
-                  />
-                )}
-              />
-            </Container>
           </Container>
         </Container>
       </Modal>
