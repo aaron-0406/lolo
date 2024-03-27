@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { AxiosError, AxiosResponse } from 'axios'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import moment from 'moment'
@@ -61,7 +61,7 @@ const IpAddressBankTable = () => {
     hideDeleteIpAddress()
   }
 
-  const { isLoading, refetch, data } = useQuery<AxiosResponse<Array<ExtIpAddressBankType>, Error>>(
+  const { isLoading, data } = useQuery<AxiosResponse<Array<ExtIpAddressBankType>, Error>>(
     KEY_EXT_IP_ADDRESS_BANK_CACHE,
     async () => {
       return await getAllIpAddress(customer.id)
@@ -111,11 +111,6 @@ const IpAddressBankTable = () => {
     }
   )
 
-  useEffect(() => {
-    refetch()
-    // eslint-disable-next-line
-  }, [])
-
   return (
     <Container width="100%" height="calc(100% - 112px)" padding="20px">
       <Table
@@ -136,7 +131,7 @@ const IpAddressBankTable = () => {
                 <BodyCell textAlign="center">{`${index + 1 || ''}`}</BodyCell>
                 <BodyCell textAlign="center">{`${record.addressName || ''}`}</BodyCell>
                 <BodyCell textAlign="center">{`${record.ip || ''}`}</BodyCell>
-                <BodyCell textAlign="center">{`${record.state ? 'activo' : 'inactivo'}`}</BodyCell>
+                <BodyCell textAlign="center">{`${record.state ? 'Habilitado' : 'Inhabilitado'}`}</BodyCell>
                 <BodyCell textAlign="center">{`${moment(record.createdAt).format('DD-MM-YYYY') || ''}`}</BodyCell>
                 <BodyCell textAlign="center">
                   <Container justifyContent="space-around" gap="15px" display="flex">
