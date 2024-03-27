@@ -110,6 +110,11 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({ children, urlIdentifier }) =>
     }
   )
 
+  const titleElement = document.getElementById('root-title')
+  if (titleElement) {
+    titleElement.textContent = customer.companyName ? `${customer.companyName} - Lolo Bank` : 'Lolo Bank'
+  }
+
   useEffect(() => {
     setIsLoadingCities(true)
     setIsLoadingUsers(true)
@@ -117,6 +122,12 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({ children, urlIdentifier }) =>
     refetchCities()
     refetchUsers()
     // eslint-disable-next-line
+
+    return () => {
+      if (titleElement) {
+        titleElement.textContent = 'Lolo Bank'
+      }
+    }
   }, [])
 
   if (isLoadingCities || isLoadingUsers) {
