@@ -105,9 +105,9 @@ const CobranzaFilesModal = ({ visible, onClose, clientId = 0, clientCode = 0 }: 
     async () => {
       //TODO: Improve this logic to get the tagId
       let tagId = 0
-      if (selectedBank.idCHB == '1') {
+      if (selectedBank.idCHB === '1') {
         tagId = 1
-      } else if (selectedBank.idCHB == '4') {
+      } else if (selectedBank.idCHB === '4') {
         tagId = 4
       }
 

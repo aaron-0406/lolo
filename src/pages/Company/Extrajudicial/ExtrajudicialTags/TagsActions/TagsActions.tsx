@@ -24,10 +24,10 @@ const TagsActions = () => {
 
   return (
     <Container
-      justifyContent="space-between"
-      alignItems="center"
       width="100%"
       display="flex"
+      justifyContent="space-between"
+      alignItems="center"
       flexDirection="row"
       padding="20px"
     >
