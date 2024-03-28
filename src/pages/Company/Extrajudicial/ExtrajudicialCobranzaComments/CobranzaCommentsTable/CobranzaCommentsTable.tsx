@@ -59,7 +59,7 @@ const CobranzaCommentsTable = ({ clientId }: CobranzaCommentsTableProps) => {
   const { data, isLoading } = useQuery<AxiosResponse<Array<CommentType & { customerUser: CustomerUserType }>, Error>>(
     [KEY_COBRANZA_URL_COBRANZA_CODE_CACHE, clientId],
     async () => {
-      return await getComments(clientId ?? 0)
+      return await getComments(clientId ?? 0, true)
     },
     {
       onError: (error: any) => {

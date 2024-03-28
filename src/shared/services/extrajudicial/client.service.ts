@@ -13,7 +13,8 @@ export const getAllClientsByCHB = async (
   negotiations?: string,
   funcionarios?: string,
   users?: string,
-  cities?: string
+  cities?: string,
+  visible: boolean = false
 ) => {
   let filters = ''
   filters += filter !== '' && filter !== undefined ? `filter=${filter}&` : ''
@@ -21,12 +22,12 @@ export const getAllClientsByCHB = async (
   filters += !!funcionarios?.length ? `funcionarios=${funcionarios}&` : 'funcionarios=[]&'
   filters += !!users?.length ? `users=${users}&` : 'users=[]&'
   filters += !!cities?.length ? `cities=${cities}&` : 'cities=[]&'
-
+  filters += `visible=${visible}&`
   return await axiosClient.get(`${url}/${chb}?${filters}page=${page}&limit=${limit}`)
 }
 
-export const getClientByCode = async (code: string, chb: string) => {
-  return await axiosClient.get(`${url}/${code}/${chb}`)
+export const getClientByCode = async (code: string, chb: string, visible: boolean = false) => {
+  return await axiosClient.get(`${url}/${code}/${chb}?visible=${visible}`)
 }
 
 export const getAllClientsByCHBDetails = async (chb: string) => {

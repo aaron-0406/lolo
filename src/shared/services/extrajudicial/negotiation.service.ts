@@ -9,8 +9,8 @@ export const getAll = async () => {
   return await axiosClient.get(`${url}/`)
 }
 
-export const getAllNegociacionesByCHB = async (chb: number) => {
-  return await axiosClient.get(`${url}/all/${chb}`)
+export const getAllNegociacionesByCHB = async (chb: number, visible: boolean = false) => {
+  return await axiosClient.get(`${url}/all/${chb}?visible=${visible}`)
 }
 
 export const getAllNegociacionesById = async (id: number) => {

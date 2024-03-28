@@ -51,7 +51,7 @@ const CobranzaContactsTable = ({ clientId }: CobranzaContactsTableProps) => {
   const { data, isLoading } = useQuery<AxiosResponse<Array<ExtContactType>, Error>>(
     [KEY_COBRANZA_URL_CONTACT_CODE_CACHE, clientId],
     async () => {
-      return await getExtContactsByClientID(clientId ?? 0)
+      return await getExtContactsByClientID(clientId ?? 0, true)
     },
     {
       onError: (error: any) => {

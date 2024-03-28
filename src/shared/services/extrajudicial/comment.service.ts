@@ -25,8 +25,8 @@ export const getCommenById = async (id: number) => {
   return await axiosClient.get(`${url}/${id}`)
 }
 
-export const getComments = async (id: number) => {
-  return await axiosClient.get(`${url}/all-client/${id}`)
+export const getComments = async (id: number, visible: boolean = false) => {
+  return await axiosClient.get(`${url}/all-client/${id}?visible=${visible}`)
 }
 
 export const getChart = async (id: number) => {

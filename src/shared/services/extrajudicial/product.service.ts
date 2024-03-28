@@ -9,8 +9,8 @@ export const getProductById = async (id: number) => {
   return await axiosClient.get(`${url}/client-by-id/${id}`)
 }
 
-export const getProductsByClientCode = async (code: string) => {
-  return await axiosClient.get(`${url}/client/${code}`)
+export const getProductsByClientCode = async (code: string, visible: boolean = false) => {
+  return await axiosClient.get(`${url}/client/${code}?visible=${visible}`)
 }
 
 export const getProductsByProductCode = async (code: string) => {

@@ -53,7 +53,7 @@ const CobranzaProductsTable = ({ clientId }: CobranzaProductsTableProps) => {
   const { data, isLoading } = useQuery<AxiosResponse<Array<ProductType>, Error>>(
     [KEY_COBRANZA_URL_PRODUCT_CODE_CACHE, clientId],
     async () => {
-      return await getProductsByClientCode(code)
+      return await getProductsByClientCode(code, true)
     },
     {
       onError: (error: any) => {

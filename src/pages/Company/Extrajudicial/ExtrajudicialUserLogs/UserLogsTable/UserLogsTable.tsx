@@ -69,7 +69,8 @@ const UserLogsTable: FC<UserLogsTableProps> = ({ opts, setOpts }) => {
         opts.limit,
         customerId,
         JSON.stringify(entities),
-        JSON.stringify(users)
+        JSON.stringify(users), 
+        true,
       )
     },
     {

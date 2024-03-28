@@ -14,12 +14,12 @@ export type GoalsApiResponse = AxiosResponse<
 >
 export type GoalCustomerUserResponse = AxiosResponse<Array<GoalUserType>, Array<GoalUserType>>
 
-export const getGoals = async ({ limit, page }: { limit: number; page: number }): Promise<GoalsApiResponse> => {
-  return await axiosClient.get(`${url}?limit=${limit}&page=${page}`)
+export const getGoals = async ({ limit, page, visible = false }: { limit: number; page: number, visible?: boolean }): Promise<GoalsApiResponse> => {
+  return await axiosClient.get(`${url}?limit=${limit}&page=${page}&visible=${visible}`)
 }
 
-export const getCustomerUserGoals = async (goalId: number): Promise<GoalCustomerUserResponse> => {
-  return await axiosClient.get(`${url}/${goalId}/customer-user`)
+export const getCustomerUserGoals = async (goalId: number, visible: boolean = false): Promise<GoalCustomerUserResponse> => {
+  return await axiosClient.get(`${url}/${goalId}/customer-user?visible=${visible}`)
 }
 export const getPersonalGoal = async (): Promise<GoalApiResponse> => {
   return await axiosClient.get(`${url}/personal-goal`)

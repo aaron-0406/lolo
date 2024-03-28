@@ -9,8 +9,8 @@ export const getAllFuncionarios = async () => {
   return await axiosClient.get(`${url}/all/`)
 }
 
-export const getAllFuncionariosByCHB = async (chb: number) => {
-  return await axiosClient.get(`${url}/all/${chb}`)
+export const getAllFuncionariosByCHB = async (chb: number, visible: boolean = false) => {
+  return await axiosClient.get(`${url}/all/${chb}?visible=${visible}`)
 }
 
 export const getAllFuncionariosByID = async (id: number) => {

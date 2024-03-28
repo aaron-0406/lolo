@@ -9,8 +9,8 @@ export const getAll = async () => {
   return await axiosClient.get(`${url}/`)
 }
 
-export const getAllUsersByID = async (customerID: number) => {
-  return await axiosClient.get(`${url}/users/${customerID}`)
+export const getAllUsersByID = async (customerID: number, visible: boolean = false) => {
+  return await axiosClient.get(`${url}/users/${customerID}?visible=${visible}`)
 }
 
 export const getUserByUserId = async (userID: number) => {

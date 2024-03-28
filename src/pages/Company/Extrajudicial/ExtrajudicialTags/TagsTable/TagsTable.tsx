@@ -56,7 +56,7 @@ const TagsTable = () => {
   const { data, isLoading } = useQuery<AxiosResponse<Array<ExtTagType>, Error>>(
     [KEY_COBRANZA_URL_TAG_CODE_CACHE, parseInt(idCHB)],
     async () => {
-      return await getExtTagsByCHB(parseInt(idCHB.length ? idCHB : '0'))
+      return await getExtTagsByCHB(parseInt(idCHB.length ? idCHB : '0'), true)
     },
     {
       onError: (error: any) => {

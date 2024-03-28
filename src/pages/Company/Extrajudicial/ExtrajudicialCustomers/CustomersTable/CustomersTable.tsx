@@ -137,7 +137,8 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
         JSON.stringify(negotiations),
         JSON.stringify(funcionarios),
         JSON.stringify(users),
-        JSON.stringify(cities)
+        JSON.stringify(cities),
+        true
       )
     },
     {

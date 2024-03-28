@@ -9,8 +9,8 @@ export const getDirectionByID = async (id: number) => {
   return await axiosClient.get(`${url}/${id}`)
 }
 
-export const getDirectionsByClientID = async (clientId: number) => {
-  return await axiosClient.get(`${url}/all-client/${clientId}`)
+export const getDirectionsByClientID = async (clientId: number, visible: boolean = false) => {
+  return await axiosClient.get(`${url}/all-client/${clientId}?visible=${visible}`)
 }
 
 export const createDirection = async (direction: Omit<DirectionType, 'id' | 'createdAt'>) => {

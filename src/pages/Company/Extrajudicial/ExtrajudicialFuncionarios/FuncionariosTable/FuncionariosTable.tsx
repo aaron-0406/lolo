@@ -66,7 +66,7 @@ const FuncionariosTable: FC<FuncionariosTableProps> = ({ opts, setOpts }) => {
   const { isLoading, data } = useQuery(
     [KEY_EXT_COBRANZA_FUNCIONARIOS_CACHE, parseInt(chb.length ? chb : '0')],
     async () => {
-      return await getAllFuncionariosByCHB(parseInt(chb.length ? chb : '0'))
+      return await getAllFuncionariosByCHB(parseInt(chb.length ? chb : '0'), true)
     }
   )
 
