@@ -82,8 +82,8 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts }) => {
     {
       onSuccess: (result, { state }) => {
         state
-          ? notification({ type: 'success', message: 'Usuario habilitado' })
-          : notification({ type: 'success', message: 'Usuario inhabilitado' })
+          ? notification({ type: 'success', message: 'Usuario inhabilitado' })
+          : notification({ type: 'success', message: 'Usuario habilitado' })
 
         editUserCache(result.data)
       },

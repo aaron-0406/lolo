@@ -1,4 +1,4 @@
-import { Dispatch, FC, useEffect, useState } from 'react'
+import { Dispatch, FC, useEffect, useMemo, useState } from 'react'
 import { useQuery } from 'react-query'
 import moment from 'moment'
 import { useLoloContext } from '@/contexts/LoloProvider'
@@ -13,6 +13,11 @@ import { userLogsColumns } from './utils/columns'
 import { FilterOptionsProps } from '@/ui/Table/Table'
 import { Opts } from '@/ui/Pagination/interfaces'
 import Pagination from '@/ui/Pagination'
+import { AxiosResponse } from 'axios'
+import { ExtIpAddressBankType } from '@/types/extrajudicial/ext-ip-address-bank.type'
+import { getAllIpAddress } from '@/services/extrajudicial/ext-ip-address-bank.service'
+import { KEY_EXT_IP_ADDRESS_BANK_CACHE } from '../../ExtrajudicialIpAddressBank/IpAddressBankTable/utils/dash-ip-address-bank.cache'
+import notification from '@/ui/notification'
 
 type UserLogsTableProps = {
   opts: Opts
@@ -76,6 +81,31 @@ const UserLogsTable: FC<UserLogsTableProps> = ({ opts, setOpts }) => {
       },
     }
   )
+
+  const { data } = useQuery<AxiosResponse<Array<ExtIpAddressBankType>, Error>>(
+    KEY_EXT_IP_ADDRESS_BANK_CACHE,
+    async () => {
+      return await getAllIpAddress(customerId)
+    },
+    {
+      onError: (error: any) => {
+        notification({
+          type: 'error',
+          message: error.response.data.message,
+        })
+      },
+    }
+  )
+
+  const ipAddresses = data?.data ?? []
+
+  const findAddressByIP = (ip: string) => {
+    return ipAddresses.find((address) => address.ip === ip)?.addressName
+  }
+
+  const findAddressByNameMemoized = useMemo(() => {
+    return (ip: string) => findAddressByIP(ip)
+  }, [ipAddresses.length, findAddressByIP])
 
   const onChangeFilterOptions = (filterOption: FilterOptionsProps) => {
     setTimeout(() => {
@@ -210,7 +240,9 @@ const UserLogsTable: FC<UserLogsTableProps> = ({ opts, setOpts }) => {
                 }`}</BodyCell>
                 <BodyCell textAlign="center">{moment(record.createAt).format('DD-MM-YYYY') || ''}</BodyCell>
                 <BodyCell textAlign="center">{moment(record.createAt).format('HH:mm:ss') || ''}</BodyCell>
-                <BodyCell textAlign="center">{`${record.ip || '-'}`}</BodyCell>
+                <BodyCell textAlign="center">{`${
+                  findAddressByNameMemoized(record.ip) ?? (record.ip || '-')
+                }`}</BodyCell>
               </tr>
             )
           })}
