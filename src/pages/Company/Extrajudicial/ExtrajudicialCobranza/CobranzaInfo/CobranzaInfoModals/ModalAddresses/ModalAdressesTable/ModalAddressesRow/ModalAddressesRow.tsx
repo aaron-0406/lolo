@@ -9,7 +9,7 @@ type ModalAddressesRowProps = {
   id: number
   addressId: number
   direction: string
-  type: string
+  addressTypeId: number
   selected?: boolean
   onClick?: (addressId: number) => void
 }
@@ -17,12 +17,12 @@ type ModalAddressesRowProps = {
 const ModalAddressesRow: React.FC<ModalAddressesRowProps> = (props) => {
   const { setValue } = useFormContext<DirectionFormType>()
 
-  const { id, addressId, type, direction, onClick, selected = false } = props
+  const { id, addressId, addressTypeId, direction, onClick, selected = false } = props
 
   const onClickRow = () => {
     onClick?.(addressId)
     setValue('direction', direction)
-    setValue('type', type)
+    setValue('addressTypeId', addressTypeId)
     setValue('id', addressId)
   }
   return (

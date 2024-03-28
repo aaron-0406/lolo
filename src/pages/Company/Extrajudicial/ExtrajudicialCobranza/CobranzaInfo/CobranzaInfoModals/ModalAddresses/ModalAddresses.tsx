@@ -18,7 +18,7 @@ const ModalAddresses: React.FC<ModalAddressesProps> = ({ clientId }) => {
       id: 0,
       direction: '',
       clientId: clientId,
-      type: '',
+      addressTypeId: 0,
       directions: [],
     },
   })

@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { useQuery } from 'react-query'
 import { KEY_COBRANZA_URL_ADDRESSES_CODE_CACHE } from './utils/company-addresses.cache'
 import { getDirectionsByClientID } from '@/services/extrajudicial/direction.service'
+import { getAddressesTypeByCHB } from '@/services/extrajudicial/ext-address-type.service'
 import notification from '@/ui/notification'
 import Container from '@/ui/Container'
 import Table from '@/ui/Table'
@@ -15,12 +16,20 @@ import Text from '@/ui/Text'
 import Button from '@/ui/Button'
 import DeleteCobranzaAddressesModal from '../Modals/DeleteCobranzaAddressesModal'
 import CobranzaAddressesModal from '../Modals/CobranzaAddressesModal'
+import { useLoloContext } from '@/contexts/LoloProvider'
+import { ExtAddressType } from '@/types/extrajudicial/ext-address-type.type'
 
 type CobranzaAddressesTableProps = {
   clientId?: number
 }
 
 const CobranzaAddressesTable = ({ clientId }: CobranzaAddressesTableProps) => {
+  const {
+    bank: {
+      selectedBank: { idCHB: chb },
+    },
+  } = useLoloContext()
+
   const [idEdit, setIdEdit] = useState<number>(0)
   const [idDeletedAddress, setIdDeletedAddress] = useState<number>(0)
 
@@ -64,6 +73,15 @@ const CobranzaAddressesTable = ({ clientId }: CobranzaAddressesTableProps) => {
 
   const addresses = data?.data ?? []
 
+  const { data: addressesTypeData } = useQuery(
+    ['KEY_EXT_ADDRESS_TYPE_CACHE', parseInt(chb.length ? chb : '0')],
+    async () => {
+      return await getAddressesTypeByCHB(parseInt(chb.length ? chb : '0'))
+    }
+  )
+
+  const addressesType: ExtAddressType[] = addressesTypeData?.data ?? []
+
   return (
     <Container width="100%" height="calc(100% - 80px)" padding="20px">
       <Table
@@ -79,12 +97,14 @@ const CobranzaAddressesTable = ({ clientId }: CobranzaAddressesTableProps) => {
       >
         {!!addresses?.length &&
           addresses.map((record: DirectionType, key) => {
+            const addressType = addressesType.find((item: ExtAddressType) => item.id === record.addressTypeId)
+
             return (
               <tr className="styled-data-table-row" key={record.id}>
                 <BodyCell textAlign="center">{key + 1 || ''}</BodyCell>
                 <BodyCell textAlign="center">
                   <Text.Body size="m" weight="bold" color="Primary5">
-                    {record.type || ''}
+                    {addressType?.type || ''}
                   </Text.Body>
                 </BodyCell>
                 <BodyCell textAlign="left">

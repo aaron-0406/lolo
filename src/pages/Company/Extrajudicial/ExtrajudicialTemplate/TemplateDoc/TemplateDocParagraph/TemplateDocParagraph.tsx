@@ -1,10 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react'
+import { useQuery } from 'react-query'
 import { useFormContext } from 'react-hook-form'
 import { ParagraphOptionsType, TextOptionsType } from '@/types/extrajudicial/template-document.type'
+import { ExtAddressType } from '@/types/extrajudicial/ext-address-type.type'
 import Container from '@/ui/Container'
 import { TemplateFormType } from '../../hookforms.interfaces'
 import TemplateDocText from './TemplateDocText'
+import { getAddressesTypeByCHB } from '@/services/extrajudicial/ext-address-type.service'
 
 type TemplateDocParagraphProps = {
   texts: TextOptionsType[]
@@ -15,6 +18,28 @@ const TemplateDocParagraph: React.FC<TemplateDocParagraphProps> = (props) => {
   const [texto, setTexto] = useState<string>('')
 
   const { watch } = useFormContext<TemplateFormType>()
+
+  const { data: addressesTypeData } = useQuery(
+    [
+      'KEY_EXT_ADDRESS_TYPE_CACHE',
+      parseInt(
+        String(watch('clientSelected').customerHasBankId).length
+          ? String(watch('clientSelected').customerHasBankId)
+          : '0'
+      ),
+    ],
+    async () => {
+      return await getAddressesTypeByCHB(
+        parseInt(
+          String(watch('clientSelected').customerHasBankId).length
+            ? String(watch('clientSelected').customerHasBankId)
+            : '0'
+        )
+      )
+    }
+  )
+
+  const addressesType: ExtAddressType[] = addressesTypeData?.data ?? []
 
   let marginBottom = options?.spacingAfter ? options?.spacingAfter - 8 : 0 - 5
 
@@ -94,7 +119,9 @@ const TemplateDocParagraph: React.FC<TemplateDocParagraphProps> = (props) => {
     return (
       <>
         {watch('clientSelected').direction?.map((item, i) => {
-          let directionType = createTag('b', item.type, 12)
+          let address = addressesType.find((record: ExtAddressType) => record.id === item.addressTypeId)
+
+          let directionType = createTag('b', address?.type ?? 'NO TYPE', 12)
           let directionText = createTag('p', item.direction, 12)
           let directionAll = createTag('p', directionType + ': ' + directionText, 12)
           return (

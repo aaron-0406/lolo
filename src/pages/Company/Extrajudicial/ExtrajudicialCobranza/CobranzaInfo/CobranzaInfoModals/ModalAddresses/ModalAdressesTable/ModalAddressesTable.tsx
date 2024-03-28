@@ -45,7 +45,7 @@ const ModalAddressesTable = () => {
         {direcciones.map((direction: DirectionType, index: number) => {
           return (
             <ModalAddressesRow
-              type={direction.type}
+              addressTypeId={direction.addressTypeId}
               key={index}
               id={index + 1}
               addressId={direction.id}
