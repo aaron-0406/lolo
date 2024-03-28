@@ -16,8 +16,8 @@ export const postCreateFile = async (
     headers: { 'Content-Type': 'multipart/form-data' },
   })
 }
-export const getFiles = async (id: number) => {
-  return await axiosClient.get(`${url}/${id}`)
+export const getFiles = async (id: number, visible: boolean = false) => {
+  return await axiosClient.get(`${url}/${id}?visible=${visible}`)
 }
 
 export const editFile = async (data: { originalName: string; tagId: number }, id: number) => {

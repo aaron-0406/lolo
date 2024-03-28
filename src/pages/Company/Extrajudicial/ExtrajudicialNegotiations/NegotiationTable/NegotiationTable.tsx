@@ -62,7 +62,7 @@ const NegotiationTable = ({ opts, setOpts }: NegotiationTableProps) => {
   const { isLoading, data } = useQuery(
     [KEY_EXT_COBRANZA_NEGOCIACIONES_CACHE, parseInt(chb.length ? chb : '0')],
     async () => {
-      return await getAllNegociacionesByCHB(parseInt(chb.length ? chb : '0'))
+      return await getAllNegociacionesByCHB(parseInt(chb.length ? chb : '0'), true)
     }
   )
 

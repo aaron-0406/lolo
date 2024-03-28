@@ -17,7 +17,7 @@ const ModalAddressesTable = () => {
   const { refetch } = useQuery(
     'query-get-directions-by-client-id',
     async () => {
-      return await getDirectionsByClientID(clientId)
+      return await getDirectionsByClientID(clientId, true)
     },
     {
       enabled: false,

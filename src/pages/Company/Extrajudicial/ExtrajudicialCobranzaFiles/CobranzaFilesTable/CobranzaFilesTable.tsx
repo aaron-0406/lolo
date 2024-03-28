@@ -76,7 +76,7 @@ const CobranzaFilesTable = ({ clientId, clientCode = 0 }: CobranzaFilesTableProp
   const { data, isLoading } = useQuery<AxiosResponse<Array<FileType>, Error>>(
     [KEY_COBRANZA_URL_FILES_CODE_CACHE, clientId],
     async () => {
-      return await getFiles(clientId ?? 0)
+      return await getFiles(clientId ?? 0, true)
     },
     {
       onError: (error: any) => {

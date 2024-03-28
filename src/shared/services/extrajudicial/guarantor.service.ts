@@ -5,8 +5,8 @@ const API = axiosClient.getUri()
 
 const url = `${API}/cobranza/guarantor`
 
-export const getGuarantorsByClientID = async (clientId: number) => {
-  return await axiosClient.get(`${url}/all-client/${clientId}`)
+export const getGuarantorsByClientID = async (clientId: number, visible: boolean = false) => {
+  return await axiosClient.get(`${url}/all-client/${clientId}?visible=${visible}`)
 }
 
 export const createGuarantor = async (guarantor: Omit<GuarantorType, 'id'>) => {

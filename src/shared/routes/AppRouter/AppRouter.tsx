@@ -30,7 +30,7 @@ import ExtrajudicialdUsers from '@/pages/extrajudicial/ExtrajudicialUsers/Extraj
 import ExtrajudicialUserLogs from '@/pages/extrajudicial/ExtrajudicialUserLogs'
 import ExtrajudicialCobranzaComments from '@/pages/extrajudicial/ExtrajudicialCobranzaComments/ExtrajudicialCobranzaComments'
 import ExtrajudicialCobranzaContacts from '@/pages/extrajudicial/ExtrajudicialCobranzaContacts'
-import ExtrajudicialCobranzaProducts from '@/pages/extrajudicial/ExtrajudicialCobranzaProducts'
+import ExtrajudicialCobranzaProducts from '@/pages/extrajudicial/ExtrajudicialCobranzaProducts/ExtrajudicialCobranzaProducts'
 import ExtrajudicialCobranzaAddresses from '@/pages/extrajudicial/ExtrajudicialCobranzaAddresses'
 import ExtrajudicialCobranzaFiles from '@/pages/extrajudicial/ExtrajudicialCobranzaFiles'
 import ExtrajudicialTags from '@/pages/extrajudicial/ExtrajudicialTags'

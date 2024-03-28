@@ -5,8 +5,8 @@ const API = axiosClient.getUri()
 
 const url = `${API}/cobranza/ext-tag`
 
-export const getExtTagsByCHB = async (chb: number) => {
-  return await axiosClient.get(`${url}/all-data-by-chb/${chb}`)
+export const getExtTagsByCHB = async (chb: number, visible: boolean = false) => {
+  return await axiosClient.get(`${url}/all-data-by-chb/${chb}?visible=${visible}`)
 }
 
 export const getExtTagsByCHBAndTagGroupId = async (chb: number, tagGroupId: number) => {

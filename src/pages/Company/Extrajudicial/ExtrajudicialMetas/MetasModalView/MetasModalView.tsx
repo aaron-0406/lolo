@@ -33,7 +33,7 @@ const MetasModalView = ({ onClose, visible }: MetasModalViewProps) => {
 
   const { mutate: getGoalsCustomers } = useMutation<GoalCustomerUserResponse, AxiosError<CustomErrorResponse>>(
     async () => {
-      return await getCustomerUserGoals(watch('goal').id)
+      return await getCustomerUserGoals(watch('goal').id, true)
     },
     {
       onSuccess: ({ data }) => {

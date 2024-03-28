@@ -107,7 +107,7 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts }) => {
   const { isLoading, refetch } = useQuery(
     KEY_EXT_USUARIOS_CACHE,
     async () => {
-      return await getAllUsersByID(customerId)
+      return await getAllUsersByID(customerId, true)
     },
     {
       onSuccess: ({ data }) => {
@@ -184,7 +184,7 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts }) => {
                       size="small"
                       leadingIcon="ri-delete-bin-line"
                       permission="P10-03"
-                      display='danger'
+                      display="danger"
                     />
                   </Container>
                 </BodyCell>

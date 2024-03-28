@@ -38,7 +38,7 @@ const CobranzaActions = ({ setLoadingGlobal }: CobranzaActionsProps) => {
   const { refetch } = useQuery(
     'query-get-client-by-code',
     async () => {
-      return await getClientByCode(codeParams, selectedBank.idCHB)
+      return await getClientByCode(codeParams, selectedBank.idCHB, true)
     },
     {
       enabled: false,

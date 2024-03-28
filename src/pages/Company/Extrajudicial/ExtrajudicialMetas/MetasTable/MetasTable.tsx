@@ -48,6 +48,7 @@ const MetasTable = () => {
       return await getGoals({
         limit: opts.limit,
         page: opts.page,
+        visible: true,
       })
     },
     {

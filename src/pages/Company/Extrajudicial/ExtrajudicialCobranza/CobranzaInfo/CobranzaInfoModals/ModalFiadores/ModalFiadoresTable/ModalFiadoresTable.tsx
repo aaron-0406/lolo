@@ -19,7 +19,7 @@ const ModalFiadoresTable = () => {
   const { refetch } = useQuery(
     'query-get-guarantors-by-client-id',
     async () => {
-      return await getGuarantorsByClientID(clientId)
+      return await getGuarantorsByClientID(clientId, true)
     },
     {
       enabled: false,
