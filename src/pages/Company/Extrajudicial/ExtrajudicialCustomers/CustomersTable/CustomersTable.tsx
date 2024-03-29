@@ -25,8 +25,8 @@ import { getAllManagementActionsByCHB } from '@/services/extrajudicial/managemen
 import Button from '@/ui/Button'
 import useModal from '@/hooks/useModal'
 import DeleteClientModal from './DeleteClientModal'
-import styled, { css } from 'styled-components'
 import Text from '@/ui/Text'
+import { Tooltip } from 'react-tooltip'
 
 
 type CustomersTableProps = {
@@ -379,10 +379,12 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
                 >
                   <BodyCell textAlign="center">{`${record.code || ''}`}</BodyCell>
                   <BodyCell textAlign="left">
-                    <Container width="17vw" whiteSpace="nowrap" overFlowX="hidden" textOverflow="ellipsis">
+                    <Container data-tooltip-id="cell-tooltip"
+                      data-tooltip-content={record.name.length >= 32 ? record.name : ""} width="17vw" whiteSpace="nowrap" overFlowX="hidden" textOverflow="ellipsis">
                       <Text.Body size="m" weight="regular">
                         {record.name || ''}
                       </Text.Body>
+                      <Tooltip place='right' id="cell-tooltip" />
                     </Container>
                   </BodyCell>
                   <BodyCell>{`${record.negotiation.name.toUpperCase() || ''}`}</BodyCell>
@@ -419,4 +421,3 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
 }
 
 export default CustomersTable
-
