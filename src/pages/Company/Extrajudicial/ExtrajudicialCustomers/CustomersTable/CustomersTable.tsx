@@ -25,6 +25,9 @@ import { getAllManagementActionsByCHB } from '@/services/extrajudicial/managemen
 import Button from '@/ui/Button'
 import useModal from '@/hooks/useModal'
 import DeleteClientModal from './DeleteClientModal'
+import styled, { css } from 'styled-components'
+import Text from '@/ui/Text'
+
 
 type CustomersTableProps = {
   opts: Opts
@@ -375,7 +378,13 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
                   }}
                 >
                   <BodyCell textAlign="center">{`${record.code || ''}`}</BodyCell>
-                  <BodyCell>{`${record.name || ''}`}</BodyCell>
+                  <BodyCell textAlign="left">
+                    <Container width="17vw" whiteSpace="nowrap" overFlowX="hidden" textOverflow="ellipsis">
+                      <Text.Body size="m" weight="regular">
+                        {record.name || ''}
+                      </Text.Body>
+                    </Container>
+                  </BodyCell>
                   <BodyCell>{`${record.negotiation.name.toUpperCase() || ''}`}</BodyCell>
                   <BodyCell>{`${record.funcionario.name.toUpperCase() || ''}`}</BodyCell>
                   <BodyCell>{`${record.customerUser.name.toUpperCase() || ''}`}</BodyCell>
@@ -410,3 +419,4 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
 }
 
 export default CustomersTable
+

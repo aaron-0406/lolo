@@ -6,11 +6,13 @@ export const customersColumns: ColumProps[] = [
     title: 'CÓDIGO',
     width: '10%',
     justifyContent: 'center',
+
   },
   {
     id: 'customers.datatable.header.name',
     title: 'CLIENTE',
-    width: '50%',
+    width: '40%',
+    justifyContent: 'left',
   },
   {
     id: 'customers.datatable.header.negotiation',
