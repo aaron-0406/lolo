@@ -28,7 +28,6 @@ import DeleteClientModal from './DeleteClientModal'
 import Text from '@/ui/Text'
 import { Tooltip } from 'react-tooltip'
 
-
 type CustomersTableProps = {
   opts: Opts
   setOpts: Dispatch<Opts>
@@ -379,12 +378,17 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
                 >
                   <BodyCell textAlign="center">{`${record.code || ''}`}</BodyCell>
                   <BodyCell textAlign="left">
-                    <Container data-tooltip-id="cell-tooltip"
-                      data-tooltip-content={record.name.length >= 32 ? record.name : ""} width="17vw" whiteSpace="nowrap" overFlowX="hidden" textOverflow="ellipsis">
+                    <Container
+                      data-tooltip-id="cell-tooltip"
+                      data-tooltip-content={record.name.length >= 25 ? record.name : ''}
+                      width="17vw"
+                      whiteSpace="nowrap"
+                      overFlowX="hidden"
+                      textOverflow="ellipsis"
+                    >
                       <Text.Body size="m" weight="regular">
-                        {record.name || ''}
+                        {record.name || '-'}
                       </Text.Body>
-                      <Tooltip place='right' id="cell-tooltip" />
                     </Container>
                   </BodyCell>
                   <BodyCell>{`${record.negotiation.name.toUpperCase() || ''}`}</BodyCell>
@@ -415,6 +419,8 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
             }
           )}
       </Table>
+      <Tooltip place="right" id="cell-tooltip" />
+
       <DeleteClientModal visible={visibleDeleteClient} onClose={hideDeleteClient} code={codeClient} />
     </Container>
   )
