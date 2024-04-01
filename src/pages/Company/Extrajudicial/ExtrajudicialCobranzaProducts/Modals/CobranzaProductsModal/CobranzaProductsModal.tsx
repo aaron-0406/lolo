@@ -201,7 +201,7 @@ const CobranzaProductsModal = ({
           align-items="center"
           gap="20px"
         >
-          <Container width="100%" display="flex" flexDirection="column" gap="10px" padding="20px">
+          <Container width="100%" display="flex" flexDirection="column" gap="25px" padding="20px">
             <CobranzaProductsInfoForm clientId={clientId} isEdit={isEdit} />
           </Container>
         </Container>

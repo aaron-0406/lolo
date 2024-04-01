@@ -55,7 +55,7 @@ const CobranzaProductsInfoForm = ({ clientId, isEdit }: CobranzaProductsInfoForm
   ]
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+    <>
       <Controller
         name="code"
         control={control}
@@ -67,11 +67,10 @@ const CobranzaProductsInfoForm = ({ clientId, isEdit }: CobranzaProductsInfoForm
             label="Código:"
             value={field.value}
             hasError={!!errors.code}
-            helperText={errors.code && errors.code.type === "min" ? "Debe ingresar como mínimo 5 caracteres" : errors.code?.type === "required" ? "Este campo es requerido" : ""}
+            helperText={errors.code?.message ? errors.code.message : ''}
             onChange={(e) => {
               field.onChange(e.target.value)
             }}
-
           />
         )}
       />
@@ -111,7 +110,7 @@ const CobranzaProductsInfoForm = ({ clientId, isEdit }: CobranzaProductsInfoForm
           />
         )}
       />
-    </div>
+    </>
   )
 }
 
