@@ -25,6 +25,8 @@ import { getAllManagementActionsByCHB } from '@/services/extrajudicial/managemen
 import Button from '@/ui/Button'
 import useModal from '@/hooks/useModal'
 import DeleteClientModal from './DeleteClientModal'
+import Text from '@/ui/Text'
+import { Tooltip } from 'react-tooltip'
 
 type CustomersTableProps = {
   opts: Opts
@@ -375,7 +377,20 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
                   }}
                 >
                   <BodyCell textAlign="center">{`${record.code || ''}`}</BodyCell>
-                  <BodyCell>{`${record.name || ''}`}</BodyCell>
+                  <BodyCell textAlign="left">
+                    <Container
+                      data-tooltip-id="cell-tooltip"
+                      data-tooltip-content={record.name.length >= 25 ? record.name : ''}
+                      width="17vw"
+                      whiteSpace="nowrap"
+                      overFlowX="hidden"
+                      textOverflow="ellipsis"
+                    >
+                      <Text.Body size="m" weight="regular">
+                        {record.name || '-'}
+                      </Text.Body>
+                    </Container>
+                  </BodyCell>
                   <BodyCell>{`${record.negotiation.name.toUpperCase() || ''}`}</BodyCell>
                   <BodyCell>{`${record.funcionario.name.toUpperCase() || ''}`}</BodyCell>
                   <BodyCell>{`${record.customerUser.name.toUpperCase() || ''}`}</BodyCell>
@@ -404,6 +419,8 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
             }
           )}
       </Table>
+      <Tooltip place="right" id="cell-tooltip" />
+
       <DeleteClientModal visible={visibleDeleteClient} onClose={hideDeleteClient} code={codeClient} />
     </Container>
   )
