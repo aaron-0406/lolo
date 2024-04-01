@@ -14,7 +14,7 @@ import Modal from '@/ui/Modal'
 import Container from '@/ui/Container'
 import Button from '@/ui/Button'
 import AddressTypeInfoForm from './AddressTypeInfoForm'
-import extAddressTypeCache from '../../AddressTypeTable/utils/ext-address-type.cache'
+import extAddressTypeCache, { KEY_EXT_ADDRESS_TYPE_CACHE } from '../../AddressTypeTable/utils/ext-address-type.cache'
 import { CustomErrorResponse } from 'types/customErrorResponse'
 import { useLoloContext } from '@/contexts/LoloProvider'
 
@@ -24,11 +24,6 @@ type AddressTypeModalProps = {
   isEdit?: boolean
   idAddressType?: number
 }
-const defaultValuesAddressType: Omit<ExtAddressType, 'createdAt' | 'updatedAt' | 'deletedAt'> = {
-  id: 0,
-  type: '',
-  customerHasBankId: 0,
-}
 
 const FuncionariosModal = ({ visible, onClose, isEdit = false, idAddressType = 0 }: AddressTypeModalProps) => {
   const {
@@ -36,6 +31,8 @@ const FuncionariosModal = ({ visible, onClose, isEdit = false, idAddressType = 0
       selectedBank: { idCHB: chb },
     },
   } = useLoloContext()
+
+  const chbNumber = parseInt(chb.length ? chb : '0')
 
   const queryClient = useQueryClient()
 
@@ -46,10 +43,14 @@ const FuncionariosModal = ({ visible, onClose, isEdit = false, idAddressType = 0
     onErrorCache,
   } = extAddressTypeCache(queryClient)
 
-  const formMethods = useForm<ExtAddressType>({
+  const formMethods = useForm<Omit<ExtAddressType, 'createdAt' | 'updatedAt' | 'deletedAt'>>({
     resolver: ModalAddressTypeResolver,
     mode: 'all',
-    defaultValues: defaultValuesAddressType,
+    defaultValues: {
+      id: 0,
+      type: '',
+      customerHasBankId: chbNumber,
+    },
   })
 
   const {
@@ -65,22 +66,22 @@ const FuncionariosModal = ({ visible, onClose, isEdit = false, idAddressType = 0
   >(
     async () => {
       const { id, ...restClient } = getValues()
-      return await createAddressType({ ...restClient, customerHasBankId: parseInt(chb) })
+      return await createAddressType({ ...restClient, customerHasBankId: chbNumber })
     },
     {
       onSuccess: (result) => {
         createAddressTypeCache(result.data)
-        notification({ type: 'success', message: 'tipo de dirección creado' })
+        notification({ type: 'success', message: 'Tipo de dirección creada' })
         handleClickCloseModal()
       },
       onMutate: () => {
-        return onMutateCache(parseInt(chb))
+        return onMutateCache(chbNumber)
       },
       onSettled: () => {
-        onSettledCache(parseInt(chb))
+        onSettledCache(chbNumber)
       },
       onError: (error, _, context: any) => {
-        onErrorCache(context, parseInt(chb))
+        onErrorCache(context, chbNumber)
         notification({
           type: 'error',
           message: error.response?.data.message,
@@ -92,26 +93,26 @@ const FuncionariosModal = ({ visible, onClose, isEdit = false, idAddressType = 0
 
   const { isLoading: loadingEditAddressType, mutate: editAddressTypeMutate } = useMutation<
     AxiosResponse<ExtAddressType>,
-    Error
+    AxiosError<CustomErrorResponse>
   >(
     async () => {
       const { id, ...restClient } = getValues()
-      return await editAddressType({ ...restClient, customerHasBankId: parseInt(chb) }, id)
+      return await editAddressType({ ...restClient, customerHasBankId: chbNumber }, id)
     },
     {
       onSuccess: (result) => {
         editAddressTypeCache(result.data)
-        notification({ type: 'success', message: 'tipo de dirección editado' })
+        notification({ type: 'success', message: 'Tipo de dirección editada' })
         handleClickCloseModal()
       },
       onMutate: () => {
-        return onMutateCache(parseInt(chb))
+        return onMutateCache(chbNumber)
       },
       onSettled: () => {
-        onSettledCache(parseInt(chb))
+        onSettledCache(chbNumber)
       },
       onError: (error: any, _, context: any) => {
-        onErrorCache(context, parseInt(chb))
+        onErrorCache(context, chbNumber)
         notification({
           type: 'error',
           message: error.response.data.message,
@@ -120,19 +121,19 @@ const FuncionariosModal = ({ visible, onClose, isEdit = false, idAddressType = 0
     }
   )
 
-  const { refetch: refetchGetAddressTypeById } = useQuery(
-    'get-address-type-by-id',
+  const { refetch: refetchGetAddressTypeById } = useQuery<AxiosResponse<ExtAddressType>>(
+    [`${KEY_EXT_ADDRESS_TYPE_CACHE}-GET-ADDRESS-TYPE-BY-ID`, parseInt(chb.length ? chb : '0')],
     async () => {
-      return getAddressTypeByID(idAddressType)
+      return getAddressTypeByID(idAddressType, chbNumber)
     },
     {
       onSuccess: ({ data }) => {
         if (!!idAddressType) {
-          setValue('id', data.id)
-          setValue('type', data.type)
-          setValue('customerHasBankId', data.customerHasBankId)
+          setValue('id', data.id, { shouldValidate: true })
+          setValue('type', data.type, { shouldValidate: true })
+          setValue('customerHasBankId', data.customerHasBankId, { shouldValidate: true })
         } else {
-          reset(defaultValuesAddressType)
+          reset()
         }
       },
       enabled: false,
@@ -184,14 +185,14 @@ const FuncionariosModal = ({ visible, onClose, isEdit = false, idAddressType = 0
       >
         <Container
           width="100%"
-          height="140px"
+          height="210px"
           display="flex"
           justify-content="center"
           flexDirection="column"
           align-items="center"
           gap="20px"
         >
-          <Container width="100%" display="flex" flexDirection="column" gap="20px" padding="20px" margin="30px 0">
+          <Container width="100%" display="flex" flexDirection="column" gap="10px" padding="20px">
             <AddressTypeInfoForm />
           </Container>
         </Container>

@@ -18,6 +18,8 @@ import DeleteCobranzaAddressesModal from '../Modals/DeleteCobranzaAddressesModal
 import CobranzaAddressesModal from '../Modals/CobranzaAddressesModal'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import { ExtAddressType } from '@/types/extrajudicial/ext-address-type.type'
+import moment from 'moment'
+import { KEY_EXT_ADDRESS_TYPE_CACHE } from '../../ExtrajudicialAddressType/AddressTypeTable/utils/ext-address-type.cache'
 
 type CobranzaAddressesTableProps = {
   clientId?: number
@@ -74,9 +76,17 @@ const CobranzaAddressesTable = ({ clientId }: CobranzaAddressesTableProps) => {
   const addresses = data?.data ?? []
 
   const { data: addressesTypeData } = useQuery(
-    ['KEY_EXT_ADDRESS_TYPE_CACHE', parseInt(chb.length ? chb : '0')],
+    [KEY_EXT_ADDRESS_TYPE_CACHE, parseInt(chb.length ? chb : '0')],
     async () => {
       return await getAddressesTypeByCHB(parseInt(chb.length ? chb : '0'))
+    },
+    {
+      onError: (error: any) => {
+        notification({
+          type: 'error',
+          message: error.response.data.message,
+        })
+      },
     }
   )
 
@@ -104,14 +114,17 @@ const CobranzaAddressesTable = ({ clientId }: CobranzaAddressesTableProps) => {
                 <BodyCell textAlign="center">{key + 1 || ''}</BodyCell>
                 <BodyCell textAlign="center">
                   <Text.Body size="m" weight="bold" color="Primary5">
-                    {addressType?.type || ''}
+                    {addressType?.type || '-'}
                   </Text.Body>
                 </BodyCell>
                 <BodyCell textAlign="left">
-                  <Text.Body size="m" weight="regular">
-                    {record.direction || ''}
-                  </Text.Body>
+                  <Container width="40vw" whiteSpace="nowrap" overFlowX="hidden" textOverflow="ellipsis">
+                    <Text.Body size="m" weight="regular">
+                      {record.direction || ''}
+                    </Text.Body>
+                  </Container>
                 </BodyCell>
+                <BodyCell textAlign="center">{`${moment(record.createdAt).format('DD-MM-YYYY') || ''}`}</BodyCell>
                 <BodyCell textAlign="center">
                   {
                     <Container display="flex" gap="10px" justifyContent="space-around">

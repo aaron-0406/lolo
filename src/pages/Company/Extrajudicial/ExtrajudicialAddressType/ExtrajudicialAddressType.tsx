@@ -4,15 +4,7 @@ import AddressesTypeTable from './AddressTypeTable'
 
 const ExtrajudicialAddressType = () => {
   return (
-    <Container
-      width="100%"
-      height="100%"
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-      justifyContent="center"
-      gap="20px"
-    >
+    <Container width="100%" height="100%" display="flex" flexDirection="column">
       <AddressTypeActions />
       <AddressesTypeTable />
     </Container>

@@ -126,7 +126,7 @@ const CobranzaAddressesModal = ({
       onSuccess: ({ data }) => {
         if (!!idAddress) {
           setValue('direction', data.direction, { shouldValidate: true })
-          setValue('addressTypeId', data.type, { shouldValidate: true })
+          setValue('addressTypeId', data.addressTypeId, { shouldValidate: true })
           setValue('clientId', data.clientId, { shouldValidate: true })
         } else {
           reset()
@@ -164,7 +164,7 @@ const CobranzaAddressesModal = ({
         title={isEdit ? 'Editar Dirección' : 'Agregar Dirección'}
         contentOverflowY="auto"
         size="small"
-        minHeight="430px"
+        minHeight="210px"
         footer={
           <Container width="100%" height="75px" display="flex" justifyContent="end" alignItems="center" gap="20px">
             <Button
@@ -181,7 +181,7 @@ const CobranzaAddressesModal = ({
       >
         <Container
           width="100%"
-          height="430px"
+          height="210px"
           display="flex"
           justify-content="center"
           flexDirection="column"

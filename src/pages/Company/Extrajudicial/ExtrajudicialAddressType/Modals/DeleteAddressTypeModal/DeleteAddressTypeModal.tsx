@@ -22,6 +22,8 @@ const DeleteAddressTypeModal = ({ visible, idAddressType = 0, onClose }: DeleteA
     },
   } = useLoloContext()
 
+  const chbNumber = parseInt(chb.length ? chb : '0')
+
   const queryClient = useQueryClient()
 
   const {
@@ -36,22 +38,22 @@ const DeleteAddressTypeModal = ({ visible, idAddressType = 0, onClose }: DeleteA
     AxiosError<CustomErrorResponse>
   >(
     async () => {
-      return await deleteAddressType(idAddressType)
+      return await deleteAddressType(idAddressType, chbNumber)
     },
     {
       onSuccess: () => {
-        deleteAddressTypeCache(String(idAddressType), parseInt(chb))
-        notification({ type: 'success', message: 'tipo de dirección eliminado' })
+        deleteAddressTypeCache(String(idAddressType), chbNumber)
+        notification({ type: 'success', message: 'Tipo de dirección eliminada' })
         onClose()
       },
       onMutate: () => {
-        return onMutateCache(parseInt(chb))
+        return onMutateCache(chbNumber)
       },
       onSettled: () => {
-        onSettledCache(parseInt(chb))
+        onSettledCache(chbNumber)
       },
       onError: (error, _, context: any) => {
-        onErrorCache(context, parseInt(chb))
+        onErrorCache(context, chbNumber)
         notification({
           type: 'error',
           message: error.response?.data.message,

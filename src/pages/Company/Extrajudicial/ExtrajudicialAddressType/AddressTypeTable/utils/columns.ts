@@ -11,7 +11,7 @@ export const AddressTypeColumns: ColumProps[] = [
     id: 'addresstype.datatable.header.type',
     title: 'NOMBRE',
     width: '20%',
-    justifyContent: 'center',
+    justifyContent: 'left',
   },
   {
     id: 'addresstype.datatable.header.date',

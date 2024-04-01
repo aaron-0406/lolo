@@ -7,6 +7,8 @@ import TextAreaField from '@/ui/fields/TextAreaField'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import { useQuery } from 'react-query'
 import { ExtAddressType } from '@/types/extrajudicial/ext-address-type.type'
+import { KEY_EXT_ADDRESS_TYPE_CACHE } from '@/pages/extrajudicial/ExtrajudicialAddressType/AddressTypeTable/utils/ext-address-type.cache'
+import notification from '@/ui/notification'
 
 type CobranzaAddressesInfoFormProps = {
   clientId: number
@@ -25,13 +27,21 @@ const CobranzaAddressesInfoForm = ({ clientId }: CobranzaAddressesInfoFormProps)
   } = useFormContext<Omit<DirectionType, 'id' | 'createdAt'>>()
 
   const { data: addressesTypeData } = useQuery(
-    ['KEY_EXT_ADDRESS_TYPE_CACHE', parseInt(chb.length ? chb : '0')],
+    [KEY_EXT_ADDRESS_TYPE_CACHE, parseInt(chb.length ? chb : '0')],
     async () => {
       return await getAddressesTypeByCHB(parseInt(chb.length ? chb : '0'))
+    },
+    {
+      onError: (error: any) => {
+        notification({
+          type: 'error',
+          message: error.response.data.message,
+        })
+      },
     }
   )
 
-  const addressesType = addressesTypeData?.data ?? []
+  const addressesType: ExtAddressType[] = addressesTypeData?.data ?? []
 
   const optionsStates: Array<SelectItemType> = addressesType.map((record: ExtAddressType) => {
     return { key: String(record.id), label: record.type }

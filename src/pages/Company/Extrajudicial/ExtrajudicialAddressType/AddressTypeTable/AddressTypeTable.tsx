@@ -14,6 +14,8 @@ import DeleteAddressTypeModal from '../Modals/DeleteAddressTypeModal'
 import { AddressTypeColumns } from './utils/columns'
 import { KEY_EXT_ADDRESS_TYPE_CACHE } from './utils/ext-address-type.cache'
 import { useLoloContext } from '@/contexts/LoloProvider'
+import { AxiosResponse } from 'axios'
+import notification from '@/ui/notification'
 
 const AddressesTypeTable = () => {
   const {
@@ -56,9 +58,20 @@ const AddressesTypeTable = () => {
     hideModalAddressType()
   }
 
-  const { isLoading, data } = useQuery([KEY_EXT_ADDRESS_TYPE_CACHE, parseInt(chb.length ? chb : '0')], async () => {
-    return await getAddressesTypeByCHB(parseInt(chb.length ? chb : '0'))
-  })
+  const { isLoading, data } = useQuery<AxiosResponse<Array<ExtAddressType>, Error>>(
+    [KEY_EXT_ADDRESS_TYPE_CACHE, parseInt(chb.length ? chb : '0')],
+    async () => {
+      return await getAddressesTypeByCHB(parseInt(chb.length ? chb : '0'))
+    },
+    {
+      onError: (error: any) => {
+        notification({
+          type: 'error',
+          message: error.response.data.message,
+        })
+      },
+    }
+  )
 
   const addressesType = data?.data ?? []
 
@@ -80,7 +93,7 @@ const AddressesTypeTable = () => {
             return (
               <tr className="styled-data-table-row" key={record.id}>
                 <BodyCell textAlign="center">{`${key + 1 || ''}`}</BodyCell>
-                <BodyCell textAlign="center">{`${record.type || ''}`}</BodyCell>
+                <BodyCell textAlign="left">{`${record.type || ''}`}</BodyCell>
                 <BodyCell textAlign="center">{`${moment(record.createdAt).format('DD-MM-YYYY') || ''}`}</BodyCell>
                 <BodyCell textAlign="center">
                   {
