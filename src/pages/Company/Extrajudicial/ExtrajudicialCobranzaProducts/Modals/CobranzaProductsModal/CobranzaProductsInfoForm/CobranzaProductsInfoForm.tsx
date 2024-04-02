@@ -1,8 +1,14 @@
 import { ProductType } from '@/types/extrajudicial/product.type'
+import { Controller, useFormContext } from 'react-hook-form'
+import { AxiosResponse } from 'axios'
+import { useQuery } from 'react-query'
 import Select from '@/ui/Select'
+import { getAllNegociacionesByCHB } from '@/services/extrajudicial/negotiation.service'
+import { NegotiationType } from '@/types/extrajudicial/negotiation.type'
 import { SelectItemType } from '@/ui/Select/interfaces'
 import TextField from '@/ui/fields/TextField'
-import { Controller, useFormContext } from 'react-hook-form'
+import notification from '@/ui/notification'
+import { useLoloContext } from '@/contexts/LoloProvider'
 
 type CobranzaProductsInfoFormProps = {
   clientId: number
@@ -14,6 +20,33 @@ const CobranzaProductsInfoForm = ({ clientId, isEdit }: CobranzaProductsInfoForm
     control,
     formState: { errors },
   } = useFormContext<ProductType>()
+
+  const {
+    bank: {
+      selectedBank: { idCHB },
+    },
+  } = useLoloContext()
+
+  const { data } = useQuery<AxiosResponse<Array<NegotiationType>, Error>>(
+    ['get-all-negotiations-by-chb', idCHB],
+    async () => {
+      return await getAllNegociacionesByCHB(Number(idCHB))
+    },
+    {
+      onError: (error: any) => {
+        notification({
+          type: 'error',
+          message: error.response.data.message,
+        })
+      },
+    }
+  )
+
+  const negotiations = data?.data ?? []
+
+  const optionsNegotiations: Array<SelectItemType> = negotiations.map((negotiation) => {
+    return { key: String(negotiation.id), label: negotiation.name }
+  })
 
   const optionsNames: Array<SelectItemType> = [
     { key: 'ADELANTO SUELDO ATRASO', label: 'ADELANTO SUELDO ATRASO' },
@@ -86,6 +119,24 @@ const CobranzaProductsInfoForm = ({ clientId, isEdit }: CobranzaProductsInfoForm
             options={optionsNames}
             onChange={(key) => {
               field.onChange(key)
+            }}
+            hasError={!!errors.name}
+          />
+        )}
+      />
+
+      <Controller
+        name="negotiationId"
+        control={control}
+        render={({ field }) => (
+          <Select
+            disabled={!clientId}
+            width="100%"
+            label="Negociación:"
+            value={String(field.value)}
+            options={optionsNegotiations}
+            onChange={(key) => {
+              field.onChange(parseInt(key))
             }}
             hasError={!!errors.name}
           />

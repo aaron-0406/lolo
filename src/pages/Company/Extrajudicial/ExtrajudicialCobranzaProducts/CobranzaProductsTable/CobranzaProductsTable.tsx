@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useQuery } from 'react-query'
 import { KEY_COBRANZA_URL_PRODUCT_CODE_CACHE } from './utils/company-products.cache'
 import { ProductType } from '@/types/extrajudicial/product.type'
+import { NegotiationType } from '@/types/extrajudicial/negotiation.type'
 import notification from '@/ui/notification'
 import { getProductsByClientCode } from '@/services/extrajudicial/product.service'
 import { useParams } from 'react-router-dom'
@@ -50,7 +51,7 @@ const CobranzaProductsTable = ({ clientId }: CobranzaProductsTableProps) => {
     hideDeleteProduct()
   }
 
-  const { data, isLoading } = useQuery<AxiosResponse<Array<ProductType>, Error>>(
+  const { data, isLoading } = useQuery<AxiosResponse<Array<ProductType & { negotiation: NegotiationType }>, Error>>(
     [KEY_COBRANZA_URL_PRODUCT_CODE_CACHE, clientId],
     async () => {
       return await getProductsByClientCode(code)
@@ -81,7 +82,7 @@ const CobranzaProductsTable = ({ clientId }: CobranzaProductsTableProps) => {
         }
       >
         {!!products?.length &&
-          products.map((record: ProductType, key) => {
+          products.map((record: ProductType & { negotiation: NegotiationType }, key) => {
             return (
               <tr className="styled-data-table-row" key={record.id}>
                 <BodyCell textAlign="center">{key + 1 || ''}</BodyCell>
@@ -93,6 +94,11 @@ const CobranzaProductsTable = ({ clientId }: CobranzaProductsTableProps) => {
                 <BodyCell textAlign="center">
                   <Text.Body size="m" weight="bold" color="Primary5">
                     {record.name || ''}
+                  </Text.Body>
+                </BodyCell>
+                <BodyCell textAlign="center">
+                  <Text.Body size="m" weight="bold" color="Primary5">
+                    {record.negotiation.name || ''}
                   </Text.Body>
                 </BodyCell>
                 <BodyCell textAlign="center">

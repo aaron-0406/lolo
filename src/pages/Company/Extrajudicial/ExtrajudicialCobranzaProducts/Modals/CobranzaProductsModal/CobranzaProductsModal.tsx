@@ -57,6 +57,7 @@ const CobranzaProductsModal = ({
       customerId: customerId,
       name: '',
       state: '',
+      negotiationId: 0,
     },
   })
 
@@ -141,6 +142,7 @@ const CobranzaProductsModal = ({
           setValue('name', data.name, { shouldValidate: true })
           setValue('state', data.state, { shouldValidate: true })
           setValue('clientCode', data.clientCode, { shouldValidate: true })
+          setValue('negotiationId', data.negotiationId, { shouldValidate: true })
         } else {
           reset()
         }
