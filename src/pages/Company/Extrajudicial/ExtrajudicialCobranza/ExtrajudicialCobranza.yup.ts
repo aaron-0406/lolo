@@ -8,8 +8,7 @@ const ExtrajudicialCobranzaSchema: yup.SchemaOf<Omit<ClientType, 'id' | 'created
   negotiationId: yup.number().required().min(1),
   dniOrRuc: yup
     .string()
-    .optional()
-    .matches(/^\d{8}$|^\d{11}$/),
+    .matches(/^\d{8}$|^\d{11}$|^$/, 'Debe ser un DNI de 8 dígitos, un RUC de 11 dígitos o estar vacío'),
   name: yup
     .string()
     .required()
