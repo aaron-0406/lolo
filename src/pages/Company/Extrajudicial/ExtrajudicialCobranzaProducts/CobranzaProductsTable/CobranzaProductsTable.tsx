@@ -17,12 +17,20 @@ import Button from '@/ui/Button'
 import { productsColumns } from './utils/columns'
 import CobranzaProductsModal from '../Modals/CobranzaProductsModal'
 import DeleteCobranzaProductsModal from '../Modals/DeleteCobranzaProductsModal'
+import { getAllNegociacionesByCHB } from '@/services/extrajudicial/negotiation.service'
+import { useLoloContext } from '@/contexts/LoloProvider'
 
 type CobranzaProductsTableProps = {
   clientId?: number
 }
 
 const CobranzaProductsTable = ({ clientId }: CobranzaProductsTableProps) => {
+  const {
+    bank: {
+      selectedBank: { idCHB },
+    },
+  } = useLoloContext()
+
   const code = useParams().code ?? ''
 
   const [idEdit, setIdEdit] = useState<number>(0)
@@ -68,6 +76,27 @@ const CobranzaProductsTable = ({ clientId }: CobranzaProductsTableProps) => {
 
   const products = data?.data ?? []
 
+  const { data: dataNegotiation } = useQuery<AxiosResponse<Array<NegotiationType>, Error>>(
+    ['get-all-negotiations-by-chb', idCHB],
+    async () => {
+      return await getAllNegociacionesByCHB(Number(idCHB))
+    },
+    {
+      onError: (error: any) => {
+        notification({
+          type: 'error',
+          message: error.response.data.message,
+        })
+      },
+    }
+  )
+
+  const negotiations = dataNegotiation?.data ?? []
+
+  const getNegotiationById = (id: number) => {
+    return negotiations.find((negotiation) => negotiation.id === id)
+  }
+
   return (
     <Container width="100%" height="calc(100% - 80px)" padding="20px">
       <Table
@@ -98,7 +127,7 @@ const CobranzaProductsTable = ({ clientId }: CobranzaProductsTableProps) => {
                 </BodyCell>
                 <BodyCell textAlign="center">
                   <Text.Body size="m" weight="bold" color="Primary5">
-                    {record.negotiation.name || ''}
+                    {getNegotiationById(record.negotiationId)?.name || '-'}
                   </Text.Body>
                 </BodyCell>
                 <BodyCell textAlign="center">
@@ -144,6 +173,7 @@ const CobranzaProductsTable = ({ clientId }: CobranzaProductsTableProps) => {
         onClose={onCloseModalEdit}
         idProduct={idEdit}
         clientId={clientId}
+        negotiations={negotiations}
         isEdit
       />
 

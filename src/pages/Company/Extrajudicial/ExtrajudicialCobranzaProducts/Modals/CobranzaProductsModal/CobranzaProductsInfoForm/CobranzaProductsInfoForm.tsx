@@ -1,48 +1,22 @@
 import { ProductType } from '@/types/extrajudicial/product.type'
 import { Controller, useFormContext } from 'react-hook-form'
-import { AxiosResponse } from 'axios'
-import { useQuery } from 'react-query'
 import Select from '@/ui/Select'
-import { getAllNegociacionesByCHB } from '@/services/extrajudicial/negotiation.service'
 import { NegotiationType } from '@/types/extrajudicial/negotiation.type'
 import { SelectItemType } from '@/ui/Select/interfaces'
 import TextField from '@/ui/fields/TextField'
-import notification from '@/ui/notification'
 import { useLoloContext } from '@/contexts/LoloProvider'
 
 type CobranzaProductsInfoFormProps = {
   clientId: number
   isEdit: boolean
+  negotiations: Array<NegotiationType>
 }
 
-const CobranzaProductsInfoForm = ({ clientId, isEdit }: CobranzaProductsInfoFormProps) => {
+const CobranzaProductsInfoForm = ({ clientId, isEdit, negotiations }: CobranzaProductsInfoFormProps) => {
   const {
     control,
     formState: { errors },
   } = useFormContext<ProductType>()
-
-  const {
-    bank: {
-      selectedBank: { idCHB },
-    },
-  } = useLoloContext()
-
-  const { data } = useQuery<AxiosResponse<Array<NegotiationType>, Error>>(
-    ['get-all-negotiations-by-chb', idCHB],
-    async () => {
-      return await getAllNegociacionesByCHB(Number(idCHB))
-    },
-    {
-      onError: (error: any) => {
-        notification({
-          type: 'error',
-          message: error.response.data.message,
-        })
-      },
-    }
-  )
-
-  const negotiations = data?.data ?? []
 
   const optionsNegotiations: Array<SelectItemType> = negotiations.map((negotiation) => {
     return { key: String(negotiation.id), label: negotiation.name }

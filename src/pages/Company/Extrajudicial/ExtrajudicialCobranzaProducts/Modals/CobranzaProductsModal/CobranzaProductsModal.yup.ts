@@ -8,7 +8,7 @@ const ModalProductsSchema: yup.SchemaOf<Omit<ProductType, 'id'>> = yup.object().
   state: yup.string().required().max(150),
   clientCode: yup.string().required().max(150),
   customerId: yup.number().required(),
-  negotiationId: yup.number().required(),
+  negotiationId: yup.number().required().min(1),
 })
 
 export const ModalProductsResolver = yupResolver(ModalProductsSchema)
