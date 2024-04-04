@@ -1,19 +1,25 @@
 import { ProductType } from '@/types/extrajudicial/product.type'
+import { Controller, useFormContext } from 'react-hook-form'
 import Select from '@/ui/Select'
+import { NegotiationType } from '@/types/extrajudicial/negotiation.type'
 import { SelectItemType } from '@/ui/Select/interfaces'
 import TextField from '@/ui/fields/TextField'
-import { Controller, useFormContext } from 'react-hook-form'
 
 type CobranzaProductsInfoFormProps = {
   clientId: number
   isEdit: boolean
+  negotiations: Array<NegotiationType>
 }
 
-const CobranzaProductsInfoForm = ({ clientId, isEdit }: CobranzaProductsInfoFormProps) => {
+const CobranzaProductsInfoForm = ({ clientId, isEdit, negotiations }: CobranzaProductsInfoFormProps) => {
   const {
     control,
     formState: { errors },
   } = useFormContext<ProductType>()
+
+  const optionsNegotiations: Array<SelectItemType> = negotiations.map((negotiation) => {
+    return { key: String(negotiation.id), label: negotiation.name }
+  })
 
   const optionsNames: Array<SelectItemType> = [
     { key: 'ADELANTO SUELDO ATRASO', label: 'ADELANTO SUELDO ATRASO' },
@@ -87,6 +93,24 @@ const CobranzaProductsInfoForm = ({ clientId, isEdit }: CobranzaProductsInfoForm
             options={optionsNames}
             onChange={(key) => {
               field.onChange(key)
+            }}
+            hasError={!!errors.name}
+          />
+        )}
+      />
+
+      <Controller
+        name="negotiationId"
+        control={control}
+        render={({ field }) => (
+          <Select
+            disabled={!clientId}
+            width="100%"
+            label="Negociación:"
+            value={String(field.value)}
+            options={optionsNegotiations}
+            onChange={(key) => {
+              field.onChange(parseInt(key))
             }}
             hasError={!!errors.name}
           />

@@ -16,6 +16,7 @@ import Container from '@/ui/Container'
 import Modal from '@/ui/Modal'
 import Button from '@/ui/Button'
 import CobranzaProductsInfoForm from './CobranzaProductsInfoForm'
+import { NegotiationType } from '@/types/extrajudicial/negotiation.type'
 
 type CobranzaProductsModalProps = {
   visible: boolean
@@ -23,6 +24,7 @@ type CobranzaProductsModalProps = {
   isEdit?: boolean
   idProduct?: number
   clientId?: number
+  negotiations: Array<NegotiationType>
 }
 
 const CobranzaProductsModal = ({
@@ -31,6 +33,7 @@ const CobranzaProductsModal = ({
   isEdit = false,
   idProduct = 0,
   clientId = 0,
+  negotiations,
 }: CobranzaProductsModalProps) => {
   const code = useParams().code ?? ''
   const queryClient = useQueryClient()
@@ -57,6 +60,7 @@ const CobranzaProductsModal = ({
       customerId: customerId,
       name: '',
       state: '',
+      negotiationId: 0,
     },
   })
 
@@ -141,6 +145,7 @@ const CobranzaProductsModal = ({
           setValue('name', data.name, { shouldValidate: true })
           setValue('state', data.state, { shouldValidate: true })
           setValue('clientCode', data.clientCode, { shouldValidate: true })
+          setValue('negotiationId', data.negotiationId, { shouldValidate: true })
         } else {
           reset()
         }
@@ -201,8 +206,8 @@ const CobranzaProductsModal = ({
           align-items="center"
           gap="20px"
         >
-          <Container width="100%" display="flex" flexDirection="column" gap="25px" padding="20px">
-            <CobranzaProductsInfoForm clientId={clientId} isEdit={isEdit} />
+          <Container width="100%" display="flex" flexDirection="column" gap="10px" padding="20px">
+            <CobranzaProductsInfoForm clientId={clientId} isEdit={isEdit} negotiations={negotiations} />
           </Container>
         </Container>
       </Modal>

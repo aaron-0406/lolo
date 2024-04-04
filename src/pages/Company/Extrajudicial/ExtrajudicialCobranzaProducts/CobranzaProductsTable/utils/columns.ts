@@ -16,12 +16,18 @@ export const productsColumns: ColumProps[] = [
   {
     id: 'products.datatable.header.name',
     title: 'NOMBRE',
-    width: '40%',
+    width: '30%',
+    justifyContent: 'center',
+  },
+  {
+    id: 'products.datatable.header.stateNegotiation',
+    title: 'ESTADO NEGOCIACIÓN',
+    width: '30%',
     justifyContent: 'center',
   },
   {
     id: 'products.datatable.header.state',
-    title: 'STATE',
+    title: 'ESTADO',
     width: '20%',
     justifyContent: 'center',
   },
