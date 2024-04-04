@@ -73,6 +73,7 @@ const CobranzaProductsInfoForm = ({ clientId, isEdit, negotiations }: CobranzaPr
             label="Código:"
             value={field.value}
             hasError={!!errors.code}
+            helperText={errors.code?.message ? errors.code.message : ''}
             onChange={(e) => {
               field.onChange(e.target.value)
             }}
