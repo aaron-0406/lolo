@@ -13,7 +13,7 @@ const App = () => {
 
   useIdleTimer({
     onIdle,
-    timeout: 1200_000,
+    timeout: 3600_000,
     throttle: 500,
   })
 
