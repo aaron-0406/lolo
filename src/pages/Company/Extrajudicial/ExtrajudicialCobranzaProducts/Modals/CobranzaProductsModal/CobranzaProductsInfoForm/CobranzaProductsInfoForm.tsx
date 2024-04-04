@@ -4,7 +4,6 @@ import Select from '@/ui/Select'
 import { NegotiationType } from '@/types/extrajudicial/negotiation.type'
 import { SelectItemType } from '@/ui/Select/interfaces'
 import TextField from '@/ui/fields/TextField'
-import { useLoloContext } from '@/contexts/LoloProvider'
 
 type CobranzaProductsInfoFormProps = {
   clientId: number
