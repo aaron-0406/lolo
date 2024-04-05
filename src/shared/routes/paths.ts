@@ -46,6 +46,7 @@ export default {
     acciones: (urlIdentifier = ':urlIdentifier') => `/cobranza/${urlIdentifier}/acciones`,
     etiquetas: (urlIdentifier = ':urlIdentifier') => `/cobranza/${urlIdentifier}/etiquetas`,
     tipoDirecciones: (urlIdentifier = ':urlIdentifier') => `/cobranza/${urlIdentifier}/tipo-direcciones`,
+    oficinas: (urlIdentifier = ':urlIdentifier') => `/cobranza/${urlIdentifier}/oficinas`,
   },
   judicial: {
     perfil: (urlIdentifier = ':urlIdentifier') => `/judicial/${urlIdentifier}/perfil`,
