@@ -36,6 +36,7 @@ import ExtrajudicialCobranzaFiles from '@/pages/extrajudicial/ExtrajudicialCobra
 import ExtrajudicialIpAddressBank from '@/pages/extrajudicial/ExtrajudicialIpAddressBank'
 import ExtrajudicialTags from '@/pages/extrajudicial/ExtrajudicialTags'
 import ExtrajudicialAddressType from '@/pages/extrajudicial/ExtrajudicialAddressType'
+import ExtrajudicialOffice from '@/pages/extrajudicial/ExtrajudicialOffice'
 
 //JUDICIAL
 import ErrorPage from '../../../pages/ErrorPage'
@@ -97,6 +98,7 @@ const AppRouter = () => {
         <Route path={paths.cobranza.negociaciones()} element={<ExtrajudicialNegotiations />} />
         <Route path={paths.cobranza.etiquetas()} element={<ExtrajudicialTags />} />
         <Route path={paths.cobranza.tipoDirecciones()} element={<ExtrajudicialAddressType />} />
+        <Route path={paths.cobranza.oficinas()} element={<ExtrajudicialOffice />} />
       </Route>
 
       <Route path="*" element={<NotFound />} />

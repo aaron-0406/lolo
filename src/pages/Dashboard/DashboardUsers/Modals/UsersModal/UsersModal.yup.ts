@@ -3,7 +3,7 @@ import yup from '../../../../../shared/yupLocale'
 import { CustomerUserType } from '@/types/dash/customer-user.type'
 
 const UsersModal: yup.SchemaOf<
-  Omit<CustomerUserType, 'customerId' | 'createdAt' | 'id' | 'permissions' | 'role' | 'loginAttempts'>
+  Omit<CustomerUserType, 'customerId' | 'createdAt' | 'id' | 'permissions' | 'role' | 'loginAttempts' | 'officeId'>
 > = yup.object().shape({
   name: yup.string().min(3).required(),
   lastName: yup.string().min(3).required(),
