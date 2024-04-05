@@ -52,6 +52,7 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({ children, urlIdentifier }) =>
     if (!greaterThanTabletL) {
       setToggleMenu(!toggleMenu)
     }
+    setToggleMenu(!toggleMenu)
   }
 
   // Log Out
@@ -160,11 +161,21 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({ children, urlIdentifier }) =>
       </Container>
 
       <Container width="100%" height="calc(100vh - 50px)" display="flex" flexDirection="row">
-        <Container className={`layout__menu ${!greaterThanTabletL && !toggleMenu && 'hide-component'}`} width="100%">
+        <Container
+          className={`layout__menu ${
+            !greaterThanTabletL ? !toggleMenu && 'hide-component' : toggleMenu ? 'enable-menu' : ''
+          }`}
+          width="100%"
+        >
           <ul className="nav">
             {items.map((item, key) => {
               return (
-                <Link key={key} to={item.link} className="nav__items" onClick={onClickToggle}>
+                <Link
+                  key={key}
+                  to={item.link}
+                  className="nav__items"
+                  onClick={!greaterThanTabletL ? onClickToggle : undefined}
+                >
                   <Container display="flex" gap="22px">
                     <Icon remixClass={item.icon} size={20} color="Neutral3" />
                     <Text.Body size="m" weight="bold" color="Neutral0">
@@ -184,7 +195,7 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({ children, urlIdentifier }) =>
         </Container>
 
         <Container
-          className={`layout__content ${toggleMenu && 'hide-component'}`}
+          className={`layout__content ${!greaterThanTabletL && toggleMenu && 'hide-component'}`}
           width={!greaterThanTabletL ? '100%' : 'calc(100% - 60px)'}
           height="100%"
         >
@@ -241,12 +252,11 @@ const StyledMenu = styled(Container)`
       .layout__menu {
         width: 60px;
         position: static;
-
-        &:hover {
-          width: 200px;
-        }
       }
-
+      .enable-menu {
+        width: 200px;
+        background-color: red;
+      }
       .layout__header-selected-bank {
         display: block;
       }
