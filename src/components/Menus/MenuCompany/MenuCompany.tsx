@@ -255,7 +255,6 @@ const StyledMenu = styled(Container)`
       }
       .enable-menu {
         width: 200px;
-        background-color: red;
       }
       .layout__header-selected-bank {
         display: block;
