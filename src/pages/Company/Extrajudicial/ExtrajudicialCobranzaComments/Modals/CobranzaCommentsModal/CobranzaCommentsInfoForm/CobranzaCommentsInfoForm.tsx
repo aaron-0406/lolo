@@ -104,7 +104,7 @@ const CobranzaCommentsInfoForm = ({ clientId }: CobranzaCommentsInfoFormProps) =
               hasError={!!errors.managementActionId}
             />
 
-            {showManagementAction && <Label label={`Acción: ${managementAction.nameAction}`} color="Primary5" />}
+            {showManagementAction && <Label label={`Acción: ${managementAction?.nameAction}`} color="Primary5" />}
           </>
         )}
       />
