@@ -37,6 +37,10 @@ export const saveClient = async (client: ClientType, idCustomer: number) => {
   return await axiosClient.post(`${url}/${idCustomer}`, client)
 }
 
+export const tranferClientToAnotherBank = async (code: string, chb: string, chbTransferred: string) => {
+  return await axiosClient.post(`${url}/transfer-client-to-another-bank/${chb}`, { code, chbTransferred })
+}
+
 export const deleteClient = async (code: string, chb: number, idCustomer: number) => {
   return await axiosClient.delete(`${url}/${code}/${chb}/${idCustomer}`)
 }
