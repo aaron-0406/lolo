@@ -49,7 +49,9 @@ const CobranzaFilesEditModal = ({
     client: { customer },
   } = useLoloContext()
 
-  const formMethods = useForm<Omit<FileType, 'id' | 'name' | 'createdAt'>>({
+  const formMethods = useForm<
+    Omit<FileType, 'id' | 'name' | 'createdAt'> & { classificationTag: { name: string; customerHasBankId: string } }
+  >({
     resolver: ModalCobranzaFilesEditResolver,
     mode: 'all',
     defaultValues: {
@@ -118,6 +120,7 @@ const CobranzaFilesEditModal = ({
           setValue('clientId', data.clientId, { shouldValidate: true })
           setValue('originalName', originalName, { shouldValidate: true })
           setValue('tagId', data.tagId, { shouldValidate: true })
+          setValue('classificationTag', data?.classificationTag, { shouldValidate: true })
         } else {
           reset()
         }

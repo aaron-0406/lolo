@@ -14,11 +14,9 @@ type CobranzaInfoProps = {
 
 const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
   const {
-    control,
-    formState: { errors },
-  } = useFormContext<ClientType>()
-
-  const {
+    bank: {
+      selectedBank: { idCHB },
+    },
     city: { cities },
     user: { users },
     extrajudicial: {
@@ -26,6 +24,21 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
       negociacion: { negociaciones },
     },
   } = useLoloContext()
+
+  const {
+    control,
+    getValues,
+    formState: { errors },
+  } = useFormContext<
+    ClientType & {
+      funcionario: { name: string; customerHasBankId: string }
+      negotiation: { name: string; customerHasBankId: string }
+    }
+  >()
+
+  const funcionario = getValues('funcionario')
+
+  const negotiation = getValues('negotiation')
 
   const optionsCities: Array<SelectItemType> = cities.map((city) => {
     return {
@@ -96,6 +109,7 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
               onChange={(key) => {
                 field.onChange(parseInt(key))
               }}
+              placeholder={negotiation?.name}
               hasError={!!errors.negotiationId}
             />
           )}
@@ -180,6 +194,7 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
               onChange={(key) => {
                 field.onChange(parseInt(key))
               }}
+              placeholder={funcionario?.name}
               hasError={!!errors.funcionarioId}
             />
           )}
