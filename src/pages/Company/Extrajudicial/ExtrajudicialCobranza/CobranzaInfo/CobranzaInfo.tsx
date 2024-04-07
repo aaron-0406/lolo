@@ -14,9 +14,6 @@ type CobranzaInfoProps = {
 
 const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
   const {
-    bank: {
-      selectedBank: { idCHB },
-    },
     city: { cities },
     user: { users },
     extrajudicial: {
