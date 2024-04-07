@@ -33,7 +33,12 @@ const CobranzaActions = ({ setLoadingGlobal }: CobranzaActionsProps) => {
   const navigate = useNavigate()
 
   const codeParams = useParams().code ?? ''
-  const { setValue, reset, handleSubmit, getValues } = useFormContext<ClientType>()
+  const { setValue, reset, handleSubmit, getValues } = useFormContext<
+    ClientType & {
+      funcionario: { name: string; customerHasBankId: string }
+      negotiation: { name: string; customerHasBankId: string }
+    }
+  >()
 
   const { refetch } = useQuery(
     'query-get-client-by-code',
@@ -56,6 +61,8 @@ const CobranzaActions = ({ setLoadingGlobal }: CobranzaActionsProps) => {
         setValue('funcionarioId', data.data.funcionarioId)
         setValue('customerUserId', data.data.customerUserId)
         setValue('customerHasBankId', data.data.customerHasBankId)
+        setValue('funcionario', data.data?.funcionario)
+        setValue('negotiation', data.data?.negotiation)
 
         setLoadingGlobal(false)
       },
@@ -79,7 +86,8 @@ const CobranzaActions = ({ setLoadingGlobal }: CobranzaActionsProps) => {
 
   const { isLoading: loadingSaveClient, mutate: saveCustomer } = useMutation<any, AxiosError<CustomErrorResponse>>(
     async () => {
-      return await saveClient(getValues(), Number(customer.id))
+      const { funcionario, negotiation, ...rest } = getValues()
+      return await saveClient(rest, Number(customer.id))
     },
     {
       onSuccess: (data) => {

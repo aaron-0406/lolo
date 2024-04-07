@@ -7,11 +7,6 @@ import Container from '@/ui/Container'
 import { useParams } from 'react-router-dom'
 import paths from 'shared/routes/paths'
 import CobranzaProductsModal from '../Modals/CobranzaProductsModal'
-import { AxiosResponse } from 'axios'
-import { NegotiationType } from '@/types/extrajudicial/negotiation.type'
-import { useQuery } from 'react-query'
-import { getAllNegociacionesByCHB } from '@/services/extrajudicial/negotiation.service'
-import notification from '@/ui/notification'
 
 type CobranzaProductsInfoProps = {
   name?: string
@@ -23,9 +18,6 @@ const CobranzaProductsInfo = ({ name, clientId }: CobranzaProductsInfoProps) => 
 
   const {
     client: { customer },
-    bank: {
-      selectedBank: { idCHB },
-    },
   } = useLoloContext()
 
   const { visible: visibleModalAdd, showModal: showModalAdd, hideModal: hideModalAdd } = useModal()
@@ -52,23 +44,6 @@ const CobranzaProductsInfo = ({ name, clientId }: CobranzaProductsInfoProps) => 
     },
   ]
 
-  const { data: dataNegotiation } = useQuery<AxiosResponse<Array<NegotiationType>, Error>>(
-    ['get-all-negotiations-by-chb', idCHB],
-    async () => {
-      return await getAllNegociacionesByCHB(Number(idCHB))
-    },
-    {
-      onError: (error: any) => {
-        notification({
-          type: 'error',
-          message: error.response.data.message,
-        })
-      },
-    }
-  )
-
-  const negotiations = dataNegotiation?.data ?? []
-
   return (
     <Container width="100%" display="flex" justifyContent="space-between" alignItems="center" padding="20px">
       <Breadcrumbs routes={routers} />
@@ -84,14 +59,7 @@ const CobranzaProductsInfo = ({ name, clientId }: CobranzaProductsInfoProps) => 
           messageTooltip="Agregar producto"
         />
 
-        {clientId && (
-          <CobranzaProductsModal
-            visible={visibleModalAdd}
-            onClose={onCloseModal}
-            clientId={clientId}
-            negotiations={negotiations}
-          />
-        )}
+        {clientId && <CobranzaProductsModal visible={visibleModalAdd} onClose={onCloseModal} clientId={clientId} />}
       </Container>
     </Container>
   )

@@ -9,6 +9,7 @@ import { useQuery } from 'react-query'
 import { ExtAddressType } from '@/types/extrajudicial/ext-address-type.type'
 import { KEY_EXT_ADDRESS_TYPE_CACHE } from '@/pages/extrajudicial/ExtrajudicialAddressType/AddressTypeTable/utils/ext-address-type.cache'
 import notification from '@/ui/notification'
+import Label from '@/ui/Label'
 
 type CobranzaAddressesInfoFormProps = {
   clientId: number
@@ -23,8 +24,14 @@ const CobranzaAddressesInfoForm = ({ clientId }: CobranzaAddressesInfoFormProps)
 
   const {
     control,
+    getValues,
     formState: { errors },
-  } = useFormContext<Omit<DirectionType, 'id' | 'createdAt'>>()
+  } = useFormContext<
+    Omit<DirectionType, 'id' | 'createdAt'> & { addressType: { type: string; customerHasBankId: string } }
+  >()
+
+  const addressType = getValues('addressType')
+  const showAddressType = addressType && addressType.customerHasBankId != chb
 
   const { data: addressesTypeData } = useQuery(
     [KEY_EXT_ADDRESS_TYPE_CACHE, parseInt(chb.length ? chb : '0')],
@@ -53,17 +60,21 @@ const CobranzaAddressesInfoForm = ({ clientId }: CobranzaAddressesInfoFormProps)
         name="addressTypeId"
         control={control}
         render={({ field }) => (
-          <Select
-            width="100%"
-            disabled={!clientId}
-            label="Tipo:"
-            value={String(field.value)}
-            options={optionsStates}
-            onChange={(key) => {
-              field.onChange(Number(key))
-            }}
-            hasError={!!errors.addressTypeId}
-          />
+          <>
+            <Select
+              width="100%"
+              disabled={!clientId}
+              label="Tipo:"
+              value={String(field.value)}
+              options={optionsStates}
+              onChange={(key) => {
+                field.onChange(Number(key))
+              }}
+              hasError={!!errors.addressTypeId}
+            />
+
+            {showAddressType && <Label label={`Tipo: ${addressType?.type}`} color="Primary5" />}
+          </>
         )}
       />
 

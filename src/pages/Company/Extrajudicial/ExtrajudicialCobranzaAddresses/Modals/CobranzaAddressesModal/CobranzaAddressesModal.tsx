@@ -38,7 +38,9 @@ const CobranzaAddressesModal = ({
     onErrorCache,
   } = companyAddressesCache(queryClient)
 
-  const formMethods = useForm<Omit<DirectionType, 'id' | 'createdAt'>>({
+  const formMethods = useForm<
+    Omit<DirectionType, 'id' | 'createdAt'> & { addressType: { type: string; customerHasBankId: string } }
+  >({
     resolver: ModalCobranzaAddressesResolver,
     mode: 'all',
     defaultValues: {
@@ -60,7 +62,7 @@ const CobranzaAddressesModal = ({
     AxiosError<CustomErrorResponse>
   >(
     async () => {
-      const { ...restClient } = getValues()
+      const { addressType, ...restClient } = getValues()
       return await createDirection({ ...restClient })
     },
     {
@@ -91,7 +93,7 @@ const CobranzaAddressesModal = ({
     AxiosError<CustomErrorResponse>
   >(
     async () => {
-      const { clientId, ...restClient } = getValues()
+      const { clientId, addressType, ...restClient } = getValues()
       return await editDirection({ ...restClient }, idAddress)
     },
     {
@@ -126,6 +128,7 @@ const CobranzaAddressesModal = ({
       onSuccess: ({ data }) => {
         if (!!idAddress) {
           setValue('direction', data.direction, { shouldValidate: true })
+          setValue('addressType', data?.addressType, { shouldValidate: true })
           setValue('addressTypeId', data.addressTypeId, { shouldValidate: true })
           setValue('clientId', data.clientId, { shouldValidate: true })
         } else {

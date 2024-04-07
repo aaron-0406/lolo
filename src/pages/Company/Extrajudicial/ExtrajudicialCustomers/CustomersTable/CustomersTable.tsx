@@ -27,6 +27,7 @@ import useModal from '@/hooks/useModal'
 import DeleteClientModal from './DeleteClientModal'
 import Text from '@/ui/Text'
 import { Tooltip } from 'react-tooltip'
+import TransferClientModal from '../Modals/TransferClientModal'
 
 type CustomersTableProps = {
   opts: Opts
@@ -52,6 +53,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
   const navigate = useNavigate()
 
   const [codeClient, setCodeClient] = useState('')
+  const [codeTransferClient, setCodeTransferClient] = useState('')
   const [customers, setCustomers] = useState([])
   const [customersCount, setCustomersCount] = useState<number>(0)
 
@@ -65,10 +67,20 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
   const [resetFilters, setResetFilters] = useState<boolean>(false)
 
   const { visible: visibleDeleteClient, showModal: showDeleteClient, hideModal: hideDeleteClient } = useModal()
+  const {
+    visible: visibleModalTransferClient,
+    showModal: showModalTransferClient,
+    hideModal: hideModalTransferClient,
+  } = useModal()
 
   const handleClickDeleteClient = (code: string) => {
     setCodeClient(code)
     showDeleteClient()
+  }
+
+  const handleClickTransferClient = (code: string) => {
+    setCodeTransferClient(code)
+    showModalTransferClient()
   }
 
   const onChangeFilterOptions = (filterOption: FilterOptionsProps) => {
@@ -368,12 +380,17 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
                 customerUser: CustomerUserType
               } & { city: CityType }
             ) => {
+              const showMessageAboutClientTransferred =
+                !record.chbTransferred || record.chbTransferred == parseInt(selectedBank.idCHB)
+
               return (
                 <tr
-                  className="styled-data-table-row"
+                  className={
+                    showMessageAboutClientTransferred ? 'styled-data-table-row' : 'styled-data-table-row disable-table'
+                  }
                   key={record.id}
                   onClick={() => {
-                    hasAccessToTheButton && onClickRow(record.code)
+                    hasAccessToTheButton && showMessageAboutClientTransferred && onClickRow(record.code)
                   }}
                 >
                   <BodyCell textAlign="center">{`${record.code || ''}`}</BodyCell>
@@ -391,29 +408,58 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
                       </Text.Body>
                     </Container>
                   </BodyCell>
-                  <BodyCell>{`${record.negotiation.name.toUpperCase() || ''}`}</BodyCell>
-                  <BodyCell>{`${record.funcionario.name.toUpperCase() || ''}`}</BodyCell>
-                  <BodyCell>{`${record.customerUser.name.toUpperCase() || ''}`}</BodyCell>
-                  <BodyCell>{`${record.city.name.toUpperCase() || ''}`}</BodyCell>
-                  <BodyCell textAlign="center">{`${moment(record.createdAt).format('DD-MM-YYYY') || ''}`}</BodyCell>
-                  <BodyCell textAlign="center">
-                    {
-                      <Container display="flex" gap="15px" justifyContent="space-around">
-                        <Button
-                          width="125px"
-                          shape="round"
-                          display="danger"
-                          trailingIcon="ri-delete-bin-line"
-                          onClick={(event) => {
-                            event.stopPropagation()
-                            handleClickDeleteClient(record.code)
-                          }}
-                          permission="P02-05"
-                          messageTooltip="Eliminar cliente"
-                        />
-                      </Container>
-                    }
-                  </BodyCell>
+                  {showMessageAboutClientTransferred ? (
+                    <>
+                      <BodyCell>{`${record.negotiation.name.toUpperCase() || ''}`}</BodyCell>
+                      <BodyCell>{`${record.funcionario.name.toUpperCase() || ''}`}</BodyCell>
+                      <BodyCell>{`${record.customerUser.name.toUpperCase() || ''}`}</BodyCell>
+                      <BodyCell>{`${record.city.name.toUpperCase() || ''}`}</BodyCell>
+                      <BodyCell textAlign="center">{`${moment(record.createdAt).format('DD-MM-YYYY') || ''}`}</BodyCell>
+                      <BodyCell textAlign="center">
+                        {
+                          <Container display="flex" gap="15px" justifyContent="space-around">
+                            <Button
+                              width="125px"
+                              shape="round"
+                              trailingIcon="ri-arrow-left-right-fill"
+                              onClick={(event) => {
+                                event.stopPropagation()
+                                handleClickTransferClient(record.code)
+                              }}
+                              //  permission="P02-05" //TODO: Changing Permission
+                              messageTooltip="Transferir cliente a otro banco"
+                            />
+
+                            <Button
+                              width="125px"
+                              shape="round"
+                              display="danger"
+                              trailingIcon="ri-delete-bin-line"
+                              onClick={(event) => {
+                                event.stopPropagation()
+                                handleClickDeleteClient(record.code)
+                              }}
+                              permission="P02-05"
+                              messageTooltip="Eliminar cliente"
+                            />
+                          </Container>
+                        }
+                      </BodyCell>
+                    </>
+                  ) : (
+                    <>
+                      <BodyCell>
+                        <Text.Body size="m" weight="bold" color="Primary5">
+                          Cliente Transferido
+                        </Text.Body>
+                      </BodyCell>
+                      <BodyCell>-</BodyCell>
+                      <BodyCell>-</BodyCell>
+                      <BodyCell>-</BodyCell>
+                      <BodyCell>-</BodyCell>
+                      <BodyCell>-</BodyCell>
+                    </>
+                  )}
                 </tr>
               )
             }
@@ -422,6 +468,11 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
       <Tooltip place="right" id="cell-tooltip" />
 
       <DeleteClientModal visible={visibleDeleteClient} onClose={hideDeleteClient} code={codeClient} />
+      <TransferClientModal
+        visible={visibleModalTransferClient}
+        onClose={hideModalTransferClient}
+        code={codeTransferClient}
+      />
     </Container>
   )
 }

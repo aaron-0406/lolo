@@ -6,6 +6,7 @@ import Select from '@/ui/Select'
 import { SelectItemType } from '@/ui/Select/interfaces'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import TextAreaField from '@/ui/fields/TextAreaField'
+import Label from '@/ui/Label'
 
 type CobranzaCommentsInfoFormProps = {
   clientId: number
@@ -13,6 +14,9 @@ type CobranzaCommentsInfoFormProps = {
 
 const CobranzaCommentsInfoForm = ({ clientId }: CobranzaCommentsInfoFormProps) => {
   const {
+    bank: {
+      selectedBank: { idCHB },
+    },
     extrajudicial: {
       managementAction: { managementActions },
     },
@@ -21,8 +25,12 @@ const CobranzaCommentsInfoForm = ({ clientId }: CobranzaCommentsInfoFormProps) =
   const {
     control,
     setValue,
+    getValues,
     formState: { errors },
-  } = useFormContext<CommentType>()
+  } = useFormContext<CommentType & { managementAction: { nameAction: string; customerHasBankId: string } }>()
+
+  const managementAction = getValues('managementAction')
+  const showManagementAction = managementAction && managementAction.customerHasBankId != idCHB
 
   const optionsStates: Array<SelectItemType> = [
     { key: 'CORREO', label: 'CORREO' },
@@ -83,17 +91,21 @@ const CobranzaCommentsInfoForm = ({ clientId }: CobranzaCommentsInfoFormProps) =
         name="managementActionId"
         control={control}
         render={({ field }) => (
-          <Select
-            disabled={!clientId}
-            width="100%"
-            label="Acción:"
-            value={!!field.value ? String(field.value) : ''}
-            options={optionsActions}
-            onChange={(key) => {
-              field.onChange(parseInt(key))
-            }}
-            hasError={!!errors.managementActionId}
-          />
+          <>
+            <Select
+              disabled={!clientId}
+              width="100%"
+              label="Acción:"
+              value={!!field.value ? String(field.value) : ''}
+              options={optionsActions}
+              onChange={(key) => {
+                field.onChange(parseInt(key))
+              }}
+              hasError={!!errors.managementActionId}
+            />
+
+            {showManagementAction && <Label label={`Acción: ${managementAction?.nameAction}`} color="Primary5" />}
+          </>
         )}
       />
 

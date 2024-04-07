@@ -18,6 +18,7 @@ const ExtrajudicialCobranzaSchema: yup.SchemaOf<Omit<ClientType, 'id' | 'created
   salePerimeter: yup.string().optional(),
   phone: yup.string().optional(),
   email: yup.string().optional(),
+  chbTransferred: yup.number().optional(),
   cityId: yup.number().required().min(1),
   funcionarioId: yup.number().required().min(1),
   customerUserId: yup.number().required().min(1),
