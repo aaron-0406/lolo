@@ -3,7 +3,8 @@ import companyContactsCache, {
   KEY_COBRANZA_URL_CONTACT_CODE_CACHE,
 } from '../../CobranzaContactsTable/utils/company-contacts.cache'
 import { useLoloContext } from '@/contexts/LoloProvider'
-import { FormProvider, useForm } from 'react-hook-form'
+import { Controller, FormProvider, useForm } from 'react-hook-form'
+import { ExtContactTypeType } from '@/types/extrajudicial/ext-contact-type.type'
 import { ExtContactType } from '@/types/extrajudicial/ext-contact.type'
 import { ModalCobranzaContactsResolver } from './CobranzaContactsModal.yup'
 import { AxiosError, AxiosResponse } from 'axios'
@@ -15,6 +16,8 @@ import Modal from '@/ui/Modal'
 import Container from '@/ui/Container'
 import Button from '@/ui/Button'
 import CobranzaContactsInfoForm from './CobranzaContactsInfoForm'
+import Label from '@/ui/Label'
+import Checkbox from '@/ui/Checkbox'
 
 type CobranzaContactsModalProps = {
   visible: boolean
@@ -22,6 +25,7 @@ type CobranzaContactsModalProps = {
   isEdit?: boolean
   idContact?: number
   clientId?: number
+  contactsType: ExtContactTypeType[]
 }
 
 const CobranzaContactsModal = ({
@@ -30,6 +34,7 @@ const CobranzaContactsModal = ({
   isEdit = false,
   idContact = 0,
   clientId = 0,
+  contactsType,
 }: CobranzaContactsModalProps) => {
   const queryClient = useQueryClient()
   const {
@@ -52,7 +57,7 @@ const CobranzaContactsModal = ({
       name: '',
       phone: '',
       email: '',
-      state: 0,
+      state: true,
       clientId,
       customerHasBankId: parseInt(idCHB),
     },
@@ -62,6 +67,7 @@ const CobranzaContactsModal = ({
     setValue,
     getValues,
     reset,
+    control,
     formState: { isValid },
   } = formMethods
 
@@ -135,12 +141,13 @@ const CobranzaContactsModal = ({
     {
       onSuccess: ({ data }) => {
         if (!!idContact) {
+          setValue('dni', data.dni ?? undefined, { shouldValidate: true })
           setValue('name', data.name, { shouldValidate: true })
           setValue('phone', data.phone, { shouldValidate: true })
           setValue('email', data.email, { shouldValidate: true })
-          setValue('state', data.state, { shouldValidate: true })
           setValue('customerHasBankId', data.customerHasBankId, { shouldValidate: true })
           setValue('clientId', data.clientId, { shouldValidate: true })
+          setValue('extContactTypeId', data.extContactTypeId ?? undefined, { shouldValidate: true })
         } else {
           reset()
         }
@@ -177,7 +184,7 @@ const CobranzaContactsModal = ({
         title={isEdit ? 'Editar Contacto' : 'Agregar Contacto'}
         contentOverflowY="auto"
         size="small"
-        minHeight="430px"
+        minHeight="480px"
         footer={
           <Container width="100%" height="75px" display="flex" justifyContent="end" alignItems="center" gap="20px">
             <Button
@@ -194,7 +201,7 @@ const CobranzaContactsModal = ({
       >
         <Container
           width="100%"
-          height="430px"
+          height="480px"
           display="flex"
           justify-content="center"
           flexDirection="column"
@@ -202,7 +209,23 @@ const CobranzaContactsModal = ({
           gap="20px"
         >
           <Container width="100%" display="flex" flexDirection="column" gap="10px" padding="20px">
-            <CobranzaContactsInfoForm clientId={clientId} />
+            <CobranzaContactsInfoForm clientId={clientId} contactsType={contactsType} />
+            <Container width="100%" display={isEdit ? 'none' : 'flex'} gap="10px">
+              <Label label="Estado:" />
+              <Controller
+                name="state"
+                control={control}
+                render={({ field }) => (
+                  <Checkbox
+                    width="100%"
+                    value={String(field.value)}
+                    onChange={(key) => {
+                      field.onChange(key)
+                    }}
+                  />
+                )}
+              />
+            </Container>
           </Container>
         </Container>
       </Modal>

@@ -26,6 +26,10 @@ export const editExtContact = async (
   return await axiosClient.patch(`${url}/${id}`, contact)
 }
 
+export const editContactState = async (id: number, state: boolean) => {
+  return await axiosClient.patch(`${url}/state/${id}`, { state })
+}
+
 export const deleteExtContact = async (id: number) => {
   return await axiosClient.delete(`${url}/${id}`)
 }
