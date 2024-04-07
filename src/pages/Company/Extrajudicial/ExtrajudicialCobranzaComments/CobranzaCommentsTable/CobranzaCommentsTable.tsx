@@ -14,7 +14,6 @@ import { getComments } from '@/services/extrajudicial/comment.service'
 import notification from '@/ui/notification'
 import { CustomerUserType } from '@/types/dash/customer-user.type'
 import Text from '@/ui/Text/Text'
-import { useLoloContext } from '@/contexts/LoloProvider'
 import CobranzaCommentsModal from '../Modals/CobranzaCommentsModal/CobranzaCommentsModal'
 import useModal from '@/hooks/useModal'
 import DeleteCobranzaCommentsModal from '../Modals/DeleteCobranzaCommentsModal'
@@ -24,12 +23,6 @@ type CobranzaCommentsTableProps = {
 }
 
 const CobranzaCommentsTable = ({ clientId }: CobranzaCommentsTableProps) => {
-  const {
-    extrajudicial: {
-      managementAction: { managementActions },
-    },
-  } = useLoloContext()
-
   const [idEdit, setIdEdit] = useState<number>(0)
   const [idDeletedComment, setIdDeletedComment] = useState<number>(0)
 
@@ -56,7 +49,12 @@ const CobranzaCommentsTable = ({ clientId }: CobranzaCommentsTableProps) => {
     hideDeleteComment()
   }
 
-  const { data, isLoading } = useQuery<AxiosResponse<Array<CommentType & { customerUser: CustomerUserType }>, Error>>(
+  const { data, isLoading } = useQuery<
+    AxiosResponse<
+      Array<CommentType & { customerUser: CustomerUserType; managementAction: { nameAction: string } }>,
+      Error
+    >
+  >(
     [KEY_COBRANZA_URL_COBRANZA_CODE_CACHE, clientId],
     async () => {
       return await getComments(clientId ?? 0)
@@ -73,10 +71,6 @@ const CobranzaCommentsTable = ({ clientId }: CobranzaCommentsTableProps) => {
 
   const comments = data?.data ?? []
 
-  const getActionById = (id: number) => {
-    return managementActions.find((action) => action.id === id)
-  }
-
   return (
     <Container width="100%" height="calc(100% - 80px)" padding="20px">
       <Table
@@ -91,66 +85,69 @@ const CobranzaCommentsTable = ({ clientId }: CobranzaCommentsTableProps) => {
         }
       >
         {!!comments?.length &&
-          comments.map((record: CommentType & { customerUser: CustomerUserType }, key) => {
-            return (
-              <tr className="styled-data-table-row" key={record.id}>
-                <BodyCell textAlign="center">{key + 1 || ''}</BodyCell>
-                <BodyCell textAlign="left">
-                  <Container
-                    margin="20px 0"
-                    minWidth="300px"
-                    maxHeight="130px"
-                    whiteSpace="normal"
-                    wordBreak="break-all"
-                    overFlowY="auto"
-                  >
-                    <Text.Body size="m" weight="regular">
-                      {record.comment || ''}
-                    </Text.Body>
-                  </Container>
-                </BodyCell>
-                <BodyCell textAlign="center">
-                  <Text.Body size="m" weight="bold" color="Primary5">
-                    {record.negotiation || ''}
-                  </Text.Body>
-                </BodyCell>
-                <BodyCell textAlign="center">
-                  {getActionById(record.managementActionId ?? 0)?.nameAction.toUpperCase() || '-'}
-                </BodyCell>
-                <BodyCell textAlign="center">{moment(record.date).format('DD-MM-YYYY') || ''}</BodyCell>
-                <BodyCell textAlign="center">{moment(record.hour).format('HH:mm:ss') || ''}</BodyCell>
-                <BodyCell textAlign="center">{record.customerUser.name || ''}</BodyCell>
-                <BodyCell textAlign="center">
-                  {
-                    <Container display="flex" gap="10px" justifyContent="space-around">
-                      <Button
-                        onClick={(event) => {
-                          event.stopPropagation()
-                          handleClickEdit(record.id)
-                        }}
-                        messageTooltip="Editar comentario"
-                        shape="round"
-                        size="small"
-                        leadingIcon="ri-pencil-fill"
-                        permission="P02-02-01-02"
-                      />
-                      <Button
-                        onClick={() => {
-                          handleClickDelete(record.id)
-                        }}
-                        messageTooltip="Eliminar comentario"
-                        shape="round"
-                        size="small"
-                        leadingIcon="ri-delete-bin-line"
-                        permission="P02-02-01-03"
-                        display="danger"
-                      />
+          comments.map(
+            (
+              record: CommentType & { customerUser: CustomerUserType; managementAction: { nameAction: string } },
+              key
+            ) => {
+              return (
+                <tr className="styled-data-table-row" key={record.id}>
+                  <BodyCell textAlign="center">{key + 1 || ''}</BodyCell>
+                  <BodyCell textAlign="left">
+                    <Container
+                      margin="20px 0"
+                      minWidth="300px"
+                      maxHeight="130px"
+                      whiteSpace="normal"
+                      wordBreak="break-all"
+                      overFlowY="auto"
+                    >
+                      <Text.Body size="m" weight="regular">
+                        {record.comment || ''}
+                      </Text.Body>
                     </Container>
-                  }
-                </BodyCell>
-              </tr>
-            )
-          })}
+                  </BodyCell>
+                  <BodyCell textAlign="center">
+                    <Text.Body size="m" weight="bold" color="Primary5">
+                      {record.negotiation || ''}
+                    </Text.Body>
+                  </BodyCell>
+                  <BodyCell textAlign="center">{record?.managementAction?.nameAction || '-'}</BodyCell>
+                  <BodyCell textAlign="center">{moment(record.date).format('DD-MM-YYYY') || ''}</BodyCell>
+                  <BodyCell textAlign="center">{moment(record.hour).format('HH:mm:ss') || ''}</BodyCell>
+                  <BodyCell textAlign="center">{record.customerUser.name || ''}</BodyCell>
+                  <BodyCell textAlign="center">
+                    {
+                      <Container display="flex" gap="10px" justifyContent="space-around">
+                        <Button
+                          onClick={(event) => {
+                            event.stopPropagation()
+                            handleClickEdit(record.id)
+                          }}
+                          messageTooltip="Editar comentario"
+                          shape="round"
+                          size="small"
+                          leadingIcon="ri-pencil-fill"
+                          permission="P02-02-01-02"
+                        />
+                        <Button
+                          onClick={() => {
+                            handleClickDelete(record.id)
+                          }}
+                          messageTooltip="Eliminar comentario"
+                          shape="round"
+                          size="small"
+                          leadingIcon="ri-delete-bin-line"
+                          permission="P02-02-01-03"
+                          display="danger"
+                        />
+                      </Container>
+                    }
+                  </BodyCell>
+                </tr>
+              )
+            }
+          )}
       </Table>
 
       <CobranzaCommentsModal

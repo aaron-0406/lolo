@@ -44,7 +44,9 @@ const CobranzaCommentsModal = ({
     customerUser: { user },
   } = useLoloContext()
 
-  const formMethods = useForm<Omit<CommentType, 'id' | 'hour'>>({
+  const formMethods = useForm<
+    Omit<CommentType, 'id' | 'hour'> & { managementAction: { nameAction: string; customerHasBankId: string } }
+  >({
     resolver: ModalCobranzaCommentsResolver,
     mode: 'all',
     defaultValues: {
@@ -68,7 +70,7 @@ const CobranzaCommentsModal = ({
     AxiosError<CustomErrorResponse>
   >(
     async () => {
-      const { ...restClient } = getValues()
+      const { managementAction, ...restClient } = getValues()
       return await createComment({ ...restClient, id: idComment })
     },
     {
@@ -99,7 +101,7 @@ const CobranzaCommentsModal = ({
     AxiosError<CustomErrorResponse>
   >(
     async () => {
-      const { ...restClient } = getValues()
+      const { managementAction, ...restClient } = getValues()
       return await editComment({ ...restClient, id: idComment })
     },
     {
@@ -136,6 +138,7 @@ const CobranzaCommentsModal = ({
           setValue('comment', data.comment, { shouldValidate: true })
           setValue('negotiation', data.negotiation, { shouldValidate: true })
           setValue('managementActionId', data.managementActionId ?? undefined, { shouldValidate: true })
+          setValue('managementAction', data?.managementAction, { shouldValidate: true })
           setValue('date', moment(data.date).format('DD-MM-YYYY'), { shouldValidate: true })
           setValue('customerUserId', data.customerUserId, { shouldValidate: true })
           setValue('clientId', data.clientId, { shouldValidate: true })
