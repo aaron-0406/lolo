@@ -36,11 +36,16 @@ const ExtrajudicialCobranzaFiles = () => {
 
   const clientName = data?.data.name
   const clientId = data?.data.id
+  const clientCustomerHasBankId = data?.data.customerHasBankId
 
   return (
     <Container width="100%" height="100%" display="flex" flexDirection="column" justifyContent="space-between">
       <CobranzaFilesInfo name={clientName} clientId={clientId} />
-      <CobranzaFilesTable clientId={clientId} clientCode={Number(code)} />
+      <CobranzaFilesTable
+        clientId={clientId}
+        clientCode={Number(code)}
+        clientCustomerHasBankId={clientCustomerHasBankId}
+      />
     </Container>
   )
 }

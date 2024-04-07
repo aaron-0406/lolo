@@ -5,7 +5,6 @@ import { useState } from 'react'
 import { useQuery } from 'react-query'
 import { KEY_COBRANZA_URL_ADDRESSES_CODE_CACHE } from './utils/company-addresses.cache'
 import { getDirectionsByClientID } from '@/services/extrajudicial/direction.service'
-import { getAddressesTypeByCHB } from '@/services/extrajudicial/ext-address-type.service'
 import notification from '@/ui/notification'
 import Container from '@/ui/Container'
 import Table from '@/ui/Table'
@@ -17,9 +16,7 @@ import Button from '@/ui/Button'
 import DeleteCobranzaAddressesModal from '../Modals/DeleteCobranzaAddressesModal'
 import CobranzaAddressesModal from '../Modals/CobranzaAddressesModal'
 import { useLoloContext } from '@/contexts/LoloProvider'
-import { ExtAddressType } from '@/types/extrajudicial/ext-address-type.type'
 import moment from 'moment'
-import { KEY_EXT_ADDRESS_TYPE_CACHE } from '../../ExtrajudicialAddressType/AddressTypeTable/utils/ext-address-type.cache'
 
 type CobranzaAddressesTableProps = {
   clientId?: number
@@ -58,7 +55,7 @@ const CobranzaAddressesTable = ({ clientId }: CobranzaAddressesTableProps) => {
     hideDeleteAddress()
   }
 
-  const { data, isLoading } = useQuery<AxiosResponse<Array<DirectionType>, Error>>(
+  const { data, isLoading } = useQuery<AxiosResponse<Array<DirectionType & { addressType: { type: string } }>, Error>>(
     [KEY_COBRANZA_URL_ADDRESSES_CODE_CACHE, clientId],
     async () => {
       return await getDirectionsByClientID(clientId ?? 0)
@@ -75,23 +72,6 @@ const CobranzaAddressesTable = ({ clientId }: CobranzaAddressesTableProps) => {
 
   const addresses = data?.data ?? []
 
-  const { data: addressesTypeData } = useQuery(
-    [KEY_EXT_ADDRESS_TYPE_CACHE, parseInt(chb.length ? chb : '0')],
-    async () => {
-      return await getAddressesTypeByCHB(parseInt(chb.length ? chb : '0'))
-    },
-    {
-      onError: (error: any) => {
-        notification({
-          type: 'error',
-          message: error.response.data.message,
-        })
-      },
-    }
-  )
-
-  const addressesType: ExtAddressType[] = addressesTypeData?.data ?? []
-
   return (
     <Container width="100%" height="calc(100% - 80px)" padding="20px">
       <Table
@@ -106,56 +86,63 @@ const CobranzaAddressesTable = ({ clientId }: CobranzaAddressesTableProps) => {
         }
       >
         {!!addresses?.length &&
-          addresses.map((record: DirectionType, key) => {
-            const addressType = addressesType.find((item: ExtAddressType) => item.id === record.addressTypeId)
-
-            return (
-              <tr className="styled-data-table-row" key={record.id}>
-                <BodyCell textAlign="center">{key + 1 || ''}</BodyCell>
-                <BodyCell textAlign="center">
-                  <Text.Body size="m" weight="bold" color="Primary5">
-                    {addressType?.type || '-'}
-                  </Text.Body>
-                </BodyCell>
-                <BodyCell textAlign="left">
-                  <Container width="40vw" whiteSpace="nowrap" overFlowX="hidden" textOverflow="ellipsis">
-                    <Text.Body size="m" weight="regular">
-                      {record.direction || ''}
+          addresses.map(
+            (
+              record: DirectionType & {
+                addressType: {
+                  type: string
+                }
+              },
+              key
+            ) => {
+              return (
+                <tr className="styled-data-table-row" key={record.id}>
+                  <BodyCell textAlign="center">{key + 1 || ''}</BodyCell>
+                  <BodyCell textAlign="center">
+                    <Text.Body size="m" weight="bold" color="Primary5">
+                      {record?.addressType?.type || '-'}
                     </Text.Body>
-                  </Container>
-                </BodyCell>
-                <BodyCell textAlign="center">{`${moment(record.createdAt).format('DD-MM-YYYY') || ''}`}</BodyCell>
-                <BodyCell textAlign="center">
-                  {
-                    <Container display="flex" gap="10px" justifyContent="space-around">
-                      <Button
-                        onClick={(event) => {
-                          event.stopPropagation()
-                          handleClickEdit(record.id)
-                        }}
-                        messageTooltip="Editar dirección"
-                        shape="round"
-                        size="small"
-                        leadingIcon="ri-pencil-fill"
-                        permission="P02-02-05-02"
-                      />
-                      <Button
-                        onClick={() => {
-                          handleClickDelete(record.id)
-                        }}
-                        messageTooltip="Eliminar dirección"
-                        shape="round"
-                        size="small"
-                        leadingIcon="ri-delete-bin-line"
-                        permission="P02-02-05-03"
-                        display="danger"
-                      />
+                  </BodyCell>
+                  <BodyCell textAlign="left">
+                    <Container width="40vw" whiteSpace="nowrap" overFlowX="hidden" textOverflow="ellipsis">
+                      <Text.Body size="m" weight="regular">
+                        {record.direction || ''}
+                      </Text.Body>
                     </Container>
-                  }
-                </BodyCell>
-              </tr>
-            )
-          })}
+                  </BodyCell>
+                  <BodyCell textAlign="center">{`${moment(record.createdAt).format('DD-MM-YYYY') || ''}`}</BodyCell>
+                  <BodyCell textAlign="center">
+                    {
+                      <Container display="flex" gap="10px" justifyContent="space-around">
+                        <Button
+                          onClick={(event) => {
+                            event.stopPropagation()
+                            handleClickEdit(record.id)
+                          }}
+                          messageTooltip="Editar dirección"
+                          shape="round"
+                          size="small"
+                          leadingIcon="ri-pencil-fill"
+                          permission="P02-02-05-02"
+                        />
+                        <Button
+                          onClick={() => {
+                            handleClickDelete(record.id)
+                          }}
+                          messageTooltip="Eliminar dirección"
+                          shape="round"
+                          size="small"
+                          leadingIcon="ri-delete-bin-line"
+                          permission="P02-02-05-03"
+                          display="danger"
+                        />
+                      </Container>
+                    }
+                  </BodyCell>
+                </tr>
+              )
+            }
+          )}
       </Table>
 
       <CobranzaAddressesModal

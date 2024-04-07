@@ -277,6 +277,11 @@ video {
       background: ${theme.colors.Neutral0};
     `}
   }
+
+.disable-table {
+  opacity: 1 !important;
+  background-color: #d9dbe9ff !important;
+}
 `
 
 export default GlobalStyles
