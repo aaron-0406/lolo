@@ -25,6 +25,7 @@ type CobranzaFilesEditModalProps = {
   idFile?: number
   clientId?: number
   clientCode?: number
+  clientCustomerHasBankId?: number
 }
 
 const CobranzaFilesEditModal = ({
@@ -33,6 +34,7 @@ const CobranzaFilesEditModal = ({
   idFile = 0,
   clientId = 0,
   clientCode = 0,
+  clientCustomerHasBankId = 0,
 }: CobranzaFilesEditModalProps) => {
   const queryClient = useQueryClient()
   const [fileExtension, setFileExtension] = useState<string | null>(null)
@@ -109,7 +111,7 @@ const CobranzaFilesEditModal = ({
   const { refetch: refetchGetCobranzaFileById } = useQuery(
     [`${KEY_COBRANZA_URL_FILES_CODE_CACHE}_GET_FILE_BY_ID`],
     async () => {
-      return getFileById(Number(customer.id), Number(selectedBank.idCHB), clientCode, idFile)
+      return getFileById(Number(customer.id), clientCustomerHasBankId, clientCode, idFile)
     },
     {
       onSuccess: ({ data }) => {

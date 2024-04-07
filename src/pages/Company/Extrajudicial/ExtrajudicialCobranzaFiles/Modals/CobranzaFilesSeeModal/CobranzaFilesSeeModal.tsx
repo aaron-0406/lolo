@@ -13,20 +13,26 @@ type CobranzaFilesSeeModalProps = {
   onClose: () => void
   idFile?: number
   clientCode?: number
+  clientCustomerHasBankId?: number
 }
 
-const CobranzaFilesSeeModal = ({ visible, onClose, idFile = 0, clientCode = 0 }: CobranzaFilesSeeModalProps) => {
+const CobranzaFilesSeeModal = ({
+  visible,
+  onClose,
+  idFile = 0,
+  clientCode = 0,
+  clientCustomerHasBankId = 0,
+}: CobranzaFilesSeeModalProps) => {
   const [fileSelected, setFileSelected] = useState<FileType>()
 
   const {
     client: { customer },
-    bank: { selectedBank },
   } = useLoloContext()
 
   const { refetch: refetchViewFile } = useQuery(
     [KEY_COBRANZA_URL_FILES_CODE_CACHE, `FILE-${idFile}`],
     async () => {
-      return await getFileById(Number(customer.id), Number(selectedBank.idCHB), clientCode, idFile)
+      return await getFileById(Number(customer.id), clientCustomerHasBankId, clientCode, idFile)
     },
     {
       enabled: false,

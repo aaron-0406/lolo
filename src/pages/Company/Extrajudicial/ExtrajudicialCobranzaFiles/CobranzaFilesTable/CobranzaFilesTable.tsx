@@ -26,9 +26,10 @@ import CobranzaFilesEditModal from '../Modals/CobranzaFilesEditModal'
 type CobranzaFilesTableProps = {
   clientId?: number
   clientCode?: number
+  clientCustomerHasBankId?: number
 }
 
-const CobranzaFilesTable = ({ clientId, clientCode = 0 }: CobranzaFilesTableProps) => {
+const CobranzaFilesTable = ({ clientId, clientCode = 0, clientCustomerHasBankId }: CobranzaFilesTableProps) => {
   const [idDeletedFile, setIdDeletedFile] = useState<number>(0)
   const [idSeeFile, setIdSeeFile] = useState<number>(0)
   const [idEditFile, setIdEditFile] = useState<number>(0)
@@ -179,6 +180,7 @@ const CobranzaFilesTable = ({ clientId, clientCode = 0 }: CobranzaFilesTableProp
         onClose={onCloseModalSeeFile}
         idFile={idSeeFile}
         clientCode={clientCode}
+        clientCustomerHasBankId={clientCustomerHasBankId}
       />
 
       <CobranzaFilesEditModal
@@ -187,6 +189,7 @@ const CobranzaFilesTable = ({ clientId, clientCode = 0 }: CobranzaFilesTableProp
         idFile={idEditFile}
         clientId={clientId}
         clientCode={clientCode}
+        clientCustomerHasBankId={clientCustomerHasBankId}
       />
 
       <DeleteCobranzaFilesModal
