@@ -16,7 +16,6 @@ import Container from '@/ui/Container'
 import Modal from '@/ui/Modal'
 import Button from '@/ui/Button'
 import CobranzaProductsInfoForm from './CobranzaProductsInfoForm'
-import { NegotiationType } from '@/types/extrajudicial/negotiation.type'
 
 type CobranzaProductsModalProps = {
   visible: boolean
@@ -24,7 +23,6 @@ type CobranzaProductsModalProps = {
   isEdit?: boolean
   idProduct?: number
   clientId?: number
-  negotiations: Array<NegotiationType>
 }
 
 const CobranzaProductsModal = ({
@@ -33,7 +31,6 @@ const CobranzaProductsModal = ({
   isEdit = false,
   idProduct = 0,
   clientId = 0,
-  negotiations,
 }: CobranzaProductsModalProps) => {
   const code = useParams().code ?? ''
   const queryClient = useQueryClient()
@@ -51,7 +48,7 @@ const CobranzaProductsModal = ({
     },
   } = useLoloContext()
 
-  const formMethods = useForm<Omit<ProductType, 'id'>>({
+  const formMethods = useForm<Omit<ProductType, 'id'> & { negotiation: { name: string; customerHasBankId: string } }>({
     resolver: ModalProductsResolver,
     mode: 'all',
     defaultValues: {
@@ -76,7 +73,7 @@ const CobranzaProductsModal = ({
     AxiosError<CustomErrorResponse>
   >(
     async () => {
-      const { ...restClient } = getValues()
+      const { negotiation, ...restClient } = getValues()
       return await createProduct({ ...restClient })
     },
     {
@@ -107,7 +104,7 @@ const CobranzaProductsModal = ({
     AxiosError<CustomErrorResponse>
   >(
     async () => {
-      const { customerId, clientCode, code, ...restClient } = getValues()
+      const { customerId, clientCode, code, negotiation, ...restClient } = getValues()
       return await editProduct({ ...restClient }, idProduct)
     },
     {
@@ -146,6 +143,7 @@ const CobranzaProductsModal = ({
           setValue('state', data.state, { shouldValidate: true })
           setValue('clientCode', data.clientCode, { shouldValidate: true })
           setValue('negotiationId', data.negotiationId, { shouldValidate: true })
+          setValue('negotiation', data.negotiation, { shouldValidate: true })
         } else {
           reset()
         }
@@ -207,7 +205,7 @@ const CobranzaProductsModal = ({
           gap="20px"
         >
           <Container width="100%" display="flex" flexDirection="column" gap="10px" padding="20px">
-            <CobranzaProductsInfoForm clientId={clientId} isEdit={isEdit} negotiations={negotiations} />
+            <CobranzaProductsInfoForm clientId={clientId} isEdit={isEdit} />
           </Container>
         </Container>
       </Modal>

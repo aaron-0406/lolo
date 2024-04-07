@@ -4,22 +4,33 @@ import Select from '@/ui/Select'
 import { NegotiationType } from '@/types/extrajudicial/negotiation.type'
 import { SelectItemType } from '@/ui/Select/interfaces'
 import TextField from '@/ui/fields/TextField'
+import { useQuery } from 'react-query'
+import { AxiosResponse } from 'axios'
+import notification from '@/ui/notification'
+import { getAllNegociacionesByCHB } from '@/services/extrajudicial/negotiation.service'
+import { useLoloContext } from '@/contexts/LoloProvider'
+import Label from '@/ui/Label'
 
 type CobranzaProductsInfoFormProps = {
   clientId: number
   isEdit: boolean
-  negotiations: Array<NegotiationType>
 }
 
-const CobranzaProductsInfoForm = ({ clientId, isEdit, negotiations }: CobranzaProductsInfoFormProps) => {
+const CobranzaProductsInfoForm = ({ clientId, isEdit }: CobranzaProductsInfoFormProps) => {
+  const {
+    bank: {
+      selectedBank: { idCHB },
+    },
+  } = useLoloContext()
+
   const {
     control,
+    getValues,
     formState: { errors },
-  } = useFormContext<ProductType>()
+  } = useFormContext<ProductType & { negotiation: { name: string; customerHasBankId: string } }>()
 
-  const optionsNegotiations: Array<SelectItemType> = negotiations.map((negotiation) => {
-    return { key: String(negotiation.id), label: negotiation.name }
-  })
+  const negotiation = getValues('negotiation')
+  const showNegotiation = negotiation && negotiation.customerHasBankId != idCHB
 
   const optionsNames: Array<SelectItemType> = [
     { key: 'ADELANTO SUELDO ATRASO', label: 'ADELANTO SUELDO ATRASO' },
@@ -59,6 +70,27 @@ const CobranzaProductsInfoForm = ({ clientId, isEdit, negotiations }: CobranzaPr
     { key: 'ACTIVA', label: 'ACTIVA' },
     { key: 'CASTIGO', label: 'CASTIGO' },
   ]
+
+  const { data: dataNegotiation } = useQuery<AxiosResponse<Array<NegotiationType>, Error>>(
+    ['get-all-negotiations-by-chb', idCHB],
+    async () => {
+      return await getAllNegociacionesByCHB(Number(idCHB))
+    },
+    {
+      onError: (error: any) => {
+        notification({
+          type: 'error',
+          message: error.response.data.message,
+        })
+      },
+    }
+  )
+
+  const negotiations = dataNegotiation?.data ?? []
+
+  const optionsNegotiations: Array<SelectItemType> = negotiations.map((negotiation) => {
+    return { key: String(negotiation.id), label: negotiation.name }
+  })
 
   return (
     <>
@@ -103,17 +135,21 @@ const CobranzaProductsInfoForm = ({ clientId, isEdit, negotiations }: CobranzaPr
         name="negotiationId"
         control={control}
         render={({ field }) => (
-          <Select
-            disabled={!clientId}
-            width="100%"
-            label="Negociación:"
-            value={String(field.value)}
-            options={optionsNegotiations}
-            onChange={(key) => {
-              field.onChange(parseInt(key))
-            }}
-            hasError={!!errors.name}
-          />
+          <>
+            <Select
+              disabled={!clientId}
+              width="100%"
+              label="Negociación:"
+              value={String(field.value)}
+              options={optionsNegotiations}
+              onChange={(key) => {
+                field.onChange(parseInt(key))
+              }}
+              hasError={!!errors.name}
+            />
+
+            {showNegotiation && <Label label={`Negociación: ${negotiation?.name}`} color="Primary5" />}
+          </>
         )}
       />
 
