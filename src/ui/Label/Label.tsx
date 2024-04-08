@@ -1,4 +1,4 @@
-import styled, { css, useTheme } from 'styled-components'
+import styled, { css } from 'styled-components'
 import type { IThemeColor } from 'styled-components'
 import Container from '@/ui/Container'
 import Icon from '@/ui/Icon'

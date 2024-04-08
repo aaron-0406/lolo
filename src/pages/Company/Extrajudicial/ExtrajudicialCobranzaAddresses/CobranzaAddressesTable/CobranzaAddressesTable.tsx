@@ -15,7 +15,6 @@ import Text from '@/ui/Text'
 import Button from '@/ui/Button'
 import DeleteCobranzaAddressesModal from '../Modals/DeleteCobranzaAddressesModal'
 import CobranzaAddressesModal from '../Modals/CobranzaAddressesModal'
-import { useLoloContext } from '@/contexts/LoloProvider'
 import moment from 'moment'
 
 type CobranzaAddressesTableProps = {
@@ -23,12 +22,6 @@ type CobranzaAddressesTableProps = {
 }
 
 const CobranzaAddressesTable = ({ clientId }: CobranzaAddressesTableProps) => {
-  const {
-    bank: {
-      selectedBank: { idCHB: chb },
-    },
-  } = useLoloContext()
-
   const [idEdit, setIdEdit] = useState<number>(0)
   const [idDeletedAddress, setIdDeletedAddress] = useState<number>(0)
 
