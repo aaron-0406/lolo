@@ -4,6 +4,7 @@ import companyContactsCache, {
 } from '../../CobranzaContactsTable/utils/company-contacts.cache'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import { FormProvider, useForm } from 'react-hook-form'
+import { ExtContactTypeType } from '@/types/extrajudicial/ext-contact-type.type'
 import { ExtContactType } from '@/types/extrajudicial/ext-contact.type'
 import { ModalCobranzaContactsResolver } from './CobranzaContactsModal.yup'
 import { AxiosError, AxiosResponse } from 'axios'
@@ -22,6 +23,7 @@ type CobranzaContactsModalProps = {
   isEdit?: boolean
   idContact?: number
   clientId?: number
+  contactsType: ExtContactTypeType[]
 }
 
 const CobranzaContactsModal = ({
@@ -30,6 +32,7 @@ const CobranzaContactsModal = ({
   isEdit = false,
   idContact = 0,
   clientId = 0,
+  contactsType,
 }: CobranzaContactsModalProps) => {
   const queryClient = useQueryClient()
   const {
@@ -45,14 +48,18 @@ const CobranzaContactsModal = ({
     },
   } = useLoloContext()
 
-  const formMethods = useForm<Omit<ExtContactType, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'>>({
+  const formMethods = useForm<
+    Omit<ExtContactType, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'> & {
+      extContactType: { contactType: string; customerHasBankId: string }
+    }
+  >({
     resolver: ModalCobranzaContactsResolver,
     mode: 'all',
     defaultValues: {
       name: '',
       phone: '',
       email: '',
-      state: 0,
+      state: true,
       clientId,
       customerHasBankId: parseInt(idCHB),
     },
@@ -70,7 +77,7 @@ const CobranzaContactsModal = ({
     AxiosError<CustomErrorResponse>
   >(
     async () => {
-      const { ...restClient } = getValues()
+      const { extContactType, ...restClient } = getValues()
       return await createExtContact({ ...restClient })
     },
     {
@@ -101,7 +108,7 @@ const CobranzaContactsModal = ({
     AxiosError<CustomErrorResponse>
   >(
     async () => {
-      const { ...restClient } = getValues()
+      const { extContactType, ...restClient } = getValues()
       return await editExtContact({ ...restClient }, idContact)
     },
     {
@@ -135,12 +142,14 @@ const CobranzaContactsModal = ({
     {
       onSuccess: ({ data }) => {
         if (!!idContact) {
+          setValue('dni', data.dni ?? undefined, { shouldValidate: true })
           setValue('name', data.name, { shouldValidate: true })
           setValue('phone', data.phone, { shouldValidate: true })
           setValue('email', data.email, { shouldValidate: true })
-          setValue('state', data.state, { shouldValidate: true })
           setValue('customerHasBankId', data.customerHasBankId, { shouldValidate: true })
           setValue('clientId', data.clientId, { shouldValidate: true })
+          setValue('extContactTypeId', data.extContactTypeId ?? undefined, { shouldValidate: true })
+          setValue('extContactType', data?.extContactType, { shouldValidate: true })
         } else {
           reset()
         }
@@ -177,7 +186,7 @@ const CobranzaContactsModal = ({
         title={isEdit ? 'Editar Contacto' : 'Agregar Contacto'}
         contentOverflowY="auto"
         size="small"
-        minHeight="430px"
+        minHeight="480px"
         footer={
           <Container width="100%" height="75px" display="flex" justifyContent="end" alignItems="center" gap="20px">
             <Button
@@ -194,7 +203,7 @@ const CobranzaContactsModal = ({
       >
         <Container
           width="100%"
-          height="430px"
+          height="480px"
           display="flex"
           justify-content="center"
           flexDirection="column"
@@ -202,7 +211,7 @@ const CobranzaContactsModal = ({
           gap="20px"
         >
           <Container width="100%" display="flex" flexDirection="column" gap="10px" padding="20px">
-            <CobranzaContactsInfoForm clientId={clientId} />
+            <CobranzaContactsInfoForm clientId={clientId} contactsType={contactsType} />
           </Container>
         </Container>
       </Modal>

@@ -1,12 +1,17 @@
+import { useQuery } from 'react-query'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import useModal from '@/hooks/useModal'
+import { getContactTypeByCHB } from '@/services/extrajudicial/ext-contact-type.service'
+import { ExtContactTypeType } from '@/types/extrajudicial/ext-contact-type.type'
 import Breadcrumbs from '@/ui/Breadcrumbs'
 import { LinkType } from '@/ui/Breadcrumbs/Breadcrumbs.type'
 import Button from '@/ui/Button'
 import Container from '@/ui/Container'
 import { useParams } from 'react-router-dom'
 import paths from 'shared/routes/paths'
+import notification from '@/ui/notification'
 import CobranzaContactsModal from '../Modals/CobranzaContactsModal'
+import { KEY_EXT_CONTACT_TYPE_CACHE } from '../../ExtrajudicialContactType/ContactTypeTable/utils/ext-contact-type.cache'
 
 type CobranzaContactsInfoProps = {
   name?: string
@@ -18,6 +23,9 @@ const CobranzaContactsInfo = ({ name, clientId }: CobranzaContactsInfoProps) => 
 
   const {
     client: { customer },
+    bank: {
+      selectedBank: { idCHB: chb },
+    },
   } = useLoloContext()
 
   const { visible: visibleModalAdd, showModal: showModalAdd, hideModal: hideModalAdd } = useModal()
@@ -44,6 +52,23 @@ const CobranzaContactsInfo = ({ name, clientId }: CobranzaContactsInfoProps) => 
     },
   ]
 
+  const { data: contactsTypeData } = useQuery(
+    [KEY_EXT_CONTACT_TYPE_CACHE, parseInt(chb.length ? chb : '0')],
+    async () => {
+      return await getContactTypeByCHB(parseInt(chb.length ? chb : '0'))
+    },
+    {
+      onError: (error: any) => {
+        notification({
+          type: 'error',
+          message: error.response.data.message,
+        })
+      },
+    }
+  )
+
+  const contactsType: ExtContactTypeType[] = contactsTypeData?.data ?? []
+
   return (
     <Container width="100%" display="flex" justifyContent="space-between" alignItems="center" padding="20px">
       <Breadcrumbs routes={routers} />
@@ -59,7 +84,14 @@ const CobranzaContactsInfo = ({ name, clientId }: CobranzaContactsInfoProps) => 
           messageTooltip="Agregar contacto"
         />
 
-        {clientId && <CobranzaContactsModal visible={visibleModalAdd} onClose={onCloseModal} clientId={clientId} />}
+        {clientId && (
+          <CobranzaContactsModal
+            contactsType={contactsType}
+            visible={visibleModalAdd}
+            onClose={onCloseModal}
+            clientId={clientId}
+          />
+        )}
       </Container>
     </Container>
   )
