@@ -83,8 +83,8 @@ const CobranzaContactsTable = ({ clientId = 0 }: CobranzaContactsTableProps) => 
     {
       onSuccess: (result, { state }) => {
         state
-          ? notification({ type: 'success', message: 'Contacto establecido' })
-          : notification({ type: 'success', message: 'Contacto no establecido' })
+          ? notification({ type: 'success', message: 'Contacto no establecido' })
+          : notification({ type: 'success', message: 'Contacto establecido' })
 
         editCobranzaContactCache(result.data)
       },

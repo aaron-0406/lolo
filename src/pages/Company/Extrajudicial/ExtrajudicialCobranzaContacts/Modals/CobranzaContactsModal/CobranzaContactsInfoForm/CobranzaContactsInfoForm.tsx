@@ -4,6 +4,8 @@ import { ExtContactTypeType } from '@/types/extrajudicial/ext-contact-type.type'
 import { SelectItemType } from '@/ui/Select/interfaces'
 import TextField from '@/ui/fields/TextField'
 import Select from '@/ui/Select'
+import { useLoloContext } from '@/contexts/LoloProvider'
+import Label from '@/ui/Label'
 
 type CobranzaContactsInfoFormProps = {
   clientId: number
@@ -12,9 +14,23 @@ type CobranzaContactsInfoFormProps = {
 
 const CobranzaContactsInfoForm = ({ clientId, contactsType }: CobranzaContactsInfoFormProps) => {
   const {
+    bank: {
+      selectedBank: { idCHB },
+    },
+  } = useLoloContext()
+
+  const {
     control,
+    getValues,
     formState: { errors },
-  } = useFormContext<ExtContactType>()
+  } = useFormContext<
+    ExtContactType & {
+      extContactType: { contactType: string; customerHasBankId: string }
+    }
+  >()
+
+  const extContactType = getValues('extContactType')
+  const showExtContactType = extContactType && extContactType.customerHasBankId != idCHB
 
   const optionsStates: Array<SelectItemType> = contactsType.map((record: ExtContactTypeType) => {
     return { key: String(record.id), label: record.contactType }
@@ -94,17 +110,21 @@ const CobranzaContactsInfoForm = ({ clientId, contactsType }: CobranzaContactsIn
         name="extContactTypeId"
         control={control}
         render={({ field }) => (
-          <Select
-            width="100%"
-            disabled={!clientId}
-            label="Tipo:"
-            value={String(field.value)}
-            options={optionsStates}
-            onChange={(key) => {
-              field.onChange(Number(key))
-            }}
-            hasError={!!errors.extContactTypeId}
-          />
+          <>
+            <Select
+              width="100%"
+              disabled={!clientId}
+              label="Tipo:"
+              value={String(field.value)}
+              options={optionsStates}
+              onChange={(key) => {
+                field.onChange(Number(key))
+              }}
+              hasError={!!errors.extContactTypeId}
+            />
+
+            {showExtContactType && <Label label={`Acción: ${extContactType?.contactType}`} color="Primary5" />}
+          </>
         )}
       />
     </>
