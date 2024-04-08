@@ -56,7 +56,7 @@ const CobranzaTagsModal = ({ visible, onClose, isEdit = false, idTag = 0 }: Cobr
   } = formMethods
 
   const { data } = useQuery<AxiosResponse<Array<ExtTagType>, Error>>(
-    [`${KEY_COBRANZA_URL_TAG_CODE_CACHE}-TAG-GROUP-BY-CHB`],
+    [`${KEY_COBRANZA_URL_TAG_CODE_CACHE}-TAG-GROUP-WITH-ORDER`],
     {
       onError: (error: any) => {
         notification({
