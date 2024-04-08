@@ -134,15 +134,7 @@ const CobranzaFilesEditModal = ({
   const { data } = useQuery<AxiosResponse<Array<ExtTagType>, Error>>(
     [`${KEY_COBRANZA_URL_TAG_CODE_CACHE}-TAGS-BY-CHB-AND-TAG-GROUP-ID`],
     async () => {
-      //TODO: Improve this logic to get the tagId
-      let tagId = 0
-      if (selectedBank.idCHB === '1') {
-        tagId = 1
-      } else if (selectedBank.idCHB === '7') {
-        tagId = 4
-      }
-
-      return await getExtTagsByCHBAndTagGroupId(parseInt(selectedBank.idCHB.length ? selectedBank.idCHB : '0'), tagId)
+      return await getExtTagsByCHBAndTagGroupId(parseInt(selectedBank.idCHB.length ? selectedBank.idCHB : '0'), 1)
     },
     {
       onError: (error: any) => {
