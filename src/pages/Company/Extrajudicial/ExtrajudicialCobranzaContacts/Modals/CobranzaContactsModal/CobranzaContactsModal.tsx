@@ -146,6 +146,7 @@ const CobranzaContactsModal = ({
           setValue('name', data.name, { shouldValidate: true })
           setValue('phone', data.phone, { shouldValidate: true })
           setValue('email', data.email, { shouldValidate: true })
+          setValue('state', !!data.state, { shouldValidate: true })
           setValue('customerHasBankId', data.customerHasBankId, { shouldValidate: true })
           setValue('clientId', data.clientId, { shouldValidate: true })
           setValue('extContactTypeId', data.extContactTypeId ?? undefined, { shouldValidate: true })

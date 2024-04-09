@@ -21,7 +21,7 @@ export const contactsColumns: ColumProps[] = [
   },
   {
     id: 'contacts.datatable.header.name',
-    title: 'NAME',
+    title: 'NOMBRE',
     width: '40%',
     justifyContent: 'left',
   },
