@@ -28,6 +28,9 @@ import DeleteClientModal from './DeleteClientModal'
 import Text from '@/ui/Text'
 import { Tooltip } from 'react-tooltip'
 import TransferClientModal from '../Modals/TransferClientModal'
+import notification from '@/ui/notification'
+import { KEY_COBRANZA_URL_CUSTOMER_CODE_CACHE } from './utils/company-customers.cache'
+import { AxiosResponse } from 'axios'
 
 type CustomersTableProps = {
   opts: Opts
@@ -54,10 +57,6 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
 
   const [codeClient, setCodeClient] = useState('')
   const [codeTransferClient, setCodeTransferClient] = useState('')
-  const [customers, setCustomers] = useState([])
-  const [customersCount, setCustomersCount] = useState<number>(0)
-
-  const [isLoading, setIsLoading] = useState(false)
   const [isLoadingNegotiations, setIsLoadingNegotiations] = useState(false)
   const [isLoadingFuncionarions, setIsLoadingFuncionarions] = useState(false)
   const [isLoadingManagementActions, setIsLoadingManagementActions] = useState(false)
@@ -72,6 +71,8 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
     showModal: showModalTransferClient,
     hideModal: hideModalTransferClient,
   } = useModal()
+
+  console.log(filterOptions)
 
   const handleClickDeleteClient = (code: string) => {
     setCodeClient(code)
@@ -116,8 +117,8 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
     navigate(`${paths.cobranza.cobranza(urlIdentifier, code)}`)
   }
 
-  const { refetch } = useQuery(
-    'query-get-all-clients-by-chb',
+  const { data, isLoading, refetch } = useQuery<AxiosResponse<any>, Error>(
+    [KEY_COBRANZA_URL_CUSTOMER_CODE_CACHE, selectedBank.idCHB],
     async () => {
       const negotiations = selectedFilterOptions
         .find((filterOption) => filterOption.identifier === 'customers.datatable.header.negotiation')
@@ -155,14 +156,21 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
       )
     },
     {
-      enabled: !!selectedBank.idCHB.length,
-      onSuccess: ({ data }) => {
-        setCustomers(data.clients)
-        setCustomersCount(data.quantity)
-        setIsLoading(false)
+      onError: (error: any) => {
+        notification({
+          type: 'error',
+          message: error.response.data.message,
+        })
       },
     }
   )
+
+  const customers = data?.data.clients ?? []
+  const quantity = data?.data.quantity
+
+  useEffect(() => {
+    refetch()
+  }, [selectedFilterOptions, opts])
 
   const { refetch: refetchManagementActions } = useQuery(
     'query-get-all-management-actions',
@@ -228,6 +236,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
 
     setFilterOptions((prev) => {
       const filterOption = prev.find((filter) => filter.identifier === 'customers.datatable.header.funcionario')
+      // console.log(prev)
 
       if (filterOption) {
         return prev.map((filter) => {
@@ -349,16 +358,9 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
     })
   }, [selectedBank.idCHB])
 
-  useEffect(() => {
-    if (selectedBank.idCHB.length) {
-      setIsLoading(true)
-      refetch()
-    }
-  }, [refetch, opts, selectedFilterOptions])
-
   return (
     <Container width="100%" height="calc(100% - 112px)" padding="20px">
-      <Pagination count={customersCount} opts={opts} setOpts={setOpts} />
+      <Pagination count={quantity} opts={opts} setOpts={setOpts} />
       <Table
         top="260px"
         columns={customersColumns}
