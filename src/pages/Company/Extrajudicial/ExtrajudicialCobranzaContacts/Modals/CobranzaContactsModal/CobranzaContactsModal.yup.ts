@@ -17,10 +17,12 @@ const ModalCobranzaContacts: yup.SchemaOf<Omit<ExtContactType, 'id' | 'createdAt
           then: yup.string().matches(peruPhoneNumberRegex, 'El número de teléfono no es válido'),
           otherwise: yup.string().optional(),
         }),
+      dni: yup.string().min(8).max(8),
       email: yup.string().max(200).email('La dirección de correo electrónico no es válida'),
-      state: yup.number().required(),
+      state: yup.boolean().required(),
       clientId: yup.number().required(),
       customerHasBankId: yup.number().required(),
+      extContactTypeId: yup.number(),
     },
     [['phone', 'phone']]
   )

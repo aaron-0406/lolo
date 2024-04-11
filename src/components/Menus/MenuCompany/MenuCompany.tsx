@@ -96,9 +96,9 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({ children, urlIdentifier }) =>
   )
 
   useQuery<AxiosResponse<Array<ExtTagType>, Error>>(
-    [`${KEY_COBRANZA_URL_TAG_CODE_CACHE}-TAG-GROUP-BY-CHB`],
+    [`${KEY_COBRANZA_URL_TAG_CODE_CACHE}-TAG-GROUP-WITH-ORDER`],
     async () => {
-      return await getExtTagGroupsByCHB(parseInt(selectedBank.idCHB.length ? selectedBank.idCHB : '0'))
+      return await getExtTagGroupsByCHB()
     },
     {
       onError: (error: any) => {

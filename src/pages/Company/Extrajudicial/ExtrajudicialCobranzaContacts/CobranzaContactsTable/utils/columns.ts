@@ -8,8 +8,20 @@ export const contactsColumns: ColumProps[] = [
     justifyContent: 'center',
   },
   {
+    id: 'contacts.datatable.header.state',
+    title: 'ESTADO',
+    width: '10%',
+    justifyContent: 'center',
+  },
+  {
+    id: 'contacts.datatable.header.dni',
+    title: 'DNI',
+    width: '20%',
+    justifyContent: 'left',
+  },
+  {
     id: 'contacts.datatable.header.name',
-    title: 'NAME',
+    title: 'NOMBRE',
     width: '40%',
     justifyContent: 'left',
   },
@@ -22,6 +34,12 @@ export const contactsColumns: ColumProps[] = [
   {
     id: 'contacts.datatable.header.email',
     title: 'CORREO',
+    width: '20%',
+    justifyContent: 'center',
+  },
+  {
+    id: 'contacts.datatable.header.type',
+    title: 'TIPO',
     width: '20%',
     justifyContent: 'center',
   },
