@@ -21,7 +21,6 @@ import { FilterOptionsProps } from '@/ui/Table/Table'
 import { FuncionarioType } from '@/types/extrajudicial/funcionario.type'
 import { CustomerUserType } from '@/types/dash/customer-user.type'
 import { CityType } from '@/types/dash/city.type'
-import { getAllManagementActionsByCHB } from '@/services/extrajudicial/management-action.service'
 import Button from '@/ui/Button'
 import useModal from '@/hooks/useModal'
 import DeleteClientModal from './DeleteClientModal'
@@ -112,42 +111,6 @@ const CustomersTable = ({ opts, setOpts }: CustomersTableProps) => {
     navigate(`${paths.cobranza.cobranza(urlIdentifier, code)}`)
   }
 
-  const { data, isLoading, refetch } = useQuery<AxiosResponse<any>, Error>(
-    [KEY_COBRANZA_URL_CUSTOMER_CODE_CACHE, chb],
-    async () => {
-      const negotiations = getIDsByIdentifier('customers.datatable.header.negotiation', selectedFilterOptions)
-      const funcionarios = getIDsByIdentifier('customers.datatable.header.funcionario', selectedFilterOptions)
-      const users = getIDsByIdentifier('customers.datatable.header.user', selectedFilterOptions)
-      const cities = getIDsByIdentifier('customers.datatable.header.city', selectedFilterOptions)
-
-      return await getAllClientsByCHB(
-        chb,
-        opts.page,
-        opts.limit,
-        opts.filter,
-        JSON.stringify(negotiations),
-        JSON.stringify(funcionarios),
-        JSON.stringify(users),
-        JSON.stringify(cities)
-      )
-    },
-    {
-      onError: (error: any) => {
-        notification({
-          type: 'error',
-          message: error.response.data.message,
-        })
-      },
-    }
-  )
-
-  const customers = data?.data.clients ?? []
-  const quantity = data?.data.quantity
-
-  useEffect(() => {
-    refetch()
-  }, [selectedFilterOptions, opts])
-
   const { isLoading: isLoadingNegotiations } = useQuery(
     [KEY_EXT_COBRANZA_NEGOCIACIONES_CACHE, parseInt(chb?.length ? chb : '0')],
     async () => {
@@ -190,6 +153,42 @@ const CustomersTable = ({ opts, setOpts }: CustomersTableProps) => {
     }
   )
 
+  const { data, isLoading, refetch } = useQuery<AxiosResponse<any>, Error>(
+    [KEY_COBRANZA_URL_CUSTOMER_CODE_CACHE, chb],
+    async () => {
+      const negotiations = getIDsByIdentifier('customers.datatable.header.negotiation', selectedFilterOptions)
+      const funcionarios = getIDsByIdentifier('customers.datatable.header.funcionario', selectedFilterOptions)
+      const users = getIDsByIdentifier('customers.datatable.header.user', selectedFilterOptions)
+      const cities = getIDsByIdentifier('customers.datatable.header.city', selectedFilterOptions)
+
+      return await getAllClientsByCHB(
+        chb,
+        opts.page,
+        opts.limit,
+        opts.filter,
+        JSON.stringify(negotiations),
+        JSON.stringify(funcionarios),
+        JSON.stringify(users),
+        JSON.stringify(cities)
+      )
+    },
+    {
+      onError: (error: any) => {
+        notification({
+          type: 'error',
+          message: error.response.data.message,
+        })
+      },
+    }
+  )
+
+  const customers = data?.data.clients ?? []
+  const quantity = data?.data.quantity
+
+  useEffect(() => {
+    refetch()
+  }, [selectedFilterOptions, opts])
+
   useEffect(() => {
     setSelectedFilterOptions([])
     setResetFilters(!resetFilters)
@@ -201,27 +200,7 @@ const CustomersTable = ({ opts, setOpts }: CustomersTableProps) => {
       }
     })
     setFilterOptions((prev) => {
-      const filterOption = prev.find((filter) => filter.identifier === 'customers.datatable.header.user')
-
-      if (filterOption) {
-        return prev.map((filter) => {
-          if (filter.identifier === 'customers.datatable.header.user') {
-            return {
-              identifier: filter.identifier,
-              options: optionsUsers,
-            }
-          }
-          return filter
-        })
-      } else {
-        return [
-          ...prev,
-          {
-            identifier: 'customers.datatable.header.user',
-            options: optionsUsers,
-          },
-        ]
-      }
+      return getProcessedFilterOptions('customers.datatable.header.user', prev, optionsUsers)
     })
 
     const optionsCities = cities.map((city) => {
@@ -231,27 +210,7 @@ const CustomersTable = ({ opts, setOpts }: CustomersTableProps) => {
       }
     })
     setFilterOptions((prev) => {
-      const filterOption = prev.find((filter) => filter.identifier === 'customers.datatable.header.city')
-
-      if (filterOption) {
-        return prev.map((filter) => {
-          if (filter.identifier === 'customers.datatable.header.city') {
-            return {
-              identifier: filter.identifier,
-              options: optionsCities,
-            }
-          }
-          return filter
-        })
-      } else {
-        return [
-          ...prev,
-          {
-            identifier: 'customers.datatable.header.city',
-            options: optionsCities,
-          },
-        ]
-      }
+      return getProcessedFilterOptions('customers.datatable.header.city', prev, optionsCities)
     })
   }, [chb])
 
