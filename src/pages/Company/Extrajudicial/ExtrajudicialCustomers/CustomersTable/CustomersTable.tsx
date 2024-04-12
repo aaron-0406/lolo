@@ -381,7 +381,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
               } & { city: CityType }
             ) => {
               const showMessageAboutClientTransferred =
-                !record.chbTransferred || record.chbTransferred == parseInt(selectedBank.idCHB)
+                !record.chbTransferred || record.chbTransferred === parseInt(selectedBank.idCHB)
 
               return (
                 <tr
@@ -426,7 +426,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
                                 event.stopPropagation()
                                 handleClickTransferClient(record.code)
                               }}
-                              //  permission="P02-05" //TODO: Changing Permission
+                              permission="P02-06"
                               messageTooltip="Transferir cliente a otro banco"
                             />
 
