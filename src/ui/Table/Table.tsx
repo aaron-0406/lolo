@@ -38,6 +38,7 @@ type TableProps = {
 const Table: React.FC<TableProps> = ({
   columns,
   filterOptions,
+  selectedFilterOptions,
   onChangeFilterOptions,
   loading,
   error,
@@ -58,6 +59,9 @@ const Table: React.FC<TableProps> = ({
               const filterOption = filterOptions?.find((option) => option.identifier === id)
               const options = filterOption?.options
 
+              const selectedOption = selectedFilterOptions?.find((option) => option.identifier === id)
+              const selectedOptions = selectedOption?.options
+
               return (
                 <HeaderCell
                   key={index}
@@ -66,6 +70,7 @@ const Table: React.FC<TableProps> = ({
                   justifyContent={justifyContent}
                   textTransform={textTransform}
                   options={options}
+                  selectedOptions={selectedOptions}
                   onChangeFilterOptions={(options) => onChangeFilterOptions?.({ identifier: id, options })}
                   resetFilters={resetFilters}
                 >

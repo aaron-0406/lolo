@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Dispatch, useEffect, useMemo, useState } from 'react'
 import { useQuery } from 'react-query'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import moment from 'moment'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import paths from '../../../../../shared/routes/paths'
@@ -33,6 +33,7 @@ import { AxiosResponse } from 'axios'
 import { getIDsByIdentifier, getProcessedFilterOptions } from './utils/methods'
 import { KEY_EXT_COBRANZA_FUNCIONARIOS_CACHE } from '../../ExtrajudicialFuncionarios/FuncionariosTable/utils/ext-funcionarios.cache'
 import { KEY_EXT_COBRANZA_NEGOCIACIONES_CACHE } from '../../ExtrajudicialNegotiations/NegotiationTable/utils/ext-negociaciones.cache'
+import { useFiltersContext } from '@/contexts/FiltersProvider'
 
 type CustomersTableProps = {
   opts: Opts
@@ -40,6 +41,9 @@ type CustomersTableProps = {
 }
 
 const CustomersTable = ({ opts, setOpts }: CustomersTableProps) => {
+  const location = useLocation()
+  const currentPath = location.pathname
+
   const {
     client: {
       customer: { urlIdentifier },
@@ -52,13 +56,19 @@ const CustomersTable = ({ opts, setOpts }: CustomersTableProps) => {
     city: { cities },
   } = useLoloContext()
 
+  const {
+    filterOptions: { getSelectedFilters, setSelectedFilters },
+  } = useFiltersContext()
+
   const navigate = useNavigate()
 
   const [codeClient, setCodeClient] = useState<string>('')
   const [codeTransferClient, setCodeTransferClient] = useState<string>('')
 
   const [filterOptions, setFilterOptions] = useState<Array<FilterOptionsProps>>([])
-  const [selectedFilterOptions, setSelectedFilterOptions] = useState<Array<FilterOptionsProps>>([])
+  const [selectedFilterOptions, setSelectedFilterOptions] = useState<Array<FilterOptionsProps>>(
+    getSelectedFilters(currentPath)?.filters ?? []
+  )
   const [resetFilters, setResetFilters] = useState<boolean>(false)
 
   const { visible: visibleDeleteClient, showModal: showDeleteClient, hideModal: hideDeleteClient } = useModal()
@@ -86,17 +96,21 @@ const CustomersTable = ({ opts, setOpts }: CustomersTableProps) => {
 
       if (!position) {
         setSelectedFilterOptions((prev) => {
-          return [...prev, filterOption]
+          const newSelectedFilters = [...prev, filterOption]
+          setSelectedFilters({ url: currentPath, filters: newSelectedFilters })
+          return newSelectedFilters
         })
       } else {
         setSelectedFilterOptions((prev) => {
-          return prev.map((selectedFilterOption) => {
+          const selectedFiltersUpdated = prev.map((selectedFilterOption) => {
             if (selectedFilterOption.identifier === filterOption.identifier) {
               return filterOption
             }
 
             return selectedFilterOption
           })
+          setSelectedFilters({ url: currentPath, filters: selectedFiltersUpdated })
+          return selectedFiltersUpdated
         })
       }
     })
@@ -111,47 +125,31 @@ const CustomersTable = ({ opts, setOpts }: CustomersTableProps) => {
     navigate(`${paths.cobranza.cobranza(urlIdentifier, code)}`)
   }
 
-  const { isLoading: isLoadingNegotiations } = useQuery(
+  const { data: dataNegotiations, isLoading: isLoadingNegotiations } = useQuery(
     [KEY_EXT_COBRANZA_NEGOCIACIONES_CACHE, parseInt(chb?.length ? chb : '0')],
     async () => {
       return await getAllNegociacionesByCHB(parseInt(chb.length ? chb : '0'))
-    },
-    {
-      onSuccess(response) {
-        const optionsNegotiations = response?.data?.map((negotiation: { id: number; name: string }) => {
-          return {
-            key: negotiation.id,
-            label: negotiation.name,
-          }
-        })
-
-        setFilterOptions((prev) => {
-          return getProcessedFilterOptions('customers.datatable.header.negotiation', prev, optionsNegotiations)
-        })
-      },
     }
   )
+  const optionsNegotiations = dataNegotiations?.data?.map((negotiation: { id: number; name: string }) => {
+    return {
+      key: negotiation.id,
+      label: negotiation.name,
+    }
+  })
 
-  const { isLoading: isLoadingFuncionarions } = useQuery(
+  const { data: dataFuncionarios, isLoading: isLoadingFuncionarios } = useQuery(
     [KEY_EXT_COBRANZA_FUNCIONARIOS_CACHE, parseInt(chb?.length ? chb : '0')],
     async () => {
       return await getAllFuncionariosByCHB(parseInt(chb.length ? chb : '0'))
-    },
-    {
-      onSuccess(response) {
-        const optionsFuncionarios = response?.data?.map((funcionario: { id: number; name: string }) => {
-          return {
-            key: funcionario.id,
-            label: funcionario.name,
-          }
-        })
-
-        setFilterOptions((prev) => {
-          return getProcessedFilterOptions('customers.datatable.header.funcionario', prev, optionsFuncionarios)
-        })
-      },
     }
   )
+  const optionsFuncionarios = dataFuncionarios?.data?.map((funcionario: { id: number; name: string }) => {
+    return {
+      key: funcionario.id,
+      label: funcionario.name,
+    }
+  })
 
   const { data, isLoading, refetch } = useQuery<AxiosResponse<any>, Error>(
     [KEY_COBRANZA_URL_CUSTOMER_CODE_CACHE, chb],
@@ -220,10 +218,15 @@ const CustomersTable = ({ opts, setOpts }: CustomersTableProps) => {
       <Table
         top="260px"
         columns={customersColumns}
-        filterOptions={filterOptions}
+        filterOptions={[
+          { identifier: 'customers.datatable.header.negotiation', options: optionsNegotiations },
+          { identifier: 'customers.datatable.header.funcionario', options: optionsFuncionarios },
+          ...filterOptions,
+        ]}
+        selectedFilterOptions={selectedFilterOptions}
         onChangeFilterOptions={onChangeFilterOptions}
         resetFilters={resetFilters}
-        loading={isLoading || isLoadingNegotiations || isLoadingFuncionarions}
+        loading={isLoading || isLoadingNegotiations || isLoadingFuncionarios}
         isArrayEmpty={!customers.length}
         emptyState={
           <EmptyStateCell colSpan={customersColumns.length}>
