@@ -7,6 +7,14 @@ import TextAreaField from '@/ui/fields/TextAreaField'
 import TextField from '@/ui/fields/TextField'
 import Select from '@/ui/Select'
 import { SelectItemType } from '@/ui/Select/interfaces'
+import { KEY_EXT_COBRANZA_NEGOCIACIONES_CACHE } from '../../ExtrajudicialNegotiations/NegotiationTable/utils/ext-negociaciones.cache'
+import { useQuery } from 'react-query'
+import { getAllNegociacionesByCHB } from '@/services/extrajudicial/negotiation.service'
+import { AxiosResponse } from 'axios'
+import { NegotiationType } from '@/types/extrajudicial/negotiation.type'
+import { KEY_EXT_COBRANZA_FUNCIONARIOS_CACHE } from '../../ExtrajudicialFuncionarios/FuncionariosTable/utils/ext-funcionarios.cache'
+import { getAllFuncionariosByCHB } from '@/services/extrajudicial/funcionario.service'
+import { FuncionarioType } from '@/types/extrajudicial/funcionario.type'
 
 type CobranzaInfoProps = {
   loading: boolean
@@ -14,12 +22,12 @@ type CobranzaInfoProps = {
 
 const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
   const {
+    bank: {
+      selectedBank: { idCHB: chb },
+    },
     city: { cities },
     user: { users },
-    extrajudicial: {
-      funcionario: { funcionarios },
-      negociacion: { negociaciones },
-    },
+    extrajudicial: {},
   } = useLoloContext()
 
   const {
@@ -34,8 +42,23 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
   >()
 
   const funcionario = getValues('funcionario')
-
   const negotiation = getValues('negotiation')
+
+  const { data: dataNegotiations } = useQuery<AxiosResponse<Array<NegotiationType>>>(
+    [KEY_EXT_COBRANZA_NEGOCIACIONES_CACHE, parseInt(chb?.length ? chb : '0')],
+    async () => {
+      return await getAllNegociacionesByCHB(parseInt(chb.length ? chb : '0'))
+    }
+  )
+  const negociaciones = dataNegotiations?.data ?? []
+
+  const { data: dataFuncionarios } = useQuery<AxiosResponse<Array<FuncionarioType>>>(
+    [KEY_EXT_COBRANZA_FUNCIONARIOS_CACHE, parseInt(chb.length ? chb : '0')],
+    async () => {
+      return await getAllFuncionariosByCHB(parseInt(chb.length ? chb : '0'))
+    }
+  )
+  const funcionarios = dataFuncionarios?.data ?? []
 
   const optionsCities: Array<SelectItemType> = cities.map((city) => {
     return {
