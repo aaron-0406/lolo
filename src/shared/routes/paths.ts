@@ -38,7 +38,6 @@ export default {
       `/cobranza/${urlIdentifier}/clientes/${code}/direcciones`,
     cobranzaFiles: (urlIdentifier = ':urlIdentifier', code = ':code') =>
       `/cobranza/${urlIdentifier}/clientes/${code}/archivos`,
-    judicial: (urlIdentifier = ':urlIdentifier') => `/cobranza/${urlIdentifier}/judicial`,
     metas: (urlIdentifier = ':urlIdentifier') => `/cobranza/${urlIdentifier}/metas`,
     document: (urlIdentifier = ':urlIdentifier') => `/cobranza/${urlIdentifier}/document`,
     dashboard: (urlIdentifier = ':urlIdentifier') => `/cobranza/${urlIdentifier}/dashboard`,
@@ -52,6 +51,7 @@ export default {
   judicial: {
     perfil: (urlIdentifier = ':urlIdentifier') => `/judicial/${urlIdentifier}/perfil`,
     expedientes: (urlIdentifier = ':urlIdentifier') => `/judicial/${urlIdentifier}/expedientes`,
-    detallesExpediente: (urlIdentifier = ':urlIdentifier', code = ':code') => `/judicial/${urlIdentifier}/expedientes/${code}`,
+    detallesExpediente: (urlIdentifier = ':urlIdentifier', code = ':code') =>
+      `/judicial/${urlIdentifier}/expedientes/${code}`,
   },
 }

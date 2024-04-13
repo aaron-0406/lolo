@@ -9,11 +9,12 @@ export type JudicialCaseFileType = {
   errandCode: string
   judicialVenue: string
   judge: string
-  demandDate: Date
-  createdAt: Date
+  demandDate: string
+  createdAt: string
   clientId: number
   customerUserId: number
   judicialCourtId: number
   judicialSubjectId: number
   judicialProceduralWayId: number
+  customerHasBankId: number
 }

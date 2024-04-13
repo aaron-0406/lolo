@@ -1,26 +1,38 @@
-import { useMutation } from 'react-query'
+import { useMutation, useQueryClient } from 'react-query'
 import { useFormContext } from 'react-hook-form'
 import styled, { css } from 'styled-components'
-import { AxiosError } from 'axios'
+import { AxiosError, AxiosResponse } from 'axios'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { device } from '@/breakpoints/responsive'
 import { JudicialCaseFileType } from '@/types/judicial/judicial-case-file.type'
 import { CustomErrorResponse } from 'types/customErrorResponse'
-import { createFileCase, deleteFileCase, updateFileCase } from '@/services/judicial/judicial-file-case.service'
+import { createFileCase, updateFileCase } from '@/services/judicial/judicial-file-case.service'
 import Container from '@/ui/Container'
 import Button from '@/ui/Button'
 import { notification } from '@/ui/notification/notification'
+import judicialFileCaseCache, {
+  JudicialFileCaseTableRow,
+} from '../../JudicialFileCasesList/JudicialFileCasesTable/utils/file-cases.cache'
 
 const FileCaseActions = () => {
-  const greaterThanDesktopS = useMediaQuery(device.desktopS)
-  const { reset, getValues } = useFormContext<JudicialCaseFileType>()
+  const queryClient = useQueryClient()
+  const {
+    actions: { createFileCaseCache, editFileCaseCache },
+    onMutateCache,
+    onSettledCache,
+    onErrorCache,
+  } = judicialFileCaseCache(queryClient)
 
-  const onClean = () => {
-    reset()
-  }
+  const greaterThanDesktopS = useMediaQuery(device.desktopS)
+  const {
+    reset,
+    getValues,
+    formState: { isValid },
+    watch,
+  } = useFormContext<JudicialCaseFileType>()
 
   const { isLoading: loadingCreateFileCase, mutate: createFileCaseMutate } = useMutation<
-    any,
+    AxiosResponse<JudicialFileCaseTableRow>,
     AxiosError<CustomErrorResponse>
   >(
     async () => {
@@ -28,11 +40,19 @@ const FileCaseActions = () => {
       return await createFileCase(restFileCase)
     },
     {
-      onSuccess: () => {
+      onSuccess: (result) => {
+        createFileCaseCache(result.data)
         reset()
         notification({ type: 'success', message: 'Expediente creado' })
       },
-      onError: (error) => {
+      onMutate: () => {
+        return onMutateCache()
+      },
+      onSettled: () => {
+        onSettledCache()
+      },
+      onError: (error, _, context: any) => {
+        onErrorCache(context)
         notification({
           type: 'error',
           message: error.response?.data.message,
@@ -42,19 +62,27 @@ const FileCaseActions = () => {
     }
   )
 
-  const { isLoading: loadingUpdateFileCase, mutate: updateFileCaseMutate } = useMutation<
-    any,
+  const { mutate: updateFileCaseMutate } = useMutation<
+    AxiosResponse<JudicialFileCaseTableRow>,
     AxiosError<CustomErrorResponse>
   >(
     async () => {
-      const { id, ...restFileCase } = getValues()
+      const { id, clientId, ...restFileCase } = getValues()
       return await updateFileCase(id, restFileCase)
     },
     {
-      onSuccess: () => {
+      onSuccess: (result) => {
+        editFileCaseCache(result.data)
         notification({ type: 'success', message: 'Expediente actualizado' })
       },
-      onError: (error) => {
+      onMutate: () => {
+        return onMutateCache()
+      },
+      onSettled: () => {
+        onSettledCache()
+      },
+      onError: (error, _, context: any) => {
+        onErrorCache(context)
         notification({
           type: 'error',
           message: error.response?.data.message,
@@ -64,73 +92,25 @@ const FileCaseActions = () => {
     }
   )
 
-  const { isLoading: loadingDeleteFileCase, mutate: deleteFileCaseMutate } = useMutation<
-    any,
-    AxiosError<CustomErrorResponse>
-  >(
-    async () => {
-      const { id } = getValues()
-      return await deleteFileCase(id)
-    },
-    {
-      onSuccess: () => {
-        notification({ type: 'success', message: 'Expediente eliminado' })
-        onClean()
-      },
-      onError: (error) => {
-        notification({
-          type: 'error',
-          message: error.response?.data.message,
-          list: error.response?.data.errors?.map((error) => error.message),
-        })
-      },
-    }
-  )
-  const onAddFileCase = () => {
+  const onCreate = () => {
     createFileCaseMutate()
   }
-
-  const onUpdateFileCase = () => {
+  const onUpdate = () => {
     updateFileCaseMutate()
-  }
-
-  const onDeleteFileCase = () => {
-    deleteFileCaseMutate()
   }
 
   return (
     <StyledContainer width="100%" display="flex" justifyContent="center" alignItems="center" gap="20px">
       <Button
-        width="125px"
-        label={greaterThanDesktopS && 'Agregar'}
+        width="130px"
+        label={greaterThanDesktopS && 'Guardar'}
         shape={greaterThanDesktopS ? 'default' : 'round'}
-        trailingIcon="ri-add-fill"
-        onClick={onAddFileCase}
+        trailingIcon="ri-save-3-line"
+        onClick={watch().id !== 0 ? onUpdate : onCreate}
+        disabled={!isValid}
         loading={loadingCreateFileCase}
-        permission="P13-01"
-      />
-      <Button
-        width="140px"
-        label={greaterThanDesktopS && 'Modificar'}
-        shape={greaterThanDesktopS ? 'default' : 'round'}
-        trailingIcon="ri-edit-2-line"
-        onClick={onUpdateFileCase}
-        loading={loadingUpdateFileCase}
-        disabled={!getValues('id')}
         permission="P13-02"
       />
-      <Button
-        width="125px"
-        label={greaterThanDesktopS && 'Eliminar'}
-        shape={greaterThanDesktopS ? 'default' : 'round'}
-        display="danger"
-        trailingIcon="ri-close-line"
-        onClick={onDeleteFileCase}
-        loading={loadingDeleteFileCase}
-        disabled={!getValues('id')}
-        permission="P13-03"
-      />
-      <Button width="100px" shape="round" display="warning" trailingIcon="ri-brush-2-line" onClick={onClean} />
     </StyledContainer>
   )
 }

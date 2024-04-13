@@ -1,6 +1,5 @@
 import { Controller, useFormContext } from 'react-hook-form'
 import styled, { css } from 'styled-components'
-import moment from 'moment'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import { JudicialCaseFileType } from '@/types/judicial/judicial-case-file.type'
 import Container from '@/ui/Container'
@@ -8,6 +7,8 @@ import Label from '@/ui/Label'
 import Select from '@/ui/Select'
 import TextField from '@/ui/fields/TextField'
 import { SelectItemType } from '@/ui/Select/interfaces'
+import DatePicker from '@/ui/DatePicker/DatePicker'
+import moment from 'moment'
 
 type FileCaseInfoProps = {
   loading: boolean
@@ -18,7 +19,6 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
     control,
     formState: { errors },
   } = useFormContext<JudicialCaseFileType>()
-
   const {
     judicial: {
       judicialCourt: { judicialCourts },
@@ -48,9 +48,7 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
     }
   })
 
-  if (loading) {
-    return <div>Loading ...</div>
-  }
+  if (loading) return <div>Loading ...</div>
 
   return (
     <StyledContainer
@@ -70,6 +68,7 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
             control={control}
             render={({ field }) => (
               <TextField
+                helperText={errors.numberCaseFile?.message}
                 width="100%"
                 value={field.value}
                 onChange={field.onChange}
@@ -85,6 +84,7 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
             control={control}
             render={({ field }) => (
               <TextField
+                helperText={errors.cautionaryCode?.message}
                 width="100%"
                 value={field.value}
                 onChange={field.onChange}
@@ -102,6 +102,7 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
             control={control}
             render={({ field }) => (
               <Select
+                helperText={errors.judicialCourtId?.message}
                 width="100%"
                 value={String(field.value)}
                 options={optionsJudicialCourts}
@@ -119,7 +120,13 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
             name="judicialVenue"
             control={control}
             render={({ field }) => (
-              <TextField width="100%" value={field.value} onChange={field.onChange} hasError={!!errors.judicialVenue} />
+              <TextField
+                width="100%"
+                helperText={errors.judicialVenue?.message}
+                value={field.value}
+                onChange={field.onChange}
+                hasError={!!errors.judicialVenue}
+              />
             )}
           />
         </div>
@@ -132,6 +139,7 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
             control={control}
             render={({ field }) => (
               <Select
+                helperText={errors.judicialSubjectId?.message}
                 width="100%"
                 value={String(field.value)}
                 options={optionsJudicialSubjects}
@@ -150,6 +158,7 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
             control={control}
             render={({ field }) => (
               <Select
+                helperText={errors.judicialProceduralWayId?.message}
                 width="100%"
                 value={String(field.value)}
                 options={optionsJudicialProceduralWays}
@@ -169,7 +178,13 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
             name="secretary"
             control={control}
             render={({ field }) => (
-              <TextField width="100%" value={field.value} onChange={field.onChange} hasError={!!errors.secretary} />
+              <TextField
+                width="100%"
+                helperText={errors.secretary?.message}
+                value={field.value}
+                onChange={field.onChange}
+                hasError={!!errors.secretary}
+              />
             )}
           />
         </div>
@@ -179,7 +194,13 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
             name="judge"
             control={control}
             render={({ field }) => (
-              <TextField width="100%" value={field.value} onChange={field.onChange} hasError={!!errors.judge} />
+              <TextField
+                width="100%"
+                helperText={errors.judge?.message}
+                value={field.value}
+                onChange={field.onChange}
+                hasError={!!errors.judge}
+              />
             )}
           />
         </div>
@@ -193,6 +214,7 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
             render={({ field }) => (
               <TextField
                 width="100%"
+                helperText={errors.amountDemandedSoles?.message}
                 value={field.value}
                 onChange={field.onChange}
                 hasError={!!errors.amountDemandedSoles}
@@ -209,6 +231,7 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
               <TextField
                 width="100%"
                 value={field.value}
+                helperText={errors.amountDemandedDollars?.message}
                 onChange={field.onChange}
                 hasError={!!errors.amountDemandedDollars}
               />
@@ -218,16 +241,21 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
       </Container>
       <Container className="fields-wrapper-container">
         <div className="field-wrapper">
-          <Label label="Fecha de Demanda:" />
           <Controller
             name="demandDate"
             control={control}
             render={({ field }) => (
-              <TextField
-                width="100%"
-                value={moment(field.value).format('DD-MM-YYYY')}
-                onChange={field.onChange}
-                hasError={!!errors.demandDate}
+              <DatePicker
+                orientation="horizontal"
+                labelWidth="10rem"
+                label="Fecha de Demanda:"
+                selectedDate={moment(field.value).format('DD-MM-YYYY')}
+                placeholder="Ingrese la fecha:"
+                dateFormat="DD-MM-YYYY"
+                value={field.value}
+                getDate={(e) => {
+                  field.onChange(e)
+                }}
               />
             )}
           />
@@ -242,6 +270,7 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
                 width="100%"
                 value={field.value}
                 onChange={field.onChange}
+                helperText={errors.judgmentNumber?.message}
                 hasError={!!errors.judgmentNumber}
               />
             )}
@@ -255,7 +284,13 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
             name="errandCode"
             control={control}
             render={({ field }) => (
-              <TextField width="100%" value={field.value} onChange={field.onChange} hasError={!!errors.errandCode} />
+              <TextField
+                width="100%"
+                helperText={errors.errandCode?.message}
+                value={field.value}
+                onChange={field.onChange}
+                hasError={!!errors.errandCode}
+              />
             )}
           />
         </div>

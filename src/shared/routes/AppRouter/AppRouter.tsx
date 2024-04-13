@@ -104,7 +104,6 @@ const AppRouter = () => {
         <Route path={paths.cobranza.tipoDirecciones()} element={<ExtrajudicialAddressType />} />
         <Route path={paths.cobranza.tipoContactos()} element={<ExtrajudicialContactType />} />
         {/* JUDICIAL */}
-        <Route path={paths.cobranza.judicial()} element={<JudicialFileCase />} />
         <Route path={paths.judicial.expedientes()} element={<JudicialFileCasesList />} />
         <Route path={paths.judicial.detallesExpediente()} element={<JudicialFileCase />} />
       </Route>
