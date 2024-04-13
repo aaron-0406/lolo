@@ -281,7 +281,7 @@ const CustomersTable = ({ opts, setOpts }: CustomersTableProps) => {
                                 event.stopPropagation()
                                 handleClickTransferClient(record.code)
                               }}
-                              //  permission="P02-05" //TODO: Changing Permission
+                              permission="P02-06"
                               messageTooltip="Transferir cliente a otro banco"
                             />
 
