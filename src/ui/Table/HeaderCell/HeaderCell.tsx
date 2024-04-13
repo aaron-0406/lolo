@@ -15,8 +15,8 @@ type HeaderCellProps = {
   children: React.ReactNode
   isThereFilter?: boolean
   options?: Array<SelectItem<any, any>>
+  selectedOptions?: Array<SelectItem<any, any>>
   onChangeFilterOptions?: (options: Array<SelectItem<any, any>>) => void
-  resetFilters?: boolean
 }
 
 const HeaderCell: React.FC<HeaderCellProps> = ({
@@ -26,11 +26,11 @@ const HeaderCell: React.FC<HeaderCellProps> = ({
   width,
   isThereFilter = false,
   options,
+  selectedOptions,
   onChangeFilterOptions,
-  resetFilters = false,
 }) => {
   const [toggleSelect, setToggleSelect] = useState<boolean>(false)
-  const [selectedFilterOptions, setSelectedFilterOptions] = useState<Array<SelectItem<any, any>>>([])
+  const [selectedFilterOptions, setSelectedFilterOptions] = useState<Array<SelectItem<any, any>>>(selectedOptions ?? [])
 
   const onSelectToogle = () => {
     if (isThereFilter) {
@@ -41,9 +41,9 @@ const HeaderCell: React.FC<HeaderCellProps> = ({
   }
 
   const onSelectItem = (option: SelectItem<any, any>) => {
-    const position = selectedFilterOptions.indexOf(option)
+    const position = selectedFilterOptions.find((selectedFilter) => selectedFilter.key === option.key)
 
-    if (position === -1) {
+    if (!position) {
       setSelectedFilterOptions((prev) => {
         const filterOptions = [...prev, option]
         onChangeFilterOptions?.(filterOptions)
@@ -59,8 +59,10 @@ const HeaderCell: React.FC<HeaderCellProps> = ({
   }
 
   useEffect(() => {
-    setSelectedFilterOptions([])
-  }, [resetFilters])
+    if (!selectedOptions?.length) {
+      setSelectedFilterOptions([])
+    }
+  }, [selectedOptions?.length === 0 || selectedOptions === undefined])
 
   return (
     <StyledTh width={width} isThereFilter={isThereFilter} textTransform={textTransform} onClick={onSelectToogle}>

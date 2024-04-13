@@ -1,5 +1,5 @@
 import React, { Dispatch, FC } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import styled, { css } from 'styled-components'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import Container from '@/ui/Container'
@@ -12,6 +12,7 @@ import Modal from '@/ui/Modal'
 import useModal from '@/hooks/useModal'
 import ModalManagementExcel from './ModalManagementExcel/ModalManagementExcel'
 import paths from 'shared/routes/paths'
+import { useFiltersContext } from '@/contexts/FiltersProvider'
 
 type CustomerActionsProps = {
   opts: Opts
@@ -19,10 +20,17 @@ type CustomerActionsProps = {
 }
 
 const CustomersActions: FC<CustomerActionsProps> = ({ opts, setOpts }) => {
+  const location = useLocation()
+  const currentPath = location.pathname
+
   const {
     client: { customer },
     bank: { selectedBank, setSelectedBank },
   } = useLoloContext()
+
+  const {
+    filterOptions: { setSelectedFilters },
+  } = useFiltersContext()
 
   const {
     visible: visibleModalManagementExcel,
@@ -40,6 +48,8 @@ const CustomersActions: FC<CustomerActionsProps> = ({ opts, setOpts }) => {
   })
 
   const onChangeBank = (key: string) => {
+    setSelectedFilters({ url: currentPath, filters: [] })
+
     const customerBank = customer.customerBanks.find((customerBank) => String(customerBank.id) === key)
 
     setSelectedBank({

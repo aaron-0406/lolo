@@ -37,7 +37,6 @@ const UserLogsTable: FC<UserLogsTableProps> = ({ opts, setOpts }) => {
   } = useLoloContext()
 
   const [filterOptions, setFilterOptions] = useState<Array<FilterOptionsProps>>([])
-  const [resetFilters, setResetFilters] = useState<boolean>(false)
   const [selectedFilterOptions, setSelectedFilterOptions] = useState<Array<FilterOptionsProps>>([])
 
   const [userLogs, setUserLogs] = useState([])
@@ -168,7 +167,6 @@ const UserLogsTable: FC<UserLogsTableProps> = ({ opts, setOpts }) => {
 
   useEffect(() => {
     setSelectedFilterOptions([])
-    setResetFilters(!resetFilters)
 
     const optionsUsers = users.map((user) => {
       return {
@@ -217,7 +215,6 @@ const UserLogsTable: FC<UserLogsTableProps> = ({ opts, setOpts }) => {
         columns={userLogsColumns}
         filterOptions={filterOptions}
         onChangeFilterOptions={onChangeFilterOptions}
-        resetFilters={resetFilters}
         loading={isLoading}
         isArrayEmpty={!userLogs?.length}
         emptyState={

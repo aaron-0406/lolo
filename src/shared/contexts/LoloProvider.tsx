@@ -5,8 +5,6 @@ import { CityType } from '@/types/dash/city.type'
 import { CustomerHasBankType } from '@/types/dash/customer-has-bank'
 import { CustomerUserType } from '@/types/dash/customer-user.type'
 import { CustomerType } from '@/types/dash/customer.type'
-import { FuncionarioType } from '@/types/extrajudicial/funcionario.type'
-import { NegotiationType } from '@/types/extrajudicial/negotiation.type'
 import { ManagementActionType } from '@/types/extrajudicial/management-action.type'
 import storage from '../utils/storage'
 
@@ -14,9 +12,7 @@ const appLoloClientStateKey = 'lolo:client'
 const appLoloBankStateKey = 'lolo:bank'
 const appLoloCityStateKey = 'lolo:city'
 const appLoloUserStateKey = 'lolo:user'
-const appLoloFuncionarioStateKey = 'lolo:funcionario'
 const appLoloManagementActionStateKey = 'lolo:management:action'
-const appLoloNegotiationStateKey = 'lolo:negotiation'
 const appLoloSelectedBankStateKey = 'lolo:selected:bank'
 
 type SelectedBankType = {
@@ -81,17 +77,9 @@ export const LoloContext = createContext<{
     setUser: Dispatch<CustomerUserType>
   }
   extrajudicial: {
-    funcionario: {
-      funcionarios: Array<FuncionarioType>
-      setFuncionarios: (funcionarios: Array<FuncionarioType>) => void
-    }
     managementAction: {
       managementActions: Array<ManagementActionType>
       setManagementActions: (managementActions: Array<ManagementActionType>) => void
-    }
-    negociacion: {
-      negociaciones: Array<NegotiationType>
-      setNegociaciones: (negociaciones: Array<NegotiationType>) => void
     }
   }
   clearAll: () => void
@@ -120,18 +108,8 @@ export const LoloProvider: React.FC<LoloProviderProps> = ({ children }) => {
 
   const [usersState, setUsersState] = usePersistedState<Array<CustomerUserType>>(appLoloUserStateKey, [])
 
-  const [funcionariosState, setFuncionariosState] = usePersistedState<Array<FuncionarioType>>(
-    appLoloFuncionarioStateKey,
-    []
-  )
-
   const [managementActionsState, setManagementActionsState] = usePersistedState<Array<ManagementActionType>>(
     appLoloManagementActionStateKey,
-    []
-  )
-
-  const [negociacionesState, setNegociacionesState] = usePersistedState<Array<NegotiationType>>(
-    appLoloNegotiationStateKey,
     []
   )
 
@@ -165,16 +143,8 @@ export const LoloProvider: React.FC<LoloProviderProps> = ({ children }) => {
     setUsersState(users)
   }
 
-  const setFuncionarios = (funcionarios: Array<FuncionarioType>) => {
-    setFuncionariosState(funcionarios)
-  }
-
   const setManagementActions = (managementActions: Array<ManagementActionType>) => {
     setManagementActionsState(managementActions)
-  }
-
-  const setNegociaciones = (negociaciones: Array<NegotiationType>) => {
-    setNegociacionesState(negociaciones)
   }
 
   const setSelectedBank = (selectedBank: SelectedBankType) => {
@@ -185,9 +155,7 @@ export const LoloProvider: React.FC<LoloProviderProps> = ({ children }) => {
     setBanksState([])
     setCitiesState([])
     setUsersState([])
-    setFuncionariosState([])
     setManagementActions([])
-    setNegociacionesState([])
     setSelectedBankState({
       idBank: '',
       idCHB: '',
@@ -235,17 +203,9 @@ export const LoloProvider: React.FC<LoloProviderProps> = ({ children }) => {
           setUsers: setUsers,
         },
         extrajudicial: {
-          funcionario: {
-            funcionarios: funcionariosState,
-            setFuncionarios: setFuncionarios,
-          },
           managementAction: {
             managementActions: managementActionsState,
             setManagementActions: setManagementActions,
-          },
-          negociacion: {
-            negociaciones: negociacionesState,
-            setNegociaciones: setNegociaciones,
           },
         },
         auth: {

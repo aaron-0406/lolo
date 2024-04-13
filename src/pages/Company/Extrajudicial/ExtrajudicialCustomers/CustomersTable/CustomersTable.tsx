@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Dispatch, FC, useEffect, useMemo, useState } from 'react'
+import { Dispatch, useEffect, useMemo, useState } from 'react'
 import { useQuery } from 'react-query'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import moment from 'moment'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import paths from '../../../../../shared/routes/paths'
@@ -21,50 +21,49 @@ import { FilterOptionsProps } from '@/ui/Table/Table'
 import { FuncionarioType } from '@/types/extrajudicial/funcionario.type'
 import { CustomerUserType } from '@/types/dash/customer-user.type'
 import { CityType } from '@/types/dash/city.type'
-import { getAllManagementActionsByCHB } from '@/services/extrajudicial/management-action.service'
 import Button from '@/ui/Button'
 import useModal from '@/hooks/useModal'
 import DeleteClientModal from './DeleteClientModal'
 import Text from '@/ui/Text'
 import { Tooltip } from 'react-tooltip'
 import TransferClientModal from '../Modals/TransferClientModal'
+import notification from '@/ui/notification'
+import { KEY_COBRANZA_URL_CUSTOMER_CODE_CACHE } from './utils/company-customers.cache'
+import { AxiosResponse } from 'axios'
+import { getIDsByIdentifier } from './utils/methods'
+import { KEY_EXT_COBRANZA_FUNCIONARIOS_CACHE } from '../../ExtrajudicialFuncionarios/FuncionariosTable/utils/ext-funcionarios.cache'
+import { KEY_EXT_COBRANZA_NEGOCIACIONES_CACHE } from '../../ExtrajudicialNegotiations/NegotiationTable/utils/ext-negociaciones.cache'
+import { useFiltersContext } from '@/contexts/FiltersProvider'
 
 type CustomersTableProps = {
   opts: Opts
   setOpts: Dispatch<Opts>
 }
 
-const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
+const CustomersTable = ({ opts, setOpts }: CustomersTableProps) => {
+  const location = useLocation()
+  const currentPath = location.pathname
+
   const {
     client: {
       customer: { urlIdentifier },
     },
-    bank: { selectedBank },
-    extrajudicial: {
-      managementAction: { setManagementActions },
-      negociacion: { negociaciones, setNegociaciones },
-      funcionario: { funcionarios, setFuncionarios },
+    bank: {
+      selectedBank: { idCHB: chb },
     },
     customerUser: { user },
     user: { users },
     city: { cities },
   } = useLoloContext()
 
+  const {
+    filterOptions: { getSelectedFilters, setSelectedFilters },
+  } = useFiltersContext()
+
   const navigate = useNavigate()
 
-  const [codeClient, setCodeClient] = useState('')
-  const [codeTransferClient, setCodeTransferClient] = useState('')
-  const [customers, setCustomers] = useState([])
-  const [customersCount, setCustomersCount] = useState<number>(0)
-
-  const [isLoading, setIsLoading] = useState(false)
-  const [isLoadingNegotiations, setIsLoadingNegotiations] = useState(false)
-  const [isLoadingFuncionarions, setIsLoadingFuncionarions] = useState(false)
-  const [isLoadingManagementActions, setIsLoadingManagementActions] = useState(false)
-
-  const [filterOptions, setFilterOptions] = useState<Array<FilterOptionsProps>>([])
-  const [selectedFilterOptions, setSelectedFilterOptions] = useState<Array<FilterOptionsProps>>([])
-  const [resetFilters, setResetFilters] = useState<boolean>(false)
+  const [codeClient, setCodeClient] = useState<string>('')
+  const [codeTransferClient, setCodeTransferClient] = useState<string>('')
 
   const { visible: visibleDeleteClient, showModal: showDeleteClient, hideModal: hideDeleteClient } = useModal()
   const {
@@ -83,6 +82,8 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
     showModalTransferClient()
   }
 
+  const selectedFilterOptions = getSelectedFilters(currentPath)?.filters ?? []
+
   const onChangeFilterOptions = (filterOption: FilterOptionsProps) => {
     setTimeout(() => {
       const position = selectedFilterOptions.find(
@@ -90,19 +91,17 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
       )
 
       if (!position) {
-        setSelectedFilterOptions((prev) => {
-          return [...prev, filterOption]
-        })
+        setSelectedFilters({ url: currentPath, filters: [...selectedFilterOptions, filterOption] })
       } else {
-        setSelectedFilterOptions((prev) => {
-          return prev.map((selectedFilterOption) => {
-            if (selectedFilterOption.identifier === filterOption.identifier) {
-              return filterOption
-            }
+        const selectedFilterOptionsTestCopy = selectedFilterOptions
+        const selectedFiltersUpdated = selectedFilterOptionsTestCopy.map((selectedFilterOption) => {
+          if (selectedFilterOption.identifier === filterOption.identifier) {
+            return filterOption
+          }
 
-            return selectedFilterOption
-          })
+          return selectedFilterOption
         })
+        setSelectedFilters({ url: currentPath, filters: selectedFiltersUpdated })
       }
     })
   }
@@ -116,35 +115,56 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
     navigate(`${paths.cobranza.cobranza(urlIdentifier, code)}`)
   }
 
-  const { refetch } = useQuery(
-    'query-get-all-clients-by-chb',
+  const { data: dataNegotiations, isLoading: isLoadingNegotiations } = useQuery(
+    [KEY_EXT_COBRANZA_NEGOCIACIONES_CACHE, parseInt(chb?.length ? chb : '0')],
     async () => {
-      const negotiations = selectedFilterOptions
-        .find((filterOption) => filterOption.identifier === 'customers.datatable.header.negotiation')
-        ?.options.map((option) => {
-          return option.key
-        })
+      return await getAllNegociacionesByCHB(parseInt(chb.length ? chb : '0'))
+    }
+  )
+  const optionsNegotiations = dataNegotiations?.data?.map((negotiation: { id: number; name: string }) => {
+    return {
+      key: negotiation.id,
+      label: negotiation.name,
+    }
+  })
 
-      const funcionarios = selectedFilterOptions
-        .find((filterOption) => filterOption.identifier === 'customers.datatable.header.funcionario')
-        ?.options.map((option) => {
-          return option.key
-        })
+  const { data: dataFuncionarios, isLoading: isLoadingFuncionarios } = useQuery(
+    [KEY_EXT_COBRANZA_FUNCIONARIOS_CACHE, parseInt(chb?.length ? chb : '0')],
+    async () => {
+      return await getAllFuncionariosByCHB(parseInt(chb.length ? chb : '0'))
+    }
+  )
+  const optionsFuncionarios = dataFuncionarios?.data?.map((funcionario: { id: number; name: string }) => {
+    return {
+      key: funcionario.id,
+      label: funcionario.name,
+    }
+  })
 
-      const users = selectedFilterOptions
-        .find((filterOption) => filterOption.identifier === 'customers.datatable.header.user')
-        ?.options.map((option) => {
-          return option.key
-        })
+  const optionsUsers = users.map((user) => {
+    return {
+      key: user.id,
+      label: user.name,
+    }
+  })
 
-      const cities = selectedFilterOptions
-        .find((filterOption) => filterOption.identifier === 'customers.datatable.header.city')
-        ?.options.map((option) => {
-          return option.key
-        })
+  const optionsCities = cities.map((city) => {
+    return {
+      key: city.id,
+      label: city.name,
+    }
+  })
+
+  const { data, isLoading, refetch } = useQuery<AxiosResponse<any>, Error>(
+    [KEY_COBRANZA_URL_CUSTOMER_CODE_CACHE, chb],
+    async () => {
+      const negotiations = getIDsByIdentifier('customers.datatable.header.negotiation', selectedFilterOptions)
+      const funcionarios = getIDsByIdentifier('customers.datatable.header.funcionario', selectedFilterOptions)
+      const users = getIDsByIdentifier('customers.datatable.header.user', selectedFilterOptions)
+      const cities = getIDsByIdentifier('customers.datatable.header.city', selectedFilterOptions)
 
       return await getAllClientsByCHB(
-        selectedBank.idCHB,
+        chb,
         opts.page,
         opts.limit,
         opts.filter,
@@ -155,217 +175,37 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
       )
     },
     {
-      enabled: !!selectedBank.idCHB.length,
-      onSuccess: ({ data }) => {
-        setCustomers(data.clients)
-        setCustomersCount(data.quantity)
-        setIsLoading(false)
+      onError: (error: any) => {
+        notification({
+          type: 'error',
+          message: error.response.data.message,
+        })
       },
     }
   )
 
-  const { refetch: refetchManagementActions } = useQuery(
-    'query-get-all-management-actions',
-    async () => {
-      return await getAllManagementActionsByCHB(selectedBank.idCHB)
-    },
-    {
-      enabled: !!selectedBank.idCHB.length,
-      onSuccess: (response) => {
-        setManagementActions(response.data)
-        setIsLoadingManagementActions(false)
-      },
-    }
-  )
-
-  const { refetch: refetchNegotiations } = useQuery(
-    'query-get-all-negociaciones',
-    async () => {
-      return await getAllNegociacionesByCHB(parseInt(selectedBank.idCHB))
-    },
-    {
-      enabled: !!selectedBank.idCHB.length,
-      onSuccess: (response) => {
-        setNegociaciones(response.data)
-        setIsLoadingNegotiations(false)
-      },
-    }
-  )
-
-  const { refetch: refetchFuncionarios } = useQuery(
-    'query-get-all-funcionarios',
-    async () => {
-      return await getAllFuncionariosByCHB(parseInt(selectedBank.idCHB))
-    },
-    {
-      enabled: !!selectedBank.idCHB.length,
-      onSuccess: (response) => {
-        setFuncionarios(response.data)
-        setIsLoadingFuncionarions(false)
-      },
-    }
-  )
+  const customers = data?.data.clients ?? []
+  const quantity = data?.data.quantity
 
   useEffect(() => {
-    if (selectedBank.idCHB.length) {
-      setIsLoadingNegotiations(true)
-      setIsLoadingFuncionarions(true)
-      setIsLoadingManagementActions(true)
-
-      refetchNegotiations()
-      refetchFuncionarios()
-      refetchManagementActions()
-    }
-  }, [selectedBank, refetch, refetchNegotiations, refetchFuncionarios, refetchManagementActions])
-
-  useEffect(() => {
-    const optionsFuncionarios = funcionarios.map((funcionario) => {
-      return {
-        key: funcionario.id,
-        label: funcionario.name,
-      }
-    })
-
-    setFilterOptions((prev) => {
-      const filterOption = prev.find((filter) => filter.identifier === 'customers.datatable.header.funcionario')
-
-      if (filterOption) {
-        return prev.map((filter) => {
-          if (filter.identifier === 'customers.datatable.header.funcionario') {
-            return {
-              identifier: filter.identifier,
-              options: optionsFuncionarios,
-            }
-          }
-          return filter
-        })
-      } else {
-        return [
-          ...prev,
-          {
-            identifier: 'customers.datatable.header.funcionario',
-            options: optionsFuncionarios,
-          },
-        ]
-      }
-    })
-  }, [funcionarios])
-
-  useEffect(() => {
-    const optionsNegotiations = negociaciones.map((negotiation) => {
-      return {
-        key: negotiation.id,
-        label: negotiation.name,
-      }
-    })
-
-    setFilterOptions((prev) => {
-      const filterOption = prev.find((filter) => filter.identifier === 'customers.datatable.header.negotiation')
-
-      if (filterOption) {
-        return prev.map((filter) => {
-          if (filter.identifier === 'customers.datatable.header.negotiation') {
-            return {
-              identifier: filter.identifier,
-              options: optionsNegotiations,
-            }
-          }
-          return filter
-        })
-      } else {
-        return [
-          ...prev,
-          {
-            identifier: 'customers.datatable.header.negotiation',
-            options: optionsNegotiations,
-          },
-        ]
-      }
-    })
-  }, [negociaciones])
-
-  useEffect(() => {
-    setSelectedFilterOptions([])
-    setResetFilters(!resetFilters)
-
-    const optionsUsers = users.map((user) => {
-      return {
-        key: user.id,
-        label: user.name,
-      }
-    })
-    setFilterOptions((prev) => {
-      const filterOption = prev.find((filter) => filter.identifier === 'customers.datatable.header.user')
-
-      if (filterOption) {
-        return prev.map((filter) => {
-          if (filter.identifier === 'customers.datatable.header.user') {
-            return {
-              identifier: filter.identifier,
-              options: optionsUsers,
-            }
-          }
-          return filter
-        })
-      } else {
-        return [
-          ...prev,
-          {
-            identifier: 'customers.datatable.header.user',
-            options: optionsUsers,
-          },
-        ]
-      }
-    })
-
-    const optionsCities = cities.map((city) => {
-      return {
-        key: city.id,
-        label: city.name,
-      }
-    })
-    setFilterOptions((prev) => {
-      const filterOption = prev.find((filter) => filter.identifier === 'customers.datatable.header.city')
-
-      if (filterOption) {
-        return prev.map((filter) => {
-          if (filter.identifier === 'customers.datatable.header.city') {
-            return {
-              identifier: filter.identifier,
-              options: optionsCities,
-            }
-          }
-          return filter
-        })
-      } else {
-        return [
-          ...prev,
-          {
-            identifier: 'customers.datatable.header.city',
-            options: optionsCities,
-          },
-        ]
-      }
-    })
-  }, [selectedBank.idCHB])
-
-  useEffect(() => {
-    if (selectedBank.idCHB.length) {
-      setIsLoading(true)
-      refetch()
-    }
-  }, [refetch, opts, selectedFilterOptions])
+    refetch()
+  }, [getSelectedFilters(currentPath)?.filters, opts])
 
   return (
     <Container width="100%" height="calc(100% - 112px)" padding="20px">
-      <Pagination count={customersCount} opts={opts} setOpts={setOpts} />
+      <Pagination count={quantity} opts={opts} setOpts={setOpts} />
       <Table
         top="260px"
         columns={customersColumns}
-        filterOptions={filterOptions}
+        filterOptions={[
+          { identifier: 'customers.datatable.header.negotiation', options: optionsNegotiations },
+          { identifier: 'customers.datatable.header.funcionario', options: optionsFuncionarios },
+          { identifier: 'customers.datatable.header.user', options: optionsUsers },
+          { identifier: 'customers.datatable.header.city', options: optionsCities },
+        ]}
+        selectedFilterOptions={selectedFilterOptions}
         onChangeFilterOptions={onChangeFilterOptions}
-        resetFilters={resetFilters}
-        loading={isLoading || isLoadingNegotiations || isLoadingFuncionarions || isLoadingManagementActions}
+        loading={isLoading || isLoadingNegotiations || isLoadingFuncionarios}
         isArrayEmpty={!customers.length}
         emptyState={
           <EmptyStateCell colSpan={customersColumns.length}>
@@ -380,8 +220,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
                 customerUser: CustomerUserType
               } & { city: CityType }
             ) => {
-              const showMessageAboutClientTransferred =
-                !record.chbTransferred || record.chbTransferred === parseInt(selectedBank.idCHB)
+              const showMessageAboutClientTransferred = !record.chbTransferred || record.chbTransferred == parseInt(chb)
 
               return (
                 <tr
