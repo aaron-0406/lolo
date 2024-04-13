@@ -32,7 +32,6 @@ type TableProps = {
   isArrayEmpty?: boolean
   emptyState?: React.ReactNode
   children?: React.ReactNode
-  resetFilters?: boolean
 }
 
 const Table: React.FC<TableProps> = ({
@@ -48,7 +47,6 @@ const Table: React.FC<TableProps> = ({
   leftSpace,
   emptyState,
   isArrayEmpty = false,
-  resetFilters,
 }) => {
   return (
     <StyledContentTable id="main-layout-content-internal" top={top} leftSpace={leftSpace} rightSpace={rightSpace}>
@@ -72,7 +70,6 @@ const Table: React.FC<TableProps> = ({
                   options={options}
                   selectedOptions={selectedOptions}
                   onChangeFilterOptions={(options) => onChangeFilterOptions?.({ identifier: id, options })}
-                  resetFilters={resetFilters}
                 >
                   {title}
                 </HeaderCell>

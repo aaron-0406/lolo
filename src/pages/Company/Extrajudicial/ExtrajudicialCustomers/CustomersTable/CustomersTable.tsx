@@ -69,7 +69,6 @@ const CustomersTable = ({ opts, setOpts }: CustomersTableProps) => {
   const [selectedFilterOptions, setSelectedFilterOptions] = useState<Array<FilterOptionsProps>>(
     getSelectedFilters(currentPath)?.filters ?? []
   )
-  const [resetFilters, setResetFilters] = useState<boolean>(false)
 
   const { visible: visibleDeleteClient, showModal: showDeleteClient, hideModal: hideDeleteClient } = useModal()
   const {
@@ -188,9 +187,6 @@ const CustomersTable = ({ opts, setOpts }: CustomersTableProps) => {
   }, [selectedFilterOptions, opts])
 
   useEffect(() => {
-    setSelectedFilterOptions([])
-    setResetFilters(!resetFilters)
-
     const optionsUsers = users.map((user) => {
       return {
         key: user.id,
@@ -225,7 +221,6 @@ const CustomersTable = ({ opts, setOpts }: CustomersTableProps) => {
         ]}
         selectedFilterOptions={selectedFilterOptions}
         onChangeFilterOptions={onChangeFilterOptions}
-        resetFilters={resetFilters}
         loading={isLoading || isLoadingNegotiations || isLoadingFuncionarios}
         isArrayEmpty={!customers.length}
         emptyState={
