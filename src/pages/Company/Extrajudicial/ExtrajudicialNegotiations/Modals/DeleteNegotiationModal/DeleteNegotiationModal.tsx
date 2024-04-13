@@ -41,7 +41,7 @@ const DeleteNegotiationModal = ({ visible, idNegociation = 0, onClose }: DeleteN
     {
       onSuccess: (result) => {
         deleteNegotiationCache(result.data.id, parseInt(chb))
-        notification({ type: 'success', message: 'Usuario eliminado' })
+        notification({ type: 'success', message: 'Negociación eliminada' })
         onClose()
       },
       onMutate: () => {
