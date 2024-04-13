@@ -65,10 +65,6 @@ const CustomersTable = ({ opts, setOpts }: CustomersTableProps) => {
   const [codeClient, setCodeClient] = useState<string>('')
   const [codeTransferClient, setCodeTransferClient] = useState<string>('')
 
-  const [selectedFilterOptions, setSelectedFilterOptions] = useState<Array<FilterOptionsProps>>(
-    getSelectedFilters(currentPath)?.filters ?? []
-  )
-
   const { visible: visibleDeleteClient, showModal: showDeleteClient, hideModal: hideDeleteClient } = useModal()
   const {
     visible: visibleModalTransferClient,
@@ -86,6 +82,8 @@ const CustomersTable = ({ opts, setOpts }: CustomersTableProps) => {
     showModalTransferClient()
   }
 
+  const selectedFilterOptions = getSelectedFilters(currentPath)?.filters ?? []
+
   const onChangeFilterOptions = (filterOption: FilterOptionsProps) => {
     setTimeout(() => {
       const position = selectedFilterOptions.find(
@@ -93,23 +91,17 @@ const CustomersTable = ({ opts, setOpts }: CustomersTableProps) => {
       )
 
       if (!position) {
-        setSelectedFilterOptions((prev) => {
-          const newSelectedFilters = [...prev, filterOption]
-          setSelectedFilters({ url: currentPath, filters: newSelectedFilters })
-          return newSelectedFilters
-        })
+        setSelectedFilters({ url: currentPath, filters: [...selectedFilterOptions, filterOption] })
       } else {
-        setSelectedFilterOptions((prev) => {
-          const selectedFiltersUpdated = prev.map((selectedFilterOption) => {
-            if (selectedFilterOption.identifier === filterOption.identifier) {
-              return filterOption
-            }
+        const selectedFilterOptionsTestCopy = selectedFilterOptions
+        const selectedFiltersUpdated = selectedFilterOptionsTestCopy.map((selectedFilterOption) => {
+          if (selectedFilterOption.identifier === filterOption.identifier) {
+            return filterOption
+          }
 
-            return selectedFilterOption
-          })
-          setSelectedFilters({ url: currentPath, filters: selectedFiltersUpdated })
-          return selectedFiltersUpdated
+          return selectedFilterOption
         })
+        setSelectedFilters({ url: currentPath, filters: selectedFiltersUpdated })
       }
     })
   }
@@ -166,11 +158,10 @@ const CustomersTable = ({ opts, setOpts }: CustomersTableProps) => {
   const { data, isLoading, refetch } = useQuery<AxiosResponse<any>, Error>(
     [KEY_COBRANZA_URL_CUSTOMER_CODE_CACHE, chb],
     async () => {
-      const selectedFilters = getSelectedFilters(currentPath)?.filters ?? []
-      const negotiations = getIDsByIdentifier('customers.datatable.header.negotiation', selectedFilters)
-      const funcionarios = getIDsByIdentifier('customers.datatable.header.funcionario', selectedFilters)
-      const users = getIDsByIdentifier('customers.datatable.header.user', selectedFilters)
-      const cities = getIDsByIdentifier('customers.datatable.header.city', selectedFilters)
+      const negotiations = getIDsByIdentifier('customers.datatable.header.negotiation', selectedFilterOptions)
+      const funcionarios = getIDsByIdentifier('customers.datatable.header.funcionario', selectedFilterOptions)
+      const users = getIDsByIdentifier('customers.datatable.header.user', selectedFilterOptions)
+      const cities = getIDsByIdentifier('customers.datatable.header.city', selectedFilterOptions)
 
       return await getAllClientsByCHB(
         chb,
@@ -199,12 +190,6 @@ const CustomersTable = ({ opts, setOpts }: CustomersTableProps) => {
   useEffect(() => {
     refetch()
   }, [getSelectedFilters(currentPath)?.filters, opts])
-
-  useEffect(() => {
-    if (!getSelectedFilters(currentPath)?.filters?.length) {
-      setSelectedFilterOptions([])
-    }
-  }, [chb])
 
   return (
     <Container width="100%" height="calc(100% - 112px)" padding="20px">
