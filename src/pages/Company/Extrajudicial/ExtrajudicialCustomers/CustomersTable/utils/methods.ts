@@ -1,4 +1,3 @@
-import { SelectItem } from '@/ui/Select/interfaces'
 import { FilterOptionsProps } from '@/ui/Table/Table'
 
 const getIDsByIdentifier = (identifier: string, selectedFilterOptions: FilterOptionsProps[]) => {
@@ -9,32 +8,4 @@ const getIDsByIdentifier = (identifier: string, selectedFilterOptions: FilterOpt
     })
 }
 
-const getProcessedFilterOptions = (
-  identifier: string,
-  selectedFilterOptions: FilterOptionsProps[],
-  options: Array<SelectItem<any, any>>
-) => {
-  const filterOption = selectedFilterOptions.find((filter) => filter.identifier === identifier)
-
-  if (filterOption) {
-    return selectedFilterOptions.map((filter) => {
-      if (filter.identifier === identifier) {
-        return {
-          identifier: filter.identifier,
-          options: options,
-        }
-      }
-      return filter
-    })
-  } else {
-    return [
-      ...selectedFilterOptions,
-      {
-        identifier: identifier,
-        options: options,
-      },
-    ]
-  }
-}
-
-export { getIDsByIdentifier, getProcessedFilterOptions }
+export { getIDsByIdentifier }

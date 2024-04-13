@@ -30,7 +30,7 @@ import TransferClientModal from '../Modals/TransferClientModal'
 import notification from '@/ui/notification'
 import { KEY_COBRANZA_URL_CUSTOMER_CODE_CACHE } from './utils/company-customers.cache'
 import { AxiosResponse } from 'axios'
-import { getIDsByIdentifier, getProcessedFilterOptions } from './utils/methods'
+import { getIDsByIdentifier } from './utils/methods'
 import { KEY_EXT_COBRANZA_FUNCIONARIOS_CACHE } from '../../ExtrajudicialFuncionarios/FuncionariosTable/utils/ext-funcionarios.cache'
 import { KEY_EXT_COBRANZA_NEGOCIACIONES_CACHE } from '../../ExtrajudicialNegotiations/NegotiationTable/utils/ext-negociaciones.cache'
 import { useFiltersContext } from '@/contexts/FiltersProvider'
@@ -65,7 +65,6 @@ const CustomersTable = ({ opts, setOpts }: CustomersTableProps) => {
   const [codeClient, setCodeClient] = useState<string>('')
   const [codeTransferClient, setCodeTransferClient] = useState<string>('')
 
-  const [filterOptions, setFilterOptions] = useState<Array<FilterOptionsProps>>([])
   const [selectedFilterOptions, setSelectedFilterOptions] = useState<Array<FilterOptionsProps>>(
     getSelectedFilters(currentPath)?.filters ?? []
   )
@@ -150,13 +149,28 @@ const CustomersTable = ({ opts, setOpts }: CustomersTableProps) => {
     }
   })
 
+  const optionsUsers = users.map((user) => {
+    return {
+      key: user.id,
+      label: user.name,
+    }
+  })
+
+  const optionsCities = cities.map((city) => {
+    return {
+      key: city.id,
+      label: city.name,
+    }
+  })
+
   const { data, isLoading, refetch } = useQuery<AxiosResponse<any>, Error>(
     [KEY_COBRANZA_URL_CUSTOMER_CODE_CACHE, chb],
     async () => {
-      const negotiations = getIDsByIdentifier('customers.datatable.header.negotiation', selectedFilterOptions)
-      const funcionarios = getIDsByIdentifier('customers.datatable.header.funcionario', selectedFilterOptions)
-      const users = getIDsByIdentifier('customers.datatable.header.user', selectedFilterOptions)
-      const cities = getIDsByIdentifier('customers.datatable.header.city', selectedFilterOptions)
+      const selectedFilters = getSelectedFilters(currentPath)?.filters ?? []
+      const negotiations = getIDsByIdentifier('customers.datatable.header.negotiation', selectedFilters)
+      const funcionarios = getIDsByIdentifier('customers.datatable.header.funcionario', selectedFilters)
+      const users = getIDsByIdentifier('customers.datatable.header.user', selectedFilters)
+      const cities = getIDsByIdentifier('customers.datatable.header.city', selectedFilters)
 
       return await getAllClientsByCHB(
         chb,
@@ -184,28 +198,12 @@ const CustomersTable = ({ opts, setOpts }: CustomersTableProps) => {
 
   useEffect(() => {
     refetch()
-  }, [selectedFilterOptions, opts])
+  }, [getSelectedFilters(currentPath)?.filters, opts])
 
   useEffect(() => {
-    const optionsUsers = users.map((user) => {
-      return {
-        key: user.id,
-        label: user.name,
-      }
-    })
-    setFilterOptions((prev) => {
-      return getProcessedFilterOptions('customers.datatable.header.user', prev, optionsUsers)
-    })
-
-    const optionsCities = cities.map((city) => {
-      return {
-        key: city.id,
-        label: city.name,
-      }
-    })
-    setFilterOptions((prev) => {
-      return getProcessedFilterOptions('customers.datatable.header.city', prev, optionsCities)
-    })
+    if (!getSelectedFilters(currentPath)?.filters?.length) {
+      setSelectedFilterOptions([])
+    }
   }, [chb])
 
   return (
@@ -217,7 +215,8 @@ const CustomersTable = ({ opts, setOpts }: CustomersTableProps) => {
         filterOptions={[
           { identifier: 'customers.datatable.header.negotiation', options: optionsNegotiations },
           { identifier: 'customers.datatable.header.funcionario', options: optionsFuncionarios },
-          ...filterOptions,
+          { identifier: 'customers.datatable.header.user', options: optionsUsers },
+          { identifier: 'customers.datatable.header.city', options: optionsCities },
         ]}
         selectedFilterOptions={selectedFilterOptions}
         onChangeFilterOptions={onChangeFilterOptions}

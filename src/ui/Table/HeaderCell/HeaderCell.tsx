@@ -58,6 +58,12 @@ const HeaderCell: React.FC<HeaderCellProps> = ({
     }
   }
 
+  useEffect(() => {
+    if (!selectedOptions?.length) {
+      setSelectedFilterOptions([])
+    }
+  }, [selectedOptions?.length === 0 || selectedOptions === undefined])
+
   return (
     <StyledTh width={width} isThereFilter={isThereFilter} textTransform={textTransform} onClick={onSelectToogle}>
       <ClickOutSideComponent className="main-container" callback={() => setToggleSelect(false)}>
