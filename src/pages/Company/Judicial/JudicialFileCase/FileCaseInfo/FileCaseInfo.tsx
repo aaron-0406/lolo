@@ -1,13 +1,24 @@
 import { Controller, useFormContext } from 'react-hook-form'
 import styled, { css } from 'styled-components'
-import { useLoloContext } from '@/contexts/LoloProvider'
 import { JudicialCaseFileType } from '@/types/judicial/judicial-case-file.type'
 import Container from '@/ui/Container'
 import Select from '@/ui/Select'
 import TextField from '@/ui/fields/TextField'
-import { SelectItemType } from '@/ui/Select/interfaces'
 import DatePicker from '@/ui/DatePicker/DatePicker'
 import moment from 'moment'
+import { useQuery } from 'react-query'
+import { getSubjectByCHB } from '@/services/judicial/judicial-subject.service'
+import { getCourtByCHB } from '@/services/judicial/judicial-court.service'
+import { useLoloContext } from '@/contexts/LoloProvider'
+import { KEY_EXT_JUDICIAL_COURTS_CACHE } from '../../JudicialCourt/CourtTable/utils/ext-court.cache'
+import { KEY_EXT_JUDICIAL_SUBJECT_CACHE } from '../../JudicialSubject/SubjectTable/utils/ext-subject.cache'
+import { KEY_EXT_JUDICIAL_PROCEDURAL_WAY_CACHE } from '../../JudicialProceduralWay/ProceduralWayTable/utils/ext-procedural-way.cache'
+import { getProceduralWayByCHB } from '@/services/judicial/judicial-procedural-way.service'
+import { AxiosResponse } from 'axios'
+import { JudicialCourtType } from '@/types/judicial/judicial-court.type'
+import { JudicialSubjectType } from '@/types/judicial/judicial-subject.type'
+import { JudicialProceduralWayType } from '@/types/judicial/judicial-procedural-way.type'
+import { SelectItemType } from '@/ui/Select/interfaces'
 
 type FileCaseInfoProps = {
   loading: boolean
@@ -19,33 +30,60 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
     formState: { errors },
   } = useFormContext<JudicialCaseFileType>()
   const {
-    judicial: {
-      judicialCourt: { judicialCourts },
-      judicialProceduralWay: { judicialProceduralWays },
-      judicialSubject: { judicialSubjects },
+    bank: {
+      selectedBank: { idCHB: chb },
     },
   } = useLoloContext()
 
-  const optionsJudicialCourts: Array<SelectItemType> = judicialCourts.map((court) => {
+  const { data: dataCourts } = useQuery<AxiosResponse<Array<JudicialCourtType>>>(
+    [KEY_EXT_JUDICIAL_COURTS_CACHE, parseInt(chb?.length ? chb : '0')],
+    async () => {
+      return await getCourtByCHB(parseInt(chb.length ? chb : '0'))
+    }
+  )
+
+  const courts = dataCourts?.data ?? []
+
+  const optionsCourts: Array<SelectItemType> = courts.map((court: { id: number; court: string }) => {
     return {
       key: String(court.id),
       label: court.court,
     }
   })
 
-  const optionsJudicialSubjects: Array<SelectItemType> = judicialSubjects.map((subject) => {
+  const { data: dataSubject } = useQuery<AxiosResponse<Array<JudicialSubjectType>>>(
+    [KEY_EXT_JUDICIAL_SUBJECT_CACHE, parseInt(chb?.length ? chb : '0')],
+    async () => {
+      return await getSubjectByCHB(parseInt(chb.length ? chb : '0'))
+    }
+  )
+
+  const subjects = dataSubject?.data ?? []
+
+  const optionsSubjects: Array<SelectItemType> = subjects.map((subject: { id: number; subject: string }) => {
     return {
       key: String(subject.id),
       label: subject.subject,
     }
   })
 
-  const optionsJudicialProceduralWays: Array<SelectItemType> = judicialProceduralWays.map((subject) => {
-    return {
-      key: String(subject.id),
-      label: subject.proceduralWay,
+  const { data: dataProceduralWay } = useQuery<AxiosResponse<Array<JudicialProceduralWayType>>>(
+    [KEY_EXT_JUDICIAL_PROCEDURAL_WAY_CACHE, parseInt(chb?.length ? chb : '0')],
+    async () => {
+      return await getProceduralWayByCHB(parseInt(chb.length ? chb : '0'))
     }
-  })
+  )
+
+  const proceduralWays = dataProceduralWay?.data ?? []
+
+  const optionsProceduralWay: Array<SelectItemType> = proceduralWays.map(
+    (proceduralWay: { id: number; proceduralWay: string }) => {
+      return {
+        key: String(proceduralWay.id),
+        label: proceduralWay.proceduralWay,
+      }
+    }
+  )
 
   if (loading) {
     return <div>Loading ...</div>
@@ -101,7 +139,7 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
               helperText={errors.judicialCourtId?.message}
               width="100%"
               value={String(field.value)}
-              options={optionsJudicialCourts}
+              options={optionsCourts}
               onChange={(key) => {
                 field.onChange(parseInt(key))
               }}
@@ -134,7 +172,7 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
               helperText={errors.judicialSubjectId?.message}
               width="100%"
               value={String(field.value)}
-              options={optionsJudicialSubjects}
+              options={optionsSubjects}
               onChange={(key) => {
                 field.onChange(parseInt(key))
               }}
@@ -151,7 +189,7 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
               helperText={errors.judicialProceduralWayId?.message}
               width="100%"
               value={String(field.value)}
-              options={optionsJudicialProceduralWays}
+              options={optionsProceduralWay}
               onChange={(key) => {
                 field.onChange(parseInt(key))
               }}

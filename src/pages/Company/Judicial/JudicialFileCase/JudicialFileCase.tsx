@@ -7,10 +7,6 @@ import FileCaseActions from './FileCaseActions'
 import FileCaseInfo from './FileCaseInfo'
 import FileCaseModals from './FileCaseInfo/FileCaseModals'
 import { useLoloContext } from '@/contexts/LoloProvider'
-import { useQuery } from 'react-query'
-import { getCourtByCHB } from '@/services/judicial/judicial-court.service'
-import { getProceduralWayByCHB } from '@/services/judicial/judicial-procedural-way.service'
-import { getSubjectByCHB } from '@/services/judicial/judicial-subject.service'
 import moment from 'moment'
 import { useState } from 'react'
 
@@ -27,11 +23,6 @@ export type FileCaseOwnerType = {
 const JudicialFileCase = () => {
   const {
     bank: { selectedBank },
-    judicial: {
-      judicialCourt: { setJudicialCourts },
-      judicialProceduralWay: { setJudicialProceduralWays },
-      judicialSubject: { setJudicialSubjects },
-    },
   } = useLoloContext()
   const [ownerFileCase, setOwnerFileCase] = useState<FileCaseOwnerType>({
     code: '',
@@ -63,42 +54,6 @@ const JudicialFileCase = () => {
     customerHasBankId: Number(selectedBank.idCHB),
   }
 
-  useQuery(
-    'get-court-by-chb',
-    async () => {
-      return await getCourtByCHB(Number(selectedBank.idCHB))
-    },
-    {
-      onSuccess: ({ data }) => {
-        setJudicialCourts(data)
-      },
-    }
-  )
-
-  useQuery(
-    'get-procedural-way-by-chb',
-    async () => {
-      return await getProceduralWayByCHB(Number(selectedBank.idCHB))
-    },
-    {
-      onSuccess: ({ data }) => {
-        setJudicialProceduralWays(data)
-      },
-    }
-  )
-
-  useQuery(
-    'get-subject-by-chb',
-    async () => {
-      return await getSubjectByCHB(Number(selectedBank.idCHB))
-    },
-    {
-      onSuccess: ({ data }) => {
-        setJudicialSubjects(data)
-      },
-    }
-  )
-
   const formMethods = useForm<JudicialCaseFileType>({
     resolver: JudicialFileCaseResolver,
     mode: 'all',
@@ -111,7 +66,7 @@ const JudicialFileCase = () => {
         actionsContent={<FileCaseActions setOwnerFileCase={setOwnerFileCase} setLoadingGlobal={setLoading} />}
         ownerContent={<FileCaseOwner setOwnerFileCase={setOwnerFileCase} ownerFileCase={ownerFileCase} />}
         infoContent={<FileCaseInfo loading={loading} />}
-        modalsContent={<FileCaseModals ownerFileCase={ownerFileCase}/>}
+        modalsContent={<FileCaseModals ownerFileCase={ownerFileCase} />}
       />
     </FormProvider>
   )

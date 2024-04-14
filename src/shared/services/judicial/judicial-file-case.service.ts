@@ -13,8 +13,20 @@ export const getFileCaseByClientId = async (id: number) => {
   return await axiosClient.get(`${url}/client/${id}`)
 }
 
-export const getFileCasesByCHB = async (id: number, page: number, limit: number) => {
-  return await axiosClient.get(`${url}/chb/${id}?page=${page}&limit=${limit}`)
+export const getFileCasesByCHB = async (
+  id: number,
+  page: number,
+  limit: number,
+  courts?: string,
+  proceduralWays?: string,
+  subjects?: string
+) => {
+  let filters = ''
+  filters += !!courts?.length ? `courts=${courts}&` : 'courts=[]&'
+  filters += !!proceduralWays?.length ? `proceduralWays=${proceduralWays}&` : 'proceduralWays=[]&'
+  filters += !!subjects?.length ? `subjects=${subjects}&` : 'subjects=[]&'
+
+  return await axiosClient.get(`${url}/chb/${id}?${filters}page=${page}&limit=${limit}`)
 }
 
 export const createFileCase = async (fileCase: Omit<JudicialCaseFileType, 'id' | 'numberCaseFile'>) => {
