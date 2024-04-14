@@ -8,8 +8,9 @@ import { SelectItemType } from '@/ui/Select/interfaces'
 import notification from '@/ui/notification'
 import { AxiosError, AxiosResponse } from 'axios'
 import { useState } from 'react'
-import { useMutation } from 'react-query'
+import { useMutation, useQueryClient } from 'react-query'
 import { CustomErrorResponse } from 'types/customErrorResponse'
+import companyCustomersCache from '../../CustomersTable/utils/company-customers.cache'
 
 type TransferClientModalProps = {
   visible: boolean
@@ -18,12 +19,21 @@ type TransferClientModalProps = {
 }
 
 const TransferClientModal = ({ visible, onClose, code }: TransferClientModalProps) => {
+  const queryClient = useQueryClient()
+
   const {
     client: { customer },
     bank: {
       selectedBank: { idBank, idCHB },
     },
   } = useLoloContext()
+
+  const {
+    actions: { transferClientCobranzaCustomerCache },
+    onMutateCache,
+    onSettledCache,
+    onErrorCache,
+  } = companyCustomersCache(queryClient)
 
   const [chbTransferred, setChbTransferred] = useState<string>('')
 
@@ -37,7 +47,7 @@ const TransferClientModal = ({ visible, onClose, code }: TransferClientModalProp
     })
 
   const { isLoading: loadingTransferClient, mutate: transferClient } = useMutation<
-    AxiosResponse<{ chbTransferred: string }>,
+    AxiosResponse<{ id: number; chbTransferred: number }>,
     AxiosError<CustomErrorResponse>
   >(
     async () => {
@@ -45,10 +55,22 @@ const TransferClientModal = ({ visible, onClose, code }: TransferClientModalProp
     },
     {
       onSuccess: (result) => {
+        transferClientCobranzaCustomerCache({
+          id: result.data.id,
+          chb: idCHB?.length ? parseInt(idCHB) : 0,
+          chbTransferred: result.data.chbTransferred,
+        })
         notification({ type: 'success', message: 'Cliente Transferido' })
         onClose()
       },
-      onError: (error) => {
+      onMutate: () => {
+        return onMutateCache(idCHB?.length ? parseInt(idCHB) : 0)
+      },
+      onSettled: () => {
+        onSettledCache(idCHB?.length ? parseInt(idCHB) : 0)
+      },
+      onError: (error, _, context: any) => {
+        onErrorCache(context, idCHB?.length ? parseInt(idCHB) : 0)
         notification({
           type: 'error',
           message: error.response?.data.message,

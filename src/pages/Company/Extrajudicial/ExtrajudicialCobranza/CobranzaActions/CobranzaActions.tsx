@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useFormContext } from 'react-hook-form'
-import { useQuery } from 'react-query'
+import { useQuery, useQueryClient } from 'react-query'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useMutation } from 'react-query'
 import { AxiosError } from 'axios'
@@ -19,18 +19,26 @@ import Breadcrumbs from '@/ui/Breadcrumbs'
 import { DOMAIN } from '../../../../../shared/utils/constant/api'
 import paths from 'shared/routes/paths'
 import { LinkType } from '@/ui/Breadcrumbs/Breadcrumbs.type'
+import companyCustomersCache from '../../ExtrajudicialCustomers/CustomersTable/utils/company-customers.cache'
 
 type CobranzaActionsProps = {
   setLoadingGlobal: (state: boolean) => void
 }
 
 const CobranzaActions = ({ setLoadingGlobal }: CobranzaActionsProps) => {
+  const queryClient = useQueryClient()
   const {
     client: { customer },
     bank: { selectedBank },
   } = useLoloContext()
 
   const navigate = useNavigate()
+  const {
+    actions: { createCobranzaCustomerCache, editCobranzaCustomerCache },
+    onMutateCache,
+    onSettledCache,
+    onErrorCache,
+  } = companyCustomersCache(queryClient)
 
   const codeParams = useParams().code ?? ''
   const { setValue, reset, handleSubmit, getValues } = useFormContext<
@@ -95,9 +103,22 @@ const CobranzaActions = ({ setLoadingGlobal }: CobranzaActionsProps) => {
         notification({ type: 'success', message: `${notificationMessage}` })
         setValue('id', data.data.id)
 
+        if (getValues().id === 0) {
+          createCobranzaCustomerCache(data.data)
+        } else {
+          editCobranzaCustomerCache(data.data)
+        }
+
         navigate(`${paths.cobranza.cobranza(customer.urlIdentifier, getValues().code)}`)
       },
-      onError: (error) => {
+      onMutate: () => {
+        return onMutateCache(selectedBank.idCHB?.length ? parseInt(selectedBank.idCHB) : 0)
+      },
+      onSettled: () => {
+        onSettledCache(selectedBank.idCHB?.length ? parseInt(selectedBank.idCHB) : 0)
+      },
+      onError: (error, _, context: any) => {
+        onErrorCache(context, selectedBank.idCHB?.length ? parseInt(selectedBank.idCHB) : 0)
         notification({
           type: 'error',
           message: error.response?.data.message,

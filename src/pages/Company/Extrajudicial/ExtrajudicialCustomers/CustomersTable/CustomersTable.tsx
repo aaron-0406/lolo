@@ -29,11 +29,12 @@ import { Tooltip } from 'react-tooltip'
 import TransferClientModal from '../Modals/TransferClientModal'
 import notification from '@/ui/notification'
 import { KEY_COBRANZA_URL_CUSTOMER_CODE_CACHE } from './utils/company-customers.cache'
-import { AxiosResponse } from 'axios'
+import { AxiosError, AxiosResponse } from 'axios'
 import { getIDsByIdentifier } from './utils/methods'
 import { KEY_EXT_COBRANZA_FUNCIONARIOS_CACHE } from '../../ExtrajudicialFuncionarios/FuncionariosTable/utils/ext-funcionarios.cache'
 import { KEY_EXT_COBRANZA_NEGOCIACIONES_CACHE } from '../../ExtrajudicialNegotiations/NegotiationTable/utils/ext-negociaciones.cache'
 import { useFiltersContext } from '@/contexts/FiltersProvider'
+import { CustomErrorResponse } from 'types/customErrorResponse'
 
 type CustomersTableProps = {
   opts: Opts
@@ -155,8 +156,8 @@ const CustomersTable = ({ opts, setOpts }: CustomersTableProps) => {
     }
   })
 
-  const { data, isLoading, refetch } = useQuery<AxiosResponse<any>, Error>(
-    [KEY_COBRANZA_URL_CUSTOMER_CODE_CACHE, chb],
+  const { data, isLoading, refetch } = useQuery<AxiosResponse<any>, AxiosError<CustomErrorResponse>>(
+    [KEY_COBRANZA_URL_CUSTOMER_CODE_CACHE, parseInt(chb?.length ? chb : '0')],
     async () => {
       const negotiations = getIDsByIdentifier('customers.datatable.header.negotiation', selectedFilterOptions)
       const funcionarios = getIDsByIdentifier('customers.datatable.header.funcionario', selectedFilterOptions)
@@ -175,10 +176,11 @@ const CustomersTable = ({ opts, setOpts }: CustomersTableProps) => {
       )
     },
     {
-      onError: (error: any) => {
+      onError: (error) => {
         notification({
           type: 'error',
-          message: error.response.data.message,
+          message: error.response?.data.message,
+          list: error.response?.data?.errors?.map((error) => error.message),
         })
       },
     }
@@ -220,7 +222,8 @@ const CustomersTable = ({ opts, setOpts }: CustomersTableProps) => {
                 customerUser: CustomerUserType
               } & { city: CityType }
             ) => {
-              const showMessageAboutClientTransferred = !record.chbTransferred || record.chbTransferred == parseInt(chb)
+              const showMessageAboutClientTransferred =
+                !record.chbTransferred || record.chbTransferred == parseInt(chb?.length ? chb : '0')
 
               return (
                 <tr

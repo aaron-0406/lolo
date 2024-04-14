@@ -1,5 +1,5 @@
 import { AxiosError } from 'axios'
-import { useMutation } from 'react-query'
+import { useMutation, useQueryClient } from 'react-query'
 import Container from '@/ui/Container'
 import Modal from '@/ui/Modal'
 import notification from '@/ui/notification'
@@ -7,6 +7,7 @@ import Button from '@/ui/Button'
 import { CustomErrorResponse } from 'types/customErrorResponse'
 import { deleteClient } from '@/services/extrajudicial/client.service'
 import { useLoloContext } from '@/contexts/LoloProvider'
+import companyCustomersCache from '../utils/company-customers.cache'
 
 type DeleteClientModalProps = {
   visible: boolean
@@ -15,21 +16,37 @@ type DeleteClientModalProps = {
 }
 
 const DeleteClientModal = ({ visible, onClose, code }: DeleteClientModalProps) => {
+  const queryClient = useQueryClient()
   const {
     client: { customer },
     bank: { selectedBank },
   } = useLoloContext()
+
+  const {
+    actions: { deleteCobranzaCustomerCache },
+    onMutateCache,
+    onSettledCache,
+    onErrorCache,
+  } = companyCustomersCache(queryClient)
 
   const { isLoading: loadingDeleteClient, mutate: deleteCustomer } = useMutation<any, AxiosError<CustomErrorResponse>>(
     async () => {
       return await deleteClient(code, Number(selectedBank.idCHB), Number(customer.id))
     },
     {
-      onSuccess: () => {
+      onSuccess: (data) => {
+        deleteCobranzaCustomerCache(data.data?.id, selectedBank.idCHB?.length ? parseInt(selectedBank.idCHB) : 0)
         notification({ type: 'success', message: 'Cliente eliminado' })
         onClose()
       },
-      onError: (error) => {
+      onMutate: () => {
+        return onMutateCache(selectedBank.idCHB?.length ? parseInt(selectedBank.idCHB) : 0)
+      },
+      onSettled: () => {
+        onSettledCache(selectedBank.idCHB?.length ? parseInt(selectedBank.idCHB) : 0)
+      },
+      onError: (error, _, context: any) => {
+        onErrorCache(context, selectedBank.idCHB?.length ? parseInt(selectedBank.idCHB) : 0)
         notification({
           type: 'error',
           message: error.response?.data.message,
