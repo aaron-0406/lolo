@@ -50,6 +50,7 @@ import ProtectedRoutes from '../ProtectedRoutes'
 import ProtectedRoutesCompany from '../ProtectedRoutesCompany'
 
 import paths from '../paths'
+import JudicialSubject from 'pages/Company/Judicial/JudicialSubject'
 
 const AppRouter = () => {
   return (
@@ -99,6 +100,8 @@ const AppRouter = () => {
         <Route path={paths.cobranza.etiquetas()} element={<ExtrajudicialTags />} />
         <Route path={paths.cobranza.tipoDirecciones()} element={<ExtrajudicialAddressType />} />
         <Route path={paths.cobranza.tipoContactos()} element={<ExtrajudicialContactType />} />
+
+        <Route path={paths.judicial.subjects()} element={<JudicialSubject />} />
       </Route>
 
       <Route path="*" element={<NotFound />} />
