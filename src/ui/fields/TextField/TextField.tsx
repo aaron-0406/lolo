@@ -35,6 +35,7 @@ const TextField: React.FC<TextFieldProps> = (props) => {
     required,
     charactersLimit,
     onClickTrailing,
+    clearInput = false,
     ...rest
   } = props
 
@@ -87,6 +88,7 @@ const TextField: React.FC<TextFieldProps> = (props) => {
           onKeyUp={onKeyUpInput}
           value={value}
           numberCharacters={countDown}
+          clearInput={clearInput}
           {...rest}
         />
 

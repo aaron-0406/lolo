@@ -36,12 +36,7 @@ import { KEY_EXT_COBRANZA_NEGOCIACIONES_CACHE } from '../../ExtrajudicialNegotia
 import { useFiltersContext } from '@/contexts/FiltersProvider'
 import { CustomErrorResponse } from 'types/customErrorResponse'
 
-type CustomersTableProps = {
-  opts: Opts
-  setOpts: Dispatch<Opts>
-}
-
-const CustomersTable = ({ opts, setOpts }: CustomersTableProps) => {
+const CustomersTable = () => {
   const location = useLocation()
   const currentPath = location.pathname
 
@@ -61,6 +56,10 @@ const CustomersTable = ({ opts, setOpts }: CustomersTableProps) => {
     filterOptions: { getSelectedFilters, setSelectedFilters },
   } = useFiltersContext()
 
+  const {
+    filterSearch: { getSearchFilters, setSearchFilters },
+  } = useFiltersContext()
+
   const navigate = useNavigate()
 
   const [codeClient, setCodeClient] = useState<string>('')
@@ -72,6 +71,8 @@ const CustomersTable = ({ opts, setOpts }: CustomersTableProps) => {
     showModal: showModalTransferClient,
     hideModal: hideModalTransferClient,
   } = useModal()
+
+  const opts = getSearchFilters(currentPath)?.opts ?? { filter: '', limit: 50, page: 1 }
 
   const handleClickDeleteClient = (code: string) => {
     setCodeClient(code)
@@ -195,7 +196,7 @@ const CustomersTable = ({ opts, setOpts }: CustomersTableProps) => {
 
   return (
     <Container width="100%" height="calc(100% - 112px)" padding="20px">
-      <Pagination count={quantity} opts={opts} setOpts={setOpts} />
+      <Pagination count={quantity} opts={opts} setOptsFilter={setSearchFilters} />
       <Table
         top="260px"
         columns={customersColumns}

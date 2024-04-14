@@ -1,5 +1,5 @@
 import React, { Dispatch, FC } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import styled, { css } from 'styled-components'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import Container from '@/ui/Container'
@@ -14,12 +14,10 @@ import ModalManagementExcel from './ModalManagementExcel/ModalManagementExcel'
 import paths from 'shared/routes/paths'
 import { useFiltersContext } from '@/contexts/FiltersProvider'
 
-type CustomerActionsProps = {
-  opts: Opts
-  setOpts: Dispatch<Opts>
-}
+const CustomersActions = () => {
+  const location = useLocation()
+  const currentPath = location.pathname
 
-const CustomersActions: FC<CustomerActionsProps> = ({ opts, setOpts }) => {
   const {
     client: { customer },
     bank: { selectedBank, setSelectedBank },
@@ -32,6 +30,10 @@ const CustomersActions: FC<CustomerActionsProps> = ({ opts, setOpts }) => {
     showModal: showModalManagementExcel,
     hideModal: hideModalManagementExcel,
   } = useModal()
+
+  const {
+    filterSearch: { getSearchFilters, setSearchFilters },
+  } = useFiltersContext()
 
   const navigate = useNavigate()
 
@@ -52,13 +54,16 @@ const CustomersActions: FC<CustomerActionsProps> = ({ opts, setOpts }) => {
       idCHB: String(customerBank?.CUSTOMER_HAS_BANK.id),
     })
   }
-
+  
   const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
-    if (value === '') return setOpts({ ...opts, filter: '', page: 1 })
-    if (value.length < 3) return
-    return setOpts({ ...opts, filter: value.trim(), page: 1 })
+    console.log(value, "value")
+    // if (value === '') return setSearchFilters({ url: currentPath, opts: { ...testing1, filter: '', page: 1 } })
+    setSearchFilters({ url: currentPath, opts: { ...testing1, filter: value.trim(), page: 1 } })
+    console.log(testing1, 'test2')
   }
+  const testing1 = getSearchFilters(currentPath)?.opts ?? { filter: '', limit: 50, page: 1 }
+  console.log(testing1, 'test')
 
   const handleClickAddClient = () => {
     navigate(`${paths.cobranza.cobranza(customer.urlIdentifier, '000000000')}`)
@@ -81,6 +86,8 @@ const CustomersActions: FC<CustomerActionsProps> = ({ opts, setOpts }) => {
           width="100%"
           label="Buscar cliente:"
           placeholder="Buscar cliente por nombre"
+          clearInput
+          value={testing1.filter}
         />
 
         <Button
