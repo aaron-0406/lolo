@@ -87,7 +87,7 @@ const JudicialFileCasesTable: FC<JudicialFileCasesTableProps> = ({ opts, setOpts
 
   useEffect(() => {
     if (selectedBank.idCHB.length) refetch()
-  }, [refetch, opts, selectedFilterOptions, selectedBank.idCHB.length])
+  }, [refetch, opts, selectedFilterOptions, selectedBank])
 
   const hasAccessToTheButton = useMemo(() => {
     const permissions = user.permissions?.map((permission) => permission.code) ?? []

@@ -1,41 +1,42 @@
-import { useState } from 'react'
 import { useQuery } from 'react-query'
 import styled, { css } from 'styled-components'
 import { useFormContext } from 'react-hook-form'
 import Container from '@/ui/Container/Container'
 import Label from '@/ui/Label'
 import TextField from '@/ui/fields/TextField'
-import Button from '@/ui/Button/Button'
 import { getClientByCode, getClientByName } from '@/services/extrajudicial/client.service'
 import notification from '@/ui/notification'
 import { JudicialCaseFileType } from '@/types/judicial/judicial-case-file.type'
 import { useLoloContext } from '@/contexts/LoloProvider'
-import useModal from '@/hooks/useModal'
-import ModalManagement from './Modal/ModalManagement'
+import { FileCaseOwnerType } from '../JudicialFileCase'
 
-const FileCaseOwner = () => {
+type FileCaseOwnerProps = {
+  setOwnerFileCase: (value: FileCaseOwnerType) => void
+  ownerFileCase: FileCaseOwnerType
+}
+
+const FileCaseOwner = ({ ownerFileCase, setOwnerFileCase }: FileCaseOwnerProps) => {
   const { setValue, reset } = useFormContext<JudicialCaseFileType>()
 
-  const { visible: visibleModalManagement, showModal: showModalManagement, hideModal: hideModalManagement } = useModal()
-
   const {
-    customerUser: { user },
     bank: { selectedBank },
   } = useLoloContext()
-
-  const [idc, setIdc] = useState<string>('')
-  const [name, setName] = useState<string>('')
 
   const { refetch } = useQuery(
     'get-client-by-code',
     async () => {
-      return await getClientByCode(idc, String(selectedBank.idCHB))
+      return await getClientByCode(ownerFileCase.code, String(selectedBank.idCHB))
     },
     {
       onSuccess: ({ data }) => {
         setValue('clientId', data.id)
-        setIdc(data.code)
-        setName(data.name)
+        setOwnerFileCase({
+          ...ownerFileCase,
+          customerUser: data.customerUser,
+          code: data.code,
+          name: data.name,
+          id: data.id,
+        })
         notification({ type: 'success', message: 'Cliente encontrado' })
       },
       onError: (error: any) => {
@@ -52,13 +53,21 @@ const FileCaseOwner = () => {
   const { refetch: refetchName } = useQuery(
     'query-client-by-name',
     async () => {
-      return await getClientByName(name, String(selectedBank.idCHB))
+      return await getClientByName(ownerFileCase.name, String(selectedBank.idCHB))
     },
     {
       onSuccess: ({ data }) => {
         setValue('clientId', data.id)
-        setIdc(data[0].code)
-        setName(data[0].name)
+        setOwnerFileCase({
+          ...ownerFileCase,
+          code: data[0].code,
+          name: data[0].name,
+          customerUser: {
+            id: data[0].customerUser.id,
+            name: data[0].customerUser.name,
+          },
+          id: data.id,
+        })
         notification({ type: 'success', message: 'Cliente encontrado' })
       },
       onError: (error: any) => {
@@ -72,12 +81,11 @@ const FileCaseOwner = () => {
     }
   )
 
-  const handleClickGestion = () => {
-    showModalManagement()
-  }
-
   const onChangeIDC = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setIdc(e.target.value)
+    setOwnerFileCase({
+      ...ownerFileCase,
+      code: e.target.value,
+    })
   }
 
   const onClickTrailingIDC = () => {
@@ -91,7 +99,10 @@ const FileCaseOwner = () => {
   }
 
   const onChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.value)
+    setOwnerFileCase({
+      ...ownerFileCase,
+      name: e.target.value,
+    })
   }
 
   const onClickTrailingName = () => {
@@ -119,7 +130,7 @@ const FileCaseOwner = () => {
           <Label label="IDC:" />
           <TextField
             width="100%"
-            value={idc}
+            value={ownerFileCase.code}
             trailingIcon="ri-search-line"
             placeholder="Buscar cliente por código"
             onKeyDown={onKeyDownIDC}
@@ -131,7 +142,7 @@ const FileCaseOwner = () => {
           <Label label="Nombre:" />
           <TextField
             width="100%"
-            value={name}
+            value={ownerFileCase.name}
             trailingIcon="ri-search-line"
             placeholder="Buscar cliente por nombre"
             onKeyDown={onKeyDownName}
@@ -144,28 +155,16 @@ const FileCaseOwner = () => {
         <div className="field-wrapper">
           <Label label="id:" />
           <Container display="flex" justifyContent="center" width="80%">
-            <Label label={String(user.id)} />
+            <Label label={String(ownerFileCase.customerUser.id)} />
           </Container>
         </div>
         <div className="field-wrapper">
           <Label label="Gestor:" />
           <Container display="flex" width="100%" justifyContent="space-between">
-            <Label label={user.name.concat(' ' + user.lastName)} />
-            <Button
-              onClick={(event) => {
-                event.stopPropagation()
-                handleClickGestion()
-              }}
-              label="Ver gestión"
-              size="small"
-            />
+            <Label label={ownerFileCase.customerUser.name} />
           </Container>
         </div>
       </Container>
-
-      {visibleModalManagement && (
-        <ModalManagement userId={user.id} visible={visibleModalManagement} onClose={hideModalManagement} />
-      )}
     </StyledContainer>
   )
 }

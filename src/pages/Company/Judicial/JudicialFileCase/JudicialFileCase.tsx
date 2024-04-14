@@ -1,10 +1,8 @@
-import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { JudicialCaseFileType } from '@/types/judicial/judicial-case-file.type'
 import { JudicialFileCaseResolver } from './JudicialFileCase.yup'
 import LayoutFileCase from 'components/Layouts/LayoutFileCase'
 import FileCaseOwner from './FileCaseOwner'
-import FileCaseSearch from './FileCaseSearch'
 import FileCaseActions from './FileCaseActions'
 import FileCaseInfo from './FileCaseInfo'
 import FileCaseModals from './FileCaseInfo/FileCaseModals'
@@ -13,14 +11,21 @@ import { useQuery } from 'react-query'
 import { getCourtByCHB } from '@/services/judicial/judicial-court.service'
 import { getProceduralWayByCHB } from '@/services/judicial/judicial-procedural-way.service'
 import { getSubjectByCHB } from '@/services/judicial/judicial-subject.service'
-import { useParams } from 'react-router-dom'
-import { AxiosResponse } from 'axios'
-import { getFileCaseByNumberFile } from '@/services/judicial/judicial-file-case.service'
 import moment from 'moment'
+import { useState } from 'react'
+
+export type FileCaseOwnerType = {
+  code: string
+  name: string
+  id: number
+  customerUser: {
+    id: number
+    name: string
+  }
+}
 
 const JudicialFileCase = () => {
   const {
-    customerUser: { user },
     bank: { selectedBank },
     judicial: {
       judicialCourt: { setJudicialCourts },
@@ -28,30 +33,34 @@ const JudicialFileCase = () => {
       judicialSubject: { setJudicialSubjects },
     },
   } = useLoloContext()
-
-  const { code } = useParams()
-  const { data } = useQuery<AxiosResponse<any, Error>>(['get-file-case-by-code', code ?? ''], async () => {
-    return await getFileCaseByNumberFile(code ?? '')
+  const [ownerFileCase, setOwnerFileCase] = useState<FileCaseOwnerType>({
+    code: '',
+    name: '',
+    id: 0,
+    customerUser: {
+      id: 0,
+      name: '',
+    },
   })
+  const [loading, setLoading] = useState<boolean>(false)
 
   const defaultValuesFileCase = {
-    id: data?.data.id ?? 0,
-    amountDemandedDollars: data?.data.amountDemandedDollars ?? 0,
-    amountDemandedSoles: data?.data.amountDemandedSoles ?? 0,
-    cautionaryCode: data?.data.cautionaryCode ?? 0,
-    clientId: data?.data.clientId ?? 0,
-    customerUserId: user.id ?? 0,
-    demandDate: moment(data?.data.demandDate).format('DD-MM-YYYY') ?? moment(new Date()).format('DD-MM-YYYY'),
-    errandCode: data?.data.errandCode ?? '',
-    judge: data?.data.judge ?? '',
-    judgmentNumber: data?.data.judgmentNumber ?? 0,
-    judicialCourtId: data?.data.judicialCourtId ?? 0,
-    judicialProceduralWayId: data?.data.judicialProceduralWayId ?? 0,
-    judicialSubjectId: data?.data.judicialSubjectId ?? 0,
-    judicialVenue: data?.data.judicialVenue ?? '',
-    numberCaseFile: data?.data.numberCaseFile ?? '',
-    secretary: data?.data.secretary ?? '',
-    customerHasBankId: data?.data.customerHasBankId ?? Number(selectedBank.idCHB),
+    id: 0,
+    amountDemandedDollars: 0,
+    amountDemandedSoles: 0,
+    cautionaryCode: '',
+    clientId: 0,
+    customerUserId: 0,
+    demandDate: moment(new Date()).format('DD-MM-YYYY'),
+    judge: '',
+    judgmentNumber: 0,
+    judicialCourtId: 0,
+    judicialProceduralWayId: 0,
+    judicialSubjectId: 0,
+    judicialVenue: '',
+    numberCaseFile: '',
+    secretary: '',
+    customerHasBankId: Number(selectedBank.idCHB),
   }
 
   useQuery(
@@ -96,20 +105,13 @@ const JudicialFileCase = () => {
     defaultValues: defaultValuesFileCase,
   })
 
-  const [loading, setLoading] = useState<boolean>(false)
-
-  const setLoadingGlobal = (state: boolean) => {
-    setLoading(state)
-  }
-
   return (
     <FormProvider {...formMethods}>
       <LayoutFileCase
-        searchContent={<FileCaseSearch setLoadingGlobal={setLoadingGlobal} />}
-        actionsContent={<FileCaseActions />}
-        ownerContent={<FileCaseOwner />}
+        actionsContent={<FileCaseActions setOwnerFileCase={setOwnerFileCase} setLoadingGlobal={setLoading} />}
+        ownerContent={<FileCaseOwner setOwnerFileCase={setOwnerFileCase} ownerFileCase={ownerFileCase} />}
         infoContent={<FileCaseInfo loading={loading} />}
-        modalsContent={<FileCaseModals />}
+        modalsContent={<FileCaseModals ownerFileCase={ownerFileCase}/>}
       />
     </FormProvider>
   )
