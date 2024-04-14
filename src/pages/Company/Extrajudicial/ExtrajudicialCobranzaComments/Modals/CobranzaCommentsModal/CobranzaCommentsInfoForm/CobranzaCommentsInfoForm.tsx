@@ -7,6 +7,11 @@ import { SelectItemType } from '@/ui/Select/interfaces'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import TextAreaField from '@/ui/fields/TextAreaField'
 import Label from '@/ui/Label'
+import { useQuery } from 'react-query'
+import { KEY_EXT_COBRANZA_ACCIONES_CACHE } from '@/pages/extrajudicial/ExtrajudicialActions/ActionsTable/utils/ext-acciones.cache'
+import { getAllManagementActionsByCHB } from '@/services/extrajudicial/management-action.service'
+import { AxiosResponse } from 'axios'
+import { ManagementActionType } from '@/types/extrajudicial/management-action.type'
 
 type CobranzaCommentsInfoFormProps = {
   clientId: number
@@ -16,9 +21,6 @@ const CobranzaCommentsInfoForm = ({ clientId }: CobranzaCommentsInfoFormProps) =
   const {
     bank: {
       selectedBank: { idCHB },
-    },
-    extrajudicial: {
-      managementAction: { managementActions },
     },
   } = useLoloContext()
 
@@ -39,6 +41,15 @@ const CobranzaCommentsInfoForm = ({ clientId }: CobranzaCommentsInfoFormProps) =
     { key: 'REUNIÓN OFICINA', label: 'REUNIÓN OFICINA' },
     { key: 'MENSAJE WHATSAPP', label: 'MENSAJE WHATSAPP' },
   ]
+
+  const { data } = useQuery<AxiosResponse<Array<ManagementActionType>>>(
+    [KEY_EXT_COBRANZA_ACCIONES_CACHE, parseInt(idCHB.length ? idCHB : '0')],
+    async () => {
+      return await getAllManagementActionsByCHB(idCHB.length ? idCHB : '0')
+    }
+  )
+
+  const managementActions = data?.data ?? []
 
   const optionsActions: Array<SelectItemType> = managementActions.map((managementAction) => {
     return {

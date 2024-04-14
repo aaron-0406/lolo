@@ -27,7 +27,6 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
     },
     city: { cities },
     user: { users },
-    extrajudicial: {},
   } = useLoloContext()
 
   const {

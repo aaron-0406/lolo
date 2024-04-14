@@ -5,14 +5,12 @@ import { CityType } from '@/types/dash/city.type'
 import { CustomerHasBankType } from '@/types/dash/customer-has-bank'
 import { CustomerUserType } from '@/types/dash/customer-user.type'
 import { CustomerType } from '@/types/dash/customer.type'
-import { ManagementActionType } from '@/types/extrajudicial/management-action.type'
 import storage from '../utils/storage'
 
 const appLoloClientStateKey = 'lolo:client'
 const appLoloBankStateKey = 'lolo:bank'
 const appLoloCityStateKey = 'lolo:city'
 const appLoloUserStateKey = 'lolo:user'
-const appLoloManagementActionStateKey = 'lolo:management:action'
 const appLoloSelectedBankStateKey = 'lolo:selected:bank'
 
 type SelectedBankType = {
@@ -76,12 +74,6 @@ export const LoloContext = createContext<{
     user: Omit<CustomerUserType, 'password'>
     setUser: Dispatch<CustomerUserType>
   }
-  extrajudicial: {
-    managementAction: {
-      managementActions: Array<ManagementActionType>
-      setManagementActions: (managementActions: Array<ManagementActionType>) => void
-    }
-  }
   clearAll: () => void
 } | null>(null)
 
@@ -107,11 +99,6 @@ export const LoloProvider: React.FC<LoloProviderProps> = ({ children }) => {
   const [citiesState, setCitiesState] = usePersistedState<Array<CityType>>(appLoloCityStateKey, [])
 
   const [usersState, setUsersState] = usePersistedState<Array<CustomerUserType>>(appLoloUserStateKey, [])
-
-  const [managementActionsState, setManagementActionsState] = usePersistedState<Array<ManagementActionType>>(
-    appLoloManagementActionStateKey,
-    []
-  )
 
   const [selectedBankState, setSelectedBankState] = usePersistedState(appLoloSelectedBankStateKey, {
     idBank: '',
@@ -143,10 +130,6 @@ export const LoloProvider: React.FC<LoloProviderProps> = ({ children }) => {
     setUsersState(users)
   }
 
-  const setManagementActions = (managementActions: Array<ManagementActionType>) => {
-    setManagementActionsState(managementActions)
-  }
-
   const setSelectedBank = (selectedBank: SelectedBankType) => {
     setSelectedBankState(selectedBank)
   }
@@ -155,7 +138,6 @@ export const LoloProvider: React.FC<LoloProviderProps> = ({ children }) => {
     setBanksState([])
     setCitiesState([])
     setUsersState([])
-    setManagementActions([])
     setSelectedBankState({
       idBank: '',
       idCHB: '',
@@ -201,12 +183,6 @@ export const LoloProvider: React.FC<LoloProviderProps> = ({ children }) => {
           users: usersState,
           getUser,
           setUsers: setUsers,
-        },
-        extrajudicial: {
-          managementAction: {
-            managementActions: managementActionsState,
-            setManagementActions: setManagementActions,
-          },
         },
         auth: {
           authenticate,
