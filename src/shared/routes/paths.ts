@@ -50,5 +50,6 @@ export default {
   },
   judicial: {
     perfil: (urlIdentifier = ':urlIdentifier') => `/judicial/${urlIdentifier}/perfil`,
+    proceduralWay: (urlIdentifier = ':urlIdentifier') => `/judicial/${urlIdentifier}/procedural-way`,
   },
 }
