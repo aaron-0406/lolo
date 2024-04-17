@@ -19,32 +19,43 @@ export const getFileCasesByCHB = async (
   limit: number,
   courts?: string,
   proceduralWays?: string,
-  subjects?: string
+  subjects?: string,
+  users?: string
 ) => {
   let filters = ''
   filters += !!courts?.length ? `courts=${courts}&` : 'courts=[]&'
   filters += !!proceduralWays?.length ? `proceduralWays=${proceduralWays}&` : 'proceduralWays=[]&'
+  filters += !!users?.length ? `users=${users}&` : 'users=[]&'
   filters += !!subjects?.length ? `subjects=${subjects}&` : 'subjects=[]&'
 
   return await axiosClient.get(`${url}/chb/${id}?${filters}page=${page}&limit=${limit}`)
 }
 
-export const createFileCase = async (fileCase: Omit<JudicialCaseFileType, 'id' | 'numberCaseFile'>) => {
-  let dia = fileCase.demandDate.split('-')
-  let day = dia[0]
-  let month = dia[1]
-  fileCase.demandDate = `${dia[2]}-${month}-${day}`
-  const demandDate = `${dia[2]}-${month}-${day}`
-  return await axiosClient.post(`${url}/`, { ...fileCase, demandDate })
+export const createFileCase = async (
+  fileCase: Omit<JudicialCaseFileType, 'id' | 'numberCaseFile'>,
+  customerId: string
+) => {
+  if (fileCase.demandDate) {
+    let dia = fileCase.demandDate.split('-')
+    let day = dia[0]
+    let month = dia[1]
+    fileCase.demandDate = `${dia[2]}-${month}-${day}`
+    const demandDate = `${dia[2]}-${month}-${day}`
+    return await axiosClient.post(`${url}/${customerId}`, { ...fileCase, demandDate })
+  }
+  return await axiosClient.post(`${url}/${customerId}`, fileCase)
 }
 
 export const updateFileCase = async (id: number, fileCase: Omit<JudicialCaseFileType, 'id' | 'clientId'>) => {
-  let dia = fileCase.demandDate.split('-')
-  let day = dia[0]
-  let month = dia[1]
-  fileCase.demandDate = `${dia[2]}-${month}-${day}`
-  const demandDate = `${dia[2]}-${month}-${day}`
-  return await axiosClient.patch(`${url}/${id}`, { ...fileCase, demandDate })
+  if (fileCase.demandDate) {
+    let dia = fileCase.demandDate.split('-')
+    let day = dia[0]
+    let month = dia[1]
+    fileCase.demandDate = `${dia[2]}-${month}-${day}`
+    const demandDate = `${dia[2]}-${month}-${day}`
+    return await axiosClient.patch(`${url}/${id}`, { ...fileCase, demandDate })
+  }
+  return await axiosClient.patch(`${url}/${id}`, fileCase)
 }
 
 export const deleteFileCase = async (id: number) => {

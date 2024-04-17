@@ -1,9 +1,11 @@
+import { useFiltersContext } from '@/contexts/FiltersProvider'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import Button from '@/ui/Button'
 import Container from '@/ui/Container'
 import { Opts } from '@/ui/Pagination/interfaces'
 import Select from '@/ui/Select'
 import { SelectItemType } from '@/ui/Select/interfaces'
+import TextField from '@/ui/fields/TextField'
 import { Dispatch, FC } from 'react'
 import { useNavigate } from 'react-router-dom'
 import paths from 'shared/routes/paths'
@@ -22,6 +24,8 @@ const JudicialFileCasesActions: FC<JudicialFileCasesActionsProps> = ({ opts, set
     bank: { selectedBank, setSelectedBank },
   } = useLoloContext()
 
+  const { clearAllFilters } = useFiltersContext()
+
   const options: Array<SelectItemType> = customer.customerBanks.map((bank) => {
     return {
       key: String(bank.id),
@@ -30,6 +34,8 @@ const JudicialFileCasesActions: FC<JudicialFileCasesActionsProps> = ({ opts, set
   })
 
   const onChangeBank = (key: string) => {
+    clearAllFilters()
+
     const customerBank = customer.customerBanks.find((customerBank) => String(customerBank.id) === key)
 
     setSelectedBank({
@@ -39,7 +45,6 @@ const JudicialFileCasesActions: FC<JudicialFileCasesActionsProps> = ({ opts, set
   }
 
   const handleClickCaseFile = () => {
-    console.log(`${paths.judicial.detallesExpediente(customer.urlIdentifier, '000000000')}`)
     navigate(`${paths.judicial.detallesExpediente(customer.urlIdentifier, '000000000')}`)
   }
 
@@ -55,13 +60,19 @@ const JudicialFileCasesActions: FC<JudicialFileCasesActionsProps> = ({ opts, set
         />
       </Container>
       <Container className="actions__textfield" width="100%" display="flex" alignItems="center" gap="10px">
+        <TextField
+          //onChange={onChangeSearch}
+          width="100%"
+          label="Buscar expediente:"
+          placeholder="Buscar expediente por código"
+        />
         <Button
           width="100px"
           shape="round"
           trailingIcon="ri-add-fill"
           onClick={handleClickCaseFile}
           disabled={!selectedBank.idBank}
-          permission="P02-01"
+          permission="P13-02"
           messageTooltip="Agregar expediente"
         />
       </Container>

@@ -10,9 +10,9 @@ import { useQuery } from 'react-query'
 import { getSubjectByCHB } from '@/services/judicial/judicial-subject.service'
 import { getCourtByCHB } from '@/services/judicial/judicial-court.service'
 import { useLoloContext } from '@/contexts/LoloProvider'
-import { KEY_EXT_JUDICIAL_COURTS_CACHE } from '../../JudicialCourt/CourtTable/utils/ext-court.cache'
-import { KEY_EXT_JUDICIAL_SUBJECT_CACHE } from '../../JudicialSubject/SubjectTable/utils/ext-subject.cache'
-import { KEY_EXT_JUDICIAL_PROCEDURAL_WAY_CACHE } from '../../JudicialProceduralWay/ProceduralWayTable/utils/ext-procedural-way.cache'
+import { KEY_JUDICIAL_COURTS_CACHE } from '../../JudicialCourt/CourtTable/utils/ext-court.cache'
+import { KEY_JUDICIAL_SUBJECT_CACHE } from '../../JudicialSubject/SubjectTable/utils/ext-subject.cache'
+import { KEY_JUDICIAL_PROCEDURAL_WAY_CACHE } from '../../JudicialProceduralWay/ProceduralWayTable/utils/ext-procedural-way.cache'
 import { getProceduralWayByCHB } from '@/services/judicial/judicial-procedural-way.service'
 import { AxiosResponse } from 'axios'
 import { JudicialCourtType } from '@/types/judicial/judicial-court.type'
@@ -26,24 +26,37 @@ type FileCaseInfoProps = {
 
 const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
   const {
-    control,
-    formState: { errors },
-  } = useFormContext<JudicialCaseFileType>()
-  const {
     bank: {
       selectedBank: { idCHB: chb },
     },
+    user: { users },
   } = useLoloContext()
 
+  const {
+    control,
+    getValues,
+    formState: { errors },
+  } = useFormContext<
+    JudicialCaseFileType & {
+      judicialCourt: { court: string; customerHasBankId: string }
+      judicialSubject: { subject: string; customerHasBankId: string }
+      judicialProceduralWay: { proceduralWay: string; customerHasBankId: string }
+    }
+  >()
+
+  const clientId = getValues('clientId')
+
+  const judicialCourt = getValues('judicialCourt')
+  const judicialSubject = getValues('judicialSubject')
+  const judicialProceduralWay = getValues('judicialProceduralWay')
+
   const { data: dataCourts } = useQuery<AxiosResponse<Array<JudicialCourtType>>>(
-    [KEY_EXT_JUDICIAL_COURTS_CACHE, parseInt(chb?.length ? chb : '0')],
+    [KEY_JUDICIAL_COURTS_CACHE, parseInt(chb?.length ? chb : '0')],
     async () => {
       return await getCourtByCHB(parseInt(chb.length ? chb : '0'))
     }
   )
-
   const courts = dataCourts?.data ?? []
-
   const optionsCourts: Array<SelectItemType> = courts.map((court: { id: number; court: string }) => {
     return {
       key: String(court.id),
@@ -52,14 +65,12 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
   })
 
   const { data: dataSubject } = useQuery<AxiosResponse<Array<JudicialSubjectType>>>(
-    [KEY_EXT_JUDICIAL_SUBJECT_CACHE, parseInt(chb?.length ? chb : '0')],
+    [KEY_JUDICIAL_SUBJECT_CACHE, parseInt(chb?.length ? chb : '0')],
     async () => {
       return await getSubjectByCHB(parseInt(chb.length ? chb : '0'))
     }
   )
-
   const subjects = dataSubject?.data ?? []
-
   const optionsSubjects: Array<SelectItemType> = subjects.map((subject: { id: number; subject: string }) => {
     return {
       key: String(subject.id),
@@ -68,14 +79,12 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
   })
 
   const { data: dataProceduralWay } = useQuery<AxiosResponse<Array<JudicialProceduralWayType>>>(
-    [KEY_EXT_JUDICIAL_PROCEDURAL_WAY_CACHE, parseInt(chb?.length ? chb : '0')],
+    [KEY_JUDICIAL_PROCEDURAL_WAY_CACHE, parseInt(chb?.length ? chb : '0')],
     async () => {
       return await getProceduralWayByCHB(parseInt(chb.length ? chb : '0'))
     }
   )
-
   const proceduralWays = dataProceduralWay?.data ?? []
-
   const optionsProceduralWay: Array<SelectItemType> = proceduralWays.map(
     (proceduralWay: { id: number; proceduralWay: string }) => {
       return {
@@ -84,6 +93,13 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
       }
     }
   )
+
+  const optionsUsers: Array<SelectItemType> = users.map((user) => {
+    return {
+      key: String(user.id),
+      label: user.name,
+    }
+  })
 
   if (loading) {
     return <div>Loading ...</div>
@@ -111,6 +127,7 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
               value={field.value}
               onChange={field.onChange}
               hasError={!!errors.numberCaseFile}
+              disabled={!clientId}
             />
           )}
         />
@@ -125,6 +142,7 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
               value={field.value}
               onChange={field.onChange}
               hasError={!!errors.cautionaryCode}
+              disabled={!clientId}
             />
           )}
         />
@@ -143,7 +161,9 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
               onChange={(key) => {
                 field.onChange(parseInt(key))
               }}
+              placeholder={judicialCourt?.court}
               hasError={!!errors.judicialCourtId}
+              disabled={!clientId}
             />
           )}
         />
@@ -158,6 +178,7 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
               value={field.value}
               onChange={field.onChange}
               hasError={!!errors.judicialVenue}
+              disabled={!clientId}
             />
           )}
         />
@@ -176,7 +197,9 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
               onChange={(key) => {
                 field.onChange(parseInt(key))
               }}
+              placeholder={judicialSubject?.subject}
               hasError={!!errors.judicialSubjectId}
+              disabled={!clientId}
             />
           )}
         />
@@ -193,7 +216,9 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
               onChange={(key) => {
                 field.onChange(parseInt(key))
               }}
+              placeholder={judicialProceduralWay?.proceduralWay}
               hasError={!!errors.judicialProceduralWayId}
+              disabled={!clientId}
             />
           )}
         />
@@ -210,6 +235,7 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
               value={field.value}
               onChange={field.onChange}
               hasError={!!errors.secretary}
+              disabled={!clientId}
             />
           )}
         />
@@ -224,6 +250,7 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
               value={field.value}
               onChange={field.onChange}
               hasError={!!errors.judge}
+              disabled={!clientId}
             />
           )}
         />
@@ -240,6 +267,7 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
               value={field.value}
               onChange={field.onChange}
               hasError={!!errors.amountDemandedSoles}
+              disabled={!clientId}
             />
           )}
         />
@@ -254,6 +282,41 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
               helperText={errors.amountDemandedDollars?.message}
               onChange={field.onChange}
               hasError={!!errors.amountDemandedDollars}
+              disabled={!clientId}
+            />
+          )}
+        />
+      </div>
+      <div className="fields-wrapper-container-t">
+        <Controller
+          name="customerUserId"
+          control={control}
+          render={({ field }) => (
+            <Select
+              label="Abogado:"
+              width="100%"
+              value={String(field.value)}
+              options={optionsUsers}
+              onChange={(key) => {
+                field.onChange(parseInt(key))
+              }}
+              hasError={!!errors.customerUserId}
+              disabled={!clientId}
+            />
+          )}
+        />
+        <Controller
+          name="errandCode"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              label="Codemandado:"
+              width="100%"
+              value={field.value}
+              helperText={errors.errandCode?.message}
+              onChange={field.onChange}
+              hasError={!!errors.errandCode}
+              disabled={!clientId}
             />
           )}
         />
@@ -269,7 +332,7 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
               selectedDate={moment(field.value).format('DD-MM-YYYY')}
               placeholder="Ingrese la fecha:"
               dateFormat="DD-MM-YYYY"
-              value={field.value}
+              value={field.value ?? moment(new Date()).format('DD-MM-YYYY')}
               getDate={(e) => {
                 field.onChange(e)
               }}
@@ -287,6 +350,7 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
               onChange={field.onChange}
               helperText={errors.judgmentNumber?.message}
               hasError={!!errors.judgmentNumber}
+              disabled={!clientId}
             />
           )}
         />

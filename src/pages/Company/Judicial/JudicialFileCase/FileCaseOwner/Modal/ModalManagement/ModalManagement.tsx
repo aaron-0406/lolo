@@ -1,10 +1,9 @@
 import { useState } from 'react'
 import { useQuery } from 'react-query'
 import { AxiosResponse } from 'axios'
-import { useNavigate } from 'react-router-dom'
 import { device } from '@/breakpoints/responsive'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
-import { getClientByName } from '@/services/extrajudicial/client.service'
+import { getClientByNameOrCode } from '@/services/extrajudicial/client.service'
 import { ClientType } from '@/types/extrajudicial/client.type'
 import Container from '@/ui/Container'
 import Modal from '@/ui/Modal'
@@ -14,35 +13,34 @@ import BodyCell from '@/ui/Table/BodyCell'
 import EmptyStateCell from '@/ui/Table/EmptyStateCell'
 import Label from '@/ui/Label'
 import notification from '@/ui/notification'
-import Button from '@/ui/Button'
-import paths from '../../../../../../../shared/routes/paths'
 import { modalManagementColumns } from './utils/columns'
 import { useLoloContext } from '@/contexts/LoloProvider'
+import { useFormContext } from 'react-hook-form'
+import { JudicialCaseFileType } from '@/types/judicial/judicial-case-file.type'
 
 type ModalManagementType = {
-  userId: number
   visible: boolean
   onClose: () => void
+  setOwnerFileCase: (value: ClientType & { customerUser: { id: number; name: string } }) => void
 }
 
-const ModalManagement = ({ userId, visible, onClose }: ModalManagementType) => {
+const ModalManagement = ({ visible, onClose, setOwnerFileCase }: ModalManagementType) => {
   const {
-    client: {
-      customer: { urlIdentifier },
-    },
+    bank: { selectedBank },
   } = useLoloContext()
+
+  const { setValue } = useFormContext<JudicialCaseFileType>()
 
   const greaterThanMobile = useMediaQuery(device.tabletS)
 
   const [filter, setFilter] = useState<string>('')
 
-  const navigate = useNavigate()
-
-  const { data, isLoading } = useQuery<AxiosResponse<Array<ClientType>, Error>>(
-    ['get-client-by-name', `${filter}${userId}`],
+  const { data, isLoading } = useQuery<
+    AxiosResponse<Array<ClientType & { customerUser: { id: number; name: string } }>, Error>
+  >(
+    ['get-client-by-name', filter],
     async () => {
-      console.log(filter)
-      return await getClientByName(filter, String(userId))
+      return await getClientByNameOrCode(filter, selectedBank.idCHB.length ? selectedBank.idCHB : '0')
     },
     {
       onError: (error: any) => {
@@ -51,7 +49,7 @@ const ModalManagement = ({ userId, visible, onClose }: ModalManagementType) => {
           message: error.response.data.message,
         })
       },
-      enabled: filter !== '' ? true : false
+      enabled: filter !== '' ? true : false,
     }
   )
 
@@ -60,26 +58,36 @@ const ModalManagement = ({ userId, visible, onClose }: ModalManagementType) => {
   const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
 
-    if (value === '' || value.length < 3) {
+    if (value === '' || value.length < 2) {
       setFilter('')
     }
-    if (value.length >= 3) {
+    if (value.length >= 2) {
       setFilter(value)
     }
   }
 
-  const handleClickButtonSelect = (code: string) => {
-    navigate(`${paths.cobranza.cobranzaComments(urlIdentifier, code)}`)
+  const handleClickButtonSelect = (client: ClientType & { customerUser: { id: number; name: string } }) => {
+    console.log('🚀 ~ handleClickButtonSelect ~ client:', client)
+    setOwnerFileCase(client)
+    setValue('clientId', client.id)
+    onClose()
   }
 
   return (
-    <Modal size="large" visible={visible} onClose={onClose} id="modal-files" title="Usuarios" contentOverflowY="auto">
+    <Modal
+      visible={visible}
+      onClose={onClose}
+      size="large"
+      id="modal-search-clients-by-name-or-code"
+      title="Clientes"
+      contentOverflowY="auto"
+    >
       <Container width="100%" padding="20px" display="flex" flexDirection="column" gap="20px">
         <Container display="flex" justifyContent="space-between" gap="10px">
           <Container display={greaterThanMobile ? 'flex' : 'none'}>
             <Label label="Buscar:" />
           </Container>
-          <TextField onChange={onChangeSearch} width="100%" placeholder="Buscar usuario por nombre:" />
+          <TextField onChange={onChangeSearch} width="100%" placeholder="Buscar cliente por Código o por Nombre:" />
         </Container>
         <Container>
           <Table
@@ -94,28 +102,18 @@ const ModalManagement = ({ userId, visible, onClose }: ModalManagementType) => {
             }
           >
             {!!clients?.length &&
-              clients.map((record: ClientType) => {
+              clients.map((record: ClientType & { customerUser: { id: number; name: string } }) => {
                 return (
-                  <tr className="styled-data-table-row" key={record.id}>
+                  <tr
+                    className="styled-data-table-row"
+                    key={record.id}
+                    onClick={() => {
+                      handleClickButtonSelect(record)
+                    }}
+                  >
                     <BodyCell textAlign="center">{`${record.id || ''}`}</BodyCell>
                     <BodyCell textAlign="center">{`${record.code || ''}`}</BodyCell>
                     <BodyCell>{`${record.name || ''}`}</BodyCell>
-                    <BodyCell textAlign="center">
-                      {
-                        <Container display="flex" gap="15px" justifyContent="space-around">
-                          <Button
-                            onClick={(event) => {
-                              event.stopPropagation()
-                              handleClickButtonSelect(record.code)
-                            }}
-                            messageTooltip="seleccionar Cliente"
-                            shape="round"
-                            size="small"
-                            leadingIcon="ri-search-line"
-                          />
-                        </Container>
-                      }
-                    </BodyCell>
                   </tr>
                 )
               })}

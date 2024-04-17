@@ -19,10 +19,4 @@ export const modalManagementColumns: ColumProps[] = [
     width: '30%',
     justifyContent: 'space-between',
   },
-  {
-    id: 'modalManagement.datatable.header.action',
-    title: 'ACCIÓN',
-    width: '30%',
-    justifyContent: 'center',
-  },
 ]

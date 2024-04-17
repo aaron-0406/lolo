@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { JudicialCaseFileType } from '@/types/judicial/judicial-case-file.type'
 import { JudicialFileCaseResolver } from './JudicialFileCase.yup'
@@ -8,50 +9,35 @@ import FileCaseInfo from './FileCaseInfo'
 import FileCaseModals from './FileCaseInfo/FileCaseModals'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import moment from 'moment'
-import { useState } from 'react'
-
-export type FileCaseOwnerType = {
-  code: string
-  name: string
-  id: number
-  customerUser: {
-    id: number
-    name: string
-  }
-}
+import { ClientType } from '@/types/extrajudicial/client.type'
 
 const JudicialFileCase = () => {
   const {
     bank: { selectedBank },
   } = useLoloContext()
-  const [ownerFileCase, setOwnerFileCase] = useState<FileCaseOwnerType>({
-    code: '',
-    name: '',
-    id: 0,
-    customerUser: {
-      id: 0,
-      name: '',
-    },
-  })
+
+  const [ownerFileCase, setOwnerFileCase] = useState<ClientType & { customerUser: { id: number; name: string } }>()
+
   const [loading, setLoading] = useState<boolean>(false)
 
   const defaultValuesFileCase = {
     id: 0,
-    amountDemandedDollars: 0,
+    numberCaseFile: '',
+    judgmentNumber: 0,
+    secretary: '',
     amountDemandedSoles: 0,
+    amountDemandedDollars: 0,
     cautionaryCode: '',
+    errandCode: '',
+    judicialVenue: '',
+    judge: '',
+    demandDate: moment(new Date()).format('DD-MM-YYYY'),
     clientId: 0,
     customerUserId: 0,
-    demandDate: moment(new Date()).format('DD-MM-YYYY'),
-    judge: '',
-    judgmentNumber: 0,
     judicialCourtId: 0,
-    judicialProceduralWayId: 0,
     judicialSubjectId: 0,
-    judicialVenue: '',
-    numberCaseFile: '',
-    secretary: '',
-    customerHasBankId: Number(selectedBank.idCHB),
+    judicialProceduralWayId: 0,
+    customerHasBankId: selectedBank.idCHB.length ? Number(selectedBank.idCHB) : 0,
   }
 
   const formMethods = useForm<JudicialCaseFileType>({

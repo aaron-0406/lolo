@@ -155,7 +155,9 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({ children, urlIdentifier }) =>
         </Container>
 
         <Text.Body className="layout__header-selected-bank" size="m" weight="bold" color="Success5">
-          {customer.customerBanks[Number(selectedBank?.idBank) - 1]?.name ?? ''}
+          {customer.customerBanks.find((customerBank) =>
+            customerBank.id === selectedBank?.idBank.length ? selectedBank?.idBank : 0
+          )?.name ?? ''}
         </Text.Body>
       </Container>
 

@@ -8,6 +8,7 @@ import { FC } from 'react'
 import { useMutation, useQueryClient } from 'react-query'
 import { CustomErrorResponse } from 'types/customErrorResponse'
 import judicialFileCaseCache from '../utils/file-cases.cache'
+import { useLoloContext } from '@/contexts/LoloProvider'
 
 type DeleteExpedienteModalProps = {
   visible: boolean
@@ -17,6 +18,10 @@ type DeleteExpedienteModalProps = {
 
 const DeleteExpedienteModal: FC<DeleteExpedienteModalProps> = ({ visible, idFileCase = 0, onClose }) => {
   const queryClient = useQueryClient()
+
+  const {
+    bank: { selectedBank },
+  } = useLoloContext()
 
   const {
     actions: { deleteFileCaseCache },
@@ -34,18 +39,18 @@ const DeleteExpedienteModal: FC<DeleteExpedienteModalProps> = ({ visible, idFile
     },
     {
       onSuccess: (result) => {
-        deleteFileCaseCache(result.data.id)
+        deleteFileCaseCache(result.data.id, selectedBank.idCHB?.length ? parseInt(selectedBank.idCHB) : 0)
         notification({ type: 'success', message: 'Expediente eliminado' })
         onClose()
       },
       onMutate: () => {
-        return onMutateCache()
+        return onMutateCache(selectedBank.idCHB?.length ? parseInt(selectedBank.idCHB) : 0)
       },
       onSettled: () => {
-        onSettledCache()
+        onSettledCache(selectedBank.idCHB?.length ? parseInt(selectedBank.idCHB) : 0)
       },
       onError: (error, _, context: any) => {
-        onErrorCache(context)
+        onErrorCache(context, selectedBank.idCHB?.length ? parseInt(selectedBank.idCHB) : 0)
         notification({
           type: 'error',
           message: error.response?.data.message,

@@ -7,7 +7,7 @@ import Table from '@/ui/Table'
 import BodyCell from '@/ui/Table/BodyCell'
 import EmptyStateCell from '@/ui/Table/EmptyStateCell'
 import { FilterOptionsProps } from '@/ui/Table/Table'
-import { Dispatch, FC, useEffect, useMemo, useState } from 'react'
+import { Dispatch, useEffect, useMemo, useState } from 'react'
 import { judicialCaseFileColumns } from './utils/columns'
 import { useLocation, useNavigate } from 'react-router-dom'
 import paths from 'shared/routes/paths'
@@ -19,23 +19,24 @@ import { AxiosError, AxiosResponse } from 'axios'
 import DeleteExpedienteModal from './DeleteExpedienteModal'
 import useModal from '@/hooks/useModal'
 import { JudicialFileCaseTableRow, KEY_FILE_CASE_CACHE } from './utils/file-cases.cache'
-import { KEY_EXT_JUDICIAL_COURTS_CACHE } from '../../JudicialCourt/CourtTable/utils/ext-court.cache'
+import { KEY_JUDICIAL_COURTS_CACHE } from '../../JudicialCourt/CourtTable/utils/ext-court.cache'
 import { getCourtByCHB } from '@/services/judicial/judicial-court.service'
-import { KEY_EXT_JUDICIAL_SUBJECT_CACHE } from '../../JudicialSubject/SubjectTable/utils/ext-subject.cache'
+import { KEY_JUDICIAL_SUBJECT_CACHE } from '../../JudicialSubject/SubjectTable/utils/ext-subject.cache'
 import { getSubjectByCHB } from '@/services/judicial/judicial-subject.service'
 import { getProceduralWayByCHB } from '@/services/judicial/judicial-procedural-way.service'
-import { KEY_EXT_JUDICIAL_PROCEDURAL_WAY_CACHE } from '../../JudicialProceduralWay/ProceduralWayTable/utils/ext-procedural-way.cache'
+import { KEY_JUDICIAL_PROCEDURAL_WAY_CACHE } from '../../JudicialProceduralWay/ProceduralWayTable/utils/ext-procedural-way.cache'
 import { getIDsByIdentifier } from './utils/methods'
 import { useFiltersContext } from '@/contexts/FiltersProvider'
 import notification from '@/ui/notification'
 import { CustomErrorResponse } from 'types/customErrorResponse'
+import Text from '@/ui/Text'
 
 type JudicialFileCasesTableProps = {
   opts: Opts
   setOpts: Dispatch<Opts>
 }
 
-const JudicialFileCasesTable: FC<JudicialFileCasesTableProps> = ({ opts, setOpts }) => {
+const JudicialFileCasesTable = ({ opts, setOpts }: JudicialFileCasesTableProps) => {
   const navigate = useNavigate()
   const location = useLocation()
   const currentPath = location.pathname
@@ -50,6 +51,7 @@ const JudicialFileCasesTable: FC<JudicialFileCasesTableProps> = ({ opts, setOpts
       selectedBank: { idCHB: chb },
       selectedBank,
     },
+    user: { users },
     customerUser: { user },
   } = useLoloContext()
 
@@ -57,7 +59,8 @@ const JudicialFileCasesTable: FC<JudicialFileCasesTableProps> = ({ opts, setOpts
     filterOptions: { getSelectedFilters, setSelectedFilters },
   } = useFiltersContext()
 
-  const [fileCaseId, setfileCaseId] = useState<number>(0)
+  const [fileCaseId, setFileCaseId] = useState<number>(0)
+
   const selectedFilterOptions = getSelectedFilters(currentPath)?.filters ?? []
 
   const onClickRow = (code: string) => {
@@ -86,8 +89,13 @@ const JudicialFileCasesTable: FC<JudicialFileCasesTableProps> = ({ opts, setOpts
     })
   }
 
+  const hasAccessToTheButton = useMemo(() => {
+    const permissions = user.permissions?.map((permission) => permission.code) ?? []
+    return permissions.includes('P13-01' ?? '')
+  }, [user.permissions])
+
   const { data: dataCourts, isLoading: isLoadingCourts } = useQuery(
-    [KEY_EXT_JUDICIAL_COURTS_CACHE, parseInt(chb?.length ? chb : '0')],
+    [KEY_JUDICIAL_COURTS_CACHE, parseInt(chb?.length ? chb : '0')],
     async () => {
       return await getCourtByCHB(parseInt(chb.length ? chb : '0'))
     }
@@ -101,7 +109,7 @@ const JudicialFileCasesTable: FC<JudicialFileCasesTableProps> = ({ opts, setOpts
   })
 
   const { data: dataSubject, isLoading: isLoadingSubject } = useQuery(
-    [KEY_EXT_JUDICIAL_SUBJECT_CACHE, parseInt(chb?.length ? chb : '0')],
+    [KEY_JUDICIAL_SUBJECT_CACHE, parseInt(chb?.length ? chb : '0')],
     async () => {
       return await getSubjectByCHB(parseInt(chb.length ? chb : '0'))
     }
@@ -115,7 +123,7 @@ const JudicialFileCasesTable: FC<JudicialFileCasesTableProps> = ({ opts, setOpts
   })
 
   const { data: dataProceduralWay, isLoading: isLoadingProceduralWay } = useQuery(
-    [KEY_EXT_JUDICIAL_PROCEDURAL_WAY_CACHE, parseInt(chb?.length ? chb : '0')],
+    [KEY_JUDICIAL_PROCEDURAL_WAY_CACHE, parseInt(chb?.length ? chb : '0')],
     async () => {
       return await getProceduralWayByCHB(parseInt(chb.length ? chb : '0'))
     }
@@ -128,6 +136,13 @@ const JudicialFileCasesTable: FC<JudicialFileCasesTableProps> = ({ opts, setOpts
     }
   })
 
+  const optionsUsers = users.map((user) => {
+    return {
+      key: user.id,
+      label: user.name,
+    }
+  })
+
   const { refetch, data, isLoading } = useQuery<
     AxiosResponse<{
       caseFiles: Array<JudicialFileCaseTableRow>
@@ -137,17 +152,20 @@ const JudicialFileCasesTable: FC<JudicialFileCasesTableProps> = ({ opts, setOpts
   >(
     [KEY_FILE_CASE_CACHE, parseInt(chb?.length ? chb : '0')],
     async () => {
-      const courts = getIDsByIdentifier('customers.datatable.header.court', selectedFilterOptions)
-      const subjects = getIDsByIdentifier('customers.datatable.header.subject', selectedFilterOptions)
-      const proceduralWays = getIDsByIdentifier('customers.datatable.header.proceduralWay', selectedFilterOptions)
+      const courts = getIDsByIdentifier('casesFiles.datatable.header.court', selectedFilterOptions)
+      const subjects = getIDsByIdentifier('casesFiles.datatable.header.subject', selectedFilterOptions)
+      const users = getIDsByIdentifier('casesFiles.datatable.header.user', selectedFilterOptions)
+      const proceduralWays = getIDsByIdentifier('casesFiles.datatable.header.proceduralWay', selectedFilterOptions)
 
+      //TODO: Add users
       return await getFileCasesByCHB(
         Number(selectedBank.idCHB),
         opts.page,
         opts.limit,
         JSON.stringify(courts),
         JSON.stringify(proceduralWays),
-        JSON.stringify(subjects)
+        JSON.stringify(subjects),
+        JSON.stringify(users)
       )
     },
     {
@@ -161,29 +179,26 @@ const JudicialFileCasesTable: FC<JudicialFileCasesTableProps> = ({ opts, setOpts
     }
   )
 
+  const judicialFileCases = data?.data?.caseFiles ?? []
+  const quantity = data?.data?.quantity ?? 0
+
   useEffect(() => {
     refetch()
   }, [getSelectedFilters(currentPath)?.filters, opts])
 
-  const hasAccessToTheButton = useMemo(() => {
-    const permissions = user.permissions?.map((permission) => permission.code) ?? []
-    return permissions.includes('P13-01' ?? '')
-  }, [user.permissions])
-
-  const judicialFileCases = data?.data.caseFiles ?? []
-
   return (
     <Container width="100%" height="calc(100% - 112px)" padding="20px">
-      <Pagination count={data?.data.quantity ?? 0} opts={opts} setOpts={setOpts} />
+      <Pagination count={quantity} opts={opts} setOpts={setOpts} />
       <Table
         filterOptions={[
           { identifier: 'casesFiles.datatable.header.court', options: optionsCourts },
           { identifier: 'casesFiles.datatable.header.subject', options: optionsSubjects },
           { identifier: 'casesFiles.datatable.header.proceduralWay', options: optionsProceduralWay },
+          { identifier: 'casesFiles.datatable.header.user', options: optionsUsers },
         ]}
         top="260px"
-        selectedFilterOptions={selectedFilterOptions}
         columns={judicialCaseFileColumns}
+        selectedFilterOptions={selectedFilterOptions}
         onChangeFilterOptions={onChangeFilterOptions}
         loading={isLoading || isLoadingProceduralWay || isLoadingSubject || isLoadingCourts}
         isArrayEmpty={!judicialCaseFileColumns.length}
@@ -203,12 +218,26 @@ const JudicialFileCasesTable: FC<JudicialFileCasesTableProps> = ({ opts, setOpts
                   hasAccessToTheButton && onClickRow(record.numberCaseFile)
                 }}
               >
-                <BodyCell textAlign="center">{`${record.judgmentNumber || ''}`}</BodyCell>
-                <BodyCell textAlign="center">{`${record.numberCaseFile || ''}`}</BodyCell>
-                <BodyCell textAlign="center">{`${record.judicialCourt.court || ''}`}</BodyCell>
-                <BodyCell textAlign="center">{`${record.judicialSubject.subject || ''}`}</BodyCell>
-                <BodyCell textAlign="center">{`${record.judicialVenue || ''}`}</BodyCell>
-                <BodyCell textAlign="center">{`${record.judicialProceduralWay.proceduralWay || ''}`}</BodyCell>
+                <BodyCell textAlign="center">{`${record?.numberCaseFile || ''}`}</BodyCell>
+                <BodyCell textAlign="left">
+                  <Container
+                    data-tooltip-id="cell-tooltip"
+                    data-tooltip-content={record?.client?.name.length >= 25 ? record?.client?.name : ''}
+                    width="17vw"
+                    whiteSpace="nowrap"
+                    overFlowX="hidden"
+                    textOverflow="ellipsis"
+                  >
+                    <Text.Body size="m" weight="regular">
+                      {record?.client?.name || '-'}
+                    </Text.Body>
+                  </Container>
+                </BodyCell>
+                <BodyCell textAlign="left">{`${record?.judicialCourt?.court || ''}`}</BodyCell>
+                <BodyCell textAlign="left">{`${record?.judicialSubject?.subject || ''}`}</BodyCell>
+                <BodyCell textAlign="left">{`${record?.customerUser?.name || ''}`}</BodyCell>
+                <BodyCell textAlign="left">{`${record?.judicialVenue || ''}`}</BodyCell>
+                <BodyCell textAlign="left">{`${record?.judicialProceduralWay?.proceduralWay || ''}`}</BodyCell>
                 <BodyCell textAlign="center">
                   {
                     <Container display="flex" gap="15px" justifyContent="space-around">
@@ -219,10 +248,10 @@ const JudicialFileCasesTable: FC<JudicialFileCasesTableProps> = ({ opts, setOpts
                         trailingIcon="ri-delete-bin-line"
                         onClick={(event) => {
                           event.stopPropagation()
-                          setfileCaseId(record.id)
+                          setFileCaseId(record.id)
                           showDeleteFileCase()
                         }}
-                        permission="P02-05"
+                        permission="P13-04"
                         messageTooltip="Eliminar expediente"
                       />
                     </Container>

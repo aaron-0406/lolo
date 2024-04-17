@@ -12,25 +12,28 @@ import { notification } from '@/ui/notification/notification'
 import judicialFileCaseCache, {
   JudicialFileCaseTableRow,
 } from '../../JudicialFileCasesList/JudicialFileCasesTable/utils/file-cases.cache'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useEffect } from 'react'
 import moment from 'moment'
-import { FileCaseOwnerType } from '../JudicialFileCase'
 import Breadcrumbs from '@/ui/Breadcrumbs'
 import { LinkType } from '@/ui/Breadcrumbs/Breadcrumbs.type'
 import paths from 'shared/routes/paths'
 import { useLoloContext } from '@/contexts/LoloProvider'
+import { ClientType } from '@/types/extrajudicial/client.type'
 
 type FileCaseActionsProps = {
   setLoadingGlobal: (state: boolean) => void
-  setOwnerFileCase: (value: FileCaseOwnerType) => void
+  setOwnerFileCase: (value: ClientType & { customerUser: { id: number; name: string } }) => void
 }
 
 const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase }: FileCaseActionsProps) => {
   const queryClient = useQueryClient()
   const {
     client: { customer },
+    bank: { selectedBank },
   } = useLoloContext()
+
+  const navigate = useNavigate()
 
   const {
     actions: { createFileCaseCache, editFileCaseCache },
@@ -40,7 +43,13 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase }: FileCaseActions
   } = judicialFileCaseCache(queryClient)
 
   const greaterThanDesktopS = useMediaQuery(device.desktopS)
-  const { reset, getValues, watch, setValue, handleSubmit } = useFormContext<JudicialCaseFileType>()
+  const { reset, getValues, watch, setValue, handleSubmit } = useFormContext<
+    JudicialCaseFileType & {
+      judicialCourt: { court: string; customerHasBankId: string }
+      judicialSubject: { subject: string; customerHasBankId: string }
+      judicialProceduralWay: { proceduralWay: string; customerHasBankId: string }
+    }
+  >()
 
   const { isLoading: loadingCreateFileCase, mutate: createFileCaseMutate } = useMutation<
     AxiosResponse<JudicialFileCaseTableRow>,
@@ -48,22 +57,23 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase }: FileCaseActions
   >(
     async () => {
       const { id, ...restFileCase } = getValues()
-      return await createFileCase(restFileCase)
+      return await createFileCase(restFileCase, String(customer.id))
     },
     {
       onSuccess: (result) => {
+        setValue('id', result.data.id)
         createFileCaseCache(result.data)
-        reset()
         notification({ type: 'success', message: 'Expediente creado' })
+        navigate(`${paths.judicial.detallesExpediente(customer.urlIdentifier, result.data.numberCaseFile)}`)
       },
       onMutate: () => {
-        return onMutateCache()
+        return onMutateCache(selectedBank.idCHB?.length ? parseInt(selectedBank.idCHB) : 0)
       },
       onSettled: () => {
-        onSettledCache()
+        onSettledCache(selectedBank.idCHB?.length ? parseInt(selectedBank.idCHB) : 0)
       },
       onError: (error, _, context: any) => {
-        onErrorCache(context)
+        onErrorCache(context, selectedBank.idCHB?.length ? parseInt(selectedBank.idCHB) : 0)
         notification({
           type: 'error',
           message: error.response?.data.message,
@@ -78,7 +88,7 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase }: FileCaseActions
     AxiosError<CustomErrorResponse>
   >(
     async () => {
-      const { id, clientId, ...restFileCase } = getValues()
+      const { id, ...restFileCase } = getValues()
       return await updateFileCase(id, restFileCase)
     },
     {
@@ -87,13 +97,13 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase }: FileCaseActions
         notification({ type: 'success', message: 'Expediente actualizado' })
       },
       onMutate: () => {
-        return onMutateCache()
+        return onMutateCache(selectedBank.idCHB?.length ? parseInt(selectedBank.idCHB) : 0)
       },
       onSettled: () => {
-        onSettledCache()
+        onSettledCache(selectedBank.idCHB?.length ? parseInt(selectedBank.idCHB) : 0)
       },
       onError: (error, _, context: any) => {
-        onErrorCache(context)
+        onErrorCache(context, selectedBank.idCHB?.length ? parseInt(selectedBank.idCHB) : 0)
         notification({
           type: 'error',
           message: error.response?.data.message,
@@ -113,30 +123,28 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase }: FileCaseActions
       enabled: false,
       onSuccess: (data) => {
         setValue('id', data.data.id)
-        setValue('amountDemandedDollars', data.data.amountDemandedDollars)
-        setValue('amountDemandedSoles', data.data.amountDemandedSoles)
-        setValue('cautionaryCode', data.data.cautionaryCode)
+        setValue('numberCaseFile', data.data.numberCaseFile)
+        setValue('judgmentNumber', data.data?.judgmentNumber ?? 0)
+        setValue('secretary', data.data?.secretary ?? '')
+        setValue('amountDemandedSoles', data.data?.amountDemandedSoles ?? 0)
+        setValue('amountDemandedDollars', data.data?.amountDemandedDollars ?? 0)
+        setValue('cautionaryCode', data.data?.cautionaryCode ?? '')
+        setValue('errandCode', data.data?.errandCode ?? '')
+        setValue('judicialVenue', data.data?.judicialVenue ?? '')
+        setValue('judge', data.data?.judge ?? '')
+        setValue('demandDate', moment(data.data.demandDate).format('DD-MM-YYYY'))
         setValue('clientId', data.data.clientId)
         setValue('customerUserId', data.data.customerUserId)
-        setValue('demandDate', moment(data.data.demandDate).format('DD-MM-YYYY'))
-        setValue('judge', data.data.judge)
-        setValue('judgmentNumber', data.data.judgmentNumber)
         setValue('judicialCourtId', data.data.judicialCourtId)
-        setValue('judicialProceduralWayId', data.data.judicialProceduralWayId)
         setValue('judicialSubjectId', data.data.judicialSubjectId)
-        setValue('judicialVenue', data.data.judicialVenue)
-        setValue('numberCaseFile', data.data.numberCaseFile)
-        setValue('secretary', data.data.secretary)
+        setValue('judicialProceduralWayId', data.data.judicialProceduralWayId)
         setValue('customerHasBankId', data.data.customerHasBankId)
-        setOwnerFileCase({
-          name: data.data.client.name,
-          id: data.data.client.id,
-          code: data.data.client.code,
-          customerUser: {
-            id: data.data.client.customerUser.id,
-            name: data.data.client.customerUser.name,
-          },
-        })
+        setValue('judicialCourt', data.data?.judicialCourt)
+        setValue('judicialSubject', data.data?.judicialSubject)
+        setValue('judicialProceduralWay', data.data?.judicialProceduralWay)
+
+        //TODO: Work here
+        setOwnerFileCase(data.data?.client)
       },
       onError: (error: any) => {
         notification({
@@ -145,9 +153,41 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase }: FileCaseActions
         })
 
         reset()
+        setLoadingGlobal(false)
       },
     }
   )
+
+  const onCreate = () => {
+    handleSubmit(() => {
+      createFileCaseMutate()
+    })()
+  }
+
+  const onUpdate = () => {
+    handleSubmit(
+      () => {
+        updateFileCaseMutate()
+      },
+      (error) => {
+        console.log(error)
+        if (error.clientId) {
+          notification({ type: 'warning', message: 'Necesitas seleccionar un cliente para el expediente.' })
+        }
+      }
+    )()
+  }
+
+  const routers: LinkType[] = [
+    {
+      link: paths.judicial.expedientes(customer.urlIdentifier),
+      name: 'Expedientes',
+    },
+    {
+      link: paths.judicial.detallesExpediente(customer.urlIdentifier, codeParams),
+      name: codeParams,
+    },
+  ]
 
   useEffect(() => {
     if (!!codeParams.length && codeParams !== '000000000') {
@@ -157,30 +197,10 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase }: FileCaseActions
     // eslint-disable-next-line
   }, [])
 
-  const onCreate = () => {
-    handleSubmit(() => {
-      createFileCaseMutate()
-    })()
-  }
-  const onUpdate = () => {
-    handleSubmit(() => {
-      updateFileCaseMutate()
-    })()
-  }
-  const routers: LinkType[] = [
-    {
-      link: paths.judicial.expedientes(),
-      name: 'Expedientes',
-    },
-    {
-      link: paths.judicial.detallesExpediente(customer.urlIdentifier, codeParams),
-      name: codeParams,
-    },
-  ]
   return (
     <Container width="100%" display="flex" justifyContent="space-between" alignItems="center" gap="20px">
       <Breadcrumbs routes={routers} />
-      <Container width="230px" display="flex" justifyContent="space-between" alignItems="center" gap="10px">
+      <Container width="130px" display="flex" justifyContent="space-between" alignItems="center" gap="10px">
         <Button
           width="130px"
           label={greaterThanDesktopS && 'Guardar'}
@@ -188,7 +208,8 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase }: FileCaseActions
           trailingIcon="ri-save-3-line"
           onClick={watch().id !== 0 ? onUpdate : onCreate}
           loading={loadingCreateFileCase}
-          permission="P13-02"
+          permission={watch().id !== 0 ? 'P13-03' : 'P13-02'}
+          messageTooltip="Guardar cambios"
         />
       </Container>
     </Container>

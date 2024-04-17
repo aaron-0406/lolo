@@ -1,4 +1,5 @@
 import { CustomerUserType } from '@/types/dash/customer-user.type'
+import { ClientType } from '@/types/extrajudicial/client.type'
 import { JudicialCaseFileType } from '@/types/judicial/judicial-case-file.type'
 import { JudicialCourtType } from '@/types/judicial/judicial-court.type'
 import { JudicialProceduralWayType } from '@/types/judicial/judicial-procedural-way.type'
@@ -16,13 +17,15 @@ export type JudicialFileCaseTableRow = JudicialCaseFileType & {
   judicialProceduralWay: JudicialProceduralWayType
 } & {
   judicialSubject: JudicialSubjectType
+} & {
+  client: ClientType
 }
 
 type QueryDataType = AxiosResponse<{ caseFiles: JudicialFileCaseTableRow[]; quantity: number }> | undefined
 
 const judicialFileCaseCache = (queryClient: QueryClient) => {
   const createFileCaseCache = (data: JudicialFileCaseTableRow) => {
-    queryClient.setQueryData<QueryDataType>(KEY_FILE_CASE_CACHE, (old) => {
+    queryClient.setQueryData<QueryDataType>([KEY_FILE_CASE_CACHE, data.customerHasBankId], (old) => {
       if (old) {
         return {
           ...old,
@@ -36,7 +39,7 @@ const judicialFileCaseCache = (queryClient: QueryClient) => {
   }
 
   const editFileCaseCache = (data: JudicialFileCaseTableRow) => {
-    queryClient.setQueryData<QueryDataType>(KEY_FILE_CASE_CACHE, (old) => {
+    queryClient.setQueryData<QueryDataType>([KEY_FILE_CASE_CACHE, data.customerHasBankId], (old) => {
       if (old) {
         const dataUpdated = old.data.caseFiles.map((fileCase: JudicialFileCaseTableRow) => {
           if (fileCase.id === data.id) return data
@@ -54,8 +57,8 @@ const judicialFileCaseCache = (queryClient: QueryClient) => {
     })
   }
 
-  const deleteFileCaseCache = (id: string) => {
-    queryClient.setQueryData<QueryDataType>(KEY_FILE_CASE_CACHE, (old) => {
+  const deleteFileCaseCache = (id: string, chb: number) => {
+    queryClient.setQueryData<QueryDataType>([KEY_FILE_CASE_CACHE, chb], (old) => {
       if (old) {
         const dataUpdated = old.data.caseFiles.filter(
           (fileCase: JudicialFileCaseTableRow) => fileCase.id !== parseInt(id)
@@ -71,25 +74,25 @@ const judicialFileCaseCache = (queryClient: QueryClient) => {
     })
   }
 
-  const onRefetchQueryCache = async () => {
-    await queryClient.refetchQueries(KEY_FILE_CASE_CACHE)
+  const onRefetchQueryCache = async (chb: number) => {
+    await queryClient.refetchQueries([KEY_FILE_CASE_CACHE, chb])
   }
 
-  const onMutateCache = async () => {
-    const old = queryClient.getQueryData(KEY_FILE_CASE_CACHE)
+  const onMutateCache = async (chb: number) => {
+    const old = queryClient.getQueryData([KEY_FILE_CASE_CACHE, chb])
     if (!old) {
-      await queryClient.prefetchQuery(KEY_FILE_CASE_CACHE)
+      await queryClient.prefetchQuery([KEY_FILE_CASE_CACHE, chb])
     }
 
     return { old }
   }
 
-  const onSettledCache = () => {
-    queryClient.cancelQueries(KEY_FILE_CASE_CACHE)
+  const onSettledCache = (chb: number) => {
+    queryClient.cancelQueries([KEY_FILE_CASE_CACHE, chb])
   }
 
-  const onErrorCache = (context: { old: QueryDataType }) => {
-    queryClient.setQueryData(KEY_FILE_CASE_CACHE, context.old)
+  const onErrorCache = (context: { old: QueryDataType }, chb: number) => {
+    queryClient.setQueryData([KEY_FILE_CASE_CACHE, chb], context.old)
   }
 
   return {
