@@ -29,6 +29,10 @@ export const getClientByCode = async (code: string, chb: string) => {
   return await axiosClient.get(`${url}/${code}/${chb}`)
 }
 
+export const getClientByNameOrCode = async (name: string, chb: string) => {
+  return await axiosClient.get(`${url}/${chb}/by-name-or-code?filter=${name}`)
+}
+
 export const getAllClientsByCHBDetails = async (chb: string) => {
   return await axiosClient.get(`${url}/${chb}/details`)
 }

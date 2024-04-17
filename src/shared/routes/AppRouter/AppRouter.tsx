@@ -39,6 +39,9 @@ import ExtrajudicialAddressType from '@/pages/extrajudicial/ExtrajudicialAddress
 import ExtrajudicialContactType from '@/pages/extrajudicial/ExtrajudicialContactType'
 
 //JUDICIAL
+import JudicialFileCasesList from 'pages/Company/Judicial/JudicialFileCasesList'
+import JudicialFileCase from 'pages/Company/Judicial/JudicialFileCase/JudicialFileCase'
+
 import ErrorPage from '../../../pages/ErrorPage'
 import NotFound from '../../../pages/NotFound'
 import Unauthorized from 'pages/Unauthorized'
@@ -77,6 +80,7 @@ const AppRouter = () => {
         <Route path={paths.company.login()} element={<CompanyLogin />} />
       </Route>
       <Route element={<ProtectedRoutesCompany pathname={paths.company.login()} />}>
+        {/* COMPANY */}
         <Route path={paths.company.root()} element={<CompanyHome />} />
         <Route path={paths.company.roles()} element={<ExtrajudicialRoles />} />
         <Route path={paths.company.usuarios()} element={<ExtrajudicialdUsers />} />
@@ -99,6 +103,9 @@ const AppRouter = () => {
         <Route path={paths.cobranza.etiquetas()} element={<ExtrajudicialTags />} />
         <Route path={paths.cobranza.tipoDirecciones()} element={<ExtrajudicialAddressType />} />
         <Route path={paths.cobranza.tipoContactos()} element={<ExtrajudicialContactType />} />
+        {/* JUDICIAL */}
+        <Route path={paths.judicial.expedientes()} element={<JudicialFileCasesList />} />
+        <Route path={paths.judicial.detallesExpediente()} element={<JudicialFileCase />} />
       </Route>
 
       <Route path="*" element={<NotFound />} />
