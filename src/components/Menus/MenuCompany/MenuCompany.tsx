@@ -115,6 +115,14 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({ children, urlIdentifier }) =>
     titleElement.textContent = customer.companyName ? `${customer.companyName} - Lolo Bank` : 'Lolo Bank'
   }
 
+  const getBankName = () => {
+    return (
+      customer.customerBanks.find((customerBank) => {
+        return customerBank.id == parseInt(selectedBank?.idBank)
+      })?.name ?? ''
+    )
+  }
+
   useEffect(() => {
     setIsLoadingCities(true)
     setIsLoadingUsers(true)
@@ -155,9 +163,7 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({ children, urlIdentifier }) =>
         </Container>
 
         <Text.Body className="layout__header-selected-bank" size="m" weight="bold" color="Success5">
-          {customer.customerBanks.find((customerBank) =>
-            customerBank.id === selectedBank?.idBank.length ? selectedBank?.idBank : 0
-          )?.name ?? ''}
+          {getBankName()}
         </Text.Body>
       </Container>
 
