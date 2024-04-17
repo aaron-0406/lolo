@@ -9,7 +9,7 @@ const ModalActions: yup.SchemaOf<Omit<ManagementActionType, 'customerHasBankId' 
     .required()
     .max(150)
     .matches(/^[^\d]+$/),
-  codeSubTypeManagement: yup.string().required().max(10),
+  codeSubTypeManagement: yup.string().optional().max(10),
 })
 
 export const ModalActionsResolver = yupResolver(ModalActions)
