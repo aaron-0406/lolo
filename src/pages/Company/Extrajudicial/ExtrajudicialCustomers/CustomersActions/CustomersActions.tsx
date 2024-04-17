@@ -28,9 +28,7 @@ const CustomersActions: FC<CustomerActionsProps> = ({ opts, setOpts }) => {
     bank: { selectedBank, setSelectedBank },
   } = useLoloContext()
 
-  const {
-    filterOptions: { setSelectedFilters },
-  } = useFiltersContext()
+  const { clearAllFilters } = useFiltersContext()
 
   const {
     visible: visibleModalManagementExcel,
@@ -48,7 +46,7 @@ const CustomersActions: FC<CustomerActionsProps> = ({ opts, setOpts }) => {
   })
 
   const onChangeBank = (key: string) => {
-    setSelectedFilters({ url: currentPath, filters: [] })
+    clearAllFilters()
 
     const customerBank = customer.customerBanks.find((customerBank) => String(customerBank.id) === key)
 
