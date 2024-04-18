@@ -57,7 +57,11 @@ export const FiltersProvider = ({ children }: FiltersProviderProps) => {
   }
 
   const clearAllFilters = () => {
-    setFilters([])
+    setFilters((prev) => {
+      return prev.map((prevBefore) => {
+        return { ...prevBefore, filters: [] }
+      })
+    })
   }
 
   return (
