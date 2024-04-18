@@ -59,7 +59,7 @@ const ProceduralWaySearch = ({ opts, setOpts }: ProceduralWaySearchProps) => {
         size="small"
         onClick={showModalAdd}
         disabled={!chb}
-        permission="P09-01" //TODO: Change permission
+        permission="P22-01"
       />
       <ProceduralWayModal visible={visibleModalAdd} onClose={hideModalAdd} />
     </Container>

@@ -59,7 +59,7 @@ const SubjectSearch = ({ opts, setOpts }: SubjectSearchProps) => {
         size="small"
         onClick={showModalAdd}
         disabled={!chb}
-        permission="P09-01" //TODO: Change permission
+        permission="P21-01"
       />
       <SubjectModal visible={visibleModalAdd} onClose={hideModalAdd} />
     </Container>
