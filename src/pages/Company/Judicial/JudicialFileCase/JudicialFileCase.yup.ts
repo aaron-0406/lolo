@@ -5,7 +5,7 @@ const regexPatternNumberFileCase = /^\d{5}-\d{4}-\d{1,4}-\d{4}-[A-Z]{2}-[A-Z]{2}
 
 const JudicialFileCaseSchema: yup.SchemaOf<Omit<JudicialCaseFileType, 'id' | 'createdAt'>> = yup.object().shape({
   numberCaseFile: yup.string().required().matches(regexPatternNumberFileCase, {
-    message: 'Patrón "####-####-####-####-LL-LL-##".',
+    message: 'Patrón "#####-####-####-####-LL-LL-##".',
   }),
   judgmentNumber: yup.number().optional(),
   secretary: yup.string().optional(),
