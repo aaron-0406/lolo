@@ -67,7 +67,6 @@ const ModalManagement = ({ visible, onClose, setOwnerFileCase }: ModalManagement
   }
 
   const handleClickButtonSelect = (client: ClientType & { customerUser: { id: number; name: string } }) => {
-    console.log('🚀 ~ handleClickButtonSelect ~ client:', client)
     setOwnerFileCase(client)
     setValue('clientId', client.id)
     onClose()
