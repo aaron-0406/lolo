@@ -6,7 +6,7 @@ import Container from '@/ui/Container'
 import Button from '@/ui/Button'
 import { CustomErrorResponse } from 'types/customErrorResponse'
 import { useLoloContext } from '@/contexts/LoloProvider'
-import extCourtCache from '../../CourtTable/utils/ext-court.cache'
+import judicialCourtCache from '../../CourtTable/utils/ext-court.cache'
 import { deleteCourt } from '@/services/judicial/judicial-court.service'
 
 type DeleteCourtModalProps = {
@@ -29,7 +29,7 @@ const DeleteCourtModal = ({ visible, idNegociation = 0, onClose }: DeleteCourtMo
     onMutateCache,
     onSettledCache,
     onErrorCache,
-  } = extCourtCache(queryClient)
+  } = judicialCourtCache(queryClient)
 
   const { isLoading: loadingDeleteCourt, mutate: deleteCourtMutate } = useMutation<
     AxiosResponse<{ id: string }>,

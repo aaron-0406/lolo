@@ -8,7 +8,7 @@ import { Opts } from '@/ui/Pagination/interfaces'
 import TextField from '@/ui/fields/TextField'
 import { Dispatch } from 'react'
 import { useQueryClient } from 'react-query'
-import extCourtCache from '../CourtTable/utils/ext-court.cache'
+import judicialCourtCache from '../CourtTable/utils/ext-court.cache'
 import CourtModal from '../Modals/CourtModal'
 import { device } from '@/breakpoints/responsive'
 
@@ -25,7 +25,7 @@ const CourtSearch = ({ opts, setOpts }: CourtSearchProps) => {
   } = useLoloContext()
 
   const queryClient = useQueryClient()
-  const { onRefetchQueryCache } = extCourtCache(queryClient)
+  const { onRefetchQueryCache } = judicialCourtCache(queryClient)
 
   const greaterThanMobile = useMediaQuery(device.tabletS)
   const { visible: visibleModalAdd, showModal: showModalAdd, hideModal: hideModalAdd } = useModal()

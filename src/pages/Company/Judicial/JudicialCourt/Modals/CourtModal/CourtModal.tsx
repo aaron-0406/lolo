@@ -11,7 +11,7 @@ import CourtInfoForm from './CourtInfoForm'
 import { AxiosError } from 'axios'
 import { CustomErrorResponse } from 'types/customErrorResponse'
 import { useLoloContext } from '@/contexts/LoloProvider'
-import extCourtCache from '../../CourtTable/utils/ext-court.cache'
+import judicialCourtCache from '../../CourtTable/utils/ext-court.cache'
 import { JudicialCourtType } from '@/types/judicial/judicial-court.type'
 
 type CourtModalProps = {
@@ -41,7 +41,7 @@ const CourtModal = ({ visible, onClose, isEdit = false, idCourt = 0 }: CourtModa
     onMutateCache,
     onSettledCache,
     onErrorCache,
-  } = extCourtCache(queryClient)
+  } = judicialCourtCache(queryClient)
 
   const formMethods = useForm<JudicialCourtType>({
     resolver: ModalCourtResolver,
