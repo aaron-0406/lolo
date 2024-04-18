@@ -44,6 +44,7 @@ type DatePickerProps = {
   shadow?: string
   hasError?: boolean
   shadowColor?: string
+  labelWidth?: string
   getDate?: (date: any) => void
 }
 
@@ -62,6 +63,7 @@ const DatePicker: React.FC<DatePickerProps> = (props) => {
     label,
     labelFontSize = '15px',
     getDate,
+    labelWidth = '8rem',
   } = props
 
   let isRow = orientation === 'horizontal'
@@ -76,7 +78,7 @@ const DatePicker: React.FC<DatePickerProps> = (props) => {
   useEffect(() => {
     getNoOfDays(new Date().getFullYear(), new Date().getMonth())
     setMonth(new Date().getMonth())
-    setValueInput(value);
+    setValueInput(value)
     return () => {
       setNoOfDays([])
       setBlankDays([])
@@ -165,7 +167,7 @@ const DatePicker: React.FC<DatePickerProps> = (props) => {
         <Container display="flex" position="relative" width="100%" flexDirection={isRow ? 'row' : 'column'}>
           <Container display="flex" flexDirection="row" gap="0.25rem" margin={'0.25rem 0px'} height="2rem">
             {label && (
-              <StyledLabel labelFontSize={labelFontSize} width={isRow ? '8rem' : ''} htmlFor={name}>
+              <StyledLabel labelFontSize={labelFontSize} width={isRow ? labelWidth : ''} htmlFor={name}>
                 {required && <StyledSpanRequired>*</StyledSpanRequired>}
                 {label}
               </StyledLabel>
@@ -352,7 +354,7 @@ const StyledCalendar = styled.div`
   background-color: rgb(255 255 255);
   margin-top: -1.5rem;
   padding: 1rem;
-  /* box-shadow: 10px 5px 5px #000000; */
+  width: 350px;
 `
 
 const ContainerCalendar = styled(Container)<{ $isRow: boolean }>`

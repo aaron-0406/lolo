@@ -50,6 +50,11 @@ export default {
   },
   judicial: {
     perfil: (urlIdentifier = ':urlIdentifier') => `/judicial/${urlIdentifier}/perfil`,
-    proceduralWay: (urlIdentifier = ':urlIdentifier') => `/judicial/${urlIdentifier}/procedural-way`,
+    viaProcedimental: (urlIdentifier = ':urlIdentifier') => `/judicial/${urlIdentifier}/via-procedimental`,
+    juzgados: (urlIdentifier = ':urlIdentifier') => `/judicial/${urlIdentifier}/juzgados`,
+    materias: (urlIdentifier = ':urlIdentifier') => `/judicial/${urlIdentifier}/materias`,
+    expedientes: (urlIdentifier = ':urlIdentifier') => `/judicial/${urlIdentifier}/expedientes`,
+    detallesExpediente: (urlIdentifier = ':urlIdentifier', code = ':code') =>
+      `/judicial/${urlIdentifier}/expedientes/${code}`,
   },
 }
