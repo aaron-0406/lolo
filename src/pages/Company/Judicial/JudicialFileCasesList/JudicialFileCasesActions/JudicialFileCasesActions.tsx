@@ -44,6 +44,13 @@ const JudicialFileCasesActions: FC<JudicialFileCasesActionsProps> = ({ opts, set
     })
   }
 
+  const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target
+    if (value === '') return setOpts({ ...opts, filter: '', page: 1 })
+    if (value.length < 3) return
+    return setOpts({ ...opts, filter: value.trim(), page: 1 })
+  }
+
   const handleClickCaseFile = () => {
     navigate(`${paths.judicial.detallesExpediente(customer.urlIdentifier, '000000000')}`)
   }
@@ -61,10 +68,10 @@ const JudicialFileCasesActions: FC<JudicialFileCasesActionsProps> = ({ opts, set
       </Container>
       <Container className="actions__textfield" width="100%" display="flex" alignItems="center" gap="10px">
         <TextField
-          //onChange={onChangeSearch}
+          onChange={onChangeSearch}
           width="100%"
           label="Buscar expediente:"
-          placeholder="Buscar expediente por código"
+          placeholder="Buscar con nombre del cliente"
         />
         <Button
           width="100px"

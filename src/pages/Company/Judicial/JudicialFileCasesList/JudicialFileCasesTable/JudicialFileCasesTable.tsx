@@ -162,6 +162,7 @@ const JudicialFileCasesTable = ({ opts, setOpts }: JudicialFileCasesTableProps) 
         Number(selectedBank.idCHB),
         opts.page,
         opts.limit,
+        opts.filter,
         JSON.stringify(courts),
         JSON.stringify(proceduralWays),
         JSON.stringify(subjects),
