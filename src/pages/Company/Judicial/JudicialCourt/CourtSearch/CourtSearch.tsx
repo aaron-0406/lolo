@@ -8,7 +8,7 @@ import { Opts } from '@/ui/Pagination/interfaces'
 import TextField from '@/ui/fields/TextField'
 import { Dispatch } from 'react'
 import { useQueryClient } from 'react-query'
-import judicialCourtCache from '../CourtTable/utils/ext-court.cache'
+import judicialCourtCache from '../CourtTable/utils/judicial-court.cache'
 import CourtModal from '../Modals/CourtModal'
 import { device } from '@/breakpoints/responsive'
 
@@ -59,7 +59,7 @@ const CourtSearch = ({ opts, setOpts }: CourtSearchProps) => {
         size="small"
         onClick={showModalAdd}
         disabled={!chb}
-        permission="P09-01"
+        permission="P09-01" //TODO: Change permission
       />
       <CourtModal visible={visibleModalAdd} onClose={hideModalAdd} />
     </Container>

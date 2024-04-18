@@ -15,7 +15,7 @@ export const courtColumns: ColumProps[] = [
   },
   {
     id: 'court.datatable.header.actions',
-    title: 'Acciones',
+    title: 'ACCIONES',
     width: '30%',
     justifyContent: 'center',
   },

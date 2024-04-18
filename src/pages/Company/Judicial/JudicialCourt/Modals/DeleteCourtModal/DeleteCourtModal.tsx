@@ -6,16 +6,16 @@ import Container from '@/ui/Container'
 import Button from '@/ui/Button'
 import { CustomErrorResponse } from 'types/customErrorResponse'
 import { useLoloContext } from '@/contexts/LoloProvider'
-import judicialCourtCache from '../../CourtTable/utils/ext-court.cache'
+import judicialCourtCache from '../../CourtTable/utils/judicial-court.cache'
 import { deleteCourt } from '@/services/judicial/judicial-court.service'
 
 type DeleteCourtModalProps = {
   visible: boolean
   onClose: () => void
-  idNegociation?: number
+  idCourt?: number
 }
 
-const DeleteCourtModal = ({ visible, idNegociation = 0, onClose }: DeleteCourtModalProps) => {
+const DeleteCourtModal = ({ visible, idCourt = 0, onClose }: DeleteCourtModalProps) => {
   const {
     bank: {
       selectedBank: { idCHB: chb },
@@ -36,12 +36,12 @@ const DeleteCourtModal = ({ visible, idNegociation = 0, onClose }: DeleteCourtMo
     AxiosError<CustomErrorResponse>
   >(
     async () => {
-      return await deleteCourt(idNegociation)
+      return await deleteCourt(idCourt)
     },
     {
       onSuccess: (result) => {
         deleteCourtCache(result.data.id, parseInt(chb))
-        notification({ type: 'success', message: 'Juzgado eliminada' })
+        notification({ type: 'success', message: 'Juzgado eliminado' })
         onClose()
       },
       onMutate: () => {
@@ -62,7 +62,7 @@ const DeleteCourtModal = ({ visible, idNegociation = 0, onClose }: DeleteCourtMo
   )
 
   const handleClickDelete = () => {
-    if (idNegociation !== 0) {
+    if (idCourt !== 0) {
       deleteCourtMutate()
     }
   }

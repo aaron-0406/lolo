@@ -2,7 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import yup from '../../../../../../shared/yupLocale'
 import { JudicialCourtType } from '@/types/judicial/judicial-court.type'
 
-const CourtModal: yup.SchemaOf<Omit<JudicialCourtType, 'createdAt' | 'id'>> = yup.object().shape({
+const CourtModal: yup.SchemaOf<Omit<JudicialCourtType, 'id'>> = yup.object().shape({
   court: yup
     .string()
     .min(1)

@@ -12,7 +12,7 @@ import CourtModal from '../Modals/CourtModal'
 import useModal from '@/hooks/useModal'
 import DeleteCourtModal from '../Modals/DeleteCourtModal/DeleteCourtModal'
 import { useLoloContext } from '@/contexts/LoloProvider'
-import { KEY_EXT_JUDICIAL_COURTS_CACHE } from './utils/ext-court.cache'
+import { KEY_JUDICIAL_COURTS_CACHE } from './utils/judicial-court.cache'
 import { JudicialCourtType } from '@/types/judicial/judicial-court.type'
 import { getCourtByCHB } from '@/services/judicial/judicial-court.service'
 
@@ -54,7 +54,7 @@ const CourtTable = ({ opts, setOpts }: CourtTableProps) => {
     hideModalEdit()
   }
 
-  const { isLoading, data } = useQuery([KEY_EXT_JUDICIAL_COURTS_CACHE, parseInt(chb.length ? chb : '0')], async () => {
+  const { isLoading, data } = useQuery([KEY_JUDICIAL_COURTS_CACHE, parseInt(chb.length ? chb : '0')], async () => {
     return await getCourtByCHB(parseInt(chb.length ? chb : '0'))
   })
 
@@ -98,7 +98,7 @@ const CourtTable = ({ opts, setOpts }: CourtTableProps) => {
                         shape="round"
                         size="small"
                         leadingIcon="ri-pencil-fill"
-                        permission="P09-02"
+                        permission="P09-02" //TODO: Change permission
                       />
                       <Button
                         onClick={(event) => {
@@ -109,7 +109,7 @@ const CourtTable = ({ opts, setOpts }: CourtTableProps) => {
                         shape="round"
                         size="small"
                         leadingIcon="ri-delete-bin-line"
-                        permission="P09-03"
+                        permission="P09-03" //TODO: Change Permission
                         display="danger"
                       />
                     </Container>
@@ -120,7 +120,7 @@ const CourtTable = ({ opts, setOpts }: CourtTableProps) => {
           })}
       </Table>
 
-      <DeleteCourtModal visible={visibleDeleteCourt} onClose={onCloseDeleteCourt} idNegociation={idDeletedCourt} />
+      <DeleteCourtModal visible={visibleDeleteCourt} onClose={onCloseDeleteCourt} idCourt={idDeletedCourt} />
       <CourtModal visible={visibleModalEdit} onClose={onCloseModal} idCourt={negotiationId} isEdit />
     </Container>
   )
