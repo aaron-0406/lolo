@@ -8,7 +8,7 @@ import { Opts } from '@/ui/Pagination/interfaces'
 import TextField from '@/ui/fields/TextField'
 import { Dispatch } from 'react'
 import { useQueryClient } from 'react-query'
-import extSubjectCache from '../SubjectTable/utils/ext-subject.cache'
+import judicialSubjectCache from '../SubjectTable/utils/ext-subject.cache'
 import SubjectModal from '../Modals/SubjectModal'
 import { device } from '@/breakpoints/responsive'
 
@@ -25,7 +25,7 @@ const SubjectSearch = ({ opts, setOpts }: SubjectSearchProps) => {
   } = useLoloContext()
 
   const queryClient = useQueryClient()
-  const { onRefetchQueryCache } = extSubjectCache(queryClient)
+  const { onRefetchQueryCache } = judicialSubjectCache(queryClient)
 
   const greaterThanMobile = useMediaQuery(device.tabletS)
   const { visible: visibleModalAdd, showModal: showModalAdd, hideModal: hideModalAdd } = useModal()

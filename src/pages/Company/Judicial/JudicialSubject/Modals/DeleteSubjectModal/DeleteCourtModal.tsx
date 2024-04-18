@@ -7,7 +7,7 @@ import Button from '@/ui/Button'
 import { CustomErrorResponse } from 'types/customErrorResponse'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import { deleteSubject } from '@/services/judicial/judicial-subject.service'
-import extSubjectCache from '../../SubjectTable/utils/ext-subject.cache'
+import judicialSubjectCache from '../../SubjectTable/utils/ext-subject.cache'
 
 type DeleteSubjectModalProps = {
   visible: boolean
@@ -29,7 +29,7 @@ const DeleteSubjectModal = ({ visible, idNegociation = 0, onClose }: DeleteSubje
     onMutateCache,
     onSettledCache,
     onErrorCache,
-  } = extSubjectCache(queryClient)
+  } = judicialSubjectCache(queryClient)
 
   const { isLoading: loadingDeleteSubject, mutate: deleteSubjectMutate } = useMutation<
     AxiosResponse<{ id: string }>,

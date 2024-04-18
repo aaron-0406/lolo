@@ -11,7 +11,7 @@ import SubjectInfoForm from './SubjectInfoForm'
 import { AxiosError } from 'axios'
 import { CustomErrorResponse } from 'types/customErrorResponse'
 import { useLoloContext } from '@/contexts/LoloProvider'
-import extSubjectCache from '../../SubjectTable/utils/ext-subject.cache'
+import judicialSubjectCache from '../../SubjectTable/utils/ext-subject.cache'
 import { JudicialSubjectType } from '@/types/judicial/judicial-subject.type'
 
 type SubjectModalProps = {
@@ -41,7 +41,7 @@ const SubjectModal = ({ visible, onClose, isEdit = false, idSubject = 0 }: Subje
     onMutateCache,
     onSettledCache,
     onErrorCache,
-  } = extSubjectCache(queryClient)
+  } = judicialSubjectCache(queryClient)
 
   const formMethods = useForm<JudicialSubjectType>({
     resolver: ModalSubjectResolver,

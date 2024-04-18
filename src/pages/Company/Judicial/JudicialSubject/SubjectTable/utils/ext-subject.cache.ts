@@ -6,7 +6,7 @@ export const KEY_JUDICIAL_SUBJECT_CACHE = 'key-judicial-subject-cache'
 
 type QueryDataType = AxiosResponse<JudicialSubjectType[]> | undefined
 
-const extSubjectCache = (queryClient: QueryClient) => {
+const judicialSubjectCache = (queryClient: QueryClient) => {
   const createSubjectCache = (data: JudicialSubjectType) => {
     queryClient.setQueryData<QueryDataType>([KEY_JUDICIAL_SUBJECT_CACHE, data.customerHasBankId], (old) => {
       if (old) {
@@ -74,4 +74,4 @@ const extSubjectCache = (queryClient: QueryClient) => {
   }
 }
 
-export default extSubjectCache
+export default judicialSubjectCache
