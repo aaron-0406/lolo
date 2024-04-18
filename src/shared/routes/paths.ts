@@ -50,6 +50,7 @@ export default {
   },
   judicial: {
     perfil: (urlIdentifier = ':urlIdentifier') => `/judicial/${urlIdentifier}/perfil`,
+    viaProcedimental: (urlIdentifier = ':urlIdentifier') => `/judicial/${urlIdentifier}/via-procedimental`,
     juzgados: (urlIdentifier = ':urlIdentifier') => `/judicial/${urlIdentifier}/juzgados`,
     materias: (urlIdentifier = ':urlIdentifier') => `/judicial/${urlIdentifier}/materias`,
     expedientes: (urlIdentifier = ':urlIdentifier') => `/judicial/${urlIdentifier}/expedientes`,

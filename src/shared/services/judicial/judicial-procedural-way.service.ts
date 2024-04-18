@@ -9,15 +9,19 @@ export const getProceduralWayByCHB = async (chb: number) => {
   return await axiosClient.get(`${url}/chb/${chb}`)
 }
 
-export const createProceduralWay = async (proceduralWay: Omit<JudicialProceduralWayType, 'id'>) => {
-  return await axiosClient.post(`${url}/`, proceduralWay)
+export const getAllProceduralWayById = async (id: number) => {
+  return await axiosClient.get(`${url}/${id}`)
+}
+
+export const createProceduralWay = async (court: Omit<JudicialProceduralWayType, 'id'>) => {
+  return await axiosClient.post(`${url}/`, court)
 }
 
 export const updateProceduralWay = async (
   id: number,
-  proceduralWay: Omit<JudicialProceduralWayType, 'id' | 'customerHasBankId'>
+  court: Omit<JudicialProceduralWayType, 'id' | 'customerHasBankId'>
 ) => {
-  return await axiosClient.patch(`${url}/${id}`, proceduralWay)
+  return await axiosClient.patch(`${url}/${id}`, court)
 }
 
 export const deleteProceduralWay = async (id: number) => {
