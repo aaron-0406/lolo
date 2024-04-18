@@ -59,7 +59,7 @@ const CourtSearch = ({ opts, setOpts }: CourtSearchProps) => {
         size="small"
         onClick={showModalAdd}
         disabled={!chb}
-        permission="P09-01" //TODO: Change permission
+        permission="P20-01"
       />
       <CourtModal visible={visibleModalAdd} onClose={hideModalAdd} />
     </Container>

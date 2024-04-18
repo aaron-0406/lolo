@@ -105,7 +105,7 @@ const ProceduralWayTable = ({ opts, setOpts }: ProceduralWayTableProps) => {
                         shape="round"
                         size="small"
                         leadingIcon="ri-pencil-fill"
-                        permission="P09-02" //TODO: Change permission
+                        permission="P22-02"
                       />
                       <Button
                         onClick={(event) => {
@@ -116,7 +116,7 @@ const ProceduralWayTable = ({ opts, setOpts }: ProceduralWayTableProps) => {
                         shape="round"
                         size="small"
                         leadingIcon="ri-delete-bin-line"
-                        permission="P09-03" //TODO: Change permission
+                        permission="P22-03"
                         display="danger"
                       />
                     </Container>

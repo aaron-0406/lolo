@@ -98,7 +98,7 @@ const SubjectTable = ({ opts, setOpts }: SubjectTableProps) => {
                         shape="round"
                         size="small"
                         leadingIcon="ri-pencil-fill"
-                        permission="P09-02" //TODO: Change permission
+                        permission="P21-02"
                       />
                       <Button
                         onClick={(event) => {
@@ -109,7 +109,7 @@ const SubjectTable = ({ opts, setOpts }: SubjectTableProps) => {
                         shape="round"
                         size="small"
                         leadingIcon="ri-delete-bin-line"
-                        permission="P09-03" //TODO: Change permission
+                        permission="P21-03"
                         display="danger"
                       />
                     </Container>
