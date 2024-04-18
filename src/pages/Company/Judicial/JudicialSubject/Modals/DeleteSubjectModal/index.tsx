@@ -1,1 +1,1 @@
-export { default } from './DeleteCourtModal'
+export { default } from './DeleteSubjectModal'

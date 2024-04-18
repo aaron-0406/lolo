@@ -4,7 +4,7 @@ import Label from '@/ui/Label'
 import TextField from '@/ui/fields/TextField'
 import Container from '@/ui/Container'
 
-const CourtInfoForm = () => {
+const SubjectInfoForm = () => {
   const {
     control,
     formState: { errors },
@@ -26,4 +26,4 @@ const CourtInfoForm = () => {
   )
 }
 
-export default CourtInfoForm
+export default SubjectInfoForm

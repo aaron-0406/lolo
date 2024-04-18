@@ -11,7 +11,7 @@ import Button from '@/ui/Button'
 import SubjectModal from '../Modals/SubjectModal'
 import useModal from '@/hooks/useModal'
 import { useLoloContext } from '@/contexts/LoloProvider'
-import { KEY_EXT_JUDICIAL_SUBJECTS_CACHE } from './utils/ext-subject.cache'
+import { KEY_JUDICIAL_SUBJECT_CACHE } from './utils/judicial-subject.cache'
 import { JudicialSubjectType } from '@/types/judicial/judicial-subject.type'
 import { getSubjectByCHB } from '@/services/judicial/judicial-subject.service'
 import DeleteSubjectModal from '../Modals/DeleteSubjectModal'
@@ -54,12 +54,9 @@ const SubjectTable = ({ opts, setOpts }: SubjectTableProps) => {
     hideModalEdit()
   }
 
-  const { isLoading, data } = useQuery(
-    [KEY_EXT_JUDICIAL_SUBJECTS_CACHE, parseInt(chb.length ? chb : '0')],
-    async () => {
-      return await getSubjectByCHB(parseInt(chb.length ? chb : '0'))
-    }
-  )
+  const { isLoading, data } = useQuery([KEY_JUDICIAL_SUBJECT_CACHE, parseInt(chb.length ? chb : '0')], async () => {
+    return await getSubjectByCHB(parseInt(chb.length ? chb : '0'))
+  })
 
   let result = data?.data ?? []
   if (opts.filter !== '') {
@@ -91,7 +88,7 @@ const SubjectTable = ({ opts, setOpts }: SubjectTableProps) => {
                 <BodyCell textAlign="left">{`${record.subject || ''}`}</BodyCell>
                 <BodyCell textAlign="center">
                   {
-                    <Container display="flex" gap="15px" justifyContent="space-around">
+                    <Container display="flex" gap="10px" justifyContent="space-around">
                       <Button
                         onClick={(event) => {
                           event.stopPropagation()
@@ -101,7 +98,7 @@ const SubjectTable = ({ opts, setOpts }: SubjectTableProps) => {
                         shape="round"
                         size="small"
                         leadingIcon="ri-pencil-fill"
-                        permission="P09-02"
+                        permission="P09-02" //TODO: Change permission
                       />
                       <Button
                         onClick={(event) => {
@@ -112,7 +109,7 @@ const SubjectTable = ({ opts, setOpts }: SubjectTableProps) => {
                         shape="round"
                         size="small"
                         leadingIcon="ri-delete-bin-line"
-                        permission="P09-03"
+                        permission="P09-03" //TODO: Change permission
                         display="danger"
                       />
                     </Container>
@@ -123,11 +120,7 @@ const SubjectTable = ({ opts, setOpts }: SubjectTableProps) => {
           })}
       </Table>
 
-      <DeleteSubjectModal
-        visible={visibleDeleteSubject}
-        onClose={onCloseDeleteSubject}
-        idNegociation={idDeletedSubject}
-      />
+      <DeleteSubjectModal visible={visibleDeleteSubject} onClose={onCloseDeleteSubject} idSubject={idDeletedSubject} />
       <SubjectModal visible={visibleModalEdit} onClose={onCloseModal} idSubject={negotiationId} isEdit />
     </Container>
   )

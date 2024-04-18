@@ -8,7 +8,7 @@ import { Opts } from '@/ui/Pagination/interfaces'
 import TextField from '@/ui/fields/TextField'
 import { Dispatch } from 'react'
 import { useQueryClient } from 'react-query'
-import judicialSubjectCache from '../SubjectTable/utils/ext-subject.cache'
+import judicialSubjectCache from '../SubjectTable/utils/judicial-subject.cache'
 import SubjectModal from '../Modals/SubjectModal'
 import { device } from '@/breakpoints/responsive'
 
@@ -50,7 +50,7 @@ const SubjectSearch = ({ opts, setOpts }: SubjectSearchProps) => {
         <Label label="Buscar:" />
       </Container>
       <Container width="calc(100% - 60px)" display="flex" justifyContent="space-between" margin="0 20px 0 0">
-        <TextField onChange={onChangeSearch} width="100%" placeholder="Buscar juzgado por nombre" />
+        <TextField onChange={onChangeSearch} width="100%" placeholder="Buscar materia por nombre" />
       </Container>
 
       <Button
@@ -59,7 +59,7 @@ const SubjectSearch = ({ opts, setOpts }: SubjectSearchProps) => {
         size="small"
         onClick={showModalAdd}
         disabled={!chb}
-        permission="P09-01"
+        permission="P09-01" //TODO: Change permission
       />
       <SubjectModal visible={visibleModalAdd} onClose={hideModalAdd} />
     </Container>

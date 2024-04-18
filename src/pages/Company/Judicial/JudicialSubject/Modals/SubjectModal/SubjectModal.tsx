@@ -8,10 +8,10 @@ import Container from '@/ui/Container'
 import Button from '@/ui/Button'
 import notification from '@/ui/notification'
 import SubjectInfoForm from './SubjectInfoForm'
-import { AxiosError } from 'axios'
+import { AxiosError, AxiosResponse } from 'axios'
 import { CustomErrorResponse } from 'types/customErrorResponse'
 import { useLoloContext } from '@/contexts/LoloProvider'
-import judicialSubjectCache from '../../SubjectTable/utils/ext-subject.cache'
+import judicialSubjectCache from '../../SubjectTable/utils/judicial-subject.cache'
 import { JudicialSubjectType } from '@/types/judicial/judicial-subject.type'
 
 type SubjectModalProps = {
@@ -21,7 +21,7 @@ type SubjectModalProps = {
   idSubject?: number
 }
 
-const defaultValuesSubject: Omit<JudicialSubjectType, 'createdAt'> = {
+const defaultValuesSubject: JudicialSubjectType = {
   id: 0,
   subject: '',
   customerHasBankId: 0,
@@ -88,7 +88,7 @@ const SubjectModal = ({ visible, onClose, isEdit = false, idSubject = 0 }: Subje
   )
 
   const { isLoading: loadingEditSubject, mutate: mutateEditSubject } = useMutation<
-    any,
+    AxiosResponse<JudicialSubjectType>,
     AxiosError<CustomErrorResponse>
   >(
     async () => {
@@ -99,7 +99,7 @@ const SubjectModal = ({ visible, onClose, isEdit = false, idSubject = 0 }: Subje
       onSuccess: (result) => {
         editSubjectCache(result.data)
         notification({ type: 'success', message: 'Materia editada' })
-        onClose()
+        handleClickCloseModal()
       },
       onMutate: () => {
         return onMutateCache(parseInt(chb))

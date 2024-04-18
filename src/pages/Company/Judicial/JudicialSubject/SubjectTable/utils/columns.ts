@@ -15,7 +15,7 @@ export const subjectColumns: ColumProps[] = [
   },
   {
     id: 'subject.datatable.header.actions',
-    title: 'Acciones',
+    title: 'ACCIONES',
     width: '30%',
     justifyContent: 'center',
   },

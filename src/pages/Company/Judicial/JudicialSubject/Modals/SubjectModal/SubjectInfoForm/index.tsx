@@ -1,1 +1,1 @@
-export { default } from './CourtInfoForm'
+export { default } from './SubjectInfoForm'

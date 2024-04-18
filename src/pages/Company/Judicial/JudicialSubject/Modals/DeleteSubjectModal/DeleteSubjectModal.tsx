@@ -7,15 +7,15 @@ import Button from '@/ui/Button'
 import { CustomErrorResponse } from 'types/customErrorResponse'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import { deleteSubject } from '@/services/judicial/judicial-subject.service'
-import judicialSubjectCache from '../../SubjectTable/utils/ext-subject.cache'
+import judicialSubjectCache from '../../SubjectTable/utils/judicial-subject.cache'
 
 type DeleteSubjectModalProps = {
   visible: boolean
   onClose: () => void
-  idNegociation?: number
+  idSubject?: number
 }
 
-const DeleteSubjectModal = ({ visible, idNegociation = 0, onClose }: DeleteSubjectModalProps) => {
+const DeleteSubjectModal = ({ visible, idSubject = 0, onClose }: DeleteSubjectModalProps) => {
   const {
     bank: {
       selectedBank: { idCHB: chb },
@@ -36,7 +36,7 @@ const DeleteSubjectModal = ({ visible, idNegociation = 0, onClose }: DeleteSubje
     AxiosError<CustomErrorResponse>
   >(
     async () => {
-      return await deleteSubject(idNegociation)
+      return await deleteSubject(idSubject)
     },
     {
       onSuccess: (result) => {
@@ -62,7 +62,7 @@ const DeleteSubjectModal = ({ visible, idNegociation = 0, onClose }: DeleteSubje
   )
 
   const handleClickDelete = () => {
-    if (idNegociation !== 0) {
+    if (idSubject !== 0) {
       deleteSubjectMutate()
     }
   }
@@ -72,7 +72,7 @@ const DeleteSubjectModal = ({ visible, idNegociation = 0, onClose }: DeleteSubje
       visible={visible}
       onClose={onClose}
       id="modal-delete"
-      title="¿Desea eliminar este Juzgado?"
+      title="¿Desea eliminar esta Materia?"
       contentOverflowY="auto"
       size="small"
       footer={
