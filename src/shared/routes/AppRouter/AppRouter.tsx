@@ -42,6 +42,7 @@ import ExtrajudicialContactType from '@/pages/extrajudicial/ExtrajudicialContact
 import JudicialFileCasesList from 'pages/Company/Judicial/JudicialFileCasesList'
 import JudicialFileCase from 'pages/Company/Judicial/JudicialFileCase/JudicialFileCase'
 import JudicialSubject from 'pages/Company/Judicial/JudicialSubject'
+import JudicialCourt from 'pages/Company/Judicial/JudicialCourt'
 
 import ErrorPage from '../../../pages/ErrorPage'
 import NotFound from '../../../pages/NotFound'
@@ -106,6 +107,7 @@ const AppRouter = () => {
         <Route path={paths.cobranza.tipoContactos()} element={<ExtrajudicialContactType />} />
 
         {/* JUDICIAL */}
+        <Route path={paths.judicial.juzgados()} element={<JudicialCourt />} />
         <Route path={paths.judicial.expedientes()} element={<JudicialFileCasesList />} />
         <Route path={paths.judicial.detallesExpediente()} element={<JudicialFileCase />} />
         <Route path={paths.judicial.materias()} element={<JudicialSubject />} />

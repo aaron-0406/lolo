@@ -9,6 +9,10 @@ export const getCourtByCHB = async (chb: number) => {
   return await axiosClient.get(`${url}/chb/${chb}`)
 }
 
+export const getAllCourtById = async (id: number) => {
+  return await axiosClient.get(`${url}/${id}`)
+}
+
 export const createCourt = async (court: Omit<JudicialCourtType, 'id'>) => {
   return await axiosClient.post(`${url}/`, court)
 }
