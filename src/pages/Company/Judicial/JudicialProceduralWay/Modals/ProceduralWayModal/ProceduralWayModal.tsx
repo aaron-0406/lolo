@@ -16,7 +16,7 @@ import { AxiosError } from 'axios'
 import { CustomErrorResponse } from 'types/customErrorResponse'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import { JudicialProceduralWayType } from '@/types/judicial/judicial-procedural-way.type'
-import extProceduralWayCache from '../../ProceduralWayTable/utils/ext-procedural-way.cache'
+import judicialProceduralWayCache from '../../ProceduralWayTable/utils/judicial-procedural-way.cache'
 
 type ProceduralWayModalProps = {
   visible: boolean
@@ -45,7 +45,7 @@ const ProceduralWayModal = ({ visible, onClose, isEdit = false, idProceduralWay 
     onMutateCache,
     onSettledCache,
     onErrorCache,
-  } = extProceduralWayCache(queryClient)
+  } = judicialProceduralWayCache(queryClient)
 
   const formMethods = useForm<JudicialProceduralWayType>({
     resolver: ModalProceduralWayResolver,

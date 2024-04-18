@@ -7,7 +7,7 @@ import Button from '@/ui/Button'
 import { CustomErrorResponse } from 'types/customErrorResponse'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import { deleteProceduralWay } from '@/services/judicial/judicial-procedural-way.service'
-import extProceduralWayCache from '../../ProceduralWayTable/utils/ext-procedural-way.cache'
+import judicialProceduralWayCache from '../../ProceduralWayTable/utils/judicial-procedural-way.cache'
 
 type DeleteProceduralWayModalProps = {
   visible: boolean
@@ -29,7 +29,7 @@ const DeleteProceduralWayModal = ({ visible, idNegociation = 0, onClose }: Delet
     onMutateCache,
     onSettledCache,
     onErrorCache,
-  } = extProceduralWayCache(queryClient)
+  } = judicialProceduralWayCache(queryClient)
 
   const { isLoading: loadingDeleteProceduralWay, mutate: deleteProceduralWayMutate } = useMutation<
     AxiosResponse<{ id: string }>,
@@ -72,7 +72,7 @@ const DeleteProceduralWayModal = ({ visible, idNegociation = 0, onClose }: Delet
       visible={visible}
       onClose={onClose}
       id="modal-delete"
-      title="¿Desea eliminar este Juzgado?"
+      title="¿Desea eliminar esta Via Procedimental?"
       contentOverflowY="auto"
       size="small"
       footer={

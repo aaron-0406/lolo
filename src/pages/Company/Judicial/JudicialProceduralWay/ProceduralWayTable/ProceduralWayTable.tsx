@@ -14,7 +14,7 @@ import DeleteProceduralWayModal from '../Modals/DeleteProceduralWayModal/DeleteP
 import { useLoloContext } from '@/contexts/LoloProvider'
 import { JudicialProceduralWayType } from '@/types/judicial/judicial-procedural-way.type'
 import { getProceduralWayByCHB } from '@/services/judicial/judicial-procedural-way.service'
-import { KEY_EXT_JUDICIAL_PROCEDURAL_WAYS_CACHE } from './utils/ext-procedural-way.cache'
+import { KEY_JUDICIAL_PROCEDURAL_WAY_CACHE } from './utils/judicial-procedural-way.cache'
 
 type ProceduralWayTableProps = {
   opts: Opts
@@ -59,7 +59,7 @@ const ProceduralWayTable = ({ opts, setOpts }: ProceduralWayTableProps) => {
   }
 
   const { isLoading, data } = useQuery(
-    [KEY_EXT_JUDICIAL_PROCEDURAL_WAYS_CACHE, parseInt(chb.length ? chb : '0')],
+    [KEY_JUDICIAL_PROCEDURAL_WAY_CACHE, parseInt(chb.length ? chb : '0')],
     async () => {
       return await getProceduralWayByCHB(parseInt(chb.length ? chb : '0'))
     }
@@ -105,7 +105,7 @@ const ProceduralWayTable = ({ opts, setOpts }: ProceduralWayTableProps) => {
                         shape="round"
                         size="small"
                         leadingIcon="ri-pencil-fill"
-                        permission="P09-02"
+                        permission="P09-02" //TODO: Change permission
                       />
                       <Button
                         onClick={(event) => {
@@ -116,7 +116,7 @@ const ProceduralWayTable = ({ opts, setOpts }: ProceduralWayTableProps) => {
                         shape="round"
                         size="small"
                         leadingIcon="ri-delete-bin-line"
-                        permission="P09-03"
+                        permission="P09-03" //TODO: Change permission
                         display="danger"
                       />
                     </Container>

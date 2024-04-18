@@ -6,7 +6,7 @@ export const KEY_JUDICIAL_PROCEDURAL_WAY_CACHE = 'key-judicial-procedural-way-ca
 
 type QueryDataType = AxiosResponse<JudicialProceduralWayType[]> | undefined
 
-const extProceduralWayCache = (queryClient: QueryClient) => {
+const judicialProceduralWayCache = (queryClient: QueryClient) => {
   const createProceduralWayCache = (data: JudicialProceduralWayType) => {
     queryClient.setQueryData<QueryDataType>([KEY_JUDICIAL_PROCEDURAL_WAY_CACHE, data.customerHasBankId], (old) => {
       if (old) {
@@ -76,4 +76,4 @@ const extProceduralWayCache = (queryClient: QueryClient) => {
   }
 }
 
-export default extProceduralWayCache
+export default judicialProceduralWayCache

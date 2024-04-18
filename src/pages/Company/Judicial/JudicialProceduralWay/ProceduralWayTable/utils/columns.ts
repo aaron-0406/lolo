@@ -15,7 +15,7 @@ export const proceduralWayColumns: ColumProps[] = [
   },
   {
     id: 'procedural-way.datatable.header.actions',
-    title: 'Acciones',
+    title: 'ACCIONES',
     width: '30%',
     justifyContent: 'center',
   },

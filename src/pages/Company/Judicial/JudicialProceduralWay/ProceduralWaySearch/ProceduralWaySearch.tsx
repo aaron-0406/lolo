@@ -10,7 +10,7 @@ import { Dispatch } from 'react'
 import { useQueryClient } from 'react-query'
 import ProceduralWayModal from '../Modals/ProceduralWayModal'
 import { device } from '@/breakpoints/responsive'
-import extProceduralWayCache from '../ProceduralWayTable/utils/ext-procedural-way.cache'
+import judicialProceduralWayCache from '../ProceduralWayTable/utils/judicial-procedural-way.cache'
 
 type ProceduralWaySearchProps = {
   opts: Opts
@@ -25,7 +25,7 @@ const ProceduralWaySearch = ({ opts, setOpts }: ProceduralWaySearchProps) => {
   } = useLoloContext()
 
   const queryClient = useQueryClient()
-  const { onRefetchQueryCache } = extProceduralWayCache(queryClient)
+  const { onRefetchQueryCache } = judicialProceduralWayCache(queryClient)
 
   const greaterThanMobile = useMediaQuery(device.tabletS)
   const { visible: visibleModalAdd, showModal: showModalAdd, hideModal: hideModalAdd } = useModal()
@@ -59,7 +59,7 @@ const ProceduralWaySearch = ({ opts, setOpts }: ProceduralWaySearchProps) => {
         size="small"
         onClick={showModalAdd}
         disabled={!chb}
-        permission="P09-01"
+        permission="P09-01" //TODO: Change permission
       />
       <ProceduralWayModal visible={visibleModalAdd} onClose={hideModalAdd} />
     </Container>
