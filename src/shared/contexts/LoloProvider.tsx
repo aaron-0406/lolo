@@ -11,6 +11,7 @@ const appLoloClientStateKey = 'lolo:client'
 const appLoloBankStateKey = 'lolo:bank'
 const appLoloCityStateKey = 'lolo:city'
 const appLoloUserStateKey = 'lolo:user'
+const appLoloUserLoggedInStateKey = 'lolo:user:logged:in'
 const appLoloSelectedBankStateKey = 'lolo:selected:bank'
 
 type SelectedBankType = {
@@ -105,7 +106,7 @@ export const LoloProvider: React.FC<LoloProviderProps> = ({ children }) => {
     idCHB: '',
   })
 
-  const [user, setUser] = useState(initialCustomerUserState)
+  const [user, setUser] = usePersistedState(appLoloUserLoggedInStateKey, initialCustomerUserState)
 
   const [authenticate, setAuthenticate] = useState<boolean>(storage.get<string>('token') ? true : false)
 
@@ -151,8 +152,6 @@ export const LoloProvider: React.FC<LoloProviderProps> = ({ children }) => {
       storage.remove('dash:token')
 
       try {
-        const usuario = jwtDecode<CustomerUserType>(token)
-        setUser(usuario)
         setAuthenticate(true)
         return
       } catch (error) {}
