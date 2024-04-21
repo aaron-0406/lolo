@@ -7,6 +7,7 @@ import Container from '@/ui/Container'
 import { useParams } from 'react-router-dom'
 import paths from 'shared/routes/paths'
 import CobranzaProductsModal from '../Modals/CobranzaProductsModal'
+import Text from '@/ui/Text'
 
 type CobranzaProductsInfoProps = {
   name?: string
@@ -45,8 +46,21 @@ const CobranzaProductsInfo = ({ name, clientId }: CobranzaProductsInfoProps) => 
   ]
 
   return (
-    <Container width="100%" display="flex" justifyContent="space-between" alignItems="center" padding="20px">
-      <Breadcrumbs routes={routers} />
+    <Container
+      width="100%"
+      display="flex"
+      justifyContent="space-between"
+      alignItems="center"
+      padding="20px 20px 0 20px"
+    >
+      <Container display="flex" flexDirection="column" gap="15px">
+        <Breadcrumbs routes={routers} />
+        <Container padding="0 20px 0 20px" backgroundColor="#e5e7eb">
+          <Text.Body size="l" weight="bold">
+            {name}
+          </Text.Body>
+        </Container>
+      </Container>
 
       <Container>
         <Button
