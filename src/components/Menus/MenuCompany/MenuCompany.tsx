@@ -64,7 +64,7 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({ children, urlIdentifier }) =>
   const { refetch: refetchCities } = useQuery(
     'query-get-all-cities',
     async () => {
-      return await getAllCities(Number(selectedBank.idCHB))
+      return await getAllCities(Number(customer.id))
     },
     {
       enabled: false,
