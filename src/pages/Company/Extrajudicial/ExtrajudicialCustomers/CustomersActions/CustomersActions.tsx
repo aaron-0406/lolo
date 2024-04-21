@@ -1,5 +1,5 @@
 import React, { Dispatch, FC } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import styled, { css } from 'styled-components'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import Container from '@/ui/Container'
@@ -20,9 +20,6 @@ type CustomerActionsProps = {
 }
 
 const CustomersActions: FC<CustomerActionsProps> = ({ opts, setOpts }) => {
-  const location = useLocation()
-  const currentPath = location.pathname
-
   const {
     client: { customer },
     bank: { selectedBank, setSelectedBank },
@@ -103,7 +100,7 @@ const CustomersActions: FC<CustomerActionsProps> = ({ opts, setOpts }) => {
           trailingIcon="ri-add-fill"
           onClick={handleClickAddClient}
           disabled={!selectedBank.idBank}
-          permission="P02-01"
+          permission="P02-03"
           messageTooltip="Agregar cliente"
         />
       </Container>

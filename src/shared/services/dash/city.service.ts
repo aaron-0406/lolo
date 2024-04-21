@@ -4,6 +4,6 @@ const API = axiosClient.getUri()
 
 const url = `${API}/dash/city`
 
-export const getAllCities = async () => {
-  return await axiosClient.get(url)
+export const getAllCities = async (customerId: number) => {
+  return await axiosClient.get(`${url}/customer/${customerId}`)
 }

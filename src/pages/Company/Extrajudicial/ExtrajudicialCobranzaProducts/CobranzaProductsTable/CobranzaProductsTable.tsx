@@ -6,8 +6,7 @@ import { KEY_COBRANZA_URL_PRODUCT_CODE_CACHE } from './utils/company-products.ca
 import { ProductType } from '@/types/extrajudicial/product.type'
 import { NegotiationType } from '@/types/extrajudicial/negotiation.type'
 import notification from '@/ui/notification'
-import { getProductsByClientCode } from '@/services/extrajudicial/product.service'
-import { useParams } from 'react-router-dom'
+import { getProductsByClientId } from '@/services/extrajudicial/product.service'
 import Table from '@/ui/Table'
 import Container from '@/ui/Container'
 import EmptyStateCell from '@/ui/Table/EmptyStateCell'
@@ -22,9 +21,7 @@ type CobranzaProductsTableProps = {
   clientId?: number
 }
 
-const CobranzaProductsTable = ({ clientId }: CobranzaProductsTableProps) => {
-  const code = useParams().code ?? ''
-
+const CobranzaProductsTable = ({ clientId = 0 }: CobranzaProductsTableProps) => {
   const [idEdit, setIdEdit] = useState<number>(0)
   const [idDeletedProduct, setIdDeletedProduct] = useState<number>(0)
 
@@ -54,7 +51,7 @@ const CobranzaProductsTable = ({ clientId }: CobranzaProductsTableProps) => {
   const { data, isLoading } = useQuery<AxiosResponse<Array<ProductType & { negotiation: NegotiationType }>, Error>>(
     [KEY_COBRANZA_URL_PRODUCT_CODE_CACHE, clientId],
     async () => {
-      return await getProductsByClientCode(code)
+      return await getProductsByClientId(clientId)
     },
     {
       onError: (error: any) => {
@@ -71,7 +68,7 @@ const CobranzaProductsTable = ({ clientId }: CobranzaProductsTableProps) => {
   return (
     <Container width="100%" height="calc(100% - 80px)" padding="20px">
       <Table
-        top="180px"
+        top="195px"
         columns={productsColumns}
         loading={isLoading}
         isArrayEmpty={!products.length}

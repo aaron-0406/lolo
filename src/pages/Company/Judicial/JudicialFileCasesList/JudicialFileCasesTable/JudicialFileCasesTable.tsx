@@ -19,12 +19,12 @@ import { AxiosError, AxiosResponse } from 'axios'
 import DeleteExpedienteModal from './DeleteExpedienteModal'
 import useModal from '@/hooks/useModal'
 import { JudicialFileCaseTableRow, KEY_FILE_CASE_CACHE } from './utils/file-cases.cache'
-import { KEY_JUDICIAL_COURTS_CACHE } from '../../JudicialCourt/CourtTable/utils/ext-court.cache'
+import { KEY_JUDICIAL_COURTS_CACHE } from '../../JudicialCourt/CourtTable/utils/judicial-court.cache'
 import { getCourtByCHB } from '@/services/judicial/judicial-court.service'
-import { KEY_JUDICIAL_SUBJECT_CACHE } from '../../JudicialSubject/SubjectTable/utils/ext-subject.cache'
+import { KEY_JUDICIAL_SUBJECT_CACHE } from '../../JudicialSubject/SubjectTable/utils/judicial-subject.cache'
 import { getSubjectByCHB } from '@/services/judicial/judicial-subject.service'
 import { getProceduralWayByCHB } from '@/services/judicial/judicial-procedural-way.service'
-import { KEY_JUDICIAL_PROCEDURAL_WAY_CACHE } from '../../JudicialProceduralWay/ProceduralWayTable/utils/ext-procedural-way.cache'
+import { KEY_JUDICIAL_PROCEDURAL_WAY_CACHE } from '../../JudicialProceduralWay/ProceduralWayTable/utils/judicial-procedural-way.cache'
 import { getIDsByIdentifier } from './utils/methods'
 import { useFiltersContext } from '@/contexts/FiltersProvider'
 import notification from '@/ui/notification'
@@ -162,6 +162,7 @@ const JudicialFileCasesTable = ({ opts, setOpts }: JudicialFileCasesTableProps) 
         Number(selectedBank.idCHB),
         opts.page,
         opts.limit,
+        opts.filter,
         JSON.stringify(courts),
         JSON.stringify(proceduralWays),
         JSON.stringify(subjects),

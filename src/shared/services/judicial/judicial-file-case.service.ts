@@ -17,12 +17,14 @@ export const getFileCasesByCHB = async (
   id: number,
   page: number,
   limit: number,
+  filter?: string,
   courts?: string,
   proceduralWays?: string,
   subjects?: string,
   users?: string
 ) => {
   let filters = ''
+  filters += filter !== '' && filter !== undefined ? `filter=${filter}&` : ''
   filters += !!courts?.length ? `courts=${courts}&` : 'courts=[]&'
   filters += !!proceduralWays?.length ? `proceduralWays=${proceduralWays}&` : 'proceduralWays=[]&'
   filters += !!users?.length ? `users=${users}&` : 'users=[]&'
