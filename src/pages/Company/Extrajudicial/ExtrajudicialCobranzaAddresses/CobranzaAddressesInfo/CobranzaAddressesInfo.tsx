@@ -7,6 +7,8 @@ import Container from '@/ui/Container'
 import { useParams } from 'react-router-dom'
 import paths from 'shared/routes/paths'
 import CobranzaAddressesModal from '../Modals/CobranzaAddressesModal'
+import styled from 'styled-components'
+import Text from '@/ui/Text'
 
 type CobranzaAddressesInfoProps = {
   name?: string
@@ -45,8 +47,15 @@ const CobranzaAddressesInfo = ({ name, clientId }: CobranzaAddressesInfoProps) =
   ]
 
   return (
-    <Container width="100%" display="flex" justifyContent="space-between" alignItems="center" padding="20px">
-      <Breadcrumbs routes={routers} />
+    <StyledContainerGeneral>
+      <Container display="flex" flexDirection="column" gap="15px">
+        <Breadcrumbs routes={routers} />
+        <StyledContainer>
+          <Text.Body size="l" weight="bold">
+            {name}
+          </Text.Body>
+        </StyledContainer>
+      </Container>
 
       <Container>
         <Button
@@ -61,8 +70,21 @@ const CobranzaAddressesInfo = ({ name, clientId }: CobranzaAddressesInfoProps) =
 
         {clientId && <CobranzaAddressesModal visible={visibleModalAdd} onClose={onCloseModal} clientId={clientId} />}
       </Container>
-    </Container>
+    </StyledContainerGeneral>
   )
 }
 
 export default CobranzaAddressesInfo
+
+const StyledContainerGeneral = styled(Container)`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+`
+const StyledContainer = styled(Container)`
+  padding-left: 20px;
+`
