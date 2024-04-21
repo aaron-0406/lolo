@@ -23,7 +23,7 @@ type UsersModalProps = {
   idUser?: number
 }
 
-const defaultValuesCustomerUser: Omit<CustomerUserType, 'customerId' | 'createdAt' | 'role'> = {
+const defaultValuesCustomerUser: Omit<CustomerUserType, 'customerId' | 'createdAt' | 'role' | 'loginAttempts'> = {
   id: 0,
   name: '',
   lastName: '',
@@ -33,7 +33,6 @@ const defaultValuesCustomerUser: Omit<CustomerUserType, 'customerId' | 'createdA
   password: '',
   state: true,
   roleId: 0,
-  loginAttempts: 0,
 }
 
 const UsersModal = ({ visible, onClose, idUser = 0, isEdit = false }: UsersModalProps) => {
