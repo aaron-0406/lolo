@@ -1,10 +1,9 @@
-import React, { Dispatch, FC } from 'react'
+import React from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import styled, { css } from 'styled-components'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import Container from '@/ui/Container'
 import TextField from '@/ui/fields/TextField'
-import { Opts } from '@/ui/Pagination/interfaces'
 import Select from '@/ui/Select'
 import { SelectItemType } from '@/ui/Select/interfaces'
 import Button from '@/ui/Button/Button'
@@ -23,17 +22,16 @@ const CustomersActions = () => {
     bank: { selectedBank, setSelectedBank },
   } = useLoloContext()
 
-  const { clearAllFilters } = useFiltersContext()
+  const {
+    clearAllFilters,
+    filterSearch: { getSearchFilters, setSearchFilters },
+  } = useFiltersContext()
 
   const {
     visible: visibleModalManagementExcel,
     showModal: showModalManagementExcel,
     hideModal: hideModalManagementExcel,
   } = useModal()
-
-  const {
-    filterSearch: { getSearchFilters, setSearchFilters },
-  } = useFiltersContext()
 
   const navigate = useNavigate()
 
@@ -54,16 +52,12 @@ const CustomersActions = () => {
       idCHB: String(customerBank?.CUSTOMER_HAS_BANK.id),
     })
   }
-  
+  const searchFilter = getSearchFilters(currentPath)?.opts ?? { filter: '', limit: 50, page: 1 }
+
   const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
-    console.log(value, "value")
-    // if (value === '') return setSearchFilters({ url: currentPath, opts: { ...testing1, filter: '', page: 1 } })
-    setSearchFilters({ url: currentPath, opts: { ...testing1, filter: value.trim(), page: 1 } })
-    console.log(testing1, 'test2')
+    setSearchFilters({ url: currentPath, opts: { ...searchFilter, filter: value } })
   }
-  const testing1 = getSearchFilters(currentPath)?.opts ?? { filter: '', limit: 50, page: 1 }
-  console.log(testing1, 'test')
 
   const handleClickAddClient = () => {
     navigate(`${paths.cobranza.cobranza(customer.urlIdentifier, '000000000')}`)
@@ -87,7 +81,7 @@ const CustomersActions = () => {
           label="Buscar cliente:"
           placeholder="Buscar cliente por nombre"
           clearInput
-          value={testing1.filter}
+          value={searchFilter.filter}
         />
 
         <Button

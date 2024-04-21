@@ -68,24 +68,22 @@ export const FiltersProvider = ({ children }: FiltersProviderProps) => {
   }
 
   const getSearchFilters = (url: string) => {
-    const yo = search.find((searchItem) => searchItem.url === url)
-    console.log(yo)
-    return yo
+    return search.find((searchItem) => searchItem.url === url)
   }
 
   const setSearchFilters = (searchFilters: SearchFilters) => {
-    console.log(searchFilters.opts.filter, 'provi')
     setSearch((prev) => {
-      const updatedSearch = prev.map((prevFilter) => {
-        if (prevFilter.url === searchFilters.url) {
-          return {
-            ...prevFilter,
-            opts: { ...searchFilters.opts },
+      const filter = prev.find((prevFilter) => prevFilter.url === searchFilters.url)
+      if (!filter) {
+        return [...prev, searchFilters]
+      } else {
+        return prev.map((prevFilter) => {
+          if (prevFilter.url === searchFilters.url) {
+            return searchFilters
           }
-        }
-        return prevFilter
-      })
-      return updatedSearch
+          return prevFilter
+        })
+      }
     })
   }
 
@@ -93,6 +91,11 @@ export const FiltersProvider = ({ children }: FiltersProviderProps) => {
     setFilters((prev) => {
       return prev.map((prevBefore) => {
         return { ...prevBefore, filters: [] }
+      })
+    })
+    setSearch((prev) => {
+      return prev.map((prevBefore) => {
+        return { ...prevBefore, opts: { ...prevBefore.opts, filter: '', limit: 50, page: 1 } }
       })
     })
   }

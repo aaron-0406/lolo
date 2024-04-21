@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Dispatch, useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useQuery } from 'react-query'
 import { useLocation, useNavigate } from 'react-router-dom'
 import moment from 'moment'
@@ -12,7 +12,6 @@ import { ClientType } from '@/types/extrajudicial/client.type'
 import { NegotiationType } from '@/types/extrajudicial/negotiation.type'
 import Container from '@/ui/Container'
 import Pagination from '@/ui/Pagination'
-import { Opts } from '@/ui/Pagination/interfaces'
 import Table from '@/ui/Table'
 import { customersColumns } from './utils/columns'
 import EmptyStateCell from '@/ui/Table/EmptyStateCell'
@@ -54,9 +53,6 @@ const CustomersTable = () => {
 
   const {
     filterOptions: { getSelectedFilters, setSelectedFilters },
-  } = useFiltersContext()
-
-  const {
     filterSearch: { getSearchFilters, setSearchFilters },
   } = useFiltersContext()
 
@@ -196,7 +192,7 @@ const CustomersTable = () => {
 
   return (
     <Container width="100%" height="calc(100% - 112px)" padding="20px">
-      <Pagination count={quantity} opts={opts} setOptsFilter={setSearchFilters} />
+      <Pagination count={quantity} opts={opts} setOptsFilter={setSearchFilters} url={currentPath} />
       <Table
         top="260px"
         columns={customersColumns}
