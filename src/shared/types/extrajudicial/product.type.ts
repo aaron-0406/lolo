@@ -3,7 +3,7 @@ export type ProductType = {
   code: string
   name: string
   state: string
-  clientCode: string
+  clientId: number
   customerId: number
   negotiationId: number
 }

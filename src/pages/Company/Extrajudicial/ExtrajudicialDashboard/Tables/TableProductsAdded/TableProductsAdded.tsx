@@ -46,11 +46,10 @@ const TableProductsAdded = ({ globalLoad }: Props) => {
           .map((item) => {
             return {
               name: item.name,
-              code: item.code,
               clientName: item.clientName,
               state: item.state,
               customerId: customerId,
-              clientCode: item.clientCode,
+              clientId: item.clientId,
             }
           })
           .slice(start, end)
@@ -63,7 +62,7 @@ const TableProductsAdded = ({ globalLoad }: Props) => {
         setValue(
           'clientsAdded',
           watch('clientsAdded').filter(
-            (item) => !watch('productsAdded').some((item2) => item2.clientCode === item.clientCode)
+            (item) => !watch('productsAdded').some((item2) => item2.clientId === item.clientId)
           )
         )
         setValue('productsAdded', [])
@@ -83,9 +82,8 @@ const TableProductsAdded = ({ globalLoad }: Props) => {
       return await createProductsDash(
         [
           {
-            code: product.code,
             name: product.name,
-            clientCode: product.clientCode,
+            clientId: product.clientId,
             clientName: product.clientName,
             customerId: product.id,
             state: product.state,
@@ -100,7 +98,7 @@ const TableProductsAdded = ({ globalLoad }: Props) => {
       onSuccess: () => {
         setValue(
           'productsAdded',
-          watch('productsAdded').filter((item) => item.code !== product.code)
+          watch('productsAdded').filter((item) => item.clientId !== product.clientId)
         )
         notification({ type: 'success', message: 'Producto Agregado' })
       },
@@ -157,16 +155,16 @@ const TableProductsAdded = ({ globalLoad }: Props) => {
           products
             .filter(
               (item) =>
-                item.clientCode.toLowerCase().includes(filter.toLowerCase()) ||
+                String(item.clientId).includes(filter.toLowerCase()) ||
                 item.clientName.toLowerCase().includes(filter.toLowerCase())
             )
             .map((record: ProductTypeName, index: number) => {
               return (
                 <tr className="styled-data-table-row" key={index}>
                   <BodyCell textAlign="center">{`${index + 1 || ''}`}</BodyCell>
-                  <BodyCell>{`${record.clientCode || ''}`}</BodyCell>
+                  <BodyCell>{`${record.clientId || ''}`}</BodyCell>
                   <BodyCell>{`${record.clientName || ''}`}</BodyCell>
-                  <BodyCell>{`${record.code || ''}`}</BodyCell>
+                  <BodyCell>{`${record.clientId || ''}`}</BodyCell>
                   <BodyCell>{`${record.name || ''}`}</BodyCell>
                   <BodyCell>{`${record.state || ''}`}</BodyCell>
                   <BodyCell textAlign="center">

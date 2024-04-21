@@ -43,7 +43,7 @@ const TableClientsAdded = ({ globalLoad }: Props) => {
           .map((item) => {
             return {
               name: item.clientName,
-              code: item.clientCode,
+              clientId: item.clientId,
               funcionarioId: item.funcionarioId,
               cityId: item.cityId,
             }
@@ -72,7 +72,7 @@ const TableClientsAdded = ({ globalLoad }: Props) => {
       return await createClientsDash(
         [
           {
-            code: client.clientCode,
+            clientId: client.clientId,
             name: client.clientName,
             cityId: client.cityId,
             funcionarioId: client.funcionarioId,
@@ -87,7 +87,7 @@ const TableClientsAdded = ({ globalLoad }: Props) => {
       onSuccess: () => {
         setValue(
           'clientsAdded',
-          watch('clientsAdded').filter((item) => item.code !== client.code)
+          watch('clientsAdded').filter((item) => item.clientId !== client.clientId)
         )
         notification({ type: 'success', message: 'Cliente Agregado' })
       },
@@ -144,14 +144,14 @@ const TableClientsAdded = ({ globalLoad }: Props) => {
           clients
             .filter(
               (item) =>
-                item.clientCode.toLowerCase().includes(filter.toLowerCase()) ||
+                String(item.clientId).toLowerCase().includes(filter.toLowerCase()) ||
                 item.clientName.toLowerCase().includes(filter.toLowerCase())
             )
             .map((record: ProductTypeName, index: number) => {
               return (
                 <tr className="styled-data-table-row" key={record.id}>
                   <BodyCell textAlign="center">{`${index + 1 || ''}`}</BodyCell>
-                  <BodyCell>{`${record.clientCode || ''}`}</BodyCell>
+                  <BodyCell>{`${record.clientId || ''}`}</BodyCell>
                   <BodyCell>{`${record.clientName || ''}`}</BodyCell>
                   <BodyCell textAlign="center">
                     {
