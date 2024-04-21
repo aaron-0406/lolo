@@ -21,7 +21,7 @@ type CobranzaProductsTableProps = {
   clientId?: number
 }
 
-const CobranzaProductsTable = ({ clientId }: CobranzaProductsTableProps) => {
+const CobranzaProductsTable = ({ clientId = 0 }: CobranzaProductsTableProps) => {
   const [idEdit, setIdEdit] = useState<number>(0)
   const [idDeletedProduct, setIdDeletedProduct] = useState<number>(0)
 
@@ -51,11 +51,10 @@ const CobranzaProductsTable = ({ clientId }: CobranzaProductsTableProps) => {
   const { data, isLoading } = useQuery<AxiosResponse<Array<ProductType & { negotiation: NegotiationType }>, Error>>(
     [KEY_COBRANZA_URL_PRODUCT_CODE_CACHE, clientId],
     async () => {
-      return await getProductsByClientId(Number(clientId))
+      return await getProductsByClientId(clientId)
     },
     {
       onError: (error: any) => {
-        if (!clientId) return
         notification({
           type: 'error',
           message: error.response.data.message,

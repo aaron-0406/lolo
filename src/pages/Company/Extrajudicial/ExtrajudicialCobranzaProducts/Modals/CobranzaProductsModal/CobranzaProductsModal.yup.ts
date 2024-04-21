@@ -6,7 +6,7 @@ const ModalProductsSchema: yup.SchemaOf<Omit<ProductType, 'id'>> = yup.object().
   code: yup.string().required().min(5).max(150),
   name: yup.string().required().max(150),
   state: yup.string().required().max(150),
-  clientId: yup.number().required().max(150),
+  clientId: yup.number().required(),
   customerId: yup.number().required(),
   negotiationId: yup.number().required().min(1),
 })
