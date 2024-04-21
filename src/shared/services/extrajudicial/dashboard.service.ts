@@ -4,17 +4,16 @@ import axiosClient from '../../utils/api/clientAxios'
 
 interface Client {
   name: string
-  code: string
+  clientId: number
   cityId: string
   funcionarioId: string
 }
 
 interface Product {
   name: string
-  code: string
+  clientId: number
   state: string
   clientName: string
-  clientCode: string
   customerId: number
 }
 

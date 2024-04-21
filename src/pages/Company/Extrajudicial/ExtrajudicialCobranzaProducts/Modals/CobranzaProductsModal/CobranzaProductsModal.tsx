@@ -10,7 +10,6 @@ import notification from '@/ui/notification'
 import { useEffect } from 'react'
 import { ProductType } from '@/types/extrajudicial/product.type'
 import { ModalProductsResolver } from './CobranzaProductsModal.yup'
-import { useParams } from 'react-router-dom'
 import { createProduct, editProduct, getProductById } from '@/services/extrajudicial/product.service'
 import Container from '@/ui/Container'
 import Modal from '@/ui/Modal'
@@ -32,7 +31,6 @@ const CobranzaProductsModal = ({
   idProduct = 0,
   clientId = 0,
 }: CobranzaProductsModalProps) => {
-  const code = useParams().code ?? ''
   const queryClient = useQueryClient()
 
   const {
@@ -52,8 +50,8 @@ const CobranzaProductsModal = ({
     resolver: ModalProductsResolver,
     mode: 'all',
     defaultValues: {
-      clientCode: code,
       code: '',
+      clientId: 0,
       customerId: customerId,
       name: '',
       state: '',
@@ -74,7 +72,7 @@ const CobranzaProductsModal = ({
   >(
     async () => {
       const { negotiation, ...restClient } = getValues()
-      return await createProduct({ ...restClient })
+      return await createProduct({ ...restClient, clientId })
     },
     {
       onSuccess: (result) => {
@@ -104,7 +102,7 @@ const CobranzaProductsModal = ({
     AxiosError<CustomErrorResponse>
   >(
     async () => {
-      const { customerId, clientCode, code, negotiation, ...restClient } = getValues()
+      const { customerId, clientId, code, negotiation, ...restClient } = getValues()
       return await editProduct({ ...restClient }, idProduct)
     },
     {
@@ -141,7 +139,7 @@ const CobranzaProductsModal = ({
           setValue('code', data.code, { shouldValidate: true })
           setValue('name', data.name, { shouldValidate: true })
           setValue('state', data.state, { shouldValidate: true })
-          setValue('clientCode', data.clientCode, { shouldValidate: true })
+          setValue('clientId', data.clientId, { shouldValidate: true })
           setValue('negotiationId', data.negotiationId, { shouldValidate: true })
           setValue('negotiation', data.negotiation, { shouldValidate: true })
         } else {

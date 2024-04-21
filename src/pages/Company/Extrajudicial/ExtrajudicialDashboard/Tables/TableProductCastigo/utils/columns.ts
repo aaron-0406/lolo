@@ -9,7 +9,7 @@ export const Columns: ColumProps[] = [
   },
   {
     id: 'company.dashboard.ProductCastigo.client',
-    title: 'Codigo Cliente',
+    title: 'Id Cliente',
     width: '31.5%',
   },
   {
