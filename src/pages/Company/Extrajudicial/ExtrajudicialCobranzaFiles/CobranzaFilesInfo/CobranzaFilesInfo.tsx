@@ -7,7 +7,6 @@ import Container from '@/ui/Container'
 import { useParams } from 'react-router-dom'
 import paths from 'shared/routes/paths'
 import CobranzaFilesModal from '../Modals/CobranzaFilesModal'
-import styled from 'styled-components'
 import Text from '@/ui/Text'
 
 type CobranzaFilesInfoProps = {
@@ -47,14 +46,20 @@ const CobranzaFilesInfo = ({ name, clientId }: CobranzaFilesInfoProps) => {
   ]
 
   return (
-    <StyledContainerGeneral>
+    <Container
+      width="100%"
+      display="flex"
+      justifyContent="space-between"
+      alignItems="center"
+      padding="20px 20px 0 20px"
+    >
       <Container display="flex" flexDirection="column" gap="15px">
         <Breadcrumbs routes={routers} />
-        <StyledContainer>
+        <Container padding="0 20px 0 20px" backgroundColor="#e5e7eb">
           <Text.Body size="l" weight="bold">
             {name}
           </Text.Body>
-        </StyledContainer>
+        </Container>
       </Container>
 
       <Container>
@@ -77,21 +82,8 @@ const CobranzaFilesInfo = ({ name, clientId }: CobranzaFilesInfoProps) => {
           />
         )}
       </Container>
-    </StyledContainerGeneral>
+    </Container>
   )
 }
 
 export default CobranzaFilesInfo
-
-const StyledContainerGeneral = styled(Container)`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-top: 20px;
-  padding-left: 20px;
-  padding-right: 20px;
-`
-const StyledContainer = styled(Container)`
-  padding-left: 20px;
-`

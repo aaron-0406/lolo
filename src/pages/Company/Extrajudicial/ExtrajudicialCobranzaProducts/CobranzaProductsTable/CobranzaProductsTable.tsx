@@ -71,7 +71,7 @@ const CobranzaProductsTable = ({ clientId }: CobranzaProductsTableProps) => {
   return (
     <Container width="100%" height="calc(100% - 80px)" padding="20px">
       <Table
-        top="180px"
+        top="195px"
         columns={productsColumns}
         loading={isLoading}
         isArrayEmpty={!products.length}

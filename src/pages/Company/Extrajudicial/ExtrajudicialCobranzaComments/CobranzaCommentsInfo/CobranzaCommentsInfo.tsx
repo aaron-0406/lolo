@@ -8,7 +8,6 @@ import CobranzaCommentsModal from '../Modals/CobranzaCommentsModal/CobranzaComme
 import paths from 'shared/routes/paths'
 import { LinkType } from '@/ui/Breadcrumbs/Breadcrumbs.type'
 import Text from '@/ui/Text'
-import styled from 'styled-components'
 
 type CobranzaCommentsInfoProps = {
   name?: string
@@ -47,14 +46,20 @@ const CobranzaCommentsInfo = ({ name, clientId }: CobranzaCommentsInfoProps) => 
   ]
 
   return (
-    <StyledContainerGeneral>
-      <Container display="flex" flexDirection="column" gap="15px">
+    <Container
+      width="100%"
+      display="flex"
+      justifyContent="space-between"
+      alignItems="center"
+      padding="20px 20px 0 20px"
+    >
+      <Container display="flex" flexDirection="column" gap="10px">
         <Breadcrumbs routes={routers} />
-        <StyledContainer>
+        <Container padding="0 20px 0 20px" backgroundColor="#e5e7eb">
           <Text.Body size="l" weight="bold">
             {name}
           </Text.Body>
-        </StyledContainer>
+        </Container>
       </Container>
 
       <Container>
@@ -70,21 +75,8 @@ const CobranzaCommentsInfo = ({ name, clientId }: CobranzaCommentsInfoProps) => 
 
         {clientId && <CobranzaCommentsModal visible={visibleModalAdd} onClose={onCloseModal} clientId={clientId} />}
       </Container>
-    </StyledContainerGeneral>
+    </Container>
   )
 }
 
 export default CobranzaCommentsInfo
-
-const StyledContainerGeneral = styled(Container)`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-top: 20px;
-  padding-left: 20px;
-  padding-right: 20px;
-`
-const StyledContainer = styled(Container)`
-  padding-left: 20px;
-`
