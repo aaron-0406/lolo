@@ -103,7 +103,7 @@ const CustomersActions: FC<CustomerActionsProps> = ({ opts, setOpts }) => {
           trailingIcon="ri-add-fill"
           onClick={handleClickAddClient}
           disabled={!selectedBank.idBank}
-          permission="P02-01"
+          permission="P02-03"
           messageTooltip="Agregar cliente"
         />
       </Container>
