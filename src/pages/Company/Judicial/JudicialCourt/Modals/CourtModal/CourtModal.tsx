@@ -125,6 +125,7 @@ const CourtModal = ({ visible, onClose, isEdit = false, idCourt = 0 }: CourtModa
         if (idCourt !== 0) {
           setValue('court', data.court)
           setValue('customerHasBankId', data.customerHasBankId)
+          setValue('cityId', data.cityId ?? undefined)
           setValue('id', data.id)
         } else {
           reset(defaultValuesCourt)
@@ -162,7 +163,7 @@ const CourtModal = ({ visible, onClose, isEdit = false, idCourt = 0 }: CourtModa
         title={isEdit ? 'Editar Juzgado' : 'Agregar Juzgado'}
         contentOverflowY="auto"
         size="small"
-        minHeight="140px"
+        minHeight="200px"
         footer={
           <Container width="100%" height="75px" display="flex" justifyContent="center" alignItems="center" gap="20px">
             <Button
@@ -179,14 +180,14 @@ const CourtModal = ({ visible, onClose, isEdit = false, idCourt = 0 }: CourtModa
       >
         <Container
           width="100%"
-          height="140px"
+          height="200px"
           display="flex"
           justify-content="center"
           flexDirection="column"
           align-items="center"
           gap="20px"
         >
-          <Container width="100%" display="flex" flexDirection="column" gap="20px" padding="20px" margin="30px 0">
+          <Container width="100%" display="flex" flexDirection="column" gap="20px" padding="20px">
             <CourtInfoForm />
           </Container>
         </Container>
