@@ -86,7 +86,7 @@ const CourtTable = ({ opts, setOpts }: CourtTableProps) => {
               <tr className="styled-data-table-row" key={record.id}>
                 <BodyCell textAlign="center">{`${key + 1 || ''}`}</BodyCell>
                 <BodyCell textAlign="left">{`${record.court || ''}`}</BodyCell>
-                <BodyCell textAlign="left">{`${record.city?.name || ''}`}</BodyCell>
+                <BodyCell textAlign="left">{`${record.city?.name || '-'}`}</BodyCell>
                 <BodyCell textAlign="center">
                   {
                     <Container display="flex" gap="15px" justifyContent="space-around">

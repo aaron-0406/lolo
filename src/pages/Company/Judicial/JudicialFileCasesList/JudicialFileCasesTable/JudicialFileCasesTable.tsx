@@ -181,7 +181,11 @@ const JudicialFileCasesTable = () => {
 
   useEffect(() => {
     refetch()
-  }, [getSelectedFilters(currentPath)?.filters, opts])
+  }, [getSelectedFilters(currentPath)?.filters])
+
+  useEffect(() => {
+    refetch()
+  }, [opts.filter.length])
 
   return (
     <Container width="100%" height="calc(100% - 112px)" padding="20px">

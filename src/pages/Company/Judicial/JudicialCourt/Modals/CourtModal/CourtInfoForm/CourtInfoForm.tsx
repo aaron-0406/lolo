@@ -26,35 +26,36 @@ const CourtInfoForm = () => {
 
   return (
     <>
-      <Container width="100%" display="flex" gap="10px">
-        <Label label="Nombre: " />
-        <Controller
-          name="court"
-          control={control}
-          render={({ field }) => (
-            <TextField width="100%" value={field.value} onChange={field.onChange} hasError={!!errors.court} />
-          )}
-        />
-      </Container>
+      <Controller
+        name="court"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            width="100%"
+            label="Nombre"
+            value={field.value}
+            onChange={field.onChange}
+            hasError={!!errors.court}
+          />
+        )}
+      />
 
-      <Container width="100%" display="flex" gap="10px">
-        <Controller
-          name="cityId"
-          control={control}
-          render={({ field }) => (
-            <Select
-              width="100%"
-              label="Jurisdicción:"
-              value={String(field.value)}
-              options={optionsCities}
-              onChange={(key) => {
-                field.onChange(parseInt(key))
-              }}
-              hasError={!!errors.cityId}
-            />
-          )}
-        />
-      </Container>
+      <Controller
+        name="cityId"
+        control={control}
+        render={({ field }) => (
+          <Select
+            width="100%"
+            label="Jurisdicción:"
+            value={String(field.value)}
+            options={optionsCities}
+            onChange={(key) => {
+              field.onChange(parseInt(key))
+            }}
+            hasError={!!errors.cityId}
+          />
+        )}
+      />
     </>
   )
 }

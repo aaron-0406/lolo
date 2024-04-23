@@ -163,7 +163,7 @@ const CourtModal = ({ visible, onClose, isEdit = false, idCourt = 0 }: CourtModa
         title={isEdit ? 'Editar Juzgado' : 'Agregar Juzgado'}
         contentOverflowY="auto"
         size="small"
-        minHeight="200px"
+        minHeight="220px"
         footer={
           <Container width="100%" height="75px" display="flex" justifyContent="end" alignItems="center" gap="20px">
             <Button
@@ -180,7 +180,7 @@ const CourtModal = ({ visible, onClose, isEdit = false, idCourt = 0 }: CourtModa
       >
         <Container
           width="100%"
-          height="200px"
+          height="220px"
           display="flex"
           justify-content="center"
           flexDirection="column"
