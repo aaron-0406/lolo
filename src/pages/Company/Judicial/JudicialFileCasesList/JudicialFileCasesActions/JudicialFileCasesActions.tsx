@@ -2,29 +2,27 @@ import { useFiltersContext } from '@/contexts/FiltersProvider'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import Button from '@/ui/Button'
 import Container from '@/ui/Container'
-import { Opts } from '@/ui/Pagination/interfaces'
 import Select from '@/ui/Select'
 import { SelectItemType } from '@/ui/Select/interfaces'
 import TextField from '@/ui/fields/TextField'
-import { Dispatch, FC } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import paths from 'shared/routes/paths'
 import styled, { css } from 'styled-components'
 
-type JudicialFileCasesActionsProps = {
-  opts: Opts
-  setOpts: Dispatch<Opts>
-}
-
-const JudicialFileCasesActions: FC<JudicialFileCasesActionsProps> = ({ opts, setOpts }) => {
+const JudicialFileCasesActions = () => {
   const navigate = useNavigate()
+  const location = useLocation()
+  const currentPath = location.pathname
 
   const {
     client: { customer },
     bank: { selectedBank, setSelectedBank },
   } = useLoloContext()
 
-  const { clearAllFilters } = useFiltersContext()
+  const {
+    clearAllFilters,
+    filterSearch: { getSearchFilters, setSearchFilters },
+  } = useFiltersContext()
 
   const options: Array<SelectItemType> = customer.customerBanks.map((bank) => {
     return {
@@ -44,11 +42,11 @@ const JudicialFileCasesActions: FC<JudicialFileCasesActionsProps> = ({ opts, set
     })
   }
 
+  const searchFilter = getSearchFilters(currentPath)?.opts ?? { filter: '', limit: 50, page: 1 }
+
   const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
-    if (value === '') return setOpts({ ...opts, filter: '', page: 1 })
-    if (value.length < 3) return
-    return setOpts({ ...opts, filter: value.trim(), page: 1 })
+    setSearchFilters({ url: currentPath, opts: { ...searchFilter, filter: value } })
   }
 
   const handleClickCaseFile = () => {
@@ -72,6 +70,8 @@ const JudicialFileCasesActions: FC<JudicialFileCasesActionsProps> = ({ opts, set
           width="100%"
           label="Buscar expediente:"
           placeholder="Buscar con nombre del cliente"
+          value={searchFilter.filter}
+          clearInput
         />
         <Button
           width="100px"

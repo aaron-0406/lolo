@@ -17,6 +17,7 @@ import { ExtTagType } from '@/types/extrajudicial/ext-tag.type'
 import { KEY_COBRANZA_URL_TAG_CODE_CACHE } from '@/pages/extrajudicial/ExtrajudicialTags/TagsTable/utils/company-tags.cache'
 import { getExtTagGroupsByCHB } from '@/services/extrajudicial/ext-tag-group.service'
 import notification from '@/ui/notification'
+import { useFiltersContext } from '@/contexts/FiltersProvider'
 
 type MenuCompanyProps = {
   children: JSX.Element
@@ -37,6 +38,8 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({ children, urlIdentifier }) =>
     clearAll,
     bank: { selectedBank },
   } = useLoloContext()
+
+  const { clearAllFilters } = useFiltersContext()
 
   const greaterThanTabletL = useMediaQuery(device.tabletL)
   const filtereditems =
@@ -59,6 +62,7 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({ children, urlIdentifier }) =>
     clearAll()
     storage.clear()
     setAuthenticate(false)
+    clearAllFilters()
   }
 
   const { refetch: refetchCities } = useQuery(

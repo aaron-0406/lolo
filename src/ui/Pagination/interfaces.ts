@@ -8,6 +8,8 @@ export interface Opts {
 
 export interface PaginationProps {
   count: number
-  setOpts: Dispatch<Opts>
+  setOpts?: Dispatch<Opts>
+  setOptsFilter?: Dispatch<{ url: string; opts: Opts }>
+  url?: string
   opts: Opts
 }
