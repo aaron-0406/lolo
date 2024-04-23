@@ -49,7 +49,12 @@ const CobranzaProductsModal = ({
     },
   } = useLoloContext()
 
-  const formMethods = useForm<Omit<ProductType, 'id'> & { negotiation: { name: string; customerHasBankId: string } }>({
+  const formMethods = useForm<
+    Omit<ProductType, 'id'> & {
+      negotiation: { name: string; customerHasBankId: string }
+      extProductName: { id: number; productName: string; customerHasBankId: string }
+    }
+  >({
     resolver: ModalProductsResolver,
     mode: 'all',
     defaultValues: {
@@ -106,7 +111,7 @@ const CobranzaProductsModal = ({
     AxiosError<CustomErrorResponse>
   >(
     async () => {
-      const { customerId, clientId, negotiation, ...restClient } = getValues()
+      const { customerId, clientId, negotiation, extProductName, ...restClient } = getValues()
       return await editProduct({ ...restClient }, idProduct)
     },
     {
@@ -146,6 +151,7 @@ const CobranzaProductsModal = ({
           setValue('negotiationId', data.negotiationId, { shouldValidate: true })
           setValue('negotiation', data.negotiation, { shouldValidate: true })
           setValue('extProductNameId', data.extProductNameId, { shouldValidate: true })
+          setValue('extProductName', data.extProductName, { shouldValidate: true })
         } else {
           reset()
         }

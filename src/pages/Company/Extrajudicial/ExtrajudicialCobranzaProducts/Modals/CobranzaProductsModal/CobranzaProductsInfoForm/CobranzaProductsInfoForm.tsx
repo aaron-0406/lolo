@@ -29,10 +29,18 @@ const CobranzaProductsInfoForm = ({ clientId }: CobranzaProductsInfoFormProps) =
     control,
     getValues,
     formState: { errors },
-  } = useFormContext<ProductType & { negotiation: { name: string; customerHasBankId: string } }>()
+  } = useFormContext<
+    ProductType & {
+      negotiation: { name: string; customerHasBankId: string }
+      extProductName: { id: number; productName: string; customerHasBankId: string }
+    }
+  >()
 
   const negotiation = getValues('negotiation')
   const showNegotiation = negotiation && negotiation.customerHasBankId != idCHB
+
+  const extProductName = getValues('extProductName')
+  const showProductName = extProductName && extProductName.customerHasBankId != idCHB
 
   const optionsStates: Array<SelectItemType> = [
     { key: 'ACTIVA', label: 'ACTIVA' },
@@ -105,17 +113,21 @@ const CobranzaProductsInfoForm = ({ clientId }: CobranzaProductsInfoFormProps) =
         name="extProductNameId"
         control={control}
         render={({ field }) => (
-          <Select
-            disabled={!clientId}
-            width="100%"
-            label="Nombre:"
-            value={String(field.value)}
-            options={optionsProductsName}
-            onChange={(key) => {
-              field.onChange(key)
-            }}
-            hasError={!!errors.extProductNameId}
-          />
+          <>
+            <Select
+              disabled={!clientId}
+              width="100%"
+              label="Nombre:"
+              value={String(field.value)}
+              options={optionsProductsName}
+              onChange={(key) => {
+                field.onChange(key)
+              }}
+              hasError={!!errors.extProductNameId}
+            />
+
+            {showProductName && <Label label={`Nombre de producto: ${extProductName?.productName}`} color="Primary5" />}
+          </>
         )}
       />
 
