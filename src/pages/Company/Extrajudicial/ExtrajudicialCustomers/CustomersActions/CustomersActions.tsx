@@ -1,10 +1,9 @@
-import React, { Dispatch, FC } from 'react'
+import React from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import styled, { css } from 'styled-components'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import Container from '@/ui/Container'
 import TextField from '@/ui/fields/TextField'
-import { Opts } from '@/ui/Pagination/interfaces'
 import Select from '@/ui/Select'
 import { SelectItemType } from '@/ui/Select/interfaces'
 import Button from '@/ui/Button/Button'
@@ -14,12 +13,7 @@ import ModalManagementExcel from './ModalManagementExcel/ModalManagementExcel'
 import paths from 'shared/routes/paths'
 import { useFiltersContext } from '@/contexts/FiltersProvider'
 
-type CustomerActionsProps = {
-  opts: Opts
-  setOpts: Dispatch<Opts>
-}
-
-const CustomersActions: FC<CustomerActionsProps> = ({ opts, setOpts }) => {
+const CustomersActions = () => {
   const location = useLocation()
   const currentPath = location.pathname
 
@@ -28,7 +22,10 @@ const CustomersActions: FC<CustomerActionsProps> = ({ opts, setOpts }) => {
     bank: { selectedBank, setSelectedBank },
   } = useLoloContext()
 
-  const { clearAllFilters } = useFiltersContext()
+  const {
+    clearAllFilters,
+    filterSearch: { getSearchFilters, setSearchFilters },
+  } = useFiltersContext()
 
   const {
     visible: visibleModalManagementExcel,
@@ -55,12 +52,11 @@ const CustomersActions: FC<CustomerActionsProps> = ({ opts, setOpts }) => {
       idCHB: String(customerBank?.CUSTOMER_HAS_BANK.id),
     })
   }
+  const searchFilter = getSearchFilters(currentPath)?.opts ?? { filter: '', limit: 50, page: 1 }
 
   const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
-    if (value === '') return setOpts({ ...opts, filter: '', page: 1 })
-    if (value.length < 3) return
-    return setOpts({ ...opts, filter: value.trim(), page: 1 })
+    setSearchFilters({ url: currentPath, opts: { ...searchFilter, filter: value } })
   }
 
   const handleClickAddClient = () => {
@@ -84,6 +80,8 @@ const CustomersActions: FC<CustomerActionsProps> = ({ opts, setOpts }) => {
           width="100%"
           label="Buscar cliente:"
           placeholder="Buscar cliente por nombre"
+          value={searchFilter.filter}
+          clearInput
         />
 
         <Button

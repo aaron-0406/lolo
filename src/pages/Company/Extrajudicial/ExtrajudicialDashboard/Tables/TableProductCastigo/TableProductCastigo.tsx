@@ -35,9 +35,7 @@ const TableProductCastigo = ({ globalLoad }: Props) => {
             return (
               <tr className="styled-data-table-row" key={record.id}>
                 <BodyCell textAlign="center">{`${index + 1 || ''}`}</BodyCell>
-                <BodyCell>{`${record.clientCode || ''}`}</BodyCell>
-                <BodyCell>{`${record.code || ''}`}</BodyCell>
-                <BodyCell>{`${record.name || ''}`}</BodyCell>
+                <BodyCell>{`${record.clientId || ''}`}</BodyCell>
                 <BodyCell>{`${record.state || ''}> CASTIGO`}</BodyCell>
               </tr>
             )

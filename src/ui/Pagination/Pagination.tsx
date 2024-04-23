@@ -8,7 +8,7 @@ import { PaginationProps } from '@/ui/Pagination/interfaces'
 import Container from '@/ui/Container'
 
 const Pagination: FC<PaginationProps> = (props) => {
-  const { count, opts, setOpts } = props
+  const { count, opts, setOpts, setOptsFilter, url } = props
   const [paginas, setPaginas] = useState<number[]>([])
   const pages = Math.ceil(count / opts.limit)
   const greaterThanTabletL = useMediaQuery(device.tabletL)
@@ -21,7 +21,8 @@ const Pagination: FC<PaginationProps> = (props) => {
   }
 
   const handleChangeLimit = (valor: string) => {
-    setOpts({ ...opts, limit: parseInt(valor, 10), page: 1 })
+    if (setOptsFilter) setOptsFilter({ url: url ?? '', opts: { ...opts, limit: parseInt(valor, 10), page: 1 } })
+    if (setOpts) setOpts({ ...opts, limit: parseInt(valor, 10), page: 1 })
   }
 
   useEffect(() => {
@@ -40,10 +41,7 @@ const Pagination: FC<PaginationProps> = (props) => {
   return (
     <>
       {count > 0 && (
-        <StyledContainerPagination
-          flexDirection="row"
-          gap={greaterThanTabletL ? '0rem' : '1.25rem'}
-        >
+        <StyledContainerPagination flexDirection="row" gap={greaterThanTabletL ? '0rem' : '1.25rem'}>
           <SelectContainer>
             <Container className="visual">
               <span>Página </span>
@@ -73,13 +71,18 @@ const Pagination: FC<PaginationProps> = (props) => {
             <StyledIcon
               className="ri-arrow-left-s-fill"
               onClick={() => {
-                if (opts.page > 1) setOpts({ ...opts, page: 1 })
+                if (opts.page > 1) {
+                  if (setOpts) setOpts({ ...opts, page: 1 })
+                  if (setOptsFilter) setOptsFilter({ url: url ?? '', opts: { ...opts, page: 1 } })
+                }
               }}
             />
             <StyledIcon
               className="ri-arrow-left-s-line"
               onClick={() => {
-                if (opts.page > 1) setOpts({ ...opts, page: opts.page - 1 })
+                if (opts.page > 1 && setOpts) setOpts({ ...opts, page: opts.page - 1 })
+                if (opts.page > 1 && setOptsFilter)
+                  setOptsFilter({ url: url ?? '', opts: { ...opts, page: opts.page - 1 } })
               }}
             />
 
@@ -92,7 +95,8 @@ const Pagination: FC<PaginationProps> = (props) => {
                   display={isVisible(opts.page, item)}
                   onClick={() => {
                     if (opts.page === item) return
-                    setOpts({ ...opts, page: item })
+                    if (setOpts) setOpts({ ...opts, page: item })
+                    if (setOptsFilter) setOptsFilter({ url: url ?? '', opts: { ...opts, page: item } })
                   }}
                 >
                   {item}
@@ -103,13 +107,19 @@ const Pagination: FC<PaginationProps> = (props) => {
             <StyledIcon
               className="ri-arrow-right-s-line"
               onClick={() => {
-                if (opts.page < pages) setOpts({ ...opts, page: opts.page + 1 })
+                if (opts.page < pages) {
+                  if (setOpts) setOpts({ ...opts, page: opts.page + 1 })
+                  if (setOptsFilter) setOptsFilter({ url: url ?? '', opts: { ...opts, page: opts.page + 1 } })
+                }
               }}
             />
             <StyledIcon
               className="ri-arrow-right-s-fill"
               onClick={() => {
-                if (opts.page < pages) setOpts({ ...opts, page: pages })
+                if (opts.page < pages) {
+                  if (setOpts) setOpts({ ...opts, page: pages })
+                  if (setOptsFilter) setOptsFilter({ url: url ?? '', opts: { ...opts, page: pages } })
+                }
               }}
             />
           </PagesContainer>
@@ -146,7 +156,7 @@ const SelectContainer = styled.div`
   @media (max-width: 450px) {
     max-width: 320px;
     flex-wrap: wrap;
-    .visual{
+    .visual {
       display: none;
     }
   }

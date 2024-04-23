@@ -10,13 +10,15 @@ import notification from '@/ui/notification'
 import { getAllNegociacionesByCHB } from '@/services/extrajudicial/negotiation.service'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import Label from '@/ui/Label'
+import { ExtProductNameType } from '@/types/extrajudicial/ext-product-name'
+import { getProductNameByCHB } from '@/services/extrajudicial/ext-product-name.service'
+import { KEY_EXT_PRODUCT_NAME_CACHE } from '@/pages/extrajudicial/ExtrajudicialProductName/ProductNameTable/utils/ext-product-name.cache'
 
 type CobranzaProductsInfoFormProps = {
   clientId: number
-  isEdit: boolean
 }
 
-const CobranzaProductsInfoForm = ({ clientId, isEdit }: CobranzaProductsInfoFormProps) => {
+const CobranzaProductsInfoForm = ({ clientId }: CobranzaProductsInfoFormProps) => {
   const {
     bank: {
       selectedBank: { idCHB },
@@ -27,44 +29,18 @@ const CobranzaProductsInfoForm = ({ clientId, isEdit }: CobranzaProductsInfoForm
     control,
     getValues,
     formState: { errors },
-  } = useFormContext<ProductType & { negotiation: { name: string; customerHasBankId: string } }>()
+  } = useFormContext<
+    ProductType & {
+      negotiation: { name: string; customerHasBankId: string }
+      extProductName: { id: number; productName: string; customerHasBankId: string }
+    }
+  >()
 
   const negotiation = getValues('negotiation')
   const showNegotiation = negotiation && negotiation.customerHasBankId != idCHB
 
-  const optionsNames: Array<SelectItemType> = [
-    { key: 'ADELANTO SUELDO ATRASO', label: 'ADELANTO SUELDO ATRASO' },
-    { key: 'AMEX LAN CLASICA', label: 'AMEX LAN CLASICA' },
-    { key: 'AMEX LAN PLATINUM', label: 'AMEX LAN PLATINUM' },
-    { key: 'AMEX ORO', label: 'AMEX ORO' },
-    { key: 'AMEX ORO LAN', label: 'AMEX ORO LAN' },
-    { key: 'AMEX VERDE', label: 'AMEX VERDE' },
-    { key: 'CTEORD', label: 'CTEORD' },
-    { key: 'EFECTIVO', label: 'EFECTIVO' },
-    { key: 'EFECTIVO DSCTO. POH', label: 'EFECTIVO DSCTO. POH' },
-    { key: 'EFECTIVO NEGOCIOS', label: 'EFECTIVO NEGOCIOS' },
-    { key: 'GARANTIA HIPOTECARIA', label: 'GARANTIA HIPOTECARIA' },
-    { key: 'HIPOTECARIO VIVIENDA', label: 'HIPOTECARIO VIVIENDA' },
-    { key: 'HIPOTECARIO VIVIENDA REF', label: 'HIPOTECARIO VIVIENDA REF' },
-    { key: 'HVIC', label: 'HVIC' },
-    { key: 'MI VIVIENDA', label: 'MI VIVIENDA' },
-    { key: 'NEGOCIO COMERCIAL', label: 'NEGOCIO COMERCIAL' },
-    { key: 'REFINANCIADO LETRAS', label: 'REFINANCIADO LETRAS' },
-    { key: 'REFINANCIADO PAGARES', label: 'REFINANCIADO PAGARES' },
-    { key: 'REPROGRAMADO CONSUMO', label: 'REPROGRAMADO CONSUMO' },
-    { key: 'REPROGRAMADO PYME', label: 'REPROGRAMADO PYME' },
-    { key: 'SOLUCION NEGOCIOS', label: 'SOLUCION NEGOCIOS' },
-    { key: 'VEHICULAR', label: 'VEHICULAR' },
-    { key: 'VISA CLASICA', label: 'VISA CLASICA' },
-    { key: 'VISA CLASICA LAN', label: 'VISA CLASICA LAN' },
-    { key: 'VISA CLASICA MASIVA', label: 'VISA CLASICA MASIVA' },
-    { key: 'VISA EXACTA', label: 'VISA EXACTA' },
-    { key: 'VISA ORO', label: 'VISA ORO' },
-    { key: 'VISA ORO LAN', label: 'VISA ORO LAN' },
-    { key: 'VISA PLATINUM', label: 'VISA PLATINUM' },
-    { key: 'VISA PLATINUM LAN', label: 'VISA PLATINUM LAN' },
-    { key: 'VISA SIGNATURE', label: 'VISA SIGNATURE' },
-  ]
+  const extProductName = getValues('extProductName')
+  const showProductName = extProductName && extProductName.customerHasBankId != idCHB
 
   const optionsStates: Array<SelectItemType> = [
     { key: 'ACTIVA', label: 'ACTIVA' },
@@ -92,6 +68,27 @@ const CobranzaProductsInfoForm = ({ clientId, isEdit }: CobranzaProductsInfoForm
     return { key: String(negotiation.id), label: negotiation.name }
   })
 
+  const { data: dataProductNames } = useQuery<AxiosResponse<Array<ExtProductNameType>, Error>>(
+    [KEY_EXT_PRODUCT_NAME_CACHE, parseInt(idCHB.length ? idCHB : '0')],
+    async () => {
+      return await getProductNameByCHB(parseInt(idCHB.length ? idCHB : '0'))
+    },
+    {
+      onError: (error: any) => {
+        notification({
+          type: 'error',
+          message: error.response.data.message,
+        })
+      },
+    }
+  )
+
+  const productsName = dataProductNames?.data ?? []
+
+  const optionsProductsName: Array<SelectItemType> = productsName.map((productName) => {
+    return { key: String(productName.id), label: productName.productName }
+  })
+
   return (
     <>
       <Controller
@@ -100,7 +97,6 @@ const CobranzaProductsInfoForm = ({ clientId, isEdit }: CobranzaProductsInfoForm
         render={({ field }) => (
           <TextField
             disabled={!clientId}
-            readOnly={isEdit}
             width="100%"
             label="Código:"
             value={field.value}
@@ -114,20 +110,24 @@ const CobranzaProductsInfoForm = ({ clientId, isEdit }: CobranzaProductsInfoForm
       />
 
       <Controller
-        name="name"
+        name="extProductNameId"
         control={control}
         render={({ field }) => (
-          <Select
-            disabled={!clientId}
-            width="100%"
-            label="Nombre:"
-            value={field.value}
-            options={optionsNames}
-            onChange={(key) => {
-              field.onChange(key)
-            }}
-            hasError={!!errors.name}
-          />
+          <>
+            <Select
+              disabled={!clientId}
+              width="100%"
+              label="Nombre:"
+              value={String(field.value)}
+              options={optionsProductsName}
+              onChange={(key) => {
+                field.onChange(key)
+              }}
+              hasError={!!errors.extProductNameId}
+            />
+
+            {showProductName && <Label label={`Nombre de producto: ${extProductName?.productName}`} color="Primary5" />}
+          </>
         )}
       />
 
@@ -145,7 +145,7 @@ const CobranzaProductsInfoForm = ({ clientId, isEdit }: CobranzaProductsInfoForm
               onChange={(key) => {
                 field.onChange(parseInt(key))
               }}
-              hasError={!!errors.name}
+              hasError={!!errors.negotiationId}
             />
 
             {showNegotiation && <Label label={`Negociación: ${negotiation?.name}`} color="Primary5" />}

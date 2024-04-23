@@ -9,8 +9,8 @@ export const getProductById = async (id: number) => {
   return await axiosClient.get(`${url}/client-by-id/${id}`)
 }
 
-export const getProductsByClientCode = async (code: string) => {
-  return await axiosClient.get(`${url}/client/${code}`)
+export const getProductsByClientId = async (clientId: number) => {
+  return await axiosClient.get(`${url}/client/${clientId}`)
 }
 
 export const getProductsByProductCode = async (code: string) => {
@@ -22,7 +22,7 @@ export const createProduct = async (product: Omit<ProductType, 'id'>) => {
 }
 
 export const editProduct = async (
-  product: Omit<ProductType, 'id' | 'clientCode' | 'code' | 'customerId'>,
+  product: Omit<ProductType, 'id' | 'clientCode' | 'customerId' | 'clientId'>,
   id: number
 ) => {
   return await axiosClient.put(`${url}/${id}`, product)
