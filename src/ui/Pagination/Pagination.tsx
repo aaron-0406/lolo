@@ -81,7 +81,8 @@ const Pagination: FC<PaginationProps> = (props) => {
               className="ri-arrow-left-s-line"
               onClick={() => {
                 if (opts.page > 1 && setOpts) setOpts({ ...opts, page: opts.page - 1 })
-                if (setOptsFilter) setOptsFilter({ url: url ?? '', opts: { ...opts, page: opts.page - 1 } })
+                if (opts.page > 1 && setOptsFilter)
+                  setOptsFilter({ url: url ?? '', opts: { ...opts, page: opts.page - 1 } })
               }}
             />
 

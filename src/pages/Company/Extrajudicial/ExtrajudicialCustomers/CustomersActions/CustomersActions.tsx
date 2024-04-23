@@ -80,8 +80,8 @@ const CustomersActions = () => {
           width="100%"
           label="Buscar cliente:"
           placeholder="Buscar cliente por nombre"
-          clearInput
           value={searchFilter.filter}
+          clearInput
         />
 
         <Button

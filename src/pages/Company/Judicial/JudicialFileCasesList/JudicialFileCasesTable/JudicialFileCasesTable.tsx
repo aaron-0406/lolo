@@ -57,12 +57,11 @@ const JudicialFileCasesTable = () => {
   const [fileCaseId, setFileCaseId] = useState<number>(0)
 
   const selectedFilterOptions = getSelectedFilters(currentPath)?.filters ?? []
+  const opts = getSearchFilters(currentPath)?.opts ?? { filter: '', limit: 50, page: 1 }
 
   const onClickRow = (code: string) => {
     navigate(`${paths.judicial.detallesExpediente(urlIdentifier, code)}`)
   }
-
-  const opts = getSearchFilters(currentPath)?.opts ?? { filter: '', limit: 50, page: 1 }
 
   const onChangeFilterOptions = (filterOption: FilterOptionsProps) => {
     setTimeout(() => {
@@ -182,7 +181,6 @@ const JudicialFileCasesTable = () => {
 
   useEffect(() => {
     refetch()
-    console.log(getSearchFilters(currentPath))
   }, [getSelectedFilters(currentPath)?.filters, opts])
 
   return (

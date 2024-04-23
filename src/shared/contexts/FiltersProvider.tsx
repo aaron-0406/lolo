@@ -15,6 +15,7 @@ type SearchFilters = {
   url: string
   opts: Opts
 }
+
 export const FiltersContext = createContext<{
   filterOptions: {
     getSelectedFilters: (url: string) => SelectedFilters | undefined
@@ -74,6 +75,7 @@ export const FiltersProvider = ({ children }: FiltersProviderProps) => {
   const setSearchFilters = (searchFilters: SearchFilters) => {
     setSearch((prev) => {
       const filter = prev.find((prevFilter) => prevFilter.url === searchFilters.url)
+
       if (!filter) {
         return [...prev, searchFilters]
       } else {
