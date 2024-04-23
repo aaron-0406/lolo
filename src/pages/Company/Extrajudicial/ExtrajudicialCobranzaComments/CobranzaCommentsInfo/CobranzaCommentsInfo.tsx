@@ -56,7 +56,7 @@ const CobranzaCommentsInfo = ({ name, clientId }: CobranzaCommentsInfoProps) => 
       <Container display="flex" flexDirection="column" gap="10px">
         <Breadcrumbs routes={routers} />
         <Container padding="0 20px 0 20px" backgroundColor="#e5e7eb">
-          <Text.Body size="l" weight="bold">
+          <Text.Body size="m" weight="bold">
             {name}
           </Text.Body>
         </Container>
