@@ -164,7 +164,7 @@ const CourtModal = ({ visible, onClose, isEdit = false, idCourt = 0 }: CourtModa
         size="small"
         minHeight="140px"
         footer={
-          <Container width="100%" height="75px" display="flex" justifyContent="center" alignItems="center" gap="20px">
+          <Container width="100%" height="75px" display="flex" justifyContent="end" alignItems="center" gap="20px">
             <Button
               width="125px"
               label={isEdit ? 'Editar' : 'Agregar'}
