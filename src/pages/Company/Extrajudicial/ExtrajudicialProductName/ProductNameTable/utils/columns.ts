@@ -10,13 +10,13 @@ export const ProductNameColumns: ColumProps[] = [
   {
     id: 'productname.datatable.header.name',
     title: 'NOMBRE',
-    width: '20%',
+    width: '30%',
     justifyContent: 'left',
   },
   {
     id: 'productname.datatable.header.date',
     title: 'FECHA DE REGISTRO',
-    width: '30%',
+    width: '20%',
     justifyContent: 'center',
   },
   {

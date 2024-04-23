@@ -171,7 +171,7 @@ const ProceduralWayModal = ({ visible, onClose, isEdit = false, idProceduralWay 
         size="small"
         minHeight="140px"
         footer={
-          <Container width="100%" height="75px" display="flex" justifyContent="center" alignItems="center" gap="20px">
+          <Container width="100%" height="75px" display="flex" justifyContent="end" alignItems="center" gap="20px">
             <Button
               width="125px"
               label={isEdit ? 'Editar' : 'Agregar'}

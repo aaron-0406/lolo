@@ -112,7 +112,7 @@ const ProductNameTable = () => {
                         onClick={() => {
                           handleClickDeleteProductName(record.id)
                         }}
-                        messageTooltip="Eliminar tipo de contacto"
+                        messageTooltip="Eliminar nombre de producto"
                         shape="round"
                         size="small"
                         leadingIcon="ri-delete-bin-line"

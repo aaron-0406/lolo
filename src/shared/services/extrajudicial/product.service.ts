@@ -22,7 +22,7 @@ export const createProduct = async (product: Omit<ProductType, 'id'>) => {
 }
 
 export const editProduct = async (
-  product: Omit<ProductType, 'id' | 'clientCode' | 'code' | 'customerId' | 'clientId'>,
+  product: Omit<ProductType, 'id' | 'clientCode' | 'customerId' | 'clientId'>,
   id: number
 ) => {
   return await axiosClient.put(`${url}/${id}`, product)

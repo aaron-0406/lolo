@@ -44,6 +44,9 @@ const CobranzaProductsModal = ({
     client: {
       customer: { id: customerId },
     },
+    bank: {
+      selectedBank: { idCHB },
+    },
   } = useLoloContext()
 
   const formMethods = useForm<Omit<ProductType, 'id'> & { negotiation: { name: string; customerHasBankId: string } }>({
@@ -53,9 +56,10 @@ const CobranzaProductsModal = ({
       code: '',
       clientId: 0,
       customerId: customerId,
-      name: '',
       state: '',
       negotiationId: 0,
+      extProductNameId: 0,
+      customerHasBankId: idCHB.length ? parseInt(idCHB) : 0,
     },
   })
 
@@ -102,7 +106,7 @@ const CobranzaProductsModal = ({
     AxiosError<CustomErrorResponse>
   >(
     async () => {
-      const { customerId, clientId, code, negotiation, ...restClient } = getValues()
+      const { customerId, clientId, negotiation, ...restClient } = getValues()
       return await editProduct({ ...restClient }, idProduct)
     },
     {
@@ -137,11 +141,11 @@ const CobranzaProductsModal = ({
       onSuccess: ({ data }) => {
         if (!!idProduct) {
           setValue('code', data.code, { shouldValidate: true })
-          setValue('name', data.name, { shouldValidate: true })
           setValue('state', data.state, { shouldValidate: true })
           setValue('clientId', data.clientId, { shouldValidate: true })
           setValue('negotiationId', data.negotiationId, { shouldValidate: true })
           setValue('negotiation', data.negotiation, { shouldValidate: true })
+          setValue('extProductNameId', data.extProductNameId, { shouldValidate: true })
         } else {
           reset()
         }
@@ -203,7 +207,7 @@ const CobranzaProductsModal = ({
           gap="20px"
         >
           <Container width="100%" display="flex" flexDirection="column" gap="10px" padding="20px">
-            <CobranzaProductsInfoForm clientId={clientId} isEdit={isEdit} />
+            <CobranzaProductsInfoForm clientId={clientId} />
           </Container>
         </Container>
       </Modal>
