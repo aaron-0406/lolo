@@ -45,7 +45,6 @@ const TableProductsAdded = ({ globalLoad }: Props) => {
         const chunk = watch('productsAdded')
           .map((item) => {
             return {
-              name: item.name,
               clientName: item.clientName,
               state: item.state,
               customerId: customerId,
@@ -82,7 +81,6 @@ const TableProductsAdded = ({ globalLoad }: Props) => {
       return await createProductsDash(
         [
           {
-            name: product.name,
             clientId: product.clientId,
             clientName: product.clientName,
             customerId: product.id,
@@ -165,7 +163,6 @@ const TableProductsAdded = ({ globalLoad }: Props) => {
                   <BodyCell>{`${record.clientId || ''}`}</BodyCell>
                   <BodyCell>{`${record.clientName || ''}`}</BodyCell>
                   <BodyCell>{`${record.clientId || ''}`}</BodyCell>
-                  <BodyCell>{`${record.name || ''}`}</BodyCell>
                   <BodyCell>{`${record.state || ''}`}</BodyCell>
                   <BodyCell textAlign="center">
                     {

@@ -10,7 +10,6 @@ interface Client {
 }
 
 interface Product {
-  name: string
   clientId: number
   state: string
   clientName: string
