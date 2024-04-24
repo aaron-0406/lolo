@@ -192,7 +192,7 @@ const CustomersTable = () => {
 
   useEffect(() => {
     refetch()
-  }, [opts])
+  }, [opts.filter.length, opts.page])
 
   return (
     <Container width="100%" height="calc(100% - 112px)" padding="20px">
