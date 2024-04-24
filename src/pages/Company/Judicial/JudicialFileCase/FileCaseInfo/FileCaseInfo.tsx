@@ -50,19 +50,21 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
   const judicialSubject = getValues('judicialSubject')
   const judicialProceduralWay = getValues('judicialProceduralWay')
 
-  const { data: dataCourts } = useQuery<AxiosResponse<Array<JudicialCourtType>>>(
+  const { data: dataCourts } = useQuery<AxiosResponse<Array<JudicialCourtType & { city: { name: string } }>>>(
     [KEY_JUDICIAL_COURTS_CACHE, parseInt(chb?.length ? chb : '0')],
     async () => {
       return await getCourtByCHB(parseInt(chb.length ? chb : '0'))
     }
   )
   const courts = dataCourts?.data ?? []
-  const optionsCourts: Array<SelectItemType> = courts.map((court: { id: number; court: string }) => {
-    return {
-      key: String(court.id),
-      label: court.court,
+  const optionsCourts: Array<SelectItemType> = courts.map(
+    (court: { id: number; court: string; city: { name: string } }) => {
+      return {
+        key: String(court.id),
+        label: `${court.court} ${court?.city?.name ? ' - ' + court?.city?.name.toUpperCase() : ''}`,
+      }
     }
-  })
+  )
 
   const { data: dataSubject } = useQuery<AxiosResponse<Array<JudicialSubjectType>>>(
     [KEY_JUDICIAL_SUBJECT_CACHE, parseInt(chb?.length ? chb : '0')],
