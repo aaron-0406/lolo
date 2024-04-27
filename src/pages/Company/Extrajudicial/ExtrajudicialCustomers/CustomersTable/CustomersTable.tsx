@@ -83,25 +83,23 @@ const CustomersTable = () => {
   const selectedFilterOptions = getSelectedFilters(currentPath)?.filters ?? []
 
   const onChangeFilterOptions = (filterOption: FilterOptionsProps) => {
-    setTimeout(() => {
-      const position = selectedFilterOptions.find(
-        (selectedFilterOption) => selectedFilterOption.identifier === filterOption.identifier
-      )
+    const position = selectedFilterOptions.find(
+      (selectedFilterOption) => selectedFilterOption.identifier === filterOption.identifier
+    )
 
-      if (!position) {
-        setSelectedFilters({ url: currentPath, filters: [...selectedFilterOptions, filterOption] })
-      } else {
-        const selectedFilterOptionsTestCopy = selectedFilterOptions
-        const selectedFiltersUpdated = selectedFilterOptionsTestCopy.map((selectedFilterOption) => {
-          if (selectedFilterOption.identifier === filterOption.identifier) {
-            return filterOption
-          }
+    if (!position) {
+      setSelectedFilters({ url: currentPath, filters: [...selectedFilterOptions, filterOption] })
+    } else {
+      const selectedFilterOptionsTestCopy = selectedFilterOptions
+      const selectedFiltersUpdated = selectedFilterOptionsTestCopy.map((selectedFilterOption) => {
+        if (selectedFilterOption.identifier === filterOption.identifier) {
+          return filterOption
+        }
 
-          return selectedFilterOption
-        })
-        setSelectedFilters({ url: currentPath, filters: selectedFiltersUpdated })
-      }
-    })
+        return selectedFilterOption
+      })
+      setSelectedFilters({ url: currentPath, filters: selectedFiltersUpdated })
+    }
   }
 
   const hasAccessToTheButton = useMemo(() => {
