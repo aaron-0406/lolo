@@ -58,6 +58,9 @@ import ProtectedRoutes from '../ProtectedRoutes'
 import ProtectedRoutesCompany from '../ProtectedRoutesCompany'
 
 import paths from '../paths'
+import JudicialBinnacle from 'pages/Company/Judicial/JudicialBinnacle'
+import JudicialBinTypeBinnacle from 'pages/Company/Judicial/JudicialBinTypeBinnacle'
+import JudicialBinProceduralStage from 'pages/Company/Judicial/JudicialBinProceduralStage'
 
 const AppRouter = () => {
   return (
@@ -117,6 +120,9 @@ const AppRouter = () => {
         <Route path={paths.judicial.materias()} element={<JudicialSubject />} />
         <Route path={paths.judicial.detallesExpediente()} element={<JudicialFileCase />} />
         <Route path={paths.judicial.productosDemandados()} element={<JudicialFileCaseDemandedProducts />} />
+        <Route path={paths.judicial.bitacora()} element={<JudicialBinnacle />} />
+        <Route path={paths.judicial.bitacoraTipo()} element={<JudicialBinTypeBinnacle />} />
+        <Route path={paths.judicial.bitacoraProceduralStage()} element={<JudicialBinProceduralStage />} />
       </Route>
 
       <Route path="*" element={<NotFound />} />

@@ -4,7 +4,7 @@ import { JudicialCaseFileType } from '@/types/judicial/judicial-case-file.type'
 import Button from '@/ui/Button'
 import Container from '@/ui/Container'
 import { useFormContext } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import paths from 'shared/routes/paths'
 
 type FileCaseModalsProps = {
@@ -20,6 +20,7 @@ const FileCaseModals = ({ ownerFileCase, numberCaseFile }: FileCaseModalsProps) 
       customer: { urlIdentifier },
     },
   } = useLoloContext()
+  const codeParams = useParams().code ?? ''
 
   const clientId = getValues('id')
 
@@ -35,8 +36,19 @@ const FileCaseModals = ({ ownerFileCase, numberCaseFile }: FileCaseModalsProps) 
     navigate(`${paths.cobranza.cobranzaContacts(urlIdentifier, ownerFileCase?.code)}`)
   }
 
+  const onClickBitacora = () => {
+    navigate(`${paths.judicial.bitacora(urlIdentifier, codeParams)}`)
+  }
+
   return (
     <Container width="100%" height="100%" display="flex" flexDirection="row" gap="10px">
+      <Button
+        label="Bitacora"
+        onClick={onClickBitacora}
+        permission="P13-01-01"
+        disabled={!clientId}
+        trailingIcon="ri-discuss-line"
+      />
       {/* <Button label="Bitacora" />
       <Button label="Garantías" />
       <Button label="Procesos Conexos" />

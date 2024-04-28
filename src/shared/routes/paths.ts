@@ -55,9 +55,15 @@ export default {
     juzgados: (urlIdentifier = ':urlIdentifier') => `/judicial/${urlIdentifier}/juzgados`,
     materias: (urlIdentifier = ':urlIdentifier') => `/judicial/${urlIdentifier}/materias`,
     expedientes: (urlIdentifier = ':urlIdentifier') => `/judicial/${urlIdentifier}/expedientes`,
+
     detallesExpediente: (urlIdentifier = ':urlIdentifier', code = ':code') =>
       `/judicial/${urlIdentifier}/expedientes/${code}`,
     productosDemandados: (urlIdentifier = ':urlIdentifier', code = ':code') =>
       `/judicial/${urlIdentifier}/expedientes/${code}/productos-demandados`,
+
+    bitacora: (urlIdentifier = ':urlIdentifier', code = ':code') =>
+      `/judicial/${urlIdentifier}/expediente/${code}/bitacora`,
+    bitacoraTipo: (urlIdentifier = ':urlIdentifier') => `/judicial/${urlIdentifier}/tipo-bitacora`,
+    bitacoraProceduralStage: (urlIdentifier = ':urlIdentifier') => `/judicial/${urlIdentifier}/etapa-procedimental`,
   },
 }
