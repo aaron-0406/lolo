@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import judicialBinnacleCache from '../../JudicialBinnacleTable/utils/judicial-binnacle.cache'
-import { FormProvider, useForm } from 'react-hook-form'
+import { Controller, FormProvider, useForm } from 'react-hook-form'
 import Modal from '@/ui/Modal'
 import Container from '@/ui/Container'
 import Button from '@/ui/Button'
@@ -14,6 +14,11 @@ import notification from '@/ui/notification'
 import { AxiosError, AxiosResponse } from 'axios'
 import { CustomErrorResponse } from 'types/customErrorResponse'
 import { createBinnacle, getBinnacleById, updateBinnacle } from '@/services/judicial/judicial-binnacle.service'
+import JudicialBinnacleInfoFileForm from './JudicialBinnacleInfoFileForm'
+import { JudicialBinFileType } from '@/types/judicial/judicial-bin-file.type'
+import TextAreaField from '@/ui/fields/TextAreaField'
+import { useMediaQuery } from '@/hooks/useMediaQuery'
+import { device } from '@/breakpoints/responsive'
 
 type JudicialBinnacleModalProps = {
   visible: boolean
@@ -44,7 +49,12 @@ const JudicialBinnacleModal = ({
     },
   } = useLoloContext()
 
-  const formMethods = useForm<Omit<JudicialBinnacleType, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'>>({
+  const formMethods = useForm<
+    Omit<JudicialBinnacleType, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'> & {
+      judicialBinFiles: JudicialBinFileType[]
+      filesDnD: File[]
+    }
+  >({
     resolver: ModalJudicialBinnacleResolver,
     mode: 'all',
     defaultValues: {
@@ -54,6 +64,8 @@ const JudicialBinnacleModal = ({
       judicialBinProceduralStageId: 0,
       judicialFileCaseId: Number(judicialFileCaseId),
       lastPerformed: '',
+      judicialBinFiles: [],
+      filesDnD: [],
     },
   })
 
@@ -61,7 +73,8 @@ const JudicialBinnacleModal = ({
     setValue,
     getValues,
     reset,
-    formState: { isValid },
+    control,
+    formState: { isValid, errors },
   } = formMethods
 
   const { isLoading: loadingCreateJudicialBinnacle, mutate: createJudicialBinnacle } = useMutation<
@@ -70,7 +83,7 @@ const JudicialBinnacleModal = ({
   >(
     async () => {
       const { ...restClient } = getValues()
-      return await createBinnacle({ ...restClient })
+      return await createBinnacle({ ...restClient, files: formMethods.watch('filesDnD') })
     },
     {
       onSuccess: (result) => {
@@ -101,12 +114,13 @@ const JudicialBinnacleModal = ({
   >(
     async () => {
       const { customerHasBankId, judicialFileCaseId, ...restClient } = getValues()
-      return await updateBinnacle(idBinnacle, { ...restClient })
+      return await updateBinnacle(idBinnacle, { ...restClient, files: formMethods.watch('filesDnD') })
     },
     {
       onSuccess: (result) => {
         editJudicialBinnacleCache(result.data)
-        notification({ type: 'success', message: 'Bitacora editado' })
+        setValue('filesDnD', [])
+        notification({ type: 'success', message: 'Bitacora editada' })
         onClose()
       },
       onMutate: () => {
@@ -140,6 +154,7 @@ const JudicialBinnacleModal = ({
           setValue('date', moment(data.date).format('DD-MM-YYYY'), { shouldValidate: true })
           setValue('lastPerformed', data.lastPerformed, { shouldValidate: true })
           setValue('judicialFileCaseId', data.judicialFileCaseId, { shouldValidate: true })
+          setValue('judicialBinFiles', data.judicialBinFiles, { shouldValidate: true })
         } else {
           reset()
         }
@@ -159,6 +174,7 @@ const JudicialBinnacleModal = ({
   const handleClickCloseModal = () => {
     reset()
     onClose()
+    setValue('filesDnD', [])
   }
 
   useEffect(() => {
@@ -166,6 +182,8 @@ const JudicialBinnacleModal = ({
       refetchGetJudicialBinnacleById()
     }
   }, [idBinnacle, refetchGetJudicialBinnacleById])
+
+  const greaterThanMobile = useMediaQuery(device.desktopL)
 
   return (
     <FormProvider {...formMethods}>
@@ -175,7 +193,7 @@ const JudicialBinnacleModal = ({
         id="modal-binnacle"
         title={isEdit ? 'Editar Bitacora' : 'Agregar Bitacora'}
         contentOverflowY="auto"
-        size="small"
+        size="large"
         minHeight="430px"
         footer={
           <Container width="100%" height="75px" display="flex" justifyContent="end" alignItems="center" gap="20px">
@@ -200,8 +218,51 @@ const JudicialBinnacleModal = ({
           align-items="center"
           gap="20px"
         >
-          <Container width="100%" display="flex" flexDirection="column" gap="10px" padding="20px">
-            <JudicialBinnacleInfoForm />
+          <Container width="100%" flexWrap="nowrap" display="flex" flexDirection="column" padding="10px 20px">
+            <Container
+              width="100%"
+              flexWrap="nowrap"
+              display="flex"
+              flexDirection={!greaterThanMobile ? 'column' : 'row'}
+              gap="10px"
+            >
+              <Container
+                width={!greaterThanMobile ? '100%' : '50%'}
+                display="flex"
+                flexDirection="column"
+                gap="10px"
+                padding="20px 20px 0 20px"
+              >
+                <JudicialBinnacleInfoForm />
+              </Container>
+              <Container
+                width={!greaterThanMobile ? '100%' : '50%'}
+                display="flex"
+                flexDirection="column"
+                gap="10px"
+                padding="20px 20px 0 20px"
+              >
+                <JudicialBinnacleInfoFileForm />
+              </Container>
+            </Container>
+            <Container padding="0 20px">
+              <Controller
+                name="lastPerformed"
+                control={control}
+                render={({ field }) => (
+                  <TextAreaField
+                    rows={4}
+                    width="100%"
+                    label="Último Actuado:"
+                    value={String(field.value)}
+                    onChange={(key) => {
+                      field.onChange(key)
+                    }}
+                    hasError={!!errors.lastPerformed}
+                  />
+                )}
+              />
+            </Container>
           </Container>
         </Container>
       </Modal>

@@ -14,13 +14,19 @@ import TextAreaField from '@/ui/fields/TextAreaField'
 import { KEY_JUDICIAL_BIN_TYPE_BINNACLE_CACHE } from 'pages/Company/Judicial/JudicialBinTypeBinnacle/JudicialBinTypeBinnacleTable/utils/judicial-bin-type-binnacle.cache'
 import { JudicialBinTypeBinnacleType } from '@/types/judicial/judicial-bin-type-binnacle.type'
 import { getJudicialBinTypeBinnacleByCHB } from '@/services/judicial/judicial-bin-type-binnacle.service'
+import { JudicialBinFileType } from '@/types/judicial/judicial-bin-file.type'
 
 const JudicialBinnacleInfoForm = () => {
   const {
     control,
     setValue,
     formState: { errors },
-  } = useFormContext<Omit<JudicialBinnacleType, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'>>()
+  } = useFormContext<
+    Omit<JudicialBinnacleType, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'> & {
+      judicialBinFiles: JudicialBinFileType[]
+      filesDnD: File[]
+    }
+  >()
   const {
     bank: {
       selectedBank: { idCHB },
@@ -110,21 +116,6 @@ const JudicialBinnacleInfoForm = () => {
               field.onChange(key)
             }}
             hasError={!!errors.binnacleTypeId}
-          />
-        )}
-      />
-      <Controller
-        name="lastPerformed"
-        control={control}
-        render={({ field }) => (
-          <TextAreaField
-            width="100%"
-            label="Último Actuado:"
-            value={String(field.value)}
-            onChange={(key) => {
-              field.onChange(key)
-            }}
-            hasError={!!errors.lastPerformed}
           />
         )}
       />
