@@ -45,6 +45,7 @@ import JudicialFileCase from 'pages/Company/Judicial/JudicialFileCase/JudicialFi
 import JudicialSubject from 'pages/Company/Judicial/JudicialSubject'
 import JudicialCourt from 'pages/Company/Judicial/JudicialCourt'
 import JudicialProceduralWay from 'pages/Company/Judicial/JudicialProceduralWay/JudicialProceduralWay'
+import JudicialFileCaseDemandedProducts from 'pages/Company/Judicial/JudicialFileCaseDemandedProducts'
 
 import ErrorPage from '../../../pages/ErrorPage'
 import NotFound from '../../../pages/NotFound'
@@ -113,8 +114,9 @@ const AppRouter = () => {
         <Route path={paths.judicial.viaProcedimental()} element={<JudicialProceduralWay />} />
         <Route path={paths.judicial.juzgados()} element={<JudicialCourt />} />
         <Route path={paths.judicial.expedientes()} element={<JudicialFileCasesList />} />
-        <Route path={paths.judicial.detallesExpediente()} element={<JudicialFileCase />} />
         <Route path={paths.judicial.materias()} element={<JudicialSubject />} />
+        <Route path={paths.judicial.detallesExpediente()} element={<JudicialFileCase />} />
+        <Route path={paths.judicial.productosDemandados()} element={<JudicialFileCaseDemandedProducts />} />
       </Route>
 
       <Route path="*" element={<NotFound />} />
