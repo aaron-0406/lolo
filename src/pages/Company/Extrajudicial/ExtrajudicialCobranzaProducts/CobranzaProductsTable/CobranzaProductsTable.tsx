@@ -16,6 +16,7 @@ import Button from '@/ui/Button'
 import { productsColumns } from './utils/columns'
 import CobranzaProductsModal from '../Modals/CobranzaProductsModal'
 import DeleteCobranzaProductsModal from '../Modals/DeleteCobranzaProductsModal'
+import { ExtProductNameType } from '@/types/extrajudicial/ext-product-name'
 
 type CobranzaProductsTableProps = {
   clientId?: number
@@ -48,7 +49,9 @@ const CobranzaProductsTable = ({ clientId = 0 }: CobranzaProductsTableProps) => 
     hideDeleteProduct()
   }
 
-  const { data, isLoading } = useQuery<AxiosResponse<Array<ProductType & { negotiation: NegotiationType }>, Error>>(
+  const { data, isLoading } = useQuery<
+    AxiosResponse<Array<ProductType & { negotiation: NegotiationType; extProductName: ExtProductNameType }>, Error>
+  >(
     [KEY_COBRANZA_URL_PRODUCT_CODE_CACHE, clientId],
     async () => {
       return await getProductsByClientId(clientId)
@@ -79,61 +82,63 @@ const CobranzaProductsTable = ({ clientId = 0 }: CobranzaProductsTableProps) => 
         }
       >
         {!!products?.length &&
-          products.map((record: ProductType & { negotiation: NegotiationType }, key) => {
-            return (
-              <tr className="styled-data-table-row" key={record.id}>
-                <BodyCell textAlign="center">{key + 1 || ''}</BodyCell>
-                <BodyCell textAlign="left">
-                  <Text.Body size="m" weight="regular">
-                    {record.code || ''}
-                  </Text.Body>
-                </BodyCell>
-                <BodyCell textAlign="center">
-                  <Text.Body size="m" weight="bold" color="Primary5">
-                    {record.name || ''}
-                  </Text.Body>
-                </BodyCell>
-                <BodyCell textAlign="center">
-                  <Text.Body size="m" weight="bold" color="Primary5">
-                    {record?.negotiation?.name || '-'}
-                  </Text.Body>
-                </BodyCell>
-                <BodyCell textAlign="center">
-                  <Text.Body size="m" weight="bold" color="Primary5">
-                    {record.state || ''}
-                  </Text.Body>
-                </BodyCell>
-                <BodyCell textAlign="center">
-                  {
-                    <Container display="flex" gap="10px" justifyContent="space-around">
-                      <Button
-                        onClick={(event) => {
-                          event.stopPropagation()
-                          handleClickEdit(record.id)
-                        }}
-                        messageTooltip="Editar producto"
-                        shape="round"
-                        size="small"
-                        leadingIcon="ri-pencil-fill"
-                        permission="P02-02-07-02"
-                      />
-                      <Button
-                        onClick={() => {
-                          handleClickDelete(record.id)
-                        }}
-                        messageTooltip="Eliminar producto"
-                        shape="round"
-                        size="small"
-                        leadingIcon="ri-delete-bin-line"
-                        permission="P02-02-07-03"
-                        display="danger"
-                      />
-                    </Container>
-                  }
-                </BodyCell>
-              </tr>
-            )
-          })}
+          products.map(
+            (record: ProductType & { negotiation: NegotiationType; extProductName: ExtProductNameType }, key) => {
+              return (
+                <tr className="styled-data-table-row" key={record.id}>
+                  <BodyCell textAlign="center">{key + 1 || ''}</BodyCell>
+                  <BodyCell textAlign="left">
+                    <Text.Body size="m" weight="regular">
+                      {record.code || ''}
+                    </Text.Body>
+                  </BodyCell>
+                  <BodyCell textAlign="center">
+                    <Text.Body size="m" weight="bold" color="Primary5">
+                      {record?.extProductName?.productName || '-'}
+                    </Text.Body>
+                  </BodyCell>
+                  <BodyCell textAlign="center">
+                    <Text.Body size="m" weight="bold" color="Primary5">
+                      {record?.negotiation?.name || '-'}
+                    </Text.Body>
+                  </BodyCell>
+                  <BodyCell textAlign="center">
+                    <Text.Body size="m" weight="bold" color="Primary5">
+                      {record.state || ''}
+                    </Text.Body>
+                  </BodyCell>
+                  <BodyCell textAlign="center">
+                    {
+                      <Container display="flex" gap="10px" justifyContent="space-around">
+                        <Button
+                          onClick={(event) => {
+                            event.stopPropagation()
+                            handleClickEdit(record.id)
+                          }}
+                          messageTooltip="Editar producto"
+                          shape="round"
+                          size="small"
+                          leadingIcon="ri-pencil-fill"
+                          permission="P02-02-07-02"
+                        />
+                        <Button
+                          onClick={() => {
+                            handleClickDelete(record.id)
+                          }}
+                          messageTooltip="Eliminar producto"
+                          shape="round"
+                          size="small"
+                          leadingIcon="ri-delete-bin-line"
+                          permission="P02-02-07-03"
+                          display="danger"
+                        />
+                      </Container>
+                    }
+                  </BodyCell>
+                </tr>
+              )
+            }
+          )}
       </Table>
 
       <CobranzaProductsModal

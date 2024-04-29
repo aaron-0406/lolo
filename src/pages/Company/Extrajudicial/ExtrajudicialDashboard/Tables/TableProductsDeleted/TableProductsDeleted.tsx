@@ -121,8 +121,7 @@ const TableProductsDeleted = ({ globalLoad }: Props) => {
             .filter(
               (item) =>
                 item.code.toLowerCase().includes(filter.toLowerCase()) ||
-                String(item.clientId).toLowerCase().includes(filter.toLowerCase()) ||
-                item.name.toLowerCase().includes(filter.toLowerCase())
+                String(item.clientId).toLowerCase().includes(filter.toLowerCase())
             )
             .map((record: ProductType, index: number) => {
               return (
@@ -130,7 +129,6 @@ const TableProductsDeleted = ({ globalLoad }: Props) => {
                   <BodyCell textAlign="center">{`${index + 1 || ''}`}</BodyCell>
                   <BodyCell>{`${record.clientId || ''}`}</BodyCell>
                   <BodyCell>{`${record.code || ''}`}</BodyCell>
-                  <BodyCell>{`${record.name || ''}`}</BodyCell>
                   <BodyCell textAlign="center">
                     {
                       <Button

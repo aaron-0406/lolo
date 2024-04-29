@@ -107,27 +107,25 @@ const UserLogsTable: FC<UserLogsTableProps> = ({ opts, setOpts }) => {
   }, [ipAddresses.length, findAddressByIP])
 
   const onChangeFilterOptions = (filterOption: FilterOptionsProps) => {
-    setTimeout(() => {
-      const position = selectedFilterOptions.find(
-        (selectedFilterOption) => selectedFilterOption.identifier === filterOption.identifier
-      )
+    const position = selectedFilterOptions.find(
+      (selectedFilterOption) => selectedFilterOption.identifier === filterOption.identifier
+    )
 
-      if (!position) {
-        setSelectedFilterOptions((prev) => {
-          return [...prev, filterOption]
-        })
-      } else {
-        setSelectedFilterOptions((prev) => {
-          return prev.map((selectedFilterOption) => {
-            if (selectedFilterOption.identifier === filterOption.identifier) {
-              return filterOption
-            }
+    if (!position) {
+      setSelectedFilterOptions((prev) => {
+        return [...prev, filterOption]
+      })
+    } else {
+      setSelectedFilterOptions((prev) => {
+        return prev.map((selectedFilterOption) => {
+          if (selectedFilterOption.identifier === filterOption.identifier) {
+            return filterOption
+          }
 
-            return selectedFilterOption
-          })
+          return selectedFilterOption
         })
-      }
-    })
+      })
+    }
   }
 
   useEffect(() => {

@@ -1,5 +1,4 @@
 import { createContext, Dispatch, useContext, useEffect, useState } from 'react'
-import jwtDecode from 'jwt-decode'
 import { usePersistedState } from '@/hooks/usePersistedState'
 import { CityType } from '@/types/dash/city.type'
 import { CustomerHasBankType } from '@/types/dash/customer-has-bank'

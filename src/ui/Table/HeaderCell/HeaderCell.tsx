@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import styled, { css } from 'styled-components'
 import type CSS from 'csstype'
 import Text from '@/ui/Text'
@@ -30,7 +30,7 @@ const HeaderCell: React.FC<HeaderCellProps> = ({
   onChangeFilterOptions,
 }) => {
   const [toggleSelect, setToggleSelect] = useState<boolean>(false)
-  const [selectedFilterOptions, setSelectedFilterOptions] = useState<Array<SelectItem<any, any>>>(selectedOptions ?? [])
+  const selectedFilterOptions = selectedOptions ?? []
 
   const onSelectToogle = () => {
     if (isThereFilter) {
@@ -44,25 +44,13 @@ const HeaderCell: React.FC<HeaderCellProps> = ({
     const position = selectedFilterOptions.find((selectedFilter) => selectedFilter.key === option.key)
 
     if (!position) {
-      setSelectedFilterOptions((prev) => {
-        const filterOptions = [...prev, option]
-        onChangeFilterOptions?.(filterOptions)
-        return filterOptions
-      })
+      const filterOptions = [...selectedFilterOptions, option]
+      onChangeFilterOptions?.(filterOptions)
     } else {
-      setSelectedFilterOptions((prev) => {
-        const filterOptions = prev.filter((filterOption) => filterOption.key !== option.key)
-        onChangeFilterOptions?.(filterOptions)
-        return filterOptions
-      })
+      const filterOptions = selectedFilterOptions.filter((filterOption) => filterOption.key !== option.key)
+      onChangeFilterOptions?.(filterOptions)
     }
   }
-
-  useEffect(() => {
-    if (!selectedOptions?.length) {
-      setSelectedFilterOptions([])
-    }
-  }, [selectedOptions?.length === 0 || selectedOptions === undefined])
 
   return (
     <StyledTh width={width} isThereFilter={isThereFilter} textTransform={textTransform} onClick={onSelectToogle}>
@@ -97,7 +85,6 @@ const HeaderCell: React.FC<HeaderCellProps> = ({
                   remixClass="ri-delete-bin-line"
                   color="Warning3"
                   onClick={() => {
-                    setSelectedFilterOptions([])
                     onChangeFilterOptions?.([])
                   }}
                 />

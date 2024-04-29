@@ -10,6 +10,7 @@ const CourtModal: yup.SchemaOf<Omit<JudicialCourtType, 'id'>> = yup.object().sha
     .required()
     .matches(/^[^\d]+$/),
   customerHasBankId: yup.number().required(),
+  cityId: yup.number().optional(),
 })
 
 export const ModalCourtResolver = yupResolver(CourtModal)

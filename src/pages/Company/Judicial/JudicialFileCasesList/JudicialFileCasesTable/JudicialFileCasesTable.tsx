@@ -2,12 +2,11 @@
 import Button from '@/ui/Button'
 import Container from '@/ui/Container'
 import Pagination from '@/ui/Pagination'
-import { Opts } from '@/ui/Pagination/interfaces'
 import Table from '@/ui/Table'
 import BodyCell from '@/ui/Table/BodyCell'
 import EmptyStateCell from '@/ui/Table/EmptyStateCell'
 import { FilterOptionsProps } from '@/ui/Table/Table'
-import { Dispatch, useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { judicialCaseFileColumns } from './utils/columns'
 import { useLocation, useNavigate } from 'react-router-dom'
 import paths from 'shared/routes/paths'
@@ -31,12 +30,7 @@ import notification from '@/ui/notification'
 import { CustomErrorResponse } from 'types/customErrorResponse'
 import Text from '@/ui/Text'
 
-type JudicialFileCasesTableProps = {
-  opts: Opts
-  setOpts: Dispatch<Opts>
-}
-
-const JudicialFileCasesTable = ({ opts, setOpts }: JudicialFileCasesTableProps) => {
+const JudicialFileCasesTable = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const currentPath = location.pathname
@@ -57,36 +51,36 @@ const JudicialFileCasesTable = ({ opts, setOpts }: JudicialFileCasesTableProps) 
 
   const {
     filterOptions: { getSelectedFilters, setSelectedFilters },
+    filterSearch: { getSearchFilters, setSearchFilters },
   } = useFiltersContext()
 
   const [fileCaseId, setFileCaseId] = useState<number>(0)
 
   const selectedFilterOptions = getSelectedFilters(currentPath)?.filters ?? []
+  const opts = getSearchFilters(currentPath)?.opts ?? { filter: '', limit: 50, page: 1 }
 
   const onClickRow = (code: string) => {
     navigate(`${paths.judicial.detallesExpediente(urlIdentifier, code)}`)
   }
 
   const onChangeFilterOptions = (filterOption: FilterOptionsProps) => {
-    setTimeout(() => {
-      const position = selectedFilterOptions.find(
-        (selectedFilterOption) => selectedFilterOption.identifier === filterOption.identifier
-      )
+    const position = selectedFilterOptions.find(
+      (selectedFilterOption) => selectedFilterOption.identifier === filterOption.identifier
+    )
 
-      if (!position) {
-        setSelectedFilters({ url: currentPath, filters: [...selectedFilterOptions, filterOption] })
-      } else {
-        const selectedFilterOptionsTestCopy = selectedFilterOptions
-        const selectedFiltersUpdated = selectedFilterOptionsTestCopy.map((selectedFilterOption) => {
-          if (selectedFilterOption.identifier === filterOption.identifier) {
-            return filterOption
-          }
+    if (!position) {
+      setSelectedFilters({ url: currentPath, filters: [...selectedFilterOptions, filterOption] })
+    } else {
+      const selectedFilterOptionsTestCopy = selectedFilterOptions
+      const selectedFiltersUpdated = selectedFilterOptionsTestCopy.map((selectedFilterOption) => {
+        if (selectedFilterOption.identifier === filterOption.identifier) {
+          return filterOption
+        }
 
-          return selectedFilterOption
-        })
-        setSelectedFilters({ url: currentPath, filters: selectedFiltersUpdated })
-      }
-    })
+        return selectedFilterOption
+      })
+      setSelectedFilters({ url: currentPath, filters: selectedFiltersUpdated })
+    }
   }
 
   const hasAccessToTheButton = useMemo(() => {
@@ -185,11 +179,15 @@ const JudicialFileCasesTable = ({ opts, setOpts }: JudicialFileCasesTableProps) 
 
   useEffect(() => {
     refetch()
-  }, [getSelectedFilters(currentPath)?.filters, opts])
+  }, [getSelectedFilters(currentPath)?.filters])
+
+  useEffect(() => {
+    refetch()
+  }, [opts.filter.length, opts.page])
 
   return (
     <Container width="100%" height="calc(100% - 112px)" padding="20px">
-      <Pagination count={quantity} opts={opts} setOpts={setOpts} />
+      <Pagination count={quantity} opts={opts} setOptsFilter={setSearchFilters} url={currentPath} />
       <Table
         filterOptions={[
           { identifier: 'casesFiles.datatable.header.court', options: optionsCourts },

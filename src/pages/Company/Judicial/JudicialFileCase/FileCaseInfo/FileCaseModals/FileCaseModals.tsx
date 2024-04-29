@@ -4,14 +4,15 @@ import { JudicialCaseFileType } from '@/types/judicial/judicial-case-file.type'
 import Button from '@/ui/Button'
 import Container from '@/ui/Container'
 import { useFormContext } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import paths from 'shared/routes/paths'
 
 type FileCaseModalsProps = {
   ownerFileCase?: ClientType & { customerUser: { id: number; name: string } }
+  numberCaseFile?: string
 }
 
-const FileCaseModals = ({ ownerFileCase }: FileCaseModalsProps) => {
+const FileCaseModals = ({ ownerFileCase, numberCaseFile }: FileCaseModalsProps) => {
   const { getValues } = useFormContext<JudicialCaseFileType>()
   const navigate = useNavigate()
   const {
@@ -19,8 +20,13 @@ const FileCaseModals = ({ ownerFileCase }: FileCaseModalsProps) => {
       customer: { urlIdentifier },
     },
   } = useLoloContext()
+  const codeParams = useParams().code ?? ''
 
   const clientId = getValues('id')
+
+  const onClickDemandedProducts = () => {
+    navigate(`${paths.judicial.productosDemandados(urlIdentifier, numberCaseFile)}`)
+  }
 
   const onClickComment = () => {
     navigate(`${paths.cobranza.cobranzaComments(urlIdentifier, ownerFileCase?.code)}`)
@@ -30,14 +36,32 @@ const FileCaseModals = ({ ownerFileCase }: FileCaseModalsProps) => {
     navigate(`${paths.cobranza.cobranzaContacts(urlIdentifier, ownerFileCase?.code)}`)
   }
 
+  const onClickBitacora = () => {
+    navigate(`${paths.judicial.bitacora(urlIdentifier, codeParams)}`)
+  }
+
   return (
     <Container width="100%" height="100%" display="flex" flexDirection="row" gap="10px">
-      <Button label="Bitacora" />
+      <Button
+        label="Bitacora"
+        onClick={onClickBitacora}
+        permission="P13-01-01"
+        disabled={!clientId}
+        trailingIcon="ri-book-3-line"
+      />
+      {/* <Button label="Bitacora" />
       <Button label="Garantías" />
       <Button label="Procesos Conexos" />
       <Button label="Observaciones" />
-      <Button label="Estatus Procesal" />
-      <Button label="Productos Demandados" />
+      <Button label="Estatus Procesal" /> */}
+      <Button
+        label="Productos Demandados"
+        trailingIcon="ri-bank-card-line"
+        width="250px"
+        disabled={!clientId}
+        onClick={onClickDemandedProducts}
+        permission="P13-01-03"
+      />
       <Button
         trailingIcon="ri-discuss-line"
         width="170px"

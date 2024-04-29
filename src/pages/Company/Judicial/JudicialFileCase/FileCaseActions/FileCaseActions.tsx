@@ -33,6 +33,8 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase }: FileCaseActions
     bank: { selectedBank },
   } = useLoloContext()
 
+  const chb = selectedBank.idCHB.length ? parseInt(selectedBank.idCHB) : 0
+
   const navigate = useNavigate()
 
   const {
@@ -117,7 +119,7 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase }: FileCaseActions
   const { refetch } = useQuery<AxiosResponse<any, Error>>(
     ['get-file-case-by-code', codeParams ?? ''],
     async () => {
-      return await getFileCaseByNumberFile(codeParams ?? '')
+      return await getFileCaseByNumberFile(codeParams ?? '', chb)
     },
     {
       enabled: false,
@@ -132,7 +134,7 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase }: FileCaseActions
         setValue('errandCode', data.data?.errandCode ?? '')
         setValue('judicialVenue', data.data?.judicialVenue ?? '')
         setValue('judge', data.data?.judge ?? '')
-        setValue('demandDate', moment(data.data.demandDate).format('DD-MM-YYYY'))
+        setValue('demandDate', moment(data.data.demandDate.split('T')[0]).format('DD-MM-YYYY'))
         setValue('clientId', data.data.clientId)
         setValue('customerUserId', data.data.customerUserId)
         setValue('judicialCourtId', data.data.judicialCourtId)

@@ -32,7 +32,7 @@ export const productsColumns: ColumProps[] = [
     justifyContent: 'center',
   },
   {
-    id: 'contacts.datatable.header.actions',
+    id: 'products.datatable.header.actions',
     title: 'ACCIONES',
     width: '15%',
     justifyContent: 'center',
