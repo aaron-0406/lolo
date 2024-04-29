@@ -175,7 +175,7 @@ const JudicialBinTypeBinnacleModal = ({
         size="small"
         minHeight="140px"
         footer={
-          <Container width="100%" height="75px" display="flex" justifyContent="center" alignItems="center" gap="20px">
+          <Container width="100%" height="75px" display="flex" justifyContent="end" alignItems="center" gap="20px">
             <Button
               width="125px"
               label={isEdit ? 'Editar' : 'Agregar'}
@@ -197,7 +197,7 @@ const JudicialBinTypeBinnacleModal = ({
           align-items="center"
           gap="20px"
         >
-          <Container width="100%" display="flex" flexDirection="column" gap="20px" padding="20px" margin="30px 0">
+          <Container width="100%" display="flex" flexDirection="column" gap="20px" padding="20px">
             <JudicialBinTypeBinnacleInfoForm />
           </Container>
         </Container>

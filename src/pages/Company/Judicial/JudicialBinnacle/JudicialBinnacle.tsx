@@ -6,13 +6,19 @@ import { AxiosResponse } from 'axios'
 import { getFileCaseByNumberFile } from '@/services/judicial/judicial-file-case.service'
 import notification from '@/ui/notification'
 import JudicialBinnacleInfo from './JudicialBinnacleInfo'
+import { useLoloContext } from '@/contexts/LoloProvider'
 
 const JudicialBinnacle = () => {
   const codeParams = useParams().code ?? ''
+  const {
+    bank: {
+      selectedBank: { idCHB },
+    },
+  } = useLoloContext()
   const { data } = useQuery<AxiosResponse<any, Error>>(
     ['get-file-case-by-code', codeParams ?? ''],
     async () => {
-      return await getFileCaseByNumberFile(codeParams ?? '')
+      return await getFileCaseByNumberFile(codeParams ?? '', Number(idCHB))
     },
     {
       onError: (error: any) => {

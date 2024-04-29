@@ -47,7 +47,7 @@ const FileCaseModals = ({ ownerFileCase, numberCaseFile }: FileCaseModalsProps) 
         onClick={onClickBitacora}
         permission="P13-01-01"
         disabled={!clientId}
-        trailingIcon="ri-discuss-line"
+        trailingIcon="ri-book-3-line"
       />
       {/* <Button label="Bitacora" />
       <Button label="Garantías" />
