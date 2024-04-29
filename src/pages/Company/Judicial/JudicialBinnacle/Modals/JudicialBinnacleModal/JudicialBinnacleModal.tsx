@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import judicialBinnacleCache from '../../JudicialBinnacleTable/utils/judicial-binnacle.cache'
-import { Controller, FormProvider, useForm } from 'react-hook-form'
+import { FormProvider, useForm } from 'react-hook-form'
 import Modal from '@/ui/Modal'
 import Container from '@/ui/Container'
 import Button from '@/ui/Button'
@@ -16,7 +16,6 @@ import { CustomErrorResponse } from 'types/customErrorResponse'
 import { createBinnacle, getBinnacleById, updateBinnacle } from '@/services/judicial/judicial-binnacle.service'
 import JudicialBinnacleInfoFileForm from './JudicialBinnacleInfoFileForm'
 import { JudicialBinFileType } from '@/types/judicial/judicial-bin-file.type'
-import TextAreaField from '@/ui/fields/TextAreaField'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { device } from '@/breakpoints/responsive'
 
@@ -26,6 +25,7 @@ type JudicialBinnacleModalProps = {
   isEdit?: boolean
   idBinnacle?: number
   judicialFileCaseId?: number
+  clientCode: string
 }
 
 const JudicialBinnacleModal = ({
@@ -34,6 +34,7 @@ const JudicialBinnacleModal = ({
   isEdit = false,
   idBinnacle = 0,
   judicialFileCaseId = 0,
+  clientCode,
 }: JudicialBinnacleModalProps) => {
   const queryClient = useQueryClient()
   const {
@@ -46,6 +47,9 @@ const JudicialBinnacleModal = ({
   const {
     bank: {
       selectedBank: { idCHB },
+    },
+    client: {
+      customer: { id: customerId },
     },
   } = useLoloContext()
 
@@ -73,8 +77,7 @@ const JudicialBinnacleModal = ({
     setValue,
     getValues,
     reset,
-    control,
-    formState: { isValid, errors },
+    formState: { isValid },
   } = formMethods
 
   const { isLoading: loadingCreateJudicialBinnacle, mutate: createJudicialBinnacle } = useMutation<
@@ -83,7 +86,7 @@ const JudicialBinnacleModal = ({
   >(
     async () => {
       const { ...restClient } = getValues()
-      return await createBinnacle({ ...restClient, files: formMethods.watch('filesDnD') })
+      return await createBinnacle({ ...restClient, files: formMethods.watch('filesDnD') }, customerId, clientCode)
     },
     {
       onSuccess: (result) => {
@@ -114,7 +117,12 @@ const JudicialBinnacleModal = ({
   >(
     async () => {
       const { customerHasBankId, judicialFileCaseId, ...restClient } = getValues()
-      return await updateBinnacle(idBinnacle, { ...restClient, files: formMethods.watch('filesDnD') })
+      return await updateBinnacle(
+        idBinnacle,
+        { ...restClient, files: formMethods.watch('filesDnD') },
+        customerId,
+        clientCode
+      )
     },
     {
       onSuccess: (result) => {
@@ -242,26 +250,8 @@ const JudicialBinnacleModal = ({
                 gap="10px"
                 padding="20px 20px 0 20px"
               >
-                <JudicialBinnacleInfoFileForm />
+                <JudicialBinnacleInfoFileForm judicialFileCaseId={judicialFileCaseId} clientCode={clientCode} />
               </Container>
-            </Container>
-            <Container padding="0 20px">
-              <Controller
-                name="lastPerformed"
-                control={control}
-                render={({ field }) => (
-                  <TextAreaField
-                    rows={4}
-                    width="100%"
-                    label="Último Actuado:"
-                    value={String(field.value)}
-                    onChange={(key) => {
-                      field.onChange(key)
-                    }}
-                    hasError={!!errors.lastPerformed}
-                  />
-                )}
-              />
             </Container>
           </Container>
         </Container>

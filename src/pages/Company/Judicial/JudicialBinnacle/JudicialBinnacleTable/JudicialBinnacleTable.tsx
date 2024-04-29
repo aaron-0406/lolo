@@ -20,9 +20,10 @@ import { judicialBinnacleColumns } from './utils/columns'
 
 type JudicialBinnacleTableProps = {
   judicialFileCaseId?: number
+  clientCode: string
 }
 
-const JudicialBinnacleTable = ({ judicialFileCaseId }: JudicialBinnacleTableProps) => {
+const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode }: JudicialBinnacleTableProps) => {
   const [idEdit, setIdEdit] = useState<number>(0)
   const [idDeletedComment, setIdDeletedComment] = useState<number>(0)
 
@@ -158,6 +159,7 @@ const JudicialBinnacleTable = ({ judicialFileCaseId }: JudicialBinnacleTableProp
       </Table>
 
       <JudicialBinnacleModal
+        clientCode={clientCode}
         visible={visibleModalJudicialBinProceduralStage}
         onClose={onCloseModalEdit}
         idBinnacle={idEdit}
@@ -169,6 +171,7 @@ const JudicialBinnacleTable = ({ judicialFileCaseId }: JudicialBinnacleTableProp
         onClose={onCloseModalDelete}
         idBinnacle={idDeletedComment}
         judicialFileCaseId={judicialFileCaseId}
+        clientCode={clientCode}
       />
     </Container>
   )

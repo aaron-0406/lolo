@@ -13,6 +13,7 @@ type DeleteJudicialBinnacleModalProps = {
   onClose: () => void
   idBinnacle?: number
   judicialFileCaseId?: number
+  clientCode: string
 }
 const DeleteJudicialBinnacleModal = ({
   visible,

@@ -17,8 +17,14 @@ import { AxiosError } from 'axios'
 import notification from '@/ui/notification'
 import JudicialBinFileSeeModal from './JudicialBinFileSeeModal'
 import useModal from '@/hooks/useModal'
+import { useLoloContext } from '@/contexts/LoloProvider'
 
-const JudicialBinnacleInfoFileForm = () => {
+type JudicialBinnacleInfoFileFormProps = {
+  clientCode: string
+  judicialFileCaseId: number
+}
+
+const JudicialBinnacleInfoFileForm = ({ clientCode, judicialFileCaseId }: JudicialBinnacleInfoFileFormProps) => {
   const { setValue, watch } = useFormContext<
     Omit<JudicialBinnacleType, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'> & {
       judicialBinFiles: JudicialBinFileType[]
@@ -27,7 +33,14 @@ const JudicialBinnacleInfoFileForm = () => {
   >()
 
   const [idSeeFile, setIdSeeFile] = useState<number>(0)
-
+  const {
+    client: {
+      customer: { id: idCustomer },
+    },
+    bank: {
+      selectedBank: { idCHB },
+    },
+  } = useLoloContext()
   const { visible: visibleModalFile, showModal: showModalFile, hideModal: hideModalFile } = useModal()
   const handleClickSeeFile = (id: number) => {
     setIdSeeFile(id)
@@ -55,7 +68,7 @@ const JudicialBinnacleInfoFileForm = () => {
 
   const { mutate: deleteBinnacleMutate } = useMutation<any, AxiosError<CustomErrorResponse>, number>(
     async (id: number) => {
-      return await deleteJudicialBinFile(id)
+      return await deleteJudicialBinFile(id, idCustomer, Number(idCHB), clientCode, judicialFileCaseId)
     },
     {
       onSuccess: (data) => {
@@ -94,7 +107,7 @@ const JudicialBinnacleInfoFileForm = () => {
           setValue('filesDnD', files)
         }}
       />
-      <Container overFlowY="auto" gap="8px" margin="10px 0 0 0" display="flex" height="350px" flexDirection="column">
+      <Container overFlowY="auto" gap="8px" margin="10px 0 0 0" display="flex" height="500px" flexDirection="column">
         {watch('judicialBinFiles').map((file) => {
           return (
             <FileItemStyled backgroundColor="#F9FAFE" key={file.id}>
@@ -116,7 +129,7 @@ const JudicialBinnacleInfoFileForm = () => {
                   permission="P02-02-03-01"
                   display="default"
                   onClick={() => {
-                    setIdSeeFile(file.id)
+                    handleClickSeeFile(file.id)
                   }}
                 />
                 <Button
@@ -161,8 +174,10 @@ const JudicialBinnacleInfoFileForm = () => {
         })}
       </Container>
       <JudicialBinFileSeeModal
+        clientCode={clientCode}
         visible={visibleModalFile}
         onClose={onCloseModalSeeFile}
+        judicialFileCaseId={judicialFileCaseId}
         idFile={idSeeFile}
         clientCustomerHasBankId={watch('customerHasBankId')}
       />

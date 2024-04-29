@@ -14,7 +14,9 @@ export const getBinnacleById = async (id: number) => {
 }
 
 export const createBinnacle = async (
-  binnacle: Omit<JudicialBinnacleType, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'> & { files: File[] }
+  binnacle: Omit<JudicialBinnacleType, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'> & { files: File[] },
+  idCustomer: number,
+  code: string
 ) => {
   let dia = binnacle.date.split('-')
   let day = dia[0]
@@ -32,7 +34,7 @@ export const createBinnacle = async (
     formData.append('file', file)
   })
 
-  return await axiosClient.post(`${url}`, formData, {
+  return await axiosClient.post(`${url}/${idCustomer}/${code}`, formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
   })
 }
@@ -42,7 +44,9 @@ export const updateBinnacle = async (
   binnacle: Omit<
     JudicialBinnacleType,
     'id' | 'judicialFileCaseId' | 'customerHasBankId' | 'createdAt' | 'updatedAt' | 'deletedAt'
-  > & { files: File[] }
+  > & { files: File[] },
+  idCustomer: number,
+  code: string
 ) => {
   let dia = binnacle.date.split('-')
   let day = dia[0]
@@ -58,7 +62,7 @@ export const updateBinnacle = async (
     formData.append('file', file)
   })
 
-  return await axiosClient.patch(`${url}/${id}`, formData, {
+  return await axiosClient.patch(`${url}/${id}/${idCustomer}/${code}`, formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
   })
 }

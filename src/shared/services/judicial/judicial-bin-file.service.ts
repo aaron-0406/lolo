@@ -8,10 +8,22 @@ export const getBinnacleByFileCase = async (fileCase: number) => {
   return await axiosClient.get(`${url}/file-case/${fileCase}`)
 }
 
-export const deleteJudicialBinFile = async (id: number) => {
-  return await axiosClient.delete(`${url}/${id}`)
+export const deleteJudicialBinFile = async (
+  id: number,
+  idCustomer: number,
+  chb: number,
+  code: string,
+  judicialFileCaseId: number
+) => {
+  return await axiosClient.delete(`${url}/${idCustomer}/${chb}/${code}/${judicialFileCaseId}/${id}`)
 }
 
-export const getJudicialBinFileById = async (idCustomer: number, chb: number, id: number) => {
-  return await axiosClient.get(`${url}/single/${idCustomer}/${chb}/${id}`)
+export const getJudicialBinFileById = async (
+  idCustomer: number,
+  code: string,
+  chb: number,
+  judicialFileCaseId: number,
+  id: number
+) => {
+  return await axiosClient.get(`${url}/single/${idCustomer}/${code}/${chb}/${judicialFileCaseId}/${id}`)
 }

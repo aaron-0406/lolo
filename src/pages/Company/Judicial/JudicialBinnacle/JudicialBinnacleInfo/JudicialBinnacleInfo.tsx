@@ -10,9 +10,10 @@ import useModal from '@/hooks/useModal'
 
 type JudicialBinnacleInfoProps = {
   judicialFileCaseId: number
+  clientCode: string
 }
 
-const JudicialBinnacleInfo = ({ judicialFileCaseId }: JudicialBinnacleInfoProps) => {
+const JudicialBinnacleInfo = ({ judicialFileCaseId, clientCode }: JudicialBinnacleInfoProps) => {
   const code = useParams().code ?? ''
 
   const {
@@ -66,6 +67,7 @@ const JudicialBinnacleInfo = ({ judicialFileCaseId }: JudicialBinnacleInfoProps)
 
         {judicialFileCaseId && (
           <JudicialBinnacleModal
+            clientCode={clientCode}
             visible={visibleModalAdd}
             onClose={onCloseModal}
             judicialFileCaseId={judicialFileCaseId}

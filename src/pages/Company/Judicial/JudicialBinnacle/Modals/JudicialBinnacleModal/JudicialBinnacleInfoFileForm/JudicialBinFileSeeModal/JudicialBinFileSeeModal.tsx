@@ -13,6 +13,8 @@ type JudicialBinFileSeeModalProps = {
   onClose: () => void
   idFile?: number
   clientCustomerHasBankId?: number
+  clientCode: string
+  judicialFileCaseId: number
 }
 
 const JudicialBinFileSeeModal = ({
@@ -20,6 +22,8 @@ const JudicialBinFileSeeModal = ({
   onClose,
   idFile = 0,
   clientCustomerHasBankId = 0,
+  clientCode,
+  judicialFileCaseId,
 }: JudicialBinFileSeeModalProps) => {
   const [fileSelected, setFileSelected] = useState<JudicialBinFileType>()
   const {
@@ -29,7 +33,13 @@ const JudicialBinFileSeeModal = ({
   const { refetch: refetchViewFile } = useQuery(
     [KEY_JUDICIAL_URL_BINNACLE_CODE_CACHE, `FILE-${idFile}`],
     async () => {
-      return await getJudicialBinFileById(Number(customer.id), clientCustomerHasBankId, idFile)
+      return await getJudicialBinFileById(
+        Number(customer.id),
+        clientCode,
+        clientCustomerHasBankId,
+        judicialFileCaseId,
+        idFile
+      )
     },
     {
       enabled: false,

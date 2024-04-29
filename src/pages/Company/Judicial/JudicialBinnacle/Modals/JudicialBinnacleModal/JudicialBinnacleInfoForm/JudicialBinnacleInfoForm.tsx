@@ -119,6 +119,22 @@ const JudicialBinnacleInfoForm = () => {
           />
         )}
       />
+      <Controller
+        name="lastPerformed"
+        control={control}
+        render={({ field }) => (
+          <TextAreaField
+            rows={10}
+            width="100%"
+            label="Último Actuado:"
+            value={String(field.value)}
+            onChange={(key) => {
+              field.onChange(key)
+            }}
+            hasError={!!errors.lastPerformed}
+          />
+        )}
+      />
     </>
   )
 }
