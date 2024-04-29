@@ -115,7 +115,7 @@ const AssignDemandedProductsModal = ({
           <Container width="100%" height="75px" display="flex" justifyContent="end" alignItems="center" gap="20px">
             <Button
               width="250px"
-              label="Assignar productos"
+              label="Asignar productos"
               shape="default"
               trailingIcon="ri-add-fill"
               onClick={onAssignDemandedProducts}
