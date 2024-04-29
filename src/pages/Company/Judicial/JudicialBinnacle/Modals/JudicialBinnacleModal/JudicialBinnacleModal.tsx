@@ -219,16 +219,24 @@ const JudicialBinnacleModal = ({
       >
         <Container
           width="100%"
-          height="430px"
+          height="100%"
           display="flex"
           justify-content="center"
           flexDirection="column"
           align-items="center"
           gap="20px"
         >
-          <Container width="100%" flexWrap="nowrap" display="flex" flexDirection="column" padding="10px 20px">
+          <Container
+            width="100%"
+            height="100%"
+            flexWrap="nowrap"
+            display="flex"
+            flexDirection="column"
+            padding="10px 20px"
+          >
             <Container
               width="100%"
+              height="100%"
               flexWrap="nowrap"
               display="flex"
               flexDirection={!greaterThanMobile ? 'column' : 'row'}
@@ -240,15 +248,18 @@ const JudicialBinnacleModal = ({
                 flexDirection="column"
                 gap="10px"
                 padding="20px 20px 0 20px"
+                overFlowY={!greaterThanMobile ? undefined : 'auto'}
               >
                 <JudicialBinnacleInfoForm />
               </Container>
+
               <Container
                 width={!greaterThanMobile ? '100%' : '50%'}
                 display="flex"
                 flexDirection="column"
                 gap="10px"
                 padding="20px 20px 0 20px"
+                overFlowY={!greaterThanMobile ? undefined : 'auto'}
               >
                 <JudicialBinnacleInfoFileForm judicialFileCaseId={judicialFileCaseId} clientCode={clientCode} />
               </Container>

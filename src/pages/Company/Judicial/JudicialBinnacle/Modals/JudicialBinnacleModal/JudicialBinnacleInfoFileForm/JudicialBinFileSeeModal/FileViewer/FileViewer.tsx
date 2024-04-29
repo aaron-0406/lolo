@@ -27,7 +27,10 @@ const FileViewer: React.FC<FileViewerProps> = (props) => {
 
   return (
     <>
-      {file?.nameOriginAws.endsWith('.pdf') ? (
+      {file?.nameOriginAws.endsWith('.pdf') ||
+      file?.nameOriginAws.endsWith('.jpeg') ||
+      file?.nameOriginAws.endsWith('.jpg') ||
+      file?.nameOriginAws.endsWith('.png') ? (
         <DocViewer
           className="doc-viewer"
           documents={docs}

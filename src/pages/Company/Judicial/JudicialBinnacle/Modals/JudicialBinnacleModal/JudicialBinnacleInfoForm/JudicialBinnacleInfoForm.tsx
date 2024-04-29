@@ -124,7 +124,7 @@ const JudicialBinnacleInfoForm = () => {
         control={control}
         render={({ field }) => (
           <TextAreaField
-            rows={10}
+            rows={4}
             width="100%"
             label="Último Actuado:"
             value={String(field.value)}

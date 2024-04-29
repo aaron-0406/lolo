@@ -107,7 +107,7 @@ const JudicialBinnacleInfoFileForm = ({ clientCode, judicialFileCaseId }: Judici
           setValue('filesDnD', files)
         }}
       />
-      <Container overFlowY="auto" gap="8px" margin="10px 0 0 0" display="flex" height="500px" flexDirection="column">
+      <Container overFlowY="auto" gap="8px" margin="10px 0 0 0" display="flex" flexDirection="column">
         {watch('judicialBinFiles').map((file) => {
           return (
             <FileItemStyled backgroundColor="#F9FAFE" key={file.id}>
