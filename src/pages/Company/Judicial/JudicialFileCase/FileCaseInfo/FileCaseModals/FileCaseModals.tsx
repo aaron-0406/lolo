@@ -44,7 +44,7 @@ const FileCaseModals = ({ ownerFileCase, numberCaseFile }: FileCaseModalsProps) 
       <Button label="Estatus Procesal" /> */}
       <Button
         label="Productos Demandados"
-        trailingIcon="ri-bank-card-fill"
+        trailingIcon="ri-bank-card-line"
         width="250px"
         disabled={!clientId}
         onClick={onClickDemandedProducts}

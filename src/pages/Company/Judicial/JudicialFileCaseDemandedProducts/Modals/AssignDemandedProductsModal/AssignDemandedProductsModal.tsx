@@ -1,5 +1,7 @@
 import { useMutation, useQueryClient } from 'react-query'
-import judicialDemandedProductsCache from '../../FileCaseDemandedProductsTable/utils/file-case-demanded-products.cache'
+import judicialDemandedProductsCache, {
+  KEY_JUDICIAL_URL_DEMANDED_PRODUCT_CODE_CACHE,
+} from '../../FileCaseDemandedProductsTable/utils/file-case-demanded-products.cache'
 import { FormProvider, useForm } from 'react-hook-form'
 import { AxiosError, AxiosResponse } from 'axios'
 import { CustomErrorResponse } from 'types/customErrorResponse'
@@ -11,6 +13,7 @@ import Container from '@/ui/Container'
 import Button from '@/ui/Button'
 import { ModalDemandedProductsResolver } from './AssignDemandedProductsModal.yup'
 import DemandedProductsInfoForm from './DemandedProductsInfoForm'
+import { useEffect } from 'react'
 
 type AssignDemandedProductsModalProps = {
   visible: boolean
@@ -87,6 +90,16 @@ const AssignDemandedProductsModal = ({
   const onAssignDemandedProducts = () => {
     assignDemandedProducts()
   }
+
+  useEffect(() => {
+    //INFO: REVIEW THIS CODE TO SOLVE CACHE PROBLEMS
+    if (visible) {
+      queryClient.invalidateQueries([
+        `${KEY_JUDICIAL_URL_DEMANDED_PRODUCT_CODE_CACHE}_UNASSIGNED_PRODUCTS`,
+        judicialCaseFileId,
+      ])
+    }
+  }, [visible, judicialCaseFileId, queryClient])
 
   return (
     <FormProvider {...formMethods}>
