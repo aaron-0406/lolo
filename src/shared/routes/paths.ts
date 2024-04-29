@@ -57,5 +57,7 @@ export default {
     expedientes: (urlIdentifier = ':urlIdentifier') => `/judicial/${urlIdentifier}/expedientes`,
     detallesExpediente: (urlIdentifier = ':urlIdentifier', code = ':code') =>
       `/judicial/${urlIdentifier}/expedientes/${code}`,
+    productosDemandados: (urlIdentifier = ':urlIdentifier', code = ':code') =>
+      `/judicial/${urlIdentifier}/expedientes/${code}/productos-demandados`,
   },
 }

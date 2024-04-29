@@ -7,6 +7,7 @@ export type ProductType = {
   negotiationId: number
   customerHasBankId: number
   extProductNameId: number
+  judicialCaseFileId?: number
 }
 
 export type ProductTypeName = ProductType & { clientName: string; funcionarioId: string; cityId: string }

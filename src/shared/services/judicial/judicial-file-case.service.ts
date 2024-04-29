@@ -5,8 +5,8 @@ const API = axiosClient.getUri()
 
 const url = `${API}/judicial/case-file`
 
-export const getFileCaseByNumberFile = async (numberCase: string) => {
-  return await axiosClient.get(`${url}/number-case/${numberCase}`)
+export const getFileCaseByNumberFile = async (numberCase: string, chb: number) => {
+  return await axiosClient.get(`${url}/number-case/${numberCase}/${chb}`)
 }
 
 export const getFileCaseByClientId = async (id: number) => {

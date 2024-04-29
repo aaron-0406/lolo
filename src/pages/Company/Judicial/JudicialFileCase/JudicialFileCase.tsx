@@ -46,13 +46,17 @@ const JudicialFileCase = () => {
     defaultValues: defaultValuesFileCase,
   })
 
+  const { getValues } = formMethods
+
+  const numberCaseFile = getValues('numberCaseFile')
+
   return (
     <FormProvider {...formMethods}>
       <LayoutFileCase
         actionsContent={<FileCaseActions setOwnerFileCase={setOwnerFileCase} setLoadingGlobal={setLoading} />}
         ownerContent={<FileCaseOwner setOwnerFileCase={setOwnerFileCase} ownerFileCase={ownerFileCase} />}
         infoContent={<FileCaseInfo loading={loading} />}
-        modalsContent={<FileCaseModals ownerFileCase={ownerFileCase} />}
+        modalsContent={<FileCaseModals ownerFileCase={ownerFileCase} numberCaseFile={numberCaseFile} />}
       />
     </FormProvider>
   )
