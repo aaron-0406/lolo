@@ -56,7 +56,7 @@ const DemandedProductsInfoForm = ({ clientId = 0, judicialCaseFileId = 0 }: Dema
     }
   )
 
-  const products = (data?.data ?? []).filter((product) => product.judicialCaseFileId != judicialCaseFileId)
+  const products = (data?.data ?? []).filter((product) => product.judicialCaseFileId == null)
 
   return (
     <Table
