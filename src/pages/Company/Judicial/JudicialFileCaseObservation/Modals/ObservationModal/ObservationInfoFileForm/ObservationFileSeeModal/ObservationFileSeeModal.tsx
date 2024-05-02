@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import { AxiosError, AxiosResponse } from 'axios'
-import { getJudicialBinFileById } from '@/services/judicial/judicial-bin-file.service'
+import { getJudicialObsFileById } from '@/services/judicial/judicial-obs-file.service'
 import { JudicialObsFileType } from '@/types/judicial/judicial-obs-file.type'
 import Container from '@/ui/Container'
 import Modal from '@/ui/Modal'
@@ -36,7 +36,7 @@ const ObservationFileSeeModal = ({
   const { refetch: refetchViewFile } = useQuery<AxiosResponse<JudicialObsFileType>, AxiosError<CustomErrorResponse>>(
     [KEY_JUDICIAL_URL_OBSERVATION_CODE_CACHE, `FILE-${idFile}`],
     async () => {
-      return await getJudicialBinFileById(
+      return await getJudicialObsFileById(
         Number(customer.id),
         clientCode,
         clientCustomerHasBankId,

@@ -82,8 +82,6 @@ const JudicialObservationTable = ({ judicialFileCaseId, clientCode }: JudicialOb
     }
   )
 
-  console.log(data)
-
   const observations = data?.data ?? []
 
   return (

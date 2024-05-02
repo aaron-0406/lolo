@@ -18,7 +18,7 @@ import {
   updateObservation,
 } from '@/services/judicial/judicial-observation.service'
 import JudicialObservationInfoFileForm from './ObservationInfoFileForm'
-import { JudicialBinFileType } from '@/types/judicial/judicial-bin-file.type'
+import { JudicialObsFileType } from '@/types/judicial/judicial-obs-file.type'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { device } from '@/breakpoints/responsive'
 import judicialObservationCache from '../../FileCaseObservationTable/utils/judicial-observation.cache'
@@ -59,7 +59,7 @@ const JudicialObservationModal = ({
 
   const formMethods = useForm<
     Omit<JudicialObservationType, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'> & {
-      judicialObsFiles: JudicialBinFileType[]
+      judicialObsFiles: JudicialObsFileType[]
       filesDnD: File[]
     }
   >({
@@ -154,7 +154,7 @@ const JudicialObservationModal = ({
   const { refetch: refetchGetJudicialObservationById } = useQuery<
     AxiosResponse<
       JudicialObservationType & {
-        judicialObsFiles: JudicialBinFileType[]
+        judicialObsFile: JudicialObsFileType[]
       }
     >,
     AxiosError<CustomErrorResponse>
@@ -165,13 +165,14 @@ const JudicialObservationModal = ({
     },
     {
       onSuccess: ({ data }) => {
+        console.log(data.judicialObsFile)
         if (!!idObservation) {
           setValue('date', moment(data.date).format('DD-MM-YYYY'), { shouldValidate: true })
           setValue('comment', data.comment, { shouldValidate: true })
           setValue('judicialCaseFileId', data.judicialCaseFileId, { shouldValidate: true })
           setValue('judicialObsTypeId', data.judicialObsTypeId, { shouldValidate: true })
           setValue('customerHasBankId', data?.customerHasBankId, { shouldValidate: true })
-          setValue('judicialObsFiles', data.judicialObsFiles, { shouldValidate: true })
+          setValue('judicialObsFiles', data.judicialObsFile, { shouldValidate: true })
         } else {
           reset()
         }

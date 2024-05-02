@@ -14,7 +14,7 @@ import pdfIcon from '@/assets/icons/pdf.png'
 import wordIcon from '@/assets/icons/word-doc.png'
 import fileIcon from '@/assets/icons/file.png'
 import notification from '@/ui/notification'
-import { deleteJudicialBinFile } from '@/services/judicial/judicial-bin-file.service'
+import { deleteJudicialObsFile } from '@/services/judicial/judicial-obs-file.service'
 import { CustomErrorResponse } from 'types/customErrorResponse'
 import JudicialObservationFileSeeModal from './ObservationFileSeeModal'
 import { useLoloContext } from '@/contexts/LoloProvider'
@@ -68,14 +68,14 @@ const JudicialObservationInfoFileForm = ({ clientCode, judicialFileCaseId }: Jud
 
   const { mutate: deleteObservationMutate } = useMutation<any, AxiosError<CustomErrorResponse>, number>(
     async (id: number) => {
-      return await deleteJudicialBinFile(id, idCustomer, Number(idCHB), clientCode, judicialFileCaseId)
+      return await deleteJudicialObsFile(id, idCustomer, Number(idCHB), clientCode, judicialFileCaseId)
     },
     {
       onSuccess: (data) => {
         notification({ type: 'success', message: 'Archivo eliminado' })
         setValue(
           'judicialObsFiles',
-          watch('judicialObsFiles').filter((jbf) => jbf.id !== data.data.id)
+          watch('judicialObsFiles').filter((jof) => jof.id !== data.data.id)
         )
       },
       onError: (error) => {
