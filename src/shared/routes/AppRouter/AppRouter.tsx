@@ -46,6 +46,8 @@ import JudicialSubject from 'pages/Company/Judicial/JudicialSubject'
 import JudicialCourt from 'pages/Company/Judicial/JudicialCourt'
 import JudicialProceduralWay from 'pages/Company/Judicial/JudicialProceduralWay/JudicialProceduralWay'
 import JudicialFileCaseDemandedProducts from 'pages/Company/Judicial/JudicialFileCaseDemandedProducts'
+import JudicialObsType from 'pages/Company/Judicial/JudicialObsType'
+import JudicialObservation from 'pages/Company/Judicial/JudicialFileCaseObservation'
 
 import ErrorPage from '../../../pages/ErrorPage'
 import NotFound from '../../../pages/NotFound'
@@ -123,6 +125,8 @@ const AppRouter = () => {
         <Route path={paths.judicial.bitacora()} element={<JudicialBinnacle />} />
         <Route path={paths.judicial.bitacoraTipo()} element={<JudicialBinTypeBinnacle />} />
         <Route path={paths.judicial.bitacoraProceduralStage()} element={<JudicialBinProceduralStage />} />
+        <Route path={paths.judicial.observacionTipo()} element={<JudicialObsType />} />
+        <Route path={paths.judicial.observacion()} element={<JudicialObservation />} />
       </Route>
 
       <Route path="*" element={<NotFound />} />

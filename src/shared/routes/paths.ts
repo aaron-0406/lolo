@@ -64,6 +64,9 @@ export default {
     bitacora: (urlIdentifier = ':urlIdentifier', code = ':code') =>
       `/judicial/${urlIdentifier}/expediente/${code}/bitacora`,
     bitacoraTipo: (urlIdentifier = ':urlIdentifier') => `/judicial/${urlIdentifier}/tipo-bitacora`,
+    observacionTipo: (urlIdentifier = ':urlIdentifier') => `/judicial/${urlIdentifier}/tipo-observacion`,
+    observacion: (urlIdentifier = ':urlIdentifier', code = ':code') =>
+      `/judicial/${urlIdentifier}/expediente/${code}/observacion`,
     bitacoraProceduralStage: (urlIdentifier = ':urlIdentifier') => `/judicial/${urlIdentifier}/etapa-procedimental`,
   },
 }

@@ -1,6 +1,6 @@
 export type JudicialObservationType = {
   id: number
-  date: Date
+  date: string
   comment: string
   judicialCaseFileId: number
   judicialObsTypeId: number

@@ -53,7 +53,7 @@ const ObsTypeTable = () => {
   const { isLoading, data } = useQuery<AxiosResponse<Array<JudicialObsTypeType>, Error>>(
     [KEY_JUDICIAL_OBS_TYPE_CACHE, parseInt(chb.length ? chb : '0')],
     async () => {
-      return await getObsTypeByCHB(parseInt(chb.length ? chb : '0'))
+      return await getObsTypeByCHB(parseInt(chb.length ? chb : '0'), true)
     },
     {
       onError: (error: any) => {
