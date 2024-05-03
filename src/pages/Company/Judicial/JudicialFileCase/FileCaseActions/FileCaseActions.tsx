@@ -197,7 +197,7 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase }: FileCaseActions
       refetch()
     }
     // eslint-disable-next-line
-  }, [])
+  }, [codeParams])
 
   return (
     <Container width="100%" display="flex" justifyContent="space-between" alignItems="center" gap="20px">

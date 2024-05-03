@@ -19,6 +19,9 @@ import { JudicialCourtType } from '@/types/judicial/judicial-court.type'
 import { JudicialSubjectType } from '@/types/judicial/judicial-subject.type'
 import { JudicialProceduralWayType } from '@/types/judicial/judicial-procedural-way.type'
 import { SelectItemType } from '@/ui/Select/interfaces'
+import Button from '@/ui/Button'
+import FileCasesRelatedModal from './FileCasesRelatedModal'
+import useModal from '@/hooks/useModal'
 
 type FileCaseInfoProps = {
   loading: boolean
@@ -34,6 +37,7 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
 
   const {
     control,
+    watch,
     getValues,
     formState: { errors },
   } = useFormContext<
@@ -96,6 +100,8 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
     }
   )
 
+  const { hideModal, showModal, visible } = useModal()
+
   const optionsUsers: Array<SelectItemType> = users.map((user) => {
     return {
       key: String(user.id),
@@ -122,15 +128,29 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
           name="numberCaseFile"
           control={control}
           render={({ field }) => (
-            <TextField
-              helperText={errors.numberCaseFile?.message}
-              width="100%"
-              label="Nº Expediente"
-              value={field.value}
-              onChange={field.onChange}
-              hasError={!!errors.numberCaseFile}
-              disabled={!clientId}
-            />
+            <Container display="flex" flexDirection="row" gap="10px" flexWrap="nowrap" width="100%" alignItems="center">
+              <TextField
+                helperText={errors.numberCaseFile?.message}
+                width="100%"
+                label="Nº Expediente"
+                value={field.value}
+                onChange={field.onChange}
+                hasError={!!errors.numberCaseFile}
+                disabled={!clientId}
+              />
+              {watch('id') !== 0 && (
+                <Button
+                  size="small"
+                  style={{
+                    marginTop: '30px',
+                  }}
+                  onClick={() => showModal()}
+                  shape="round"
+                  trailingIcon="ri-eye-line"
+                  messageTooltip="Ver relacionados"
+                />
+              )}
+            </Container>
           )}
         />
         <Controller
@@ -357,6 +377,12 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
           )}
         />
       </div>
+      <FileCasesRelatedModal
+        onClose={() => {
+          hideModal()
+        }}
+        visible={visible}
+      />
     </StyledContainer>
   )
 }
