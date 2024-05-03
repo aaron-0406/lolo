@@ -26,6 +26,7 @@ type JudicialObservationTableProps = {
 const JudicialObservationTable = ({ judicialFileCaseId, clientCode }: JudicialObservationTableProps) => {
   const [idEdit, setIdEdit] = useState<number>(0)
   const [idDeletedObservation, setIdDeletedObservation] = useState<number>(0)
+  const [filesDelete, setFilesDelete] = useState(0)
 
   const {
     visible: visibleModalJudicialObservation,
@@ -48,7 +49,8 @@ const JudicialObservationTable = ({ judicialFileCaseId, clientCode }: JudicialOb
     hideModalJudicialObservation()
   }
 
-  const handleClickDelete = (id: number) => {
+  const handleClickDelete = (id: number, fd: number) => {
+    setFilesDelete(fd)
     setIdDeletedObservation(id)
     showDeleteJudicialObservation()
   }
@@ -113,7 +115,7 @@ const JudicialObservationTable = ({ judicialFileCaseId, clientCode }: JudicialOb
                 <tr className="styled-data-table-row" key={record.id}>
                   <BodyCell textAlign="center">{key + 1 || ''}</BodyCell>
                   <BodyCell textAlign="center">{moment(record.date).format('DD-MM-YYYY') || ''}</BodyCell>
-                  <BodyCell textAlign="left">
+                  <BodyCell textAlign="center">
                     <Container
                       margin="20px 0"
                       minWidth="300px"
@@ -143,7 +145,7 @@ const JudicialObservationTable = ({ judicialFileCaseId, clientCode }: JudicialOb
                         />
                         <Button
                           onClick={() => {
-                            handleClickDelete(record.id)
+                            handleClickDelete(record.id, record.judicialObsFile.length)
                           }}
                           messageTooltip="Eliminar observación"
                           shape="round"
@@ -175,6 +177,7 @@ const JudicialObservationTable = ({ judicialFileCaseId, clientCode }: JudicialOb
         idObservation={idDeletedObservation}
         judicialFileCaseId={judicialFileCaseId}
         clientCode={clientCode}
+        countFilesDelete={filesDelete}
       />
     </Container>
   )

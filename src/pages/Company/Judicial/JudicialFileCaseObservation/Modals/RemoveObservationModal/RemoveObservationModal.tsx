@@ -4,6 +4,7 @@ import Button from '@/ui/Button'
 import Container from '@/ui/Container'
 import Modal from '@/ui/Modal'
 import notification from '@/ui/notification'
+import Text from '@/ui/Text'
 import { deleteObservation } from '@/services/judicial/judicial-observation.service'
 import judicialObservationCache from '../../FileCaseObservationTable/utils/judicial-observation.cache'
 import { CustomErrorResponse } from 'types/customErrorResponse'
@@ -14,12 +15,14 @@ type DeleteJudicialObservationModalProps = {
   idObservation?: number
   judicialFileCaseId?: number
   clientCode: string
+  countFilesDelete: number
 }
 const DeleteJudicialObservationModal = ({
   visible,
   onClose,
   idObservation = 0,
   judicialFileCaseId = 0,
+  countFilesDelete = 0,
 }: DeleteJudicialObservationModalProps) => {
   const queryClient = useQueryClient()
 
@@ -66,6 +69,40 @@ const DeleteJudicialObservationModal = ({
     }
   }
 
+  let content: JSX.Element
+
+  switch (true) {
+    case countFilesDelete === 0:
+      content = (
+        <Text.Body size="l" weight="regular">
+          No hay archivos adjuntos a esta observación.
+        </Text.Body>
+      )
+      break
+    case countFilesDelete === 1:
+      content = (
+        <Text.Body size="l" weight="regular">
+          ¡Existe
+          <Text.Body size="l" weight="bold" color="Primary5">
+            {' 1 archivo '}
+          </Text.Body>
+          adjunto a esta observación que también será eliminado!
+        </Text.Body>
+      )
+      break
+    default:
+      content = (
+        <Text.Body size="l" weight="regular">
+          ¡Existen
+          <Text.Body size="l" weight="bold" color="Primary5">
+            {` ${countFilesDelete} archivos `}
+          </Text.Body>
+          adjuntos a esta observación que también serán eliminados!
+        </Text.Body>
+      )
+      break
+  }
+
   return (
     <Modal
       visible={visible}
@@ -86,7 +123,11 @@ const DeleteJudicialObservationModal = ({
           <Button onClick={onClose} size="default" label="CANCELAR" />
         </Container>
       }
-    />
+    >
+      <Container width="100%" justifyContent="start" display="flex" padding="10px 40px" alignItems="center">
+        {content}
+      </Container>
+    </Modal>
   )
 }
 
