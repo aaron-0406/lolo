@@ -28,6 +28,10 @@ const FileCaseModals = ({ ownerFileCase, numberCaseFile }: FileCaseModalsProps) 
     navigate(`${paths.judicial.productosDemandados(urlIdentifier, numberCaseFile)}`)
   }
 
+  const onClickObservations = () => {
+    navigate(`${paths.judicial.observacion(urlIdentifier, codeParams)}`)
+  }
+
   const onClickComment = () => {
     navigate(`${paths.cobranza.cobranzaComments(urlIdentifier, ownerFileCase?.code)}`)
   }
@@ -52,8 +56,14 @@ const FileCaseModals = ({ ownerFileCase, numberCaseFile }: FileCaseModalsProps) 
       {/* <Button label="Bitacora" />
       <Button label="Garantías" />
       <Button label="Procesos Conexos" />
-      <Button label="Observaciones" />
       <Button label="Estatus Procesal" /> */}
+      <Button
+        label="Observaciones"
+        trailingIcon="ri-search-eye-line"
+        disabled={!clientId}
+        onClick={onClickObservations}
+        permission="P13-01-02"
+      />
       <Button
         label="Productos Demandados"
         trailingIcon="ri-bank-card-line"
