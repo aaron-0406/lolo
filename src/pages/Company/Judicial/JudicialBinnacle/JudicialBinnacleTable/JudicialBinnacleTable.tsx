@@ -22,10 +22,9 @@ import { judicialBinnacleColumns } from './utils/columns'
 type JudicialBinnacleTableProps = {
   judicialFileCaseId?: number
   clientCode: string
-  clientName: string
 }
 
-const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode, clientName }: JudicialBinnacleTableProps) => {
+const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode }: JudicialBinnacleTableProps) => {
   const [idEdit, setIdEdit] = useState<number>(0)
   const [idDeletedComment, setIdDeletedComment] = useState<number>(0)
 
@@ -89,12 +88,7 @@ const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode, clientName }: J
   const binnacles = data?.data ?? []
 
   return (
-    <Container width="100%" height="calc(100% - 80px)" padding="20px">
-      <Container padding="10px" width="100%" margin="0px 0px 10px 0px" backgroundColor="#eff0f6ff">
-        <Text.Body size="m" weight="regular">
-          {clientName ?? '-'}
-        </Text.Body>
-      </Container>
+    <Container width="100%" height="calc(100% - 80px)" padding="0px 20px 0px 20px">
 
       <Table
         top="195px"
