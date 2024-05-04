@@ -12,8 +12,6 @@ import { KEY_EXT_COBRANZA_ACCIONES_CACHE } from '@/pages/extrajudicial/Extrajudi
 import { getAllManagementActionsByCHB } from '@/services/extrajudicial/management-action.service'
 import { AxiosResponse } from 'axios'
 import { ManagementActionType } from '@/types/extrajudicial/management-action.type'
-
-import styled, { css } from 'styled-components' 
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { device } from '@/breakpoints/responsive'
 
@@ -64,19 +62,13 @@ const CobranzaCommentsInfoForm = ({ clientId }: CobranzaCommentsInfoFormProps) =
 
   const greaterThanTabletL = useMediaQuery(device.tabletL)
   const greaterThanDesktopS = useMediaQuery(device.desktopS)
-  const textAreaSize = greaterThanTabletL ? 13 : 6 
-  const mainContainer = greaterThanDesktopS ? 'row' : 'column' 
+  const textAreaSize = greaterThanTabletL ? 13 : 6
+  const mainContainer = greaterThanDesktopS ? 'row' : 'column'
 
   return (
     <>
-      <Container 
-        display='flex'
-        flexDirection = { mainContainer }
-        gap="10px"
-      >
-
+      <Container display="flex" flexDirection={mainContainer} gap="10px">
         <Container width="100%" display="flex" flexDirection="column">
-        
           <Controller
             name="date"
             control={control}
@@ -113,7 +105,7 @@ const CobranzaCommentsInfoForm = ({ clientId }: CobranzaCommentsInfoFormProps) =
             )}
           />
 
-            <Controller
+          <Controller
             name="managementActionId"
             control={control}
             render={({ field }) => (
@@ -137,7 +129,6 @@ const CobranzaCommentsInfoForm = ({ clientId }: CobranzaCommentsInfoFormProps) =
         </Container>
 
         <Container width="100%" height="fit-content">
-          
           <Controller
             name="comment"
             control={control}
@@ -155,9 +146,7 @@ const CobranzaCommentsInfoForm = ({ clientId }: CobranzaCommentsInfoFormProps) =
               />
             )}
           />
-
         </Container>
-
       </Container>
     </>
   )
