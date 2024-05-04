@@ -17,6 +17,7 @@ import { JudicialBinProceduralStageType } from '@/types/judicial/judicial-bin-pr
 import { getBinnacleByFileCase } from '@/services/judicial/judicial-binnacle.service'
 import notification from '@/ui/notification'
 import { judicialBinnacleColumns } from './utils/columns'
+import { JudicialBinDefendantProceduralActionType } from '@/types/judicial/judicial-bin-defendant-procedural-action.type'
 
 type JudicialBinnacleTableProps = {
   judicialFileCaseId?: number
@@ -64,6 +65,7 @@ const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode }: JudicialBinna
         JudicialBinnacleType & {
           binnacleType: JudicialBinTypeBinnacleType
           judicialBinProceduralStage: JudicialBinProceduralStageType
+          judicialBinDefendantProceduralAction: JudicialBinDefendantProceduralActionType
         }
       >,
       Error
@@ -104,6 +106,7 @@ const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode }: JudicialBinna
               record: JudicialBinnacleType & {
                 binnacleType: JudicialBinTypeBinnacleType
                 judicialBinProceduralStage: JudicialBinProceduralStageType
+                judicialBinDefendantProceduralAction: JudicialBinDefendantProceduralActionType
               },
               key
             ) => {
@@ -122,6 +125,7 @@ const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode }: JudicialBinna
                       {record.binnacleType.typeBinnacle || ''}
                     </Container>
                   </BodyCell>
+                  <BodyCell textAlign="center">{record.judicialBinDefendantProceduralAction.defendantProceduralAction || ''}</BodyCell>
                   <BodyCell textAlign="center">{record.judicialBinProceduralStage.proceduralStage || ''}</BodyCell>
                   <BodyCell textAlign="center">{moment(record.date).format('DD-MM-YYYY') || ''}</BodyCell>
                   <BodyCell textAlign="center">

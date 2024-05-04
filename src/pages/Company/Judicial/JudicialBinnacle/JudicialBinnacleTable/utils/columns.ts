@@ -10,13 +10,19 @@ export const judicialBinnacleColumns: ColumProps[] = [
   {
     id: 'binnacle.datatable.header.bin-type-binnacle-type',
     title: 'TIPO',
-    width: '25%',
+    width: '20%',
+    justifyContent: 'left',
+  },
+  {
+    id: 'binnacle.datatable.header.bin-defendant-procedural-action-type',
+    title: 'ACTUACIÓN PROCEDIMENTAL DEMANDADA',
+    width: '20%',
     justifyContent: 'left',
   },
   {
     id: 'binnacle.datatable.header.bin-procedural-stage',
     title: 'ETAPA PROCEDIMENTAL',
-    width: '25%',
+    width: '20%',
     justifyContent: 'center',
   },
   {
