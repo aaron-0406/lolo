@@ -21,7 +21,6 @@ const LayoutFileCase = (props: LayoutFileCaseProps) => {
         flexDirection="row"
         justifyContent="end"
         gap="15px"
-        padding="20px"
         backgroundColor="#eff0f6ff"
       >
         {actionsContent}
@@ -62,14 +61,21 @@ export default LayoutFileCase
 const StyledContainer = styled(Container)`
   ${({ theme }) => css`
     .container__top {
-      padding-right: 60px !important;
+      padding-right: 10px !important;
+    }
+    .container__down{
+      padding-left: 10px !important;
     }
 
     @media ${theme.device.tabletS} {
       .container__top {
+        padding-right: 60px !important;
         flex-direction: row;
         gap: 30px;
       }
+      .container__down{
+      padding-left: 60px !important;
+    }
 
       .container__info {
         height: calc(100% - 156px);
