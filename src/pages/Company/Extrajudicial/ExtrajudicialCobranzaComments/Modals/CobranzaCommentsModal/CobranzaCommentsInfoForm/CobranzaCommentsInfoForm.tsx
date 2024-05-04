@@ -63,11 +63,17 @@ const CobranzaCommentsInfoForm = ({ clientId }: CobranzaCommentsInfoFormProps) =
   })
 
   const greaterThanTabletL = useMediaQuery(device.tabletL)
+  const greaterThanDesktopS = useMediaQuery(device.desktopS)
   const textAreaSize = greaterThanTabletL ? 13 : 6 
+  const mainContainer = greaterThanDesktopS ? 'row' : 'column' 
 
   return (
     <>
-      <StyledContainer>
+      <Container 
+        display='flex'
+        flexDirection = { mainContainer }
+        gap="10px"
+      >
 
         <Container width="100%" display="flex" flexDirection="column">
         
@@ -107,7 +113,7 @@ const CobranzaCommentsInfoForm = ({ clientId }: CobranzaCommentsInfoFormProps) =
             )}
           />
 
-          <Controller
+            <Controller
             name="managementActionId"
             control={control}
             render={({ field }) => (
@@ -152,20 +158,9 @@ const CobranzaCommentsInfoForm = ({ clientId }: CobranzaCommentsInfoFormProps) =
 
         </Container>
 
-      </StyledContainer>
+      </Container>
     </>
   )
 }
 
 export default CobranzaCommentsInfoForm
-
-const StyledContainer = styled(Container)`
-  display: flex;
-  flex-direction: column;
-  gap:10px; 
-  ${({ theme }) => css`
-    @media ${theme.device.desktopS} {
-      flex-direction: row;
-    }
-  `}
-`
