@@ -13,6 +13,10 @@ import { getAllManagementActionsByCHB } from '@/services/extrajudicial/managemen
 import { AxiosResponse } from 'axios'
 import { ManagementActionType } from '@/types/extrajudicial/management-action.type'
 
+import styled, { css } from 'styled-components' 
+import { useMediaQuery } from '@/hooks/useMediaQuery'
+import { device } from '@/breakpoints/responsive'
+
 type CobranzaCommentsInfoFormProps = {
   clientId: number
 }
@@ -58,85 +62,103 @@ const CobranzaCommentsInfoForm = ({ clientId }: CobranzaCommentsInfoFormProps) =
     }
   })
 
+  const greaterThanTabletL = useMediaQuery(device.tabletL)
+  const greaterThanDesktopS = useMediaQuery(device.desktopS)
+  const textAreaSize = greaterThanTabletL ? 13 : 6 
+  const mainContainer = greaterThanDesktopS ? 'row' : 'column' 
+
   return (
     <>
-      <Container width="100%" display="flex" gap="10px">
-        <Controller
-          name="date"
-          control={control}
-          render={({ field }) => (
-            <DatePicker
-              required
-              label="Fecha"
-              selectedDate={field.value}
-              placeholder="Ingrese la fecha:"
-              dateFormat="DD-MM-YYYY"
-              value={field.value}
-              getDate={(e) => {
-                setValue('date', e)
-              }}
-            />
-          )}
-        />
+      <Container 
+        display='flex'
+        flexDirection = { mainContainer }
+        gap="10px"
+      >
+
+        <Container width="100%" display="flex" flexDirection="column">
+        
+          <Controller
+            name="date"
+            control={control}
+            render={({ field }) => (
+              <DatePicker
+                required
+                label="Fecha"
+                selectedDate={field.value}
+                placeholder="Ingrese la fecha:"
+                dateFormat="DD-MM-YYYY"
+                value={field.value}
+                getDate={(e) => {
+                  setValue('date', e)
+                }}
+              />
+            )}
+          />
+
+          <Controller
+            name="negotiation"
+            control={control}
+            render={({ field }) => (
+              <Select
+                disabled={!clientId}
+                width="100%"
+                label="Negociación:"
+                value={field.value}
+                options={optionsStates}
+                onChange={(key) => {
+                  field.onChange(key)
+                }}
+                hasError={!!errors.negotiation}
+              />
+            )}
+          />
+
+            <Controller
+            name="managementActionId"
+            control={control}
+            render={({ field }) => (
+              <>
+                <Select
+                  disabled={!clientId}
+                  width="100%"
+                  label="Acción:"
+                  value={!!field.value ? String(field.value) : ''}
+                  options={optionsActions}
+                  onChange={(key) => {
+                    field.onChange(parseInt(key))
+                  }}
+                  hasError={!!errors.managementActionId}
+                />
+
+                {showManagementAction && <Label label={`Acción: ${managementAction?.nameAction}`} color="Primary5" />}
+              </>
+            )}
+          />
+        </Container>
+
+        <Container width="100%" height="fit-content">
+          
+          <Controller
+            name="comment"
+            control={control}
+            render={({ field }) => (
+              <TextAreaField
+                disabled={!clientId}
+                width="100%"
+                label="Comentario:"
+                rows={textAreaSize}
+                value={field.value}
+                hasError={!!errors.comment}
+                onChange={(e) => {
+                  field.onChange(e.target.value)
+                }}
+              />
+            )}
+          />
+
+        </Container>
+
       </Container>
-
-      <Controller
-        name="negotiation"
-        control={control}
-        render={({ field }) => (
-          <Select
-            disabled={!clientId}
-            width="100%"
-            label="Negociación:"
-            value={field.value}
-            options={optionsStates}
-            onChange={(key) => {
-              field.onChange(key)
-            }}
-            hasError={!!errors.negotiation}
-          />
-        )}
-      />
-
-      <Controller
-        name="managementActionId"
-        control={control}
-        render={({ field }) => (
-          <>
-            <Select
-              disabled={!clientId}
-              width="100%"
-              label="Acción:"
-              value={!!field.value ? String(field.value) : ''}
-              options={optionsActions}
-              onChange={(key) => {
-                field.onChange(parseInt(key))
-              }}
-              hasError={!!errors.managementActionId}
-            />
-
-            {showManagementAction && <Label label={`Acción: ${managementAction?.nameAction}`} color="Primary5" />}
-          </>
-        )}
-      />
-
-      <Controller
-        name="comment"
-        control={control}
-        render={({ field }) => (
-          <TextAreaField
-            disabled={!clientId}
-            width="100%"
-            label="Comentario:"
-            rows={5}
-            value={field.value}
-            hasError={!!errors.comment}
-            onChange={(e) => {
-              field.onChange(e.target.value)
-            }}
-          />
-        )}
-      />
     </>
   )
 }
