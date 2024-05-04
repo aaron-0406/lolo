@@ -202,14 +202,17 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase }: FileCaseActions
   }, [])
 
   return (
-    <Container width="100%" display="flex" justifyContent="space-between" alignItems="center" gap="20px" 
+    <Container
+      width="100%"
+      display="flex"
+      justifyContent="space-between"
+      alignItems="center"
+      gap="20px"
       padding={greaterThanDesktopS ? '0px 0px 0px 20px' : '0px'}
     >
-
       <Breadcrumbs routes={routers} />
 
       <Container width="fit-content" display="flex" justifyContent="space-between" alignItems="center" gap="10px">
-
         <Button
           width="130px"
           label={greaterThanDesktopS && 'Guardar'}
@@ -221,9 +224,7 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase }: FileCaseActions
           permission={watch().id !== 0 ? 'P13-03' : 'P13-02'}
           messageTooltip="Guardar cambios"
         />
-
       </Container>
-      
     </Container>
   )
 }

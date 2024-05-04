@@ -20,7 +20,7 @@ const FileCaseOwner = ({ ownerFileCase, setOwnerFileCase }: FileCaseOwnerProps) 
   const { setValue, getValues } = useFormContext<JudicialCaseFileType>()
   const greaterThanDesktopS = useMediaQuery(device.desktopS)
   const greaterThanTabletS = useMediaQuery(device.tabletS)
-  const navigate = useNavigate(); 
+  const navigate = useNavigate()
   const { visible: visibleModalClients, showModal: showModalClients, hideModal: hideModalClients } = useModal()
 
   const clearClient = () => {
@@ -30,9 +30,9 @@ const FileCaseOwner = ({ ownerFileCase, setOwnerFileCase }: FileCaseOwnerProps) 
 
   const {
     client: {
-      customer: { urlIdentifier }, 
-    } 
-  } = useLoloContext(); 
+      customer: { urlIdentifier },
+    },
+  } = useLoloContext()
 
   const clientId = getValues('id')
 

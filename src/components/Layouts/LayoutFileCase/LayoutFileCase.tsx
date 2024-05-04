@@ -63,7 +63,7 @@ const StyledContainer = styled(Container)`
     .container__top {
       padding-right: 10px !important;
     }
-    .container__down{
+    .container__down {
       padding-left: 10px !important;
     }
 
@@ -73,9 +73,9 @@ const StyledContainer = styled(Container)`
         flex-direction: row;
         gap: 30px;
       }
-      .container__down{
-      padding-left: 60px !important;
-    }
+      .container__down {
+        padding-left: 60px !important;
+      }
 
       .container__info {
         height: calc(100% - 156px);
