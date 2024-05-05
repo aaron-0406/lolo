@@ -18,6 +18,10 @@ import { ExtIpAddressBankType } from '@/types/extrajudicial/ext-ip-address-bank.
 import { getAllIpAddress } from '@/services/extrajudicial/ext-ip-address-bank.service'
 import { KEY_EXT_IP_ADDRESS_BANK_CACHE } from '../../ExtrajudicialIpAddressBank/IpAddressBankTable/utils/dash-ip-address-bank.cache'
 import notification from '@/ui/notification'
+import { useFiltersContext } from '@/contexts/FiltersProvider'
+import { useLocation } from 'react-router-dom'
+import { KEY_EXT_USUARIOS_CACHE } from '../../ExtrajudicialUsers/UsersTable/utils/ext-usuarios.cache'
+import { getAllUsersByID } from '@/services/dash/customer-user.service'
 
 type UserLogsTableProps = {
   opts: Opts
@@ -33,11 +37,14 @@ const UserLogsTable: FC<UserLogsTableProps> = ({ opts, setOpts }) => {
     customerUser: {
       user: { permissions },
     },
-    user: { users },
   } = useLoloContext()
 
-  const [filterOptions, setFilterOptions] = useState<Array<FilterOptionsProps>>([])
-  const [selectedFilterOptions, setSelectedFilterOptions] = useState<Array<FilterOptionsProps>>([])
+  const {
+    filterOptions: { getSelectedFilters, setSelectedFilters },
+  } = useFiltersContext()
+
+  const location = useLocation()
+  const currentPath = location.pathname
 
   const [userLogs, setUserLogs] = useState([])
   const [userLogsCount, setUserLogsCount] = useState<number>(0)
@@ -47,6 +54,8 @@ const UserLogsTable: FC<UserLogsTableProps> = ({ opts, setOpts }) => {
   const getPermission = (code: string) => {
     return permissions?.find((permission) => permission.code === code)
   }
+
+  const selectedFilterOptions = getSelectedFilters(currentPath)?.filters ?? []
 
   const { refetch } = useQuery(
     ['key-ext-user-logs-cache', customerId],
@@ -80,6 +89,22 @@ const UserLogsTable: FC<UserLogsTableProps> = ({ opts, setOpts }) => {
       },
     }
   )
+  const { data: dataUsers } = useQuery(KEY_EXT_USUARIOS_CACHE, async () => {
+    return await getAllUsersByID(customerId)
+  })
+
+  const userOptions = dataUsers?.data.map((customerUser: CustomerUserType) => {
+    return {
+      key: customerUser.id,
+      label: customerUser.name,
+    }
+  })
+  const permissionsOptions = permissions?.map((permission) => {
+    return {
+      key: permission.code,
+      label: permission.name,
+    }
+  })
 
   const { data } = useQuery<AxiosResponse<Array<ExtIpAddressBankType>, Error>>(
     KEY_EXT_IP_ADDRESS_BANK_CACHE,
@@ -112,98 +137,23 @@ const UserLogsTable: FC<UserLogsTableProps> = ({ opts, setOpts }) => {
     )
 
     if (!position) {
-      setSelectedFilterOptions((prev) => {
-        return [...prev, filterOption]
-      })
+      setSelectedFilters({ url: currentPath, filters: [...selectedFilterOptions, filterOption] })
     } else {
-      setSelectedFilterOptions((prev) => {
-        return prev.map((selectedFilterOption) => {
-          if (selectedFilterOption.identifier === filterOption.identifier) {
-            return filterOption
-          }
+      const selectedFilterOptionsTestCopy = selectedFilterOptions
+      const selectedFiltersUpdated = selectedFilterOptionsTestCopy.map((selectedFilterOption) => {
+        if (selectedFilterOption.identifier === filterOption.identifier) {
+          return filterOption
+        }
 
-          return selectedFilterOption
-        })
+        return selectedFilterOption
       })
+      setSelectedFilters({ url: currentPath, filters: selectedFiltersUpdated })
     }
   }
 
   useEffect(() => {
-    if (permissions) {
-      const optionsActions = permissions?.map((permission) => {
-        return {
-          key: permission.code,
-          label: permission.name,
-        }
-      })
-
-      setFilterOptions((prev) => {
-        const filterOption = prev.find((filter) => filter.identifier === 'user.logs.datatable.header.action')
-
-        if (filterOption) {
-          return prev.map((filter) => {
-            if (filter.identifier === 'user.logs.datatable.header.action') {
-              return {
-                identifier: filter.identifier,
-                options: optionsActions,
-              }
-            }
-            return filter
-          })
-        } else {
-          return [
-            ...prev,
-            {
-              identifier: 'user.logs.datatable.header.action',
-              options: optionsActions,
-            },
-          ]
-        }
-      })
-    }
-  }, [permissions])
-
-  useEffect(() => {
-    setSelectedFilterOptions([])
-
-    const optionsUsers = users.map((user) => {
-      return {
-        key: user.id,
-        label: user.name,
-      }
-    })
-    setFilterOptions((prev) => {
-      const filterOption = prev.find((filter) => filter.identifier === 'user.logs.datatable.header.user')
-
-      if (filterOption) {
-        return prev.map((filter) => {
-          if (filter.identifier === 'user.logs.datatable.header.user') {
-            return {
-              identifier: filter.identifier,
-              options: optionsUsers,
-            }
-          }
-          return filter
-        })
-      } else {
-        return [
-          ...prev,
-          {
-            identifier: 'user.logs.datatable.header.user',
-            options: optionsUsers,
-          },
-        ]
-      }
-    })
-    // eslint-disable-next-line
-  }, [selectedBank.idCHB])
-
-  useEffect(() => {
-    if (selectedBank.idCHB.length) {
-      setIsLoading(true)
-      refetch()
-    }
-  }, [refetch, opts, selectedFilterOptions, selectedBank.idCHB.length])
+    refetch()
+  }, [getSelectedFilters(currentPath)?.filters])
 
   return (
     <Container width="100%" height="calc(100% - 112px)" padding="20px">
@@ -211,7 +161,11 @@ const UserLogsTable: FC<UserLogsTableProps> = ({ opts, setOpts }) => {
       <Table
         top="200px"
         columns={userLogsColumns}
-        filterOptions={filterOptions}
+        filterOptions={[
+          { identifier: 'user.logs.datatable.header.user', options: userOptions },
+          { identifier: 'user.logs.datatable.header.action', options: permissionsOptions },
+        ]}
+        selectedFilterOptions={selectedFilterOptions}
         onChangeFilterOptions={onChangeFilterOptions}
         loading={isLoading}
         isArrayEmpty={!userLogs?.length}

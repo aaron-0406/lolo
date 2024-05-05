@@ -177,7 +177,7 @@ const CobranzaCommentsModal = ({
         id="modal-files"
         title={isEdit ? 'Editar Comentario' : 'Agregar Comentario'}
         contentOverflowY="auto"
-        size="small"
+        size="large"
         minHeight="430px"
         footer={
           <Container width="100%" height="75px" display="flex" justifyContent="end" alignItems="center" gap="20px">
