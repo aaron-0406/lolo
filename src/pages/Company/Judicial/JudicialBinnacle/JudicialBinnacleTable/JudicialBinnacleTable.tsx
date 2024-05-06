@@ -122,11 +122,13 @@ const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode }: JudicialBinna
                       wordBreak="break-all"
                       overFlowY="auto"
                     >
-                      {record.binnacleType.typeBinnacle || ''}
+                      {record?.binnacleType?.typeBinnacle || '-'}
                     </Container>
                   </BodyCell>
-                  <BodyCell textAlign="center">{record.judicialBinDefendantProceduralAction.defendantProceduralAction || ''}</BodyCell>
-                  <BodyCell textAlign="center">{record.judicialBinProceduralStage.proceduralStage || ''}</BodyCell>
+                  <BodyCell textAlign="center">
+                    {record?.judicialBinDefendantProceduralAction?.defendantProceduralAction || '-'}
+                  </BodyCell>
+                  <BodyCell textAlign="center">{record?.judicialBinProceduralStage?.proceduralStage || '-'}</BodyCell>
                   <BodyCell textAlign="center">{moment(record.date).format('DD-MM-YYYY') || ''}</BodyCell>
                   <BodyCell textAlign="center">
                     {
