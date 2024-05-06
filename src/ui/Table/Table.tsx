@@ -4,6 +4,8 @@ import type CSS from 'csstype'
 import Container from '@/ui/Container'
 import HeaderCell from '@/ui/Table/HeaderCell'
 import { SelectItem } from '@/ui/Select/interfaces'
+import Skeleton, {SkeletonTheme} from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 export type ColumProps = {
   id: string
@@ -31,6 +33,7 @@ type TableProps = {
   rightSpace?: number
   isArrayEmpty?: boolean
   emptyState?: React.ReactNode
+  emptyFirstState?: React.ReactNode
   children?: React.ReactNode
 }
 
@@ -46,6 +49,7 @@ const Table: React.FC<TableProps> = ({
   rightSpace,
   leftSpace,
   emptyState,
+  emptyFirstState,
   isArrayEmpty = false,
 }) => {
   return (
@@ -82,7 +86,9 @@ const Table: React.FC<TableProps> = ({
           {!!loading && (
             <tr>
               <td colSpan={columns.length}>
-                <>Loading skeleton</>
+                <SkeletonTheme baseColor='#f0f0f0' highlightColor='#e6e6e6'>
+                  <Skeleton width={"100%"} height={50} count={columns.length}/>
+                </SkeletonTheme>
               </td>
             </tr>
           )}
@@ -95,7 +101,8 @@ const Table: React.FC<TableProps> = ({
               </td>
             </tr>
           )}
-          {isArrayEmpty && !loading && emptyState}
+          { filterOptions && isArrayEmpty && !loading && emptyState}
+          { !filterOptions && isArrayEmpty && !loading && emptyFirstState }
         </tbody>
       </StyledOrderTable>
     </StyledContentTable>

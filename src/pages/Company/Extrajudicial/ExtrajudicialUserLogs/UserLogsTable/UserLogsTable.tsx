@@ -22,6 +22,7 @@ import { useFiltersContext } from '@/contexts/FiltersProvider'
 import { useLocation } from 'react-router-dom'
 import { KEY_EXT_USUARIOS_CACHE } from '../../ExtrajudicialUsers/UsersTable/utils/ext-usuarios.cache'
 import { getAllUsersByID } from '@/services/dash/customer-user.service'
+import EmptyState from '@/ui/EmptyState'
 
 type UserLogsTableProps = {
   opts: Opts
@@ -41,6 +42,7 @@ const UserLogsTable: FC<UserLogsTableProps> = ({ opts, setOpts }) => {
 
   const {
     filterOptions: { getSelectedFilters, setSelectedFilters },
+    clearAllFilters,
   } = useFiltersContext()
 
   const location = useLocation()
@@ -171,7 +173,22 @@ const UserLogsTable: FC<UserLogsTableProps> = ({ opts, setOpts }) => {
         isArrayEmpty={!userLogs?.length}
         emptyState={
           <EmptyStateCell colSpan={userLogsColumns.length}>
-            <div>Vacio</div>
+            <EmptyState
+              title="Recurso no encontrado"
+              description="No se encontraron los datos solicitados. Por favor, intente con otros filtros."
+              buttonLabel='Limpiar filtros'
+              buttonAction={clearAllFilters}
+            />
+          </EmptyStateCell>
+        }
+        emptyFirstState={
+          <EmptyStateCell colSpan={userLogsColumns.length}>
+            <EmptyState
+              title="Recurso no encontrado"
+              description="Aún no se han registrado logs."
+              buttonLabel="regresar"
+              buttonAction={() => {}}
+            />
           </EmptyStateCell>
         }
       >
