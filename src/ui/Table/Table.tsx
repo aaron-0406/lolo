@@ -4,7 +4,7 @@ import type CSS from 'csstype'
 import Container from '@/ui/Container'
 import HeaderCell from '@/ui/Table/HeaderCell'
 import { SelectItem } from '@/ui/Select/interfaces'
-import Skeleton, {SkeletonTheme} from 'react-loading-skeleton'
+import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 
 export type ColumProps = {
@@ -68,7 +68,7 @@ const Table: React.FC<TableProps> = ({
                 <HeaderCell
                   key={index}
                   isThereFilter={isThereFilter}
-                  width={width}
+                  width={width?.replace('%', 'em')}
                   justifyContent={justifyContent}
                   textTransform={textTransform}
                   options={options}
@@ -86,9 +86,20 @@ const Table: React.FC<TableProps> = ({
           {!!loading && (
             <tr>
               <td colSpan={columns.length}>
-                <SkeletonTheme baseColor='#f0f0f0' highlightColor='#e6e6e6'>
-                  <Skeleton width={"100%"} height={50} count={columns.length}/>
-                </SkeletonTheme>
+                {columns.map((_,index) => (
+                  <Container key={index} width="100%"  gap="20px" display='flex' flexDirection='row'>
+                    {columns.map((column, index) => (
+                      <Skeleton
+                        key={index}
+                        width={column.width ? (parseInt(column.width.replace('%', '')) * (window.innerWidth / 100)) : 170}
+                        height={50}
+                        className="skeleton"
+                        baseColor="#f0f0f0"
+                        highlightColor="#e6e6e6"
+                      />
+                    ))}
+                  </Container>
+                ))}
               </td>
             </tr>
           )}
@@ -101,8 +112,8 @@ const Table: React.FC<TableProps> = ({
               </td>
             </tr>
           )}
-          { filterOptions && isArrayEmpty && !loading && emptyState}
-          { !filterOptions && isArrayEmpty && !loading && emptyFirstState }
+          {filterOptions && isArrayEmpty && !loading && emptyState}
+          {!filterOptions && isArrayEmpty && !loading && emptyFirstState}
         </tbody>
       </StyledOrderTable>
     </StyledContentTable>
@@ -142,6 +153,15 @@ const StyledOrderTable = styled.table`
 
     .active {
       background: ${theme.colors['Neutral2']};
+    }
+
+    .skeleton{
+      margin-top:10px; 
+      gap: 10px;
+    }
+    .table-body{
+      width: 100%;
+      height: 100%;
     }
   `}
 `

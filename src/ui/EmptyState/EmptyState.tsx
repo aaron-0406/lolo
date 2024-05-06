@@ -16,8 +16,8 @@ const EmptyState:React.FC<EmptyStateProps> = ({title, description, buttonLabel, 
     <Container
       display="flex"
       flexDirection="column"
-      width="400"
-      height="100%"
+      width="100%"
+      height="70dvh"
       justifyContent="center"
       alignItems="center"
       gap="5px"
@@ -46,17 +46,19 @@ const EmptyState:React.FC<EmptyStateProps> = ({title, description, buttonLabel, 
         gap="5px"
         maxWidth="500px"
         textAlign="center"
+        margin={'0px 0px 10px 0px'}
       >
-        <Text.Title size="m" weight="bold" color="Neutral8">
+        <Text.Title size="m" weight="bold" color="Neutral6">
           {title}
         </Text.Title>
-        <Text.Body size="m" weight="regular">
+        <Text.Body size="m" weight="regular" color="Neutral6">
           {description}
         </Text.Body>
       </Container>
       <Button 
       onClick={buttonAction}
-      label={buttonLabel} />
+      label={buttonLabel}
+      />
     </Container>
   )
 }
