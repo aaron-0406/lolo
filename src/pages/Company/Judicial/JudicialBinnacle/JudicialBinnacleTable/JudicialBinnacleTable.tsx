@@ -129,7 +129,7 @@ const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode }: JudicialBinna
                     {record?.judicialBinDefendantProceduralAction?.defendantProceduralAction || '-'}
                   </BodyCell>
                   <BodyCell textAlign="center">{record?.judicialBinProceduralStage?.proceduralStage || '-'}</BodyCell>
-                  <BodyCell textAlign="center">{moment(record.date).format('DD-MM-YYYY') || ''}</BodyCell>
+                  <BodyCell textAlign="center">{moment(record.date.split('T')[0]).format('DD-MM-YYYY') || ''}</BodyCell>
                   <BodyCell textAlign="center">
                     {
                       <Container display="flex" gap="10px" justifyContent="space-around">
