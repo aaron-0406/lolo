@@ -18,6 +18,7 @@ import notification from '@/ui/notification'
 import JudicialBinFileSeeModal from './JudicialBinFileSeeModal'
 import useModal from '@/hooks/useModal'
 import { useLoloContext } from '@/contexts/LoloProvider'
+import { Tooltip } from 'react-tooltip'
 
 type JudicialBinnacleInfoFileFormProps = {
   clientCode: string
@@ -107,20 +108,29 @@ const JudicialBinnacleInfoFileForm = ({ clientCode, judicialFileCaseId }: Judici
           setValue('filesDnD', files)
         }}
       />
-      <Container overFlowY="auto" gap="8px" margin="10px 0 0 0" display="flex" flexDirection="column">
+      <Container width="100%" overFlowY="auto" gap="8px" margin="10px 0 0 0" display="flex" flexDirection="column">
         {watch('judicialBinFiles').map((file) => {
           return (
-            <FileItemStyled backgroundColor="#F9FAFE" key={file.id}>
-              <Container display="flex" gap="10px" alignItems="center">
-                <Container display="flex" justifyContent="start" alignItems="start">
+            <FileItemStyled width="100%" backgroundColor="#F9FAFE" key={file.id}>
+              <Container width="calc(100% - 96px)" display="flex" gap="10px" alignItems="center" justifyContent="start">
+                <Container width="30px" display="flex" justifyContent="start" alignItems="start">
                   {getIconFile(file.originalName)}
                 </Container>
-                <Container display="flex" justifyContent="start" flexDirection="column">
-                  <Container>{file.originalName}</Container>
+                <Container width="calc(90% - 30px)" display="flex" justifyContent="start" flexDirection="column">
+                  <StyledFileName
+                    data-tooltip-id={'my-tooltip' + file.id}
+                    data-tooltip-content={file.originalName}
+                    width="100%"
+                  >
+                    {file.originalName}
+                    <Tooltip content={file.originalName} place="left" id={'my-tooltip' + file.id}>
+                      {file.originalName}
+                    </Tooltip>
+                  </StyledFileName>
                   <Container></Container>
                 </Container>
               </Container>
-              <Container display="flex" gap="5px" alignItems="center">
+              <Container width="20%" display="flex" justifyContent="end" alignItems="center" gap="10px">
                 <Button
                   messageTooltip="Ver archivo"
                   shape="round"
@@ -146,17 +156,22 @@ const JudicialBinnacleInfoFileForm = ({ clientCode, judicialFileCaseId }: Judici
         })}
         {watch('filesDnD').map((file) => {
           return (
-            <FileItemStyled backgroundColor="#F9FAFE" key={file.name}>
-              <Container display="flex" gap="10px" alignItems="center">
-                <Container display="flex" justifyContent="start" alignItems="start">
+            <FileItemStyled width="100%" backgroundColor="#F9FAFE" key={file.name}>
+              <Container width="calc(100% - 48px)" display="flex" gap="10px" alignItems="center" justifyContent="start">
+                <Container width="30px" display="flex" justifyContent="start" alignItems="start">
                   {getIconFile(file.name)}
                 </Container>
-                <Container display="flex" justifyContent="start" flexDirection="column">
-                  <Container>{file.name}</Container>
+                <Container width="calc(90% - 30px)" display="flex" justifyContent="start" flexDirection="column">
+                  <StyledFileName data-tooltip-id={'my-tooltip-2' + file.name} width="100%">
+                    {file.name}
+                    <Tooltip content={file.name} place="left" id={'my-tooltip-2' + file.name}>
+                      {file.name}
+                    </Tooltip>
+                  </StyledFileName>
                   <Container>{formatFileSize(file.size)}</Container>
                 </Container>
               </Container>
-              <Container>
+              <Container width="20%" display="flex" justifyContent="end" alignItems="center" gap="10px">
                 <Button
                   leadingIcon="ri-close-line"
                   hierarchy="tertiary"
@@ -197,4 +212,10 @@ const FileItemStyled = styled(Container)`
   border-radius: 4px;
   padding: 15px 30px;
   justify-content: space-between;
+`
+
+const StyledFileName = styled(Container)`
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 `
