@@ -18,6 +18,8 @@ import { KEY_COBRANZA_URL_TAG_CODE_CACHE } from '@/pages/extrajudicial/Extrajudi
 import { getExtTagGroupsByCHB } from '@/services/extrajudicial/ext-tag-group.service'
 import notification from '@/ui/notification'
 import { useFiltersContext } from '@/contexts/FiltersProvider'
+import Select from '@/ui/Select'
+import { SelectItemType } from '@/ui/Select/interfaces'
 
 type MenuCompanyProps = {
   children: JSX.Element
@@ -36,7 +38,7 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({ children, urlIdentifier }) =>
     customerUser: { user },
     auth: { setAuthenticate },
     clearAll,
-    bank: { selectedBank },
+    bank: { selectedBank, setSelectedBank },
   } = useLoloContext()
 
   const { clearAllFilters } = useFiltersContext()
@@ -119,12 +121,22 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({ children, urlIdentifier }) =>
     titleElement.textContent = customer.companyName ? `${customer.companyName} - Lolo Bank` : 'Lolo Bank'
   }
 
-  const getBankName = () => {
-    return (
-      customer.customerBanks.find((customerBank) => {
-        return customerBank.id == parseInt(selectedBank?.idBank)
-      })?.name ?? ''
-    )
+  const options: Array<SelectItemType> = customer.customerBanks.map((bank) => {
+    return {
+      key: String(bank.id),
+      label: bank.name,
+    }
+  })
+
+  const onChangeBank = (key: string) => {
+    clearAllFilters()
+
+    const customerBank = customer.customerBanks.find((customerBank) => String(customerBank.id) === key)
+
+    setSelectedBank({
+      idBank: key,
+      idCHB: String(customerBank?.CUSTOMER_HAS_BANK.id),
+    })
   }
 
   useEffect(() => {
@@ -166,9 +178,24 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({ children, urlIdentifier }) =>
           </Text.Body>
         </Container>
 
-        <Text.Body className="layout__header-selected-bank" size="m" weight="bold" color="Success5">
-          {getBankName()}
-        </Text.Body>
+        <Container
+          className="actions__select"
+          display="flex"
+          flexDirection="row"
+          gap="8px"
+          alignItems="center"
+          width="400px"
+        >
+          <Text.Body size="m" weight="bold">
+            BANCO
+          </Text.Body>
+          <Select
+            placeholder="Seleccionar banco"
+            value={selectedBank.idBank}
+            options={options}
+            onChange={onChangeBank}
+          />
+        </Container>
       </Container>
 
       <Container width="100%" height="calc(100vh - 50px)" display="flex" flexDirection="row">
@@ -211,6 +238,23 @@ export default MenuCompany
 
 const StyledMenu = styled(Container)`
   ${({ theme }) => css`
+    .actions__select {
+      > span:first-child {
+        width: 20%;
+      }
+      > div {
+        width: 80%;
+      }
+    }
+    .layout__header {
+      > div:first-child {
+        width: 20%;
+      }
+      > div:first-child > span {
+        display: none;
+      }
+    }
+
     .layout__header {
       box-shadow: ${theme.shadows.elevationMedium};
     }
@@ -261,6 +305,14 @@ const StyledMenu = styled(Container)`
 
       .layout__header-selected-bank {
         display: block;
+      }
+      .layout__header {
+        > div:first-child > span {
+          display: flex;
+        }
+        > div:first-child {
+          width: 80%;
+        }
       }
     }
   `}
