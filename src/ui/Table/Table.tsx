@@ -52,6 +52,7 @@ const Table: React.FC<TableProps> = ({
   emptyFirstState,
   isArrayEmpty = false,
 }) => {
+  const hasFilter = selectedFilterOptions?.some((filter) => filter.options.length)
   return (
     <StyledContentTable id="main-layout-content-internal" top={top} leftSpace={leftSpace} rightSpace={rightSpace}>
       <StyledOrderTable>
@@ -68,7 +69,7 @@ const Table: React.FC<TableProps> = ({
                 <HeaderCell
                   key={index}
                   isThereFilter={isThereFilter}
-                  width={width?.replace('%', 'em')}
+                  width={loading ? width : width?.replace('%', 'em')}
                   justifyContent={justifyContent}
                   textTransform={textTransform}
                   options={options}
@@ -83,7 +84,7 @@ const Table: React.FC<TableProps> = ({
         </thead>
 
         <tbody className="table-body">
-          {!!loading && (
+          {!!loading ? (
             <tr>
               <td colSpan={columns.length}>
                 {columns.map((_,index) => (
@@ -92,7 +93,7 @@ const Table: React.FC<TableProps> = ({
                       <Skeleton
                         key={index}
                         width={column.width ? (parseInt(column.width.replace('%', '')) * (window.innerWidth / 100)) : 170}
-                        height={50}
+                        height={40}
                         className="skeleton"
                         baseColor="#f0f0f0"
                         highlightColor="#e6e6e6"
@@ -102,7 +103,7 @@ const Table: React.FC<TableProps> = ({
                 ))}
               </td>
             </tr>
-          )}
+          ):null}
           {!error && !loading && children}
           {!!error && !loading && (
             <tr className="row-error">
@@ -112,8 +113,8 @@ const Table: React.FC<TableProps> = ({
               </td>
             </tr>
           )}
-          {filterOptions && isArrayEmpty && !loading && emptyState}
-          {!filterOptions && isArrayEmpty && !loading && emptyFirstState}
+          {hasFilter && isArrayEmpty && !loading && emptyState}
+          {!hasFilter && isArrayEmpty && !loading && emptyFirstState}
         </tbody>
       </StyledOrderTable>
     </StyledContentTable>

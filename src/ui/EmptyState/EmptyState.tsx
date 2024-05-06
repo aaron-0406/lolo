@@ -7,8 +7,8 @@ import Text from '../Text'
 type EmptyStateProps = {
   title: string
   description:string
-  buttonLabel: string
-  buttonAction: () => void
+  buttonLabel?: string
+  buttonAction?: () => void
 }
 
 const EmptyState:React.FC<EmptyStateProps> = ({title, description, buttonLabel, buttonAction}) => {
@@ -55,10 +55,14 @@ const EmptyState:React.FC<EmptyStateProps> = ({title, description, buttonLabel, 
           {description}
         </Text.Body>
       </Container>
-      <Button 
-      onClick={buttonAction}
-      label={buttonLabel}
-      />
+      {
+        !!buttonAction || !!buttonLabel ? (
+          <Button 
+          onClick={buttonAction}
+          label={buttonLabel}
+          />
+        ): null
+      }  
     </Container>
   )
 }

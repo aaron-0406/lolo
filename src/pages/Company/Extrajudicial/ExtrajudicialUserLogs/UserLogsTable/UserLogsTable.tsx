@@ -186,8 +186,6 @@ const UserLogsTable: FC<UserLogsTableProps> = ({ opts, setOpts }) => {
             <EmptyState
               title="Recurso no encontrado"
               description="Aún no se han registrado logs."
-              buttonLabel="regresar"
-              buttonAction={() => {}}
             />
           </EmptyStateCell>
         }
