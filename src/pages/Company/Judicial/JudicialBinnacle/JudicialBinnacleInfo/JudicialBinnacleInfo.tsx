@@ -7,13 +7,15 @@ import { LinkType } from '@/ui/Breadcrumbs/Breadcrumbs.type'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import { useParams } from 'react-router-dom'
 import useModal from '@/hooks/useModal'
+import Text from '@/ui/Text'
 
 type JudicialBinnacleInfoProps = {
   judicialFileCaseId: number
   clientCode: string
+  name: string
 }
 
-const JudicialBinnacleInfo = ({ judicialFileCaseId, clientCode }: JudicialBinnacleInfoProps) => {
+const JudicialBinnacleInfo = ({ judicialFileCaseId, clientCode, name }: JudicialBinnacleInfoProps) => {
   const code = useParams().code ?? ''
 
   const {
@@ -53,6 +55,11 @@ const JudicialBinnacleInfo = ({ judicialFileCaseId, clientCode }: JudicialBinnac
     >
       <Container display="flex" flexDirection="column" gap="10px">
         <Breadcrumbs routes={routers} />
+        <Container padding="0 20px 0 20px" backgroundColor="#e5e7eb">
+          <Text.Body size="m" weight="bold">
+            {name}
+          </Text.Body>
+        </Container>
       </Container>
 
       <Container>

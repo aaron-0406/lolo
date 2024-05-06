@@ -109,12 +109,13 @@ const JudicialObservationTable = ({ judicialFileCaseId, clientCode }: JudicialOb
             ) => {
               let documentos = ''
               record.judicialObsFile.forEach((obsFiles) => {
-                documentos = documentos + obsFiles.originalName + ', '
+                documentos = documentos + obsFiles.originalName + ' | '
               })
               return (
                 <tr className="styled-data-table-row" key={record.id}>
                   <BodyCell textAlign="center">{key + 1 || ''}</BodyCell>
                   <BodyCell textAlign="center">{moment(record.date).format('DD-MM-YYYY') || ''}</BodyCell>
+                  <BodyCell textAlign="center">{record.judicialObsType.type || ''}</BodyCell>
                   <BodyCell textAlign="center">
                     <Container
                       margin="20px 0"
@@ -124,11 +125,21 @@ const JudicialObservationTable = ({ judicialFileCaseId, clientCode }: JudicialOb
                       wordBreak="break-all"
                       overFlowY="auto"
                     >
-                      {record.judicialObsType.type || ''}
+                      {record.comment || ''}
                     </Container>
                   </BodyCell>
-                  <BodyCell textAlign="center">{record.comment || ''}</BodyCell>
-                  <BodyCell textAlign="center">{documentos}</BodyCell>
+                  <BodyCell textAlign="center">
+                    <Container
+                      margin="20px 0"
+                      minWidth="300px"
+                      maxHeight="130px"
+                      whiteSpace="normal"
+                      wordBreak="break-all"
+                      overFlowY="auto"
+                    >
+                      {documentos}
+                    </Container>
+                  </BodyCell>
                   <BodyCell textAlign="center">
                     {
                       <Container display="flex" gap="10px" justifyContent="space-around">

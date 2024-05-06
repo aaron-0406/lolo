@@ -31,11 +31,16 @@ const JudicialObservation = () => {
   )
 
   const judicialFileCaseId = data?.data.id
+  const clientName = data?.data?.client?.name
   const clientCode = data?.data.client.code
 
   return (
     <Container width="100%" height="100%" display="flex" flexDirection="column" justifyContent="space-between">
-      <JudicialObservationInfo judicialFileCaseId={judicialFileCaseId} clientCode={clientCode} />
+      <JudicialObservationInfo
+        judicialFileCaseId={judicialFileCaseId}
+        clientName={clientName}
+        clientCode={clientCode}
+      />
       <JudicialObservationTable judicialFileCaseId={judicialFileCaseId} clientCode={clientCode} />
     </Container>
   )
