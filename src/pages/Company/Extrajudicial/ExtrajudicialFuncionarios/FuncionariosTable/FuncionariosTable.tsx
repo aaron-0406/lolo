@@ -16,6 +16,7 @@ import { funcionariosColumns } from './utils/columns'
 import DeleteFuncionariosModal from '../Modals/DeleteFuncionariosModal'
 import { KEY_EXT_COBRANZA_FUNCIONARIOS_CACHE } from './utils/ext-funcionarios.cache'
 import { useLoloContext } from '@/contexts/LoloProvider'
+import EmptyState from '@/ui/EmptyState'
 
 type FuncionariosTableProps = {
   opts: Opts
@@ -89,6 +90,11 @@ const FuncionariosTable: FC<FuncionariosTableProps> = ({ opts, setOpts }) => {
         emptyState={
           <EmptyStateCell colSpan={funcionariosColumns.length}>
             <div>Vacio</div>
+          </EmptyStateCell>
+        }
+        emptyFirstState={
+          <EmptyStateCell colSpan={funcionariosColumns.length}>
+            <EmptyState title="Recurso no encontrado" description="" />
           </EmptyStateCell>
         }
       >

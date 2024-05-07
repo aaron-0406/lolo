@@ -16,6 +16,7 @@ import moment from 'moment'
 import Button from '@/ui/Button'
 import DeleteJudicialBinTypeBinnacleModal from '../Modals/DeleteJudicialBinTypeBinnacleModal'
 import JudicialBinTypeBinnacleModal from '../Modals/JudicialBinTypeBinnacleModal/JudicialBinTypeBinnacleModal'
+import EmptyState from '@/ui/EmptyState'
 
 type JudicialBinTypeBinnacleTableProps = {
   opts: Opts
@@ -85,7 +86,20 @@ const JudicialBinTypeBinnacleTable = ({ opts, setOpts }: JudicialBinTypeBinnacle
         isArrayEmpty={!binTypeBinnacles.length}
         emptyState={
           <EmptyStateCell colSpan={binTypeBinnaclesColumns.length}>
-            <div>Vacio</div>
+            <EmptyState
+              title="No hay recursos disponibles"
+              description="No se encontraron tipos de bitacora disponibles, por favor seleccione otros filtros."
+              buttonLabel="Limpiar filtros"
+              buttonAction={() => {}}
+            />
+          </EmptyStateCell>
+        }
+        emptyFirstState = {
+          <EmptyStateCell colSpan={binTypeBinnaclesColumns.length}>
+            <EmptyState
+              title="No hay recursos disponibles"
+              description="No se encontró el la bitacora solicitada"
+            />
           </EmptyStateCell>
         }
       >

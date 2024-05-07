@@ -52,7 +52,7 @@ const Table: React.FC<TableProps> = ({
   emptyFirstState,
   isArrayEmpty = false,
 }) => {
-  const hasFilter = selectedFilterOptions?.some((filter) => filter.options.length)
+  const hasFilter = selectedFilterOptions?.length && selectedFilterOptions?.some((filter) => filter.options.length)
   return (
     <StyledContentTable id="main-layout-content-internal" top={top} leftSpace={leftSpace} rightSpace={rightSpace}>
       <StyledOrderTable>
@@ -69,7 +69,7 @@ const Table: React.FC<TableProps> = ({
                 <HeaderCell
                   key={index}
                   isThereFilter={isThereFilter}
-                  width={loading ? width : width?.replace('%', 'em')}
+                  width={loading ? '' : width}
                   justifyContent={justifyContent}
                   textTransform={textTransform}
                   options={options}
@@ -82,39 +82,38 @@ const Table: React.FC<TableProps> = ({
             })}
           </tr>
         </thead>
-
         <tbody className="table-body">
-          {!!loading ? (
-            <tr>
-              <td colSpan={columns.length}>
-                {columns.map((_,index) => (
-                  <Container key={index} width="100%"  gap="20px" display='flex' flexDirection='row'>
-                    {columns.map((column, index) => (
-                      <Skeleton
-                        key={index}
-                        width={column.width ? (parseInt(column.width.replace('%', '')) * (window.innerWidth / 100)) : 170}
-                        height={40}
-                        className="skeleton"
-                        baseColor="#f0f0f0"
-                        highlightColor="#e6e6e6"
-                      />
-                    ))}
+          {!!loading ? columns.map((_, index) => <tr key = {index}>
+            {
+              columns.map((column, index)=> (
+                <td key={index} >
+                  <Container width="100%" height="100%" display='flex' justifyContent='center' alignItems='center'>
+                    <Skeleton
+                      width={
+                        column.width
+                        ? parseInt(column.width.replace('%', '')) * (window.innerWidth / 100) 
+                          : 170
+                      }
+                      height={40}
+                      className="skeleton"
+                      baseColor="#f0f0f0"
+                      highlightColor="#e6e6e6"
+                    />
                   </Container>
-                ))}
-              </td>
-            </tr>
-          ):null}
+                </td>
+              ))
+            }
+          </tr>) : null}
           {!error && !loading && children}
           {!!error && !loading && (
             <tr className="row-error">
               <td colSpan={columns.length}>
-                {/* <RetryPage error={error} reload={errorRefetch} fullScreen /> */}
                 <>Error</>
               </td>
             </tr>
           )}
-          {hasFilter && isArrayEmpty && !loading && emptyState}
-          {!hasFilter && isArrayEmpty && !loading && emptyFirstState}
+          {hasFilter && isArrayEmpty && !loading ? emptyState : null}
+          {!hasFilter && isArrayEmpty && !loading ? emptyFirstState : null}
         </tbody>
       </StyledOrderTable>
     </StyledContentTable>
@@ -157,7 +156,6 @@ const StyledOrderTable = styled.table`
     }
 
     .skeleton{
-      margin-top:10px; 
       gap: 10px;
     }
     .table-body{

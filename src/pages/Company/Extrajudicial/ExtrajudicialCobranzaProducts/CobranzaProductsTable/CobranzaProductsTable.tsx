@@ -17,6 +17,7 @@ import { productsColumns } from './utils/columns'
 import CobranzaProductsModal from '../Modals/CobranzaProductsModal'
 import DeleteCobranzaProductsModal from '../Modals/DeleteCobranzaProductsModal'
 import { ExtProductNameType } from '@/types/extrajudicial/ext-product-name'
+import EmptyState from '@/ui/EmptyState'
 
 type CobranzaProductsTableProps = {
   clientId?: number
@@ -77,7 +78,20 @@ const CobranzaProductsTable = ({ clientId = 0 }: CobranzaProductsTableProps) => 
         isArrayEmpty={!products.length}
         emptyState={
           <EmptyStateCell colSpan={productsColumns.length}>
-            <div>Vacio</div>
+            <EmptyState
+              title="No hay recursos disponibles"
+              description="No se encontraron productos, por favor seleccione otros filtros"
+              buttonLabel="Limpiar filtros"
+              buttonAction={() => {}}
+            />
+          </EmptyStateCell>
+        }
+        emptyFirstState={
+          <EmptyStateCell colSpan={productsColumns.length}>
+            <EmptyState
+              title="No hay recursos disponibles"
+              description="No se encontraron productos relacionados al cliente seleccionado"
+            />
           </EmptyStateCell>
         }
       >

@@ -185,7 +185,7 @@ const UserLogsTable: FC<UserLogsTableProps> = ({ opts, setOpts }) => {
           <EmptyStateCell colSpan={userLogsColumns.length}>
             <EmptyState
               title="Recurso no encontrado"
-              description="Aún no se han registrado logs."
+              description="Aún no se han registrado logs"
             />
           </EmptyStateCell>
         }

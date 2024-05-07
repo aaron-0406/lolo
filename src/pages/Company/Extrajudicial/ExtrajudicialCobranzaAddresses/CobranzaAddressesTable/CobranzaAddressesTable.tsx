@@ -16,6 +16,7 @@ import Button from '@/ui/Button'
 import DeleteCobranzaAddressesModal from '../Modals/DeleteCobranzaAddressesModal'
 import CobranzaAddressesModal from '../Modals/CobranzaAddressesModal'
 import moment from 'moment'
+import EmptyState from '@/ui/EmptyState'
 
 type CobranzaAddressesTableProps = {
   clientId?: number
@@ -74,7 +75,18 @@ const CobranzaAddressesTable = ({ clientId }: CobranzaAddressesTableProps) => {
         isArrayEmpty={!addresses.length}
         emptyState={
           <EmptyStateCell colSpan={addressesColumns.length}>
-            <div>Vacio</div>
+            <EmptyState
+              title="No hay recursos disponibles"
+              description="No se encontraron direcciones diponibles"
+            />
+          </EmptyStateCell>
+        }
+        emptyFirstState={
+          <EmptyStateCell colSpan={addressesColumns.length}>
+            <EmptyState
+              title="No hay recursos disponibles"
+              description="No se encontraron direcciones de cobranza para este cliente"
+            />
           </EmptyStateCell>
         }
       >

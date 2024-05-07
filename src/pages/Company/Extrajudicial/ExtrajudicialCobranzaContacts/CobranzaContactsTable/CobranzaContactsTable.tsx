@@ -22,6 +22,7 @@ import CobranzaContactsModal from '../Modals/CobranzaContactsModal'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import { KEY_EXT_CONTACT_TYPE_CACHE } from '@/pages/extrajudicial/ExtrajudicialContactType/ContactTypeTable/utils/ext-contact-type.cache'
 import styled, { css } from 'styled-components'
+import EmptyState from '@/ui/EmptyState'
 
 type CobranzaContactsTableProps = {
   clientId?: number
@@ -149,8 +150,19 @@ const CobranzaContactsTable = ({ clientId = 0 }: CobranzaContactsTableProps) => 
         loading={isLoading}
         isArrayEmpty={!contacts.length}
         emptyState={
+            <EmptyStateCell colSpan={contactsColumns.length}>
+              <EmptyState
+                title="No hay recursos disponibles"
+                description="No se encontraron contactos para este cliente, por favor seleccione otros filtros"
+              />
+            </EmptyStateCell>
+        }
+        emptyFirstState={
           <EmptyStateCell colSpan={contactsColumns.length}>
-            <div>Vacio</div>
+            <EmptyState
+              title="No hay recursos disponibles"
+              description="No se encontraron contactos para este cliente"
+            />
           </EmptyStateCell>
         }
       >

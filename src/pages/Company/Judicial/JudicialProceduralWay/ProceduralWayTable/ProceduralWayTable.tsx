@@ -15,6 +15,7 @@ import { useLoloContext } from '@/contexts/LoloProvider'
 import { JudicialProceduralWayType } from '@/types/judicial/judicial-procedural-way.type'
 import { getProceduralWayByCHB } from '@/services/judicial/judicial-procedural-way.service'
 import { KEY_JUDICIAL_PROCEDURAL_WAY_CACHE } from './utils/judicial-procedural-way.cache'
+import EmptyState from '@/ui/EmptyState'
 
 type ProceduralWayTableProps = {
   opts: Opts
@@ -83,7 +84,17 @@ const ProceduralWayTable = ({ opts, setOpts }: ProceduralWayTableProps) => {
         isArrayEmpty={!proceduralWays.length}
         emptyState={
           <EmptyStateCell colSpan={proceduralWayColumns.length}>
-            <div>Vacio</div>
+            <EmptyState
+              title="No hay recursos disponibles"
+              description="No se encontraron vias procedimentales, por favor seleccione otros filtros."
+              buttonLabel="Limpiar filtros"
+              buttonAction={() => {}}
+            />
+          </EmptyStateCell>
+        }
+        emptyFirstState={
+          <EmptyStateCell colSpan={proceduralWayColumns.length}>
+            <EmptyState title="No hay recursos disponibles" description="No se encontraron vias procedimentales" />
           </EmptyStateCell>
         }
       >

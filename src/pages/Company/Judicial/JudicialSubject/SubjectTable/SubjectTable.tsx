@@ -15,6 +15,7 @@ import { KEY_JUDICIAL_SUBJECT_CACHE } from './utils/judicial-subject.cache'
 import { JudicialSubjectType } from '@/types/judicial/judicial-subject.type'
 import { getSubjectByCHB } from '@/services/judicial/judicial-subject.service'
 import DeleteSubjectModal from '../Modals/DeleteSubjectModal'
+import EmptyState from '@/ui/EmptyState'
 
 type SubjectTableProps = {
   opts: Opts
@@ -76,7 +77,12 @@ const SubjectTable = ({ opts, setOpts }: SubjectTableProps) => {
         isArrayEmpty={!subjects.length}
         emptyState={
           <EmptyStateCell colSpan={subjectColumns.length}>
-            <div>Vacio</div>
+            <EmptyState title="No hay recursos disponibles" description="No se encontraron materias, por favor seleccione otros filtros." />
+          </EmptyStateCell>
+        }
+        emptyFirstState={
+          <EmptyStateCell colSpan={subjectColumns.length}>
+            <EmptyState title="No hay recursos disponibles" description="No se encontraron materias" />
           </EmptyStateCell>
         }
       >

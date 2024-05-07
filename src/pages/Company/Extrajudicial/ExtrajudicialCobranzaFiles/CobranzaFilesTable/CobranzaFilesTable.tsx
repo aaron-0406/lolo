@@ -22,6 +22,7 @@ import fileIcon from '@/assets/icons/file.png'
 import CobranzaFilesSeeModal from '../Modals/CobranzaFilesSeeModal'
 import Tag from '@/ui/Tag'
 import CobranzaFilesEditModal from '../Modals/CobranzaFilesEditModal'
+import EmptyState from '@/ui/EmptyState'
 
 type CobranzaFilesTableProps = {
   clientId?: number
@@ -100,7 +101,20 @@ const CobranzaFilesTable = ({ clientId, clientCode = 0, clientCustomerHasBankId 
         isArrayEmpty={!files.length}
         emptyState={
           <EmptyStateCell colSpan={filesColumns.length}>
-            <div>Vacio</div>
+            <EmptyState
+              title="No hay recursos disponibles"
+              description="No se encontraron archivos de este cliente, por favor seleccione otros filtros"
+              buttonLabel="Limpiar filtros"
+              buttonAction={() => {}}
+            />
+          </EmptyStateCell>
+        }
+        emptyFirstState = {
+          <EmptyStateCell colSpan={filesColumns.length}>
+            <EmptyState
+              title="No hay recursos disponibles"
+              description="No se encontraron archivos para este cliente"
+            />
           </EmptyStateCell>
         }
       >
