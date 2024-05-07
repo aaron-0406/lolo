@@ -126,7 +126,7 @@ const JudicialObservationInfoFileForm = ({ clientCode, judicialFileCaseId }: Jud
                   shape="round"
                   size="small"
                   leadingIcon="ri-eye-line"
-                  permission="P02-02-02-04"
+                  // permission="P02-02-02-04"
                   display="default"
                   onClick={() => {
                     handleClickSeeFile(file.id)

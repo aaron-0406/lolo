@@ -165,7 +165,6 @@ const JudicialObservationModal = ({
     },
     {
       onSuccess: ({ data }) => {
-        console.log(data.judicialObsFile)
         if (!!idObservation) {
           setValue('date', moment(data.date).format('DD-MM-YYYY'), { shouldValidate: true })
           setValue('comment', data.comment, { shouldValidate: true })

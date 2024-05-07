@@ -45,6 +45,8 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase }: FileCaseActions
   } = judicialFileCaseCache(queryClient)
 
   const greaterThanDesktopS = useMediaQuery(device.desktopS)
+  const greaterThanTabletS = useMediaQuery(device.tabletS)
+
   const { reset, getValues, watch, setValue, handleSubmit } = useFormContext<
     JudicialCaseFileType & {
       judicialCourt: { court: string; customerHasBankId: string }
@@ -200,13 +202,22 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase }: FileCaseActions
   }, [codeParams])
 
   return (
-    <Container width="100%" display="flex" justifyContent="space-between" alignItems="center" gap="20px">
+    <Container
+      width="100%"
+      display="flex"
+      justifyContent="space-between"
+      alignItems="center"
+      gap="20px"
+      padding={greaterThanDesktopS ? '0px 0px 0px 20px' : '0px'}
+    >
       <Breadcrumbs routes={routers} />
-      <Container width="130px" display="flex" justifyContent="space-between" alignItems="center" gap="10px">
+
+      <Container width="fit-content" display="flex" justifyContent="space-between" alignItems="center" gap="10px">
         <Button
           width="130px"
           label={greaterThanDesktopS && 'Guardar'}
           shape={greaterThanDesktopS ? 'default' : 'round'}
+          size={greaterThanTabletS ? 'default' : 'small'}
           trailingIcon="ri-save-3-line"
           onClick={watch().id !== 0 ? onUpdate : onCreate}
           loading={loadingCreateFileCase}

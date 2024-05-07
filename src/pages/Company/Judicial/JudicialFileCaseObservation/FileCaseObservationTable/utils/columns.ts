@@ -3,7 +3,7 @@ import { ColumProps } from '@/ui/Table/Table'
 export const judicialObservationColumns: ColumProps[] = [
   {
     id: 'judicial.observation.datatable.header.id',
-    title: '#',
+    title: 'ID',
     width: '5%',
     justifyContent: 'center',
   },
