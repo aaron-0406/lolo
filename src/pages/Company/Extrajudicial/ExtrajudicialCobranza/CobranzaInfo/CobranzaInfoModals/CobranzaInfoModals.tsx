@@ -8,6 +8,7 @@ import Modal from '@/ui/Modal'
 import ModalFiadores from './ModalFiadores'
 import paths from '../../../../../../shared/routes/paths'
 import { useLoloContext } from '@/contexts/LoloProvider'
+import ScrollButtons from '@/ui/ScrollsButton/ScrollsButton'
 
 const CobranzaInfoModals = () => {
   const {
@@ -47,64 +48,66 @@ const CobranzaInfoModals = () => {
 
   return (
     <Container width="100%" height="100%" display="flex" flexDirection="row" gap="10px">
-      <Button
-        trailingIcon="ri-discuss-line"
-        width="170px"
-        label="Comentarios"
-        disabled={!clientId}
-        onClick={onClickComment}
-        permission="P02-02-01"
-      />
-      <Button
-        trailingIcon="ri-customer-service-2-line"
-        width="150px"
-        label="Contactos"
-        disabled={!clientId}
-        onClick={onClickContact}
-        permission="P02-02-07"
-      />
-      <Button
-        trailingIcon="ri-file-line"
-        width="150px"
-        label="Archivos"
-        disabled={!clientId}
-        onClick={onClickFile}
-        permission="P02-02-03"
-      />
-      <Button
-        trailingIcon="ri-group-line"
-        width="150px"
-        label="Fiadores"
-        disabled={!clientId}
-        onClick={showModalFiadores}
-        permission="P02-02-04"
-      />
-      <Button
-        trailingIcon="ri-map-pin-user-line"
-        width="160px"
-        label="Direcciones"
-        disabled={!clientId}
-        onClick={onClickAddress}
-        permission="P02-02-05"
-      />
-      <Button
-        trailingIcon="ri-bank-card-line"
-        width="150px"
-        label="Productos"
-        disabled={!clientId}
-        onClick={onClickProduct}
-        permission="P02-02-06"
-      />
+      <ScrollButtons>
+        <Button
+          trailingIcon="ri-discuss-line"
+          width="170px"
+          label="Comentarios"
+          disabled={!clientId}
+          onClick={onClickComment}
+          permission="P02-02-01"
+        />
+        <Button
+          trailingIcon="ri-customer-service-2-line"
+          width="150px"
+          label="Contactos"
+          disabled={!clientId}
+          onClick={onClickContact}
+          permission="P02-02-07"
+        />
+        <Button
+          trailingIcon="ri-file-line"
+          width="150px"
+          label="Archivos"
+          disabled={!clientId}
+          onClick={onClickFile}
+          permission="P02-02-03"
+        />
+        <Button
+          trailingIcon="ri-group-line"
+          width="150px"
+          label="Fiadores"
+          disabled={!clientId}
+          onClick={showModalFiadores}
+          permission="P02-02-04"
+        />
+        <Button
+          trailingIcon="ri-map-pin-user-line"
+          width="160px"
+          label="Direcciones"
+          disabled={!clientId}
+          onClick={onClickAddress}
+          permission="P02-02-05"
+        />
+        <Button
+          trailingIcon="ri-bank-card-line"
+          width="150px"
+          label="Productos"
+          disabled={!clientId}
+          onClick={onClickProduct}
+          permission="P02-02-06"
+        />
 
-      <Modal
-        id="modal-fiadores"
-        title="Fiadores"
-        visible={visibleModalFiadores}
-        onClose={hideModalFiadores}
-        contentOverflowY="auto"
-      >
-        <ModalFiadores clientId={clientId} />
-      </Modal>
+        <Modal
+          id="modal-fiadores"
+          title="Fiadores"
+          visible={visibleModalFiadores}
+          onClose={hideModalFiadores}
+          contentOverflowY="auto"
+        >
+          <ModalFiadores clientId={clientId} />
+        </Modal>
+      </ScrollButtons>
     </Container>
   )
 }
