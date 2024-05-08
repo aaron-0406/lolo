@@ -174,7 +174,6 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase }: FileCaseActions
         updateFileCaseMutate()
       },
       (error) => {
-        console.log(error)
         if (error.clientId) {
           notification({ type: 'warning', message: 'Necesitas seleccionar un cliente para el expediente.' })
         }
@@ -199,7 +198,7 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase }: FileCaseActions
       refetch()
     }
     // eslint-disable-next-line
-  }, [])
+  }, [codeParams])
 
   return (
     <Container

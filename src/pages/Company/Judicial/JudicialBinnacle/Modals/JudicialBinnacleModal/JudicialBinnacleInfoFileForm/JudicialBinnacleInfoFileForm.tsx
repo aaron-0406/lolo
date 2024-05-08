@@ -127,7 +127,7 @@ const JudicialBinnacleInfoFileForm = ({ clientCode, judicialFileCaseId }: Judici
                       {file.originalName}
                     </Tooltip>
                   </StyledFileName>
-                  <Container></Container>
+                  <Container>{formatFileSize(file.size)}</Container>
                 </Container>
               </Container>
               <Container width="20%" display="flex" justifyContent="end" alignItems="center" gap="10px">
