@@ -32,11 +32,11 @@ const JudicialBinnacle = () => {
 
   const judicialFileCaseId = data?.data.id
   const clientCode = data?.data.client.code
-  const name = data?.data.client.name
+  const clientName = data?.data.client.name
 
   return (
     <Container width="100%" height="100%" display="flex" flexDirection="column" justifyContent="space-between">
-      <JudicialBinnacleInfo name={name} judicialFileCaseId={judicialFileCaseId} clientCode={clientCode} />
+      <JudicialBinnacleInfo judicialFileCaseId={judicialFileCaseId} clientCode={clientCode} clientName={clientName} />
       <JudicialBinnacleTable judicialFileCaseId={judicialFileCaseId} clientCode={clientCode} />
     </Container>
   )

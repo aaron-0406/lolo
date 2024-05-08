@@ -56,9 +56,9 @@ const FileCaseDemandedProductsInfo = ({ clientId, clientName, caseFileId }: File
     >
       <Container display="flex" flexDirection="column" gap="15px">
         <Breadcrumbs routes={routers} />
-        <Container padding="0 20px 0 20px" backgroundColor="#e5e7eb">
+        <Container padding="10px" width="100%" margin="0px" backgroundColor="#eff0f6ff">
           <Text.Body size="m" weight="bold">
-            {clientName}
+            {clientName ?? '-'}
           </Text.Body>
         </Container>
       </Container>
