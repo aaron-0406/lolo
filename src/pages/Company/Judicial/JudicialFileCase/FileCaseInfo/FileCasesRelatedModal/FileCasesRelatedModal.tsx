@@ -59,9 +59,10 @@ const FileCasesRelatedModal = ({ onClose, visible }: FileCasesRelatedModalProps)
         height="100%"
         gap="10px"
       >
-        {fileCasesRelated.map((fileCase) => {
+        {fileCasesRelated.map((fileCase, key) => {
           return (
             <Container
+              key={key}
               onClick={() => {
                 handleRedirectFileCase(fileCase.numberCaseFile)
               }}
