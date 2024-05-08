@@ -5,6 +5,7 @@ import Container from '@/ui/Container'
 import Modal from '@/ui/Modal'
 import Text from '@/ui/Text'
 import { AxiosResponse } from 'axios'
+import { useEffect } from 'react'
 import { useQuery } from 'react-query'
 import { useNavigate, useParams } from 'react-router-dom'
 import paths from 'shared/routes/paths'
@@ -28,9 +29,15 @@ const FileCasesRelatedModal = ({ onClose, visible }: FileCasesRelatedModalProps)
 
   const codeParams = useParams().code ?? ''
 
-  const { data } = useQuery<AxiosResponse<Array<JudicialCaseFileType>>>('get-file-cases-related', () => {
-    return getFileCasesRelated(codeParams, Number(idCHB))
-  })
+  const { data, refetch } = useQuery<AxiosResponse<Array<JudicialCaseFileType>>>(
+    'get-file-cases-related',
+    () => {
+      return getFileCasesRelated(codeParams, Number(idCHB))
+    },
+    {
+      enabled: false,
+    }
+  )
 
   const fileCasesRelated = data?.data ?? []
 
@@ -40,6 +47,13 @@ const FileCasesRelatedModal = ({ onClose, visible }: FileCasesRelatedModalProps)
     })
     onClose()
   }
+
+  useEffect(() => {
+    if (!!codeParams.length && codeParams !== '000000000') {
+      refetch()
+    }
+    // eslint-disable-next-line
+  }, [codeParams])
 
   return (
     <Modal

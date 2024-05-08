@@ -147,7 +147,7 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
                   onClick={() => showModal()}
                   shape="round"
                   trailingIcon="ri-eye-line"
-                  messageTooltip="Ver relacionados"
+                  messageTooltip="Ver expedientes relacionados"
                 />
               )}
             </Container>
