@@ -159,10 +159,13 @@ const JudicialBinnacleModal = ({
           setValue('binnacleTypeId', data.binnacleTypeId, { shouldValidate: true })
           setValue('judicialBinProceduralStageId', data.judicialBinProceduralStageId, { shouldValidate: true })
           setValue('customerHasBankId', data?.customerHasBankId, { shouldValidate: true })
-          setValue('date', moment(data.date).format('DD-MM-YYYY'), { shouldValidate: true })
+          setValue('date', moment(data.date.split('T')[0]).format('DD-MM-YYYY'), { shouldValidate: true })
           setValue('lastPerformed', data.lastPerformed, { shouldValidate: true })
           setValue('judicialFileCaseId', data.judicialFileCaseId, { shouldValidate: true })
           setValue('judicialBinFiles', data.judicialBinFiles, { shouldValidate: true })
+          setValue('judicialDefendantProceduralActionId', data.judicialDefendantProceduralActionId, {
+            shouldValidate: true,
+          })
         } else {
           reset()
         }

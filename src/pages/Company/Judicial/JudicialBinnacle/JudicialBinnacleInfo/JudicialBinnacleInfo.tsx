@@ -9,7 +9,6 @@ import { useParams } from 'react-router-dom'
 import useModal from '@/hooks/useModal'
 import Text from '@/ui/Text'
 
-
 type JudicialBinnacleInfoProps = {
   judicialFileCaseId: number
   clientCode: string
@@ -57,10 +56,10 @@ const JudicialBinnacleInfo = ({ judicialFileCaseId, clientCode, clientName }: Ju
       <Container display="flex" flexDirection="column" gap="10px">
         <Breadcrumbs routes={routers} />
         <Container padding="10px" width="100%" margin="0px 0px 10px 0px" backgroundColor="#eff0f6ff">
-        <Text.Body size="m" weight="bold">
-          {clientName ?? '-'}
-        </Text.Body>
-      </Container>
+          <Text.Body size="m" weight="bold">
+            {clientName ?? '-'}
+          </Text.Body>
+        </Container>
       </Container>
 
       <Container>
