@@ -7,7 +7,6 @@ import moment from 'moment'
 import Table from '@/ui/Table'
 import EmptyStateCell from '@/ui/Table/EmptyStateCell'
 import useModal from '@/hooks/useModal'
-import Text from '@/ui/Text'
 import { useState } from 'react'
 import { AxiosResponse } from 'axios'
 import { useQuery } from 'react-query'
@@ -28,7 +27,6 @@ type JudicialBinnacleTableProps = {
 const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode }: JudicialBinnacleTableProps) => {
   const [idEdit, setIdEdit] = useState<number>(0)
   const [idDeletedComment, setIdDeletedComment] = useState<number>(0)
-
 
   const {
     visible: visibleModalJudicialBinProceduralStage,
@@ -91,7 +89,6 @@ const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode }: JudicialBinna
 
   return (
     <Container width="100%" height="calc(100% - 80px)" padding="0px 20px 0px 20px">
-
       <Table
         top="195px"
         columns={judicialBinnacleColumns}
