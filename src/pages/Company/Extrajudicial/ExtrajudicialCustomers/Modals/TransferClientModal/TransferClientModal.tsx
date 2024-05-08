@@ -101,7 +101,7 @@ const TransferClientModal = ({ visible, onClose, code }: TransferClientModalProp
       title="Tranferir cliente a otro banco"
       contentOverflowY="auto"
       size="small"
-      minHeight="200px"
+      minHeight="400px"
       footer={
         <Container width="100%" height="75px" display="flex" justifyContent="end" alignItems="center" gap="20px">
           <Button
@@ -118,7 +118,7 @@ const TransferClientModal = ({ visible, onClose, code }: TransferClientModalProp
     >
       <Container
         width="100%"
-        height="200px"
+        height="400px"
         display="flex"
         justify-content="center"
         flexDirection="column"

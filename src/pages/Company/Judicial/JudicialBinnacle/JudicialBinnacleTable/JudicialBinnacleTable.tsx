@@ -88,7 +88,7 @@ const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode }: JudicialBinna
   const binnacles = data?.data ?? []
 
   return (
-    <Container width="100%" height="calc(100% - 80px)" padding="20px">
+    <Container width="100%" height="calc(100% - 80px)" padding="0px 20px 0px 20px">
       <Table
         top="195px"
         columns={judicialBinnacleColumns}

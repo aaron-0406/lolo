@@ -157,6 +157,10 @@ const UserLogsTable: FC<UserLogsTableProps> = ({ opts, setOpts }) => {
     refetch()
   }, [getSelectedFilters(currentPath)?.filters])
 
+  useEffect(() => {
+    refetch()
+  }, [opts.page])
+
   return (
     <Container width="100%" height="calc(100% - 112px)" padding="20px">
       <Pagination count={userLogsCount} opts={opts} setOpts={setOpts} />

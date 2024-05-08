@@ -114,8 +114,10 @@ const JudicialObservationTable = ({ judicialFileCaseId, clientCode }: JudicialOb
               return (
                 <tr className="styled-data-table-row" key={record.id}>
                   <BodyCell textAlign="center">{key + 1 || ''}</BodyCell>
-                  <BodyCell textAlign="center">{moment(record.date).format('DD-MM-YYYY') || ''}</BodyCell>
-                  <BodyCell textAlign="center">{record.judicialObsType.type || ''}</BodyCell>
+                  <BodyCell textAlign="center">
+                    {moment(record.date.split('T')[0]).format('DD-MM-YYYY') || '-'}
+                  </BodyCell>
+                  <BodyCell textAlign="center">{record.judicialObsType.type || '-'}</BodyCell>
                   <BodyCell textAlign="center">
                     <Container
                       margin="20px 0"
@@ -125,7 +127,7 @@ const JudicialObservationTable = ({ judicialFileCaseId, clientCode }: JudicialOb
                       wordBreak="break-all"
                       overFlowY="auto"
                     >
-                      {record.comment || ''}
+                      {record.comment || '-'}
                     </Container>
                   </BodyCell>
                   <BodyCell textAlign="center">

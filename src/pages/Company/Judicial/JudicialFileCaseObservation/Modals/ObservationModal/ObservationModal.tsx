@@ -166,7 +166,7 @@ const JudicialObservationModal = ({
     {
       onSuccess: ({ data }) => {
         if (!!idObservation) {
-          setValue('date', moment(data.date).format('DD-MM-YYYY'), { shouldValidate: true })
+          setValue('date', moment(data.date.split('T')[0]).format('DD-MM-YYYY'), { shouldValidate: true })
           setValue('comment', data.comment, { shouldValidate: true })
           setValue('judicialCaseFileId', data.judicialCaseFileId, { shouldValidate: true })
           setValue('judicialObsTypeId', data.judicialObsTypeId, { shouldValidate: true })
