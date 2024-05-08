@@ -66,13 +66,13 @@ const ScrollButtons = ({ children }: ScrollButtonsProps) => {
     <ScrollButtonsContainer>
       {isScrollable && (
         <ScrollButton onClick={() => handleScroll(-100)}>
-          <Button trailingIcon="ri-arrow-left-s-fill" width="10px" shape="round" size="small" />
+          <Button trailingIcon="ri-arrow-left-s-fill" width="10px" shape="round" size="small" hierarchy="tertiary" />
         </ScrollButton>
       )}
       <ScrollContent ref={contentRef}>{children}</ScrollContent>
       {isScrollable && (
         <ScrollButton onClick={() => handleScroll(100)}>
-          <Button trailingIcon="ri-arrow-right-s-fill" width="10px" shape="round" size="small" />
+          <Button trailingIcon="ri-arrow-right-s-fill" width="10px" shape="round" size="small" hierarchy="tertiary" />
         </ScrollButton>
       )}
     </ScrollButtonsContainer>
