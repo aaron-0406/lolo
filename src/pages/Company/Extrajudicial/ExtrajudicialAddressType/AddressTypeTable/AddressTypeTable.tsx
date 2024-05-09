@@ -16,6 +16,7 @@ import { KEY_EXT_ADDRESS_TYPE_CACHE } from './utils/ext-address-type.cache'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import { AxiosResponse } from 'axios'
 import notification from '@/ui/notification'
+import EmptyState from '@/ui/EmptyState'
 
 const AddressesTypeTable = () => {
   const {
@@ -84,7 +85,15 @@ const AddressesTypeTable = () => {
         isArrayEmpty={!addressesType.length}
         emptyState={
           <EmptyStateCell colSpan={AddressTypeColumns.length}>
-            <div>Vacio</div>
+            <EmptyState
+              title="Recurso no encontrado"
+              description="No se encontraron los datos solicitados. Por favor, intente con otros filtros."
+            />
+          </EmptyStateCell>
+        }
+        emptyFirstState={
+          <EmptyStateCell colSpan={AddressTypeColumns.length}>
+            <EmptyState title="Recurso no encontrado" description="Aún no se han registrado tipos de direcciones" />
           </EmptyStateCell>
         }
       >
