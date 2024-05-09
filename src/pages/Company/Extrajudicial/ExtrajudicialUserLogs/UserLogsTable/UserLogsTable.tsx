@@ -62,6 +62,7 @@ const UserLogsTable: FC<UserLogsTableProps> = ({ opts, setOpts }) => {
   const { refetch } = useQuery(
     ['key-ext-user-logs-cache', customerId],
     async () => {
+      setIsLoading(true)
       const entities = selectedFilterOptions
         .find((filterOption) => filterOption.identifier === 'user.logs.datatable.header.action')
         ?.options.map((option) => {
@@ -180,17 +181,14 @@ const UserLogsTable: FC<UserLogsTableProps> = ({ opts, setOpts }) => {
             <EmptyState
               title="Recurso no encontrado"
               description="No se encontraron los datos solicitados. Por favor, intente con otros filtros."
-              buttonLabel='Limpiar filtros'
+              buttonLabel="Limpiar filtros"
               buttonAction={clearAllFilters}
             />
           </EmptyStateCell>
         }
         emptyFirstState={
           <EmptyStateCell colSpan={userLogsColumns.length}>
-            <EmptyState
-              title="Recurso no encontrado"
-              description="Aún no se han registrado logs"
-            />
+            <EmptyState title="Recurso no encontrado" description="Aún no se han registrado logs" />
           </EmptyStateCell>
         }
       >

@@ -45,6 +45,7 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts }) => {
   const [usersCount, setUsersCount] = useState<number>(0)
   const [idUser, setIdUser] = useState(0)
   const [idDeletedUser, setIdDeletedUser] = useState(0)
+  const [loadingUsers, setLoadingUsers] = useState(false)
 
   const { visible: visibleModalUser, showModal: showModalUser, hideModal: hideModalUser } = useModal()
   const { visible: visibleDeleteUser, showModal: showDeleteUser, hideModal: hideDeleteUser } = useModal()
@@ -141,17 +142,12 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts }) => {
             <EmptyState
               title="Recurso no encontrado"
               description="No se encontraron los datos solicitados. Por favor, intente con otros filtros."
-              buttonLabel="Limpiar filtros"
-              buttonAction={()=>{}}
             />
           </EmptyStateCell>
         }
         emptyFirstState={
           <EmptyStateCell colSpan={usersColumns.length}>
-            <EmptyState
-              title="Recurso no encontrado"
-              description="No se encontraron los datos solicitados."
-            />
+            <EmptyState title="Recurso no encontrado" description="No se encontraron los datos solicitados." />
           </EmptyStateCell>
         }
       >
