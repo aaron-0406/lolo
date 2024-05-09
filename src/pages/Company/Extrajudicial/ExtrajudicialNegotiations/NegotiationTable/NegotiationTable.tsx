@@ -16,6 +16,7 @@ import NegotiationModal from '../Modals/NegotiationModal'
 import useModal from '@/hooks/useModal'
 import DeleteNegotiationModal from '../Modals/DeleteNegotiationModal/DeleteNegotiationModal'
 import { useLoloContext } from '@/contexts/LoloProvider'
+import EmptyState from '@/ui/EmptyState'
 
 type NegotiationTableProps = {
   opts: Opts
@@ -84,7 +85,20 @@ const NegotiationTable = ({ opts, setOpts }: NegotiationTableProps) => {
         isArrayEmpty={!negotiations.length}
         emptyState={
           <EmptyStateCell colSpan={negotiationColumns.length}>
-            <div>Vacio</div>
+            <EmptyState
+              title="No hay recursos disponibles"
+              description="No se encontraron negociaciones, por favor seleccione otros filtros."
+              buttonLabel="Limpiar filtros"
+              buttonAction={() => {}}
+            />
+          </EmptyStateCell>
+        }
+        emptyFirstState={
+          <EmptyStateCell colSpan={negotiationColumns.length}>
+            <EmptyState
+              title="No hay recursos disponibles"
+              description="No se encontraron negociaciones"
+            />
           </EmptyStateCell>
         }
       >

@@ -16,6 +16,7 @@ import DeleteObsTypeModal from '../Modals/DeleteObsTypeModal'
 import { ObsTypeColumns } from './utils/columns'
 import { KEY_JUDICIAL_OBS_TYPE_CACHE } from './utils/judicial-obs-type.cache'
 import { useLoloContext } from '@/contexts/LoloProvider'
+import EmptyState from '@/ui/EmptyState'
 
 const ObsTypeTable = () => {
   const {
@@ -76,8 +77,21 @@ const ObsTypeTable = () => {
         isArrayEmpty={!ObsTypes.length}
         emptyState={
           <EmptyStateCell colSpan={ObsTypeColumns.length}>
-            <div>Vacio</div>
+            <EmptyState
+              title="No hay recursos disponibles"
+              description="No se encontraron tipos de observaciones disponibles, por favor seleccione otros filtros."
+              buttonLabel="Limpiar filtros"
+              buttonAction={() => {}}
+            />
           </EmptyStateCell>
+        }
+        emptyFirstState = {
+          <EmptyStateCell colSpan={ObsTypeColumns.length}>
+          <EmptyState
+            title="No hay recursos disponibles"
+            description="No se encontraron tipos de observaciones disponibles en este momento."
+          />
+        </EmptyStateCell>
         }
       >
         {!!ObsTypes?.length &&

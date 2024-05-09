@@ -17,6 +17,7 @@ import Text from '@/ui/Text/Text'
 import CobranzaCommentsModal from '../Modals/CobranzaCommentsModal/CobranzaCommentsModal'
 import useModal from '@/hooks/useModal'
 import DeleteCobranzaCommentsModal from '../Modals/DeleteCobranzaCommentsModal'
+import EmptyState from '@/ui/EmptyState'
 
 type CobranzaCommentsTableProps = {
   clientId?: number
@@ -80,7 +81,18 @@ const CobranzaCommentsTable = ({ clientId }: CobranzaCommentsTableProps) => {
         isArrayEmpty={!comments.length}
         emptyState={
           <EmptyStateCell colSpan={commentsColumns.length}>
-            <div>Vacio</div>
+            <EmptyState
+              title="No hay recursos disponibles"
+              description="No se encontraron comentarios para este cliente"
+            />
+          </EmptyStateCell>
+        }
+        emptyFirstState={
+          <EmptyStateCell colSpan={commentsColumns.length}>
+            <EmptyState
+              title="No hay recursos disponibles"
+              description="No se encontraron comentarios para este cliente"
+            />
           </EmptyStateCell>
         }
       >

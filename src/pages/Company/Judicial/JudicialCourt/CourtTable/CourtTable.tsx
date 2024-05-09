@@ -15,6 +15,7 @@ import { useLoloContext } from '@/contexts/LoloProvider'
 import { KEY_JUDICIAL_COURTS_CACHE } from './utils/judicial-court.cache'
 import { JudicialCourtType } from '@/types/judicial/judicial-court.type'
 import { getCourtByCHB } from '@/services/judicial/judicial-court.service'
+import EmptyState from '@/ui/EmptyState'
 
 type CourtTableProps = {
   opts: Opts
@@ -76,7 +77,20 @@ const CourtTable = ({ opts, setOpts }: CourtTableProps) => {
         isArrayEmpty={!courts.length}
         emptyState={
           <EmptyStateCell colSpan={courtColumns.length}>
-            <div>Vacio</div>
+            <EmptyState
+              title="No hay recursos disponibles"
+              description="No se encontraron juzgados, por favor seleccione otros filtros."
+              buttonLabel="Limpiar filtros"
+              buttonAction={() => {}}
+            />
+          </EmptyStateCell>
+        }
+        emptyFirstState={
+          <EmptyStateCell colSpan={courtColumns.length}>
+            <EmptyState
+              title="No hay recursos disponibles"
+              description="No se encontraron juzgados"
+            />
           </EmptyStateCell>
         }
       >

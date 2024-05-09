@@ -16,6 +16,7 @@ import { ProductNameColumns } from './utils/columns'
 import { KEY_EXT_PRODUCT_NAME_CACHE } from './utils/ext-product-name.cache'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import { AxiosResponse } from 'axios'
+import EmptyState from '@/ui/EmptyState'
 
 const ProductNameTable = () => {
   const {
@@ -84,7 +85,20 @@ const ProductNameTable = () => {
         isArrayEmpty={!productsName.length}
         emptyState={
           <EmptyStateCell colSpan={ProductNameColumns.length}>
-            <div>Vacio</div>
+            <EmptyState
+              title="No hay recursos disponibles"
+              description="No se encontraron productos disponibles, por favor seleccione otros filtros."
+              buttonLabel="Limpiar filtros"
+              buttonAction={() => {}}
+            />
+          </EmptyStateCell>
+        }
+        emptyFirstState={
+          <EmptyStateCell colSpan={ProductNameColumns.length}>
+            <EmptyState
+              title="No hay recursos disponibles"
+              description="No se encontraron productos disponibles"
+            />
           </EmptyStateCell>
         }
       >

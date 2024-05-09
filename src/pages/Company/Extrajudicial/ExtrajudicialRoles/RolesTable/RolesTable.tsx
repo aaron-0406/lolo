@@ -14,6 +14,7 @@ import useModal from '@/hooks/useModal'
 import DeleteRoleModal from '../Modals/DeleteRoleModal/DeleteRoleModal'
 import notification from '@/ui/notification'
 import { useLoloContext } from '@/contexts/LoloProvider'
+import EmptyState from '@/ui/EmptyState'
 
 const RolesTable = () => {
   const [roleId, setRoleId] = useState<number>(0)
@@ -74,7 +75,12 @@ const RolesTable = () => {
         isArrayEmpty={!roles.length}
         emptyState={
           <EmptyStateCell colSpan={roleColumns.length}>
-            <div>Vacio</div>
+            <EmptyState title="Recurso no encontrado" description="No se encontraron los datos solicitados." />
+          </EmptyStateCell>
+        }
+        emptyFirstState={
+          <EmptyStateCell colSpan={roleColumns.length}>
+            <EmptyState title="Recurso no encontrado" description="No se encontraron los datos solicitados." />
           </EmptyStateCell>
         }
       >
@@ -109,7 +115,7 @@ const RolesTable = () => {
                         size="small"
                         leadingIcon="ri-delete-bin-line"
                         permission="P11-03"
-                        display='danger'
+                        display="danger"
                       />
                     </Container>
                   }

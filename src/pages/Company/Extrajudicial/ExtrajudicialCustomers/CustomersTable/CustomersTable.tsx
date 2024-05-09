@@ -34,6 +34,7 @@ import { KEY_EXT_COBRANZA_FUNCIONARIOS_CACHE } from '../../ExtrajudicialFunciona
 import { KEY_EXT_COBRANZA_NEGOCIACIONES_CACHE } from '../../ExtrajudicialNegotiations/NegotiationTable/utils/ext-negociaciones.cache'
 import { useFiltersContext } from '@/contexts/FiltersProvider'
 import { CustomErrorResponse } from 'types/customErrorResponse'
+import EmptyState from '@/ui/EmptyState'
 
 const CustomersTable = () => {
   const location = useLocation()
@@ -54,6 +55,7 @@ const CustomersTable = () => {
   const {
     filterOptions: { getSelectedFilters, setSelectedFilters },
     filterSearch: { getSearchFilters, setSearchFilters },
+    clearAllFilters
   } = useFiltersContext()
 
   const navigate = useNavigate()
@@ -209,8 +211,18 @@ const CustomersTable = () => {
         loading={isLoading || isLoadingNegotiations || isLoadingFuncionarios}
         isArrayEmpty={!customers.length}
         emptyState={
+            <EmptyStateCell colSpan={customersColumns.length}>
+              <EmptyState
+                title="Recurso no encontrado"
+                description="No se encontraron los datos solicitados. Por favor, intente con otros filtros."
+                buttonLabel="Limpiar filtros"
+                buttonAction={clearAllFilters}
+              />
+            </EmptyStateCell>
+        }
+        emptyFirstState={
           <EmptyStateCell colSpan={customersColumns.length}>
-            <div>Vacio</div>
+            <EmptyState title="Recurso no encontrado" description="Por favor, seleccione un banco" />
           </EmptyStateCell>
         }
       >

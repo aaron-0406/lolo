@@ -19,6 +19,7 @@ import extUsuariosCache, { KEY_EXT_USUARIOS_CACHE } from './utils/ext-usuarios.c
 import notification from '@/ui/notification'
 import { CustomErrorResponse } from 'types/customErrorResponse'
 import { useLoloContext } from '@/contexts/LoloProvider'
+import EmptyState from '@/ui/EmptyState'
 
 type UsersTableProps = {
   opts: Opts
@@ -44,6 +45,7 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts }) => {
   const [usersCount, setUsersCount] = useState<number>(0)
   const [idUser, setIdUser] = useState(0)
   const [idDeletedUser, setIdDeletedUser] = useState(0)
+  const [loadingUsers, setLoadingUsers] = useState(false)
 
   const { visible: visibleModalUser, showModal: showModalUser, hideModal: hideModalUser } = useModal()
   const { visible: visibleDeleteUser, showModal: showDeleteUser, hideModal: hideDeleteUser } = useModal()
@@ -137,7 +139,15 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts }) => {
         isArrayEmpty={!users.length}
         emptyState={
           <EmptyStateCell colSpan={usersColumns.length}>
-            <div>Vacio</div>
+            <EmptyState
+              title="Recurso no encontrado"
+              description="No se encontraron los datos solicitados. Por favor, intente con otros filtros."
+            />
+          </EmptyStateCell>
+        }
+        emptyFirstState={
+          <EmptyStateCell colSpan={usersColumns.length}>
+            <EmptyState title="Recurso no encontrado" description="No se encontraron los datos solicitados." />
           </EmptyStateCell>
         }
       >
@@ -184,7 +194,7 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts }) => {
                       size="small"
                       leadingIcon="ri-delete-bin-line"
                       permission="P10-03"
-                      display='danger'
+                      display="danger"
                     />
                   </Container>
                 </BodyCell>

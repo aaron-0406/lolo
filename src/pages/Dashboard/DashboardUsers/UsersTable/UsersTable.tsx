@@ -140,6 +140,9 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts }) => {
             <div>Vacio</div>
           </EmptyStateCell>
         }
+        emptyFirstState ={
+          <>hola</>
+        }
       >
         {!!users?.length &&
           users.map((record: CustomerUserType) => {

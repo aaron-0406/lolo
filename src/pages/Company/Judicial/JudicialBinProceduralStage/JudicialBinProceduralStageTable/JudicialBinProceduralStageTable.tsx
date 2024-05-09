@@ -16,6 +16,7 @@ import Button from '@/ui/Button'
 import JudicialBinProceduralStageModal from '../Modals/JudicialBinProceduralStageModal'
 import DeleteJudicialBinProceduralStageModal from '../Modals/DeleteJudicialBinProceduralStageModal'
 import { binProceduralStagesColumns } from './utils/columns'
+import EmptyState from '@/ui/EmptyState'
 
 type JudicialBinProceduralStageTableProps = {
   opts: Opts
@@ -85,7 +86,17 @@ const JudicialBinProceduralStageTable = ({ opts, setOpts }: JudicialBinProcedura
         isArrayEmpty={!binTypeBinnacles.length}
         emptyState={
           <EmptyStateCell colSpan={binProceduralStagesColumns.length}>
-            <div>Vacio</div>
+            <EmptyState
+              title="No hay recursos disponibles"
+              description="No se encontraron etapas, por favor seleccione otros filtros."
+              buttonLabel="Limpiar filtros"
+              buttonAction={() => {}}
+            />
+          </EmptyStateCell>
+        }
+        emptyFirstState={
+          <EmptyStateCell colSpan={binProceduralStagesColumns.length}>
+            <EmptyState title="No hay recursos disponibles" description="No se encontraron etapas disponibles" />
           </EmptyStateCell>
         }
       >

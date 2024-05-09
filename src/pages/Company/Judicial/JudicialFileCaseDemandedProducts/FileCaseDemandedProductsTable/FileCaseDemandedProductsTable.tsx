@@ -17,6 +17,7 @@ import Text from '@/ui/Text'
 import Button from '@/ui/Button'
 import { demandedProductsColumns } from './utils/columns'
 import RemoveDemandedProductModal from '../Modals/RemoveDemandedProductModal'
+import EmptyState from '@/ui/EmptyState'
 
 type FileCaseDemandedProductsTableProps = {
   caseFileId: number
@@ -64,10 +65,23 @@ const FileCaseDemandedProductsTable = ({ caseFileId }: FileCaseDemandedProductsT
         top="195px"
         columns={demandedProductsColumns}
         loading={isLoading}
-        isArrayEmpty={!products.length}
+        isArrayEmpty={true}
         emptyState={
           <EmptyStateCell colSpan={demandedProductsColumns.length}>
-            <div>Vacio</div>
+            <EmptyState
+              title="No hay recursos disponibles"
+              description="No se encontraron productos demandados, por favor seleccione otros filtros."
+              buttonLabel="Limpiar filtros"
+              buttonAction={() => {}}
+            />
+          </EmptyStateCell>
+        }
+        emptyFirstState={
+          <EmptyStateCell colSpan={demandedProductsColumns.length}>
+            <EmptyState
+              title="No hay recursos disponibles"
+              description="No se encontraron productos demandados"
+            />
           </EmptyStateCell>
         }
       >

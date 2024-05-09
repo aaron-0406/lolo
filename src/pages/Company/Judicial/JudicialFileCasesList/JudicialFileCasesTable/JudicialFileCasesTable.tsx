@@ -29,6 +29,7 @@ import { useFiltersContext } from '@/contexts/FiltersProvider'
 import notification from '@/ui/notification'
 import { CustomErrorResponse } from 'types/customErrorResponse'
 import Text from '@/ui/Text'
+import EmptyState from '@/ui/EmptyState'
 
 const JudicialFileCasesTable = () => {
   const navigate = useNavigate()
@@ -52,6 +53,7 @@ const JudicialFileCasesTable = () => {
   const {
     filterOptions: { getSelectedFilters, setSelectedFilters },
     filterSearch: { getSearchFilters, setSearchFilters },
+    clearAllFilters,
   } = useFiltersContext()
 
   const [fileCaseId, setFileCaseId] = useState<number>(0)
@@ -200,10 +202,20 @@ const JudicialFileCasesTable = () => {
         selectedFilterOptions={selectedFilterOptions}
         onChangeFilterOptions={onChangeFilterOptions}
         loading={isLoading || isLoadingProceduralWay || isLoadingSubject || isLoadingCourts}
-        isArrayEmpty={!judicialCaseFileColumns.length}
+        isArrayEmpty={!judicialFileCases.length}
         emptyState={
           <EmptyStateCell colSpan={judicialCaseFileColumns.length}>
-            <div>Vacio</div>
+            <EmptyState
+              title="No hay recursos disponibles"
+              description="No se encontraron expedientes, por favor seleccione otros filtros."
+              buttonLabel="Limpiar filtros"
+              buttonAction={clearAllFilters}
+            />
+          </EmptyStateCell>
+        }
+        emptyFirstState={
+          <EmptyStateCell colSpan={judicialCaseFileColumns.length}>
+            <EmptyState title="No hay recursos disponibles" description="No se encontraron expedientes" />
           </EmptyStateCell>
         }
       >

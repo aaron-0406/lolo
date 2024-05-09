@@ -16,6 +16,7 @@ import { KEY_EXT_CONTACT_TYPE_CACHE } from './utils/ext-contact-type.cache'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import { AxiosResponse } from 'axios'
 import notification from '@/ui/notification'
+import EmptyState from '@/ui/EmptyState'
 
 const ContactTypeTable = () => {
   const {
@@ -84,7 +85,18 @@ const ContactTypeTable = () => {
         isArrayEmpty={!contactsType.length}
         emptyState={
           <EmptyStateCell colSpan={ContactTypeColumns.length}>
-            <div>Vacio</div>
+            <EmptyState
+              title="No hay recursos disponibles"
+              description="No se encontró el tipo de contacto, por favor seleccione otros filtros."
+            />
+          </EmptyStateCell>
+        }
+        emptyFirstState={
+          <EmptyStateCell colSpan={ContactTypeColumns.length}>
+            <EmptyState
+              title="No hay recursos disponibles"
+              description="No hay tipos de contactos disponibles en este momento"
+            />
           </EmptyStateCell>
         }
       >
