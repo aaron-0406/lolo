@@ -78,10 +78,7 @@ const FileCaseDemandedProductsTable = ({ caseFileId }: FileCaseDemandedProductsT
         }
         emptyFirstState={
           <EmptyStateCell colSpan={demandedProductsColumns.length}>
-            <EmptyState
-              title="No hay recursos disponibles"
-              description="No se encontraron productos demandados"
-            />
+            <EmptyState title="No hay recursos disponibles" description="No se encontraron Productos Demandados" />
           </EmptyStateCell>
         }
       >
