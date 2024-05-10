@@ -8,6 +8,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { device } from '@/breakpoints/responsive'
 import paths from 'shared/routes/paths'
+import ScrollButtons from '@/ui/ScrollsButton'
 
 type FileCaseModalsProps = {
   ownerFileCase?: ClientType & { customerUser: { id: number; name: string } }
@@ -40,37 +41,38 @@ const FileCaseModals = ({ ownerFileCase, numberCaseFile }: FileCaseModalsProps) 
   }
 
   return (
-    <Container width="100%" height="100%" display="flex" flexDirection="row" gap="10px">
-      <Button
-        label="Bitacora"
-        permission="P13-01-01"
-        size={greaterThanTabletS ? "default": "small"}
-        disabled={!clientId}
-        onClick={onClickBitacora}
-        trailingIcon="ri-book-3-line"
-
-      />
-      {/* <Button label="Bitacora" />
+    <Container width="100%" height="100%" display="flex" flexDirection="row" gap="10px" padding="none">
+      <ScrollButtons>
+        <Button
+          label="Bitacora"
+          permission="P13-01-01"
+          size={greaterThanTabletS ? 'default' : 'small'}
+          disabled={!clientId}
+          onClick={onClickBitacora}
+          trailingIcon="ri-book-3-line"
+        />
+        {/* <Button label="Bitacora" />
       <Button label="Garantías" />
       <Button label="Procesos Conexos" />
       <Button label="Estatus Procesal" /> */}
-      <Button
-        label="Observaciones"
-        trailingIcon="ri-search-eye-line"
-        disabled={!clientId}
-        size={greaterThanTabletS ? "default": "small"}
-        onClick={onClickObservations}
-        permission="P13-01-02"
-      />
-      <Button
-        label="Productos Demandados"
-        trailingIcon="ri-bank-card-line"
-        width="250px"
-        size={greaterThanTabletS ? "default": "small"}
-        disabled={!clientId}
-        onClick={onClickDemandedProducts}
-        permission="P13-01-03"
-      />
+        <Button
+          label="Observaciones"
+          trailingIcon="ri-search-eye-line"
+          disabled={!clientId}
+          size={greaterThanTabletS ? 'default' : 'small'}
+          onClick={onClickObservations}
+          permission="P13-01-02"
+        />
+        <Button
+          label="Productos Demandados"
+          trailingIcon="ri-bank-card-line"
+          width="250px"
+          size={greaterThanTabletS ? 'default' : 'small'}
+          disabled={!clientId}
+          onClick={onClickDemandedProducts}
+          permission="P13-01-03"
+        />
+      </ScrollButtons>
     </Container>
   )
 }
