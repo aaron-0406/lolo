@@ -23,8 +23,8 @@ const JudicialFileCaseSchema: yup.SchemaOf<Omit<JudicialCaseFileType, 'id' | 'cr
   customerUserId: yup.number().required().min(1),
   customerHasBankId: yup.number().required().min(1),
   processComment: yup.string().optional(),
-  processStatus: yup.string().optional(),
   processReasonId: yup.number().optional(),
+  processStatus: yup.string().optional(),
 })
 
 export const JudicialFileCaseResolver = yupResolver(JudicialFileCaseSchema)

@@ -38,6 +38,9 @@ const FileCaseModals = ({ ownerFileCase, numberCaseFile }: FileCaseModalsProps) 
   const onClickBitacora = () => {
     navigate(`${paths.judicial.bitacora(urlIdentifier, codeParams)}`)
   }
+  const onClickProcessStatus = () => {
+    navigate(`${paths.judicial.processStatus(urlIdentifier, codeParams)}`)
+  }
 
   return (
     <Container width="100%" height="100%" display="flex" flexDirection="row" gap="10px">
@@ -70,6 +73,15 @@ const FileCaseModals = ({ ownerFileCase, numberCaseFile }: FileCaseModalsProps) 
         disabled={!clientId}
         onClick={onClickDemandedProducts}
         permission="P13-01-03"
+      />
+      <Button
+        label="Estatus del proceso"
+        trailingIcon="ri-donut-chart-line"
+        width="250px"
+        size={greaterThanTabletS ? "default": "small"}
+        disabled={!clientId}
+        onClick={onClickProcessStatus}
+        permission="P13-01-04"
       />
     </Container>
   )
