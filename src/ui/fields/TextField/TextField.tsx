@@ -1,4 +1,4 @@
-import { createRef, useState } from 'react'
+import { HTMLInputTypeAttribute, createRef, useState } from 'react'
 import type CSS from 'csstype'
 import styled, { css } from 'styled-components'
 import Container from '@/ui/Container'
@@ -7,8 +7,9 @@ import type { InputSize } from '@/ui/inputs/Input/Input.interfaces'
 import type { HelperFieldProps, LabelFieldProps } from '@/ui/fields/interfaces'
 import InputText from '@/ui/inputs/InputText'
 import InputLabel from '@/ui/Label'
+import InputCurrency from '@/ui/inputs/InputCurrency'
 
-type TextFieldProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> &
+type TextFieldProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size' | 'type'> &
   LabelFieldProps &
   HelperFieldProps & {
     width?: string
@@ -16,6 +17,7 @@ type TextFieldProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> 
     trailingIcon?: string
     suffix?: string
     prefix?: string
+    type?: HTMLInputTypeAttribute | 'currency'
     size?: InputSize
     clearInput?: boolean
     onClickTrailing?: (value: string) => void
@@ -36,6 +38,7 @@ const TextField: React.FC<TextFieldProps> = (props) => {
     charactersLimit,
     onClickTrailing,
     clearInput = false,
+    type,
     ...rest
   } = props
 
@@ -81,16 +84,37 @@ const TextField: React.FC<TextFieldProps> = (props) => {
       />
 
       <Container display="flex" flexDirection="column" gap="4px">
-        <InputText
-          ref={inputRef}
-          onClear={onClear}
-          onClickTrailingIcon={onClickTrailingIcon}
-          onKeyUp={onKeyUpInput}
-          value={value}
-          numberCharacters={countDown}
-          clearInput={clearInput}
-          {...rest}
-        />
+        {type !== 'currency' ? (
+          <InputText
+            ref={inputRef}
+            onClear={onClear}
+            onClickTrailingIcon={onClickTrailingIcon}
+            onKeyUp={onKeyUpInput}
+            value={value}
+            numberCharacters={countDown}
+            clearInput={clearInput}
+            type={type}
+            {...rest}
+          />
+        ) : (
+          <InputCurrency
+            ref={inputRef}
+            prefix="S/. "
+            decimalScale={2}
+            allowDecimals
+            onClear={onClear}
+            onClickTrailingIcon={onClickTrailingIcon}
+            onKeyUp={onKeyUpInput}
+            value={value}
+            decimalSeparator="."
+            groupSeparator=","
+            decimalsLimit={2}
+            numberCharacters={countDown}
+            clearInput={clearInput}
+            type={type}
+            {...rest}
+          />
+        )}
 
         <HelperText
           wrap={wrap}

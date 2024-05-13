@@ -287,6 +287,7 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
               width="100%"
               helperText={errors.amountDemandedSoles?.message}
               value={field.value}
+              type="currency"
               onChange={field.onChange}
               hasError={!!errors.amountDemandedSoles}
               disabled={!clientId}
@@ -300,6 +301,8 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
             <TextField
               label="Monto Demandado US$:"
               width="100%"
+              type="currency"
+              prefix="$"
               value={field.value}
               helperText={errors.amountDemandedDollars?.message}
               onChange={field.onChange}
