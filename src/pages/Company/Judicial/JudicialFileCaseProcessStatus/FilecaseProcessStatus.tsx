@@ -1,10 +1,7 @@
 import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { JudicialCaseFileType } from '@/types/judicial/judicial-case-file.type'
 import { JudicialFileCaseResolver } from './FileCaseProcessStatus.yup'
-import FileCaseActions from './FileCaseProcessStatusActions'
 import { useLoloContext } from '@/contexts/LoloProvider'
-import moment from 'moment'
 import { ClientType } from '@/types/extrajudicial/client.type'
 import { useQuery } from 'react-query'
 import { useParams } from 'react-router-dom'
@@ -12,41 +9,22 @@ import { AxiosResponse } from 'axios'
 import { getFileCaseByNumberFile } from '@/services/judicial/judicial-file-case.service'
 import notification from '@/ui/notification'
 import FileCaseProcessStatusActions from './FileCaseProcessStatusActions'
-import FileCaseProcessStatusInfo from './FileCaseInfo/FileCaseProcessStatusInfo'
+import FileCaseProcessStatusInfo from './FileCaseFileProcessStatusInfo/FileCaseProcessStatusInfo'
+import { JudicialCasefileProcessStatusType } from '@/types/judicial/judicial-case-file-process-status.type'
 
 const JudicialFileCaseProcessStatus = () => {
-  const {
-    bank: { selectedBank },
-  } = useLoloContext()
-
   const [ownerFileCase, setOwnerFileCase] = useState<ClientType & { customerUser: { id: number; name: string } }>()
 
   const [loading, setLoading] = useState<boolean>(false)
 
   const defaultValuesFileCase = {
-    id: 0,
-    numberCaseFile: '',
-    judgmentNumber: 0,
-    secretary: '',
-    amountDemandedSoles: 0,
-    amountDemandedDollars: 0,
-    cautionaryCode: '',
-    errandCode: '',
-    judicialVenue: '',
-    judge: '',
-    demandDate: moment(new Date()).format('DD-MM-YYYY'),
-    clientId: 0,
-    customerUserId: 0,
-    judicialCourtId: 0,
-    judicialSubjectId: 0,
-    judicialProceduralWayId: 0,
-    customerHasBankId: selectedBank.idCHB.length ? Number(selectedBank.idCHB) : 0,
+    id:0,
     processStatus:'', 
     processComment:'',
     processReasonId:0,
   }
 
-  const formMethods = useForm<JudicialCaseFileType>({
+  const formMethods = useForm<JudicialCasefileProcessStatusType>({
     resolver: JudicialFileCaseResolver,
     mode: 'all',
     defaultValues: defaultValuesFileCase,
@@ -79,7 +57,7 @@ const JudicialFileCaseProcessStatus = () => {
 
   return (
     <FormProvider {...formMethods}>
-      <FileCaseProcessStatusActions clientName={clientName} setOwnerFileCase={setOwnerFileCase} setLoadingGlobal={setLoading} />
+      <FileCaseProcessStatusActions clientName={clientName} setOwnerFileCase={setOwnerFileCase} setLoadingGlobal={setLoading} loading = {loading}/>
       <FileCaseProcessStatusInfo ownerFileCase={ownerFileCase}/>
     </FormProvider>
   )

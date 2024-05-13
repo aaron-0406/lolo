@@ -5,16 +5,15 @@ import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { device } from '@/breakpoints/responsive'
 import { JudicialCaseFileType } from '@/types/judicial/judicial-case-file.type'
 import { CustomErrorResponse } from 'types/customErrorResponse'
-import { createFileCase, getFileCaseByNumberFile, updateFileCase } from '@/services/judicial/judicial-file-case.service'
+import { getFileCaseByNumberFile, updateFileCaseProcessStatus } from '@/services/judicial/judicial-file-case.service'
 import Container from '@/ui/Container'
 import Button from '@/ui/Button'
 import { notification } from '@/ui/notification/notification'
 import judicialFileCaseCache, {
   JudicialFileCaseTableRow,
 } from '../../JudicialFileCasesList/JudicialFileCasesTable/utils/file-cases.cache'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { useEffect } from 'react'
-import moment from 'moment'
 import Breadcrumbs from '@/ui/Breadcrumbs'
 import { LinkType } from '@/ui/Breadcrumbs/Breadcrumbs.type'
 import paths from 'shared/routes/paths'
@@ -29,9 +28,10 @@ type FileCaseProcessStatusProps = {
   setLoadingGlobal: (state: boolean) => void
   setOwnerFileCase: (value: ClientType & { customerUser: { id: number; name: string } }) => void
   clientName: string
+  loading: boolean
 }
 
-const FileCaseProcessStatusActions = ({ setLoadingGlobal, setOwnerFileCase, clientName }: FileCaseProcessStatusProps) => {
+const FileCaseProcessStatusActions = ({ setLoadingGlobal, setOwnerFileCase, clientName, loading }: FileCaseProcessStatusProps) => {
   const queryClient = useQueryClient()
   const {
     client: { customer },
@@ -40,10 +40,8 @@ const FileCaseProcessStatusActions = ({ setLoadingGlobal, setOwnerFileCase, clie
 
   const chb = selectedBank.idCHB.length ? parseInt(selectedBank.idCHB) : 0
 
-  const navigate = useNavigate()
-
   const {
-    actions: { createFileCaseCache, editFileCaseCache },
+    actions: { editFileCaseCache },
     onMutateCache,
     onSettledCache,
     onErrorCache,
@@ -65,8 +63,8 @@ const FileCaseProcessStatusActions = ({ setLoadingGlobal, setOwnerFileCase, clie
     AxiosError<CustomErrorResponse>
   >(
     async () => {
-      const { id, ...restFileCase } = getValues()
-      return await updateFileCase(id, restFileCase)
+      const { id, ...restFileCaseProcessStatus } = getValues()
+      return await updateFileCaseProcessStatus(id, restFileCaseProcessStatus)
     },
     {
       onSuccess: (result) => {
@@ -100,30 +98,10 @@ const FileCaseProcessStatusActions = ({ setLoadingGlobal, setOwnerFileCase, clie
       enabled: false,
       onSuccess: (data) => {
         setValue('id', data.data.id)
-        setValue('numberCaseFile', data.data.numberCaseFile)
-        setValue('judgmentNumber', data.data?.judgmentNumber ?? 0)
-        setValue('secretary', data.data?.secretary ?? '')
-        setValue('amountDemandedSoles', data.data?.amountDemandedSoles ?? 0)
-        setValue('amountDemandedDollars', data.data?.amountDemandedDollars ?? 0)
-        setValue('cautionaryCode', data.data?.cautionaryCode ?? '')
-        setValue('errandCode', data.data?.errandCode ?? '')
-        setValue('judicialVenue', data.data?.judicialVenue ?? '')
-        setValue('judge', data.data?.judge ?? '')
-        setValue('demandDate', moment(data.data.demandDate.split('T')[0]).format('DD-MM-YYYY'))
-        setValue('clientId', data.data.clientId)
-        setValue('customerUserId', data.data.customerUserId)
-        setValue('judicialCourtId', data.data.judicialCourtId)
-        setValue('judicialSubjectId', data.data.judicialSubjectId)
-        setValue('judicialProceduralWayId', data.data.judicialProceduralWayId)
-        setValue('customerHasBankId', data.data.customerHasBankId)
-        setValue('judicialCourt', data.data?.judicialCourt)
-        setValue('judicialSubject', data.data?.judicialSubject)
-        setValue('judicialProceduralWay', data.data?.judicialProceduralWay)
         setValue('processStatus', data.data?.processStatus)
         setValue('processComment', data.data?.processComment)
         setValue('processReasonId', data.data?.processReasonId)
 
-        //TODO: Work here
         setOwnerFileCase(data.data?.client)
       },
       onError: (error: any) => {
@@ -196,6 +174,7 @@ const FileCaseProcessStatusActions = ({ setLoadingGlobal, setOwnerFileCase, clie
       <Container width="fit-content" display="flex" justifyContent="space-between" alignItems="center" gap="10px">
         <Button
           width="130px"
+          loading={loading}
           label={greaterThanDesktopS && 'Guardar'}
           shape={greaterThanDesktopS ? 'default' : 'round'}
           size={greaterThanTabletS ? 'default' : 'small'}

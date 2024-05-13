@@ -18,6 +18,9 @@ import { KEY_JUDICIAL_PROCESS_REASON_CACHE } from '../../JudicialProcessReason/P
 import { getAllProcessReasonByCHB } from '@/services/judicial/judicial-process-reason.service'
 import { Controller } from 'react-hook-form'
 
+import { useFormContext } from 'react-hook-form'
+import { JudicialCasefileProcessStatusType } from '@/types/judicial/judicial-case-file-process-status.type'
+
 
 type FileCaseProcessStatusInfoProps = {
   ownerFileCase?: ClientType & { customerUser: { id: number; name: string } }
@@ -46,6 +49,12 @@ const FileCaseProcessStatusInfo = ({ ownerFileCase }: FileCaseProcessStatusInfoP
     }
   })
 
+  const {
+    control,
+  } = useFormContext<
+    JudicialCasefileProcessStatusType
+  >()
+
 
 
   return (
@@ -57,11 +66,12 @@ const FileCaseProcessStatusInfo = ({ ownerFileCase }: FileCaseProcessStatusInfoP
         gap={greaterThanTabletS ? '30px' : '10px'}
       >
         <Container className="container__status">
-          <Text.Body weight="bold" size="s" color="Neutral8">
-            ESTATUS DEL PROCESO
+          <Text.Body weight="bold" size="m" color="Neutral8">
+            Estatus del proceso
           </Text.Body>
           <Controller
             name="processStatus"
+            control={control}
             render={({ field }) => (
               <Container className="container__status-radio-buttons">
                 <RadioButton
@@ -87,13 +97,11 @@ const FileCaseProcessStatusInfo = ({ ownerFileCase }: FileCaseProcessStatusInfoP
         </Container>
 
         <Container className="container__reason">
-          <Text.Body weight="bold" size="s" color="Neutral8">
-            MOTIVO
-          </Text.Body>
           <Controller
             name="processReasonId"
             render={({ field }) => (
               <Select
+                label="Motivo"
                 value={field.value}
                 placeholder={optionsStates.find((option) => option.key === field.value)?.label ?? ''}
                 onChange={(key) => {
@@ -107,8 +115,8 @@ const FileCaseProcessStatusInfo = ({ ownerFileCase }: FileCaseProcessStatusInfoP
       </Container>
 
       <Container className="container__comment" width={greaterThanTabletS ? '50%' : '100%'}>
-        <Text.Body weight="bold" size="s" color="Neutral8">
-          COMENTARIO
+        <Text.Body weight="bold" size="m" color="Neutral8">
+          Comentario
         </Text.Body>
         <Container className="container__comment-text-area">
           <Controller

@@ -65,7 +65,7 @@ import JudicialBinnacle from 'pages/Company/Judicial/JudicialBinnacle'
 import JudicialBinTypeBinnacle from 'pages/Company/Judicial/JudicialBinTypeBinnacle'
 import JudicialBinProceduralStage from 'pages/Company/Judicial/JudicialBinProceduralStage'
 import JudicialBinDefendantProceduralAction from 'pages/Company/Judicial/JudicialBinDefendantProceduralAction'
-import JudicialFileCaseProcessStatus from 'pages/Company/Judicial/JudicialProcessStatus'
+import JudicialFileCaseProcessStatus from 'pages/Company/Judicial/JudicialFileCaseProcessStatus'
 
 const AppRouter = () => {
   return (

@@ -94,7 +94,6 @@ const ProcessReasonModal = ({ visible, onClose, isEdit = false, idProcessReason 
   >(
     async () => {
       const { id, ...restProcessReason } = getValues()
-      console.log(restProcessReason)
       return await editProcessReason(id ,{
         reason: restProcessReason.reason,
       })
