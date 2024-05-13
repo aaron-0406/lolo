@@ -21,26 +21,20 @@ import { Controller } from 'react-hook-form'
 import { useFormContext } from 'react-hook-form'
 import { JudicialCasefileProcessStatusType } from '@/types/judicial/judicial-case-file-process-status.type'
 
-
 type FileCaseProcessStatusInfoProps = {
   ownerFileCase?: ClientType & { customerUser: { id: number; name: string } }
 }
-
-
 const FileCaseProcessStatusInfo = ({ ownerFileCase }: FileCaseProcessStatusInfoProps) => {
-  
   const {
     bank: { selectedBank: { idCHB:chb } }
   } = useLoloContext()
 
   const greaterThanTabletS = useMediaQuery(device.tabletS)
   
-
   const { isLoading, data } = useQuery([KEY_JUDICIAL_PROCESS_REASON_CACHE, parseInt(chb.length ? chb : '0')], async () => {
     return await getAllProcessReasonByCHB(parseInt(chb.length ? chb : '0'))
   })
 
-  
   let result = data?.data ?? []
   const optionsStates:Array<SelectItemType> = result.map((reason:{id:string, reason:string}) => { 
     return {
@@ -51,11 +45,10 @@ const FileCaseProcessStatusInfo = ({ ownerFileCase }: FileCaseProcessStatusInfoP
 
   const {
     control,
+    setValue,
   } = useFormContext<
     JudicialCasefileProcessStatusType
   >()
-
-
 
   return (
     <StyledContainer width="100%" display="flex" flexDirection="column" padding="20px 20px 20px 20px" gap="20px">
@@ -121,7 +114,9 @@ const FileCaseProcessStatusInfo = ({ ownerFileCase }: FileCaseProcessStatusInfoP
         <Container className="container__comment-text-area">
           <Controller
             name="processComment"
-            render={({ field }) => <TextArea value={field.value} onChange={field.onChange} rows={8} />}
+            render={({ field }) => <TextArea value={field.value} onChange={(e) => {
+              setValue('processComment', e.target.value)
+            }} rows={8} />}
           />
         </Container>
       </Container>

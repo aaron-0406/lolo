@@ -38,6 +38,7 @@ const FileCaseModals = ({ ownerFileCase, numberCaseFile }: FileCaseModalsProps) 
   const onClickBitacora = () => {
     navigate(`${paths.judicial.bitacora(urlIdentifier, codeParams)}`)
   }
+  
   const onClickProcessStatus = () => {
     navigate(`${paths.judicial.processStatus(urlIdentifier, codeParams)}`)
   }
