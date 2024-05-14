@@ -73,12 +73,12 @@ const FileCaseProcessStatusInfo = () => {
                 <RadioButton
                   value="inactive"
                   name="processStatus"
-                  checked={field.value === 'Conluido' ? true : false}
+                  checked={field.value === 'Concluido' ? true : false}
                   onChange={() => {
-                    field.onChange('Conluido')
+                    field.onChange('Concluido')
                   }}
                 >
-                  Conluido
+                  Concluido
                 </RadioButton>
               </Container>
             )}
