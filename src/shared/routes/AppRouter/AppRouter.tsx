@@ -66,6 +66,8 @@ import JudicialBinTypeBinnacle from 'pages/Company/Judicial/JudicialBinTypeBinna
 import JudicialBinProceduralStage from 'pages/Company/Judicial/JudicialBinProceduralStage'
 import JudicialBinDefendantProceduralAction from 'pages/Company/Judicial/JudicialBinDefendantProceduralAction'
 import JudicialFileCaseProcessStatus from 'pages/Company/Judicial/JudicialFileCaseProcessStatus'
+import JudicialFileCaseRelatedProcess from 'pages/Company/Judicial/JudicialFileCaseRelatedProcess'
+import JudicialFileCaseRelatedProcessList from 'pages/Company/Judicial/JudicialFileCaseRelatedProcessesList'
 
 const AppRouter = () => {
   return (
@@ -133,6 +135,8 @@ const AppRouter = () => {
         <Route path={paths.judicial.observacionTipo()} element={<JudicialObsType />} />
         <Route path={paths.judicial.observacion()} element={<JudicialObservation />} />
         <Route path={paths.judicial.processReason()} element={<JudicialProcessReason />} />
+        <Route path={paths.judicial.relatedProcess()} element={<JudicialFileCaseRelatedProcessList />} />
+        <Route path={paths.judicial.detallesExpedienteRelatedProcess()} element={<JudicialFileCaseRelatedProcess />} />
       </Route>
 
       <Route path="*" element={<NotFound />} />

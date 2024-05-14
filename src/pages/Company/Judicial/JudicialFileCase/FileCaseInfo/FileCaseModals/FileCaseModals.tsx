@@ -42,16 +42,19 @@ const FileCaseModals = ({ ownerFileCase, numberCaseFile }: FileCaseModalsProps) 
     navigate(`${paths.judicial.processStatus(urlIdentifier, codeParams)}`)
   }
 
+  const onClickRelatedProcess = () => {
+    navigate(`${paths.judicial.relatedProcess(urlIdentifier, codeParams)}`)
+  }
+
   return (
     <Container width="100%" height="100%" display="flex" flexDirection="row" gap="10px">
       <Button
         label="Bitacora"
         permission="P13-01-01"
-        size={greaterThanTabletS ? "default": "small"}
+        size={greaterThanTabletS ? 'default' : 'small'}
         disabled={!clientId}
         onClick={onClickBitacora}
         trailingIcon="ri-book-3-line"
-
       />
       {/* <Button label="Bitacora" />
       <Button label="Garantías" />
@@ -61,7 +64,7 @@ const FileCaseModals = ({ ownerFileCase, numberCaseFile }: FileCaseModalsProps) 
         label="Observaciones"
         trailingIcon="ri-search-eye-line"
         disabled={!clientId}
-        size={greaterThanTabletS ? "default": "small"}
+        size={greaterThanTabletS ? 'default' : 'small'}
         onClick={onClickObservations}
         permission="P13-01-02"
       />
@@ -69,7 +72,7 @@ const FileCaseModals = ({ ownerFileCase, numberCaseFile }: FileCaseModalsProps) 
         label="Productos Demandados"
         trailingIcon="ri-bank-card-line"
         width="250px"
-        size={greaterThanTabletS ? "default": "small"}
+        size={greaterThanTabletS ? 'default' : 'small'}
         disabled={!clientId}
         onClick={onClickDemandedProducts}
         permission="P13-01-03"
@@ -78,10 +81,19 @@ const FileCaseModals = ({ ownerFileCase, numberCaseFile }: FileCaseModalsProps) 
         label="Estatus del proceso"
         trailingIcon="ri-donut-chart-line"
         width="250px"
-        size={greaterThanTabletS ? "default": "small"}
+        size={greaterThanTabletS ? 'default' : 'small'}
         disabled={!clientId}
         onClick={onClickProcessStatus}
         permission="P13-01-04"
+      />
+      <Button
+        label="Procesos conexos"
+        trailingIcon="ri-archive-drawer-line"
+        width="250px"
+        size={greaterThanTabletS ? 'default' : 'small'}
+        disabled={!clientId}
+        onClick={onClickRelatedProcess}
+        permission="P13-01-05"
       />
     </Container>
   )

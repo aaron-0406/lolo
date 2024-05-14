@@ -20,4 +20,6 @@ export type JudicialCaseFileType = {
   processStatus?:string; 
   processComment?:string; 
   processReasonId?:number;
+  idJudicialCaseFileRelated?:number
+  bankId?:number
 }

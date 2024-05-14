@@ -6,17 +6,12 @@ import Table from '@/ui/Table'
 import BodyCell from '@/ui/Table/BodyCell'
 import EmptyStateCell from '@/ui/Table/EmptyStateCell'
 import { FilterOptionsProps } from '@/ui/Table/Table'
-import { useEffect, useMemo, useState } from 'react'
 import { judicialCaseFileColumns } from './utils/columns'
-import { useLocation, useNavigate } from 'react-router-dom'
 import paths from 'shared/routes/paths'
-import { useLoloContext } from '@/contexts/LoloProvider'
 import { Tooltip } from 'react-tooltip'
 import { getFileCasesByCHB } from '@/services/judicial/judicial-file-case.service'
-import { useQuery } from 'react-query'
 import { AxiosError, AxiosResponse } from 'axios'
 import DeleteExpedienteModal from './DeleteExpedienteModal'
-import useModal from '@/hooks/useModal'
 import { JudicialFileCaseTableRow, KEY_FILE_CASE_CACHE } from './utils/file-cases.cache'
 import { KEY_JUDICIAL_COURTS_CACHE } from '../../JudicialCourt/CourtTable/utils/judicial-court.cache'
 import { getCourtByCHB } from '@/services/judicial/judicial-court.service'
@@ -25,16 +20,29 @@ import { getSubjectByCHB } from '@/services/judicial/judicial-subject.service'
 import { getProceduralWayByCHB } from '@/services/judicial/judicial-procedural-way.service'
 import { KEY_JUDICIAL_PROCEDURAL_WAY_CACHE } from '../../JudicialProceduralWay/ProceduralWayTable/utils/judicial-procedural-way.cache'
 import { getIDsByIdentifier } from './utils/methods'
-import { useFiltersContext } from '@/contexts/FiltersProvider'
 import notification from '@/ui/notification'
 import { CustomErrorResponse } from 'types/customErrorResponse'
-import Text from '@/ui/Text'
 import EmptyState from '@/ui/EmptyState'
 
-const JudicialFileCasesTable = () => {
-  const navigate = useNavigate()
+import { useLocation, useNavigate } from 'react-router-dom'
+import { useLoloContext } from '@/contexts/LoloProvider'
+import { useFiltersContext } from '@/contexts/FiltersProvider'
+import { useParams } from 'react-router-dom'
+import { useQuery } from 'react-query'
+import { useEffect, useMemo, useState } from 'react'
+import useModal from '@/hooks/useModal'
+
+import Text from '@/ui/Text'
+
+type JudicialFileCasesTableProps = { 
+  caseFileId:number;
+}
+
+const JudicialFileCasesTable = ({ caseFileId } : JudicialFileCasesTableProps ) => {
+  const navigate = useNavigate() 
   const location = useLocation()
   const currentPath = location.pathname
+  const codeParams = useParams().code ?? ''
 
   const { visible: visibleDeleteFileCase, showModal: showDeleteFileCase, hideModal: hideDeleteFileCase } = useModal()
 
@@ -62,7 +70,7 @@ const JudicialFileCasesTable = () => {
   const opts = getSearchFilters(currentPath)?.opts ?? { filter: '', limit: 50, page: 1 }
 
   const onClickRow = (code: string) => {
-    navigate(`${paths.judicial.detallesExpediente(urlIdentifier, code)}`)
+    navigate(`${paths.judicial.detallesExpedienteRelatedProcess(urlIdentifier, codeParams, code)}`)
   }
 
   const onChangeFilterOptions = (filterOption: FilterOptionsProps) => {
@@ -176,8 +184,8 @@ const JudicialFileCasesTable = () => {
     }
   )
 
-  const judicialFileCases = data?.data?.caseFiles.filter((fileCase:JudicialFileCaseTableRow) => !fileCase.idJudicialCaseFileRelated) ?? []
-  const quantity = data?.data?.quantity ?? 0
+  const judicialFileCases = data?.data?.caseFiles.filter((caseFile: JudicialFileCaseTableRow) => caseFile.idJudicialCaseFileRelated === caseFileId ) ?? []
+  const quantity = judicialFileCases.length ?? 0
 
   useEffect(() => {
     refetch()
@@ -188,7 +196,7 @@ const JudicialFileCasesTable = () => {
   }, [opts.filter.length, opts.page])
 
   return (
-    <Container width="100%" height="calc(100% - 112px)" padding="20px">
+    <Container width="100%" height="100%" padding="0px 20px 0px 20px">
       <Pagination count={quantity} opts={opts} setOptsFilter={setSearchFilters} url={currentPath} />
       <Table
         filterOptions={[

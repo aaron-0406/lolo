@@ -24,14 +24,18 @@ import { ClientType } from '@/types/extrajudicial/client.type'
 type FileCaseActionsProps = {
   setLoadingGlobal: (state: boolean) => void
   setOwnerFileCase: (value: ClientType & { customerUser: { id: number; name: string } }) => void
+  caseFileId: number
 }
 
-const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase }: FileCaseActionsProps) => {
+const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase, caseFileId }: FileCaseActionsProps) => {
   const queryClient = useQueryClient()
   const {
     client: { customer },
     bank: { selectedBank },
   } = useLoloContext()
+
+  const codeParams = useParams().code ?? ''
+  const relatedProcessCodeParams = useParams().relatedProcessCode ?? ''
 
   const chb = selectedBank.idCHB.length ? parseInt(selectedBank.idCHB) : 0
 
@@ -69,7 +73,7 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase }: FileCaseActions
         setValue('id', result.data.id)
         createFileCaseCache(result.data)
         notification({ type: 'success', message: 'Expediente creado' })
-        navigate(`${paths.judicial.detallesExpediente(customer.urlIdentifier, result.data.numberCaseFile)}`)
+        navigate(`${paths.judicial.detallesExpedienteRelatedProcess(customer.urlIdentifier,codeParams , result.data.numberCaseFile)}`)
       },
       onMutate: () => {
         return onMutateCache(selectedBank.idCHB?.length ? parseInt(selectedBank.idCHB) : 0)
@@ -118,11 +122,11 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase }: FileCaseActions
     }
   )
 
-  const codeParams = useParams().code ?? ''
+  
   const { refetch } = useQuery<AxiosResponse<any, Error>>(
-    ['get-file-case-by-code', codeParams ?? ''],
+    ['get-file-case-by-code', relatedProcessCodeParams ?? ''],
     async () => {
-      return await getFileCaseByNumberFile(codeParams ?? '', chb)
+      return await getFileCaseByNumberFile(relatedProcessCodeParams ?? '', chb)
     },
     {
       enabled: false,
@@ -147,6 +151,8 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase }: FileCaseActions
         setValue('judicialCourt', data.data?.judicialCourt)
         setValue('judicialSubject', data.data?.judicialSubject)
         setValue('judicialProceduralWay', data.data?.judicialProceduralWay)
+        setValue('idJudicialCaseFileRelated', data.data?.judicialProceduralWay)
+        setValue('bankId', data.data.bankId)
 
         //TODO: Work here
         setOwnerFileCase(data.data?.client)
@@ -162,6 +168,7 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase }: FileCaseActions
       },
     }
   )
+
 
   const onCreate = () => {
     handleSubmit(() => {
@@ -191,15 +198,27 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase }: FileCaseActions
       link: paths.judicial.detallesExpediente(customer.urlIdentifier, codeParams),
       name: codeParams,
     },
+    {
+      link: paths.judicial.relatedProcess(customer.urlIdentifier, codeParams),
+      name: 'Procesos Conexos',
+    },
+    {
+      link: paths.judicial.detallesExpedienteRelatedProcess(customer.urlIdentifier, codeParams, relatedProcessCodeParams),
+      name: relatedProcessCodeParams,
+    },
   ]
 
   useEffect(() => {
-    if (!!codeParams.length && codeParams !== '000000000') {
+    setValue('idJudicialCaseFileRelated', caseFileId);
+  }, [caseFileId]);
+
+  useEffect(() => {
+    if (!!relatedProcessCodeParams.length && relatedProcessCodeParams !== '000000000') {
       setLoadingGlobal(false)
       refetch()
     }
     // eslint-disable-next-line
-  }, [codeParams])
+  }, [relatedProcessCodeParams])
 
   return (
     <Container
