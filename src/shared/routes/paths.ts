@@ -59,7 +59,7 @@ export default {
     detallesExpediente: (urlIdentifier = ':urlIdentifier', code = ':code') =>
       `/judicial/${urlIdentifier}/expedientes/${code}`,
     productosDemandados: (urlIdentifier = ':urlIdentifier', code = ':code') =>
-      `/judicial/${urlIdentifier}/expediente/${code}/productos-demandados`,
+      `/judicial/${urlIdentifier}/expedientes/${code}/productos-demandados`,
     processStatus: (urlIdentifier = ':urlIdentifier', code = ':code') =>
       `/judicial/${urlIdentifier}/expediente/${code}/estatus-proceso`,
     bitacora: (urlIdentifier = ':urlIdentifier', code = ':code') =>
