@@ -3,7 +3,9 @@ import { JudicialCaseFileType } from '@/types/judicial/judicial-case-file.type'
 import yup from '../../../../shared/yupLocale'
 const regexPatternNumberFileCase = /^\d{5}-\d{4}-\d{1,4}-\d{4}-[A-Z]{2}-[A-Z]{2}-\d{2}$/
 
-const JudicialFileCaseSchema: yup.SchemaOf<Omit<JudicialCaseFileType, 'id' | 'createdAt'>> = yup.object().shape({
+const JudicialFileCaseSchema: yup.SchemaOf<
+  Omit<JudicialCaseFileType, 'id' | 'createdAt' | 'processComment' | 'processStatus' | 'processReasonId'>
+> = yup.object().shape({
   numberCaseFile: yup.string().required().matches(regexPatternNumberFileCase, {
     message: 'Patrón "#####-####-####-####-LL-LL-##".',
   }),
