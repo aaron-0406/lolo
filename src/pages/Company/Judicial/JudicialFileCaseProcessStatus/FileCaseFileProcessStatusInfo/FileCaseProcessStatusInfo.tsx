@@ -1,6 +1,5 @@
 import Container from '@/ui/Container'
 import Text from '@/ui/Text'
-import { ClientType } from '@/types/extrajudicial/client.type'
 
 import { useLoloContext } from '@/contexts/LoloProvider'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
@@ -21,34 +20,28 @@ import { Controller } from 'react-hook-form'
 import { useFormContext } from 'react-hook-form'
 import { JudicialCasefileProcessStatusType } from '@/types/judicial/judicial-case-file-process-status.type'
 
-type FileCaseProcessStatusInfoProps = {
-  ownerFileCase?: ClientType & { customerUser: { id: number; name: string } }
-}
-const FileCaseProcessStatusInfo = ({ ownerFileCase }: FileCaseProcessStatusInfoProps) => {
+const FileCaseProcessStatusInfo = () => {
   const {
-    bank: { selectedBank: { idCHB:chb } }
+    bank: {
+      selectedBank: { idCHB: chb },
+    },
   } = useLoloContext()
 
+  const { control } = useFormContext<JudicialCasefileProcessStatusType>()
+
   const greaterThanTabletS = useMediaQuery(device.tabletS)
-  
-  const { isLoading, data } = useQuery([KEY_JUDICIAL_PROCESS_REASON_CACHE, parseInt(chb.length ? chb : '0')], async () => {
+
+  const { data } = useQuery([KEY_JUDICIAL_PROCESS_REASON_CACHE, parseInt(chb.length ? chb : '0')], async () => {
     return await getAllProcessReasonByCHB(parseInt(chb.length ? chb : '0'))
   })
 
   let result = data?.data ?? []
-  const optionsStates:Array<SelectItemType> = result.map((reason:{id:string, reason:string}) => { 
+  const optionsStates: Array<SelectItemType> = result.map((reason: { id: string; reason: string }) => {
     return {
-      key: reason.id,
-      label: reason.reason
+      key: String(reason.id),
+      label: reason.reason,
     }
   })
-
-  const {
-    control,
-    setValue,
-  } = useFormContext<
-    JudicialCasefileProcessStatusType
-  >()
 
   return (
     <StyledContainer width="100%" display="flex" flexDirection="column" padding="20px 20px 20px 20px" gap="20px">
@@ -77,7 +70,10 @@ const FileCaseProcessStatusInfo = ({ ownerFileCase }: FileCaseProcessStatusInfoP
                 >
                   Activo
                 </RadioButton>
-                <RadioButton value="inactive" name="processStatus" checked={field.value === 'Conluido' ? true : false}
+                <RadioButton
+                  value="inactive"
+                  name="processStatus"
+                  checked={field.value === 'Conluido' ? true : false}
                   onChange={() => {
                     field.onChange('Conluido')
                   }}
@@ -92,15 +88,15 @@ const FileCaseProcessStatusInfo = ({ ownerFileCase }: FileCaseProcessStatusInfoP
         <Container className="container__reason">
           <Controller
             name="processReasonId"
+            control={control}
             render={({ field }) => (
               <Select
                 label="Motivo"
-                value={field.value}
-                placeholder={optionsStates.find((option) => option.key === field.value)?.label ?? ''}
-                onChange={(key) => {
-                  field.onChange(parseInt(key))
-                }}
                 options={optionsStates}
+                value={String(field.value)}
+                onChange={(key) => {
+                  field.onChange(key)
+                }}
               />
             )}
           />
@@ -114,9 +110,16 @@ const FileCaseProcessStatusInfo = ({ ownerFileCase }: FileCaseProcessStatusInfoP
         <Container className="container__comment-text-area">
           <Controller
             name="processComment"
-            render={({ field }) => <TextArea value={field.value} onChange={(e) => {
-              setValue('processComment', e.target.value)
-            }} rows={8} />}
+            control={control}
+            render={({ field }) => (
+              <TextArea
+                value={field.value ?? ''}
+                onChange={(e) => {
+                  field.onChange(e.target.value)
+                }}
+                rows={8}
+              />
+            )}
           />
         </Container>
       </Container>
@@ -133,37 +136,36 @@ const StyledContainer = styled(Container)`
   padding: 20px 20px 0 20px;
   ${({ theme }) =>
     css`
-    .container__status{
-      display: flex;
-      flex: 1;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .container__status-radio-buttons{
-      border: 2px solid ${theme.colors.Neutral4};
-      border-radius: 8px;
-      padding: 8px;
-      display: flex;
-      flex-direction: row;
-      gap: 10px;
+      .container__status {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .container__status-radio-buttons {
+        border: 2px solid ${theme.colors.Neutral4};
+        border-radius: 8px;
+        padding: 8px;
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+      }
+      .container__reason {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        gap: 10px;
+      }
 
-    }
-    .container__reason{
-      display: flex;
-      flex: 1;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .container__comment{
-    }
-    .container__comment-text-area{
-      border: 2px solid ${theme.colors.Neutral4};
-      border-radius: 8px;
-      padding: 8px;
-      display: flex;
-      flex-direction: row;
-      gap: 10px;
-    }
-  `}
+      .container__comment {
+      }
+      .container__comment-text-area {
+        border: 2px solid ${theme.colors.Neutral4};
+        border-radius: 8px;
+        padding: 8px;
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+      }
+    `}
 `

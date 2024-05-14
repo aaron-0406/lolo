@@ -17,21 +17,16 @@ import { useEffect } from 'react'
 import Breadcrumbs from '@/ui/Breadcrumbs'
 import { LinkType } from '@/ui/Breadcrumbs/Breadcrumbs.type'
 import paths from 'shared/routes/paths'
-
-
 import { useLoloContext } from '@/contexts/LoloProvider'
-import { ClientType } from '@/types/extrajudicial/client.type'
-
 import Text from '@/ui/Text'
+import { KEY_JUDICIAL_PROCESS_REASON_CACHE } from '../../JudicialProcessReason/ProcessReasonTable/utils/judicial-process-reason.cache'
+import { getAllProcessReasonByCHB } from '@/services/judicial/judicial-process-reason.service'
 
 type FileCaseProcessStatusProps = {
-  setLoadingGlobal: (state: boolean) => void
-  setOwnerFileCase: (value: ClientType & { customerUser: { id: number; name: string } }) => void
   clientName: string
-  loading: boolean
 }
 
-const FileCaseProcessStatusActions = ({ setLoadingGlobal, setOwnerFileCase, clientName, loading }: FileCaseProcessStatusProps) => {
+const FileCaseProcessStatusActions = ({ clientName }: FileCaseProcessStatusProps) => {
   const queryClient = useQueryClient()
   const {
     client: { customer },
@@ -50,7 +45,14 @@ const FileCaseProcessStatusActions = ({ setLoadingGlobal, setOwnerFileCase, clie
   const greaterThanDesktopS = useMediaQuery(device.desktopS)
   const greaterThanTabletS = useMediaQuery(device.tabletS)
 
-  const { reset, getValues, watch, setValue, handleSubmit } = useFormContext<
+  const {
+    reset,
+    getValues,
+    watch,
+    setValue,
+    handleSubmit,
+    formState: { isDirty },
+  } = useFormContext<
     JudicialCaseFileType & {
       judicialCourt: { court: string; customerHasBankId: string }
       judicialSubject: { subject: string; customerHasBankId: string }
@@ -88,6 +90,10 @@ const FileCaseProcessStatusActions = ({ setLoadingGlobal, setOwnerFileCase, clie
     }
   )
 
+  useQuery([KEY_JUDICIAL_PROCESS_REASON_CACHE, chb], async () => {
+    return await getAllProcessReasonByCHB(chb)
+  })
+
   const codeParams = useParams().code ?? ''
   const { refetch } = useQuery<AxiosResponse<any, Error>>(
     ['get-file-case-by-code', codeParams ?? ''],
@@ -97,12 +103,10 @@ const FileCaseProcessStatusActions = ({ setLoadingGlobal, setOwnerFileCase, clie
     {
       enabled: false,
       onSuccess: (data) => {
-        setValue('id', data.data.id)
-        setValue('processStatus', data.data?.processStatus)
-        setValue('processComment', data.data?.processComment)
-        setValue('processReasonId', data.data?.processReasonId)
-
-        setOwnerFileCase(data.data?.client)
+        setValue('id', data.data?.id)
+        setValue('processStatus', data.data?.processStatus ?? undefined, { shouldValidate: true })
+        setValue('processComment', data.data?.processComment ?? undefined, { shouldValidate: true })
+        setValue('processReasonId', data.data?.processReasonId ?? undefined, { shouldValidate: true })
       },
       onError: (error: any) => {
         notification({
@@ -111,11 +115,9 @@ const FileCaseProcessStatusActions = ({ setLoadingGlobal, setOwnerFileCase, clie
         })
 
         reset()
-        setLoadingGlobal(false)
       },
     }
   )
-
 
   const onUpdate = () => {
     handleSubmit(
@@ -147,7 +149,6 @@ const FileCaseProcessStatusActions = ({ setLoadingGlobal, setOwnerFileCase, clie
 
   useEffect(() => {
     if (!!codeParams.length && codeParams !== '000000000') {
-      setLoadingGlobal(false)
       refetch()
     }
     // eslint-disable-next-line
@@ -174,12 +175,12 @@ const FileCaseProcessStatusActions = ({ setLoadingGlobal, setOwnerFileCase, clie
       <Container width="fit-content" display="flex" justifyContent="space-between" alignItems="center" gap="10px">
         <Button
           width="130px"
-          loading={loading}
           label={greaterThanDesktopS && 'Guardar'}
           shape={greaterThanDesktopS ? 'default' : 'round'}
           size={greaterThanTabletS ? 'default' : 'small'}
+          disabled={!isDirty}
           trailingIcon="ri-save-3-line"
-          onClick={watch().id !== 0 ? onUpdate : () => {} }
+          onClick={watch().id !== 0 ? onUpdate : () => {}}
           permission={watch().id !== 0 ? 'P13-03' : 'P13-02'}
           messageTooltip="Guardar cambios"
         />
