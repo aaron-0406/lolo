@@ -64,7 +64,7 @@ export default {
       relatedProcessCode = ':relatedProcessCode'
     ) => `/judicial/${urlIdentifier}/expediente/${code}/procesos-conexos/${relatedProcessCode}`,
     productosDemandados: (urlIdentifier = ':urlIdentifier', code = ':code') =>
-      `/judicial/${urlIdentifier}/expediente/${code}/productos-demandados`,
+      `/judicial/${urlIdentifier}/expedientes/${code}/productos-demandados`,
     processStatus: (urlIdentifier = ':urlIdentifier', code = ':code') =>
       `/judicial/${urlIdentifier}/expediente/${code}/estatus-proceso`,
     bitacora: (urlIdentifier = ':urlIdentifier', code = ':code') =>

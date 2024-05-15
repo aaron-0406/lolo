@@ -82,7 +82,7 @@ const judicialFileCaseCache = (queryClient: QueryClient) => {
     const old = queryClient.getQueryData([KEY_FILE_CASE_CACHE, chb])
     if (!old) {
       await queryClient.prefetchQuery([KEY_FILE_CASE_CACHE, chb])
-    }
+    } 
 
     return { old }
   }
