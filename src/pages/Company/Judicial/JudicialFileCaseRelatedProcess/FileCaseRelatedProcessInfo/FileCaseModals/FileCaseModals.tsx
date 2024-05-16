@@ -22,13 +22,13 @@ const FileCaseModals = ({ ownerFileCase, numberCaseFile }: FileCaseModalsProps) 
       customer: { urlIdentifier },
     },
   } = useLoloContext()
-  const codeParams = useParams().code ?? ''
+  const relatedProcessCodeParams = useParams().relatedProcessCode ?? ''
   const greaterThanTabletS = useMediaQuery(device.tabletS)
 
   const clientId = getValues('id')
 
   const onClickBitacora = () => {
-    navigate(`${paths.judicial.bitacora(urlIdentifier, codeParams)}`)
+    navigate(`${paths.judicial.bitacora(urlIdentifier, relatedProcessCodeParams)}`)
   }
 
   return (

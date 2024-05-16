@@ -5,11 +5,11 @@ import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { device } from '@/breakpoints/responsive'
 import { JudicialCaseFileType } from '@/types/judicial/judicial-case-file.type'
 import { CustomErrorResponse } from 'types/customErrorResponse'
-import { createFileCase, getFileCaseByNumberFile, updateFileCase } from '@/services/judicial/judicial-file-case.service'
+import { createFileCase, getFileCaseByNumberFile, updateFileCase } from '@/services/judicial/judicial-file-case-related-process.service'
 import Container from '@/ui/Container'
 import Button from '@/ui/Button'
 import { notification } from '@/ui/notification/notification'
-import judicialFileCaseCache, {
+import {
   JudicialFileCaseTableRow,
 } from '../../JudicialFileCasesList/JudicialFileCasesTable/utils/file-cases.cache'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -20,14 +20,15 @@ import { LinkType } from '@/ui/Breadcrumbs/Breadcrumbs.type'
 import paths from 'shared/routes/paths'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import { ClientType } from '@/types/extrajudicial/client.type'
+import judicialFileCaseRelatedProcessCache from '../../JudicialFileCaseRelatedProcessesList/FileCaseRelatedProcessesTable/utils/file-cases-related-Process.cache'
 
 type FileCaseActionsProps = {
   setLoadingGlobal: (state: boolean) => void
   setOwnerFileCase: (value: ClientType & { customerUser: { id: number; name: string } }) => void
-  caseFileId: number
+  caseFileRelatedProcessId: number
 }
 
-const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase, caseFileId }: FileCaseActionsProps) => {
+const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase, caseFileRelatedProcessId }: FileCaseActionsProps) => {
   const queryClient = useQueryClient()
   const {
     client: { customer },
@@ -42,11 +43,11 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase, caseFileId }: Fil
   const navigate = useNavigate()
 
   const {
-    actions: { createFileCaseCache, editFileCaseCache },
+    actions: { createFileCaseRelatedProcessCache, editFileCaseRelatedProcessCache },
     onMutateCache,
     onSettledCache,
     onErrorCache,
-  } = judicialFileCaseCache(queryClient)
+  } = judicialFileCaseRelatedProcessCache(queryClient)
 
   const greaterThanDesktopS = useMediaQuery(device.desktopS)
   const greaterThanTabletS = useMediaQuery(device.tabletS)
@@ -71,18 +72,18 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase, caseFileId }: Fil
     {
       onSuccess: (result) => {
         setValue('id', result.data.id)
-        createFileCaseCache(result.data)
+        createFileCaseRelatedProcessCache(result.data)
         notification({ type: 'success', message: 'Expediente creado' })
         navigate(`${paths.judicial.detallesExpedienteRelatedProcess(customer.urlIdentifier,codeParams , result.data.numberCaseFile)}`)
       },
       onMutate: () => {
-        return onMutateCache(selectedBank.idCHB?.length ? parseInt(selectedBank.idCHB) : 0)
+        return onMutateCache(caseFileRelatedProcessId ? caseFileRelatedProcessId : 0)
       },
       onSettled: () => {
-        onSettledCache(selectedBank.idCHB?.length ? parseInt(selectedBank.idCHB) : 0)
+        onSettledCache(caseFileRelatedProcessId ? caseFileRelatedProcessId : 0)
       },
       onError: (error, _, context: any) => {
-        onErrorCache(context, selectedBank.idCHB?.length ? parseInt(selectedBank.idCHB) : 0)
+        onErrorCache(context, caseFileRelatedProcessId ? caseFileRelatedProcessId : 0)
         notification({
           type: 'error',
           message: error.response?.data.message,
@@ -102,17 +103,17 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase, caseFileId }: Fil
     },
     {
       onSuccess: (result) => {
-        editFileCaseCache(result.data)
+        editFileCaseRelatedProcessCache(result.data)
         notification({ type: 'success', message: 'Expediente actualizado' })
       },
       onMutate: () => {
-        return onMutateCache(selectedBank.idCHB?.length ? parseInt(selectedBank.idCHB) : 0)
+        return onMutateCache(caseFileRelatedProcessId ? caseFileRelatedProcessId : 0)
       },
       onSettled: () => {
-        onSettledCache(selectedBank.idCHB?.length ? parseInt(selectedBank.idCHB) : 0)
+        onSettledCache(caseFileRelatedProcessId ? caseFileRelatedProcessId : 0)
       },
       onError: (error, _, context: any) => {
-        onErrorCache(context, selectedBank.idCHB?.length ? parseInt(selectedBank.idCHB) : 0)
+        onErrorCache(context, caseFileRelatedProcessId ? caseFileRelatedProcessId : 0)
         notification({
           type: 'error',
           message: error.response?.data.message,
@@ -209,8 +210,8 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase, caseFileId }: Fil
   ]
 
   useEffect(() => {
-    setValue('idJudicialCaseFileRelated', caseFileId);
-  }, [caseFileId]);
+    setValue('idJudicialCaseFileRelated', caseFileRelatedProcessId);
+  }, [caseFileRelatedProcessId]);
 
   useEffect(() => {
     if (!!relatedProcessCodeParams.length && relatedProcessCodeParams !== '000000000') {

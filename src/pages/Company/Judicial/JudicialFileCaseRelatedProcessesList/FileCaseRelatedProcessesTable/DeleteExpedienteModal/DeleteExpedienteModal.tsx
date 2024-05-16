@@ -1,4 +1,4 @@
-import { deleteFileCase } from '@/services/judicial/judicial-file-case.service'
+import { deleteFileCase } from '@/services/judicial/judicial-file-case-related-process.service'
 import Button from '@/ui/Button'
 import Container from '@/ui/Container'
 import Modal from '@/ui/Modal'
@@ -7,28 +7,25 @@ import { AxiosError, AxiosResponse } from 'axios'
 import { FC } from 'react'
 import { useMutation, useQueryClient } from 'react-query'
 import { CustomErrorResponse } from 'types/customErrorResponse'
-import judicialFileCaseCache from '../utils/file-cases.cache'
+import judicialFileCaseRelatedProcessCache from '../utils/file-cases-related-Process.cache'
 import { useLoloContext } from '@/contexts/LoloProvider'
 
 type DeleteExpedienteModalProps = {
   visible: boolean
   onClose: () => void
   idFileCase?: number
+  caseFileRelatedProcessId:number
 }
 
-const DeleteExpedienteModal: FC<DeleteExpedienteModalProps> = ({ visible, idFileCase = 0, onClose }) => {
+const DeleteExpedienteModal: FC<DeleteExpedienteModalProps> = ({ visible, idFileCase = 0, caseFileRelatedProcessId = 0, onClose }) => {
   const queryClient = useQueryClient()
 
   const {
-    bank: { selectedBank },
-  } = useLoloContext()
-
-  const {
-    actions: { deleteFileCaseCache },
+    actions: { deleteFileCaseRelatedProcessCache },
     onMutateCache,
     onSettledCache,
     onErrorCache,
-  } = judicialFileCaseCache(queryClient)
+  } = judicialFileCaseRelatedProcessCache(queryClient)
 
   const { isLoading: loadingDeleteUser, mutate: deleteUserMutate } = useMutation<
     AxiosResponse<{ id: string }>,
@@ -39,18 +36,18 @@ const DeleteExpedienteModal: FC<DeleteExpedienteModalProps> = ({ visible, idFile
     },
     {
       onSuccess: (result) => {
-        deleteFileCaseCache(result.data.id, selectedBank.idCHB?.length ? parseInt(selectedBank.idCHB) : 0)
+        deleteFileCaseRelatedProcessCache(result.data.id, caseFileRelatedProcessId ? caseFileRelatedProcessId : 0)
         notification({ type: 'success', message: 'Expediente eliminado' })
         onClose()
       },
       onMutate: () => {
-        return onMutateCache(selectedBank.idCHB?.length ? parseInt(selectedBank.idCHB) : 0)
+        return onMutateCache(caseFileRelatedProcessId ? caseFileRelatedProcessId : 0)
       },
       onSettled: () => {
-        onSettledCache(selectedBank.idCHB?.length ? parseInt(selectedBank.idCHB) : 0)
+        onSettledCache(caseFileRelatedProcessId ? caseFileRelatedProcessId : 0)
       },
       onError: (error, _, context: any) => {
-        onErrorCache(context, selectedBank.idCHB?.length ? parseInt(selectedBank.idCHB) : 0)
+        onErrorCache(context, caseFileRelatedProcessId ? caseFileRelatedProcessId : 0)
         notification({
           type: 'error',
           message: error.response?.data.message,

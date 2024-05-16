@@ -1,1 +1,1 @@
-export { default } from './JudicialFileCase'
+export { default } from './JudicialFileCaseRelatedProcess'

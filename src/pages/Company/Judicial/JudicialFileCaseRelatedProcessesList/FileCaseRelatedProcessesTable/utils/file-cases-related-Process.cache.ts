@@ -7,7 +7,7 @@ import { JudicialSubjectType } from '@/types/judicial/judicial-subject.type'
 import { AxiosResponse } from 'axios'
 import { QueryClient } from 'react-query'
 
-export const KEY_FILE_CASE_CACHE = 'key-get-all-file-cases-by-chb'
+export const KEY_FILE_CASE_RELATED_PROCESS_CACHE = 'key-get-all-file-cases-related-process-by-case-file-related-process-id'
 
 export type JudicialFileCaseTableRow = JudicialCaseFileType & {
   customerUser: CustomerUserType
@@ -23,9 +23,10 @@ export type JudicialFileCaseTableRow = JudicialCaseFileType & {
 
 type QueryDataType = AxiosResponse<{ caseFiles: JudicialFileCaseTableRow[]; quantity: number }> | undefined
 
-const judicialFileCaseCache = (queryClient: QueryClient) => {
-  const createFileCaseCache = (data: JudicialFileCaseTableRow) => {
-    queryClient.setQueryData<QueryDataType>([KEY_FILE_CASE_CACHE, data.customerHasBankId], (old) => {
+const judicialFileCaseRelatedProcessCache = (queryClient: QueryClient) => {
+
+  const createFileCaseRelatedProcessCache = (data: JudicialFileCaseTableRow) => {
+    queryClient.setQueryData<QueryDataType>([KEY_FILE_CASE_RELATED_PROCESS_CACHE, data.idJudicialCaseFileRelated], (old) => {
       if (old) {
         return {
           ...old,
@@ -38,8 +39,8 @@ const judicialFileCaseCache = (queryClient: QueryClient) => {
     })
   }
 
-  const editFileCaseCache = (data: JudicialFileCaseTableRow) => {
-    queryClient.setQueryData<QueryDataType>([KEY_FILE_CASE_CACHE, data.customerHasBankId], (old) => {
+  const editFileCaseRelatedProcessCache = (data: JudicialFileCaseTableRow) => {
+    queryClient.setQueryData<QueryDataType>([KEY_FILE_CASE_RELATED_PROCESS_CACHE, data.idJudicialCaseFileRelated], (old) => {
       if (old) {
         const dataUpdated = old.data.caseFiles.map((fileCase: JudicialFileCaseTableRow) => {
           if (fileCase.id === data.id) return data
@@ -57,8 +58,8 @@ const judicialFileCaseCache = (queryClient: QueryClient) => {
     })
   }
 
-  const deleteFileCaseCache = (id: string, chb: number) => {
-    queryClient.setQueryData<QueryDataType>([KEY_FILE_CASE_CACHE, chb], (old) => {
+  const deleteFileCaseRelatedProcessCache = (id: string, relatedCaseFileId: number) => {
+    queryClient.setQueryData<QueryDataType>([KEY_FILE_CASE_RELATED_PROCESS_CACHE, relatedCaseFileId], (old) => {
       if (old) {
         const dataUpdated = old.data.caseFiles.filter(
           (fileCase: JudicialFileCaseTableRow) => fileCase.id !== parseInt(id)
@@ -74,32 +75,32 @@ const judicialFileCaseCache = (queryClient: QueryClient) => {
     })
   }
 
-  const onRefetchQueryCache = async (chb: number) => {
-    await queryClient.refetchQueries([KEY_FILE_CASE_CACHE, chb])
+  const onRefetchQueryCache = async (relatedCaseFileId: number) => {
+    await queryClient.refetchQueries([KEY_FILE_CASE_RELATED_PROCESS_CACHE, relatedCaseFileId])
   }
 
-  const onMutateCache = async (chb: number) => {
-    const old = queryClient.getQueryData([KEY_FILE_CASE_CACHE, chb])
+  const onMutateCache = async (relatedCaseFileId: number) => {
+    const old = queryClient.getQueryData([KEY_FILE_CASE_RELATED_PROCESS_CACHE, relatedCaseFileId])
     if (!old) {
-      await queryClient.prefetchQuery([KEY_FILE_CASE_CACHE, chb])
+      await queryClient.prefetchQuery([KEY_FILE_CASE_RELATED_PROCESS_CACHE, relatedCaseFileId])
     }
 
     return { old }
   }
 
-  const onSettledCache = (chb: number) => {
-    queryClient.cancelQueries([KEY_FILE_CASE_CACHE, chb])
+  const onSettledCache = (relatedCaseFileId: number) => {
+    queryClient.cancelQueries([KEY_FILE_CASE_RELATED_PROCESS_CACHE, relatedCaseFileId])
   }
 
-  const onErrorCache = (context: { old: QueryDataType }, chb: number) => {
-    queryClient.setQueryData([KEY_FILE_CASE_CACHE, chb], context.old)
+  const onErrorCache = (context: { old: QueryDataType }, relatedCaseFileId: number) => {
+    queryClient.setQueryData([KEY_FILE_CASE_RELATED_PROCESS_CACHE, relatedCaseFileId], context.old)
   }
 
   return {
     actions: {
-      createFileCaseCache,
-      editFileCaseCache,
-      deleteFileCaseCache,
+      createFileCaseRelatedProcessCache,
+      editFileCaseRelatedProcessCache,
+      deleteFileCaseRelatedProcessCache,
     },
     onRefetchQueryCache,
     onMutateCache,
@@ -108,4 +109,4 @@ const judicialFileCaseCache = (queryClient: QueryClient) => {
   }
 }
 
-export default judicialFileCaseCache
+export default judicialFileCaseRelatedProcessCache

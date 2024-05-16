@@ -17,6 +17,7 @@ type JudicialBinnacleInfoProps = {
 
 const JudicialBinnacleInfo = ({ judicialFileCaseId, clientCode, clientName }: JudicialBinnacleInfoProps) => {
   const code = useParams().code ?? ''
+  const relatedProcessCodeParams = useParams().relatedProcessCode ?? ''
 
   const {
     client: { customer },
@@ -30,13 +31,36 @@ const JudicialBinnacleInfo = ({ judicialFileCaseId, clientCode, clientName }: Ju
     hideModalAdd()
   }
 
-  const routers: LinkType[] = [
+  const routersFileCase: LinkType[] = [
     {
       link: paths.judicial.expedientes(customer.urlIdentifier),
       name: 'Expedientes',
     },
     {
       link: paths.judicial.detallesExpediente(customer.urlIdentifier, code),
+      name: code,
+    },
+    {
+      link: paths.judicial.bitacora(customer.urlIdentifier, code),
+      name: 'Bitacora',
+    },
+  ]
+
+  const routersFileCaseRelatedProcess: LinkType[] = [
+    {
+      link: paths.judicial.expedientes(customer.urlIdentifier),
+      name: 'Expedientes',
+    },
+    {
+      link: paths.judicial.detallesExpediente(customer.urlIdentifier, code),
+      name: code,
+    },
+    {
+      link: paths.judicial.relatedProcess(customer.urlIdentifier),
+      name: 'Procesos Conexos',
+    },
+    {
+      link: paths.judicial.detallesExpedienteRelatedProcess(customer.urlIdentifier, code, relatedProcessCodeParams),
       name: code,
     },
     {
@@ -54,7 +78,7 @@ const JudicialBinnacleInfo = ({ judicialFileCaseId, clientCode, clientName }: Ju
       padding="20px 20px 0 20px"
     >
       <Container display="flex" flexDirection="column" gap="10px">
-        <Breadcrumbs routes={routers} />
+        <Breadcrumbs routes={relatedProcessCodeParams ? routersFileCaseRelatedProcess : routersFileCase} />
         <Container padding="10px" width="100%" margin="0px 0px 10px 0px" backgroundColor="#eff0f6ff">
           <Text.Body size="m" weight="bold">
             {clientName ?? '-'}

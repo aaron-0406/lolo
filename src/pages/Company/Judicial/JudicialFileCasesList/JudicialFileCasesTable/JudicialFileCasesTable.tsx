@@ -78,7 +78,6 @@ const JudicialFileCasesTable = () => {
         if (selectedFilterOption.identifier === filterOption.identifier) {
           return filterOption
         }
-
         return selectedFilterOption
       })
       setSelectedFilters({ url: currentPath, filters: selectedFiltersUpdated })
@@ -176,7 +175,7 @@ const JudicialFileCasesTable = () => {
     }
   )
 
-  const judicialFileCases = data?.data?.caseFiles.filter((fileCase:JudicialFileCaseTableRow) => !fileCase.idJudicialCaseFileRelated) ?? []
+  const judicialFileCases = data?.data?.caseFiles ?? []
   const quantity = data?.data?.quantity ?? 0
 
   useEffect(() => {

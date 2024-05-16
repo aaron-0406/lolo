@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { JudicialCaseFileType } from '@/types/judicial/judicial-case-file.type'
-import { JudicialFileCaseResolver } from './JudicialFileCase.yup'
+import { JudicialFileCaseResolver } from './JudicialFileCaseRelatedProcess.yup'
 import LayoutFileCase from 'components/Layouts/LayoutFileCase'
 import FileCaseOwner from './FileCaseRelatedProcessOwner'
 import FileCaseActions from './FileCaseRelatedProcessActions'
@@ -78,7 +78,7 @@ const JudicialFileCaseRelatedProcess = () => {
   return (
     <FormProvider {...formMethods}>
       <LayoutFileCase
-        actionsContent={<FileCaseActions setOwnerFileCase={setOwnerFileCase} setLoadingGlobal={setLoading} caseFileId ={caseFileId}  />}
+        actionsContent={<FileCaseActions setOwnerFileCase={setOwnerFileCase} setLoadingGlobal={setLoading} caseFileRelatedProcessId ={caseFileId}  />}
         ownerContent={<FileCaseOwner setOwnerFileCase={setOwnerFileCase} ownerFileCase={ownerFileCase} />}
         infoContent={<FileCaseInfo loading={loading} caseFileId = {caseFileId}/>}
         modalsContent={<FileCaseModals ownerFileCase={ownerFileCase} numberCaseFile={numberCaseFile} />}

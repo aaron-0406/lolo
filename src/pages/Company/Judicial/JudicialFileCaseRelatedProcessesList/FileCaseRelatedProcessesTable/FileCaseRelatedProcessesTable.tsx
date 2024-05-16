@@ -1,18 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import Button from '@/ui/Button'
-import Container from '@/ui/Container'
-import Pagination from '@/ui/Pagination'
-import Table from '@/ui/Table'
-import BodyCell from '@/ui/Table/BodyCell'
-import EmptyStateCell from '@/ui/Table/EmptyStateCell'
-import { FilterOptionsProps } from '@/ui/Table/Table'
 import { judicialCaseFileColumns } from './utils/columns'
 import paths from 'shared/routes/paths'
 import { Tooltip } from 'react-tooltip'
-import { getFileCasesByCHB } from '@/services/judicial/judicial-file-case.service'
 import { AxiosError, AxiosResponse } from 'axios'
 import DeleteExpedienteModal from './DeleteExpedienteModal'
-import { JudicialFileCaseTableRow, KEY_FILE_CASE_CACHE } from './utils/file-cases.cache'
+import { JudicialFileCaseTableRow, KEY_FILE_CASE_RELATED_PROCESS_CACHE } from './utils/file-cases-related-Process.cache'
 import { KEY_JUDICIAL_COURTS_CACHE } from '../../JudicialCourt/CourtTable/utils/judicial-court.cache'
 import { getCourtByCHB } from '@/services/judicial/judicial-court.service'
 import { KEY_JUDICIAL_SUBJECT_CACHE } from '../../JudicialSubject/SubjectTable/utils/judicial-subject.cache'
@@ -33,6 +25,14 @@ import { useEffect, useMemo, useState } from 'react'
 import useModal from '@/hooks/useModal'
 
 import Text from '@/ui/Text'
+import Button from '@/ui/Button'
+import Container from '@/ui/Container'
+import Pagination from '@/ui/Pagination'
+import Table from '@/ui/Table'
+import BodyCell from '@/ui/Table/BodyCell'
+import EmptyStateCell from '@/ui/Table/EmptyStateCell'
+import { FilterOptionsProps } from '@/ui/Table/Table'
+import { getFileCaseRelatedProcessByCaseFileId } from '@/services/judicial/judicial-file-case-related-process.service'
 
 type JudicialFileCasesTableProps = { 
   caseFileId:number;
@@ -52,7 +52,6 @@ const JudicialFileCasesTable = ({ caseFileId } : JudicialFileCasesTableProps ) =
     },
     bank: {
       selectedBank: { idCHB: chb },
-      selectedBank,
     },
     user: { users },
     customerUser: { user },
@@ -95,7 +94,7 @@ const JudicialFileCasesTable = ({ caseFileId } : JudicialFileCasesTableProps ) =
 
   const hasAccessToTheButton = useMemo(() => {
     const permissions = user.permissions?.map((permission) => permission.code) ?? []
-    return permissions.includes('P13-01' ?? '')
+    return permissions.includes('P13-01-05-01' ?? '')
   }, [user.permissions])
 
   const { data: dataCourts, isLoading: isLoadingCourts } = useQuery(
@@ -147,53 +146,55 @@ const JudicialFileCasesTable = ({ caseFileId } : JudicialFileCasesTableProps ) =
     }
   })
 
-  const { refetch, data, isLoading } = useQuery<
-    AxiosResponse<{
-      caseFiles: Array<JudicialFileCaseTableRow>
-      quantity: number
-    }>,
-    AxiosError<CustomErrorResponse>
-  >(
-    [KEY_FILE_CASE_CACHE, parseInt(chb?.length ? chb : '0')],
-    async () => {
-      const courts = getIDsByIdentifier('casesFiles.datatable.header.court', selectedFilterOptions)
-      const subjects = getIDsByIdentifier('casesFiles.datatable.header.subject', selectedFilterOptions)
-      const users = getIDsByIdentifier('casesFiles.datatable.header.user', selectedFilterOptions)
-      const proceduralWays = getIDsByIdentifier('casesFiles.datatable.header.proceduralWay', selectedFilterOptions)
 
-      //TODO: Add users
-      return await getFileCasesByCHB(
-        Number(selectedBank.idCHB),
-        opts.page,
-        opts.limit,
-        opts.filter,
-        JSON.stringify(courts),
-        JSON.stringify(proceduralWays),
-        JSON.stringify(subjects),
-        JSON.stringify(users)
-      )
+  const { refetch:RelatedProcessRefetch, data:RelatedProcessData, isLoading:RelatedProcessIsLoading } = useQuery<
+  AxiosResponse<{
+    caseFiles: Array<JudicialFileCaseTableRow>
+    quantity: number
+  }>,
+  AxiosError<CustomErrorResponse>
+>(
+  [KEY_FILE_CASE_RELATED_PROCESS_CACHE, caseFileId ? caseFileId : 0],
+  async () => {
+    const courts = getIDsByIdentifier('casesFiles.datatable.header.court', selectedFilterOptions)
+    const subjects = getIDsByIdentifier('casesFiles.datatable.header.subject', selectedFilterOptions)
+    const users = getIDsByIdentifier('casesFiles.datatable.header.user', selectedFilterOptions)
+    const proceduralWays = getIDsByIdentifier('casesFiles.datatable.header.proceduralWay', selectedFilterOptions)
+    //TODO: Add users
+    return await getFileCaseRelatedProcessByCaseFileId(
+      caseFileId ? caseFileId : 0,
+      opts.page,
+      opts.limit,
+      opts.filter,
+      JSON.stringify(courts),
+      JSON.stringify(proceduralWays),
+      JSON.stringify(subjects),
+      JSON.stringify(users)
+    )
+  } ,
+  {
+    onError: (error) => {
+      notification({
+        type: 'error',
+        message: error.response?.data.message,
+        list: error.response?.data?.errors?.map((error) => error.message),
+      })
     },
-    {
-      onError: (error) => {
-        notification({
-          type: 'error',
-          message: error.response?.data.message,
-          list: error.response?.data?.errors?.map((error) => error.message),
-        })
-      },
-    }
-  )
+  }
+)
 
-  const judicialFileCases = data?.data?.caseFiles.filter((caseFile: JudicialFileCaseTableRow) => caseFile.idJudicialCaseFileRelated === caseFileId ) ?? []
-  const quantity = judicialFileCases.length ?? 0
+const caseFilesRelatedProcess = RelatedProcessData?.data?.caseFiles ?? []
 
+  const quantity = RelatedProcessData?.data.quantity ?? 0
   useEffect(() => {
-    refetch()
+    RelatedProcessRefetch()
   }, [getSelectedFilters(currentPath)?.filters])
 
   useEffect(() => {
-    refetch()
+    RelatedProcessRefetch()
   }, [opts.filter.length, opts.page])
+
+
 
   return (
     <Container width="100%" height="100%" padding="0px 20px 0px 20px">
@@ -209,8 +210,8 @@ const JudicialFileCasesTable = ({ caseFileId } : JudicialFileCasesTableProps ) =
         columns={judicialCaseFileColumns}
         selectedFilterOptions={selectedFilterOptions}
         onChangeFilterOptions={onChangeFilterOptions}
-        loading={isLoading || isLoadingProceduralWay || isLoadingSubject || isLoadingCourts}
-        isArrayEmpty={!judicialFileCases.length}
+        loading={RelatedProcessIsLoading || isLoadingProceduralWay || isLoadingSubject || isLoadingCourts}
+        isArrayEmpty={!caseFilesRelatedProcess.length}
         emptyState={
           <EmptyStateCell colSpan={judicialCaseFileColumns.length}>
             <EmptyState
@@ -228,7 +229,7 @@ const JudicialFileCasesTable = ({ caseFileId } : JudicialFileCasesTableProps ) =
         }
       >
         {!!judicialCaseFileColumns?.length &&
-          judicialFileCases.map((record: JudicialFileCaseTableRow) => {
+          caseFilesRelatedProcess.map((record: JudicialFileCaseTableRow) => {
             return (
               <tr
                 className="styled-data-table-row"
@@ -282,7 +283,7 @@ const JudicialFileCasesTable = ({ caseFileId } : JudicialFileCasesTableProps ) =
       </Table>
       <Tooltip place="right" id="cell-tooltip" />
 
-      <DeleteExpedienteModal visible={visibleDeleteFileCase} onClose={hideDeleteFileCase} idFileCase={fileCaseId} />
+      <DeleteExpedienteModal visible={visibleDeleteFileCase} onClose={hideDeleteFileCase} idFileCase={fileCaseId} caseFileRelatedProcessId = {caseFileId}/>
     </Container>
   )
 }
