@@ -56,12 +56,12 @@ const JudicialBinnacleInfo = ({ judicialFileCaseId, clientCode, clientName }: Ju
       name: code,
     },
     {
-      link: paths.judicial.relatedProcess(customer.urlIdentifier),
+      link: paths.judicial.relatedProcess(customer.urlIdentifier, code),
       name: 'Procesos Conexos',
     },
     {
       link: paths.judicial.detallesExpedienteRelatedProcess(customer.urlIdentifier, code, relatedProcessCodeParams),
-      name: code,
+      name: relatedProcessCodeParams,
     },
     {
       link: paths.judicial.bitacora(customer.urlIdentifier, code),

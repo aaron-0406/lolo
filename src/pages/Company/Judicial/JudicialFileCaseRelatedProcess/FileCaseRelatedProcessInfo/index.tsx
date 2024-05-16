@@ -1,1 +1,1 @@
-export { default } from './FileCaseInfo'
+export { default } from './FileCaseRelatedInfo'

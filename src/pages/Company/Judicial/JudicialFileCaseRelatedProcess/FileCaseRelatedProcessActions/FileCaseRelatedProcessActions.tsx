@@ -34,7 +34,6 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase, caseFileRelatedPr
     client: { customer },
     bank: { selectedBank },
   } = useLoloContext()
-
   const codeParams = useParams().code ?? ''
   const relatedProcessCodeParams = useParams().relatedProcessCode ?? ''
 
@@ -61,7 +60,7 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase, caseFileRelatedPr
 
   >()
 
-  const { isLoading: loadingCreateFileCase, mutate: createFileCaseMutate } = useMutation<
+  const { isLoading: loadingCreateFileCase, mutate: createFileCaseRelatedProcessMutate } = useMutation<
     AxiosResponse<JudicialFileCaseTableRow>,
     AxiosError<CustomErrorResponse>
   >(
@@ -93,7 +92,7 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase, caseFileRelatedPr
     }
   )
 
-  const { mutate: updateFileCaseMutate } = useMutation<
+  const { mutate: updateFileCaseRelatedProcessMutate } = useMutation<
     AxiosResponse<JudicialFileCaseTableRow>,
     AxiosError<CustomErrorResponse>
   >(
@@ -173,14 +172,14 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase, caseFileRelatedPr
 
   const onCreate = () => {
     handleSubmit(() => {
-      createFileCaseMutate()
+      createFileCaseRelatedProcessMutate()
     })()
   }
 
   const onUpdate = () => {
     handleSubmit(
       () => {
-        updateFileCaseMutate()
+        updateFileCaseRelatedProcessMutate()
       },
       (error) => {
         if (error.clientId) {
@@ -226,11 +225,12 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase, caseFileRelatedPr
       width="100%"
       display="flex"
       justifyContent="space-between"
-      alignItems="center"
+      alignItems={greaterThanDesktopS ? "center" : "start"}
       gap="20px"
       padding={greaterThanDesktopS ? '0px 0px 0px 20px' : '0px'}
+      flexDirection={ greaterThanDesktopS ? 'row' : 'column'}
     >
-      <Breadcrumbs routes={routers} />
+      <Breadcrumbs routes={routers}  />
 
       <Container width="fit-content" display="flex" justifyContent="space-between" alignItems="center" gap="10px">
         <Button

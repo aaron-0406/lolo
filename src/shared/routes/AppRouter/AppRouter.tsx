@@ -129,6 +129,7 @@ const AppRouter = () => {
         <Route path={paths.judicial.productosDemandados()} element={<JudicialFileCaseDemandedProducts />} />
         <Route path={paths.judicial.processStatus()} element={<JudicialFileCaseProcessStatus />} />
         <Route path={paths.judicial.bitacora()} element={<JudicialBinnacle />} />
+        <Route path={paths.judicial.bitacoraProcesoConexo()} element={<JudicialBinnacle />} />
         <Route path={paths.judicial.bitacoraTipo()} element={<JudicialBinTypeBinnacle />} />
         <Route path={paths.judicial.bitacoraProceduralStage()} element={<JudicialBinProceduralStage />} />
         <Route path={paths.judicial.bitacoraDefendantProceduralAction()} element={<JudicialBinDefendantProceduralAction />} />

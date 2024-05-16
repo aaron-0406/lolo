@@ -22,20 +22,22 @@ const FileCaseModals = ({ ownerFileCase, numberCaseFile }: FileCaseModalsProps) 
       customer: { urlIdentifier },
     },
   } = useLoloContext()
+
+  const codeParams = useParams().code ?? ''
   const relatedProcessCodeParams = useParams().relatedProcessCode ?? ''
   const greaterThanTabletS = useMediaQuery(device.tabletS)
 
   const clientId = getValues('id')
 
   const onClickBitacora = () => {
-    navigate(`${paths.judicial.bitacora(urlIdentifier, relatedProcessCodeParams)}`)
+    navigate(`${paths.judicial.bitacoraProcesoConexo(urlIdentifier, codeParams, relatedProcessCodeParams)}`)
   }
 
   return (
     <Container width="100%" height="100%" display="flex" flexDirection="row" gap="10px">
       <Button
         label="Bitacora"
-        permission="P13-01-01"
+        permission="P13-01-05-01-01"
         size={greaterThanTabletS ? "default": "small"}
         disabled={!clientId}
         onClick={onClickBitacora}

@@ -20,11 +20,13 @@ import { JudicialProceduralWayType } from '@/types/judicial/judicial-procedural-
 import { SelectItemType } from '@/ui/Select/interfaces'
 import Button from '@/ui/Button'
 import FileCasesRelatedModal from './FileCasesRelatedModal'
-
+import { useMediaQuery } from '@/hooks/useMediaQuery'
+import { device } from '@/breakpoints/responsive'
 
 import useModal from '@/hooks/useModal'
 import { useQuery } from 'react-query'
 import { BankType } from '@/types/dash/bank.type'
+
 
 type FileCaseInfoProps = {
   loading: boolean
@@ -42,6 +44,7 @@ const FileCaseInfo = ({ loading, caseFileId }: FileCaseInfoProps) => {
     },
   } = useLoloContext()
 
+  const greaterThanTabletL = useMediaQuery(device.tabletL)
 
   const {
     control,
@@ -125,7 +128,7 @@ const FileCaseInfo = ({ loading, caseFileId }: FileCaseInfoProps) => {
   })
 
   if (loading) {
-    return <div>Loading ...</div>
+    return <Container>Loading ...</Container>
   }
 
   return (
@@ -138,7 +141,7 @@ const FileCaseInfo = ({ loading, caseFileId }: FileCaseInfoProps) => {
       gap="20px"
       overFlowY="auto"
     >
-      <div className="fields-wrapper-container-t">
+      <Container className="fields-wrapper-container-t">
         <Controller
           name="numberCaseFile"
           control={control}
@@ -183,8 +186,8 @@ const FileCaseInfo = ({ loading, caseFileId }: FileCaseInfoProps) => {
             />
           )}
         />
-      </div>
-      <div className="fields-wrapper-container-t">
+      </Container>
+      <Container className="fields-wrapper-container-t">
         <Controller
           name="judicialCourtId"
           control={control}
@@ -219,8 +222,8 @@ const FileCaseInfo = ({ loading, caseFileId }: FileCaseInfoProps) => {
             />
           )}
         />
-      </div>
-      <div className="fields-wrapper-container-t">
+      </Container>
+      <Container className="fields-wrapper-container-t">
         <Controller
           name="judicialSubjectId"
           control={control}
@@ -259,8 +262,8 @@ const FileCaseInfo = ({ loading, caseFileId }: FileCaseInfoProps) => {
             />
           )}
         />
-      </div>
-      <div className="fields-wrapper-container-t">
+      </Container>
+      <Container className="fields-wrapper-container-t">
         <Controller
           name="secretary"
           control={control}
@@ -291,8 +294,8 @@ const FileCaseInfo = ({ loading, caseFileId }: FileCaseInfoProps) => {
             />
           )}
         />
-      </div>
-      <div className="fields-wrapper-container-t">
+      </Container>
+      <Container className="fields-wrapper-container-t">
         <Controller
           name="amountDemandedSoles"
           control={control}
@@ -323,8 +326,8 @@ const FileCaseInfo = ({ loading, caseFileId }: FileCaseInfoProps) => {
             />
           )}
         />
-      </div>
-      <div className="fields-wrapper-container-t">
+      </Container>
+      <Container className="fields-wrapper-container-t">
         <Controller
           name="customerUserId"
           control={control}
@@ -357,8 +360,8 @@ const FileCaseInfo = ({ loading, caseFileId }: FileCaseInfoProps) => {
             />
           )}
         />
-      </div>
-      <div className="fields-wrapper-container-t">
+      </Container>
+      <Container className="fields-wrapper-container-t">
         <Controller
           name="demandDate"
           control={control}
@@ -391,37 +394,30 @@ const FileCaseInfo = ({ loading, caseFileId }: FileCaseInfoProps) => {
             />
           )}
         />
-        <Controller
-          name="idJudicialCaseFileRelated"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              width="100%"
-              label="Expediente"
-              value={field.value}
-              onChange={field.onChange}
-              helperText={errors.judgmentNumber?.message}
-              hasError={!!errors.judgmentNumber}
-              disabled={true}
-            />
-          )}
-        />
-      </div>
-      <Controller
-        control={control}
-        name="bankId"
-        render={({ field }) => (
-          <Select
-            label="Banco"
-            value={String(field.value)}
-            // placeholder={customerBanks.find((option) => option.key === field.value)?.label ?? ''}
-            onChange={(key) => {
-              field.onChange(parseInt(key))
-            }}
-            options={optionsStates}
+      </Container>
+      <Container display="flex" flexDirection={greaterThanTabletL ? 'row' : 'column'} gap="10px">
+        <Container width={greaterThanTabletL ? '50%' : '100%'}>
+          <Controller
+            control={control}
+            name="bankId"
+            render={({ field }) => (
+              <Select
+                label="Banco"
+                width="100%"
+                value={String(field.value)}
+                options={optionsStates}
+                onChange={(key) => {
+                  field.onChange(parseInt(key))
+                }}
+                hasError={!!errors.bankId}
+                disabled={!clientId}
+              />
+            )}
           />
-        )}
-      />
+        </Container>
+        <Container width="50%" display={greaterThanTabletL ? 'flex' : 'none'}/>
+      </Container>
+
       <FileCasesRelatedModal
         onClose={() => {
           hideModal()
