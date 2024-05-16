@@ -60,7 +60,8 @@ export default {
       `/judicial/${urlIdentifier}/expedientes/${code}`,
     productosDemandados: (urlIdentifier = ':urlIdentifier', code = ':code') =>
       `/judicial/${urlIdentifier}/expedientes/${code}/productos-demandados`,
-
+    processStatus: (urlIdentifier = ':urlIdentifier', code = ':code') =>
+      `/judicial/${urlIdentifier}/expediente/${code}/estatus-proceso`,
     bitacora: (urlIdentifier = ':urlIdentifier', code = ':code') =>
       `/judicial/${urlIdentifier}/expediente/${code}/bitacora`,
     bitacoraTipo: (urlIdentifier = ':urlIdentifier') => `/judicial/${urlIdentifier}/tipo-bitacora`,
@@ -70,5 +71,7 @@ export default {
     bitacoraProceduralStage: (urlIdentifier = ':urlIdentifier') => `/judicial/${urlIdentifier}/etapa-procedimental`,
     bitacoraDefendantProceduralAction: (urlIdentifier = ':urlIdentifier') =>
       `/judicial/${urlIdentifier}/actuacion-procesal-demandado`,
+    processReason: (urlIdentifier = ':urlIdentifier') =>
+      `/judicial/${urlIdentifier}/motivo-proceso`,
   },
 }

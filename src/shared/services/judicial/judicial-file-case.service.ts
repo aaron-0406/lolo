@@ -1,5 +1,6 @@
 import { JudicialCaseFileType } from '@/types/judicial/judicial-case-file.type'
 import axiosClient from '../../utils/api/clientAxios'
+import { JudicialCasefileProcessStatusType } from '@/types/judicial/judicial-case-file-process-status.type'
 
 const API = axiosClient.getUri()
 
@@ -62,6 +63,10 @@ export const updateFileCase = async (id: number, fileCase: Omit<JudicialCaseFile
     return await axiosClient.patch(`${url}/${id}`, { ...fileCase, demandDate })
   }
   return await axiosClient.patch(`${url}/${id}`, fileCase)
+}
+
+export const updateFileCaseProcessStatus = async (id: number, processStatus: Omit<JudicialCasefileProcessStatusType,'id'>) => {
+  return await axiosClient.patch(`${url}/${id}/process-status`, processStatus)
 }
 
 export const deleteFileCase = async (id: number) => {
