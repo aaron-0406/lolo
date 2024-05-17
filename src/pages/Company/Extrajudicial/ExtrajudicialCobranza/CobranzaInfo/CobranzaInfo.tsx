@@ -15,6 +15,9 @@ import { NegotiationType } from '@/types/extrajudicial/negotiation.type'
 import { KEY_EXT_COBRANZA_FUNCIONARIOS_CACHE } from '../../ExtrajudicialFuncionarios/FuncionariosTable/utils/ext-funcionarios.cache'
 import { getAllFuncionariosByCHB } from '@/services/extrajudicial/funcionario.service'
 import { FuncionarioType } from '@/types/extrajudicial/funcionario.type'
+import FuncionariosModal from '../../ExtrajudicialFuncionarios/Modals/FuncionariosModal'
+import Button from '@/ui/Button'
+import useModal from '@/hooks/useModal'
 
 type CobranzaInfoProps = {
   loading: boolean
@@ -59,6 +62,8 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
   )
   const funcionarios = dataFuncionarios?.data ?? []
 
+  const { visible: visibleModalAdd, showModal: showModalAdd, hideModal: hideModalAdd } = useModal()
+
   const optionsCities: Array<SelectItemType> = cities.map((city) => {
     return {
       key: String(city.id),
@@ -86,6 +91,14 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
       label: negociacion.name,
     }
   })
+
+  const onShowModal = () => {
+    showModalAdd()
+  }
+
+  const onCloseModal = () => {
+    hideModalAdd()
+  }
 
   if (loading) {
     return <div>Loading ...</div>
@@ -205,17 +218,35 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
           name="funcionarioId"
           control={control}
           render={({ field }) => (
-            <Select
+            <Container
+              display="flex"
+              flexDirection="row"
+              gap="10px"
+              flexWrap="nowrap"
               width="100%"
-              label="Funcionario:"
-              value={String(field.value)}
-              options={optionsFuncionarios}
-              onChange={(key) => {
-                field.onChange(parseInt(key))
-              }}
-              placeholder={funcionario?.name}
-              hasError={!!errors.funcionarioId}
-            />
+              alignItems="flex-end"
+            >
+              <Select
+                width="100%"
+                label="Funcionario:"
+                value={String(field.value)}
+                options={optionsFuncionarios}
+                onChange={(key) => {
+                  field.onChange(parseInt(key))
+                }}
+                placeholder={funcionario?.name}
+                hasError={!!errors.funcionarioId}
+              />
+
+              <Button
+                shape="round"
+                leadingIcon="ri-add-fill"
+                size="small"
+                onClick={onShowModal}
+                disabled={!chb}
+                permission="P08-01"
+              />
+            </Container>
           )}
         />
 
@@ -268,6 +299,8 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
           )}
         />
       </div>
+
+      <FuncionariosModal visible={visibleModalAdd} onClose={onCloseModal} />
     </StyledContainer>
   )
 }
