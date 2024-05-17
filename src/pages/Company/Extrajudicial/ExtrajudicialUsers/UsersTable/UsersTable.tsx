@@ -45,7 +45,6 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts }) => {
   const [usersCount, setUsersCount] = useState<number>(0)
   const [idUser, setIdUser] = useState(0)
   const [idDeletedUser, setIdDeletedUser] = useState(0)
-  const [loadingUsers, setLoadingUsers] = useState(false)
 
   const { visible: visibleModalUser, showModal: showModalUser, hideModal: hideModalUser } = useModal()
   const { visible: visibleDeleteUser, showModal: showDeleteUser, hideModal: hideDeleteUser } = useModal()

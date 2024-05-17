@@ -17,7 +17,7 @@ import DeleteProcessReasonModal from '../Modals/DeleteProcessReasonModal'
 
 import EmptyState from '@/ui/EmptyState'
 
-import { getAllProcessReasonByCHB, getProcessReasonByID } from '@/services/judicial/judicial-process-reason.service'
+import { getAllProcessReasonByCHB } from '@/services/judicial/judicial-process-reason.service'
 import { JudicialProcessReasonType } from '@/types/judicial/judicial-process-reason.types'
 
 type ProcessReasonTableProps = {
@@ -36,7 +36,11 @@ const ProcessReasonTable = ({ opts, setOpts }: ProcessReasonTableProps) => {
   const [idDeletedProcessReason, setIdDeletedProcessReason] = useState<number>(0)
 
   const { visible: visibleModalEdit, showModal: showModalEdit, hideModal: hideModalEdit } = useModal()
-  const { visible: visibleDeleteProcessReason, showModal: showDeleteProcessReason, hideModal: hideDeleteProcessReason } = useModal()
+  const {
+    visible: visibleDeleteProcessReason,
+    showModal: showDeleteProcessReason,
+    hideModal: hideDeleteProcessReason,
+  } = useModal()
 
   const handleClickButtonEdit = (id: number) => {
     setProcessReasonId(id)
@@ -48,7 +52,7 @@ const ProcessReasonTable = ({ opts, setOpts }: ProcessReasonTableProps) => {
     showDeleteProcessReason()
   }
 
-  const onCloseDeleteProcessReason= () => {
+  const onCloseDeleteProcessReason = () => {
     setIdDeletedProcessReason(0)
     hideDeleteProcessReason()
   }
@@ -58,13 +62,16 @@ const ProcessReasonTable = ({ opts, setOpts }: ProcessReasonTableProps) => {
     hideModalEdit()
   }
 
-  const { isLoading, data } = useQuery([KEY_JUDICIAL_PROCESS_REASON_CACHE, parseInt(chb.length ? chb : '0')], async () => {
-    return await getAllProcessReasonByCHB(parseInt(chb.length ? chb : '0'))
-  })
+  const { isLoading, data } = useQuery(
+    [KEY_JUDICIAL_PROCESS_REASON_CACHE, parseInt(chb.length ? chb : '0')],
+    async () => {
+      return await getAllProcessReasonByCHB(parseInt(chb.length ? chb : '0'))
+    }
+  )
 
   let result = data?.data ?? []
   if (opts.filter !== '') {
-    result = result.filter((filt: JudicialProcessReasonType ) => {
+    result = result.filter((filt: JudicialProcessReasonType) => {
       return filt.reason.substring(0, opts.filter.length).toUpperCase() === opts.filter.toUpperCase()
     })
   }
@@ -80,7 +87,10 @@ const ProcessReasonTable = ({ opts, setOpts }: ProcessReasonTableProps) => {
         isArrayEmpty={!processReasons.length}
         emptyState={
           <EmptyStateCell colSpan={judicialProcessColumns.length}>
-            <EmptyState title="No hay recursos disponibles" description="No se encontraron motivos, por favor seleccione otros filtros." />
+            <EmptyState
+              title="No hay recursos disponibles"
+              description="No se encontraron motivos, por favor seleccione otros filtros."
+            />
           </EmptyStateCell>
         }
         emptyFirstState={
@@ -129,7 +139,11 @@ const ProcessReasonTable = ({ opts, setOpts }: ProcessReasonTableProps) => {
           })}
       </Table>
 
-      <DeleteProcessReasonModal visible={visibleDeleteProcessReason} onClose={onCloseDeleteProcessReason} idProcessReason={idDeletedProcessReason} />
+      <DeleteProcessReasonModal
+        visible={visibleDeleteProcessReason}
+        onClose={onCloseDeleteProcessReason}
+        idProcessReason={idDeletedProcessReason}
+      />
       <ProcessReasonModal visible={visibleModalEdit} onClose={onCloseModal} idProcessReason={processReasonId} isEdit />
     </Container>
   )
