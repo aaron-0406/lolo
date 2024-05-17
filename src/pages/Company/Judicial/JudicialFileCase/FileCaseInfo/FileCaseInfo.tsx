@@ -288,7 +288,11 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
               helperText={errors.amountDemandedSoles?.message}
               value={field.value}
               type="currency"
-              onChange={field.onChange}
+              onValueChange={(_, __, values) => {
+                field.onChange(values?.value)
+              }}
+              decimalScale={3}
+              decimalsLimit={3}
               hasError={!!errors.amountDemandedSoles}
               disabled={!clientId}
             />
@@ -301,11 +305,15 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
             <TextField
               label="Monto Demandado US$:"
               width="100%"
+              helperText={errors.amountDemandedDollars?.message}
+              value={field.value}
               type="currency"
               prefix="$"
-              value={field.value}
-              helperText={errors.amountDemandedDollars?.message}
-              onChange={field.onChange}
+              onValueChange={(_, __, values) => {
+                field.onChange(values?.value)
+              }}
+              decimalScale={3}
+              decimalsLimit={3}
               hasError={!!errors.amountDemandedDollars}
               disabled={!clientId}
             />

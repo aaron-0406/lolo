@@ -8,6 +8,7 @@ import type { HelperFieldProps, LabelFieldProps } from '@/ui/fields/interfaces'
 import InputText from '@/ui/inputs/InputText'
 import InputLabel from '@/ui/Label'
 import InputCurrency from '@/ui/inputs/InputCurrency'
+import { CurrencyInputOnChangeValues } from 'react-currency-input-field'
 
 type TextFieldProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size' | 'type'> &
   LabelFieldProps &
@@ -21,6 +22,9 @@ type TextFieldProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size' |
     size?: InputSize
     clearInput?: boolean
     onClickTrailing?: (value: string) => void
+    onValueChange?: (value: string | undefined, name?: string, values?: CurrencyInputOnChangeValues) => void
+    decimalScale?: number
+    decimalsLimit?: number
   }
 
 const initialCounter = 0
@@ -37,7 +41,10 @@ const TextField: React.FC<TextFieldProps> = (props) => {
     required,
     charactersLimit,
     onClickTrailing,
+    onValueChange,
     clearInput = false,
+    decimalScale,
+    decimalsLimit,
     type,
     ...rest
   } = props
@@ -100,15 +107,16 @@ const TextField: React.FC<TextFieldProps> = (props) => {
           <InputCurrency
             ref={inputRef}
             prefix="S/. "
-            decimalScale={2}
+            decimalScale={decimalScale}
             allowDecimals
             onClear={onClear}
             onClickTrailingIcon={onClickTrailingIcon}
+            onValueChange={onValueChange}
             onKeyUp={onKeyUpInput}
             value={value}
             decimalSeparator="."
             groupSeparator=","
-            decimalsLimit={2}
+            decimalsLimit={decimalsLimit}
             numberCharacters={countDown}
             clearInput={clearInput}
             type={type}

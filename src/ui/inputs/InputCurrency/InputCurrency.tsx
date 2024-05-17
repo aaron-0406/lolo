@@ -1,7 +1,7 @@
 import Container from '@/ui/Container'
 import Icon from '@/ui/Icon'
 import Text from '@/ui/Text'
-import { FC, ReactNode } from 'react'
+import { FC, ReactNode, forwardRef } from 'react'
 import CurrencyInput, { CurrencyInputProps } from 'react-currency-input-field'
 import styled, { IRegular, css, useTheme } from 'styled-components'
 import { InputSize } from '../Input/Input.interfaces'
@@ -21,85 +21,90 @@ type InputCurrencyProps = Omit<CurrencyInputProps, 'size' | 'step' | 'defaultVal
   numberCharacters?: number
 }
 
-const InputCurrency: FC<InputCurrencyProps> = (props: InputCurrencyProps) => {
-  const {
-    width,
-    suffix,
-    prefix,
-    onClear,
-    onClickTrailingIcon,
-    disabled,
-    leadingIcon,
-    trailingIcon,
-    numberCharacters,
-    size = 'small',
-    hasError = false,
-    clearInput = false,
-    ...rest
-  } = props
+const InputCurrency = forwardRef(
+  (
+    props: InputCurrencyProps,
+    ref: ((instance: HTMLInputElement | null) => void) | React.RefObject<HTMLInputElement> | null | undefined
+  ) => {
+    const {
+      width,
+      suffix,
+      prefix,
+      onClear,
+      onClickTrailingIcon,
+      disabled,
+      leadingIcon,
+      trailingIcon,
+      numberCharacters,
+      size = 'small',
+      hasError = false,
+      clearInput = false,
+      ...rest
+    } = props
 
-  const theme = useTheme()
+    const theme = useTheme()
 
-  const textStyle = size === 'small' ? theme.typography.body.m.regular : theme.typography.body.l.regular
+    const textStyle = size === 'small' ? theme.typography.body.m.regular : theme.typography.body.l.regular
 
-  return (
-    <StyledInputWrapper $size={size} $hasError={hasError} $disabled={disabled} $width={width} {...textStyle}>
-      {!!leadingIcon && (
-        <Container
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          width="24px"
-          height="24px"
-          className="leading__icon"
-        >
-          <Icon size={20} remixClass={leadingIcon} />
-        </Container>
-      )}
-
-      {!!prefix && (
-        <Text.Body size="m" weight="regular" className="prefix__text">
-          {prefix}
-        </Text.Body>
-      )}
-
-      <CurrencyInput {...rest} />
-
-      {!!suffix && (
-        <Text.Body size="m" weight="regular" className="suffix__text">
-          {suffix}
-        </Text.Body>
-      )}
-
-      {!disabled && hasError ? (
-        <div className="error__icon">
-          <Icon size={20} remixClass="ri-error-warning-line" color="Danger5" />
-        </div>
-      ) : !disabled && clearInput && numberCharacters ? (
-        <Icon
-          className="icon__clear-input"
-          size={20}
-          remixClass="ri-close-circle-line"
-          color="Neutral6"
-          onClick={onClear}
-        />
-      ) : (
-        !!trailingIcon && (
+    return (
+      <StyledInputWrapper $size={size} $hasError={hasError} $disabled={disabled} $width={width} {...textStyle}>
+        {!!leadingIcon && (
           <Container
             display="flex"
             justifyContent="center"
             alignItems="center"
             width="24px"
             height="24px"
-            className="trailing__icon"
+            className="leading__icon"
           >
-            <Icon size={20} remixClass={trailingIcon} onClick={onClickTrailingIcon} />
+            <Icon size={20} remixClass={leadingIcon} />
           </Container>
-        )
-      )}
-    </StyledInputWrapper>
-  )
-}
+        )}
+
+        {!!prefix && (
+          <Text.Body size="m" weight="regular" className="prefix__text">
+            {prefix}
+          </Text.Body>
+        )}
+
+        <CurrencyInput ref={ref} disabled={disabled} {...rest} />
+
+        {!!suffix && (
+          <Text.Body size="m" weight="regular" className="suffix__text">
+            {suffix}
+          </Text.Body>
+        )}
+
+        {!disabled && hasError ? (
+          <div className="error__icon">
+            <Icon size={20} remixClass="ri-error-warning-line" color="Danger5" />
+          </div>
+        ) : !disabled && clearInput && numberCharacters ? (
+          <Icon
+            className="icon__clear-input"
+            size={20}
+            remixClass="ri-close-circle-line"
+            color="Neutral6"
+            onClick={onClear}
+          />
+        ) : (
+          !!trailingIcon && (
+            <Container
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              width="24px"
+              height="24px"
+              className="trailing__icon"
+            >
+              <Icon size={20} remixClass={trailingIcon} onClick={onClickTrailingIcon} />
+            </Container>
+          )
+        )}
+      </StyledInputWrapper>
+    )
+  }
+)
 
 export default InputCurrency
 
