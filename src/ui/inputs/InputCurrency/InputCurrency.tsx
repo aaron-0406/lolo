@@ -1,7 +1,7 @@
 import Container from '@/ui/Container'
 import Icon from '@/ui/Icon'
 import Text from '@/ui/Text'
-import { FC, ReactNode, forwardRef } from 'react'
+import { ReactNode, forwardRef } from 'react'
 import CurrencyInput, { CurrencyInputProps } from 'react-currency-input-field'
 import styled, { IRegular, css, useTheme } from 'styled-components'
 import { InputSize } from '../Input/Input.interfaces'
