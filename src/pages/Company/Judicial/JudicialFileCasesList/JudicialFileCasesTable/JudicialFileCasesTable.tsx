@@ -244,6 +244,11 @@ const JudicialFileCasesTable = () => {
                     </Text.Body>
                   </Container>
                 </BodyCell>
+                <BodyCell textAlign="center">
+                  <Text.Body size="m" weight="bold" color="Primary5">{`${
+                    record?.processStatus?.toUpperCase() || '-'
+                  }`}</Text.Body>
+                </BodyCell>
                 <BodyCell textAlign="left">{`${record?.judicialCourt?.court || ''}`}</BodyCell>
                 <BodyCell textAlign="left">{`${record?.judicialSubject?.subject || ''}`}</BodyCell>
                 <BodyCell textAlign="left">{`${record?.customerUser?.name || ''}`}</BodyCell>
