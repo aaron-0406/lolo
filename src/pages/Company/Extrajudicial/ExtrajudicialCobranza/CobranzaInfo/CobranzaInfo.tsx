@@ -218,7 +218,14 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
           name="funcionarioId"
           control={control}
           render={({ field }) => (
-            <Container display="flex" flexDirection="row" gap="10px" flexWrap="nowrap" width="100%" alignItems="center">
+            <Container
+              display="flex"
+              flexDirection="row"
+              gap="10px"
+              flexWrap="nowrap"
+              width="100%"
+              alignItems="flex-end"
+            >
               <Select
                 width="100%"
                 label="Funcionario:"
@@ -234,9 +241,6 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
               <Button
                 shape="round"
                 leadingIcon="ri-add-fill"
-                style={{
-                  marginTop: '30px',
-                }}
                 size="small"
                 onClick={onShowModal}
                 disabled={!chb}
