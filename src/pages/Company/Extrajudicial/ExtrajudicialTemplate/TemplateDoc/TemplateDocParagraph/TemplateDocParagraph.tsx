@@ -98,23 +98,6 @@ const TemplateDocParagraph: React.FC<TemplateDocParagraphProps> = (props) => {
     transformText()
   }, [watch('values'), watch('clients'), watch('clientSelected')])
 
-  if (!!texts && texts[0]?.text === '[guarantor]') {
-    return (
-      <Container
-        backgroundColor="transparent"
-        minHeight="1.2rem"
-        display="flex"
-        justifyContent={options?.align}
-        margin={`0 0 ${marginBottom}px 0`}
-        flexWrap="nowrap"
-      >
-        {watch('clientSelected').guarantor?.map((item, i) => {
-          let guarantor = createTag('p', item.name, 11)
-          return <TemplateDocText key={i + 'guarantor'} $text={guarantor} />
-        })}
-      </Container>
-    )
-  }
   if (!!texts && texts[0]?.text?.includes('direction')) {
     return (
       <>
