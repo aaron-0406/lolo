@@ -6,6 +6,10 @@ import TextField from '@/ui/fields/TextField'
 import Select from '@/ui/Select'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import Label from '@/ui/Label'
+import Container from '@/ui/Container'
+import Button from '@/ui/Button'
+import useModal from '@/hooks/useModal'
+import ContactTypeModal from '@/pages/extrajudicial/ExtrajudicialContactType/Modals/ContactTypeModal'
 
 type CobranzaContactsInfoFormProps = {
   clientId: number
@@ -29,6 +33,16 @@ const CobranzaContactsInfoForm = ({ clientId, contactsType }: CobranzaContactsIn
     }
   >()
 
+  const { visible: visibleModalAdd, showModal: showModalAdd, hideModal: hideModalAdd } = useModal()
+
+  const onShowModal = () => {
+    showModalAdd()
+  }
+
+  const onCloseModal = () => {
+    hideModalAdd()
+  }
+
   const extContactType = getValues('extContactType')
   const showExtContactType = extContactType && extContactType.customerHasBankId != idCHB
 
@@ -38,6 +52,37 @@ const CobranzaContactsInfoForm = ({ clientId, contactsType }: CobranzaContactsIn
 
   return (
     <>
+      <Controller
+        name="extContactTypeId"
+        control={control}
+        render={({ field }) => (
+          <Container display="flex" flexDirection="row" gap="10px" flexWrap="nowrap" width="100%" alignItems="flex-end">
+            <Select
+              width="100%"
+              disabled={!clientId}
+              label="Tipo:"
+              value={String(field.value)}
+              options={optionsStates}
+              onChange={(key) => {
+                field.onChange(Number(key))
+              }}
+              hasError={!!errors.extContactTypeId}
+            />
+
+            <Button
+              shape="round"
+              leadingIcon="ri-add-fill"
+              size="small"
+              onClick={onShowModal}
+              disabled={!idCHB}
+              permission="P08-01"
+            />
+
+            {showExtContactType && <Label label={`Acción: ${extContactType?.contactType}`} color="Primary5" />}
+          </Container>
+        )}
+      />
+
       <Controller
         name="dni"
         control={control}
@@ -106,27 +151,7 @@ const CobranzaContactsInfoForm = ({ clientId, contactsType }: CobranzaContactsIn
         )}
       />
 
-      <Controller
-        name="extContactTypeId"
-        control={control}
-        render={({ field }) => (
-          <>
-            <Select
-              width="100%"
-              disabled={!clientId}
-              label="Tipo:"
-              value={String(field.value)}
-              options={optionsStates}
-              onChange={(key) => {
-                field.onChange(Number(key))
-              }}
-              hasError={!!errors.extContactTypeId}
-            />
-
-            {showExtContactType && <Label label={`Acción: ${extContactType?.contactType}`} color="Primary5" />}
-          </>
-        )}
-      />
+      <ContactTypeModal visible={visibleModalAdd} onClose={onCloseModal} />
     </>
   )
 }

@@ -10,6 +10,11 @@ import notification from '@/ui/notification'
 import { getAllNegociacionesByCHB } from '@/services/extrajudicial/negotiation.service'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import Label from '@/ui/Label'
+import Container from '@/ui/Container'
+import Button from '@/ui/Button'
+import useModal from '@/hooks/useModal'
+import NegotiationModal from '@/pages/extrajudicial/ExtrajudicialNegotiations/Modals/NegotiationModal'
+import ProductNameModal from '@/pages/extrajudicial/ExtrajudicialProductName/Modals/ProductNameModal'
 import { ExtProductNameType } from '@/types/extrajudicial/ext-product-name'
 import { getProductNameByCHB } from '@/services/extrajudicial/ext-product-name.service'
 import { KEY_EXT_PRODUCT_NAME_CACHE } from '@/pages/extrajudicial/ExtrajudicialProductName/ProductNameTable/utils/ext-product-name.cache'
@@ -83,6 +88,26 @@ const CobranzaProductsInfoForm = ({ clientId }: CobranzaProductsInfoFormProps) =
     }
   )
 
+  const { visible: visibleModalAdd, showModal: showModalAdd, hideModal: hideModalAdd } = useModal()
+
+  const onShowModal = () => {
+    showModalAdd()
+  }
+
+  const onCloseModal = () => {
+    hideModalAdd()
+  }
+
+  const { visible: visibleModalAddNe, showModal: showModalAddNe, hideModal: hideModalAddNe } = useModal()
+
+  const onShowModalNe = () => {
+    showModalAddNe()
+  }
+
+  const onCloseModalNe = () => {
+    hideModalAddNe()
+  }
+
   const productsName = dataProductNames?.data ?? []
 
   const optionsProductsName: Array<SelectItemType> = productsName.map((productName) => {
@@ -113,7 +138,7 @@ const CobranzaProductsInfoForm = ({ clientId }: CobranzaProductsInfoFormProps) =
         name="extProductNameId"
         control={control}
         render={({ field }) => (
-          <>
+          <Container display="flex" flexDirection="row" gap="10px" flexWrap="nowrap" width="100%" alignItems="flex-end">
             <Select
               disabled={!clientId}
               width="100%"
@@ -126,8 +151,17 @@ const CobranzaProductsInfoForm = ({ clientId }: CobranzaProductsInfoFormProps) =
               hasError={!!errors.extProductNameId}
             />
 
+            <Button
+              shape="round"
+              leadingIcon="ri-add-fill"
+              size="small"
+              onClick={onShowModal}
+              disabled={!idCHB}
+              permission="P08-01"
+            />
+
             {showProductName && <Label label={`Nombre de producto: ${extProductName?.productName}`} color="Primary5" />}
-          </>
+          </Container>
         )}
       />
 
@@ -135,7 +169,7 @@ const CobranzaProductsInfoForm = ({ clientId }: CobranzaProductsInfoFormProps) =
         name="negotiationId"
         control={control}
         render={({ field }) => (
-          <>
+          <Container display="flex" flexDirection="row" gap="10px" flexWrap="nowrap" width="100%" alignItems="flex-end">
             <Select
               disabled={!clientId}
               width="100%"
@@ -147,9 +181,17 @@ const CobranzaProductsInfoForm = ({ clientId }: CobranzaProductsInfoFormProps) =
               }}
               hasError={!!errors.negotiationId}
             />
+            <Button
+              shape="round"
+              leadingIcon="ri-add-fill"
+              size="small"
+              onClick={onShowModalNe}
+              disabled={!idCHB}
+              permission="P08-01"
+            />
 
             {showNegotiation && <Label label={`Negociación: ${negotiation?.name}`} color="Primary5" />}
-          </>
+          </Container>
         )}
       />
 
@@ -170,6 +212,9 @@ const CobranzaProductsInfoForm = ({ clientId }: CobranzaProductsInfoFormProps) =
           />
         )}
       />
+
+      <ProductNameModal visible={visibleModalAdd} onClose={onCloseModal} />
+      <NegotiationModal visible={visibleModalAddNe} onClose={onCloseModalNe} />
     </>
   )
 }
