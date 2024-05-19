@@ -67,6 +67,7 @@ import JudicialBinProceduralStage from 'pages/Company/Judicial/JudicialBinProced
 import JudicialBinDefendantProceduralAction from 'pages/Company/Judicial/JudicialBinDefendantProceduralAction'
 import JudicialFileCaseProcessStatus from 'pages/Company/Judicial/JudicialFileCaseProcessStatus'
 
+import ScheduledNotifications from 'pages/Company/Settings/ScheduledNotifications/SheduledNotifications'
 const AppRouter = () => {
   return (
     <AppSwitch>
@@ -133,6 +134,9 @@ const AppRouter = () => {
         <Route path={paths.judicial.observacionTipo()} element={<JudicialObsType />} />
         <Route path={paths.judicial.observacion()} element={<JudicialObservation />} />
         <Route path={paths.judicial.processReason()} element={<JudicialProcessReason />} />
+
+        {/* SETTINGS */}
+        <Route path={paths.settings.scheduldedNotifications()} element={<ScheduledNotifications />} />
       </Route>
 
       <Route path="*" element={<NotFound />} />

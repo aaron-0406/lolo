@@ -74,4 +74,7 @@ export default {
     processReason: (urlIdentifier = ':urlIdentifier') =>
       `/judicial/${urlIdentifier}/motivo-proceso`,
   },
+  settings: {
+    scheduldedNotifications: (urlIdentifier = `:urlIdentifier`) => `/configuracion/${urlIdentifier}/notificationes-programadas`,
+  }
 }
