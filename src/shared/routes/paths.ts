@@ -69,8 +69,6 @@ export default {
     observacion: (urlIdentifier = ':urlIdentifier', code = ':code') =>
       `/judicial/${urlIdentifier}/expediente/${code}/observacion`,
     bitacoraProceduralStage: (urlIdentifier = ':urlIdentifier') => `/judicial/${urlIdentifier}/etapa-procedimental`,
-    bitacoraDefendantProceduralAction: (urlIdentifier = ':urlIdentifier') =>
-      `/judicial/${urlIdentifier}/actuacion-procesal-demandado`,
     processReason: (urlIdentifier = ':urlIdentifier') =>
       `/judicial/${urlIdentifier}/motivo-proceso`,
   },
