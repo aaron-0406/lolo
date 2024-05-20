@@ -5,12 +5,15 @@ import ScheduledNotificationsUsersTable from './ScheduledNoticationsUsersTable/S
 import { useLoloContext } from '@/contexts/LoloProvider';
 import { useQuery } from 'react-query';
 import { useEffect } from 'react';
-import { useFormContext } from 'react-hook-form';
 
 import {KEY_USUARIOS_SCHUDULED_NOTIFICATIONS_CACHE} from './ScheduledNoticationsUsersTable/utils/users.cache';
 import { getAllUsersByID } from '@/services/dash/customer-user.service';
 import { useState } from 'react';
 import { Opts } from '@/ui/Pagination/interfaces'
+import { device } from '@/breakpoints/responsive';
+import { useMediaQuery } from '@/hooks/useMediaQuery';
+
+
 
 type ScheduledNotificationsInfoModalProps = {
   modalActions: "edit" | "add"
@@ -28,8 +31,8 @@ const ScheduledNotificationsInfoModal = ({ modalActions, onClose }: ScheduledNot
   const { data, isLoading, refetch } = useQuery(KEY_USUARIOS_SCHUDULED_NOTIFICATIONS_CACHE, async () => {
     return await getAllUsersByID(customerId)
   })
+  const greaterThanTabletS = useMediaQuery(device.desktopL)
 
-  const { getValues, setValue } = useFormContext()
 
   useEffect(() => {
     refetch()
@@ -39,18 +42,19 @@ const ScheduledNotificationsInfoModal = ({ modalActions, onClose }: ScheduledNot
   const users = data?.data ?? []
 
   return (
-    <Container width="100%" padding="20px" display="flex" flexDirection="row" gap="20px">
-      <ScheduledNotficationForm modalActions = {modalActions} />
-      {
-        modalActions === 'edit' ? (
-          <ScheduledNotificationsUsersTable 
-            users={users} 
-            isLoading={isLoading} 
-            opts={opts}
-            setOpts={setOpts}
-          />
-        ): null
-      }
+    <Container
+      width="100%"
+      padding="20px"
+      display="flex"
+      flexDirection={greaterThanTabletS ? 'row' : 'column'}
+      gap="20px"
+      overFlowY='scroll'
+      height={greaterThanTabletS ? '100%' : '700px'}
+    >
+      <ScheduledNotficationForm modalActions={modalActions} />
+      {modalActions === 'edit' ? (
+        <ScheduledNotificationsUsersTable users={users} isLoading={isLoading} opts={opts} setOpts={setOpts} />
+      ) : null}
     </Container>
   )
 }

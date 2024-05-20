@@ -3,13 +3,9 @@ import Button from '@/ui/Button'
 import Container from '@/ui/Container'
 import AssignScheduledNotificationsModal from '../Modals/AssignScheduledNotificationsModal'
 
-type ScheduledNotificationsInfoProps = {
-  clientId?: number
-  clientName?: string
-  caseFileId?: number
-}
 
-const ScheduledNotificationsInfo = ({ clientId, clientName, caseFileId }: ScheduledNotificationsInfoProps) => {
+
+const ScheduledNotificationsInfo = () => {
 
   const { visible: visibleModalAdd, showModal: showModalAdd, hideModal: hideModalAdd } = useModal()
   

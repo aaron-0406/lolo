@@ -3,7 +3,7 @@ export type ScheduledNotificationsType = {
   nameNotification: string;
   descriptionNotification: string;
   frequencyToNotify: number;
-  hourTimeToNotify:Date;
+  hourTimeToNotify:string;
   customerHasBankId: number;
   logicKey:string;
   state:boolean;

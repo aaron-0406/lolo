@@ -4,8 +4,8 @@ import { ScheduledNotificationsType } from '@/types/config/scheduled-notificatio
 import { ScheduledNotificationsUsersType } from '@/types/config/scheduled-notifications-users.type'
 
 export type ModalScheduleNotificationsType = {
-  scheduledNotification: Omit<ScheduledNotificationsType,  'createdAt' | 'deletedAt' | 'updatedAt'>
-  scheduledNotificationsUsers: Array<Omit<ScheduledNotificationsUsersType, 'createdAt' | 'deletedAt' | 'updatedAt'>>
+  scheduledNotification: Omit<ScheduledNotificationsType,  'id' |'createdAt' | 'deletedAt' | 'updatedAt'>
+  scheduledNotificationsUsers: Array<Omit<ScheduledNotificationsUsersType, 'id' | 'createdAt' | 'deletedAt' | 'updatedAt'>>
 }
 
 const ModalScheduleNotificationsSchema: yup.SchemaOf<ModalScheduleNotificationsType> = yup.object({
@@ -14,7 +14,7 @@ const ModalScheduleNotificationsSchema: yup.SchemaOf<ModalScheduleNotificationsT
     nameNotification: yup.string().required(),
     descriptionNotification: yup.string().required(),
     frequencyToNotify: yup.number().required(),
-    hourTimeToNotify: yup.date().required(),
+    hourTimeToNotify: yup.string().required(),
     customerHasBankId: yup.number().required(),
     logicKey: yup.string().required(),
     state: yup.boolean().required(),

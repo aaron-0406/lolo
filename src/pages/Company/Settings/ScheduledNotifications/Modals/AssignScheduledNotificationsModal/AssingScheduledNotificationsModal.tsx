@@ -12,6 +12,7 @@ import { AxiosResponse, AxiosError } from 'axios'
 import { CustomErrorResponse } from 'types/customErrorResponse'
 
 import { createScheduledNotification, updateScheduledNotification } from '@/services/config/scheduled-notifications.service'
+import { changeNotificationsUsers, getNotificationsUsersByScheduleNotificationId } from '@/services/config/scheluded-notifications-users.service';
 import { useLoloContext } from '@/contexts/LoloProvider';
 import { useQueryClient } from 'react-query';
 import scheduledNotificationsCache from '../../ScheduledNotificationsTable/utils/scheduled-notifications.cache';
@@ -31,24 +32,36 @@ const AssingScheduledNotificationsModal = ({visible, onClose, modalActions, sche
     bank: { selectedBank: { idCHB: chb } },
   } = useLoloContext()
 
-  const convertTimeToDate = (timeString: string): Date => {
-    const currentDate = new Date()
-    const [hours, minutes] = timeString.split(':').map(Number)
-    currentDate.setHours(hours, minutes, 0, 0)
-    return currentDate
+  const convertTimeToISO = (time: string) => {
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+    const day = String(currentDate.getDate()).padStart(2, '0');
+    const [hours, minutes] = time.split(':');
+    const dateTimeString = `${year}-${month}-${day}T${hours}:${minutes}:00.000Z`;
+    const dateWithTime = new Date(dateTimeString).toString();
+    return dateWithTime;
   }
+  const convertISOToTime = (isoString: string): string => {
+    const date = new Date(isoString);
+    const hours = String(date.getUTCHours()).padStart(2, '0');
+    const minutes = String(date.getUTCMinutes()).padStart(2, '0');
+    return `${hours}:${minutes}`;
+}
 
   const defaultValues = {
     scheduledNotification: {
       nameNotification: '',
       descriptionNotification: '',
       frequencyToNotify: 0,
-      hourTimeToNotify: new Date(),
+      hourTimeToNotify: new Date().toString(),
       customerHasBankId: parseInt(chb) ?? 0,
       logicKey: '',
       state: false,
     },
-    scheduledNotificationsUsers: [] as Array<ScheduledNotificationsUsersType>,
+    scheduledNotificationsUsers: [] as Array<
+      Omit<ScheduledNotificationsUsersType, 'id' | 'createdAt' | 'deletedAt' | 'updatedAt'>
+    >,
   }
   const formMethods = useForm<{
     scheduledNotification: ScheduledNotificationsType
@@ -70,27 +83,13 @@ const AssingScheduledNotificationsModal = ({visible, onClose, modalActions, sche
 
   const { getValues, setValue } = formMethods
 
-  useEffect(()=>{
-    console.log(scheduledNotification)
-    if (modalActions === 'edit' && scheduledNotification) {
-      setValue('scheduledNotification.customerHasBankId', scheduledNotification.customerHasBankId)
-      setValue('scheduledNotification.logicKey', scheduledNotification.logicKey)
-      setValue('scheduledNotification.nameNotification', scheduledNotification.nameNotification)
-      setValue('scheduledNotification.descriptionNotification', scheduledNotification.descriptionNotification)
-      setValue('scheduledNotification.frequencyToNotify', scheduledNotification.frequencyToNotify)
-      setValue('scheduledNotification.hourTimeToNotify', scheduledNotification.hourTimeToNotify)
-      setValue('scheduledNotification.state', scheduledNotification.state)
-    }
-  },[scheduledNotification])
-
-
   const { mutate: createNotification } = useMutation<
     AxiosResponse<ScheduledNotificationsType>,
     AxiosError<CustomErrorResponse>
   >(
     async () => {
       const scheduledNotification = getValues('scheduledNotification')
-      const formatDate = convertTimeToDate(scheduledNotification.hourTimeToNotify.toString())
+      const formatDate = convertTimeToISO(scheduledNotification.hourTimeToNotify.toString())
 
       return await createScheduledNotification({
         ...scheduledNotification,
@@ -117,11 +116,11 @@ const AssingScheduledNotificationsModal = ({visible, onClose, modalActions, sche
   AxiosError<CustomErrorResponse>
 >(
   async () => {
-      const getScheduledNotification = getValues('scheduledNotification')
+    const getScheduledNotification = getValues('scheduledNotification')
       return await updateScheduledNotification(scheduledNotification?.id ?? 0, {
         descriptionNotification: getScheduledNotification?.descriptionNotification ?? '',
         frequencyToNotify: getScheduledNotification?.frequencyToNotify ?? 0,
-        hourTimeToNotify: convertTimeToDate(getScheduledNotification?.hourTimeToNotify.toString()),
+        hourTimeToNotify: convertTimeToISO(getScheduledNotification?.hourTimeToNotify.toString()),
         logicKey: getScheduledNotification?.logicKey ?? '',
         nameNotification: getScheduledNotification?.nameNotification ?? '',
         state: getScheduledNotification?.state ?? false,
@@ -142,6 +141,42 @@ const AssingScheduledNotificationsModal = ({visible, onClose, modalActions, sche
   }
 )
 
+const { mutate: changeNotificationsUsersMt } = useMutation<
+  AxiosResponse<ScheduledNotificationsType>,
+  AxiosError<CustomErrorResponse>
+>(
+  async () => {
+    const getScheduledNotification = getValues('scheduledNotificationsUsers')
+    return await changeNotificationsUsers(scheduledNotification?.id ?? 0, JSON.stringify(getScheduledNotification))
+  },
+  {
+    onSuccess: (result) => {
+      updateScheduledNotificationsCache(result.data)
+      notification({ type: 'success', message: 'Asignaciones actualizadas' })
+    },
+    onError: (error, _, context: any) => {
+      notification({
+        type: 'error',
+        message: error.response?.data.message,
+        list: error.response?.data.errors?.map((error) => error.message),
+      })
+    },
+  }
+)
+
+useEffect(() => {
+  if (modalActions === 'edit' && scheduledNotification) {
+    setValue('scheduledNotification.id', scheduledNotification.id)
+    setValue('scheduledNotification.customerHasBankId', scheduledNotification.customerHasBankId)
+    setValue('scheduledNotification.logicKey', scheduledNotification.logicKey)
+    setValue('scheduledNotification.nameNotification', scheduledNotification.nameNotification)
+    setValue('scheduledNotification.descriptionNotification', scheduledNotification.descriptionNotification)
+    setValue('scheduledNotification.frequencyToNotify', scheduledNotification.frequencyToNotify)
+    setValue('scheduledNotification.hourTimeToNotify', convertISOToTime(scheduledNotification.hourTimeToNotify))
+    setValue('scheduledNotification.state', scheduledNotification.state)
+  }
+}, [scheduledNotification])
+ 
   const onCreateNotification = () => {
     createNotification()
     onClose()
@@ -149,6 +184,7 @@ const AssingScheduledNotificationsModal = ({visible, onClose, modalActions, sche
 
   const onEditNotification = () => {
     editNotification()
+    changeNotificationsUsersMt()
     onClose()
   }
 
@@ -167,6 +203,7 @@ const AssingScheduledNotificationsModal = ({visible, onClose, modalActions, sche
               label="Guardar"
               trailingIcon="ri-save-line"
               messageTooltip="Guardar cambios"
+              disabled={!chb} 
             />
           </Container>
         }

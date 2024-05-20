@@ -24,11 +24,8 @@ import { deleteScheduledNotification } from '@/services/config/scheduled-notific
 import scheduledNotificationsCache from './utils/scheduled-notifications.cache'
 import DeleteScheduledNotificationsModal from '../Modals/DeleteScheduledNotificationsModal/DeleteScheduledNotificationsModal'
 
-type ScheduleNotificationsTableProps = {
-  caseFileId: number
-}
 
-const ScheduleNotificationsTable = ({ caseFileId }: ScheduleNotificationsTableProps) => {
+const ScheduleNotificationsTable = () => {
   const [ idNotification, setIdNotification ] = useState<number>(0)
   const [ scheduledNotification, setScheduledNotification ] = useState<ScheduledNotificationsType | undefined>(undefined)
   const queryClient = useQueryClient()
@@ -39,6 +36,19 @@ const ScheduleNotificationsTable = ({ caseFileId }: ScheduleNotificationsTablePr
       deleteScheduledNotificationsCache,
     }
   } = scheduledNotificationsCache(queryClient)
+
+
+  const convertISOToTime = (isoString: string): string => {
+    const date = new Date(isoString);
+    let hours = date.getUTCHours();
+    const minutes = String(date.getUTCMinutes()).padStart(2, '0');
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12; 
+    const strHours = String(hours).padStart(2, '0');
+    return `${strHours}:${minutes} ${ampm}`;
+}
+
 
   const { data:Notifications, isLoading:LoadingNotifications } = useQuery<
     AxiosResponse<Array<ScheduledNotificationsType>>,
@@ -76,8 +86,7 @@ const ScheduleNotificationsTable = ({ caseFileId }: ScheduleNotificationsTablePr
     onError: (error, _, context: any) => {
       notification({
         type: 'error',
-        message: error.response?.data.message,
-        list: error.response?.data.errors?.map((error) => error.message),
+        message: "No se pudo eliminar la notificación, hay usuarios asignados a esta notificación",
       })
     },
   }
@@ -160,7 +169,7 @@ const ScheduleNotificationsTable = ({ caseFileId }: ScheduleNotificationsTablePr
                   </BodyCell>
                   <BodyCell textAlign="center">
                     <Text.Body size="m" weight="bold" color="Primary5">
-                      {record?.hourTimeToNotify.toString() ?? '-'}
+                      {convertISOToTime(record?.hourTimeToNotify.toString()) ?? '-'}
                     </Text.Body>
                   </BodyCell>
                   <BodyCell textAlign="center">

@@ -7,6 +7,8 @@ import Label from '@/ui/Label'
 import Switch from '@/ui/Switch'
 import { Controller, useFormContext } from 'react-hook-form'
 import styled from 'styled-components'
+import { device } from '@/breakpoints/responsive';
+import { useMediaQuery } from '@/hooks/useMediaQuery';
 
 type ScheduledNotificationFormProps = {
   modalActions: "edit" | "add"
@@ -17,16 +19,10 @@ const ScheduledNotificationForm = ({ modalActions }: ScheduledNotificationFormPr
     control,
     formState: { errors },
   } = useFormContext()
-
-  const  formatDateToTimeString = (dateString: string) => { 
-    const date = new Date(dateString);
-    const hours = String(date.getHours()).padStart(2, '0');
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-    return `${hours}:${minutes}`;
-  }
+  const greaterThanTabletS = useMediaQuery(device.tabletS)
 
   return (
-    <StyledContainer display="flex" flexDirection="column" gap="20px" width={modalActions === 'add' ? '100%' : '40%'}>
+    <StyledContainer display="flex" flexDirection="column" gap="20px" width="100%">
       <Controller
         name="scheduledNotification.nameNotification"
         control={control}
@@ -81,7 +77,7 @@ const ScheduledNotificationForm = ({ modalActions }: ScheduledNotificationFormPr
         render={({ field }) => (
           <Container display="flex" flexDirection="column" gap="10px">
             <Label label="Hora" />
-            <Input className="input-time" type="time" value={field.value} placeholder={ formatDateToTimeString(field.value) } onChange={field.onChange} />
+            <Input className="input-time" type="time" value={field.value} onChange={field.onChange} />
           </Container>
         )}
       />
