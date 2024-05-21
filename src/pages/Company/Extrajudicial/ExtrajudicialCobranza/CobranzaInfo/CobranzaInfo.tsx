@@ -18,12 +18,16 @@ import { FuncionarioType } from '@/types/extrajudicial/funcionario.type'
 import FuncionariosModal from '../../ExtrajudicialFuncionarios/Modals/FuncionariosModal'
 import Button from '@/ui/Button'
 import useModal from '@/hooks/useModal'
+import DatePicker from '@/ui/DatePicker/DatePicker'
+import { useState } from 'react'
+import moment from 'moment'
 
 type CobranzaInfoProps = {
   loading: boolean
 }
 
 const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
+  const [currentDate, setCurrentDate] = useState("")
   const {
     bank: {
       selectedBank: { idCHB: chb },
@@ -299,6 +303,25 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
           )}
         />
       </div>
+      <Container className='fields-wrapper-container-t'>
+        <Controller
+          name="memoAssignmentDate"
+          control={control}
+          render={({ field }) => (
+            <DatePicker 
+              width="100%"
+              dateFormat='MM-DD-YYYY'
+              label="Fecha de asignación:"
+              selectedDate={field.value}
+              value={field.value ?? ""} 
+              getDate={(e) => {
+                field.onChange(e) 
+              }}
+            />
+          )}
+        />
+        <Container width="100%"/>
+      </Container>
 
       <FuncionariosModal visible={visibleModalAdd} onClose={onCloseModal} />
     </StyledContainer>

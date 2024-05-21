@@ -29,7 +29,7 @@ type DatePickerProps = {
   name?: string
   placeholder?: string
   required?: boolean
-  dateFormat?: 'DD-MM-YYYY' | 'YYYY-MM-DD' | 'D d M, Y' | 'DD/MM/YYYY'
+  dateFormat?: 'DD-MM-YYYY' | 'YYYY-MM-DD' | 'D d M, Y' | 'DD/MM/YYYY' | 'MM-DD-YYYY'
   width?: string
   label?: string
   labelFontSize?: string
@@ -96,6 +96,7 @@ const DatePicker: React.FC<DatePickerProps> = (props) => {
     if (dateFormat === 'DD-MM-YYYY') return `${formattedDate}-${formattedMonthInNumber}-${formattedYear}`
     if (dateFormat === 'YYYY-MM-DD') return `${formattedYear}-${formattedMonthInNumber}-${formattedDate}`
     if (dateFormat === 'D d M, Y') return `${formattedDay} ${formattedDate} ${formattedMonthShortName} ${formattedYear}`
+    if (dateFormat === 'MM-DD-YYYY') return `${formattedMonthInNumber}-${formattedDate}-${formattedYear}` 
     return `${formattedDay} ${formattedDate} ${formattedMonth} ${formattedYear}`
   }
 

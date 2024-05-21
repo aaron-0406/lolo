@@ -71,6 +71,7 @@ const CobranzaActions = ({ setLoadingGlobal }: CobranzaActionsProps) => {
         setValue('customerHasBankId', data.data.customerHasBankId)
         setValue('funcionario', data.data?.funcionario)
         setValue('negotiation', data.data?.negotiation)
+        data.data?.memoAssignmentDate && setValue('memoAssignmentDate', data.data?.memoAssignmentDate)
 
         setLoadingGlobal(false)
       },
