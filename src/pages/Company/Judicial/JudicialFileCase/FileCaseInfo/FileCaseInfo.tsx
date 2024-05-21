@@ -35,6 +35,7 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
     bank: {
       selectedBank: { idCHB: chb },
     },
+    city: { cities },
     user: { users },
   } = useLoloContext()
 
@@ -118,6 +119,13 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
   })
 
   const { hideModal, showModal, visible } = useModal()
+
+  const optionsCities: Array<SelectItemType> = cities.map((city) => {
+    return {
+      key: String(city.id),
+      label: city.name,
+    }
+  })
 
   const optionsUsers: Array<SelectItemType> = users.map((user) => {
     return {
@@ -391,6 +399,24 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
             />
           )}
         />
+        <Controller
+          name="cityId"
+          control={control}
+          render={({ field }) => (
+            <Select
+              width="100%"
+              label="Jurisdicción:"
+              value={String(field.value)}
+              options={optionsCities}
+              onChange={(key) => {
+                field.onChange(parseInt(key))
+              }}
+              hasError={!!errors.cityId}
+            />
+          )}
+        />
+      </div>
+      <div className="fields-wrapper-container-t">
         <Controller
           name="judgmentNumber"
           control={control}

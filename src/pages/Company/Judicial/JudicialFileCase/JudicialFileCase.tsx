@@ -33,6 +33,7 @@ const JudicialFileCase = () => {
     judge: '',
     demandDate: moment(new Date()).format('DD-MM-YYYY'),
     clientId: 0,
+    cityId: 0,
     customerUserId: 0,
     judicialCourtId: 0,
     judicialSubjectId: 0,

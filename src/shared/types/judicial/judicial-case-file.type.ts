@@ -11,6 +11,7 @@ export type JudicialCaseFileType = {
   judge?: string
   demandDate?: string
   createdAt: string
+  cityId?: number
   clientId: number
   customerUserId: number
   judicialCourtId: number

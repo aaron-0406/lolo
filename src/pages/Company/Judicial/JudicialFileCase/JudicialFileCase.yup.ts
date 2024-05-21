@@ -21,6 +21,7 @@ const JudicialFileCaseSchema: yup.SchemaOf<
   judicialCourtId: yup.number().required().min(1),
   judicialSubjectId: yup.number().required().min(1),
   judicialProceduralWayId: yup.number().required().min(1),
+  cityId: yup.number().required().min(1),
   clientId: yup.number().required().min(1),
   customerUserId: yup.number().required().min(1),
   customerHasBankId: yup.number().required().min(1),
