@@ -3,6 +3,7 @@ import { ClientType } from '@/types/extrajudicial/client.type'
 import { JudicialCaseFileType } from '@/types/judicial/judicial-case-file.type'
 import { JudicialCourtType } from '@/types/judicial/judicial-court.type'
 import { JudicialProceduralWayType } from '@/types/judicial/judicial-procedural-way.type'
+import { JudicialSedeType } from '@/types/judicial/judicial-sede.type'
 import { JudicialSubjectType } from '@/types/judicial/judicial-subject.type'
 import { AxiosResponse } from 'axios'
 import { QueryClient } from 'react-query'
@@ -19,6 +20,8 @@ export type JudicialFileCaseTableRow = JudicialCaseFileType & {
   judicialSubject: JudicialSubjectType
 } & {
   client: ClientType
+} & {
+  judicialSede: JudicialSedeType
 }
 
 type QueryDataType = AxiosResponse<{ caseFiles: JudicialFileCaseTableRow[]; quantity: number }> | undefined
@@ -82,7 +85,7 @@ const judicialFileCaseCache = (queryClient: QueryClient) => {
     const old = queryClient.getQueryData([KEY_FILE_CASE_CACHE, chb])
     if (!old) {
       await queryClient.prefetchQuery([KEY_FILE_CASE_CACHE, chb])
-    } 
+    }
 
     return { old }
   }

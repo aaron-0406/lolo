@@ -15,7 +15,7 @@ const JudicialFileCaseSchema: yup.SchemaOf<
   amountDemandedSoles: yup.number().optional(),
   cautionaryCode: yup.string().optional().matches(/^\d*$/, { message: 'Debe ser un número entero' }),
   errandCode: yup.string().optional(),
-  judicialVenue: yup.string().optional(),
+  judicialSedeId: yup.number().required().min(1),
   judge: yup.string().required().optional(),
   demandDate: yup.string().optional(),
   judicialCourtId: yup.number().required().min(1),

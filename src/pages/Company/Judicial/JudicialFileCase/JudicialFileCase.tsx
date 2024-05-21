@@ -29,7 +29,7 @@ const JudicialFileCase = () => {
     amountDemandedDollars: 0,
     cautionaryCode: '',
     errandCode: '',
-    judicialVenue: '',
+    judicialSedeId: 0,
     judge: '',
     demandDate: moment(new Date()).format('DD-MM-YYYY'),
     clientId: 0,

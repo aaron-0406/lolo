@@ -71,7 +71,7 @@ export default {
     bitacoraProceduralStage: (urlIdentifier = ':urlIdentifier') => `/judicial/${urlIdentifier}/etapa-procedimental`,
     bitacoraDefendantProceduralAction: (urlIdentifier = ':urlIdentifier') =>
       `/judicial/${urlIdentifier}/actuacion-procesal-demandado`,
-    processReason: (urlIdentifier = ':urlIdentifier') =>
-      `/judicial/${urlIdentifier}/motivo-proceso`,
+    processReason: (urlIdentifier = ':urlIdentifier') => `/judicial/${urlIdentifier}/motivo-proceso`,
+    sedes: (urlIdentifier = ':urlIdentifier') => `/judicial/${urlIdentifier}/sedes`,
   },
 }

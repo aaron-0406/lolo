@@ -7,7 +7,7 @@ export type JudicialCaseFileType = {
   amountDemandedDollars?: number
   cautionaryCode?: string
   errandCode?: string
-  judicialVenue?: string
+  judicialSedeId?: number
   judge?: string
   demandDate?: string
   createdAt: string
@@ -17,7 +17,7 @@ export type JudicialCaseFileType = {
   judicialSubjectId: number
   judicialProceduralWayId: number
   customerHasBankId: number
-  processStatus?:string; 
-  processComment?:string; 
-  processReasonId?:number;
+  processStatus?: string
+  processComment?: string
+  processReasonId?: number
 }
