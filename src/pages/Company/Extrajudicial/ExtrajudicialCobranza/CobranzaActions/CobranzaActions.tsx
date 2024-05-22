@@ -20,6 +20,7 @@ import { DOMAIN } from '../../../../../shared/utils/constant/api'
 import paths from 'shared/routes/paths'
 import { LinkType } from '@/ui/Breadcrumbs/Breadcrumbs.type'
 import companyCustomersCache from '../../ExtrajudicialCustomers/CustomersTable/utils/company-customers.cache'
+import moment from 'moment'
 
 type CobranzaActionsProps = {
   setLoadingGlobal: (state: boolean) => void
@@ -71,7 +72,10 @@ const CobranzaActions = ({ setLoadingGlobal }: CobranzaActionsProps) => {
         setValue('customerHasBankId', data.data.customerHasBankId)
         setValue('funcionario', data.data?.funcionario)
         setValue('negotiation', data.data?.negotiation)
-        data.data?.memoAssignmentDate && setValue('memoAssignmentDate', data.data?.memoAssignmentDate)
+        data.data?.memoAssignmentDate &&
+          setValue('memoAssignmentDate', moment(data.data?.memoAssignmentDate).format('DD-MM-YYYY'), {
+            shouldValidate: true,
+          })
 
         setLoadingGlobal(false)
       },
@@ -95,8 +99,14 @@ const CobranzaActions = ({ setLoadingGlobal }: CobranzaActionsProps) => {
 
   const { isLoading: loadingSaveClient, mutate: saveCustomer } = useMutation<any, AxiosError<CustomErrorResponse>>(
     async () => {
-      const { funcionario, negotiation, ...rest } = getValues()
-      return await saveClient(rest, Number(customer.id))
+      const { funcionario, negotiation, memoAssignmentDate, ...rest } = getValues()
+      return await saveClient(
+        {
+          ...rest,
+          memoAssignmentDate: memoAssignmentDate ? moment(memoAssignmentDate, 'DD-MM-YYYY').toDate() : undefined,
+        },
+        Number(customer.id)
+      )
     },
     {
       onSuccess: (data) => {
