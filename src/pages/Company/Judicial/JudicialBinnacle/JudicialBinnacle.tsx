@@ -7,21 +7,24 @@ import { getFileCaseByNumberFile } from '@/services/judicial/judicial-file-case.
 import notification from '@/ui/notification'
 import JudicialBinnacleInfo from './JudicialBinnacleInfo'
 import { useLoloContext } from '@/contexts/LoloProvider'
-import { useNavigate } from "react-router-dom";
 
 const JudicialBinnacle = () => {
   const codeParams = useParams().code ?? ''
   const relatedProcessCodeParams = useParams().relatedProcessCode ?? ''
-  const navigate = useNavigate()
+
   const {
     bank: {
       selectedBank: { idCHB },
     },
   } = useLoloContext()
+
   const { data } = useQuery<AxiosResponse<any, Error>>(
-    ['get-file-case-by-code', relatedProcessCodeParams ? relatedProcessCodeParams : codeParams ],
+    ['get-file-case-by-code', relatedProcessCodeParams ? relatedProcessCodeParams : codeParams],
     async () => {
-      return await getFileCaseByNumberFile(relatedProcessCodeParams ? relatedProcessCodeParams : codeParams , Number(idCHB))
+      return await getFileCaseByNumberFile(
+        relatedProcessCodeParams ? relatedProcessCodeParams : codeParams,
+        Number(idCHB)
+      )
     },
     {
       onError: (error: any) => {

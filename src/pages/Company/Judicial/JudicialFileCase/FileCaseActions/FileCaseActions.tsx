@@ -53,7 +53,6 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase }: FileCaseActions
       judicialSubject: { subject: string; customerHasBankId: string }
       judicialProceduralWay: { proceduralWay: string; customerHasBankId: string }
     }
-
   >()
 
   const { isLoading: loadingCreateFileCase, mutate: createFileCaseMutate } = useMutation<

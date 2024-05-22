@@ -34,12 +34,12 @@ import EmptyStateCell from '@/ui/Table/EmptyStateCell'
 import { FilterOptionsProps } from '@/ui/Table/Table'
 import { getFileCaseRelatedProcessByCaseFileId } from '@/services/judicial/judicial-file-case-related-process.service'
 
-type JudicialFileCasesTableProps = { 
-  caseFileId:number;
+type JudicialFileCasesTableProps = {
+  caseFileId: number
 }
 
-const JudicialFileCasesTable = ({ caseFileId } : JudicialFileCasesTableProps ) => {
-  const navigate = useNavigate() 
+const JudicialFileCasesTable = ({ caseFileId }: JudicialFileCasesTableProps) => {
+  const navigate = useNavigate()
   const location = useLocation()
   const currentPath = location.pathname
   const codeParams = useParams().code ?? ''
@@ -146,44 +146,47 @@ const JudicialFileCasesTable = ({ caseFileId } : JudicialFileCasesTableProps ) =
     }
   })
 
-
-  const { refetch:RelatedProcessRefetch, data:RelatedProcessData, isLoading:RelatedProcessIsLoading } = useQuery<
-  AxiosResponse<{
-    caseFiles: Array<JudicialFileCaseTableRow>
-    quantity: number
-  }>,
-  AxiosError<CustomErrorResponse>
->(
-  [KEY_FILE_CASE_RELATED_PROCESS_CACHE, caseFileId ? caseFileId : 0],
-  async () => {
-    const courts = getIDsByIdentifier('casesFiles.datatable.header.court', selectedFilterOptions)
-    const subjects = getIDsByIdentifier('casesFiles.datatable.header.subject', selectedFilterOptions)
-    const users = getIDsByIdentifier('casesFiles.datatable.header.user', selectedFilterOptions)
-    const proceduralWays = getIDsByIdentifier('casesFiles.datatable.header.proceduralWay', selectedFilterOptions)
-    //TODO: Add users
-    return await getFileCaseRelatedProcessByCaseFileId(
-      caseFileId ? caseFileId : 0,
-      opts.page,
-      opts.limit,
-      opts.filter,
-      JSON.stringify(courts),
-      JSON.stringify(proceduralWays),
-      JSON.stringify(subjects),
-      JSON.stringify(users)
-    )
-  } ,
-  {
-    onError: (error) => {
-      notification({
-        type: 'error',
-        message: error.response?.data.message,
-        list: error.response?.data?.errors?.map((error) => error.message),
-      })
+  const {
+    refetch: RelatedProcessRefetch,
+    data: RelatedProcessData,
+    isLoading: RelatedProcessIsLoading,
+  } = useQuery<
+    AxiosResponse<{
+      caseFiles: Array<JudicialFileCaseTableRow>
+      quantity: number
+    }>,
+    AxiosError<CustomErrorResponse>
+  >(
+    [KEY_FILE_CASE_RELATED_PROCESS_CACHE, caseFileId ? caseFileId : 0],
+    async () => {
+      const courts = getIDsByIdentifier('casesFiles.datatable.header.court', selectedFilterOptions)
+      const subjects = getIDsByIdentifier('casesFiles.datatable.header.subject', selectedFilterOptions)
+      const users = getIDsByIdentifier('casesFiles.datatable.header.user', selectedFilterOptions)
+      const proceduralWays = getIDsByIdentifier('casesFiles.datatable.header.proceduralWay', selectedFilterOptions)
+      //TODO: Add users
+      return await getFileCaseRelatedProcessByCaseFileId(
+        caseFileId ? caseFileId : 0,
+        opts.page,
+        opts.limit,
+        opts.filter,
+        JSON.stringify(courts),
+        JSON.stringify(proceduralWays),
+        JSON.stringify(subjects),
+        JSON.stringify(users)
+      )
     },
-  }
-)
+    {
+      onError: (error) => {
+        notification({
+          type: 'error',
+          message: error.response?.data.message,
+          list: error.response?.data?.errors?.map((error) => error.message),
+        })
+      },
+    }
+  )
 
-const caseFilesRelatedProcess = RelatedProcessData?.data?.caseFiles ?? []
+  const caseFilesRelatedProcess = RelatedProcessData?.data?.caseFiles ?? []
 
   const quantity = RelatedProcessData?.data.quantity ?? 0
   useEffect(() => {
@@ -193,8 +196,6 @@ const caseFilesRelatedProcess = RelatedProcessData?.data?.caseFiles ?? []
   useEffect(() => {
     RelatedProcessRefetch()
   }, [opts.filter.length, opts.page])
-
-
 
   return (
     <Container width="100%" height="100%" padding="0px 20px 0px 20px">
@@ -271,7 +272,7 @@ const caseFilesRelatedProcess = RelatedProcessData?.data?.caseFiles ?? []
                           setFileCaseId(record.id)
                           showDeleteFileCase()
                         }}
-                        permission="P13-04"
+                        permission="P13-01-05-04"
                         messageTooltip="Eliminar expediente"
                       />
                     </Container>
@@ -283,7 +284,12 @@ const caseFilesRelatedProcess = RelatedProcessData?.data?.caseFiles ?? []
       </Table>
       <Tooltip place="right" id="cell-tooltip" />
 
-      <DeleteExpedienteModal visible={visibleDeleteFileCase} onClose={hideDeleteFileCase} idFileCase={fileCaseId} caseFileRelatedProcessId = {caseFileId}/>
+      <DeleteExpedienteModal
+        visible={visibleDeleteFileCase}
+        onClose={hideDeleteFileCase}
+        idFileCase={fileCaseId}
+        caseFileRelatedProcessId={caseFileId}
+      />
     </Container>
   )
 }

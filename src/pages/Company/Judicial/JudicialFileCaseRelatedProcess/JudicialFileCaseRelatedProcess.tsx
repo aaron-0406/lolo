@@ -10,10 +10,9 @@ import FileCaseModals from './FileCaseRelatedProcessInfo/FileCaseModals'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import moment from 'moment'
 import { ClientType } from '@/types/extrajudicial/client.type'
-
 import { useParams } from 'react-router-dom'
 import { useQuery } from 'react-query'
-import { getFileCaseByNumberFile } from '../../../../shared/services/judicial/judicial-file-case.service';
+import { getFileCaseByNumberFile } from '../../../../shared/services/judicial/judicial-file-case.service'
 import { AxiosResponse } from 'axios'
 
 import notification from '@/ui/notification'
@@ -62,7 +61,7 @@ const JudicialFileCaseRelatedProcess = () => {
     judicialSubjectId: 0,
     judicialProceduralWayId: 0,
     customerHasBankId: selectedBank.idCHB.length ? Number(selectedBank.idCHB) : 0,
-    idJudicialCaseFileRelated: caseFileId, 
+    idJudicialCaseFileRelated: caseFileId,
     bankId: 0,
   }
 
@@ -72,16 +71,19 @@ const JudicialFileCaseRelatedProcess = () => {
     defaultValues: defaultValuesFileCase,
   })
 
-  const { getValues } = formMethods
-  const numberCaseFile = getValues('numberCaseFile')
-
   return (
     <FormProvider {...formMethods}>
       <LayoutFileCase
-        actionsContent={<FileCaseActions setOwnerFileCase={setOwnerFileCase} setLoadingGlobal={setLoading} caseFileRelatedProcessId ={caseFileId}  />}
+        actionsContent={
+          <FileCaseActions
+            setOwnerFileCase={setOwnerFileCase}
+            setLoadingGlobal={setLoading}
+            caseFileRelatedProcessId={caseFileId}
+          />
+        }
         ownerContent={<FileCaseOwner setOwnerFileCase={setOwnerFileCase} ownerFileCase={ownerFileCase} />}
-        infoContent={<FileCaseInfo loading={loading} caseFileId = {caseFileId}/>}
-        modalsContent={<FileCaseModals ownerFileCase={ownerFileCase} numberCaseFile={numberCaseFile} />}
+        infoContent={<FileCaseInfo loading={loading} />}
+        modalsContent={<FileCaseModals />}
       />
     </FormProvider>
   )

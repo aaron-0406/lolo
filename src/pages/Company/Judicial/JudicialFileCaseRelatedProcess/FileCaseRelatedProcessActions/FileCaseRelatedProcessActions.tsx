@@ -5,13 +5,15 @@ import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { device } from '@/breakpoints/responsive'
 import { JudicialCaseFileType } from '@/types/judicial/judicial-case-file.type'
 import { CustomErrorResponse } from 'types/customErrorResponse'
-import { createFileCase, getFileCaseByNumberFile, updateFileCase } from '@/services/judicial/judicial-file-case-related-process.service'
+import {
+  createFileCase,
+  getFileCaseByNumberFile,
+  updateFileCase,
+} from '@/services/judicial/judicial-file-case-related-process.service'
 import Container from '@/ui/Container'
 import Button from '@/ui/Button'
 import { notification } from '@/ui/notification/notification'
-import {
-  JudicialFileCaseTableRow,
-} from '../../JudicialFileCasesList/JudicialFileCasesTable/utils/file-cases.cache'
+import { JudicialFileCaseTableRow } from '../../JudicialFileCasesList/JudicialFileCasesTable/utils/file-cases.cache'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useEffect } from 'react'
 import moment from 'moment'
@@ -57,7 +59,6 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase, caseFileRelatedPr
       judicialSubject: { subject: string; customerHasBankId: string }
       judicialProceduralWay: { proceduralWay: string; customerHasBankId: string }
     }
-
   >()
 
   const { isLoading: loadingCreateFileCase, mutate: createFileCaseRelatedProcessMutate } = useMutation<
@@ -73,7 +74,13 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase, caseFileRelatedPr
         setValue('id', result.data.id)
         createFileCaseRelatedProcessCache(result.data)
         notification({ type: 'success', message: 'Expediente creado' })
-        navigate(`${paths.judicial.detallesExpedienteRelatedProcess(customer.urlIdentifier,codeParams , result.data.numberCaseFile)}`)
+        navigate(
+          `${paths.judicial.detallesExpedienteRelatedProcess(
+            customer.urlIdentifier,
+            codeParams,
+            result.data.numberCaseFile
+          )}`
+        )
       },
       onMutate: () => {
         return onMutateCache(caseFileRelatedProcessId ? caseFileRelatedProcessId : 0)
@@ -122,7 +129,6 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase, caseFileRelatedPr
     }
   )
 
-  
   const { refetch } = useQuery<AxiosResponse<any, Error>>(
     ['get-file-case-by-code', relatedProcessCodeParams ?? ''],
     async () => {
@@ -151,10 +157,9 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase, caseFileRelatedPr
         setValue('judicialCourt', data.data?.judicialCourt)
         setValue('judicialSubject', data.data?.judicialSubject)
         setValue('judicialProceduralWay', data.data?.judicialProceduralWay)
-        setValue('idJudicialCaseFileRelated', data.data?.judicialProceduralWay)
+        setValue('idJudicialCaseFileRelated', data.data?.idJudicialCaseFileRelated)
         setValue('bankId', data.data.bankId)
 
-        //TODO: Work here
         setOwnerFileCase(data.data?.client)
       },
       onError: (error: any) => {
@@ -168,7 +173,6 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase, caseFileRelatedPr
       },
     }
   )
-
 
   const onCreate = () => {
     handleSubmit(() => {
@@ -203,14 +207,18 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase, caseFileRelatedPr
       name: 'Procesos Conexos',
     },
     {
-      link: paths.judicial.detallesExpedienteRelatedProcess(customer.urlIdentifier, codeParams, relatedProcessCodeParams),
+      link: paths.judicial.detallesExpedienteRelatedProcess(
+        customer.urlIdentifier,
+        codeParams,
+        relatedProcessCodeParams
+      ),
       name: relatedProcessCodeParams,
     },
   ]
 
   useEffect(() => {
-    setValue('idJudicialCaseFileRelated', caseFileRelatedProcessId);
-  }, [caseFileRelatedProcessId]);
+    setValue('idJudicialCaseFileRelated', caseFileRelatedProcessId)
+  }, [caseFileRelatedProcessId])
 
   useEffect(() => {
     if (!!relatedProcessCodeParams.length && relatedProcessCodeParams !== '000000000') {
@@ -225,12 +233,12 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase, caseFileRelatedPr
       width="100%"
       display="flex"
       justifyContent="space-between"
-      alignItems={greaterThanDesktopS ? "center" : "start"}
+      alignItems={greaterThanDesktopS ? 'center' : 'start'}
       gap="20px"
       padding={greaterThanDesktopS ? '0px 0px 0px 20px' : '0px'}
-      flexDirection={ greaterThanDesktopS ? 'row' : 'column'}
+      flexDirection={greaterThanDesktopS ? 'row' : 'column'}
     >
-      <Breadcrumbs routes={routers}  />
+      <Breadcrumbs routes={routers} />
 
       <Container width="fit-content" display="flex" justifyContent="space-between" alignItems="center" gap="10px">
         <Button
@@ -241,7 +249,7 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase, caseFileRelatedPr
           trailingIcon="ri-save-3-line"
           onClick={watch().id !== 0 ? onUpdate : onCreate}
           loading={loadingCreateFileCase}
-          permission={watch().id !== 0 ? 'P13-03' : 'P13-02'}
+          permission={watch().id !== 0 ? 'P13-01-05-03' : 'P13-01-05-02'}
           messageTooltip="Guardar cambios"
         />
       </Container>

@@ -13,6 +13,7 @@ type FileCaseOwnerProps = {
   setOwnerFileCase: (value: (ClientType & { customerUser: { id: number; name: string } }) | undefined) => void
   ownerFileCase?: ClientType & { customerUser: { id: number; name: string } }
 }
+
 const FileCaseOwner = ({ ownerFileCase, setOwnerFileCase }: FileCaseOwnerProps) => {
   const { setValue } = useFormContext<JudicialCaseFileType>()
   const greaterThanDesktopS = useMediaQuery(device.desktopS)

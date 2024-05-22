@@ -22,18 +22,15 @@ import Button from '@/ui/Button'
 import FileCasesRelatedModal from './FileCasesRelatedModal'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { device } from '@/breakpoints/responsive'
-
 import useModal from '@/hooks/useModal'
 import { useQuery } from 'react-query'
 import { BankType } from '@/types/dash/bank.type'
 
-
 type FileCaseInfoProps = {
   loading: boolean
-  caseFileId: number
 }
 
-const FileCaseInfo = ({ loading, caseFileId }: FileCaseInfoProps) => {
+const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
   const {
     bank: {
       selectedBank: { idCHB: chb },
@@ -62,7 +59,7 @@ const FileCaseInfo = ({ loading, caseFileId }: FileCaseInfoProps) => {
   const optionsStates: Array<SelectItemType> = customerBanks.map((bank: BankType) => {
     return {
       key: String(bank.id),
-      label: bank.name
+      label: bank.name,
     }
   })
 
@@ -415,7 +412,7 @@ const FileCaseInfo = ({ loading, caseFileId }: FileCaseInfoProps) => {
             )}
           />
         </Container>
-        <Container width="50%" display={greaterThanTabletL ? 'flex' : 'none'}/>
+        <Container width="50%" display={greaterThanTabletL ? 'flex' : 'none'} />
       </Container>
 
       <FileCasesRelatedModal

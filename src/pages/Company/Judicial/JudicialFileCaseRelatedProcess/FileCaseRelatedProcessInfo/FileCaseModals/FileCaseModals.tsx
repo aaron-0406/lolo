@@ -1,5 +1,4 @@
 import { useLoloContext } from '@/contexts/LoloProvider'
-import { ClientType } from '@/types/extrajudicial/client.type'
 import { JudicialCaseFileType } from '@/types/judicial/judicial-case-file.type'
 import Button from '@/ui/Button'
 import Container from '@/ui/Container'
@@ -9,12 +8,7 @@ import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { device } from '@/breakpoints/responsive'
 import paths from 'shared/routes/paths'
 
-type FileCaseModalsProps = {
-  ownerFileCase?: ClientType & { customerUser: { id: number; name: string } }
-  numberCaseFile?: string
-}
-
-const FileCaseModals = ({ ownerFileCase, numberCaseFile }: FileCaseModalsProps) => {
+const FileCaseModals = () => {
   const { getValues } = useFormContext<JudicialCaseFileType>()
   const navigate = useNavigate()
   const {
@@ -38,11 +32,10 @@ const FileCaseModals = ({ ownerFileCase, numberCaseFile }: FileCaseModalsProps) 
       <Button
         label="Bitacora"
         permission="P13-01-05-01-01"
-        size={greaterThanTabletS ? "default": "small"}
+        size={greaterThanTabletS ? 'default' : 'small'}
         disabled={!clientId}
         onClick={onClickBitacora}
         trailingIcon="ri-book-3-line"
-
       />
     </Container>
   )

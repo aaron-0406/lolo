@@ -8,16 +8,20 @@ import { FC } from 'react'
 import { useMutation, useQueryClient } from 'react-query'
 import { CustomErrorResponse } from 'types/customErrorResponse'
 import judicialFileCaseRelatedProcessCache from '../utils/file-cases-related-Process.cache'
-import { useLoloContext } from '@/contexts/LoloProvider'
 
 type DeleteExpedienteModalProps = {
   visible: boolean
   onClose: () => void
   idFileCase?: number
-  caseFileRelatedProcessId:number
+  caseFileRelatedProcessId: number
 }
 
-const DeleteExpedienteModal: FC<DeleteExpedienteModalProps> = ({ visible, idFileCase = 0, caseFileRelatedProcessId = 0, onClose }) => {
+const DeleteExpedienteModal: FC<DeleteExpedienteModalProps> = ({
+  visible,
+  idFileCase = 0,
+  caseFileRelatedProcessId = 0,
+  onClose,
+}) => {
   const queryClient = useQueryClient()
 
   const {
