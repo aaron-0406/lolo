@@ -8,6 +8,7 @@ import { useQuery } from 'react-query'
 import { AxiosResponse } from 'axios'
 import notification from '@/ui/notification'
 import { getAllNegociacionesByCHB } from '@/services/extrajudicial/negotiation.service'
+import { KEY_EXT_COBRANZA_NEGOCIACIONES_CACHE } from '@/pages/extrajudicial/ExtrajudicialNegotiations/NegotiationTable/utils/ext-negociaciones.cache'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import Label from '@/ui/Label'
 import Container from '@/ui/Container'
@@ -53,7 +54,7 @@ const CobranzaProductsInfoForm = ({ clientId }: CobranzaProductsInfoFormProps) =
   ]
 
   const { data: dataNegotiation } = useQuery<AxiosResponse<Array<NegotiationType>, Error>>(
-    ['get-all-negotiations-by-chb', idCHB],
+    [KEY_EXT_COBRANZA_NEGOCIACIONES_CACHE, parseInt(idCHB.length ? idCHB : '0')],
     async () => {
       return await getAllNegociacionesByCHB(Number(idCHB))
     },
