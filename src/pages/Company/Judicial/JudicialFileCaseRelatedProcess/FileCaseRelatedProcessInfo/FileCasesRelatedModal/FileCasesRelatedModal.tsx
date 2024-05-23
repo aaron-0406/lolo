@@ -27,12 +27,12 @@ const FileCasesRelatedModal = ({ onClose, visible }: FileCasesRelatedModalProps)
   } = useLoloContext()
   const navigate = useNavigate()
 
-  const codeParams = useParams().code ?? ''
+  const relatedProcessCodeParams = useParams().relatedProcessCode ?? ''
 
   const { data, refetch } = useQuery<AxiosResponse<Array<JudicialCaseFileType>>>(
     'get-file-cases-related',
     () => {
-      return getFileCasesRelated(codeParams, Number(idCHB))
+      return getFileCasesRelated(relatedProcessCodeParams, Number(idCHB))
     },
     {
       enabled: false,
@@ -49,11 +49,11 @@ const FileCasesRelatedModal = ({ onClose, visible }: FileCasesRelatedModalProps)
   }
 
   useEffect(() => {
-    if (!!codeParams.length && codeParams !== '000000000') {
+    if (!!relatedProcessCodeParams.length && relatedProcessCodeParams !== '000000000') {
       refetch()
     }
     // eslint-disable-next-line
-  }, [codeParams])
+  }, [relatedProcessCodeParams])
 
   return (
     <Modal

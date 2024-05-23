@@ -62,7 +62,6 @@ const JudicialFileCaseRelatedProcess = () => {
     judicialProceduralWayId: 0,
     customerHasBankId: selectedBank.idCHB.length ? Number(selectedBank.idCHB) : 0,
     idJudicialCaseFileRelated: caseFileId,
-    bankId: 0,
   }
 
   const formMethods = useForm<JudicialCaseFileType>({
