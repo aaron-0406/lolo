@@ -17,17 +17,18 @@ export const getScheduledNotificationByChb = async (chb: number) => {
   return await axiosClient.get(`${url}/chb/${chb}`)
 }
 
-export const getScheduledNotificationByLogicKey = async (logicKey: number) => {
-  return await axiosClient.get(`${url}/logicKey/${logicKey}`)
-}
-
-export const createScheduledNotification = async (ScheduledNotification: Omit<ScheduledNotificationsType, 'id' | 'createdAt' | 'deletedAt' | 'updatedAt'>) => {
+export const createScheduledNotification = async (
+  ScheduledNotification: Omit<ScheduledNotificationsType, 'id' | 'createdAt' | 'deletedAt' | 'updatedAt'>
+) => {
   return await axiosClient.post(`${url}/`, ScheduledNotification)
 }
 
 export const updateScheduledNotification = async (
   id: number,
-  ScheduledNotification: Omit<ScheduledNotificationsType, 'id' | 'customerHasBankId' | 'createdAt' | 'deletedAt' | 'updatedAt'>
+  ScheduledNotification: Omit<
+    ScheduledNotificationsType,
+    'id' | 'customerHasBankId' | 'createdAt' | 'deletedAt' | 'updatedAt'
+  >
 ) => {
   return await axiosClient.put(`${url}/${id}`, ScheduledNotification)
 }
