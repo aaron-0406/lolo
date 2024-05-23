@@ -13,6 +13,9 @@ import { SelectItemType } from '@/ui/Select/interfaces'
 import TextAreaField from '@/ui/fields/TextAreaField'
 import { KEY_JUDICIAL_OBS_TYPE_CACHE } from 'pages/Company/Judicial/JudicialObsType/ObsTypeTable/utils/judicial-obs-type.cache'
 import { useLoloContext } from '@/contexts/LoloProvider'
+import Button from '@/ui/Button'
+import useModal from '@/hooks/useModal'
+import ObsTypeModal from 'pages/Company/Judicial/JudicialObsType/Modals/ObsTypeModal'
 
 const ObservationInfoForm = () => {
   const {
@@ -47,6 +50,16 @@ const ObservationInfoForm = () => {
     }
   })
 
+  const { visible: visibleModalAdd, showModal: showModalAdd, hideModal: hideModalAdd } = useModal()
+
+  const onShowModal = () => {
+    showModalAdd()
+  }
+
+  const onCloseModal = () => {
+    hideModalAdd()
+  }
+
   return (
     <>
       <Container width="100%" display="flex" gap="10px">
@@ -73,16 +86,27 @@ const ObservationInfoForm = () => {
         name="judicialObsTypeId"
         control={control}
         render={({ field }) => (
-          <Select
-            width="100%"
-            label="Tipo:"
-            value={String(field.value)}
-            options={optionsObsType}
-            onChange={(key) => {
-              field.onChange(key)
-            }}
-            hasError={!!errors.judicialObsTypeId}
-          />
+          <Container display="flex" flexDirection="row" gap="10px" flexWrap="nowrap" width="100%" alignItems="flex-end">
+            <Select
+              width="100%"
+              label="Tipo:"
+              value={String(field.value)}
+              options={optionsObsType}
+              onChange={(key) => {
+                field.onChange(key)
+              }}
+              hasError={!!errors.judicialObsTypeId}
+            />
+
+            <Button
+              shape="round"
+              leadingIcon="ri-add-fill"
+              size="small"
+              onClick={onShowModal}
+              disabled={!idCHB}
+              permission="P08-01"
+            />
+          </Container>
         )}
       />
       <Controller
@@ -101,6 +125,7 @@ const ObservationInfoForm = () => {
           />
         )}
       />
+      <ObsTypeModal visible={visibleModalAdd} onClose={onCloseModal} />
     </>
   )
 }
