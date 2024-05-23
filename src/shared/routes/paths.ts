@@ -69,9 +69,12 @@ export default {
       `/judicial/${urlIdentifier}/expediente/${code}/estatus-proceso`,
     bitacora: (urlIdentifier = ':urlIdentifier', code = ':code') =>
       `/judicial/${urlIdentifier}/expediente/${code}/bitacora`,
-    
-    bitacoraProcesoConexo: (urlIdentifier = ':urlIdentifier', code = ':code', relatedProcessCode = ':relatedProcessCode') =>
-      `/judicial/${urlIdentifier}/expediente/${code}/procesos-conexos/${relatedProcessCode}/bitacora`,
+
+    bitacoraProcesoConexo: (
+      urlIdentifier = ':urlIdentifier',
+      code = ':code',
+      relatedProcessCode = ':relatedProcessCode'
+    ) => `/judicial/${urlIdentifier}/expediente/${code}/procesos-conexos/${relatedProcessCode}/bitacora`,
 
     bitacoraTipo: (urlIdentifier = ':urlIdentifier') => `/judicial/${urlIdentifier}/tipo-bitacora`,
     observacionTipo: (urlIdentifier = ':urlIdentifier') => `/judicial/${urlIdentifier}/tipo-observacion`,
