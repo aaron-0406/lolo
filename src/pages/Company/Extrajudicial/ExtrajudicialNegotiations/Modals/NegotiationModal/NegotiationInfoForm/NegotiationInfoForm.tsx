@@ -13,12 +13,17 @@ const NegotiationInfoForm = () => {
   return (
     <>
       <Container width="100%" display="flex" gap="10px">
-        <Label label="Nombre: " />
         <Controller
           name="name"
           control={control}
           render={({ field }) => (
-            <TextField width="100%" value={field.value} onChange={field.onChange} hasError={!!errors.name} />
+            <TextField
+              label="Nombre"
+              width="100%"
+              value={field.value}
+              onChange={field.onChange}
+              hasError={!!errors.name}
+            />
           )}
         />
       </Container>

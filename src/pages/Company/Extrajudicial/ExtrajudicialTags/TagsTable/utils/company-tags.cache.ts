@@ -4,13 +4,13 @@ import { ExtTagType } from '@/types/extrajudicial/ext-tag.type'
 
 export const KEY_COBRANZA_URL_TAG_CODE_CACHE = 'key-cobranza-url-tag-code-cache'
 
-type QueryDataType = AxiosResponse<Array<ExtTagType>> | undefined
+type QueryDataType = AxiosResponse<ExtTagType[]> | undefined
 
 const companyTagsCache = (queryClient: QueryClient) => {
   const createCobranzaTagCache = (data: ExtTagType) => {
     queryClient.setQueryData<QueryDataType>([KEY_COBRANZA_URL_TAG_CODE_CACHE, data.customerHasBankId], (old) => {
       if (old) {
-        return { ...old, data: [data, ...old.data] }
+        return { ...old, data: [...old.data, data] }
       }
     })
   }
