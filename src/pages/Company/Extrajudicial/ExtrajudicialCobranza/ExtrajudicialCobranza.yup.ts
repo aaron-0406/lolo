@@ -3,7 +3,7 @@ import { ClientType } from '@/types/extrajudicial/client.type'
 import { CommentType } from '@/types/extrajudicial/comment.type'
 import yup from '../../../../shared/yupLocale'
 
-const ExtrajudicialCobranzaSchema: yup.SchemaOf<Omit<ClientType, 'id' | 'createdAt'>> = yup.object().shape({
+const ExtrajudicialCobranzaSchema: yup.SchemaOf<Omit<ClientType, 'id' | 'createdAt' | 'memoAssignmentDate'>> = yup.object().shape({
   code: yup.string().required().matches(/^\d*$/),
   negotiationId: yup.number().required().min(1),
   dniOrRuc: yup
@@ -23,6 +23,7 @@ const ExtrajudicialCobranzaSchema: yup.SchemaOf<Omit<ClientType, 'id' | 'created
   funcionarioId: yup.number().required().min(1),
   customerUserId: yup.number().required().min(1),
   customerHasBankId: yup.number().required().min(1),
+  memoAssignmentDate: yup.string().optional(),
 })
 
 const ExtrajudicialCobranzaCommentSchema: yup.SchemaOf<Omit<CommentType, 'id' | 'hour'>> = yup.object().shape({

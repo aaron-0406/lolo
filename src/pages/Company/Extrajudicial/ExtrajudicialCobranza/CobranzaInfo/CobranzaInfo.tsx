@@ -18,6 +18,7 @@ import { FuncionarioType } from '@/types/extrajudicial/funcionario.type'
 import FuncionariosModal from '../../ExtrajudicialFuncionarios/Modals/FuncionariosModal'
 import Button from '@/ui/Button'
 import useModal from '@/hooks/useModal'
+import DatePicker from '@/ui/DatePicker/DatePicker'
 
 type CobranzaInfoProps = {
   loading: boolean
@@ -299,6 +300,26 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
           )}
         />
       </div>
+      <Container className="fields-wrapper-container-t">
+        <Controller
+          name="memoAssignmentDate"
+          control={control}
+          render={({ field }) => (
+            <DatePicker
+              label="Fecha de asignación (MEMO):"
+              selectedDate={field.value}
+              placeholder="Ingrese la fecha:"
+              dateFormat="DD-MM-YYYY"
+              width="100%"
+              value={field.value ?? ''}
+              getDate={(e) => {
+                field.onChange(e)
+              }}
+            />
+          )}
+        />
+        <Container width="100%" />
+      </Container>
 
       <FuncionariosModal visible={visibleModalAdd} onClose={onCloseModal} />
     </StyledContainer>
