@@ -56,6 +56,7 @@ const CobranzaContactsModal = ({
     resolver: ModalCobranzaContactsResolver,
     mode: 'all',
     defaultValues: {
+      dni: '',
       name: '',
       phone: '',
       email: '',
@@ -142,7 +143,7 @@ const CobranzaContactsModal = ({
     {
       onSuccess: ({ data }) => {
         if (!!idContact) {
-          setValue('dni', data.dni ?? undefined, { shouldValidate: true })
+          setValue('dni', data.dni, { shouldValidate: true })
           setValue('name', data.name, { shouldValidate: true })
           setValue('phone', data.phone, { shouldValidate: true })
           setValue('email', data.email, { shouldValidate: true })

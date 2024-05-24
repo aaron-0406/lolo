@@ -10,6 +10,10 @@ import { ExtAddressType } from '@/types/extrajudicial/ext-address-type.type'
 import { KEY_EXT_ADDRESS_TYPE_CACHE } from '@/pages/extrajudicial/ExtrajudicialAddressType/AddressTypeTable/utils/ext-address-type.cache'
 import notification from '@/ui/notification'
 import Label from '@/ui/Label'
+import Container from '@/ui/Container'
+import Button from '@/ui/Button'
+import AddressTypeModal from '@/pages/extrajudicial/ExtrajudicialAddressType/Modals/AddressTypeModal'
+import useModal from '@/hooks/useModal'
 
 type CobranzaAddressesInfoFormProps = {
   clientId: number
@@ -32,6 +36,16 @@ const CobranzaAddressesInfoForm = ({ clientId }: CobranzaAddressesInfoFormProps)
 
   const addressType = getValues('addressType')
   const showAddressType = addressType && addressType.customerHasBankId != chb
+
+  const { visible: visibleModalAdd, showModal: showModalAdd, hideModal: hideModalAdd } = useModal()
+
+  const onShowModal = () => {
+    showModalAdd()
+  }
+
+  const onCloseModal = () => {
+    hideModalAdd()
+  }
 
   const { data: addressesTypeData } = useQuery(
     [KEY_EXT_ADDRESS_TYPE_CACHE, parseInt(chb.length ? chb : '0')],
@@ -60,21 +74,39 @@ const CobranzaAddressesInfoForm = ({ clientId }: CobranzaAddressesInfoFormProps)
         name="addressTypeId"
         control={control}
         render={({ field }) => (
-          <>
-            <Select
+          <Container display="flex" flexDirection="column">
+            <Container
+              display="flex"
+              flexDirection="row"
+              gap="10px"
+              flexWrap="nowrap"
               width="100%"
-              disabled={!clientId}
-              label="Tipo:"
-              value={String(field.value)}
-              options={optionsStates}
-              onChange={(key) => {
-                field.onChange(Number(key))
-              }}
-              hasError={!!errors.addressTypeId}
-            />
+              alignItems="flex-end"
+            >
+              <Select
+                width="100%"
+                disabled={!clientId}
+                label="Tipo:"
+                value={String(field.value)}
+                options={optionsStates}
+                onChange={(key) => {
+                  field.onChange(Number(key))
+                }}
+                hasError={!!errors.addressTypeId}
+              />
+
+              <Button
+                shape="round"
+                leadingIcon="ri-add-fill"
+                size="small"
+                onClick={onShowModal}
+                disabled={!chb}
+                permission="P16-01"
+              />
+            </Container>
 
             {showAddressType && <Label label={`Tipo: ${addressType?.type}`} color="Primary5" />}
-          </>
+          </Container>
         )}
       />
 
@@ -93,6 +125,8 @@ const CobranzaAddressesInfoForm = ({ clientId }: CobranzaAddressesInfoFormProps)
           />
         )}
       />
+
+      <AddressTypeModal visible={visibleModalAdd} onClose={onCloseModal} />
     </>
   )
 }
