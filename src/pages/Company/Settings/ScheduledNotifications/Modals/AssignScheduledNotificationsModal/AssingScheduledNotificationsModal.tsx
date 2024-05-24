@@ -201,6 +201,7 @@ useEffect(() => {
             <Button
               onClick={modalActions === 'add' ? onCreateNotification : onEditNotification}
               label="Guardar"
+              permission={"P29-02" || "P29-04"}
               trailingIcon="ri-save-line"
               messageTooltip="Guardar cambios"
               disabled={!chb} 

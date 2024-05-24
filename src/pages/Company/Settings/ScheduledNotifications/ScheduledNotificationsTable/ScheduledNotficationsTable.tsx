@@ -14,7 +14,7 @@ import Button from '@/ui/Button'
 import { demandedProductsColumns } from './utils/columns'
 import EmptyState from '@/ui/EmptyState'
 import { ScheduledNotificationsType } from '../../../../../shared/types/config/scheduled-notifications.type';
-import { getAllScheduledNotification } from '@/services/config/scheduled-notifications.service'
+import { getScheduledNotificationByChb } from '@/services/config/scheduled-notifications.service'
 import AssingScheduledNotificationsModal from '../Modals/AssignScheduledNotificationsModal/AssingScheduledNotificationsModal'
 
 import { useMutation } from 'react-query'
@@ -23,6 +23,7 @@ import { useQueryClient } from 'react-query'
 import { deleteScheduledNotification } from '@/services/config/scheduled-notifications.service'
 import scheduledNotificationsCache from './utils/scheduled-notifications.cache'
 import DeleteScheduledNotificationsModal from '../Modals/DeleteScheduledNotificationsModal/DeleteScheduledNotificationsModal'
+import { useLoloContext } from '@/contexts/LoloProvider'
 
 
 const ScheduleNotificationsTable = () => {
@@ -37,6 +38,9 @@ const ScheduleNotificationsTable = () => {
     }
   } = scheduledNotificationsCache(queryClient)
 
+  const {
+    bank: { selectedBank: { idCHB: chb } },
+  } = useLoloContext()
 
   const convertISOToTime = (isoString: string): string => {
     const date = new Date(isoString);
@@ -56,7 +60,7 @@ const ScheduleNotificationsTable = () => {
   >(
     [KEYS_CHUDULED_NOTIFICATIONS_CACHE],
     async () => {
-      return await getAllScheduledNotification()
+      return await getScheduledNotificationByChb(Number(chb))
     },
     {
       onError: (error) => {
@@ -191,7 +195,7 @@ const ScheduleNotificationsTable = () => {
                           shape="round"
                           size="small"
                           leadingIcon="ri-pencil-fill"
-                          permission="P13-01-03-03"
+                          permission={'P29-02' || 'P29-04'}
                           display="default"
                         />
                         <Button
@@ -200,7 +204,7 @@ const ScheduleNotificationsTable = () => {
                           shape="round"
                           size="small"
                           leadingIcon="ri-delete-bin-line"
-                          permission="P13-01-03-03"
+                          permission="P29-03"
                           display="danger"
                         />
                       </Container>

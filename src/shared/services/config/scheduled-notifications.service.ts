@@ -5,14 +5,6 @@ const API = axiosClient.getUri()
 
 const url = `${API}/config/scheduled-notifications`
 
-export const getAllScheduledNotification = async () => {
-  return await axiosClient.get(`${url}/`)
-}
-
-export const getScheduledNotificationById = async (id: number) => {
-  return await axiosClient.get(`${url}/${id}`)
-}
-
 export const getScheduledNotificationByChb = async (chb: number) => {
   return await axiosClient.get(`${url}/chb/${chb}`)
 }

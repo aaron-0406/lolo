@@ -31,7 +31,7 @@ const ScheduledNotificationsInfo = () => {
           width="100px"
           shape="round"
           trailingIcon="ri-add-fill"
-          permission="P13-01-03-02"
+          permission="P29-01"
           messageTooltip="Asignar notificaciones"
         />
 
