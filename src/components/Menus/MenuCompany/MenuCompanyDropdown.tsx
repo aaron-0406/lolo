@@ -1,5 +1,5 @@
 import Container from "@/ui/Container"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Icon from "@/ui/Icon"
 import Text from "@/ui/Text"
 import { Link } from "react-router-dom"
@@ -31,6 +31,13 @@ const MenuCompanyDropdown = ({ permission, permissions, onSelectTargetNavItem, t
   const childrens = permissions.filter((item) => item.idPermissionMain === permission.id)
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const onToggle = () => setIsOpen(!isOpen)
+
+  useEffect(()=>{
+    const isChildSelected = childrens.some((item) => item.id === targetNavItem)
+    if(isChildSelected){
+      setIsOpen(true)
+    }
+  },[])
   return (
     <StyledDropdown width="100%" display="flex" flexDirection="column">
       <Container className="dropdown__header">

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useQuery } from 'react-query'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import styled, { css } from 'styled-components'
 import { device } from '@/breakpoints/responsive'
 import { useLoloContext } from '@/contexts/LoloProvider'
@@ -30,6 +30,8 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({ children, urlIdentifier }) =>
   const [isLoadingCities, setIsLoadingCities] = useState(false)
   const [isLoadingUsers, setIsLoadingUsers] = useState(false)
   const [ targetNavItem, setTargetNavItem ] = useState<string>("")  
+
+  const location = useLocation();
 
   const {
     client: { customer },
@@ -138,6 +140,9 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({ children, urlIdentifier }) =>
 
     refetchCities()
     refetchUsers()
+    
+    const currentPermissionID = items.find((item) => item.link === location.pathname)?.id
+    setTargetNavItem(currentPermissionID ?? "")
     // eslint-disable-next-line
 
     return () => {
@@ -168,7 +173,8 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({ children, urlIdentifier }) =>
                   <Link
                     key={key}
                     to={item.link}
-                    className={`nav__items ${targetNavItem === item.id ? 'nav__items--selected' : ''}`}
+                    className={`nav__items ${targetNavItem === item.id ? ' nav__items--selected' : ''}`}
+                    
                     onClick={() => onSelectTargetNavItem(item.id)}
                   >
                     <Container display="flex" gap="22px">
@@ -220,7 +226,7 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({ children, urlIdentifier }) =>
             </Text.Body>
             {getBankName() ? (
               <Container className="layout__content-header-selected-bank">
-                <Text.Body size="m" weight="bold" color="Neutral0">
+                <Text.Body size={!greaterThanTabletL ? "s" : "m" } weight="bold" color="Neutral0" ellipsis={!greaterThanTabletL}>
                   {getBankName()}
                 </Text.Body>
               </Container>
