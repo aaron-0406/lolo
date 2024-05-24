@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useQuery } from 'react-query'
 import { Link } from 'react-router-dom'
 import styled, { css } from 'styled-components'
@@ -18,6 +18,7 @@ import { KEY_COBRANZA_URL_TAG_CODE_CACHE } from '@/pages/extrajudicial/Extrajudi
 import { getExtTagGroupsByCHB } from '@/services/extrajudicial/ext-tag-group.service'
 import notification from '@/ui/notification'
 import { useFiltersContext } from '@/contexts/FiltersProvider'
+import MenuCompanyDropdown from './MenuCompanyDropdown'
 
 type MenuCompanyProps = {
   children: JSX.Element
@@ -28,6 +29,7 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({ children, urlIdentifier }) =>
   const [toggleMenu, setToggleMenu] = useState(false)
   const [isLoadingCities, setIsLoadingCities] = useState(false)
   const [isLoadingUsers, setIsLoadingUsers] = useState(false)
+  const [ targetNavItem, setTargetNavItem ] = useState<string>("")  
 
   const {
     client: { customer },
@@ -43,7 +45,7 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({ children, urlIdentifier }) =>
 
   const greaterThanTabletL = useMediaQuery(device.tabletL)
   const filtereditems =
-    user.permissions?.filter((permission) => permission.link !== '#' && permission.code.length === 3) ?? []
+    user.permissions?.filter((permission) => permission.code.length === 3) ?? []
   const items = filtereditems.map((item) => {
     return {
       ...item,
@@ -51,10 +53,14 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({ children, urlIdentifier }) =>
     }
   })
 
+  const onSelectTargetNavItem = (id: string) => {
+    setTargetNavItem(id)
+    !greaterThanTabletL && setToggleMenu(!toggleMenu)
+
+  }
+
   const onClickToggle = () => {
-    if (!greaterThanTabletL) {
-      setToggleMenu(!toggleMenu)
-    }
+    !greaterThanTabletL && setToggleMenu(!toggleMenu)
   }
 
   // Log Out
@@ -90,7 +96,6 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({ children, urlIdentifier }) =>
     {
       enabled: false,
       onSuccess: (response) => {
-        setUsers(response.data)
         setIsLoadingUsers(false)
       },
       onError: () => {
@@ -142,64 +147,94 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({ children, urlIdentifier }) =>
     }
   }, [])
 
+  useEffect(()=>{
+    if(greaterThanTabletL){
+      setToggleMenu(false)
+    }
+  },[greaterThanTabletL])
+
   if (isLoadingCities || isLoadingUsers) {
     return <div>Loading</div>
   }
 
   return (
-    <StyledMenu width="100%" display="flex" flexDirection="column" position="relative">
-      <Container
-        className="layout__header"
-        width="100%"
-        height="50px"
-        display="flex"
-        alignItems="center"
-        justifyContent="space-between"
-        gap="35px"
-        padding="15px"
-      >
-        <Container width="100%" display="flex" gap="35px">
-          <Icon remixClass="ri-menu-line" size={30} onClick={onClickToggle} />
-
-          <Text.Body size="l" weight="bold" ellipsis>
-            {customer.companyName}
-          </Text.Body>
-        </Container>
-
-        <Text.Body className="layout__header-selected-bank" size="m" weight="bold" color="Success5">
-          {getBankName()}
-        </Text.Body>
-      </Container>
-
-      <Container width="100%" height="calc(100vh - 50px)" display="flex" flexDirection="row">
-        <Container className={`layout__menu ${!greaterThanTabletL && !toggleMenu && 'hide-component'}`} width="100%">
+    <StyledMenu className={`hide-conponent`}>
+      <Container className={`layout__main`}>
+        <Container className={`layout__menu ${!greaterThanTabletL && !toggleMenu && 'layout__menu--close'}`}>
           <ul className="nav">
-            {items.map((item, key) => {
-              return (
-                <Link key={key} to={item.link} className="nav__items" onClick={onClickToggle}>
-                  <Container display="flex" gap="22px">
-                    <Icon remixClass={item.icon} size={20} color="Neutral3" />
-                    <Text.Body size="m" weight="bold" color="Neutral0">
-                      {item.name}
-                    </Text.Body>
-                  </Container>
-                </Link>
-              )
-            })}
-            <Link to={paths.company.login(urlIdentifier)} className="nav__items" onClick={logOut}>
+            {items.map((item, key) => (
+              <Container>
+                {!item.idPermissionMain && !item.isDropdown ? (
+                  <Link
+                    key={key}
+                    to={item.link}
+                    className={`nav__items ${targetNavItem === item.id ? 'nav__items--selected' : ''}`}
+                    onClick={() => onSelectTargetNavItem(item.id)}
+                  >
+                    <Container display="flex" gap="22px">
+                      <Icon remixClass={item.icon} size={18} color="Neutral3" />
+                      <Text.Body size="m" weight="bold" color="Neutral0">
+                        {item.name[0].toUpperCase() + item.name.slice(1).toLowerCase()}
+                      </Text.Body>
+                    </Container>
+                  </Link>
+                ) : null}
+                {item.idPermissionMain && item.isDropdown ? (
+                  <MenuCompanyDropdown
+                    key={key}
+                    permission={item}
+                    permissions={items}
+                    onSelectTargetNavItem={onSelectTargetNavItem}
+                    targetNavItem = {targetNavItem}
+                  />
+                ) : null}
+              </Container>
+            ))}
+          </ul>
+          <Link to={paths.company.login(urlIdentifier)} className="" onClick={logOut}>
+            <Container
+              display="flex"
+              flexDirection="row"
+              gap="22px"
+              alignItems="start"
+              justifyContent="start"
+              minHeight={greaterThanTabletL ? '50px' : '100px'}
+              padding="10px 15px 0px 15px"
+            >
               <Icon remixClass="ri-logout-circle-line" color="Neutral3" />
               <Text.Body size="m" weight="bold" color="Neutral0">
-                CERRAR SESIÓN
+                Cerrar Sesión
               </Text.Body>
-            </Link>
-          </ul>
+            </Container>
+          </Link>
         </Container>
 
         <Container
-          className={`layout__content ${toggleMenu && 'hide-component'}`}
-          width={!greaterThanTabletL ? '100%' : 'calc(100% - 60px)'}
-          height="100%"
+          id="LayoutContent"
+          className={`layout__content ${!greaterThanTabletL && toggleMenu ? 'hide-component' : ''}`}
+          width={!greaterThanTabletL ? '100%' : '100vw'}
         >
+          <Container className="layout__content-header" gap={!greaterThanTabletL ? '20px' : '0px'}>
+            <Text.Body size="l" weight="bold" color="Primary5" ellipsis={!greaterThanTabletL}>
+              {customer.companyName}
+            </Text.Body>
+            {getBankName() ? (
+              <Container className="layout__content-header-selected-bank">
+                <Text.Body size="m" weight="bold" color="Neutral0">
+                  {getBankName()}
+                </Text.Body>
+              </Container>
+            ) : null}
+
+            {!greaterThanTabletL && !toggleMenu ? (
+              <Icon remixClass="ri-menu-line" color="Primary5" size={24} onClick={onClickToggle} />
+            ) : null}
+
+            {!greaterThanTabletL && toggleMenu ? (
+              <Icon remixClass="ri-close-line" color="Primary5" size={24} onClick={onClickToggle} />
+            ) : null}
+          </Container>
+
           {children}
         </Container>
       </Container>
@@ -211,51 +246,121 @@ export default MenuCompany
 
 const StyledMenu = styled(Container)`
   ${({ theme }) => css`
-    .layout__header {
-      box-shadow: ${theme.shadows.elevationMedium};
-    }
+    box-sizing: border-box;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    height: 100vh;
+    
+  .layout__main{
+    flex: 1;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
 
-    .layout__header-selected-bank {
-      display: none;
     }
 
     .layout__menu {
-      transition: width 0.3s ease;
-      background-color: ${theme.colors.Primary5};
+      background-color: ${theme.colors.Primary6};
+      z-index: 10;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      width: 100vw;
+      position: fixed;
       top: 50px;
+      transition-property: all;
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      transition-duration: 150ms;
+      transform: translateX(0); 
 
-      .nav {
-        height: calc(100vh - 50px);
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        list-style-type: none;
-        color: ${theme.colors.Neutral0};
+      &.layout__menu--close {
+        transform: translateX(-100%);
+      }
 
-        .nav__items {
-          cursor: pointer;
+        .nav {
           width: 100%;
-          height: 60px;
-          padding: 0 18px;
           display: flex;
-          align-items: center;
-          gap: 18px;
-
-          :hover {
-            background-color: ${theme.colors.Neutral5};
+          box-sizing: border-box;
+          flex: 1;
+          flex-direction: column;
+          list-style-type: none;
+          color: ${theme.colors.Neutral0};
+  
+          .nav__items {
+            cursor: pointer;
+            width: 100%;
+            min-height: 50px;
+            padding: 0 18px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            transition-property: all;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 15ms;
+            :hover {
+              background-color: ${theme.colors.Primary3};
+            }
+            &.nav__items--selected{
+              background-color: ${theme.colors.Primary3};
+            }
           }
         }
       }
+      .layout__content{
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        box-sizing: border-box;
+        overflow-y: auto;
+        max-height: 100dvb;
+        background-color: ${theme.colors.Neutral0};
+        color: ${theme.colors.Primary5};
+        &.hide-component{
+      overflow-y: hidden;
+      max-height: 100vh;
+      
     }
+
+        .layout__content-header{
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+          padding: 8px 20px 8px 20px;
+          min-height: 50px;
+          box-shadow: ${theme.shadows.elevationLow};
+
+            .layout__content-header-selected-bank{
+              border-radius: 8px;
+              background-color: ${theme.colors.Primary5};
+              display: flex;
+              padding: 5px 10px 5px 10px;
+              flex-direction: column;
+              justify-content: center;
+            }
+        }
+      }
+        
+    }
+
 
     @media ${theme.device.tabletL} {
       .layout__menu {
         width: 60px;
-        position: static;
+        top: 0;
+        position: relative;
+        max-height: 100vh;
+        width: 280px;
+        max-width: 280px;
+        transform: translateX(0%);
+
+        .nav{
+          height: auto;
+        }
 
         &:hover {
-          width: 200px;
         }
       }
 
