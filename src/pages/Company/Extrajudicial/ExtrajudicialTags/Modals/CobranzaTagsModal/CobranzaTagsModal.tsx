@@ -187,7 +187,7 @@ const CobranzaTagsModal = ({ visible, onClose, isEdit = false, idTag = 0 }: Cobr
         title={isEdit ? 'Editar Etiqueta' : 'Agregar Etiqueta'}
         contentOverflowY="auto"
         size="small"
-        minHeight="430px"
+        minHeight="390px"
         footer={
           <Container width="100%" height="75px" display="flex" justifyContent="end" alignItems="center" gap="20px">
             <Button
@@ -204,7 +204,7 @@ const CobranzaTagsModal = ({ visible, onClose, isEdit = false, idTag = 0 }: Cobr
       >
         <Container
           width="100%"
-          height="430px"
+          height="390px"
           display="flex"
           justify-content="center"
           flexDirection="column"

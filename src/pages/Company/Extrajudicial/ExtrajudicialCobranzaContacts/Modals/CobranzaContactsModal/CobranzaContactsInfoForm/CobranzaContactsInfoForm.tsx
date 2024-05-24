@@ -56,27 +56,36 @@ const CobranzaContactsInfoForm = ({ clientId, contactsType }: CobranzaContactsIn
         name="extContactTypeId"
         control={control}
         render={({ field }) => (
-          <Container display="flex" flexDirection="row" gap="10px" flexWrap="nowrap" width="100%" alignItems="flex-end">
-            <Select
+          <Container display="flex" flexDirection="column">
+            <Container
+              display="flex"
+              flexDirection="row"
+              gap="10px"
+              flexWrap="nowrap"
               width="100%"
-              disabled={!clientId}
-              label="Tipo:"
-              value={String(field.value)}
-              options={optionsStates}
-              onChange={(key) => {
-                field.onChange(Number(key))
-              }}
-              hasError={!!errors.extContactTypeId}
-            />
+              alignItems="flex-end"
+            >
+              <Select
+                width="100%"
+                disabled={!clientId}
+                label="Tipo:"
+                value={String(field.value)}
+                options={optionsStates}
+                onChange={(key) => {
+                  field.onChange(Number(key))
+                }}
+                hasError={!!errors.extContactTypeId}
+              />
 
-            <Button
-              shape="round"
-              leadingIcon="ri-add-fill"
-              size="small"
-              onClick={onShowModal}
-              disabled={!idCHB}
-              permission="P08-01"
-            />
+              <Button
+                shape="round"
+                leadingIcon="ri-add-fill"
+                size="small"
+                onClick={onShowModal}
+                disabled={!idCHB}
+                permission="P18-01"
+              />
+            </Container>
 
             {showExtContactType && <Label label={`Acción: ${extContactType?.contactType}`} color="Primary5" />}
           </Container>

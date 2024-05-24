@@ -93,7 +93,7 @@ const CobranzaFilesInfoForm = ({ setStateFormData, tags }: CobranzaFilesInfoForm
               size="small"
               onClick={onShowModal}
               disabled={!chb}
-              permission="P08-01"
+              permission="P14-01"
             />
           </Container>
         )}

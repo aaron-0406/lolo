@@ -89,24 +89,32 @@ const CobranzaProductsInfoForm = ({ clientId }: CobranzaProductsInfoFormProps) =
     }
   )
 
-  const { visible: visibleModalAdd, showModal: showModalAdd, hideModal: hideModalAdd } = useModal()
+  const {
+    visible: visibleModalAddProductName,
+    showModal: showModalAddProductName,
+    hideModal: hideModalAddProductName,
+  } = useModal()
 
-  const onShowModal = () => {
-    showModalAdd()
+  const onShowModalProductName = () => {
+    showModalAddProductName()
   }
 
-  const onCloseModal = () => {
-    hideModalAdd()
+  const onCloseModalProductName = () => {
+    hideModalAddProductName()
   }
 
-  const { visible: visibleModalAddNe, showModal: showModalAddNe, hideModal: hideModalAddNe } = useModal()
+  const {
+    visible: visibleModalAddNegotiation,
+    showModal: showModalAddNegotiation,
+    hideModal: hideModalAddNegotiation,
+  } = useModal()
 
-  const onShowModalNe = () => {
-    showModalAddNe()
+  const onShowModalNegotiation = () => {
+    showModalAddNegotiation()
   }
 
-  const onCloseModalNe = () => {
-    hideModalAddNe()
+  const onCloseModalNegotiation = () => {
+    hideModalAddNegotiation()
   }
 
   const productsName = dataProductNames?.data ?? []
@@ -139,27 +147,36 @@ const CobranzaProductsInfoForm = ({ clientId }: CobranzaProductsInfoFormProps) =
         name="extProductNameId"
         control={control}
         render={({ field }) => (
-          <Container display="flex" flexDirection="row" gap="10px" flexWrap="nowrap" width="100%" alignItems="flex-end">
-            <Select
-              disabled={!clientId}
+          <Container display="flex" flexDirection="column">
+            <Container
+              display="flex"
+              flexDirection="row"
+              gap="10px"
+              flexWrap="nowrap"
               width="100%"
-              label="Nombre:"
-              value={String(field.value)}
-              options={optionsProductsName}
-              onChange={(key) => {
-                field.onChange(key)
-              }}
-              hasError={!!errors.extProductNameId}
-            />
+              alignItems="flex-end"
+            >
+              <Select
+                disabled={!clientId}
+                width="100%"
+                label="Nombre:"
+                value={String(field.value)}
+                options={optionsProductsName}
+                onChange={(key) => {
+                  field.onChange(key)
+                }}
+                hasError={!!errors.extProductNameId}
+              />
 
-            <Button
-              shape="round"
-              leadingIcon="ri-add-fill"
-              size="small"
-              onClick={onShowModal}
-              disabled={!idCHB}
-              permission="P08-01"
-            />
+              <Button
+                shape="round"
+                leadingIcon="ri-add-fill"
+                size="small"
+                onClick={onShowModalProductName}
+                disabled={!idCHB}
+                permission="P08-01"
+              />
+            </Container>
 
             {showProductName && <Label label={`Nombre de producto: ${extProductName?.productName}`} color="Primary5" />}
           </Container>
@@ -170,26 +187,35 @@ const CobranzaProductsInfoForm = ({ clientId }: CobranzaProductsInfoFormProps) =
         name="negotiationId"
         control={control}
         render={({ field }) => (
-          <Container display="flex" flexDirection="row" gap="10px" flexWrap="nowrap" width="100%" alignItems="flex-end">
-            <Select
-              disabled={!clientId}
+          <Container display="flex" flexDirection="column">
+            <Container
+              display="flex"
+              flexDirection="row"
+              gap="10px"
+              flexWrap="nowrap"
               width="100%"
-              label="Negociación:"
-              value={String(field.value)}
-              options={optionsNegotiations}
-              onChange={(key) => {
-                field.onChange(parseInt(key))
-              }}
-              hasError={!!errors.negotiationId}
-            />
-            <Button
-              shape="round"
-              leadingIcon="ri-add-fill"
-              size="small"
-              onClick={onShowModalNe}
-              disabled={!idCHB}
-              permission="P08-01"
-            />
+              alignItems="flex-end"
+            >
+              <Select
+                disabled={!clientId}
+                width="100%"
+                label="Negociación:"
+                value={String(field.value)}
+                options={optionsNegotiations}
+                onChange={(key) => {
+                  field.onChange(parseInt(key))
+                }}
+                hasError={!!errors.negotiationId}
+              />
+              <Button
+                shape="round"
+                leadingIcon="ri-add-fill"
+                size="small"
+                onClick={onShowModalNegotiation}
+                disabled={!idCHB}
+                permission="P08-01"
+              />
+            </Container>
 
             {showNegotiation && <Label label={`Negociación: ${negotiation?.name}`} color="Primary5" />}
           </Container>
@@ -214,8 +240,12 @@ const CobranzaProductsInfoForm = ({ clientId }: CobranzaProductsInfoFormProps) =
         )}
       />
 
-      <ProductNameModal visible={visibleModalAdd} onClose={onCloseModal} />
-      <NegotiationModal visible={visibleModalAddNe} onClose={onCloseModalNe} />
+      {visibleModalAddProductName && (
+        <ProductNameModal visible={visibleModalAddProductName} onClose={onCloseModalProductName} />
+      )}
+      {visibleModalAddNegotiation && (
+        <NegotiationModal visible={visibleModalAddNegotiation} onClose={onCloseModalNegotiation} />
+      )}
     </>
   )
 }

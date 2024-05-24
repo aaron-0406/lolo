@@ -80,8 +80,8 @@ const CobranzaCommentsInfoForm = ({ clientId }: CobranzaCommentsInfoFormProps) =
 
   return (
     <>
-      <Container display="flex" flexDirection={mainContainer} gap="10px">
-        <Container width="100%" display="flex" flexDirection="column">
+      <Container display="flex" flexDirection={mainContainer} gap="20px">
+        <Container width="100%" display="flex" flexDirection="column" gap="10px">
           <Controller
             name="date"
             control={control}
@@ -122,34 +122,36 @@ const CobranzaCommentsInfoForm = ({ clientId }: CobranzaCommentsInfoFormProps) =
             name="managementActionId"
             control={control}
             render={({ field }) => (
-              <Container
-                display="flex"
-                flexDirection="row"
-                gap="10px"
-                flexWrap="nowrap"
-                width="100%"
-                alignItems="flex-end"
-              >
-                <Select
-                  disabled={!clientId}
+              <Container display="flex" flexDirection="column">
+                <Container
+                  display="flex"
+                  flexDirection="row"
+                  gap="10px"
+                  flexWrap="nowrap"
                   width="100%"
-                  label="Acción:"
-                  value={!!field.value ? String(field.value) : ''}
-                  options={optionsActions}
-                  onChange={(key) => {
-                    field.onChange(parseInt(key))
-                  }}
-                  hasError={!!errors.managementActionId}
-                />
+                  alignItems="flex-end"
+                >
+                  <Select
+                    disabled={!clientId}
+                    width="100%"
+                    label="Acción:"
+                    value={!!field.value ? String(field.value) : ''}
+                    options={optionsActions}
+                    onChange={(key) => {
+                      field.onChange(parseInt(key))
+                    }}
+                    hasError={!!errors.managementActionId}
+                  />
 
-                <Button
-                  shape="round"
-                  leadingIcon="ri-add-fill"
-                  size="small"
-                  onClick={onShowModal}
-                  disabled={!idCHB}
-                  permission="P08-01"
-                />
+                  <Button
+                    shape="round"
+                    leadingIcon="ri-add-fill"
+                    size="small"
+                    onClick={onShowModal}
+                    disabled={!idCHB}
+                    permission="P07-01"
+                  />
+                </Container>
 
                 {showManagementAction && <Label label={`Acción: ${managementAction?.nameAction}`} color="Primary5" />}
               </Container>
