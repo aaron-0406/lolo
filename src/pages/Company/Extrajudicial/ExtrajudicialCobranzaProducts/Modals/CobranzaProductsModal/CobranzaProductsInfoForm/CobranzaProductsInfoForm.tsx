@@ -174,7 +174,7 @@ const CobranzaProductsInfoForm = ({ clientId }: CobranzaProductsInfoFormProps) =
                 size="small"
                 onClick={onShowModalProductName}
                 disabled={!idCHB}
-                permission="P08-01"
+                permission="P19-01"
               />
             </Container>
 
@@ -213,7 +213,7 @@ const CobranzaProductsInfoForm = ({ clientId }: CobranzaProductsInfoFormProps) =
                 size="small"
                 onClick={onShowModalNegotiation}
                 disabled={!idCHB}
-                permission="P08-01"
+                permission="P09-01"
               />
             </Container>
 
