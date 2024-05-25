@@ -115,22 +115,22 @@ const JudicialBinProceduralStageTable = ({ opts, setOpts }: JudicialBinProcedura
                           event.stopPropagation()
                           handleClickButtonEdit(record.id)
                         }}
-                        messageTooltip="Editar Negociación"
+                        messageTooltip="Editar Etapa Procesal"
                         shape="round"
                         size="small"
                         leadingIcon="ri-pencil-fill"
-                        permission="P09-02"
+                        permission="P24-02"
                       />
                       <Button
                         onClick={(event) => {
                           event.stopPropagation()
                           handleClickDeleteJudicialBinProceduralStage(record.id)
                         }}
-                        messageTooltip="Eliminar Negociación"
+                        messageTooltip="Eliminar Etapa Procesal"
                         shape="round"
                         size="small"
                         leadingIcon="ri-delete-bin-line"
-                        permission="P09-03"
+                        permission="P24-03"
                         display="danger"
                       />
                     </Container>
