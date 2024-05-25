@@ -16,9 +16,9 @@ import { JudicialBinTypeBinnacleType } from '@/types/judicial/judicial-bin-type-
 import { JudicialBinProceduralStageType } from '@/types/judicial/judicial-bin-procedural-stage.type'
 import { getBinnacleByFileCase } from '@/services/judicial/judicial-binnacle.service'
 import notification from '@/ui/notification'
+import EmptyState from '@/ui/EmptyState'
 import { judicialBinnacleColumns } from './utils/columns'
 import { JudicialBinDefendantProceduralActionType } from '@/types/judicial/judicial-bin-defendant-procedural-action.type'
-import EmptyState from '@/ui/EmptyState'
 
 type JudicialBinnacleTableProps = {
   judicialFileCaseId?: number
