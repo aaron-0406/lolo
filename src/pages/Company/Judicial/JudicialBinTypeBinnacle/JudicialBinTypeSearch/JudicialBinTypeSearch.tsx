@@ -58,7 +58,7 @@ const JudicialBinTypeSearch = ({ opts, setOpts }: JudicialBinTypeSearchProps) =>
         size="small"
         onClick={showModalAdd}
         disabled={!chb}
-        permission="P09-01"
+        permission="P25-01"
       />
       <JudicialBinTypeBinnacleModal visible={visibleModalAdd} onClose={hideModalAdd} />
     </Container>

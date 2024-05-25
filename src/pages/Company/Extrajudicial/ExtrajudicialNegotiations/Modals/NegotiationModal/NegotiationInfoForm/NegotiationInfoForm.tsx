@@ -1,6 +1,5 @@
 import { Controller, useFormContext } from 'react-hook-form'
 import { NegotiationType } from '@/types/extrajudicial/negotiation.type'
-import Label from '@/ui/Label'
 import TextField from '@/ui/fields/TextField'
 import Container from '@/ui/Container'
 
