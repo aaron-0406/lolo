@@ -30,7 +30,6 @@ export const createBinnacle = async (
   formData.append('judicialFileCaseId', binnacle.judicialFileCaseId + '')
   formData.append('customerHasBankId', binnacle.customerHasBankId + '')
   formData.append('judicialBinProceduralStageId', binnacle.judicialBinProceduralStageId + '')
-  formData.append('judicialDefendantProceduralActionId', binnacle.judicialDefendantProceduralActionId + '')
   binnacle.files.forEach((file) => {
     formData.append('file', file)
   })
@@ -59,7 +58,6 @@ export const updateBinnacle = async (
   formData.append('binnacleTypeId', binnacle.binnacleTypeId + '')
   formData.append('date', binnacle.date)
   formData.append('judicialBinProceduralStageId', binnacle.judicialBinProceduralStageId + '')
-  formData.append('judicialDefendantProceduralActionId', binnacle.judicialDefendantProceduralActionId + '')
   binnacle.files.forEach((file) => {
     formData.append('file', file)
   })

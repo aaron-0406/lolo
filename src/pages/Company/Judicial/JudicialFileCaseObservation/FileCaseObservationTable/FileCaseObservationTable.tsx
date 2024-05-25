@@ -88,7 +88,7 @@ const JudicialObservationTable = ({ judicialFileCaseId, clientCode }: JudicialOb
   const observations = data?.data ?? []
 
   return (
-    <Container width="100%" height="calc(100% - 80px)" padding="20px">
+    <Container width="100%" height="calc(100% - 80px)" padding="10px 20px">
       <Table
         top="195px"
         columns={judicialObservationColumns}

@@ -78,7 +78,7 @@ const ProceduralWayTable = ({ opts, setOpts }: ProceduralWayTableProps) => {
     <Container width="100%" height="calc(100% - 112px)" padding="20px">
       <Pagination count={proceduralWays.length} opts={opts} setOpts={setOpts} />
       <Table
-        top="260px"
+        top="230px"
         columns={proceduralWayColumns}
         loading={isLoading}
         isArrayEmpty={!proceduralWays.length}

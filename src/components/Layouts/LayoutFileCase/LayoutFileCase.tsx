@@ -12,7 +12,7 @@ const LayoutFileCase = (props: LayoutFileCaseProps) => {
   const { actionsContent, infoContent, modalsContent, ownerContent } = props
 
   return (
-    <StyledContainer width="100%" height="100%" display="flex" flexDirection="column">
+    <StyledContainer width="100%" height="calc(100% - 50px)" display="flex" flexDirection="column">
       <Container
         className="container__top"
         width="100%"

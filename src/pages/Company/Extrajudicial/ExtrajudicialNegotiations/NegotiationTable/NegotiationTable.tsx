@@ -79,7 +79,7 @@ const NegotiationTable = ({ opts, setOpts }: NegotiationTableProps) => {
     <Container width="100%" height="calc(100% - 112px)" padding="20px">
       <Pagination count={negotiations.length} opts={opts} setOpts={setOpts} />
       <Table
-        top="260px"
+        top="220px"
         columns={negotiationColumns}
         loading={isLoading}
         isArrayEmpty={!negotiations.length}
@@ -95,10 +95,7 @@ const NegotiationTable = ({ opts, setOpts }: NegotiationTableProps) => {
         }
         emptyFirstState={
           <EmptyStateCell colSpan={negotiationColumns.length}>
-            <EmptyState
-              title="No hay recursos disponibles"
-              description="No se encontraron negociaciones"
-            />
+            <EmptyState title="No hay recursos disponibles" description="No se encontraron negociaciones" />
           </EmptyStateCell>
         }
       >

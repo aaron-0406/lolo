@@ -38,7 +38,13 @@ const ExtrajudicialCobranzaComments = () => {
   const clientId = data?.data.id
 
   return (
-    <Container width="100%" height="100%" display="flex" flexDirection="column" justifyContent="space-between">
+    <Container
+      width="100%"
+      height="calc(100% - 50px)"
+      display="flex"
+      flexDirection="column"
+      justifyContent="space-between"
+    >
       <CobranzaCommentsInfo name={clientName} clientId={clientId} />
       <CobranzaCommentsTable clientId={clientId} />
     </Container>
