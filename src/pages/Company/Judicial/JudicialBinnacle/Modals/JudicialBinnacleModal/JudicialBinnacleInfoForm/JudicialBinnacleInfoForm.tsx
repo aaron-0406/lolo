@@ -69,24 +69,32 @@ const JudicialBinnacleInfoForm = () => {
     }
   })
 
-  const { visible: visibleModalAddEta, showModal: showModalAddEta, hideModal: hideModalAddEta } = useModal()
+  const {
+    visible: visibleModalAddProceduralStage,
+    showModal: showModalAddProceduralStage,
+    hideModal: hideModalAddProceduralStage,
+  } = useModal()
 
-  const onShowModalEta = () => {
-    showModalAddEta()
+  const onShowModalProceduralStage = () => {
+    showModalAddProceduralStage()
   }
 
-  const onCloseModalEta = () => {
-    hideModalAddEta()
+  const onCloseModalProceduralStage = () => {
+    hideModalAddProceduralStage()
   }
 
-  const { visible: visibleModalAddTi, showModal: showModalAddTi, hideModal: hideModalAddTi } = useModal()
+  const {
+    visible: visibleModalAddTypeBinnacle,
+    showModal: showModalAddTypeBinnacle,
+    hideModal: hideModalAddTypeBinnacle,
+  } = useModal()
 
-  const onShowModalTi = () => {
-    showModalAddTi()
+  const onShowModalTypeBinnacle = () => {
+    showModalAddTypeBinnacle()
   }
 
-  const onCloseModalTi = () => {
-    hideModalAddTi()
+  const onCloseModalTypeBinnacle = () => {
+    hideModalAddTypeBinnacle()
   }
 
   return (
@@ -131,9 +139,9 @@ const JudicialBinnacleInfoForm = () => {
               shape="round"
               leadingIcon="ri-add-fill"
               size="small"
-              onClick={onShowModalEta}
+              onClick={onShowModalProceduralStage}
               disabled={!idCHB}
-              permission="P08-01"
+              permission="P24-01"
             />
           </Container>
         )}
@@ -159,9 +167,9 @@ const JudicialBinnacleInfoForm = () => {
               shape="round"
               leadingIcon="ri-add-fill"
               size="small"
-              onClick={onShowModalTi}
+              onClick={onShowModalTypeBinnacle}
               disabled={!idCHB}
-              permission="P08-01"
+              permission="P25-01"
             />
           </Container>
         )}
@@ -183,8 +191,9 @@ const JudicialBinnacleInfoForm = () => {
           />
         )}
       />
-      <JudicialBinProceduralStageModal visible={visibleModalAddEta} onClose={onCloseModalEta} />
-      <JudicialBinTypeBinnacleModal visible={visibleModalAddTi} onClose={onCloseModalTi} />
+
+      <JudicialBinProceduralStageModal visible={visibleModalAddProceduralStage} onClose={onCloseModalProceduralStage} />
+      <JudicialBinTypeBinnacleModal visible={visibleModalAddTypeBinnacle} onClose={onCloseModalTypeBinnacle} />
     </>
   )
 }

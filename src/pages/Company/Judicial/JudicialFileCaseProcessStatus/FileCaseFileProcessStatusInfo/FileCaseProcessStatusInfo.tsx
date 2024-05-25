@@ -99,16 +99,9 @@ const FileCaseProcessStatusInfo = () => {
             name="processReasonId"
             control={control}
             render={({ field }) => (
-              <Container
-                display="flex"
-                flexDirection="row"
-                gap="10px"
-                flexWrap="nowrap"
-                width="100%"
-                alignItems="flex-end"
-              >
+              <Container display="flex" flexDirection="row" gap="10px" width="100%" alignItems="flex-end">
                 <Select
-                  width="80vh"
+                  width="100%"
                   label="Motivo"
                   options={optionsStates}
                   value={String(field.value)}
@@ -123,7 +116,7 @@ const FileCaseProcessStatusInfo = () => {
                   size="small"
                   onClick={onShowModal}
                   disabled={!chb}
-                  permission="P08-01"
+                  permission="P27-01"
                 />
               </Container>
             )}

@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { FormProvider, useForm } from 'react-hook-form'
-import { createProcessReason, editProcessReason } from '@/services/judicial/judicial-process-reason.service'  
+import { createProcessReason, editProcessReason } from '@/services/judicial/judicial-process-reason.service'
 import { ModalProcessReasonResolver } from './ProcessReasonModal.yup'
 import Modal from '@/ui/Modal'
 import Container from '@/ui/Container'
@@ -13,7 +13,7 @@ import { CustomErrorResponse } from 'types/customErrorResponse'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import judicialProcessReasonCache from '../../ProcessReasonTable/utils/judicial-process-reason.cache'
 import { JudicialProcessReasonType } from '@/types/judicial/judicial-process-reason.types'
-import { getProcessReasonByID } from '../../../../../../shared/services/judicial/judicial-process-reason.service';
+import { getProcessReasonByID } from '../../../../../../shared/services/judicial/judicial-process-reason.service'
 
 type ProcessReasonModalProps = {
   visible: boolean
@@ -22,7 +22,7 @@ type ProcessReasonModalProps = {
   idProcessReason?: number
 }
 
-const defaultValuesProcessReason: Omit<JudicialProcessReasonType, 'createdAt' | 'updatedAt' | 'deletedAt'>  = {
+const defaultValuesProcessReason: Omit<JudicialProcessReasonType, 'createdAt' | 'updatedAt' | 'deletedAt'> = {
   id: 0,
   reason: '',
   customerHasBankId: 0,
@@ -94,7 +94,7 @@ const ProcessReasonModal = ({ visible, onClose, isEdit = false, idProcessReason 
   >(
     async () => {
       const { id, ...restProcessReason } = getValues()
-      return await editProcessReason(id ,{
+      return await editProcessReason(id, {
         reason: restProcessReason.reason,
       })
     },

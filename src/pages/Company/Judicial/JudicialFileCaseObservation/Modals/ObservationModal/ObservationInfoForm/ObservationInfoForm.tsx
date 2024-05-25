@@ -104,7 +104,7 @@ const ObservationInfoForm = () => {
               size="small"
               onClick={onShowModal}
               disabled={!idCHB}
-              permission="P08-01"
+              permission="P23-01"
             />
           </Container>
         )}
@@ -125,6 +125,7 @@ const ObservationInfoForm = () => {
           />
         )}
       />
+
       <ObsTypeModal visible={visibleModalAdd} onClose={onCloseModal} />
     </>
   )

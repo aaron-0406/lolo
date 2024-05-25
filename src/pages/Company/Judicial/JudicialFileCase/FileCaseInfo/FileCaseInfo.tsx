@@ -103,33 +103,37 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
     }
   )
 
-  const { visible: visibleModalAddJu, showModal: showModalAddJu, hideModal: hideModalAddJu } = useModal()
   const { hideModal, showModal, visible } = useModal()
-  const { visible: visibleModalAddPro, showModal: showModalAddPro, hideModal: hideModalAddPro } = useModal()
-  const { visible: visibleModalAddMa, showModal: showModalAddMa, hideModal: hideModalAddMa } = useModal()
+  const { visible: visibleModalAddCourt, showModal: showModalAddCourt, hideModal: hideModalAddCourt } = useModal()
+  const {
+    visible: visibleModalAddProceduralWay,
+    showModal: showModalAddProceduralWay,
+    hideModal: hideModalAddProceduralWay,
+  } = useModal()
+  const { visible: visibleModalAddSubject, showModal: showModalAddSubject, hideModal: hideModalAddSubject } = useModal()
 
-  const onShowModalJu = () => {
-    showModalAddJu()
+  const onShowModalCourt = () => {
+    showModalAddCourt()
   }
 
-  const onCloseModalJu = () => {
-    hideModalAddJu()
+  const onCloseModalCourt = () => {
+    hideModalAddCourt()
   }
 
-  const onShowModalPro = () => {
-    showModalAddPro()
+  const onShowModalProceduralWay = () => {
+    showModalAddProceduralWay()
   }
 
-  const onCloseModalPro = () => {
-    hideModalAddPro()
+  const onCloseModalProceduralWay = () => {
+    hideModalAddProceduralWay()
   }
 
-  const onShowModalMa = () => {
-    showModalAddMa()
+  const onShowModalSubject = () => {
+    showModalAddSubject()
   }
 
-  const onCloseModalMa = () => {
-    hideModalAddMa()
+  const onCloseModalSubject = () => {
+    hideModalAddSubject()
   }
 
   const optionsUsers: Array<SelectItemType> = users.map((user) => {
@@ -230,9 +234,9 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
                 shape="round"
                 leadingIcon="ri-add-fill"
                 size="small"
-                onClick={onShowModalJu}
+                onClick={onShowModalCourt}
                 disabled={!chb}
-                permission="P08-01"
+                permission="P20-01"
               />
             </Container>
           )}
@@ -284,9 +288,9 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
                 shape="round"
                 leadingIcon="ri-add-fill"
                 size="small"
-                onClick={onShowModalMa}
+                onClick={onShowModalSubject}
                 disabled={!chb}
-                permission="P08-01"
+                permission="P21-01"
               />
             </Container>
           )}
@@ -321,9 +325,9 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
                 shape="round"
                 leadingIcon="ri-add-fill"
                 size="small"
-                onClick={onShowModalPro}
+                onClick={onShowModalProceduralWay}
                 disabled={!chb}
-                permission="P08-01"
+                permission="P22-01"
               />
             </Container>
           )}
@@ -478,9 +482,10 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
         }}
         visible={visible}
       />
-      <CourtModal onClose={onCloseModalJu} visible={visibleModalAddJu} />
-      <ProceduralWayModal onClose={onCloseModalPro} visible={visibleModalAddPro} />
-      <SubjectModal onClose={onCloseModalMa} visible={visibleModalAddMa} />
+
+      <CourtModal onClose={onCloseModalCourt} visible={visibleModalAddCourt} />
+      <ProceduralWayModal onClose={onCloseModalProceduralWay} visible={visibleModalAddProceduralWay} />
+      <SubjectModal onClose={onCloseModalSubject} visible={visibleModalAddSubject} />
     </StyledContainer>
   )
 }
