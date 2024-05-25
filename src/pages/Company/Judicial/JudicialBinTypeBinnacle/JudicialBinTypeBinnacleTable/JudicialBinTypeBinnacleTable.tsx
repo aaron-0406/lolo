@@ -94,12 +94,9 @@ const JudicialBinTypeBinnacleTable = ({ opts, setOpts }: JudicialBinTypeBinnacle
             />
           </EmptyStateCell>
         }
-        emptyFirstState = {
+        emptyFirstState={
           <EmptyStateCell colSpan={binTypeBinnaclesColumns.length}>
-            <EmptyState
-              title="No hay recursos disponibles"
-              description="No se encontró el la bitacora solicitada"
-            />
+            <EmptyState title="No hay recursos disponibles" description="No se encontró el la bitacora solicitada" />
           </EmptyStateCell>
         }
       >
@@ -118,22 +115,22 @@ const JudicialBinTypeBinnacleTable = ({ opts, setOpts }: JudicialBinTypeBinnacle
                           event.stopPropagation()
                           handleClickButtonEdit(record.id)
                         }}
-                        messageTooltip="Editar Negociación"
+                        messageTooltip="Editar Tipo de Bitacora"
                         shape="round"
                         size="small"
                         leadingIcon="ri-pencil-fill"
-                        permission="P09-02"
+                        permission="P25-02"
                       />
                       <Button
                         onClick={(event) => {
                           event.stopPropagation()
                           handleClickDeleteJudicialBinTypeBinnacle(record.id)
                         }}
-                        messageTooltip="Eliminar Negociación"
+                        messageTooltip="Eliminar Tipo de Bitacora"
                         shape="round"
                         size="small"
                         leadingIcon="ri-delete-bin-line"
-                        permission="P09-03"
+                        permission="P25-03"
                         display="danger"
                       />
                     </Container>

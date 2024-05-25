@@ -48,6 +48,7 @@ import JudicialProceduralWay from 'pages/Company/Judicial/JudicialProceduralWay/
 import JudicialFileCaseDemandedProducts from 'pages/Company/Judicial/JudicialFileCaseDemandedProducts'
 import JudicialObsType from 'pages/Company/Judicial/JudicialObsType'
 import JudicialObservation from 'pages/Company/Judicial/JudicialFileCaseObservation'
+import JudicialProcessReason from 'pages/Company/Judicial/JudicialProcessReason'
 
 import ErrorPage from '../../../pages/ErrorPage'
 import NotFound from '../../../pages/NotFound'
@@ -63,7 +64,9 @@ import paths from '../paths'
 import JudicialBinnacle from 'pages/Company/Judicial/JudicialBinnacle'
 import JudicialBinTypeBinnacle from 'pages/Company/Judicial/JudicialBinTypeBinnacle'
 import JudicialBinProceduralStage from 'pages/Company/Judicial/JudicialBinProceduralStage'
-import JudicialBinDefendantProceduralAction from 'pages/Company/Judicial/JudicialBinDefendantProceduralAction'
+import JudicialFileCaseProcessStatus from 'pages/Company/Judicial/JudicialFileCaseProcessStatus'
+import JudicialFileCaseRelatedProcess from 'pages/Company/Judicial/JudicialFileCaseRelatedProcess'
+import JudicialFileCaseRelatedProcessList from 'pages/Company/Judicial/JudicialFileCaseRelatedProcessesList'
 
 const AppRouter = () => {
   return (
@@ -123,12 +126,16 @@ const AppRouter = () => {
         <Route path={paths.judicial.materias()} element={<JudicialSubject />} />
         <Route path={paths.judicial.detallesExpediente()} element={<JudicialFileCase />} />
         <Route path={paths.judicial.productosDemandados()} element={<JudicialFileCaseDemandedProducts />} />
+        <Route path={paths.judicial.processStatus()} element={<JudicialFileCaseProcessStatus />} />
         <Route path={paths.judicial.bitacora()} element={<JudicialBinnacle />} />
+        <Route path={paths.judicial.bitacoraProcesoConexo()} element={<JudicialBinnacle />} />
         <Route path={paths.judicial.bitacoraTipo()} element={<JudicialBinTypeBinnacle />} />
         <Route path={paths.judicial.bitacoraProceduralStage()} element={<JudicialBinProceduralStage />} />
-        <Route path={paths.judicial.bitacoraDefendantProceduralAction()} element={<JudicialBinDefendantProceduralAction />} />
         <Route path={paths.judicial.observacionTipo()} element={<JudicialObsType />} />
         <Route path={paths.judicial.observacion()} element={<JudicialObservation />} />
+        <Route path={paths.judicial.processReason()} element={<JudicialProcessReason />} />
+        <Route path={paths.judicial.relatedProcess()} element={<JudicialFileCaseRelatedProcessList />} />
+        <Route path={paths.judicial.detallesExpedienteRelatedProcess()} element={<JudicialFileCaseRelatedProcess />} />
       </Route>
 
       <Route path="*" element={<NotFound />} />

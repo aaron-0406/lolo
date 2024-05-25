@@ -17,4 +17,9 @@ export type JudicialCaseFileType = {
   judicialSubjectId: number
   judicialProceduralWayId: number
   customerHasBankId: number
+  processStatus?: string
+  processComment?: string
+  processReasonId?: number
+  idJudicialCaseFileRelated?: number
+  bankId?: number
 }

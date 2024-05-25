@@ -168,7 +168,7 @@ const ProductNameModal = ({ visible, onClose, isEdit = false, idProductName = 0 
         title={isEdit ? 'Editar nombre de producto' : 'Agregar nombre de producto'}
         contentOverflowY="auto"
         size="small"
-        minHeight="140px"
+        minHeight="120px"
         footer={
           <Container width="100%" height="75px" display="flex" justifyContent="end" alignItems="center" gap="20px">
             <Button
@@ -185,7 +185,7 @@ const ProductNameModal = ({ visible, onClose, isEdit = false, idProductName = 0 
       >
         <Container
           width="100%"
-          height="210px"
+          height="120px"
           display="flex"
           justify-content="center"
           flexDirection="column"

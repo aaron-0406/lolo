@@ -14,6 +14,9 @@ import { AxiosResponse } from 'axios'
 import { ManagementActionType } from '@/types/extrajudicial/management-action.type'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { device } from '@/breakpoints/responsive'
+import Button from '@/ui/Button'
+import useModal from '@/hooks/useModal'
+import ActionsModal from '@/pages/extrajudicial/ExtrajudicialActions/Modals/ActionsModal'
 
 type CobranzaCommentsInfoFormProps = {
   clientId: number
@@ -53,12 +56,22 @@ const CobranzaCommentsInfoForm = ({ clientId }: CobranzaCommentsInfoFormProps) =
 
   const managementActions = data?.data ?? []
 
+  const { visible: visibleModalAdd, showModal: showModalAdd, hideModal: hideModalAdd } = useModal()
+
   const optionsActions: Array<SelectItemType> = managementActions.map((managementAction) => {
     return {
       key: String(managementAction.id),
       label: managementAction.nameAction,
     }
   })
+
+  const onShowModal = () => {
+    showModalAdd()
+  }
+
+  const onCloseModal = () => {
+    hideModalAdd()
+  }
 
   const greaterThanTabletL = useMediaQuery(device.tabletL)
   const greaterThanDesktopS = useMediaQuery(device.desktopS)
@@ -67,8 +80,8 @@ const CobranzaCommentsInfoForm = ({ clientId }: CobranzaCommentsInfoFormProps) =
 
   return (
     <>
-      <Container display="flex" flexDirection={mainContainer} gap="10px">
-        <Container width="100%" display="flex" flexDirection="column">
+      <Container display="flex" flexDirection={mainContainer} gap="20px">
+        <Container width="100%" display="flex" flexDirection="column" gap="10px">
           <Controller
             name="date"
             control={control}
@@ -109,21 +122,39 @@ const CobranzaCommentsInfoForm = ({ clientId }: CobranzaCommentsInfoFormProps) =
             name="managementActionId"
             control={control}
             render={({ field }) => (
-              <>
-                <Select
-                  disabled={!clientId}
+              <Container display="flex" flexDirection="column">
+                <Container
+                  display="flex"
+                  flexDirection="row"
+                  gap="10px"
+                  flexWrap="nowrap"
                   width="100%"
-                  label="Acción:"
-                  value={!!field.value ? String(field.value) : ''}
-                  options={optionsActions}
-                  onChange={(key) => {
-                    field.onChange(parseInt(key))
-                  }}
-                  hasError={!!errors.managementActionId}
-                />
+                  alignItems="flex-end"
+                >
+                  <Select
+                    disabled={!clientId}
+                    width="100%"
+                    label="Acción:"
+                    value={!!field.value ? String(field.value) : ''}
+                    options={optionsActions}
+                    onChange={(key) => {
+                      field.onChange(parseInt(key))
+                    }}
+                    hasError={!!errors.managementActionId}
+                  />
+
+                  <Button
+                    shape="round"
+                    leadingIcon="ri-add-fill"
+                    size="small"
+                    onClick={onShowModal}
+                    disabled={!idCHB}
+                    permission="P07-01"
+                  />
+                </Container>
 
                 {showManagementAction && <Label label={`Acción: ${managementAction?.nameAction}`} color="Primary5" />}
-              </>
+              </Container>
             )}
           />
         </Container>
@@ -148,6 +179,8 @@ const CobranzaCommentsInfoForm = ({ clientId }: CobranzaCommentsInfoFormProps) =
           />
         </Container>
       </Container>
+
+      <ActionsModal visible={visibleModalAdd} onClose={onCloseModal} />
     </>
   )
 }

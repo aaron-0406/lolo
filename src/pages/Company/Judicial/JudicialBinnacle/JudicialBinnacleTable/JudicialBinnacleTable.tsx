@@ -19,6 +19,7 @@ import notification from '@/ui/notification'
 import EmptyState from '@/ui/EmptyState'
 import { judicialBinnacleColumns } from './utils/columns'
 import { JudicialBinDefendantProceduralActionType } from '@/types/judicial/judicial-bin-defendant-procedural-action.type'
+import EmptyState from '@/ui/EmptyState'
 
 type JudicialBinnacleTableProps = {
   judicialFileCaseId?: number
@@ -97,7 +98,12 @@ const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode }: JudicialBinna
         isArrayEmpty={!binnacles.length}
         emptyState={
           <EmptyStateCell colSpan={judicialBinnacleColumns.length}>
-            <div>Vacio</div>
+            <EmptyState title="No hay recursos disponibles" description="No se encontraron bitacoras registradas" />
+          </EmptyStateCell>
+        }
+        emptyFirstState={
+          <EmptyStateCell colSpan={judicialBinnacleColumns.length}>
+            <EmptyState title="No hay recursos disponibles" description="No se encontraron bitacoras registradas" />
           </EmptyStateCell>
         }
         emptyFirstState={

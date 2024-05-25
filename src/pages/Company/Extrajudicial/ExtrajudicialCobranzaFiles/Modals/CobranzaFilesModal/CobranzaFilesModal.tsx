@@ -101,7 +101,7 @@ const CobranzaFilesModal = ({ visible, onClose, clientId = 0, clientCode = 0 }: 
   )
 
   const { data } = useQuery<AxiosResponse<Array<ExtTagType>, Error>>(
-    [`${KEY_COBRANZA_URL_TAG_CODE_CACHE}-TAGS-BY-CHB-AND-TAG-GROUP-ID`],
+    [KEY_COBRANZA_URL_TAG_CODE_CACHE, parseInt(selectedBank.idCHB)],
     async () => {
       return await getExtTagsByCHBAndTagGroupId(parseInt(selectedBank.idCHB.length ? selectedBank.idCHB : '0'), 1)
     },

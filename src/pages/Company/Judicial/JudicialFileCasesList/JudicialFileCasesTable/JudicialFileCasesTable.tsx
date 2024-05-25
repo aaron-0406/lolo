@@ -78,7 +78,6 @@ const JudicialFileCasesTable = () => {
         if (selectedFilterOption.identifier === filterOption.identifier) {
           return filterOption
         }
-
         return selectedFilterOption
       })
       setSelectedFilters({ url: currentPath, filters: selectedFiltersUpdated })
@@ -243,6 +242,11 @@ const JudicialFileCasesTable = () => {
                       {record?.client?.name || '-'}
                     </Text.Body>
                   </Container>
+                </BodyCell>
+                <BodyCell textAlign="center">
+                  <Text.Body size="m" weight="bold" color="Primary5">{`${
+                    record?.processStatus?.toUpperCase() || '-'
+                  }`}</Text.Body>
                 </BodyCell>
                 <BodyCell textAlign="left">{`${record?.judicialCourt?.court || ''}`}</BodyCell>
                 <BodyCell textAlign="left">{`${record?.judicialSubject?.subject || ''}`}</BodyCell>

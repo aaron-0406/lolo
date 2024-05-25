@@ -15,12 +15,29 @@ import { NegotiationType } from '@/types/extrajudicial/negotiation.type'
 import { KEY_EXT_COBRANZA_FUNCIONARIOS_CACHE } from '../../ExtrajudicialFuncionarios/FuncionariosTable/utils/ext-funcionarios.cache'
 import { getAllFuncionariosByCHB } from '@/services/extrajudicial/funcionario.service'
 import { FuncionarioType } from '@/types/extrajudicial/funcionario.type'
+import FuncionariosModal from '../../ExtrajudicialFuncionarios/Modals/FuncionariosModal'
+import Button from '@/ui/Button'
+import useModal from '@/hooks/useModal'
+import DatePicker from '@/ui/DatePicker/DatePicker'
+import NegotiationModal from '../../ExtrajudicialNegotiations/Modals/NegotiationModal'
 
 type CobranzaInfoProps = {
   loading: boolean
 }
 
 const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
+  const {
+    visible: visibleModalAddFuncionarios,
+    showModal: showModalAddFuncionarios,
+    hideModal: hideModalAddFuncionarios,
+  } = useModal()
+
+  const {
+    visible: visibleModalAddNegotiations,
+    showModal: showModalAddNegotiations,
+    hideModal: hideModalAddNegotiations,
+  } = useModal()
+
   const {
     bank: {
       selectedBank: { idCHB: chb },
@@ -87,6 +104,22 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
     }
   })
 
+  const onShowModalFuncionarios = () => {
+    showModalAddFuncionarios()
+  }
+
+  const onCloseModalFuncionarios = () => {
+    hideModalAddFuncionarios()
+  }
+
+  const onShowModalNegotiations = () => {
+    showModalAddNegotiations()
+  }
+
+  const onCloseModalNegotiations = () => {
+    hideModalAddNegotiations()
+  }
+
   if (loading) {
     return <div>Loading ...</div>
   }
@@ -120,17 +153,35 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
           name="negotiationId"
           control={control}
           render={({ field }) => (
-            <Select
+            <Container
+              display="flex"
+              flexDirection="row"
+              gap="10px"
+              flexWrap="nowrap"
               width="100%"
-              label="Estado:"
-              value={String(field.value)}
-              options={optionsStates}
-              onChange={(key) => {
-                field.onChange(parseInt(key))
-              }}
-              placeholder={negotiation?.name}
-              hasError={!!errors.negotiationId}
-            />
+              alignItems="flex-end"
+            >
+              <Select
+                width="100%"
+                label="Estado:"
+                value={String(field.value)}
+                options={optionsStates}
+                onChange={(key) => {
+                  field.onChange(parseInt(key))
+                }}
+                placeholder={negotiation?.name}
+                hasError={!!errors.negotiationId}
+              />
+
+              <Button
+                shape="round"
+                leadingIcon="ri-add-fill"
+                size="small"
+                onClick={onShowModalNegotiations}
+                disabled={!chb}
+                permission="P09-01"
+              />
+            </Container>
           )}
         />
       </div>
@@ -205,17 +256,35 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
           name="funcionarioId"
           control={control}
           render={({ field }) => (
-            <Select
+            <Container
+              display="flex"
+              flexDirection="row"
+              gap="10px"
+              flexWrap="nowrap"
               width="100%"
-              label="Funcionario:"
-              value={String(field.value)}
-              options={optionsFuncionarios}
-              onChange={(key) => {
-                field.onChange(parseInt(key))
-              }}
-              placeholder={funcionario?.name}
-              hasError={!!errors.funcionarioId}
-            />
+              alignItems="flex-end"
+            >
+              <Select
+                width="100%"
+                label="Funcionario:"
+                value={String(field.value)}
+                options={optionsFuncionarios}
+                onChange={(key) => {
+                  field.onChange(parseInt(key))
+                }}
+                placeholder={funcionario?.name}
+                hasError={!!errors.funcionarioId}
+              />
+
+              <Button
+                shape="round"
+                leadingIcon="ri-add-fill"
+                size="small"
+                onClick={onShowModalFuncionarios}
+                disabled={!chb}
+                permission="P08-01"
+              />
+            </Container>
           )}
         />
 
@@ -268,6 +337,29 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
           )}
         />
       </div>
+      <Container className="fields-wrapper-container-t">
+        <Controller
+          name="memoAssignmentDate"
+          control={control}
+          render={({ field }) => (
+            <DatePicker
+              label="Fecha de asignación (MEMO):"
+              selectedDate={field.value}
+              placeholder="Ingrese la fecha:"
+              dateFormat="DD-MM-YYYY"
+              width="100%"
+              value={field.value ?? ''}
+              getDate={(e) => {
+                field.onChange(e)
+              }}
+            />
+          )}
+        />
+        <Container width="100%" />
+      </Container>
+
+      <FuncionariosModal visible={visibleModalAddFuncionarios} onClose={onCloseModalFuncionarios} />
+      <NegotiationModal visible={visibleModalAddNegotiations} onClose={onCloseModalNegotiations} />
     </StyledContainer>
   )
 }

@@ -96,7 +96,12 @@ const JudicialObservationTable = ({ judicialFileCaseId, clientCode }: JudicialOb
         isArrayEmpty={!observations.length}
         emptyState={
           <EmptyStateCell colSpan={judicialObservationColumns.length}>
-            <div>Vacio</div>
+            <EmptyState title="No hay recursos disponibles" description="No se encontraron observaciones" />
+          </EmptyStateCell>
+        }
+        emptyFirstState={
+          <EmptyStateCell colSpan={judicialObservationColumns.length}>
+            <EmptyState title="No hay recursos disponibles" description="No se encontraron observaciones" />
           </EmptyStateCell>
         }
         emptyFirstState={
