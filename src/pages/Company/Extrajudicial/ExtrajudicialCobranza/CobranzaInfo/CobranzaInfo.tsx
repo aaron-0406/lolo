@@ -18,12 +18,26 @@ import { FuncionarioType } from '@/types/extrajudicial/funcionario.type'
 import FuncionariosModal from '../../ExtrajudicialFuncionarios/Modals/FuncionariosModal'
 import Button from '@/ui/Button'
 import useModal from '@/hooks/useModal'
+import DatePicker from '@/ui/DatePicker/DatePicker'
+import NegotiationModal from '../../ExtrajudicialNegotiations/Modals/NegotiationModal'
 
 type CobranzaInfoProps = {
   loading: boolean
 }
 
 const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
+  const {
+    visible: visibleModalAddFuncionarios,
+    showModal: showModalAddFuncionarios,
+    hideModal: hideModalAddFuncionarios,
+  } = useModal()
+
+  const {
+    visible: visibleModalAddNegotiations,
+    showModal: showModalAddNegotiations,
+    hideModal: hideModalAddNegotiations,
+  } = useModal()
+
   const {
     bank: {
       selectedBank: { idCHB: chb },
@@ -62,8 +76,6 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
   )
   const funcionarios = dataFuncionarios?.data ?? []
 
-  const { visible: visibleModalAdd, showModal: showModalAdd, hideModal: hideModalAdd } = useModal()
-
   const optionsCities: Array<SelectItemType> = cities.map((city) => {
     return {
       key: String(city.id),
@@ -92,12 +104,20 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
     }
   })
 
-  const onShowModal = () => {
-    showModalAdd()
+  const onShowModalFuncionarios = () => {
+    showModalAddFuncionarios()
   }
 
-  const onCloseModal = () => {
-    hideModalAdd()
+  const onCloseModalFuncionarios = () => {
+    hideModalAddFuncionarios()
+  }
+
+  const onShowModalNegotiations = () => {
+    showModalAddNegotiations()
+  }
+
+  const onCloseModalNegotiations = () => {
+    hideModalAddNegotiations()
   }
 
   if (loading) {
@@ -133,17 +153,35 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
           name="negotiationId"
           control={control}
           render={({ field }) => (
-            <Select
+            <Container
+              display="flex"
+              flexDirection="row"
+              gap="10px"
+              flexWrap="nowrap"
               width="100%"
-              label="Estado:"
-              value={String(field.value)}
-              options={optionsStates}
-              onChange={(key) => {
-                field.onChange(parseInt(key))
-              }}
-              placeholder={negotiation?.name}
-              hasError={!!errors.negotiationId}
-            />
+              alignItems="flex-end"
+            >
+              <Select
+                width="100%"
+                label="Estado:"
+                value={String(field.value)}
+                options={optionsStates}
+                onChange={(key) => {
+                  field.onChange(parseInt(key))
+                }}
+                placeholder={negotiation?.name}
+                hasError={!!errors.negotiationId}
+              />
+
+              <Button
+                shape="round"
+                leadingIcon="ri-add-fill"
+                size="small"
+                onClick={onShowModalNegotiations}
+                disabled={!chb}
+                permission="P09-01"
+              />
+            </Container>
           )}
         />
       </div>
@@ -242,7 +280,7 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
                 shape="round"
                 leadingIcon="ri-add-fill"
                 size="small"
-                onClick={onShowModal}
+                onClick={onShowModalFuncionarios}
                 disabled={!chb}
                 permission="P08-01"
               />
@@ -299,8 +337,29 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
           )}
         />
       </div>
+      <Container className="fields-wrapper-container-t">
+        <Controller
+          name="memoAssignmentDate"
+          control={control}
+          render={({ field }) => (
+            <DatePicker
+              label="Fecha de asignación (MEMO):"
+              selectedDate={field.value}
+              placeholder="Ingrese la fecha:"
+              dateFormat="DD-MM-YYYY"
+              width="100%"
+              value={field.value ?? ''}
+              getDate={(e) => {
+                field.onChange(e)
+              }}
+            />
+          )}
+        />
+        <Container width="100%" />
+      </Container>
 
-      <FuncionariosModal visible={visibleModalAdd} onClose={onCloseModal} />
+      <FuncionariosModal visible={visibleModalAddFuncionarios} onClose={onCloseModalFuncionarios} />
+      <NegotiationModal visible={visibleModalAddNegotiations} onClose={onCloseModalNegotiations} />
     </StyledContainer>
   )
 }

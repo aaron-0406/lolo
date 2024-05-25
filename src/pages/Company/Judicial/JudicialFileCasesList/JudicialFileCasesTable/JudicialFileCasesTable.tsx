@@ -78,7 +78,6 @@ const JudicialFileCasesTable = () => {
         if (selectedFilterOption.identifier === filterOption.identifier) {
           return filterOption
         }
-
         return selectedFilterOption
       })
       setSelectedFilters({ url: currentPath, filters: selectedFiltersUpdated })

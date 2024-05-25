@@ -19,9 +19,6 @@ import { KEY_JUDICIAL_BIN_TYPE_BINNACLE_CACHE } from 'pages/Company/Judicial/Jud
 import { JudicialBinTypeBinnacleType } from '@/types/judicial/judicial-bin-type-binnacle.type'
 import { getJudicialBinTypeBinnacleByCHB } from '@/services/judicial/judicial-bin-type-binnacle.service'
 import { JudicialBinFileType } from '@/types/judicial/judicial-bin-file.type'
-import { JudicialBinDefendantProceduralActionType } from '@/types/judicial/judicial-bin-defendant-procedural-action.type'
-import { KEY_JUDICIAL_BIN_DEFENDANT_PROCEDURAL_ACTION_CACHE } from 'pages/Company/Judicial/JudicialBinDefendantProceduralAction/JudicialBinDefendantProceduralActionTable/utils/judicial-bin-defendant-procedural-action.cache'
-import { getJudicialBinDefendantProceduralActionByCHB } from '@/services/judicial/judicial-bin-defendant-procedural-action.service'
 
 const JudicialBinnacleInfoForm = () => {
   const {
@@ -47,12 +44,6 @@ const JudicialBinnacleInfoForm = () => {
     }
   )
 
-  const { data: dataBinDefendatProceduralAction } = useQuery<
-    AxiosResponse<Array<JudicialBinDefendantProceduralActionType>>
-  >([KEY_JUDICIAL_BIN_DEFENDANT_PROCEDURAL_ACTION_CACHE, parseInt(idCHB.length ? idCHB : '0')], async () => {
-    return await getJudicialBinDefendantProceduralActionByCHB(Number(idCHB))
-  })
-
   const { data: dataBinTypeBinnacle } = useQuery<AxiosResponse<Array<JudicialBinTypeBinnacleType>>>(
     [KEY_JUDICIAL_BIN_TYPE_BINNACLE_CACHE, parseInt(idCHB.length ? idCHB : '0')],
     async () => {
@@ -61,7 +52,6 @@ const JudicialBinnacleInfoForm = () => {
   )
 
   const binProceduralStagesOptions = data?.data ?? []
-  const binDefendatProceduralActionsOptions = dataBinDefendatProceduralAction?.data ?? []
 
   const binTypeBinnacleOptions = dataBinTypeBinnacle?.data ?? []
 
@@ -76,13 +66,6 @@ const JudicialBinnacleInfoForm = () => {
     return {
       key: String(binTypeBinnacle.id),
       label: binTypeBinnacle.typeBinnacle,
-    }
-  })
-
-  const optionsDefendant: Array<SelectItemType> = binDefendatProceduralActionsOptions.map((binTypeBinnacle) => {
-    return {
-      key: String(binTypeBinnacle.id),
-      label: binTypeBinnacle.defendantProceduralAction,
     }
   })
 
@@ -183,22 +166,7 @@ const JudicialBinnacleInfoForm = () => {
           </Container>
         )}
       />
-      <Controller
-        name="judicialDefendantProceduralActionId"
-        control={control}
-        render={({ field }) => (
-          <Select
-            width="100%"
-            label="Actuación Procesal Demandada:"
-            value={String(field.value)}
-            options={optionsDefendant}
-            onChange={(key) => {
-              field.onChange(key)
-            }}
-            hasError={!!errors.judicialDefendantProceduralActionId}
-          />
-        )}
-      />
+
       <Controller
         name="lastPerformed"
         control={control}

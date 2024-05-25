@@ -65,7 +65,7 @@ const FileCaseDemandedProductsTable = ({ caseFileId }: FileCaseDemandedProductsT
         top="195px"
         columns={demandedProductsColumns}
         loading={isLoading}
-        isArrayEmpty={true}
+        isArrayEmpty={!products.length}
         emptyState={
           <EmptyStateCell colSpan={demandedProductsColumns.length}>
             <EmptyState

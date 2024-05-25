@@ -17,6 +17,7 @@ import { KEY_JUDICIAL_URL_OBSERVATION_CODE_CACHE } from './utils/judicial-observ
 import { judicialObservationColumns } from './utils/columns'
 import RemoveJudicialObservationModal from '../Modals/RemoveObservationModal'
 import JudicialObservationModal from '../Modals/ObservationModal'
+import EmptyState from '@/ui/EmptyState'
 
 type JudicialObservationTableProps = {
   judicialFileCaseId?: number
@@ -95,7 +96,12 @@ const JudicialObservationTable = ({ judicialFileCaseId, clientCode }: JudicialOb
         isArrayEmpty={!observations.length}
         emptyState={
           <EmptyStateCell colSpan={judicialObservationColumns.length}>
-            <div>Vacio</div>
+            <EmptyState title="No hay recursos disponibles" description="No se encontraron observaciones" />
+          </EmptyStateCell>
+        }
+        emptyFirstState={
+          <EmptyStateCell colSpan={judicialObservationColumns.length}>
+            <EmptyState title="No hay recursos disponibles" description="No se encontraron observaciones" />
           </EmptyStateCell>
         }
       >
