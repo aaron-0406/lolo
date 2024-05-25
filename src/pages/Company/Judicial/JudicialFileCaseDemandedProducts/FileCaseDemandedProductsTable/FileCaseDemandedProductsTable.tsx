@@ -60,9 +60,9 @@ const FileCaseDemandedProductsTable = ({ caseFileId }: FileCaseDemandedProductsT
   const products = data?.data ?? []
 
   return (
-    <Container width="100%" height="calc(100% - 80px)" padding="20px">
+    <Container width="100%" height="calc(100% - 80px)" padding="10px 20px">
       <Table
-        top="195px"
+        top="190px"
         columns={demandedProductsColumns}
         loading={isLoading}
         isArrayEmpty={!products.length}

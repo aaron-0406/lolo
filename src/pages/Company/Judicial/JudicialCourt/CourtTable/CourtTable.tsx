@@ -71,7 +71,7 @@ const CourtTable = ({ opts, setOpts }: CourtTableProps) => {
     <Container width="100%" height="calc(100% - 112px)" padding="20px">
       <Pagination count={courts.length} opts={opts} setOpts={setOpts} />
       <Table
-        top="260px"
+        top="220px"
         columns={courtColumns}
         loading={isLoading}
         isArrayEmpty={!courts.length}
@@ -87,10 +87,7 @@ const CourtTable = ({ opts, setOpts }: CourtTableProps) => {
         }
         emptyFirstState={
           <EmptyStateCell colSpan={courtColumns.length}>
-            <EmptyState
-              title="No hay recursos disponibles"
-              description="No se encontraron juzgados"
-            />
+            <EmptyState title="No hay recursos disponibles" description="No se encontraron juzgados" />
           </EmptyStateCell>
         }
       >

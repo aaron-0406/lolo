@@ -163,9 +163,6 @@ const JudicialBinnacleModal = ({
           setValue('lastPerformed', data.lastPerformed, { shouldValidate: true })
           setValue('judicialFileCaseId', data.judicialFileCaseId, { shouldValidate: true })
           setValue('judicialBinFiles', data.judicialBinFiles, { shouldValidate: true })
-          setValue('judicialDefendantProceduralActionId', data.judicialDefendantProceduralActionId, {
-            shouldValidate: true,
-          })
         } else {
           reset()
         }

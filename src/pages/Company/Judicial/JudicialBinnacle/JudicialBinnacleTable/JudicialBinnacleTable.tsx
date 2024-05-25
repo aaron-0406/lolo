@@ -91,7 +91,7 @@ const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode }: JudicialBinna
   return (
     <Container width="100%" height="calc(100% - 80px)" padding="0px 20px 0px 20px">
       <Table
-        top="195px"
+        top="190px"
         columns={judicialBinnacleColumns}
         loading={isLoading}
         isArrayEmpty={!binnacles.length}

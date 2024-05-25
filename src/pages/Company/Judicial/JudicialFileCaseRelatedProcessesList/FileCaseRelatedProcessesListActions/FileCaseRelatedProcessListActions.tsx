@@ -15,18 +15,18 @@ import Button from '@/ui/Button'
 import Text from '@/ui/Text'
 
 type JudicialFileCasesActionsProps = {
-  clientName:string
-} 
+  clientName: string
+}
 
-const FileCasesRelatedProcessActions:React.FC<JudicialFileCasesActionsProps> = ({ clientName }) => {
-  const navigate = useNavigate();
+const FileCasesRelatedProcessActions: React.FC<JudicialFileCasesActionsProps> = ({ clientName }) => {
+  const navigate = useNavigate()
   const codeParams = useParams().code ?? ''
   const {
     client: { customer },
   } = useLoloContext()
 
   const handleClickCaseFileRelatedProcess = () => {
-    navigate(`${paths.judicial.detallesExpedienteRelatedProcess(customer.urlIdentifier, codeParams , '000000000')}`)
+    navigate(`${paths.judicial.detallesExpedienteRelatedProcess(customer.urlIdentifier, codeParams, '000000000')}`)
   }
 
   const greaterThanTabletS = useMediaQuery(device.tabletS)
@@ -53,7 +53,7 @@ const FileCasesRelatedProcessActions:React.FC<JudicialFileCasesActionsProps> = (
       flexDirection="column"
       justifyContent="space-between"
       alignItems="center"
-      padding="20px"
+      padding="20px 20px 0 20px"
       gap="20px"
     >
       <Container display="flex" flexDirection="column" gap="10px">

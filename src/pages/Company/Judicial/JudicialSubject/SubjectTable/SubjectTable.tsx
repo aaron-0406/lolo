@@ -71,13 +71,16 @@ const SubjectTable = ({ opts, setOpts }: SubjectTableProps) => {
     <Container width="100%" height="calc(100% - 112px)" padding="20px">
       <Pagination count={subjects.length} opts={opts} setOpts={setOpts} />
       <Table
-        top="260px"
+        top="230px"
         columns={subjectColumns}
         loading={isLoading}
         isArrayEmpty={!subjects.length}
         emptyState={
           <EmptyStateCell colSpan={subjectColumns.length}>
-            <EmptyState title="No hay recursos disponibles" description="No se encontraron materias, por favor seleccione otros filtros." />
+            <EmptyState
+              title="No hay recursos disponibles"
+              description="No se encontraron materias, por favor seleccione otros filtros."
+            />
           </EmptyStateCell>
         }
         emptyFirstState={

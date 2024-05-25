@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import { Link, useLocation } from 'react-router-dom'
 import styled, { css } from 'styled-components'
@@ -29,9 +29,9 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({ children, urlIdentifier }) =>
   const [toggleMenu, setToggleMenu] = useState(false)
   const [isLoadingCities, setIsLoadingCities] = useState(false)
   const [isLoadingUsers, setIsLoadingUsers] = useState(false)
-  const [ targetNavItem, setTargetNavItem ] = useState<string>("")  
+  const [targetNavItem, setTargetNavItem] = useState<string>('')
 
-  const location = useLocation();
+  const location = useLocation()
 
   const {
     client: { customer },
@@ -46,8 +46,7 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({ children, urlIdentifier }) =>
   const { clearAllFilters } = useFiltersContext()
 
   const greaterThanTabletL = useMediaQuery(device.tabletL)
-  const filtereditems =
-    user.permissions?.filter((permission) => permission.code.length === 3) ?? []
+  const filtereditems = user.permissions?.filter((permission) => permission.code.length === 3) ?? []
   const items = filtereditems.map((item) => {
     return {
       ...item,
@@ -58,7 +57,6 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({ children, urlIdentifier }) =>
   const onSelectTargetNavItem = (id: string) => {
     setTargetNavItem(id)
     !greaterThanTabletL && setToggleMenu(!toggleMenu)
-
   }
 
   const onClickToggle = () => {
@@ -98,6 +96,7 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({ children, urlIdentifier }) =>
     {
       enabled: false,
       onSuccess: (response) => {
+        setUsers(response.data)
         setIsLoadingUsers(false)
       },
       onError: () => {
@@ -140,9 +139,9 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({ children, urlIdentifier }) =>
 
     refetchCities()
     refetchUsers()
-    
+
     const currentPermissionID = items.find((item) => item.link === location.pathname)?.id
-    setTargetNavItem(currentPermissionID ?? "")
+    setTargetNavItem(currentPermissionID ?? '')
     // eslint-disable-next-line
 
     return () => {
@@ -152,11 +151,11 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({ children, urlIdentifier }) =>
     }
   }, [])
 
-  useEffect(()=>{
-    if(greaterThanTabletL){
+  useEffect(() => {
+    if (greaterThanTabletL) {
       setToggleMenu(false)
     }
-  },[greaterThanTabletL])
+  }, [greaterThanTabletL])
 
   if (isLoadingCities || isLoadingUsers) {
     return <div>Loading</div>
@@ -168,13 +167,12 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({ children, urlIdentifier }) =>
         <Container className={`layout__menu ${!greaterThanTabletL && !toggleMenu && 'layout__menu--close'}`}>
           <ul className="nav">
             {items.map((item, key) => (
-              <Container>
+              <Container key={key}>
                 {!item.idPermissionMain && !item.isDropdown ? (
                   <Link
                     key={key}
                     to={item.link}
                     className={`nav__items ${targetNavItem === item.id ? ' nav__items--selected' : ''}`}
-                    
                     onClick={() => onSelectTargetNavItem(item.id)}
                   >
                     <Container display="flex" gap="22px">
@@ -191,7 +189,7 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({ children, urlIdentifier }) =>
                     permission={item}
                     permissions={items}
                     onSelectTargetNavItem={onSelectTargetNavItem}
-                    targetNavItem = {targetNavItem}
+                    targetNavItem={targetNavItem}
                   />
                 ) : null}
               </Container>
@@ -226,7 +224,12 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({ children, urlIdentifier }) =>
             </Text.Body>
             {getBankName() ? (
               <Container className="layout__content-header-selected-bank">
-                <Text.Body size={!greaterThanTabletL ? "s" : "m" } weight="bold" color="Neutral0" ellipsis={!greaterThanTabletL}>
+                <Text.Body
+                  size={!greaterThanTabletL ? 's' : 'm'}
+                  weight="bold"
+                  color="Neutral0"
+                  ellipsis={!greaterThanTabletL}
+                >
                   {getBankName()}
                 </Text.Body>
               </Container>
@@ -336,6 +339,7 @@ const StyledMenu = styled(Container)`
           align-items: center;
           padding: 8px 20px 8px 20px;
           min-height: 50px;
+          max-height: 50px;
           box-shadow: ${theme.shadows.elevationLow};
 
             .layout__content-header-selected-bank{
@@ -358,8 +362,8 @@ const StyledMenu = styled(Container)`
         top: 0;
         position: relative;
         max-height: 100vh;
-        width: 280px;
-        max-width: 280px;
+        width: 220px;
+        max-width: 220px;
         transform: translateX(0%);
 
         .nav{

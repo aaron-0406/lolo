@@ -196,7 +196,7 @@ const JudicialFileCasesTable = () => {
           { identifier: 'casesFiles.datatable.header.proceduralWay', options: optionsProceduralWay },
           { identifier: 'casesFiles.datatable.header.user', options: optionsUsers },
         ]}
-        top="260px"
+        top="250px"
         columns={judicialCaseFileColumns}
         selectedFilterOptions={selectedFilterOptions}
         onChangeFilterOptions={onChangeFilterOptions}
