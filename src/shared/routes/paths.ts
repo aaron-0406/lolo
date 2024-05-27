@@ -88,4 +88,8 @@ export default {
     relatedProcess: (urlIdentifier = ':urlIdentifier', code = ':code') =>
       `/judicial/${urlIdentifier}/expediente/${code}/procesos-conexos`,
   },
+  settings: {
+    scheduldedNotifications: (urlIdentifier = `:urlIdentifier`) =>
+      `/configuracion/${urlIdentifier}/notificationes-programadas`,
+  },
 }

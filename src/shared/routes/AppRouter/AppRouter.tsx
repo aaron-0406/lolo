@@ -69,6 +69,7 @@ import JudicialFileCaseProcessStatus from 'pages/Company/Judicial/JudicialFileCa
 import JudicialFileCaseRelatedProcess from 'pages/Company/Judicial/JudicialFileCaseRelatedProcess'
 import JudicialFileCaseRelatedProcessList from 'pages/Company/Judicial/JudicialFileCaseRelatedProcessesList'
 
+import ScheduledNotifications from 'pages/Company/Settings/ScheduledNotifications/SheduledNotifications'
 const AppRouter = () => {
   return (
     <AppSwitch>
@@ -138,6 +139,9 @@ const AppRouter = () => {
         <Route path={paths.judicial.sedes()} element={<JudicialSede />} />
         <Route path={paths.judicial.relatedProcess()} element={<JudicialFileCaseRelatedProcessList />} />
         <Route path={paths.judicial.detallesExpedienteRelatedProcess()} element={<JudicialFileCaseRelatedProcess />} />
+
+        {/* SETTINGS */}
+        <Route path={paths.settings.scheduldedNotifications()} element={<ScheduledNotifications />} />
       </Route>
 
       <Route path="*" element={<NotFound />} />
