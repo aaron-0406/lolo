@@ -1,22 +1,21 @@
 import Container from '@/ui/Container'
 import Text from '@/ui/Text'
-
+import Button from '@/ui/Button'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useQuery } from 'react-query'
 import { device } from '@/breakpoints/responsive'
 import { SelectItemType } from '@/ui/Select/interfaces'
-
 import Select from '@/ui/Select'
 import RadioButton from '@/ui/RadioButton'
 import TextArea from '@/ui/inputs/TextArea'
 import styled from 'styled-components'
 import { css } from 'styled-components'
-
 import { KEY_JUDICIAL_PROCESS_REASON_CACHE } from '../../JudicialProcessReason/ProcessReasonTable/utils/judicial-process-reason.cache'
 import { getAllProcessReasonByCHB } from '@/services/judicial/judicial-process-reason.service'
 import { Controller } from 'react-hook-form'
-
+import useModal from '@/hooks/useModal'
+import ProcessReasonModal from '../../JudicialProcessReason/Modals/ProcessReasonModal'
 import { useFormContext } from 'react-hook-form'
 import { JudicialCasefileProcessStatusType } from '@/types/judicial/judicial-case-file-process-status.type'
 
@@ -42,6 +41,16 @@ const FileCaseProcessStatusInfo = () => {
       label: reason.reason,
     }
   })
+
+  const { visible: visibleModalAdd, showModal: showModalAdd, hideModal: hideModalAdd } = useModal()
+
+  const onShowModal = () => {
+    showModalAdd()
+  }
+
+  const onCloseModal = () => {
+    hideModalAdd()
+  }
 
   return (
     <StyledContainer width="100%" display="flex" flexDirection="column" padding="20px 20px 20px 20px" gap="20px">
@@ -90,14 +99,26 @@ const FileCaseProcessStatusInfo = () => {
             name="processReasonId"
             control={control}
             render={({ field }) => (
-              <Select
-                label="Motivo"
-                options={optionsStates}
-                value={String(field.value)}
-                onChange={(key) => {
-                  field.onChange(key)
-                }}
-              />
+              <Container display="flex" flexDirection="row" gap="10px" width="100%" alignItems="flex-end">
+                <Select
+                  width="100%"
+                  label="Motivo"
+                  options={optionsStates}
+                  value={String(field.value)}
+                  onChange={(key) => {
+                    field.onChange(key)
+                  }}
+                />
+
+                <Button
+                  shape="round"
+                  leadingIcon="ri-add-fill"
+                  size="small"
+                  onClick={onShowModal}
+                  disabled={!chb}
+                  permission="P27-01"
+                />
+              </Container>
             )}
           />
         </Container>
@@ -123,6 +144,8 @@ const FileCaseProcessStatusInfo = () => {
           />
         </Container>
       </Container>
+
+      <ProcessReasonModal visible={visibleModalAdd} onClose={onCloseModal} />
     </StyledContainer>
   )
 }

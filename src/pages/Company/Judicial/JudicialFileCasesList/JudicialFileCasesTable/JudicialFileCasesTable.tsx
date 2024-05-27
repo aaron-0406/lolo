@@ -196,7 +196,7 @@ const JudicialFileCasesTable = () => {
           { identifier: 'casesFiles.datatable.header.proceduralWay', options: optionsProceduralWay },
           { identifier: 'casesFiles.datatable.header.user', options: optionsUsers },
         ]}
-        top="260px"
+        top="250px"
         columns={judicialCaseFileColumns}
         selectedFilterOptions={selectedFilterOptions}
         onChangeFilterOptions={onChangeFilterOptions}
@@ -251,7 +251,7 @@ const JudicialFileCasesTable = () => {
                 <BodyCell textAlign="left">{`${record?.judicialCourt?.court || ''}`}</BodyCell>
                 <BodyCell textAlign="left">{`${record?.judicialSubject?.subject || ''}`}</BodyCell>
                 <BodyCell textAlign="left">{`${record?.customerUser?.name || ''}`}</BodyCell>
-                <BodyCell textAlign="left">{`${record?.judicialVenue || ''}`}</BodyCell>
+                <BodyCell textAlign="left">{`${record?.judicialSede?.sede || ''}`}</BodyCell>
                 <BodyCell textAlign="left">{`${record?.judicialProceduralWay?.proceduralWay || ''}`}</BodyCell>
                 <BodyCell textAlign="center">
                   {

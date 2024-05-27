@@ -1,18 +1,21 @@
+import { useQuery } from 'react-query'
 import { Controller, useFormContext } from 'react-hook-form'
 import styled, { css } from 'styled-components'
 import { JudicialCaseFileType } from '@/types/judicial/judicial-case-file.type'
+import { JudicialSedeType } from '@/types/judicial/judicial-sede.type'
 import Container from '@/ui/Container'
 import Select from '@/ui/Select'
 import TextField from '@/ui/fields/TextField'
 import DatePicker from '@/ui/DatePicker/DatePicker'
 import moment from 'moment'
-import { useQuery } from 'react-query'
 import { getSubjectByCHB } from '@/services/judicial/judicial-subject.service'
 import { getCourtByCHB } from '@/services/judicial/judicial-court.service'
+import { getSedeByCHB } from '@/services/judicial/judicial-sede.service'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import { KEY_JUDICIAL_COURTS_CACHE } from '../../JudicialCourt/CourtTable/utils/judicial-court.cache'
 import { KEY_JUDICIAL_SUBJECT_CACHE } from '../../JudicialSubject/SubjectTable/utils/judicial-subject.cache'
 import { KEY_JUDICIAL_PROCEDURAL_WAY_CACHE } from '../../JudicialProceduralWay/ProceduralWayTable/utils/judicial-procedural-way.cache'
+import { KEY_JUDICIAL_SEDE_CACHE } from '../../JudicialSede/SedeTable/utils/judicial-sede.cache'
 import { getProceduralWayByCHB } from '@/services/judicial/judicial-procedural-way.service'
 import { AxiosResponse } from 'axios'
 import { JudicialCourtType } from '@/types/judicial/judicial-court.type'
@@ -22,6 +25,10 @@ import { SelectItemType } from '@/ui/Select/interfaces'
 import Button from '@/ui/Button'
 import FileCasesRelatedModal from './FileCasesRelatedModal'
 import useModal from '@/hooks/useModal'
+import CourtModal from '../../JudicialCourt/Modals/CourtModal'
+import ProceduralWayModal from '../../JudicialProceduralWay/Modals/ProceduralWayModal'
+import SubjectModal from '../../JudicialSubject/Modals/SubjectModal'
+import SedeModal from '../../JudicialSede/Modals/SedeModal'
 
 type FileCaseInfoProps = {
   loading: boolean
@@ -32,6 +39,7 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
     bank: {
       selectedBank: { idCHB: chb },
     },
+    city: { cities },
     user: { users },
   } = useLoloContext()
 
@@ -100,7 +108,68 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
     }
   )
 
+  const { data: dataSede } = useQuery<AxiosResponse<Array<JudicialSedeType>>>(
+    [KEY_JUDICIAL_SEDE_CACHE, parseInt(chb?.length ? chb : '0')],
+    async () => {
+      return await getSedeByCHB(parseInt(chb.length ? chb : '0'))
+    }
+  )
+  const sedes = dataSede?.data ?? []
+  const optionsSede: Array<SelectItemType> = sedes.map((sede: { id: number; sede: string }) => {
+    return {
+      key: String(sede.id),
+      label: sede.sede,
+    }
+  })
+
   const { hideModal, showModal, visible } = useModal()
+  const { visible: visibleModalAddCourt, showModal: showModalAddCourt, hideModal: hideModalAddCourt } = useModal()
+  const {
+    visible: visibleModalAddProceduralWay,
+    showModal: showModalAddProceduralWay,
+    hideModal: hideModalAddProceduralWay,
+  } = useModal()
+  const { visible: visibleModalAddSubject, showModal: showModalAddSubject, hideModal: hideModalAddSubject } = useModal()
+  const { visible: visibleModalAddSede, showModal: showModalAddSede, hideModal: hideModalAddSede } = useModal()
+
+  const onShowModalCourt = () => {
+    showModalAddCourt()
+  }
+
+  const onCloseModalCourt = () => {
+    hideModalAddCourt()
+  }
+
+  const onShowModalProceduralWay = () => {
+    showModalAddProceduralWay()
+  }
+
+  const onCloseModalProceduralWay = () => {
+    hideModalAddProceduralWay()
+  }
+
+  const onShowModalSubject = () => {
+    showModalAddSubject()
+  }
+
+  const onCloseModalSubject = () => {
+    hideModalAddSubject()
+  }
+
+  const onShowModalSede = () => {
+    showModalAddSede()
+  }
+
+  const onCloseModalSede = () => {
+    hideModalAddSede()
+  }
+
+  const optionsCities: Array<SelectItemType> = cities.map((city) => {
+    return {
+      key: String(city.id),
+      label: city.name,
+    }
+  })
 
   const optionsUsers: Array<SelectItemType> = users.map((user) => {
     return {
@@ -174,34 +243,72 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
           name="judicialCourtId"
           control={control}
           render={({ field }) => (
-            <Select
-              label="Juzgado:"
-              helperText={errors.judicialCourtId?.message}
+            <Container
+              display="flex"
+              flexDirection="row"
+              gap="10px"
+              flexWrap="nowrap"
               width="100%"
-              value={String(field.value)}
-              options={optionsCourts}
-              onChange={(key) => {
-                field.onChange(parseInt(key))
-              }}
-              placeholder={judicialCourt?.court}
-              hasError={!!errors.judicialCourtId}
-              disabled={!clientId}
-            />
+              alignItems="flex-end"
+            >
+              <Select
+                label="Juzgado:"
+                helperText={errors.judicialCourtId?.message}
+                width="100%"
+                value={String(field.value)}
+                options={optionsCourts}
+                onChange={(key) => {
+                  field.onChange(parseInt(key))
+                }}
+                placeholder={judicialCourt?.court}
+                hasError={!!errors.judicialCourtId}
+                disabled={!clientId}
+              />
+
+              <Button
+                shape="round"
+                leadingIcon="ri-add-fill"
+                size="small"
+                onClick={onShowModalCourt}
+                disabled={!chb}
+                permission="P20-01"
+              />
+            </Container>
           )}
         />
         <Controller
-          name="judicialVenue"
+          name="judicialSedeId"
           control={control}
           render={({ field }) => (
-            <TextField
-              label="Sede Judicial:"
+            <Container
+              display="flex"
+              flexDirection="row"
+              gap="10px"
+              flexWrap="nowrap"
               width="100%"
-              helperText={errors.judicialVenue?.message}
-              value={field.value}
-              onChange={field.onChange}
-              hasError={!!errors.judicialVenue}
-              disabled={!clientId}
-            />
+              alignItems="flex-end"
+            >
+              <Select
+                label="Sede Judicial:"
+                width="100%"
+                value={String(field.value)}
+                options={optionsSede}
+                onChange={(key) => {
+                  field.onChange(parseInt(key))
+                }}
+                hasError={!!errors.customerUserId}
+                disabled={!clientId}
+              />
+
+              <Button
+                shape="round"
+                leadingIcon="ri-add-fill"
+                size="small"
+                onClick={onShowModalSede}
+                disabled={!chb}
+                permission="P28-01"
+              />
+            </Container>
           )}
         />
       </div>
@@ -210,38 +317,74 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
           name="judicialSubjectId"
           control={control}
           render={({ field }) => (
-            <Select
-              label="Materia:"
-              helperText={errors.judicialSubjectId?.message}
+            <Container
+              display="flex"
+              flexDirection="row"
+              gap="10px"
+              flexWrap="nowrap"
               width="100%"
-              value={String(field.value)}
-              options={optionsSubjects}
-              onChange={(key) => {
-                field.onChange(parseInt(key))
-              }}
-              placeholder={judicialSubject?.subject}
-              hasError={!!errors.judicialSubjectId}
-              disabled={!clientId}
-            />
+              alignItems="flex-end"
+            >
+              <Select
+                label="Materia:"
+                helperText={errors.judicialSubjectId?.message}
+                width="100%"
+                value={String(field.value)}
+                options={optionsSubjects}
+                onChange={(key) => {
+                  field.onChange(parseInt(key))
+                }}
+                placeholder={judicialSubject?.subject}
+                hasError={!!errors.judicialSubjectId}
+                disabled={!clientId}
+              />
+
+              <Button
+                shape="round"
+                leadingIcon="ri-add-fill"
+                size="small"
+                onClick={onShowModalSubject}
+                disabled={!chb}
+                permission="P21-01"
+              />
+            </Container>
           )}
         />
         <Controller
           name="judicialProceduralWayId"
           control={control}
           render={({ field }) => (
-            <Select
-              label="Via Procedimental:"
-              helperText={errors.judicialProceduralWayId?.message}
+            <Container
+              display="flex"
+              flexDirection="row"
+              gap="10px"
+              flexWrap="nowrap"
               width="100%"
-              value={String(field.value)}
-              options={optionsProceduralWay}
-              onChange={(key) => {
-                field.onChange(parseInt(key))
-              }}
-              placeholder={judicialProceduralWay?.proceduralWay}
-              hasError={!!errors.judicialProceduralWayId}
-              disabled={!clientId}
-            />
+              alignItems="flex-end"
+            >
+              <Select
+                label="Via Procedimental:"
+                helperText={errors.judicialProceduralWayId?.message}
+                width="100%"
+                value={String(field.value)}
+                options={optionsProceduralWay}
+                onChange={(key) => {
+                  field.onChange(parseInt(key))
+                }}
+                placeholder={judicialProceduralWay?.proceduralWay}
+                hasError={!!errors.judicialProceduralWayId}
+                disabled={!clientId}
+              />
+
+              <Button
+                shape="round"
+                leadingIcon="ri-add-fill"
+                size="small"
+                onClick={onShowModalProceduralWay}
+                disabled={!chb}
+                permission="P22-01"
+              />
+            </Container>
           )}
         />
       </div>
@@ -373,6 +516,24 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
           )}
         />
         <Controller
+          name="cityId"
+          control={control}
+          render={({ field }) => (
+            <Select
+              width="100%"
+              label="Jurisdicción:"
+              value={String(field.value)}
+              options={optionsCities}
+              onChange={(key) => {
+                field.onChange(parseInt(key))
+              }}
+              hasError={!!errors.cityId}
+            />
+          )}
+        />
+      </div>
+      <div className="fields-wrapper-container-t">
+        <Controller
           name="judgmentNumber"
           control={control}
           render={({ field }) => (
@@ -388,12 +549,18 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
           )}
         />
       </div>
+
       <FileCasesRelatedModal
         onClose={() => {
           hideModal()
         }}
         visible={visible}
       />
+
+      <CourtModal onClose={onCloseModalCourt} visible={visibleModalAddCourt} />
+      <ProceduralWayModal onClose={onCloseModalProceduralWay} visible={visibleModalAddProceduralWay} />
+      <SubjectModal onClose={onCloseModalSubject} visible={visibleModalAddSubject} />
+      <SedeModal onClose={onCloseModalSede} visible={visibleModalAddSede} />
     </StyledContainer>
   )
 }

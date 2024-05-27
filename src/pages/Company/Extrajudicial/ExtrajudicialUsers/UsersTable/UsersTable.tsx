@@ -132,7 +132,7 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts }) => {
     <Container width="100%" height="calc(100% - 112px)" padding="20px">
       <Pagination count={usersCount} opts={opts} setOpts={setOpts} />
       <Table
-        top="260px"
+        top="220px"
         columns={usersColumns}
         loading={isLoading}
         isArrayEmpty={!users.length}

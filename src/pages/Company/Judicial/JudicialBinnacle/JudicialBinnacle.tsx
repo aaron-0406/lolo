@@ -41,7 +41,13 @@ const JudicialBinnacle = () => {
   const clientName = data?.data.client.name
 
   return (
-    <Container width="100%" height="100%" display="flex" flexDirection="column" justifyContent="space-between">
+    <Container
+      width="100%"
+      height="calc(100% - 50px)"
+      display="flex"
+      flexDirection="column"
+      justifyContent="space-between"
+    >
       <JudicialBinnacleInfo judicialFileCaseId={judicialFileCaseId} clientCode={clientCode} clientName={clientName} />
       <JudicialBinnacleTable judicialFileCaseId={judicialFileCaseId} clientCode={clientCode} />
     </Container>

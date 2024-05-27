@@ -67,18 +67,15 @@ const CobranzaAddressesTable = ({ clientId }: CobranzaAddressesTableProps) => {
   const addresses = data?.data ?? []
 
   return (
-    <Container width="100%" height="calc(100% - 80px)" padding="20px">
+    <Container width="100%" height="calc(100% - 80px)" padding="10px 20px">
       <Table
-        top="195px"
+        top="190px"
         columns={addressesColumns}
         loading={isLoading}
         isArrayEmpty={!addresses.length}
         emptyState={
           <EmptyStateCell colSpan={addressesColumns.length}>
-            <EmptyState
-              title="No hay recursos disponibles"
-              description="No se encontraron direcciones diponibles"
-            />
+            <EmptyState title="No hay recursos disponibles" description="No se encontraron direcciones diponibles" />
           </EmptyStateCell>
         }
         emptyFirstState={

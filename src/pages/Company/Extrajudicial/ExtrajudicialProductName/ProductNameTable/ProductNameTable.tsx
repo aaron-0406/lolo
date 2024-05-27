@@ -79,7 +79,7 @@ const ProductNameTable = () => {
   return (
     <Container width="100%" height="calc(100% - 112px)" padding="20px">
       <Table
-        top="260px"
+        top="200px"
         columns={ProductNameColumns}
         loading={isLoading}
         isArrayEmpty={!productsName.length}
@@ -95,10 +95,7 @@ const ProductNameTable = () => {
         }
         emptyFirstState={
           <EmptyStateCell colSpan={ProductNameColumns.length}>
-            <EmptyState
-              title="No hay recursos disponibles"
-              description="No se encontraron productos disponibles"
-            />
+            <EmptyState title="No hay recursos disponibles" description="No se encontraron productos disponibles" />
           </EmptyStateCell>
         }
       >
