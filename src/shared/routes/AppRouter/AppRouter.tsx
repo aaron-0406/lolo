@@ -49,6 +49,7 @@ import JudicialFileCaseDemandedProducts from 'pages/Company/Judicial/JudicialFil
 import JudicialObsType from 'pages/Company/Judicial/JudicialObsType'
 import JudicialObservation from 'pages/Company/Judicial/JudicialFileCaseObservation'
 import JudicialProcessReason from 'pages/Company/Judicial/JudicialProcessReason'
+import JudicialSede from 'pages/Company/Judicial/JudicialSede'
 
 import ErrorPage from '../../../pages/ErrorPage'
 import NotFound from '../../../pages/NotFound'
@@ -134,6 +135,7 @@ const AppRouter = () => {
         <Route path={paths.judicial.observacionTipo()} element={<JudicialObsType />} />
         <Route path={paths.judicial.observacion()} element={<JudicialObservation />} />
         <Route path={paths.judicial.processReason()} element={<JudicialProcessReason />} />
+        <Route path={paths.judicial.sedes()} element={<JudicialSede />} />
         <Route path={paths.judicial.relatedProcess()} element={<JudicialFileCaseRelatedProcessList />} />
         <Route path={paths.judicial.detallesExpedienteRelatedProcess()} element={<JudicialFileCaseRelatedProcess />} />
       </Route>

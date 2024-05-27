@@ -3,11 +3,13 @@ import { ClientType } from '@/types/extrajudicial/client.type'
 import { JudicialCaseFileType } from '@/types/judicial/judicial-case-file.type'
 import { JudicialCourtType } from '@/types/judicial/judicial-court.type'
 import { JudicialProceduralWayType } from '@/types/judicial/judicial-procedural-way.type'
+import { JudicialSedeType } from '@/types/judicial/judicial-sede.type'
 import { JudicialSubjectType } from '@/types/judicial/judicial-subject.type'
 import { AxiosResponse } from 'axios'
 import { QueryClient } from 'react-query'
 
-export const KEY_FILE_CASE_RELATED_PROCESS_CACHE = 'key-get-all-file-cases-related-process-by-case-file-related-process-id'
+export const KEY_FILE_CASE_RELATED_PROCESS_CACHE =
+  'key-get-all-file-cases-related-process-by-case-file-related-process-id'
 
 export type JudicialFileCaseTableRow = JudicialCaseFileType & {
   customerUser: CustomerUserType
@@ -18,44 +20,51 @@ export type JudicialFileCaseTableRow = JudicialCaseFileType & {
 } & {
   judicialSubject: JudicialSubjectType
 } & {
+  judicialSede: JudicialSedeType
+} & {
   client: ClientType
 }
 
 type QueryDataType = AxiosResponse<{ caseFiles: JudicialFileCaseTableRow[]; quantity: number }> | undefined
 
 const judicialFileCaseRelatedProcessCache = (queryClient: QueryClient) => {
-
   const createFileCaseRelatedProcessCache = (data: JudicialFileCaseTableRow) => {
-    queryClient.setQueryData<QueryDataType>([KEY_FILE_CASE_RELATED_PROCESS_CACHE, data.idJudicialCaseFileRelated], (old) => {
-      if (old) {
-        return {
-          ...old,
-          data: {
-            caseFiles: [...old.data.caseFiles, data],
-            quantity: old.data.quantity + 1,
-          },
+    queryClient.setQueryData<QueryDataType>(
+      [KEY_FILE_CASE_RELATED_PROCESS_CACHE, data.idJudicialCaseFileRelated],
+      (old) => {
+        if (old) {
+          return {
+            ...old,
+            data: {
+              caseFiles: [...old.data.caseFiles, data],
+              quantity: old.data.quantity + 1,
+            },
+          }
         }
       }
-    })
+    )
   }
 
   const editFileCaseRelatedProcessCache = (data: JudicialFileCaseTableRow) => {
-    queryClient.setQueryData<QueryDataType>([KEY_FILE_CASE_RELATED_PROCESS_CACHE, data.idJudicialCaseFileRelated], (old) => {
-      if (old) {
-        const dataUpdated = old.data.caseFiles.map((fileCase: JudicialFileCaseTableRow) => {
-          if (fileCase.id === data.id) return data
-          return fileCase
-        })
+    queryClient.setQueryData<QueryDataType>(
+      [KEY_FILE_CASE_RELATED_PROCESS_CACHE, data.idJudicialCaseFileRelated],
+      (old) => {
+        if (old) {
+          const dataUpdated = old.data.caseFiles.map((fileCase: JudicialFileCaseTableRow) => {
+            if (fileCase.id === data.id) return data
+            return fileCase
+          })
 
-        return {
-          ...old,
-          data: {
-            caseFiles: dataUpdated,
-            quantity: old.data.quantity,
-          },
+          return {
+            ...old,
+            data: {
+              caseFiles: dataUpdated,
+              quantity: old.data.quantity,
+            },
+          }
         }
       }
-    })
+    )
   }
 
   const deleteFileCaseRelatedProcessCache = (id: string, relatedCaseFileId: number) => {

@@ -41,7 +41,7 @@ export const judicialCaseFileColumns: ColumProps[] = [
     isThereFilter: true,
   },
   {
-    id: 'casesFiles.datatable.header.judicialVenue',
+    id: 'casesFiles.datatable.header.judicialSedeId',
     title: 'SEDE JUDICIAL',
     width: '10%',
     justifyContent: 'left',
