@@ -1,22 +1,20 @@
 import ScheduledNotficationForm from './ScheduledNotficationForm'
 import Container from '@/ui/Container'
-import ScheduledNotificationsUsersTable from './ScheduledNoticationsUsersTable/ScheduledNotificationsUsersTable';
+import ScheduledNotificationsUsersTable from './ScheduledNoticationsUsersTable/ScheduledNotificationsUsersTable'
 
-import { useLoloContext } from '@/contexts/LoloProvider';
-import { useQuery } from 'react-query';
-import { useEffect } from 'react';
+import { useLoloContext } from '@/contexts/LoloProvider'
+import { useQuery } from 'react-query'
+import { useEffect } from 'react'
 
-import {KEY_USUARIOS_SCHUDULED_NOTIFICATIONS_CACHE} from './ScheduledNoticationsUsersTable/utils/users.cache';
-import { getAllUsersByID } from '@/services/dash/customer-user.service';
-import { useState } from 'react';
+import { KEY_USUARIOS_SCHUDULED_NOTIFICATIONS_CACHE } from './ScheduledNoticationsUsersTable/utils/users.cache'
+import { getAllUsersByID } from '@/services/dash/customer-user.service'
+import { useState } from 'react'
 import { Opts } from '@/ui/Pagination/interfaces'
-import { device } from '@/breakpoints/responsive';
-import { useMediaQuery } from '@/hooks/useMediaQuery';
-
-
+import { device } from '@/breakpoints/responsive'
+import { useMediaQuery } from '@/hooks/useMediaQuery'
 
 type ScheduledNotificationsInfoModalProps = {
-  modalActions: "edit" | "add"
+  modalActions: 'edit' | 'add'
   onClose: () => void
 }
 
@@ -33,7 +31,6 @@ const ScheduledNotificationsInfoModal = ({ modalActions, onClose }: ScheduledNot
   })
   const greaterThanTabletS = useMediaQuery(device.desktopL)
 
-
   useEffect(() => {
     refetch()
     // eslint-disable-next-line
@@ -42,15 +39,7 @@ const ScheduledNotificationsInfoModal = ({ modalActions, onClose }: ScheduledNot
   const users = data?.data ?? []
 
   return (
-    <Container
-      width="100%"
-      padding="20px"
-      display="flex"
-      flexDirection={greaterThanTabletS ? 'row' : 'column'}
-      gap="20px"
-      overFlowY='scroll'
-      height={greaterThanTabletS ? '100%' : '700px'}
-    >
+    <Container width="100%" display="flex" flexDirection={greaterThanTabletS ? 'row' : 'column'} height="100%">
       <ScheduledNotficationForm modalActions={modalActions} />
       {modalActions === 'edit' ? (
         <ScheduledNotificationsUsersTable users={users} isLoading={isLoading} opts={opts} setOpts={setOpts} />

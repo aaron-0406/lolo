@@ -13,7 +13,7 @@ import Text from '@/ui/Text'
 import Button from '@/ui/Button'
 import { demandedProductsColumns } from './utils/columns'
 import EmptyState from '@/ui/EmptyState'
-import { ScheduledNotificationsType } from '../../../../../shared/types/config/scheduled-notifications.type';
+import { ScheduledNotificationsType } from '../../../../../shared/types/config/scheduled-notifications.type'
 import { getScheduledNotificationByChb } from '@/services/config/scheduled-notifications.service'
 import AssingScheduledNotificationsModal from '../Modals/AssignScheduledNotificationsModal/AssingScheduledNotificationsModal'
 
@@ -25,36 +25,34 @@ import scheduledNotificationsCache from './utils/scheduled-notifications.cache'
 import DeleteScheduledNotificationsModal from '../Modals/DeleteScheduledNotificationsModal/DeleteScheduledNotificationsModal'
 import { useLoloContext } from '@/contexts/LoloProvider'
 
-
 const ScheduleNotificationsTable = () => {
-  const [ idNotification, setIdNotification ] = useState<number>(0)
-  const [ scheduledNotification, setScheduledNotification ] = useState<ScheduledNotificationsType | undefined>(undefined)
+  const [idNotification, setIdNotification] = useState<number>(0)
+  const [scheduledNotification, setScheduledNotification] = useState<ScheduledNotificationsType | undefined>(undefined)
   const queryClient = useQueryClient()
-  const { hideModal:HideEditModal, showModal:showEditModal, visible:visibleEditModal } = useModal()  
-  const { hideModal:HideDeleteModal, showModal:showDeleteModal, visible:visibleDeleteModal } = useModal() 
+  const { hideModal: HideEditModal, showModal: showEditModal, visible: visibleEditModal } = useModal()
+  const { hideModal: HideDeleteModal, showModal: showDeleteModal, visible: visibleDeleteModal } = useModal()
   const {
-    actions:{
-      deleteScheduledNotificationsCache,
-    }
+    actions: { deleteScheduledNotificationsCache },
   } = scheduledNotificationsCache(queryClient)
 
   const {
-    bank: { selectedBank: { idCHB: chb } },
+    bank: {
+      selectedBank: { idCHB: chb },
+    },
   } = useLoloContext()
 
   const convertISOToTime = (isoString: string): string => {
-    const date = new Date(isoString);
-    let hours = date.getUTCHours();
-    const minutes = String(date.getUTCMinutes()).padStart(2, '0');
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    hours = hours % 12;
-    hours = hours ? hours : 12; 
-    const strHours = String(hours).padStart(2, '0');
-    return `${strHours}:${minutes} ${ampm}`;
-}
+    const date = new Date(isoString)
+    let hours = date.getUTCHours()
+    const minutes = String(date.getUTCMinutes()).padStart(2, '0')
+    const ampm = hours >= 12 ? 'PM' : 'AM'
+    hours = hours % 12
+    hours = hours ? hours : 12
+    const strHours = String(hours).padStart(2, '0')
+    return `${strHours}:${minutes} ${ampm}`
+  }
 
-
-  const { data:Notifications, isLoading:LoadingNotifications } = useQuery<
+  const { data: Notifications, isLoading: LoadingNotifications } = useQuery<
     AxiosResponse<Array<ScheduledNotificationsType>>,
     AxiosError<CustomErrorResponse>
   >(
@@ -73,28 +71,25 @@ const ScheduleNotificationsTable = () => {
     }
   )
 
-  const { mutate: deleteNotification } = useMutation< 
-  AxiosResponse<{id: string}>,
-  AxiosError<CustomErrorResponse>
->(
-  async () => {
-    const id = idNotification ?? 0
-    return await deleteScheduledNotification( id )
-  },
-  {
-    onSuccess: (result) => {
-      deleteScheduledNotificationsCache(parseInt(result.data.id))
-      notification({ type: 'success', message: 'Notificación eliminada' })
-      setIdNotification(0)
+  const { mutate: deleteNotification } = useMutation<AxiosResponse<{ id: string }>, AxiosError<CustomErrorResponse>>(
+    async () => {
+      const id = idNotification ?? 0
+      return await deleteScheduledNotification(id)
     },
-    onError: (error, _, context: any) => {
-      notification({
-        type: 'error',
-        message: "No se pudo eliminar la notificación, hay usuarios asignados a esta notificación",
-      })
-    },
-  }
-)
+    {
+      onSuccess: (result) => {
+        deleteScheduledNotificationsCache(parseInt(result.data.id))
+        notification({ type: 'success', message: 'Notificación eliminada' })
+        setIdNotification(0)
+      },
+      onError: (error, _, context: any) => {
+        notification({
+          type: 'error',
+          message: 'No se pudo eliminar la notificación, hay usuarios asignados a esta notificación',
+        })
+      },
+    }
+  )
 
   const onDeleteNotification = () => {
     deleteNotification()
@@ -111,7 +106,7 @@ const ScheduleNotificationsTable = () => {
     HideDeleteModal()
   }
 
-  const onOpenEditNotificationModal = ( notification: ScheduledNotificationsType ) => { 
+  const onOpenEditNotificationModal = (notification: ScheduledNotificationsType) => {
     setScheduledNotification(notification)
     showEditModal()
   }
@@ -120,8 +115,6 @@ const ScheduleNotificationsTable = () => {
     setScheduledNotification(undefined)
     HideEditModal()
   }
-
-  
 
   const scheduleNotificitions = Notifications?.data ?? []
 
@@ -151,18 +144,17 @@ const ScheduleNotificationsTable = () => {
           </EmptyStateCell>
         }
       >
-        {scheduleNotificitions && !!scheduleNotificitions?.length ? 
-          scheduleNotificitions.map(
-            (record: ScheduledNotificationsType, key) => {
+        {scheduleNotificitions && !!scheduleNotificitions?.length
+          ? scheduleNotificitions.map((record: ScheduledNotificationsType, key) => {
               return (
                 <tr className="styled-data-table-row" key={record.id}>
                   <BodyCell textAlign="center">
-                    <Text.Body size="m" weight="bold" color="Primary5">
+                    <Text.Body size="m" weight="bold">
                       {record?.id || '-'}
                     </Text.Body>
                   </BodyCell>
                   <BodyCell textAlign="center">
-                    <Text.Body size="m" weight="bold" color="Primary5">
+                    <Text.Body size="m" weight="regular">
                       {record?.nameNotification || '-'}
                     </Text.Body>
                   </BodyCell>
@@ -172,12 +164,12 @@ const ScheduleNotificationsTable = () => {
                     </Text.Body>
                   </BodyCell>
                   <BodyCell textAlign="center">
-                    <Text.Body size="m" weight="bold" color="Primary5">
+                    <Text.Body size="m" weight="bold">
                       {convertISOToTime(record?.hourTimeToNotify.toString()) ?? '-'}
                     </Text.Body>
                   </BodyCell>
                   <BodyCell textAlign="center">
-                    <Text.Body size="m" weight="bold" color="Primary5">
+                    <Text.Body size="m" weight="regular">
                       {record?.logicKey ?? '-'}
                     </Text.Body>
                   </BodyCell>
@@ -212,30 +204,25 @@ const ScheduleNotificationsTable = () => {
                   </BodyCell>
                 </tr>
               )
-            }
-          ) : null}
+            })
+          : null}
       </Table>
 
-      {
-        visibleEditModal ? (
-          <AssingScheduledNotificationsModal 
-            visible={visibleEditModal} 
-            onClose={onHideEditNotificationModal} 
-            modalActions='edit'
-            scheduledNotification={scheduledNotification}
-          />
-        ) : null
-      }
-      {
-        visibleDeleteModal ? (
-          <DeleteScheduledNotificationsModal 
-            visible={visibleDeleteModal}
-            onClose={onHideDeleteModal}
-            onDelete={onDeleteNotification}
-          />
-        ) : null
-      }
-      
+      {visibleEditModal ? (
+        <AssingScheduledNotificationsModal
+          visible={visibleEditModal}
+          onClose={onHideEditNotificationModal}
+          modalActions="edit"
+          scheduledNotification={scheduledNotification}
+        />
+      ) : null}
+      {visibleDeleteModal ? (
+        <DeleteScheduledNotificationsModal
+          visible={visibleDeleteModal}
+          onClose={onHideDeleteModal}
+          onDelete={onDeleteNotification}
+        />
+      ) : null}
     </Container>
   )
 }
