@@ -113,8 +113,8 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
       return await getSedeByCHB(parseInt(chb.length ? chb : '0'))
     }
   )
-  const Sedes = dataSede?.data ?? []
-  const optionsSede: Array<SelectItemType> = Sedes.map((sede: { id: number; sede: string }) => {
+  const sedes = dataSede?.data ?? []
+  const optionsSede: Array<SelectItemType> = sedes.map((sede: { id: number; sede: string }) => {
     return {
       key: String(sede.id),
       label: sede.sede,
@@ -521,6 +521,7 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
           )}
         />
       </div>
+
       <FileCasesRelatedModal
         onClose={() => {
           hideModal()

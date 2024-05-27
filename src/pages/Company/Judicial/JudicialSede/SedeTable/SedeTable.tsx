@@ -66,7 +66,7 @@ const SedeTable = () => {
     }
   )
 
-  const Sedes = data?.data ?? []
+  const sedes = data?.data ?? []
 
   return (
     <Container width="100%" height="calc(100% - 112px)" padding="20px">
@@ -74,7 +74,7 @@ const SedeTable = () => {
         top="260px"
         columns={JudicialSedeColumns}
         loading={isLoading}
-        isArrayEmpty={!Sedes.length}
+        isArrayEmpty={!sedes.length}
         emptyState={
           <EmptyStateCell colSpan={JudicialSedeColumns.length}>
             <EmptyState
@@ -94,8 +94,8 @@ const SedeTable = () => {
           </EmptyStateCell>
         }
       >
-        {!!Sedes?.length &&
-          Sedes.map((record: JudicialSedeType, key: number) => {
+        {!!sedes?.length &&
+          sedes.map((record: JudicialSedeType, key: number) => {
             return (
               <tr className="styled-data-table-row" key={record.id}>
                 <BodyCell textAlign="center">{`${key + 1 || ''}`}</BodyCell>

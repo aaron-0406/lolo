@@ -20,11 +20,12 @@ import { JudicialProceduralWayType } from '@/types/judicial/judicial-procedural-
 import { SelectItemType } from '@/ui/Select/interfaces'
 import Button from '@/ui/Button'
 import FileCasesRelatedModal from './FileCasesRelatedModal'
-import { useMediaQuery } from '@/hooks/useMediaQuery'
-import { device } from '@/breakpoints/responsive'
 import useModal from '@/hooks/useModal'
 import { useQuery } from 'react-query'
 import { BankType } from '@/types/dash/bank.type'
+import { JudicialSedeType } from '@/types/judicial/judicial-sede.type'
+import { getSedeByCHB } from '@/services/judicial/judicial-sede.service'
+import { KEY_JUDICIAL_SEDE_CACHE } from '../../JudicialSede/SedeTable/utils/judicial-sede.cache'
 
 type FileCaseInfoProps = {
   loading: boolean
@@ -36,12 +37,11 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
       selectedBank: { idCHB: chb },
     },
     user: { users },
+    city: { cities },
     client: {
       customer: { customerBanks },
     },
   } = useLoloContext()
-
-  const greaterThanTabletL = useMediaQuery(device.tabletL)
 
   const {
     control,
@@ -99,6 +99,20 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
     }
   })
 
+  const { data: dataSede } = useQuery<AxiosResponse<Array<JudicialSedeType>>>(
+    [KEY_JUDICIAL_SEDE_CACHE, parseInt(chb?.length ? chb : '0')],
+    async () => {
+      return await getSedeByCHB(parseInt(chb.length ? chb : '0'))
+    }
+  )
+  const sedes = dataSede?.data ?? []
+  const optionsSede: Array<SelectItemType> = sedes.map((sede: { id: number; sede: string }) => {
+    return {
+      key: String(sede.id),
+      label: sede.sede,
+    }
+  })
+
   const { data: dataProceduralWay } = useQuery<AxiosResponse<Array<JudicialProceduralWayType>>>(
     [KEY_JUDICIAL_PROCEDURAL_WAY_CACHE, parseInt(chb?.length ? chb : '0')],
     async () => {
@@ -116,6 +130,13 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
   )
 
   const { hideModal, showModal, visible } = useModal()
+
+  const optionsCities: Array<SelectItemType> = cities.map((city) => {
+    return {
+      key: String(city.id),
+      label: city.name,
+    }
+  })
 
   const optionsUsers: Array<SelectItemType> = users.map((user) => {
     return {
@@ -205,16 +226,18 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
           )}
         />
         <Controller
-          name="judicialVenue"
+          name="judicialSedeId"
           control={control}
           render={({ field }) => (
-            <TextField
+            <Select
               label="Sede Judicial:"
               width="100%"
-              helperText={errors.judicialVenue?.message}
-              value={field.value}
-              onChange={field.onChange}
-              hasError={!!errors.judicialVenue}
+              value={String(field.value)}
+              options={optionsSede}
+              onChange={(key) => {
+                field.onChange(parseInt(key))
+              }}
+              hasError={!!errors.customerUserId}
               disabled={!clientId}
             />
           )}
@@ -377,23 +400,24 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
           )}
         />
         <Controller
-          name="judgmentNumber"
+          name="cityId"
           control={control}
           render={({ field }) => (
-            <TextField
+            <Select
               width="100%"
-              label="Nº de Juicio:"
-              value={field.value}
-              onChange={field.onChange}
-              helperText={errors.judgmentNumber?.message}
-              hasError={!!errors.judgmentNumber}
-              disabled={!clientId}
+              label="Jurisdicción:"
+              value={String(field.value)}
+              options={optionsCities}
+              onChange={(key) => {
+                field.onChange(parseInt(key))
+              }}
+              hasError={!!errors.cityId}
             />
           )}
         />
       </Container>
-      <Container display="flex" flexDirection={greaterThanTabletL ? 'row' : 'column'} gap="10px">
-        <Container width={greaterThanTabletL ? '50%' : '100%'}>
+      <Container className="fields-wrapper-container-t">
+        <Container width="100%">
           <Controller
             control={control}
             name="bankId"
@@ -412,7 +436,21 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
             )}
           />
         </Container>
-        <Container width="50%" display={greaterThanTabletL ? 'flex' : 'none'} />
+        <Controller
+          name="judgmentNumber"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              width="100%"
+              label="Nº de Juicio:"
+              value={field.value}
+              onChange={field.onChange}
+              helperText={errors.judgmentNumber?.message}
+              hasError={!!errors.judgmentNumber}
+              disabled={!clientId}
+            />
+          )}
+        />
       </Container>
 
       <FileCasesRelatedModal

@@ -134,7 +134,7 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase }: FileCaseActions
         setValue('amountDemandedDollars', data.data?.amountDemandedDollars ?? 0)
         setValue('cautionaryCode', data.data?.cautionaryCode ?? '')
         setValue('errandCode', data.data?.errandCode ?? '')
-        setValue('judicialSedeId', data.data.judicialSedeId)
+        setValue('judicialSedeId', data.data.judicialSedeId ?? undefined)
         setValue('judge', data.data?.judge ?? '')
         setValue('demandDate', moment(data.data.demandDate.split('T')[0]).format('DD-MM-YYYY'))
         setValue('clientId', data.data.clientId)
