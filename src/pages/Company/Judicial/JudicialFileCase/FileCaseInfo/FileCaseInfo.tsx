@@ -28,6 +28,7 @@ import useModal from '@/hooks/useModal'
 import CourtModal from '../../JudicialCourt/Modals/CourtModal'
 import ProceduralWayModal from '../../JudicialProceduralWay/Modals/ProceduralWayModal'
 import SubjectModal from '../../JudicialSubject/Modals/SubjectModal'
+import SedeModal from '../../JudicialSede/Modals/SedeModal'
 
 type FileCaseInfoProps = {
   loading: boolean
@@ -129,6 +130,7 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
     hideModal: hideModalAddProceduralWay,
   } = useModal()
   const { visible: visibleModalAddSubject, showModal: showModalAddSubject, hideModal: hideModalAddSubject } = useModal()
+  const { visible: visibleModalAddSede, showModal: showModalAddSede, hideModal: hideModalAddSede } = useModal()
 
   const onShowModalCourt = () => {
     showModalAddCourt()
@@ -152,6 +154,14 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
 
   const onCloseModalSubject = () => {
     hideModalAddSubject()
+  }
+
+  const onShowModalSede = () => {
+    showModalAddSede()
+  }
+
+  const onCloseModalSede = () => {
+    hideModalAddSede()
   }
 
   const optionsCities: Array<SelectItemType> = cities.map((city) => {
@@ -270,17 +280,35 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
           name="judicialSedeId"
           control={control}
           render={({ field }) => (
-            <Select
-              label="Sede Judicial:"
+            <Container
+              display="flex"
+              flexDirection="row"
+              gap="10px"
+              flexWrap="nowrap"
               width="100%"
-              value={String(field.value)}
-              options={optionsSede}
-              onChange={(key) => {
-                field.onChange(parseInt(key))
-              }}
-              hasError={!!errors.customerUserId}
-              disabled={!clientId}
-            />
+              alignItems="flex-end"
+            >
+              <Select
+                label="Sede Judicial:"
+                width="100%"
+                value={String(field.value)}
+                options={optionsSede}
+                onChange={(key) => {
+                  field.onChange(parseInt(key))
+                }}
+                hasError={!!errors.customerUserId}
+                disabled={!clientId}
+              />
+
+              <Button
+                shape="round"
+                leadingIcon="ri-add-fill"
+                size="small"
+                onClick={onShowModalSede}
+                disabled={!chb}
+                permission="P28-01"
+              />
+            </Container>
           )}
         />
       </div>
@@ -532,6 +560,7 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
       <CourtModal onClose={onCloseModalCourt} visible={visibleModalAddCourt} />
       <ProceduralWayModal onClose={onCloseModalProceduralWay} visible={visibleModalAddProceduralWay} />
       <SubjectModal onClose={onCloseModalSubject} visible={visibleModalAddSubject} />
+      <SedeModal onClose={onCloseModalSede} visible={visibleModalAddSede} />
     </StyledContainer>
   )
 }

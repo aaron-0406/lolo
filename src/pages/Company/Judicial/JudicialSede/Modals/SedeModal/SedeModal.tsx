@@ -181,7 +181,7 @@ const SedeModal = ({ visible, onClose, isEdit = false, idSede = 0 }: SedeModalPr
       >
         <Container
           width="100%"
-          height="210px"
+          height="140px"
           display="flex"
           justify-content="center"
           flexDirection="column"
