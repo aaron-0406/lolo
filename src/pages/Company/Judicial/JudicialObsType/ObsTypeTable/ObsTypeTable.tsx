@@ -71,7 +71,7 @@ const ObsTypeTable = () => {
   return (
     <Container width="100%" height="calc(100% - 112px)" padding="20px">
       <Table
-        top="260px"
+        top="200px"
         columns={ObsTypeColumns}
         loading={isLoading}
         isArrayEmpty={!ObsTypes.length}
@@ -85,13 +85,13 @@ const ObsTypeTable = () => {
             />
           </EmptyStateCell>
         }
-        emptyFirstState = {
+        emptyFirstState={
           <EmptyStateCell colSpan={ObsTypeColumns.length}>
-          <EmptyState
-            title="No hay recursos disponibles"
-            description="No se encontraron tipos de observaciones disponibles en este momento."
-          />
-        </EmptyStateCell>
+            <EmptyState
+              title="No hay recursos disponibles"
+              description="No se encontraron tipos de observaciones disponibles en este momento."
+            />
+          </EmptyStateCell>
         }
       >
         {!!ObsTypes?.length &&

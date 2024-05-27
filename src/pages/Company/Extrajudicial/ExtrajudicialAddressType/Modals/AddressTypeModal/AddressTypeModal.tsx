@@ -168,7 +168,7 @@ const FuncionariosModal = ({ visible, onClose, isEdit = false, idAddressType = 0
         title={isEdit ? 'Editar tipo de dirección' : 'Agregar tipo de dirección'}
         contentOverflowY="auto"
         size="small"
-        minHeight="140px"
+        minHeight="120px"
         footer={
           <Container width="100%" height="75px" display="flex" justifyContent="end" alignItems="center" gap="20px">
             <Button
@@ -185,7 +185,7 @@ const FuncionariosModal = ({ visible, onClose, isEdit = false, idAddressType = 0
       >
         <Container
           width="100%"
-          height="210px"
+          height="120px"
           display="flex"
           justify-content="center"
           flexDirection="column"

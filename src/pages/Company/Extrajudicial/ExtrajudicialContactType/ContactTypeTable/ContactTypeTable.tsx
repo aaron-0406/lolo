@@ -79,7 +79,7 @@ const ContactTypeTable = () => {
   return (
     <Container width="100%" height="calc(100% - 112px)" padding="20px">
       <Table
-        top="260px"
+        top="200px"
         columns={ContactTypeColumns}
         loading={isLoading}
         isArrayEmpty={!contactsType.length}

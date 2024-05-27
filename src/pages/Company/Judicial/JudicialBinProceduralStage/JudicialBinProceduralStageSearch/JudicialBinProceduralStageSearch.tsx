@@ -59,7 +59,7 @@ const JudicialBinProceduralStageSearch = ({ opts, setOpts }: JudicialBinProcedur
         size="small"
         onClick={showModalAdd}
         disabled={!chb}
-        permission="P09-01"
+        permission="P24-01"
       />
       <JudicialBinProceduralStageModal visible={visibleModalAdd} onClose={hideModalAdd} />
     </Container>

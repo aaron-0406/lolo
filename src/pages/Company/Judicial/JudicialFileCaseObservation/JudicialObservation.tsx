@@ -35,7 +35,13 @@ const JudicialObservation = () => {
   const clientCode = data?.data.client.code
 
   return (
-    <Container width="100%" height="100%" display="flex" flexDirection="column" justifyContent="space-between">
+    <Container
+      width="100%"
+      height="calc(100% - 50px)"
+      display="flex"
+      flexDirection="column"
+      justifyContent="space-between"
+    >
       <JudicialObservationInfo
         judicialFileCaseId={judicialFileCaseId}
         clientName={clientName}

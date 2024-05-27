@@ -37,7 +37,10 @@ export const getAllClientsByCHBDetails = async (chb: string) => {
   return await axiosClient.get(`${url}/${chb}/details`)
 }
 
-export const saveClient = async (client: ClientType, idCustomer: number) => {
+export const saveClient = async (
+  client: Omit<ClientType, 'memoAssignmentDate'> & { memoAssignmentDate?: Date },
+  idCustomer: number
+) => {
   return await axiosClient.post(`${url}/${idCustomer}`, client)
 }
 

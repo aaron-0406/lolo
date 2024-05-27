@@ -1,10 +1,15 @@
 import { ExtTagType } from '@/types/extrajudicial/ext-tag.type'
 import { FileType } from '@/types/extrajudicial/file.type'
 import Select from '@/ui/Select'
+import { useLoloContext } from '@/contexts/LoloProvider'
 import { SelectItemType } from '@/ui/Select/interfaces'
 import InputFile from '@/ui/inputs/InputFile'
 import notification from '@/ui/notification'
 import { Controller, useFormContext } from 'react-hook-form'
+import Container from '@/ui/Container'
+import Button from '@/ui/Button'
+import useModal from '@/hooks/useModal'
+import CobranzaTagsModal from '@/pages/extrajudicial/ExtrajudicialTags/Modals/CobranzaTagsModal'
 
 type CobranzaFilesInfoFormProps = {
   setStateFormData: (formData: FormData) => void
@@ -12,6 +17,11 @@ type CobranzaFilesInfoFormProps = {
 }
 
 const CobranzaFilesInfoForm = ({ setStateFormData, tags }: CobranzaFilesInfoFormProps) => {
+  const {
+    bank: {
+      selectedBank: { idCHB: chb },
+    },
+  } = useLoloContext()
   const {
     control,
     formState: { errors },
@@ -42,6 +52,8 @@ const CobranzaFilesInfoForm = ({ setStateFormData, tags }: CobranzaFilesInfoForm
     }
   }
 
+  const { visible: visibleModalAdd, showModal: showModalAdd, hideModal: hideModalAdd } = useModal()
+
   const optionsTags: Array<SelectItemType> = tags.map((tag) => {
     return {
       key: String(tag.id),
@@ -49,27 +61,46 @@ const CobranzaFilesInfoForm = ({ setStateFormData, tags }: CobranzaFilesInfoForm
     }
   })
 
+  const onShowModal = () => {
+    showModalAdd()
+  }
+
+  const onCloseModal = () => {
+    hideModalAdd()
+  }
+
   return (
     <>
       <Controller
         name="tagId"
         control={control}
         render={({ field }) => (
-          <Select
-            width="100%"
-            label="Clasificación de archivo:"
-            placeholder="Selecciona una clasificación"
-            value={!!field.value ? String(field.value) : ''}
-            options={optionsTags}
-            onChange={(key) => {
-              field.onChange(parseInt(key))
-            }}
-            hasError={!!errors.tagId}
-          />
+          <Container display="flex" flexDirection="row" gap="10px" flexWrap="nowrap" width="100%" alignItems="flex-end">
+            <Select
+              width="100%"
+              label="Clasificación de archivo:"
+              placeholder="Selecciona una clasificación"
+              value={!!field.value ? String(field.value) : ''}
+              options={optionsTags}
+              onChange={(key) => {
+                field.onChange(parseInt(key))
+              }}
+              hasError={!!errors.tagId}
+            />
+            <Button
+              shape="round"
+              leadingIcon="ri-add-fill"
+              size="small"
+              onClick={onShowModal}
+              disabled={!chb}
+              permission="P14-01"
+            />
+          </Container>
         )}
       />
 
       <InputFile onChangeFiles={handleInputFileChange} multiple />
+      <CobranzaTagsModal visible={visibleModalAdd} onClose={onCloseModal} />
     </>
   )
 }

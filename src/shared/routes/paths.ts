@@ -58,12 +58,24 @@ export default {
 
     detallesExpediente: (urlIdentifier = ':urlIdentifier', code = ':code') =>
       `/judicial/${urlIdentifier}/expedientes/${code}`,
+    detallesExpedienteRelatedProcess: (
+      urlIdentifier = ':urlIdentifier',
+      code = ':code',
+      relatedProcessCode = ':relatedProcessCode'
+    ) => `/judicial/${urlIdentifier}/expediente/${code}/procesos-conexos/${relatedProcessCode}`,
     productosDemandados: (urlIdentifier = ':urlIdentifier', code = ':code') =>
       `/judicial/${urlIdentifier}/expedientes/${code}/productos-demandados`,
     processStatus: (urlIdentifier = ':urlIdentifier', code = ':code') =>
       `/judicial/${urlIdentifier}/expediente/${code}/estatus-proceso`,
     bitacora: (urlIdentifier = ':urlIdentifier', code = ':code') =>
       `/judicial/${urlIdentifier}/expediente/${code}/bitacora`,
+
+    bitacoraProcesoConexo: (
+      urlIdentifier = ':urlIdentifier',
+      code = ':code',
+      relatedProcessCode = ':relatedProcessCode'
+    ) => `/judicial/${urlIdentifier}/expediente/${code}/procesos-conexos/${relatedProcessCode}/bitacora`,
+
     bitacoraTipo: (urlIdentifier = ':urlIdentifier') => `/judicial/${urlIdentifier}/tipo-bitacora`,
     observacionTipo: (urlIdentifier = ':urlIdentifier') => `/judicial/${urlIdentifier}/tipo-observacion`,
     observacion: (urlIdentifier = ':urlIdentifier', code = ':code') =>
@@ -73,5 +85,7 @@ export default {
       `/judicial/${urlIdentifier}/actuacion-procesal-demandado`,
     processReason: (urlIdentifier = ':urlIdentifier') => `/judicial/${urlIdentifier}/motivo-proceso`,
     sedes: (urlIdentifier = ':urlIdentifier') => `/judicial/${urlIdentifier}/sedes`,
+    relatedProcess: (urlIdentifier = ':urlIdentifier', code = ':code') =>
+      `/judicial/${urlIdentifier}/expediente/${code}/procesos-conexos`,
   },
 }

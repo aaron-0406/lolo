@@ -80,7 +80,7 @@ const JudicialBinProceduralStageTable = ({ opts, setOpts }: JudicialBinProcedura
     <Container width="100%" height="calc(100% - 112px)" padding="20px">
       <Pagination count={binTypeBinnacles.length} opts={opts} setOpts={setOpts} />
       <Table
-        top="260px"
+        top="220px"
         columns={binProceduralStagesColumns}
         loading={isLoading}
         isArrayEmpty={!binTypeBinnacles.length}
@@ -115,22 +115,22 @@ const JudicialBinProceduralStageTable = ({ opts, setOpts }: JudicialBinProcedura
                           event.stopPropagation()
                           handleClickButtonEdit(record.id)
                         }}
-                        messageTooltip="Editar Negociación"
+                        messageTooltip="Editar Etapa Procesal"
                         shape="round"
                         size="small"
                         leadingIcon="ri-pencil-fill"
-                        permission="P09-02"
+                        permission="P24-02"
                       />
                       <Button
                         onClick={(event) => {
                           event.stopPropagation()
                           handleClickDeleteJudicialBinProceduralStage(record.id)
                         }}
-                        messageTooltip="Eliminar Negociación"
+                        messageTooltip="Eliminar Etapa Procesal"
                         shape="round"
                         size="small"
                         leadingIcon="ri-delete-bin-line"
-                        permission="P09-03"
+                        permission="P24-03"
                         display="danger"
                       />
                     </Container>

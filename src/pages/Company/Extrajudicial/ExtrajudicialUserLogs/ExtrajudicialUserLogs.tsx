@@ -8,7 +8,7 @@ const ExtrajudicialUserLogs = () => {
   const [opts, setOpts] = useState<Opts>({ filter: '', limit: 50, page: 1 })
 
   return (
-    <Container width="100%" height="100%" display="flex" flexDirection="column">
+    <Container width="100%" height="calc(100% - 50px)" display="flex" flexDirection="column">
       <UserLogsActions />
       <UserLogsTable opts={opts} setOpts={setOpts} />
     </Container>

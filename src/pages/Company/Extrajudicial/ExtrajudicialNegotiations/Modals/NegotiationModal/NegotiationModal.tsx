@@ -169,9 +169,9 @@ const NegotiationModal = ({ visible, onClose, isEdit = false, idNegotiation = 0 
         title={isEdit ? 'Editar Negociación' : 'Agregar Negociación'}
         contentOverflowY="auto"
         size="small"
-        minHeight="140px"
+        minHeight="120px"
         footer={
-          <Container width="100%" height="75px" display="flex" justifyContent="center" alignItems="center" gap="20px">
+          <Container width="100%" height="75px" display="flex" justifyContent="end" alignItems="center" gap="20px">
             <Button
               width="125px"
               label={isEdit ? 'Editar' : 'Agregar'}
@@ -186,14 +186,14 @@ const NegotiationModal = ({ visible, onClose, isEdit = false, idNegotiation = 0 
       >
         <Container
           width="100%"
-          height="140px"
+          height="120px"
           display="flex"
           justify-content="center"
           flexDirection="column"
           align-items="center"
           gap="20px"
         >
-          <Container width="100%" display="flex" flexDirection="column" gap="20px" padding="20px" margin="30px 0">
+          <Container width="100%" display="flex" flexDirection="column" gap="20px" padding="20px">
             <NegotiationInfoForm />
           </Container>
         </Container>

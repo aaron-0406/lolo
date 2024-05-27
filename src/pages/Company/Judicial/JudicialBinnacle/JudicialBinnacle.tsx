@@ -10,15 +10,21 @@ import { useLoloContext } from '@/contexts/LoloProvider'
 
 const JudicialBinnacle = () => {
   const codeParams = useParams().code ?? ''
+  const relatedProcessCodeParams = useParams().relatedProcessCode ?? ''
+
   const {
     bank: {
       selectedBank: { idCHB },
     },
   } = useLoloContext()
+
   const { data } = useQuery<AxiosResponse<any, Error>>(
-    ['get-file-case-by-code', codeParams ?? ''],
+    ['get-file-case-by-code', relatedProcessCodeParams ? relatedProcessCodeParams : codeParams],
     async () => {
-      return await getFileCaseByNumberFile(codeParams ?? '', Number(idCHB))
+      return await getFileCaseByNumberFile(
+        relatedProcessCodeParams ? relatedProcessCodeParams : codeParams,
+        Number(idCHB)
+      )
     },
     {
       onError: (error: any) => {
@@ -35,7 +41,13 @@ const JudicialBinnacle = () => {
   const clientName = data?.data.client.name
 
   return (
-    <Container width="100%" height="100%" display="flex" flexDirection="column" justifyContent="space-between">
+    <Container
+      width="100%"
+      height="calc(100% - 50px)"
+      display="flex"
+      flexDirection="column"
+      justifyContent="space-between"
+    >
       <JudicialBinnacleInfo judicialFileCaseId={judicialFileCaseId} clientCode={clientCode} clientName={clientName} />
       <JudicialBinnacleTable judicialFileCaseId={judicialFileCaseId} clientCode={clientCode} />
     </Container>

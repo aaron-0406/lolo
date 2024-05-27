@@ -57,7 +57,7 @@ const JudicialFileCase = () => {
         actionsContent={<FileCaseActions setOwnerFileCase={setOwnerFileCase} setLoadingGlobal={setLoading} />}
         ownerContent={<FileCaseOwner setOwnerFileCase={setOwnerFileCase} ownerFileCase={ownerFileCase} />}
         infoContent={<FileCaseInfo loading={loading} />}
-        modalsContent={<FileCaseModals ownerFileCase={ownerFileCase} numberCaseFile={numberCaseFile} />}
+        modalsContent={<FileCaseModals numberCaseFile={numberCaseFile} />}
       />
     </FormProvider>
   )

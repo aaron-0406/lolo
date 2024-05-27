@@ -10,7 +10,15 @@ export type CustomerUserType = {
   password: string
   state: boolean
   createdAt: Date
-  permissions?: Array<{ code: string; link: string; name: string; icon: string }>
+  permissions?: Array<{
+    id:string
+    code: string
+    link: string
+    name: string
+    icon: string
+    idPermissionMain: string
+    isDropdown: boolean
+  }>
   customerId: number
   roleId: number
   role: RoleType

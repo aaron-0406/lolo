@@ -164,7 +164,7 @@ const ObsTypeModal = ({ visible, onClose, isEdit = false, idObsType = 0 }: ObsTy
         title={isEdit ? 'Editar tipo de observación' : 'Agregar tipo de observación'}
         contentOverflowY="auto"
         size="small"
-        minHeight="140px"
+        minHeight="120px"
         footer={
           <Container width="100%" height="75px" display="flex" justifyContent="end" alignItems="center" gap="20px">
             <Button
@@ -181,7 +181,7 @@ const ObsTypeModal = ({ visible, onClose, isEdit = false, idObsType = 0 }: ObsTy
       >
         <Container
           width="100%"
-          height="210px"
+          height="120px"
           display="flex"
           justify-content="center"
           flexDirection="column"

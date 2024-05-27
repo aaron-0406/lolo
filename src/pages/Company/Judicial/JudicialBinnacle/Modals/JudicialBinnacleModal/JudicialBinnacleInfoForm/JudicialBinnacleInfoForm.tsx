@@ -5,6 +5,10 @@ import { JudicialBinProceduralStageType } from '@/types/judicial/judicial-bin-pr
 import Container from '@/ui/Container'
 import DatePicker from '@/ui/DatePicker/DatePicker'
 import Select from '@/ui/Select'
+import Button from '@/ui/Button'
+import useModal from '@/hooks/useModal'
+import JudicialBinTypeBinnacleModal from 'pages/Company/Judicial/JudicialBinTypeBinnacle/Modals/JudicialBinTypeBinnacleModal'
+import JudicialBinProceduralStageModal from 'pages/Company/Judicial/JudicialBinProceduralStage/Modals/JudicialBinProceduralStageModal'
 import { SelectItemType } from '@/ui/Select/interfaces'
 import { AxiosResponse } from 'axios'
 import { KEY_JUDICIAL_BIN_PROCEDURAL_STAGE_CACHE } from 'pages/Company/Judicial/JudicialBinProceduralStage/JudicialBinProceduralStageTable/utils/judicial-bin-procedural-stage.cache'
@@ -15,9 +19,6 @@ import { KEY_JUDICIAL_BIN_TYPE_BINNACLE_CACHE } from 'pages/Company/Judicial/Jud
 import { JudicialBinTypeBinnacleType } from '@/types/judicial/judicial-bin-type-binnacle.type'
 import { getJudicialBinTypeBinnacleByCHB } from '@/services/judicial/judicial-bin-type-binnacle.service'
 import { JudicialBinFileType } from '@/types/judicial/judicial-bin-file.type'
-import { JudicialBinDefendantProceduralActionType } from '@/types/judicial/judicial-bin-defendant-procedural-action.type'
-import { KEY_JUDICIAL_BIN_DEFENDANT_PROCEDURAL_ACTION_CACHE } from 'pages/Company/Judicial/JudicialBinDefendantProceduralAction/JudicialBinDefendantProceduralActionTable/utils/judicial-bin-defendant-procedural-action.cache'
-import { getJudicialBinDefendantProceduralActionByCHB } from '@/services/judicial/judicial-bin-defendant-procedural-action.service'
 
 const JudicialBinnacleInfoForm = () => {
   const {
@@ -43,12 +44,6 @@ const JudicialBinnacleInfoForm = () => {
     }
   )
 
-  const { data: dataBinDefendatProceduralAction } = useQuery<
-    AxiosResponse<Array<JudicialBinDefendantProceduralActionType>>
-  >([KEY_JUDICIAL_BIN_DEFENDANT_PROCEDURAL_ACTION_CACHE, parseInt(idCHB.length ? idCHB : '0')], async () => {
-    return await getJudicialBinDefendantProceduralActionByCHB(Number(idCHB))
-  })
-
   const { data: dataBinTypeBinnacle } = useQuery<AxiosResponse<Array<JudicialBinTypeBinnacleType>>>(
     [KEY_JUDICIAL_BIN_TYPE_BINNACLE_CACHE, parseInt(idCHB.length ? idCHB : '0')],
     async () => {
@@ -57,7 +52,6 @@ const JudicialBinnacleInfoForm = () => {
   )
 
   const binProceduralStagesOptions = data?.data ?? []
-  const binDefendatProceduralActionsOptions = dataBinDefendatProceduralAction?.data ?? []
 
   const binTypeBinnacleOptions = dataBinTypeBinnacle?.data ?? []
 
@@ -75,12 +69,33 @@ const JudicialBinnacleInfoForm = () => {
     }
   })
 
-  const optionsDefendant: Array<SelectItemType> = binDefendatProceduralActionsOptions.map((binTypeBinnacle) => {
-    return {
-      key: String(binTypeBinnacle.id),
-      label: binTypeBinnacle.defendantProceduralAction,
-    }
-  })
+  const {
+    visible: visibleModalAddProceduralStage,
+    showModal: showModalAddProceduralStage,
+    hideModal: hideModalAddProceduralStage,
+  } = useModal()
+
+  const onShowModalProceduralStage = () => {
+    showModalAddProceduralStage()
+  }
+
+  const onCloseModalProceduralStage = () => {
+    hideModalAddProceduralStage()
+  }
+
+  const {
+    visible: visibleModalAddTypeBinnacle,
+    showModal: showModalAddTypeBinnacle,
+    hideModal: hideModalAddTypeBinnacle,
+  } = useModal()
+
+  const onShowModalTypeBinnacle = () => {
+    showModalAddTypeBinnacle()
+  }
+
+  const onCloseModalTypeBinnacle = () => {
+    hideModalAddTypeBinnacle()
+  }
 
   return (
     <>
@@ -108,16 +123,27 @@ const JudicialBinnacleInfoForm = () => {
         name="judicialBinProceduralStageId"
         control={control}
         render={({ field }) => (
-          <Select
-            width="100%"
-            label="Etapa Procesal:"
-            value={String(field.value)}
-            options={optionsActions}
-            onChange={(key) => {
-              field.onChange(key)
-            }}
-            hasError={!!errors.judicialBinProceduralStageId}
-          />
+          <Container display="flex" flexDirection="row" gap="10px" flexWrap="nowrap" width="100%" alignItems="flex-end">
+            <Select
+              width="100%"
+              label="Etapa Procesal:"
+              value={String(field.value)}
+              options={optionsActions}
+              onChange={(key) => {
+                field.onChange(key)
+              }}
+              hasError={!!errors.judicialBinProceduralStageId}
+            />
+
+            <Button
+              shape="round"
+              leadingIcon="ri-add-fill"
+              size="small"
+              onClick={onShowModalProceduralStage}
+              disabled={!idCHB}
+              permission="P24-01"
+            />
+          </Container>
         )}
       />
 
@@ -125,34 +151,30 @@ const JudicialBinnacleInfoForm = () => {
         name="binnacleTypeId"
         control={control}
         render={({ field }) => (
-          <Select
-            width="100%"
-            label="Tipo:"
-            value={String(field.value)}
-            options={optionsBinType}
-            onChange={(key) => {
-              field.onChange(key)
-            }}
-            hasError={!!errors.binnacleTypeId}
-          />
+          <Container display="flex" flexDirection="row" gap="10px" flexWrap="nowrap" width="100%" alignItems="flex-end">
+            <Select
+              width="100%"
+              label="Tipo:"
+              value={String(field.value)}
+              options={optionsBinType}
+              onChange={(key) => {
+                field.onChange(key)
+              }}
+              hasError={!!errors.binnacleTypeId}
+            />
+
+            <Button
+              shape="round"
+              leadingIcon="ri-add-fill"
+              size="small"
+              onClick={onShowModalTypeBinnacle}
+              disabled={!idCHB}
+              permission="P25-01"
+            />
+          </Container>
         )}
       />
-      <Controller
-        name="judicialDefendantProceduralActionId"
-        control={control}
-        render={({ field }) => (
-          <Select
-            width="100%"
-            label="Actuación Procesal Demandada:"
-            value={String(field.value)}
-            options={optionsDefendant}
-            onChange={(key) => {
-              field.onChange(key)
-            }}
-            hasError={!!errors.judicialDefendantProceduralActionId}
-          />
-        )}
-      />
+
       <Controller
         name="lastPerformed"
         control={control}
@@ -169,6 +191,9 @@ const JudicialBinnacleInfoForm = () => {
           />
         )}
       />
+
+      <JudicialBinProceduralStageModal visible={visibleModalAddProceduralStage} onClose={onCloseModalProceduralStage} />
+      <JudicialBinTypeBinnacleModal visible={visibleModalAddTypeBinnacle} onClose={onCloseModalTypeBinnacle} />
     </>
   )
 }

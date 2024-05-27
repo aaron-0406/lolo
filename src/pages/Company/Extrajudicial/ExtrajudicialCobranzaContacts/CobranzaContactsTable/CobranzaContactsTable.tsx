@@ -143,19 +143,19 @@ const CobranzaContactsTable = ({ clientId = 0 }: CobranzaContactsTableProps) => 
   const contactsType: ExtContactTypeType[] = contactsTypeData?.data ?? []
 
   return (
-    <Container width="100%" height="calc(100% - 80px)" padding="20px">
+    <Container width="100%" height="calc(100% - 80px)" padding="10px 20px">
       <Table
-        top="195px"
+        top="190px"
         columns={contactsColumns}
         loading={isLoading}
         isArrayEmpty={!contacts.length}
         emptyState={
-            <EmptyStateCell colSpan={contactsColumns.length}>
-              <EmptyState
-                title="No hay recursos disponibles"
-                description="No se encontraron contactos para este cliente, por favor seleccione otros filtros"
-              />
-            </EmptyStateCell>
+          <EmptyStateCell colSpan={contactsColumns.length}>
+            <EmptyState
+              title="No hay recursos disponibles"
+              description="No se encontraron contactos para este cliente, por favor seleccione otros filtros"
+            />
+          </EmptyStateCell>
         }
         emptyFirstState={
           <EmptyStateCell colSpan={contactsColumns.length}>

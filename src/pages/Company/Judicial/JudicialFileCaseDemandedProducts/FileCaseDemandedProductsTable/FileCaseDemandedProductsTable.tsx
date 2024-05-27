@@ -60,12 +60,12 @@ const FileCaseDemandedProductsTable = ({ caseFileId }: FileCaseDemandedProductsT
   const products = data?.data ?? []
 
   return (
-    <Container width="100%" height="calc(100% - 80px)" padding="20px">
+    <Container width="100%" height="calc(100% - 80px)" padding="10px 20px">
       <Table
-        top="195px"
+        top="190px"
         columns={demandedProductsColumns}
         loading={isLoading}
-        isArrayEmpty={true}
+        isArrayEmpty={!products.length}
         emptyState={
           <EmptyStateCell colSpan={demandedProductsColumns.length}>
             <EmptyState
@@ -78,10 +78,7 @@ const FileCaseDemandedProductsTable = ({ caseFileId }: FileCaseDemandedProductsT
         }
         emptyFirstState={
           <EmptyStateCell colSpan={demandedProductsColumns.length}>
-            <EmptyState
-              title="No hay recursos disponibles"
-              description="No se encontraron productos demandados"
-            />
+            <EmptyState title="No hay recursos disponibles" description="No se encontraron Productos Demandados" />
           </EmptyStateCell>
         }
       >
