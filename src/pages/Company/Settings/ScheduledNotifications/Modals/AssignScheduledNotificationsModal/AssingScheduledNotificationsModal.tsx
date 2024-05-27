@@ -225,7 +225,7 @@ const AssingScheduledNotificationsModal = ({
           gap="20px"
         >
           <Container width="100%" display="flex" flexDirection="column" gap="10px" padding="20px">
-            <ScheduledNotificationsInfoModal modalActions={modalActions} onClose={onClose} />
+            <ScheduledNotificationsInfoModal modalActions={modalActions} />
           </Container>
         </Container>
       </Modal>

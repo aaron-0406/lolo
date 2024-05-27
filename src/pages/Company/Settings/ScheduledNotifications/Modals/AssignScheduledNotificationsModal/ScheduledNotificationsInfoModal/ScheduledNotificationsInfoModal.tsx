@@ -1,11 +1,9 @@
 import ScheduledNotficationForm from './ScheduledNotficationForm'
 import Container from '@/ui/Container'
 import ScheduledNotificationsUsersTable from './ScheduledNoticationsUsersTable/ScheduledNotificationsUsersTable'
-
 import { useLoloContext } from '@/contexts/LoloProvider'
 import { useQuery } from 'react-query'
 import { useEffect } from 'react'
-
 import { KEY_USUARIOS_SCHUDULED_NOTIFICATIONS_CACHE } from './ScheduledNoticationsUsersTable/utils/users.cache'
 import { getAllUsersByID } from '@/services/dash/customer-user.service'
 import { useState } from 'react'
@@ -15,10 +13,9 @@ import { useMediaQuery } from '@/hooks/useMediaQuery'
 
 type ScheduledNotificationsInfoModalProps = {
   modalActions: 'edit' | 'add'
-  onClose: () => void
 }
 
-const ScheduledNotificationsInfoModal = ({ modalActions, onClose }: ScheduledNotificationsInfoModalProps) => {
+const ScheduledNotificationsInfoModal = ({ modalActions }: ScheduledNotificationsInfoModalProps) => {
   const [opts, setOpts] = useState<Opts>({ filter: '', limit: 10, page: 1 })
   const {
     client: {
@@ -40,7 +37,7 @@ const ScheduledNotificationsInfoModal = ({ modalActions, onClose }: ScheduledNot
 
   return (
     <Container width="100%" display="flex" flexDirection={greaterThanTabletS ? 'row' : 'column'} height="100%">
-      <ScheduledNotficationForm modalActions={modalActions} />
+      <ScheduledNotficationForm />
       {modalActions === 'edit' ? (
         <ScheduledNotificationsUsersTable users={users} isLoading={isLoading} opts={opts} setOpts={setOpts} />
       ) : null}

@@ -7,19 +7,12 @@ import Label from '@/ui/Label'
 import Switch from '@/ui/Switch'
 import { Controller, useFormContext } from 'react-hook-form'
 import styled from 'styled-components'
-import { device } from '@/breakpoints/responsive';
-import { useMediaQuery } from '@/hooks/useMediaQuery';
 
-type ScheduledNotificationFormProps = {
-  modalActions: "edit" | "add"
-}
-
-const ScheduledNotificationForm = ({ modalActions }: ScheduledNotificationFormProps) => {
+const ScheduledNotificationForm = () => {
   const {
     control,
     formState: { errors },
   } = useFormContext()
-  const greaterThanTabletS = useMediaQuery(device.tabletS)
 
   return (
     <StyledContainer display="flex" flexDirection="column" gap="20px" width="100%">
