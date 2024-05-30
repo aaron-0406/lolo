@@ -15,8 +15,8 @@ export const judicialBinnacleColumns: ColumProps[] = [
   },
   {
     id: 'binnacle.datatable.header.bin-defendant-procedural-action-type',
-    title: 'ACTUACIÓN PROCEDIMENTAL DEMANDADA',
-    width: '20%',
+    title: 'ÚLTIMO ACTUADO',
+    width: '30%',
     justifyContent: 'left',
   },
   {
