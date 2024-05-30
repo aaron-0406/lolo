@@ -10,7 +10,7 @@ export const judicialBinnacleColumns: ColumProps[] = [
   {
     id: 'binnacle.datatable.header.bin-type-binnacle-type',
     title: 'TIPO',
-    width: '20%',
+    width: '10%',
     justifyContent: 'left',
   },
   {
@@ -28,7 +28,7 @@ export const judicialBinnacleColumns: ColumProps[] = [
   {
     id: 'binnacle.datatable.header.date',
     title: 'FECHA',
-    width: '25%',
+    width: '20%',
     justifyContent: 'center',
   },
   {
