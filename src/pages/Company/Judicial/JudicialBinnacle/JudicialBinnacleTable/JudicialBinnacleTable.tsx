@@ -123,7 +123,7 @@ const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode }: JudicialBinna
                   <BodyCell textAlign="left">
                     <Container
                       margin="20px 0"
-                      minWidth="300px"
+                      minWidth="100px"
                       maxHeight="130px"
                       whiteSpace="normal"
                       wordBreak="break-all"

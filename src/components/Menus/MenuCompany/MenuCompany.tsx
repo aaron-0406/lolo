@@ -140,16 +140,18 @@ const MenuCompany: React.FC<MenuCompanyProps> = ({ children, urlIdentifier }) =>
     refetchCities()
     refetchUsers()
 
-    const currentPermissionID = items.find((item) => item.link === location.pathname)?.id
-    setTargetNavItem(currentPermissionID ?? '')
-    // eslint-disable-next-line
-
     return () => {
       if (titleElement) {
         titleElement.textContent = 'Lolo Bank'
       }
     }
   }, [])
+
+  useEffect(() => {
+    const currentPermissionID = items.find((item) => item.link === location.pathname)?.id
+    setTargetNavItem(currentPermissionID ?? '')
+    // eslint-disable-next-line
+  }, [location.pathname])
 
   useEffect(() => {
     if (greaterThanTabletL) {
