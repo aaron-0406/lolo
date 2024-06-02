@@ -30,6 +30,10 @@ import notification from '@/ui/notification'
 import { CustomErrorResponse } from 'types/customErrorResponse'
 import Text from '@/ui/Text'
 import EmptyState from '@/ui/EmptyState'
+import Checkbox from '@/ui/Checkbox'
+import FloatingContainer from '@/ui/FloatingContainer'
+import type { FloatingContainerButtonsType } from '@/ui/FloatingContainer/interfaces'
+import { JudicialCaseFileType } from '@/types/judicial/judicial-case-file.type'
 
 const JudicialFileCasesTable = () => {
   const navigate = useNavigate()
@@ -57,6 +61,7 @@ const JudicialFileCasesTable = () => {
   } = useFiltersContext()
 
   const [fileCaseId, setFileCaseId] = useState<number>(0)
+  const [caseFileSelected, setCaseFileSelected] = useState<Array<JudicialCaseFileType>>([])
 
   const selectedFilterOptions = getSelectedFilters(currentPath)?.filters ?? []
   const opts = getSearchFilters(currentPath)?.opts ?? { filter: '', limit: 50, page: 1 }
@@ -178,6 +183,41 @@ const JudicialFileCasesTable = () => {
   const judicialFileCases = data?.data?.caseFiles ?? []
   const quantity = data?.data?.quantity ?? 0
 
+  const funt = () => {
+    console.log('acción')
+  }
+
+  const buttons: FloatingContainerButtonsType[] = [
+    {
+      onClick: funt,
+      label: 'Aceptar',
+    },
+    {
+      onClick: funt,
+      label: 'Eliminar',
+      type: 'danger',
+    },
+  ]
+
+  const onChangeCheckBox = (state: boolean, caseFile: JudicialCaseFileType) => {
+    let arr = caseFileSelected
+
+    if (state) {
+      setCaseFileSelected([...arr, caseFile])
+    } else {
+      arr = arr.filter((cf) => cf !== caseFile)
+      setCaseFileSelected(arr)
+    }
+  }
+
+  const onCloseFloatingContainer = () => {
+    setCaseFileSelected([])
+    const checkboxes = document.querySelectorAll<HTMLInputElement>('.file-case-check-box')
+    checkboxes.forEach((checkbox) => {
+      checkbox.checked = false
+    })
+  }
+
   useEffect(() => {
     refetch()
   }, [getSelectedFilters(currentPath)?.filters])
@@ -219,15 +259,32 @@ const JudicialFileCasesTable = () => {
         }
       >
         {!!judicialCaseFileColumns?.length &&
-          judicialFileCases.map((record: JudicialFileCaseTableRow) => {
+          judicialFileCases.map((record: JudicialFileCaseTableRow, key) => {
             return (
               <tr
                 className="styled-data-table-row"
-                key={record.id}
+                key={key}
                 onClick={() => {
                   hasAccessToTheButton && onClickRow(record.numberCaseFile)
                 }}
               >
+                <BodyCell textAlign="center">
+                  {
+                    <Container
+                      onClick={(event) => {
+                        event.stopPropagation()
+                      }}
+                    >
+                      <Checkbox
+                        className="file-case-check-box"
+                        width="100%"
+                        onChange={(event) => {
+                          onChangeCheckBox(event.currentTarget.checked, record)
+                        }}
+                      />
+                    </Container>
+                  }
+                </BodyCell>
                 <BodyCell textAlign="center">{`${record?.numberCaseFile || ''}`}</BodyCell>
                 <BodyCell textAlign="left">
                   <Container
@@ -277,6 +334,9 @@ const JudicialFileCasesTable = () => {
           })}
       </Table>
       <Tooltip place="right" id="cell-tooltip" />
+      {caseFileSelected.length !== 0 && (
+        <FloatingContainer numberItems={caseFileSelected.length} buttons={buttons} onClose={onCloseFloatingContainer} />
+      )}
 
       <DeleteExpedienteModal visible={visibleDeleteFileCase} onClose={hideDeleteFileCase} idFileCase={fileCaseId} />
     </Container>
