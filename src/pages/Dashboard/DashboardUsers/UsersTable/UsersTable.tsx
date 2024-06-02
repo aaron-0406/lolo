@@ -121,7 +121,7 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts }) => {
       },
     }
   )
-
+  console.log(users)
   useEffect(() => {
     refetch()
     // eslint-disable-next-line
@@ -141,7 +141,7 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts }) => {
           </EmptyStateCell>
         }
         emptyFirstState ={
-          <>hola</>
+          <></>
         }
       >
         {!!users?.length &&
