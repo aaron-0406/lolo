@@ -10,11 +10,12 @@ import storage from '../../../shared/utils/storage'
 import Button from '@/ui/Button'
 import Container from '@/ui/Container'
 import TextField from '@/ui/fields/TextField'
-import Icon from '@/ui/Icon'
+import logo  from '@/assets/images/logo.png'
 import notification from '@/ui/notification'
 import { LoginResolver } from './Login.yup'
 import QRCode from 'react-qr-code'
 import Text from '@/ui/Text'
+import Img from '@/ui/Img'
 
 const Login = () => {
   const {
@@ -83,85 +84,114 @@ const Login = () => {
   }
 
   return (
-    <StyledLoginContainer width="100%" height="100vh" display="flex" justifyContent="center" alignItems="center">
-      <Container className="login__container" width="100%" height="100%">
-        <LoginHeader title="Iniciar sesión" />
+    <StyledLoginContainer className="login">
+      <Container className="login__form-container">
 
-        <Container
-          width="100%"
-          height="calc(100% - 56px)"
-          display="flex"
-          justifyContent="center"
-          flexDirection="column"
-          alignItems="center"
-          gap="25px"
-          padding="23px"
-        >
-          {qrCodeUrl ? (
-            <Container width="100%" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
-              <Text.Body size="s" weight="bold">
-                Escanea el código QR:
-              </Text.Body>
-              <QRCode value={qrCodeUrl} size={150} />
-            </Container>
-          ) : (
-            <Icon remixClass="ri-user-line" size={120} color="Primary5" />
-          )}
-          <Container width="100%" display="flex" flexDirection="column" gap="30px">
-            <Controller
-              name="email"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  width="100%"
-                  label="Email"
-                  type="email"
-                  value={field.value}
-                  helperText={errors.email?.message}
-                  hasError={!!errors.email}
-                  onChange={field.onChange}
-                  onKeyPress={handleKeyPress}
-                />
-              )}
-            />
-
-            <Controller
-              name="password"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  width="100%"
-                  label="Password"
-                  type="password"
-                  value={field.value}
-                  helperText={errors.password?.message}
-                  hasError={!!errors.password}
-                  onChange={field.onChange}
-                  onKeyPress={handleKeyPress}
-                />
-              )}
-            />
-
-            <Controller
-              name="code2fa"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  width="100%"
-                  label="Código de 6 dígitos"
-                  type="text"
-                  value={field.value}
-                  helperText={errors.code2fa?.message}
-                  hasError={!!errors.code2fa}
-                  onChange={field.onChange}
-                  onKeyPress={handleKeyPress}
-                />
-              )}
-            />
-          </Container>
-
-          <Button onClick={onLogin} disabled={isLoading} loading={isLoading} width="100%" label="Continuar" />
+        <Container className="login__header">
+          <Img src={logo} alt="logo" placeholderImage="" className="login__header-img" />
+          <Text.Body size="l" weight="bold" color="Primary5">
+            LoloBank
+          </Text.Body>
         </Container>
+
+        <Container className="login__form">
+          <LoginHeader title="Iniciar sesión" />
+          <Container
+            width="100%"
+            display="flex"
+            justifyContent="center"
+            flexDirection="column"
+            alignItems="center"
+            gap="25px"
+            padding="23px"
+          >
+            {qrCodeUrl ? (
+              <Container width="100%" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
+                <Text.Body size="s" weight="bold">
+                  Escanea el código QR:
+                </Text.Body>
+                <QRCode value={qrCodeUrl} size={150} />
+              </Container>
+            ) : null}
+            <Container width="100%" display="flex" flexDirection="column" gap="30px">
+              <Controller
+                name="email"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    width="100%"
+                    label="Email"
+                    type="email"
+                    value={field.value}
+                    helperText={errors.email?.message}
+                    hasError={!!errors.email}
+                    onChange={field.onChange}
+                    onKeyPress={handleKeyPress}
+                  />
+                )}
+              />
+
+              <Controller
+                name="password"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    width="100%"
+                    label="Password"
+                    type="password"
+                    value={field.value}
+                    helperText={errors.password?.message}
+                    hasError={!!errors.password}
+                    onChange={field.onChange}
+                    onKeyPress={handleKeyPress}
+                  />
+                )}
+              />
+
+              <Controller
+                name="code2fa"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    width="100%"
+                    label="Código de 6 dígitos"
+                    type="text"
+                    value={field.value}
+                    helperText={errors.code2fa?.message}
+                    hasError={!!errors.code2fa}
+                    onChange={field.onChange}
+                    onKeyPress={handleKeyPress}
+                  />
+                )}
+              />
+            </Container>
+
+            <Button onClick={onLogin} disabled={isLoading} loading={isLoading} width="100%" label="Continuar" />
+          </Container>
+        </Container>
+      </Container>
+
+      <Container className="content__container">
+
+        <Container className="content__balls-container">
+          <Container className='content__ball-first' />
+          <Container className='content__ball-second' />
+        </Container>
+
+        <Container className="info__container">
+          
+          <Container className='info__cover'/>
+          
+          <Container className='info__text-container'>
+            <Text.Body size="l" weight="bold" color='Neutral0' className='info__text-title'>
+              Bienvenido a LoloBank
+            </Text.Body>
+            <Text.Body weight='regular' size="m" color='Neutral0' className='info__text-title--sub'>
+              Gestiona tu estudio de manera fácil y rápida
+            </Text.Body>
+          </Container>
+        </Container>
+      
       </Container>
     </StyledLoginContainer>
   )
