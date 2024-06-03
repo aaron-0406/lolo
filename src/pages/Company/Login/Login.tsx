@@ -86,7 +86,6 @@ const Login = () => {
   return (
     <StyledLoginContainer className="login">
       <Container className="login__form-container">
-
         <Container className="login__header">
           <Img src={logo} alt="logo" placeholderImage="" className="login__header-img" />
           <Text.Body size="l" weight="bold" color="Primary5">
@@ -172,26 +171,23 @@ const Login = () => {
       </Container>
 
       <Container className="content__container">
-
         <Container className="content__balls-container">
-          <Container className='content__ball-first' />
-          <Container className='content__ball-second' />
+          <Container className="content__ball-first" />
+          <Container className="content__ball-second" />
         </Container>
 
         <Container className="info__container">
-          
-          <Container className='info__cover'/>
-          
-          <Container className='info__text-container'>
-            <Text.Body size="l" weight="bold" color='Neutral0' className='info__text-title'>
+          <Container className="info__cover" />
+
+          <Container className="info__text-container">
+            <Text.Body size="l" weight="bold" color="Neutral0" className="info__text-title">
               Bienvenido a LoloBank
             </Text.Body>
-            <Text.Body weight='regular' size="m" color='Neutral0' className='info__text-title--sub'>
-              Gestiona tu estudio de manera fácil y rápida
+            <Text.Body weight="regular" size="m" color="Neutral0" className="info__text-title--sub">
+              Optimización de la Cobranza: Enfoques Judiciales y Extrajudiciales para la Gestión de Cartera
             </Text.Body>
           </Container>
         </Container>
-      
       </Container>
     </StyledLoginContainer>
   )

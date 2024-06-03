@@ -6,17 +6,15 @@ export const StyledLoginContainer = styled(Container)`
   ${({ theme }) => css`
     box-sizing: border-box;
     width: 100vw;
-    min-height: 100vh;
+    height: 100lvh;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
     overflow-y: auto;
 
     .login__form-container {
       margin-top: 2rem;
       width: 100%;
-      min-height: 70vh;
+      min-height: 700px;
       height: 100%;
       display: flex;
       flex-direction: column;
@@ -45,6 +43,8 @@ export const StyledLoginContainer = styled(Container)`
         width: 100%;
         display: flex;
         flex-direction: column;
+        justify-content: center;
+        align-items: center;
         gap: 10px;
         padding: 50px 23px;
 
@@ -169,6 +169,7 @@ export const StyledLoginContainer = styled(Container)`
     @media ${theme.device.desktopS} {
       width: 100vw;
       height: 100vh;
+      min-height: auto;
       display: flex;
       flex-direction: row;
       justify-content: center;
@@ -177,7 +178,8 @@ export const StyledLoginContainer = styled(Container)`
       .login__form-container {
         margin-top: 0rem;
         width: 40%;
-        height: 100%;
+        min-height: auto;
+        height: fit-content;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -203,6 +205,7 @@ export const StyledLoginContainer = styled(Container)`
           width: 100%;
           display: flex;
           flex-direction: column;
+          justify-content: center;
           gap: 10px;
           padding: 23px;
 
@@ -308,13 +311,13 @@ export const StyledLoginContainer = styled(Container)`
             color: white;
             font-size: 2.5rem;
             font-weight: 700;
-            text-align: center;
+            text-align: start;
           }
           .info__text-title--sub {
             color: white;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: 500;
-            text-align: center;
+            text-align: start;
           }
         }
       }
