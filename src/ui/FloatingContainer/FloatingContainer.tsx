@@ -29,8 +29,8 @@ export default FloatingContainer
 const StyledNotification = styled.div`
   ${({ theme }) => css`
     position: relative;
-    bottom: 70px;
     left: 50%;
+    bottom: 70px;
     transform: translateX(-50%);
     display: flex;
     gap: 5px;
@@ -38,9 +38,8 @@ const StyledNotification = styled.div`
     justify-content: space-around;
     width: 100%;
     padding: 5px 20px;
-    background-color: white;
-    border: 1px solid #ccc;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: ${theme.colors.Neutral4};
+    box-shadow: ${theme.shadows.elevationHigh};
     border-radius: 8px;
     height: 60px;
     z-index: 1000;
