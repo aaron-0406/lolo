@@ -10,7 +10,7 @@ import storage from '../../../shared/utils/storage'
 import Button from '@/ui/Button'
 import Container from '@/ui/Container'
 import TextField from '@/ui/fields/TextField'
-import logo  from '@/assets/images/logo.png'
+import logo from '@/assets/images/logo.png'
 import notification from '@/ui/notification'
 import { LoginResolver } from './Login.yup'
 import QRCode from 'react-qr-code'
@@ -94,14 +94,14 @@ const Login = () => {
         </Container>
 
         <Container className="login__form">
-          <LoginHeader title="Iniciar sesión" />
+          <LoginHeader />
           <Container
             width="100%"
             display="flex"
             justifyContent="center"
             flexDirection="column"
             alignItems="center"
-            gap="25px"
+            gap="30px"
             padding="23px"
           >
             {qrCodeUrl ? (
@@ -183,7 +183,7 @@ const Login = () => {
             <Text.Body size="l" weight="bold" color="Neutral0" className="info__text-title">
               Bienvenido a LoloBank
             </Text.Body>
-            <Text.Body weight="regular" size="m" color="Neutral0" className="info__text-title--sub">
+            <Text.Body weight="regular" size="s" color="Neutral0" className="info__text-title--sub">
               Optimización de la Cobranza: Enfoques Judiciales y Extrajudiciales para la Gestión de Cartera
             </Text.Body>
           </Container>

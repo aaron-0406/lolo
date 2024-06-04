@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components'
 import Container from '@/ui/Container'
-import login from "@/assets/images/login.jpeg"
+import login from '@/assets/images/login.jpeg'
 
 export const StyledLoginContainer = styled(Container)`
   ${({ theme }) => css`
@@ -143,8 +143,8 @@ export const StyledLoginContainer = styled(Container)`
           flex-direction: column;
           justify-content: center;
           align-items: start;
-          gap: 15px;
-          padding: 0px 6px;
+          gap: 30px;
+          padding: 0px 26px;
           top: 0;
           left: 0;
           width: fit-content;
@@ -299,8 +299,8 @@ export const StyledLoginContainer = styled(Container)`
             flex-direction: column;
             justify-content: center;
             align-items: start;
-            padding: 0px 15px;
-            gap: 15px;
+            padding: 0px 26px;
+            gap: 30px;
             top: 50%;
             right: 0;
             transform: translate(0%, -50%);
