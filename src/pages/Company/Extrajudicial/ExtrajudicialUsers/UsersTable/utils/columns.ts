@@ -55,6 +55,6 @@ export const usersColumns: ColumProps[] = [
     id: 'users.datatable.header.actions',
     title: 'ACCIONES',
     width: '40%',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
   },
 ]

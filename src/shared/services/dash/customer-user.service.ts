@@ -32,6 +32,10 @@ export const editUserById = async (
   return await axiosClient.patch(`${url}/${userID}`, user)
 }
 
+export const removeCode2faUser = async (userID: number) => {
+  return await axiosClient.patch(`${url}/code2fa/${userID}`)
+}
+
 export const deleteUser = async (userID: number) => {
   return await axiosClient.delete(`${url}/${userID}`)
 }

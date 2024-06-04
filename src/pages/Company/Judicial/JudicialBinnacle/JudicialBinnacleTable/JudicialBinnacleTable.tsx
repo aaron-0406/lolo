@@ -1,4 +1,5 @@
 import Button from '@/ui/Button'
+import Text from '@/ui/Text'
 import DeleteJudicialBinnacleModal from '../Modals/DeleteJudicialBinnacleModal'
 import JudicialBinnacleModal from '../Modals/JudicialBinnacleModal'
 import BodyCell from '@/ui/Table/BodyCell'
@@ -122,7 +123,7 @@ const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode }: JudicialBinna
                   <BodyCell textAlign="left">
                     <Container
                       margin="20px 0"
-                      minWidth="300px"
+                      minWidth="100px"
                       maxHeight="130px"
                       whiteSpace="normal"
                       wordBreak="break-all"
@@ -131,8 +132,19 @@ const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode }: JudicialBinna
                       {record?.binnacleType?.typeBinnacle || '-'}
                     </Container>
                   </BodyCell>
-                  <BodyCell textAlign="center">
-                    {record?.judicialBinDefendantProceduralAction?.defendantProceduralAction || '-'}
+                  <BodyCell textAlign="left">
+                  <Container
+                      margin="20px 0"
+                      minWidth="300px"
+                      maxHeight="130px"
+                      whiteSpace="normal"
+                      wordBreak="break-all"
+                      overFlowY="auto"
+                    >
+                      <Text.Body size="m" weight="regular">
+                          {record?.lastPerformed || '-'}
+                      </Text.Body>
+                    </Container> 
                   </BodyCell>
                   <BodyCell textAlign="center">{record?.judicialBinProceduralStage?.proceduralStage || '-'}</BodyCell>
                   <BodyCell textAlign="center">{moment(record.date.split('T')[0]).format('DD-MM-YYYY') || ''}</BodyCell>
