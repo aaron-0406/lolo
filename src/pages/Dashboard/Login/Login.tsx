@@ -67,7 +67,7 @@ const Login = () => {
   return (
     <StyledLoginContainer width="100%" height="100vh" display="flex" justifyContent="center" alignItems="center">
       <Container className="login__container" width="100%" height="100%">
-        <LoginHeader title="Iniciar sesión" />
+        <LoginHeader />
 
         <Container
           width="100%"

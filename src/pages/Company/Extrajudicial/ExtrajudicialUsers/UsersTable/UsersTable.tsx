@@ -2,7 +2,7 @@ import { Dispatch, FC, useEffect, useState } from 'react'
 import moment from 'moment'
 import { AxiosError, AxiosResponse } from 'axios'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
-import { getAllUsersByID, editUserState } from '@/services/dash/customer-user.service'
+import { getAllUsersByID, editUserState, removeCode2faUser } from '@/services/dash/customer-user.service'
 import { CustomerUserType } from '@/types/dash/customer-user.type'
 import Container from '@/ui/Container'
 import Pagination from '@/ui/Pagination'
@@ -63,6 +63,10 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts }) => {
     editStateUser({ idUser, state })
   }
 
+  const handleClickRemoveCode2fa = (idUser: number) => {
+    removeCode2fa({ idUser })
+  }
+
   const onCloseDeleteUser = () => {
     setIdDeletedUser(0)
     hideDeleteUser()
@@ -105,6 +109,36 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts }) => {
     }
   )
 
+  const { mutate: removeCode2fa } = useMutation<
+    AxiosResponse<CustomerUserType>,
+    AxiosError<CustomErrorResponse>,
+    { idUser: number }
+  >(
+    async ({ idUser }) => {
+      return await removeCode2faUser(idUser)
+    },
+    {
+      onSuccess: (result) => {
+        notification({ type: 'success', message: 'Código de autenticación eliminado' })
+        editUserCache(result.data)
+      },
+      onMutate: () => {
+        return onMutateCache()
+      },
+      onSettled: () => {
+        onSettledCache()
+      },
+      onError: (error, _, context: any) => {
+        onErrorCache(context)
+        notification({
+          type: 'error',
+          message: error.response?.data.message,
+          list: error.response?.data?.errors?.map((error) => error.message),
+        })
+      },
+    }
+  ) 
+
   const { isLoading, refetch } = useQuery(
     KEY_EXT_USUARIOS_CACHE,
     async () => {
@@ -122,7 +156,6 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts }) => {
       },
     }
   )
-
   useEffect(() => {
     refetch()
     // eslint-disable-next-line
@@ -164,12 +197,13 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts }) => {
                 <BodyCell textAlign="center">{`${record.state ? 'activo' : 'inactivo'}`}</BodyCell>
                 <BodyCell textAlign="center">{`${moment(record.createdAt).format('DD-MM-YYYY') || ''}`}</BodyCell>
                 <BodyCell textAlign="center">
-                  <Container justifyContent="space-around" gap="15px" display="flex">
+                  <Container justifyContent="start" gap="15px" display="flex">
                     <Button
                       onClick={() => {
                         handleClickEditUser(record.id)
                       }}
                       shape="round"
+                      messageTooltip='Editar usuario'
                       size="small"
                       leadingIcon="ri-pencil-fill"
                       permission="P10-02"
@@ -191,10 +225,24 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts }) => {
                       }}
                       shape="round"
                       size="small"
+                      messageTooltip='Eliminar usuario'
                       leadingIcon="ri-delete-bin-line"
                       permission="P10-03"
                       display="danger"
                     />
+                    {record.code2fa ? (
+                      <Button
+                        messageTooltip={'Remover 2fa'}
+                        onClick={() => {
+                          handleClickRemoveCode2fa(record.id)
+                        }}
+                        shape="round"
+                        size="small"
+                        leadingIcon="ri-qr-code-line"
+                        permission="P10-05"
+                        display="danger"
+                      />
+                    ) : null}
                   </Container>
                 </BodyCell>
               </tr>

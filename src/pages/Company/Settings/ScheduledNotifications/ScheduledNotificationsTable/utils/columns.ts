@@ -15,7 +15,7 @@ export const demandedProductsColumns: ColumProps[] = [
   },
   {
     id: 'scheduled.notifications.datatable.header.frequencyToNotify',
-    title: 'FREQUENCIA',
+    title: 'FRECUENCIA',
     width: '30%',
     justifyContent: 'center',
   },

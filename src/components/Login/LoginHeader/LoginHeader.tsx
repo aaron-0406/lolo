@@ -1,32 +1,28 @@
-import styled, { css } from 'styled-components'
+import { useLoloContext } from '@/contexts/LoloProvider'
 import Container from '@/ui/Container'
 import Text from '@/ui/Text'
 
-type LoginHeaderProps = {
-  title: string
-}
+const LoginHeader = () => {
+  const {
+    client: {
+      customer: { companyName },
+    },
+  } = useLoloContext()
 
-const LoginHeader: React.FC<LoginHeaderProps> = ({ title }) => {
   return (
-    <StyledContainer
-      className="login__header"
-      width="100%"
-      height="56px"
+    <Container
       display="flex"
       alignItems="center"
       justifyContent="center"
+      flexDirection="column"
+      gap="20px"
+      padding="20px 0"
     >
-      <Text.Body size="l" weight="bold">
-        {title}
+      <Text.Body size="l" weight="bold" style={{ textAlign: 'center' }}>
+        {companyName}
       </Text.Body>
-    </StyledContainer>
+    </Container>
   )
 }
 
 export default LoginHeader
-
-const StyledContainer = styled(Container)`
-  ${({ theme }) => css`
-    border-bottom: 2px solid ${theme.colors.Neutral4};
-  `}
-`
