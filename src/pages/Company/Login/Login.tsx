@@ -165,7 +165,7 @@ const Login = () => {
               />
             </Container>
 
-            <Button onClick={onLogin} disabled={isLoading} loading={isLoading} width="100%" label="Continuar" />
+            <Button onClick={onLogin} disabled={isLoading} loading={isLoading} width="100%" label="Iniciar Sesión" />
           </Container>
         </Container>
       </Container>
@@ -180,7 +180,7 @@ const Login = () => {
           <Container className="info__cover" />
 
           <Container className="info__text-container">
-            <Text.Body size="l" weight="bold" color="Neutral0" className="info__text-title">
+            <Text.Body size="m" weight="bold" color="Neutral0" className="info__text-title">
               Bienvenido a LoloBank
             </Text.Body>
             <Text.Body weight="regular" size="s" color="Neutral0" className="info__text-title--sub">
