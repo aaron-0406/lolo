@@ -41,7 +41,7 @@ const TransferClientModal = ({ visible, onClose, code }: TransferClientModalProp
     .filter((bank) => bank.id !== (!!idBank ? parseInt(idBank) : 0))
     .map((bank) => {
       return {
-        key: String(bank.id),
+        key: String(bank.CUSTOMER_HAS_BANK.id),
         label: bank.name,
       }
     })
