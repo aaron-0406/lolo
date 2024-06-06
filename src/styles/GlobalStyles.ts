@@ -282,6 +282,11 @@ video {
   opacity: 1 !important;
   background-color: #d9dbe9ff !important;
 }
+
+.select-table {
+  opacity: 1 !important;
+  background-color: #eff0f6ff !important;
+}
 `
 
 export default GlobalStyles

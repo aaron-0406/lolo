@@ -1,7 +1,9 @@
 import styled, { css } from 'styled-components'
 import Icon from '@/ui/Icon'
 import Button from '@/ui/Button'
+import Text from '@/ui/Text'
 import type { FloatingContainerType } from '@/ui/FloatingContainer/interfaces'
+import Container from '../Container'
 
 const FloatingContainer = ({ numberItems, buttons, onClose }: FloatingContainerType) => {
   const message = numberItems === 1 ? '1 seleccionado' : `${numberItems} seleccionados`
@@ -18,6 +20,11 @@ const FloatingContainer = ({ numberItems, buttons, onClose }: FloatingContainerT
           onClose()
         }}
       >
+        <Container margin="0 5px">
+          <Text.Title size="l" weight="regular" className="floatingcontainer__text" ellipsis>
+            |
+          </Text.Title>
+        </Container>
         <Icon remixClass="ri-close-line" size={24} />
       </CloseButton>
     </StyledNotification>
@@ -46,6 +53,7 @@ const StyledNotification = styled.div`
 
     @media ${theme.device.tabletS} {
       width: 60%;
+      max-width: 850px;
     }
   `}
 `
@@ -84,11 +92,13 @@ const Buttons = styled(Button)`
 `
 
 const CloseButton = styled.button`
+  width: 15%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
   background: none;
   border: none;
   cursor: pointer;
-  position: relative;
-  left: 2%;
 
   i {
     color: #000;

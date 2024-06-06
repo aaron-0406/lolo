@@ -4,6 +4,7 @@ import type CSS from 'csstype'
 import Text from '@/ui/Text'
 import Container from '@/ui/Container'
 import Icon from '@/ui/Icon'
+import Checkbox from '@/ui/Checkbox'
 import DropdownList from '@/ui/DropdownList'
 import { SelectItem } from '@/ui/Select/interfaces'
 import ClickOutSideComponent from '@/hooks/useClickOutside'
@@ -14,6 +15,7 @@ type HeaderCellProps = {
   textTransform?: CSS.Property.TextTransform
   children: React.ReactNode
   isThereFilter?: boolean
+  onChangeCheckBoxAll?: (state: boolean) => void
   options?: Array<SelectItem<any, any>>
   selectedOptions?: Array<SelectItem<any, any>>
   onChangeFilterOptions?: (options: Array<SelectItem<any, any>>) => void
@@ -25,6 +27,7 @@ const HeaderCell: React.FC<HeaderCellProps> = ({
   justifyContent,
   width,
   isThereFilter = false,
+  onChangeCheckBoxAll,
   options,
   selectedOptions,
   onChangeFilterOptions,
@@ -65,9 +68,19 @@ const HeaderCell: React.FC<HeaderCellProps> = ({
           alignItems="center"
           backgroundColor={toggleSelect ? '#d9dbe9ff' : ''}
         >
-          <Text.Body size="m" weight="bold" ellipsis>
-            {children}
-          </Text.Body>
+          {children !== 'checkbox' ? (
+            <Text.Body size="m" weight="bold" ellipsis>
+              {children}
+            </Text.Body>
+          ) : (
+            <Checkbox
+              className="headercell-check-box"
+              width="100%"
+              onChange={(event) => {
+                onChangeCheckBoxAll?.(event.currentTarget.checked)
+              }}
+            />
+          )}
 
           {isThereFilter && (
             <Container
@@ -112,6 +125,10 @@ export default HeaderCell
 
 const StyledTh = styled.th<HeaderCellProps>`
   ${({ width, textTransform, isThereFilter }) => css`
+    .headercell-check-box {
+      padding: 0;
+    }
+
     ${!!width &&
     css`
       width: ${width};

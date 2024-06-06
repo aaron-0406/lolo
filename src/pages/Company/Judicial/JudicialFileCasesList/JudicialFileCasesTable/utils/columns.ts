@@ -3,7 +3,7 @@ import { ColumProps } from '@/ui/Table/Table'
 export const judicialCaseFileColumns: ColumProps[] = [
   {
     id: 'casesFiles.datatable.header.select',
-    title: '#',
+    title: 'checkbox',
     width: '10%',
     justifyContent: 'center',
   },

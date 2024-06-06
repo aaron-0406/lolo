@@ -210,6 +210,22 @@ const JudicialFileCasesTable = () => {
     }
   }
 
+  const onChangeCheckBoxAll = (state: boolean) => {
+    if (state) {
+      setCaseFileSelected(judicialFileCases)
+      const checkboxes = document.querySelectorAll<HTMLInputElement>('.file-case-check-box')
+      checkboxes.forEach((checkbox) => {
+        checkbox.checked = true
+      })
+    } else {
+      setCaseFileSelected([])
+      const checkboxes = document.querySelectorAll<HTMLInputElement>('.file-case-check-box')
+      checkboxes.forEach((checkbox) => {
+        checkbox.checked = false
+      })
+    }
+  }
+
   const onCloseFloatingContainer = () => {
     setCaseFileSelected([])
     const checkboxes = document.querySelectorAll<HTMLInputElement>('.file-case-check-box')
@@ -242,6 +258,8 @@ const JudicialFileCasesTable = () => {
         onChangeFilterOptions={onChangeFilterOptions}
         loading={isLoading || isLoadingProceduralWay || isLoadingSubject || isLoadingCourts}
         isArrayEmpty={!judicialFileCases.length}
+        isCheckboxChecked={!!caseFileSelected.length}
+        onChangeCheckBoxAll={onChangeCheckBoxAll}
         emptyState={
           <EmptyStateCell colSpan={judicialCaseFileColumns.length}>
             <EmptyState
@@ -260,17 +278,22 @@ const JudicialFileCasesTable = () => {
       >
         {!!judicialCaseFileColumns?.length &&
           judicialFileCases.map((record: JudicialFileCaseTableRow, key) => {
+            const cfs = caseFileSelected.find((cs) => cs.numberCaseFile === record.numberCaseFile)
+
             return (
               <tr
-                className="styled-data-table-row"
+                className={cfs ? 'styled-data-table-row select-table' : 'styled-data-table-row'}
                 key={key}
                 onClick={() => {
                   hasAccessToTheButton && onClickRow(record.numberCaseFile)
                 }}
               >
-                <BodyCell textAlign="center">
+                <BodyCell textAlign="left">
                   {
                     <Container
+                      display="flex"
+                      justifyContent="end"
+                      alignItems="center"
                       onClick={(event) => {
                         event.stopPropagation()
                       }}
