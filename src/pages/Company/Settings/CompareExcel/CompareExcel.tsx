@@ -1,13 +1,14 @@
 import Container from '@/ui/Container'
 import CompareExcelInfo from './CompareExcelInfo'
 import { FormProvider, useForm } from 'react-hook-form'
+import { CompareResponse } from '@/types/config/compare-excels.type'
 
 const CompareExcel = () => {
 
   const formMethods = useForm<{
     prevFile: File | undefined,
     newFile: File | undefined
-    resultFile: any | undefined
+    resultFile: CompareResponse | undefined
   }>({
     defaultValues: {
       prevFile: undefined,

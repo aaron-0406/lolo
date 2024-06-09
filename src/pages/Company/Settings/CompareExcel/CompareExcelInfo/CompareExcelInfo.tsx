@@ -9,22 +9,35 @@ import wordIcon from '@/assets/icons/word-doc.png'
 import fileIcon from '@/assets/icons/file.png'
 import excelIcon from '@/assets/icons/excel.png' 
 
+
 import { ReactNode } from "react"
 
 import styled, { css } from "styled-components"
 import { useFormContext } from "react-hook-form"
 import { useMutation } from "react-query"
-import { AxiosError } from "axios"
+import { AxiosError, AxiosResponse } from "axios"
 import { CustomErrorResponse } from "types/customErrorResponse"
 import { compareExcelsFiles } from "@/services/config/compare-excels.service"
+import useModal from "@/hooks/useModal"
+import AssignUsersToSendReportModal from "../Modals/AssignUsersToSendReportModal"
+import { useLoloContext } from "@/contexts/LoloProvider"
+import { CompareResponse } from "@/types/config/compare-excels.type"
+
+import { DOMAIN } from "shared/utils/constant/api"
 
 const CompareExcelInfo = () => {
-
+  const { hideModal: hideAssingUsersModal, showModal: showAssingUsersModal, visible: visibleAssingUsersModal } = useModal()
   const { setValue, watch } = useFormContext<{
     prevFile: File | undefined
     newFile: File | undefined
-    resultFile: any | undefined
-  }>()
+    resultFile: CompareResponse
+    }>()
+  
+    const {
+      bank: {
+        selectedBank: { idCHB: chb },
+      }
+    } = useLoloContext() 
 
   const getIconFile = (name: string): ReactNode => {
     if (name.endsWith('.docx') || name.endsWith('.doc')) return <Img width="30px" placeholderImage="" src={wordIcon} />
@@ -47,28 +60,35 @@ const CompareExcelInfo = () => {
     return `${size.toFixed(2)} ${units[unitIndex]}`
   }
 
-  const { mutate: sendExcelFiles } = useMutation<any, AxiosError<CustomErrorResponse>, { prevFile: File, newFile: File }>(
+  const { mutate: sendExcelFiles } = useMutation<
+    AxiosResponse<CompareResponse>, 
+    AxiosError<CustomErrorResponse>,
+    { prevFile: File; newFile: File }
+  >(
     async ({ prevFile, newFile }) => {
-      const formData = new FormData()
-      formData.append('prevFile', prevFile)
-      formData.append('newFile', newFile)
-      await compareExcelsFiles(prevFile, newFile)
+      return await compareExcelsFiles(prevFile, newFile)
     },
     {
       onSuccess: (data) => {
-        setValue('resultFile', data)
-        console.log(data)
+        setValue('resultFile', data.data)
       },
       onError: (error) => {
         throw new Error(error.response?.data.message)
       },
     }
-  ) 
-
+  )
   const onSendExcelFiles = () => {
     if (watch('prevFile') && watch('newFile')){ 
       sendExcelFiles({ prevFile: watch('prevFile')!, newFile: watch('newFile')! })
     }
+  }
+
+  const onOpenAssingUsersModal = () => {
+    showAssingUsersModal()
+  }
+
+  const onHiddenAssingUsersModal = () => {
+    hideAssingUsersModal()
   }
 
   return (
@@ -151,12 +171,50 @@ const CompareExcelInfo = () => {
           </Container>
 
           <Container className="container__result">
-            <Text.Body size="m" weight="regular" color="Primary5">
-              Resultado
-            </Text.Body>
+            {!watch('resultFile') ? (
+              <Text.Body size="m" weight="regular" color="Primary5">
+                Resultado
+              </Text.Body>
+            ) : (
+              <Container className="result__file">
+                <Container className="result__file--content">
+                  {getIconFile(watch('resultFile')?.fileName ?? '')}
+                  <Container display="flex" flexDirection="column" gap="5px">
+                    <Text.Body size="m" weight="regular" color="Primary5">
+                      {watch('resultFile')?.fileName ?? 'test'}
+                    </Text.Body>
+                    <Text.Body size="m" weight="regular" color="Primary5">
+                      {formatFileSize(parseInt(watch('resultFile')?.fileSize ?? '') ?? 0)}
+                    </Text.Body>
+                  </Container>
+                </Container>
+                <Container display="flex" justifyContent="center" gap="5px" alignItems="center">
+                  <Button
+                    leadingIcon="ri-mail-send-fill"
+                    hierarchy="primary"
+                    shape="round"
+                    disabled={!watch('resultFile') || !chb}
+                    onClick={onOpenAssingUsersModal}
+                  />
+                  <a
+                    href={`${DOMAIN}/download/compare-excels/${watch('resultFile')?.fileName}`}
+                    download={watch('resultFile')?.fileName}
+                  >
+                    <Button leadingIcon="ri-download-2-line" hierarchy="primary" shape="round" />
+                  </a>
+                </Container>
+              </Container>
+            )}
           </Container>
         </Container>
       </Container>
+      {visibleAssingUsersModal ? (
+        <AssignUsersToSendReportModal
+          fileData={watch('resultFile') ?? ''}
+          onClose={onHiddenAssingUsersModal}
+          visible={visibleAssingUsersModal}
+        />
+      ) : null}
     </StyledComponent>
   )
 }
@@ -259,22 +317,39 @@ const StyledComponent = styled(Container)`
       }
       .container__result{
         width: 100%;
-        height: 5rem;
+        height: 6.5rem;
         background-color: ${theme.colors.Neutral3};
         border-radius: 12px;
         padding: 15px;
         display: flex;
         justify-content: center;
         align-items: center;
-
-        .result__filename {
-          flex: 1; ru
+        
+        .result__file{
+          box-sizing: border-box;
+          width: 100%;
+          background-color: ${theme.colors.Neutral0};
+          border-radius: 12px;
+          padding: 10px;
           display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          gap: 10px;
+          justify-content: space-between;
+          
+          .result__file--content{
+            display: flex; 
+            flex-direction: row;
+            align-items: center;
+            gap: 10px;
+            .result__filename {
+              flex: 1; ru
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+              gap: 10px;
+            }
+          }
         }
+          
       }
     }
 
