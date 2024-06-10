@@ -38,6 +38,10 @@ export const getFileCasesByCHB = async (
   return await axiosClient.get(`${url}/chb/${id}?${filters}page=${page}&limit=${limit}`)
 }
 
+export const createQrCode = async (numberCase: number) => {
+  return await axiosClient.post(`${url}/qr-code/${numberCase}`)
+}
+
 export const createFileCase = async (
   fileCase: Omit<JudicialCaseFileType, 'id' | 'numberCaseFile'>,
   customerId: string

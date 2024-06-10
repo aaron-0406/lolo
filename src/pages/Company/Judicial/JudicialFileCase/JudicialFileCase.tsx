@@ -38,6 +38,7 @@ const JudicialFileCase = () => {
     judicialSubjectId: 0,
     judicialProceduralWayId: 0,
     customerHasBankId: selectedBank.idCHB.length ? Number(selectedBank.idCHB) : 0,
+    qrCode: '',
   }
 
   const formMethods = useForm<JudicialCaseFileType>({
