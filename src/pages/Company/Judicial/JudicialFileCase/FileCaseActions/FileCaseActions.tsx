@@ -133,7 +133,6 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase }: FileCaseActions
     {
       enabled: false,
       onSuccess: (data) => {
-        console.log(data)
         setValue('id', data.data.id)
         setValue('numberCaseFile', data.data.numberCaseFile)
         setValue('judgmentNumber', data.data?.judgmentNumber ?? 0)

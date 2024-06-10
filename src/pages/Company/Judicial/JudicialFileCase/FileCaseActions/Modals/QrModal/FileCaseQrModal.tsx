@@ -38,7 +38,7 @@ const FileCaseQrModal = ({ isVisible, onClose }: Props) => {
         setValue('qrCode', data.data)
       },
       onError: (error) => {
-        console.log(error)
+        throw new Error(error.response?.data.message)
       },
     }
   )
