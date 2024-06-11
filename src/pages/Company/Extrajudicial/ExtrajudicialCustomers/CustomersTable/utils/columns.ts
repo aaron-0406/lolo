@@ -2,6 +2,12 @@ import { ColumProps } from '@/ui/Table/Table'
 
 export const customersColumns: ColumProps[] = [
   {
+    id: 'casesFiles.datatable.header.select',
+    title: 'checkbox',
+    width: '10%',
+    justifyContent: 'center',
+  },
+  {
     id: 'customers.datatable.header.code',
     title: 'CÓDIGO',
     width: '10%',

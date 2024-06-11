@@ -1,11 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useMemo, useState } from 'react'
-import { useQuery } from 'react-query'
+import { useMutation, useQuery } from 'react-query'
 import { useLocation, useNavigate } from 'react-router-dom'
 import moment from 'moment'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import paths from '../../../../../shared/routes/paths'
-import { getAllClientsByCHB } from '@/services/extrajudicial/client.service'
+import { getAllClientsByCHB, updateClients } from '@/services/extrajudicial/client.service'
 import { getAllFuncionariosByCHB } from '@/services/extrajudicial/funcionario.service'
 import { getAllNegociacionesByCHB } from '@/services/extrajudicial/negotiation.service'
 import { ClientType } from '@/types/extrajudicial/client.type'
@@ -35,6 +35,11 @@ import { KEY_EXT_COBRANZA_NEGOCIACIONES_CACHE } from '../../ExtrajudicialNegotia
 import { useFiltersContext } from '@/contexts/FiltersProvider'
 import { CustomErrorResponse } from 'types/customErrorResponse'
 import EmptyState from '@/ui/EmptyState'
+import Checkbox from '@/ui/Checkbox'
+import FloatingContainer from '@/ui/FloatingContainer'
+import { FloatingContainerButtonsType } from '@/ui/FloatingContainer/interfaces'
+import ArchiveClientModal from './ArchiveClientModal'
+import { set } from 'lodash'
 
 const CustomersTable = () => {
   const location = useLocation()
@@ -62,8 +67,11 @@ const CustomersTable = () => {
 
   const [codeClient, setCodeClient] = useState<string>('')
   const [codeTransferClient, setCodeTransferClient] = useState<string>('')
+  const [ selectedCustomers, setSelectedCustomers] = useState<ClientType[]>([])  
+  const [ archived, setArchived ] = useState<boolean>(false)
 
   const { visible: visibleDeleteClient, showModal: showDeleteClient, hideModal: hideDeleteClient } = useModal()
+  const { visible: visibleArchiveClient, showModal: showArchiveClient, hideModal: hideArchiveClient } = useModal()
   const {
     visible: visibleModalTransferClient,
     showModal: showModalTransferClient,
@@ -80,6 +88,46 @@ const CustomersTable = () => {
   const handleClickTransferClient = (code: string) => {
     setCodeTransferClient(code)
     showModalTransferClient()
+  }
+
+  const onChangeCheckBox = (state: boolean, client: ClientType) => {
+    let arr = selectedCustomers
+
+    if (state) {
+      setSelectedCustomers([...arr, client])
+    } else {
+      arr = arr.filter((cf) => cf !== client)
+      setSelectedCustomers(arr)
+    }
+  }
+
+  const onChangeCheckBoxAll = (state: boolean) => {
+    if (state) {
+      setSelectedCustomers(customers)
+      const checkboxes = document.querySelectorAll<HTMLInputElement>('.customer-check-box')
+      checkboxes.forEach((checkbox) => {
+        checkbox.checked = true
+      })
+    } else {
+      setSelectedCustomers([])
+      const checkboxes = document.querySelectorAll<HTMLInputElement>('.customer-check-box')
+      checkboxes.forEach((checkbox) => {
+        checkbox.checked = false
+      })
+    }
+  }
+
+  const onCloseFloatingContainer = () => {
+    setSelectedCustomers([])
+    const checkboxes = document.querySelectorAll<HTMLInputElement>('.customer-check-box')
+    checkboxes.forEach((checkbox) => {
+      checkbox.checked = false
+    })
+  }
+  
+  const onChangeArchivedState = () => { 
+    setArchived(!archived)
+    setSelectedCustomers([])
   }
 
   const selectedFilterOptions = getSelectedFilters(currentPath)?.filters ?? []
@@ -163,6 +211,7 @@ const CustomersTable = () => {
 
       return await getAllClientsByCHB(
         chb,
+        archived,
         opts.page,
         opts.limit,
         opts.filter,
@@ -183,6 +232,59 @@ const CustomersTable = () => {
     }
   )
 
+  const { mutate: updateClientsmutate } = useMutation<AxiosResponse<ClientType[]>, AxiosError<CustomErrorResponse>>(
+    async () => {
+      const clients: ClientType[] = selectedCustomers.map((client) => ({
+        id: client.id,
+        code: client.code,
+        name: client.name,
+        negotiationId: client.negotiationId,
+        funcionarioId: client.funcionarioId,
+        customerUserId: client.customerUserId,
+        cityId: client.cityId,
+        createdAt: client.createdAt,
+        customerHasBankId: client.customerHasBankId,
+        isArchived: !archived,
+      }))
+      return await updateClients(clients, chb)
+    },
+    {
+      onSuccess: () => {
+        setSelectedCustomers([])
+        refetch() 
+        notification({ type: 'success', message: 'Clientes actualizados' })
+      },
+      onError: (error) => {
+        notification({
+          type: 'error',
+          message: error.response?.data.message,
+          list: error.response?.data?.errors?.map((error) => error.message),
+        })
+      },
+    }
+  )
+
+  const onUpdateClients = async () => {
+    updateClientsmutate()
+    hideArchiveClient()
+  }
+
+  const onOpenArchiveClientModal= () => {
+    if (!selectedCustomers.length) {
+      notification({
+        type: 'info',
+        message: 'No se ha seleccionado ningún cliente',
+      })
+    } else showArchiveClient()
+  }
+
+  const buttons: FloatingContainerButtonsType[] = [
+    {
+      onClick: onOpenArchiveClientModal,
+      label: archived ? 'Desarchivar' : 'Archivar',
+    },
+  ]
+
   const customers = data?.data.clients ?? []
   const quantity = data?.data.quantity
 
@@ -192,10 +294,31 @@ const CustomersTable = () => {
 
   useEffect(() => {
     refetch()
+  }, [archived])
+
+  useEffect(() => {
+    refetch()
   }, [opts.filter.length, opts.page])
 
   return (
-    <Container width="100%" height="calc(100% - 112px)" padding="20px">
+    <Container width="100%" height="calc(100% - 200px)" padding="10px 20px">
+      <Container width="100%" height="auto" display="flex" justifyContent="end" alignItems="center">
+        {!archived ? (
+          <Button
+            size="small"
+            label="Ver clientes archivados"
+            trailingIcon="ri-archive-line"
+            onClick={onChangeArchivedState}
+          />
+        ) : (
+          <Button
+            size="small"
+            label="Ver clientes activos"
+            trailingIcon="ri-user-fill"
+            onClick={onChangeArchivedState}
+          />
+        )}
+      </Container>
       <Pagination count={quantity} opts={opts} setOptsFilter={setSearchFilters} url={currentPath} />
       <Table
         top="260px"
@@ -210,15 +333,16 @@ const CustomersTable = () => {
         onChangeFilterOptions={onChangeFilterOptions}
         loading={isLoading || isLoadingNegotiations || isLoadingFuncionarios}
         isArrayEmpty={!customers.length}
+        onChangeCheckBoxAll={onChangeCheckBoxAll}
         emptyState={
-            <EmptyStateCell colSpan={customersColumns.length}>
-              <EmptyState
-                title="Recurso no encontrado"
-                description="No se encontraron los datos solicitados. Por favor, intente con otros filtros."
-                buttonLabel="Limpiar filtros"
-                buttonAction={clearAllFilters}
-              />
-            </EmptyStateCell>
+          <EmptyStateCell colSpan={customersColumns.length}>
+            <EmptyState
+              title="Recurso no encontrado"
+              description="No se encontraron los datos solicitados. Por favor, intente con otros filtros."
+              buttonLabel="Limpiar filtros"
+              buttonAction={clearAllFilters}
+            />
+          </EmptyStateCell>
         }
         emptyFirstState={
           <EmptyStateCell colSpan={customersColumns.length}>
@@ -239,13 +363,33 @@ const CustomersTable = () => {
               return (
                 <tr
                   className={
-                    showMessageAboutClientTransferred ? 'styled-data-table-row' : 'styled-data-table-row disable-table'
+                    showMessageAboutClientTransferred ? 'styled-data-table-row ' : 'styled-data-table-row disable-table'
                   }
                   key={record.id}
                   onClick={() => {
                     hasAccessToTheButton && showMessageAboutClientTransferred && onClickRow(record.code)
                   }}
                 >
+                  <BodyCell textAlign="left">
+                    {
+                      <Container
+                        display="flex"
+                        justifyContent="end"
+                        alignItems="center"
+                        onClick={(event) => {
+                          event.stopPropagation()
+                        }}
+                      >
+                        <Checkbox
+                          className="customer-check-box"
+                          width="100%"
+                          onChange={(event) => {
+                            onChangeCheckBox(event.currentTarget.checked, record)
+                          }}
+                        />
+                      </Container>
+                    }
+                  </BodyCell>
                   <BodyCell textAlign="center">{`${record.code || ''}`}</BodyCell>
                   <BodyCell textAlign="left">
                     <Container
@@ -326,6 +470,25 @@ const CustomersTable = () => {
         onClose={hideModalTransferClient}
         code={codeTransferClient}
       />
+
+      {selectedCustomers.length ? (
+        <FloatingContainer
+          numberItems={selectedCustomers.length}
+          buttons={buttons}
+          onClose={onCloseFloatingContainer}
+        />
+      ) : null}
+
+      {
+        visibleArchiveClient ? (
+          <ArchiveClientModal 
+            isVisible={visibleArchiveClient}
+            onClose={hideArchiveClient}
+            onArchiveClients={onUpdateClients}
+            archived={archived}
+          />
+        ) : null
+      }
     </Container>
   )
 }
