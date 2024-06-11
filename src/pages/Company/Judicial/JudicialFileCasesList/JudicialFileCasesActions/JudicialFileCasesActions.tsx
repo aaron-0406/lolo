@@ -82,19 +82,20 @@ const JudicialFileCasesActions = () => {
         <Button
           width="100px"
           shape="round"
+          trailingIcon="ri-qr-code-line"
+          permission="P13-01"
+          messageTooltip="Escanea código QR"
+          disabled={!selectedBank.idBank}
+          onClick={showScanQrModal}
+        />
+        <Button
+          width="100px"
+          shape="round"
           trailingIcon="ri-add-fill"
           onClick={handleClickCaseFile}
           disabled={!selectedBank.idBank}
           permission="P13-02"
           messageTooltip="Agregar expediente"
-        />
-        <Button
-          width="100px"
-          shape="round"
-          trailingIcon="ri-qr-code-line"
-          permission="P13-01"
-          messageTooltip="Escanea código QR"
-          onClick={showScanQrModal}
         />
       </Container>
       {isVisebleScanQrModal ? (
