@@ -39,7 +39,6 @@ import Checkbox from '@/ui/Checkbox'
 import FloatingContainer from '@/ui/FloatingContainer'
 import { FloatingContainerButtonsType } from '@/ui/FloatingContainer/interfaces'
 import ArchiveClientModal from './ArchiveClientModal'
-import { set } from 'lodash'
 
 const CustomersTable = () => {
   const location = useLocation()
@@ -69,6 +68,7 @@ const CustomersTable = () => {
   const [codeTransferClient, setCodeTransferClient] = useState<string>('')
   const [ selectedCustomers, setSelectedCustomers] = useState<ClientType[]>([])  
   const [ archived, setArchived ] = useState<boolean>(false)
+  let usersChanged: ClientType[] = []
 
   const { visible: visibleDeleteClient, showModal: showDeleteClient, hideModal: hideDeleteClient } = useModal()
   const { visible: visibleArchiveClient, showModal: showArchiveClient, hideModal: hideArchiveClient } = useModal()
@@ -249,9 +249,9 @@ const CustomersTable = () => {
       return await updateClients(clients, chb)
     },
     {
-      onSuccess: () => {
+      onSuccess: (data) => {
         setSelectedCustomers([])
-        refetch() 
+        refetch()
         notification({ type: 'success', message: 'Clientes actualizados' })
       },
       onError: (error) => {
@@ -299,7 +299,7 @@ const CustomersTable = () => {
   useEffect(() => {
     refetch()
   }, [opts.filter.length, opts.page])
-
+  
   return (
     <Container width="100%" height="calc(100% - 200px)" padding="10px 20px">
       <Container width="100%" height="auto" display="flex" justifyContent="end" alignItems="center">
