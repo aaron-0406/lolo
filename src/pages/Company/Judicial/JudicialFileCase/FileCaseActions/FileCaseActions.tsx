@@ -58,6 +58,8 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase }: FileCaseActions
     }
   >()
 
+  const caseFileId = getValues('id')
+
   const { isLoading: loadingCreateFileCase, mutate: createFileCaseMutate } = useMutation<
     AxiosResponse<JudicialFileCaseTableRow>,
     AxiosError<CustomErrorResponse>
@@ -150,7 +152,7 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase }: FileCaseActions
         setValue('judicialCourt', data.data?.judicialCourt)
         setValue('judicialSubject', data.data?.judicialSubject)
         setValue('judicialProceduralWay', data.data?.judicialProceduralWay)
-        setValue('qrCode', data.data?.qrCode)
+        setValue('qrCode', data.data?.qrCode ?? undefined)
 
         //TODO: Work here
         setOwnerFileCase(data.data?.client)
@@ -225,6 +227,7 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase }: FileCaseActions
           trailingIcon="ri-qr-code-line"
           messageTooltip="Ver código QR"
           onClick={showQrModal}
+          disabled={!caseFileId}
         />
         <Button
           width="130px"
