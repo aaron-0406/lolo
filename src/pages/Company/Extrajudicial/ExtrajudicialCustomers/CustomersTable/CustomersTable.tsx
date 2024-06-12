@@ -68,7 +68,6 @@ const CustomersTable = () => {
   const [codeTransferClient, setCodeTransferClient] = useState<string>('')
   const [ selectedCustomers, setSelectedCustomers] = useState<ClientType[]>([])  
   const [ archived, setArchived ] = useState<boolean>(false)
-  let usersChanged: ClientType[] = []
 
   const { visible: visibleDeleteClient, showModal: showDeleteClient, hideModal: hideDeleteClient } = useModal()
   const { visible: visibleArchiveClient, showModal: showArchiveClient, hideModal: hideArchiveClient } = useModal()
@@ -302,9 +301,10 @@ const CustomersTable = () => {
   
   return (
     <Container width="100%" height="calc(100% - 200px)" padding="10px 20px">
-      <Container width="100%" height="auto" display="flex" justifyContent="end" alignItems="center">
+      <Container width="100%" height="auto" display="flex" justifyContent="end" alignItems="center" padding="0px 0px 10px 0px">
         {!archived ? (
           <Button
+            disabled={!chb}
             size="small"
             label="Ver clientes archivados"
             trailingIcon="ri-archive-line"
@@ -312,6 +312,7 @@ const CustomersTable = () => {
           />
         ) : (
           <Button
+            disabled={!chb}
             size="small"
             label="Ver clientes activos"
             trailingIcon="ri-user-fill"
