@@ -30,11 +30,7 @@ type FileCaseActionsProps = {
 
 const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase }: FileCaseActionsProps) => {
   const queryClient = useQueryClient()
-  const {
-    hideModal: hideQrModal,
-    showModal: showQrModal,
-    visible: visibleQrModal,
-  } = useModal()
+  const { hideModal: hideQrModal, showModal: showQrModal, visible: visibleQrModal } = useModal()
   const {
     client: { customer },
     bank: { selectedBank },
@@ -154,7 +150,7 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase }: FileCaseActions
         setValue('judicialCourt', data.data?.judicialCourt)
         setValue('judicialSubject', data.data?.judicialSubject)
         setValue('judicialProceduralWay', data.data?.judicialProceduralWay)
-        setValue('qrCode', data.data?.qrCode) 
+        setValue('qrCode', data.data?.qrCode)
 
         //TODO: Work here
         setOwnerFileCase(data.data?.client)
@@ -242,7 +238,7 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase }: FileCaseActions
           messageTooltip="Guardar cambios"
         />
       </Container>
-      
+
       {visibleQrModal ? <FileCaseQrModal isVisible={visibleQrModal} onClose={hideQrModal} /> : null}
     </Container>
   )
