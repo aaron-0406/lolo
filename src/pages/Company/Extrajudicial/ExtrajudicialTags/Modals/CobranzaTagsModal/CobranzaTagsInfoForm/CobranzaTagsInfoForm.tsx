@@ -1,8 +1,10 @@
 import { ExtTagType } from '@/types/extrajudicial/ext-tag.type'
+import Container from '@/ui/Container'
 import Select from '@/ui/Select'
 import { SelectItemType } from '@/ui/Select/interfaces'
 import TextField from '@/ui/fields/TextField'
 import { Controller, useFormContext } from 'react-hook-form'
+import styled, { css } from 'styled-components'
 
 type CobranzaTagsInforFormProps = {
   tagGroups: ExtTagType[]
@@ -43,15 +45,29 @@ const CobranzaTagsInfoForm = ({ tagGroups }: CobranzaTagsInforFormProps) => {
         name="color"
         control={control}
         render={({ field }) => (
-          <TextField
-            width="100%"
-            label="Color:"
-            value={field.value}
-            hasError={!!errors.color}
-            onChange={(e) => {
-              field.onChange(e.target.value)
-            }}
-          />
+          <StyleContainer>
+            <Container width="100%" position='absolute'>
+              <label
+                htmlFor="color"
+                className='label__text-field'
+              />
+              <TextField width="100%" label="Color:" value={field.value} hasError={!!errors.color} />
+              <Container className='color__sample' style={{ backgroundColor: field.value }} />
+            </Container>
+            <Container className="color__field">
+              <TextField
+                id="color"
+                type="color"
+                width="100%"
+                height="100%"
+                hasError={!!errors.color}
+                value={field.value}
+                onChange={(e) => {
+                  field.onChange(e.target.value)
+                }}
+              />
+            </Container>
+          </StyleContainer>
         )}
       />
 
@@ -76,3 +92,35 @@ const CobranzaTagsInfoForm = ({ tagGroups }: CobranzaTagsInforFormProps) => {
 }
 
 export default CobranzaTagsInfoForm
+
+const StyleContainer = styled(Container)`
+  ${({ theme, width }) => css`
+    height: 75px;
+    position: relative;
+    z-index: 1;
+     .label__text-field {
+      position: absolute;
+      top: -5px;
+      width: 100%;
+      height: 100%;
+      left: 0;
+      opacity: 0;
+    }
+    .color__sample{
+      position: absolute;
+      right: 0px;
+      top: 2px;
+      bottom: 0;
+      border-radius: 100%;
+      width: 20px;
+      height: 20px;
+    }
+    .color__field {
+      position: absolute;
+      top: 50px;
+      left: -15px;
+      opacity: 0;
+      pointerevents: none;
+    }
+  `}
+`
