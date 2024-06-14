@@ -9,7 +9,7 @@ import TextField from '@/ui/fields/TextField'
 import { useLocation, useNavigate } from 'react-router-dom'
 import paths from 'shared/routes/paths'
 import styled, { css } from 'styled-components'
-import JudicialCaseFilesScanQrModal from './Modals/JudicialCaseFilesScanQrModal'
+import JudicialCaseFilesScanQrModal from './Modals/JudicialCaseFilesScanQrModal/JudicialCaseFilesScanQrModal'
 
 const JudicialFileCasesActions = () => {
   const navigate = useNavigate()
