@@ -30,6 +30,7 @@ export const judicialBinnacleColumns: ColumProps[] = [
     title: 'FECHA',
     width: '20%',
     justifyContent: 'center',
+    isSortable: true,
   },
   {
     id: 'binnacle.datatable.header.actions',

@@ -14,6 +14,7 @@ export type ColumProps = {
   justifyContent?: CSS.Property.JustifyContent
   textTransform?: CSS.Property.TextTransform
   isThereFilter?: boolean
+  isSortable?: boolean
 }
 
 export type FilterOptionsProps = {
@@ -27,6 +28,7 @@ type TableProps = {
   filterOptions?: Array<FilterOptionsProps>
   selectedFilterOptions?: Array<FilterOptionsProps>
   onChangeFilterOptions?: (filterOption: FilterOptionsProps) => void
+  onChangeSortingOptions?: (sortBy: string, order: 'ASC' | 'DESC') => void
   loading?: boolean
   error?: boolean | undefined
   leftSpace?: number
@@ -42,6 +44,7 @@ const Table: React.FC<TableProps> = ({
   filterOptions,
   selectedFilterOptions,
   onChangeFilterOptions,
+  onChangeSortingOptions, 
   loading,
   error,
   children,
@@ -58,7 +61,7 @@ const Table: React.FC<TableProps> = ({
       <StyledOrderTable>
         <thead className="table-header">
           <tr>
-            {columns.map(({ justifyContent = 'left', textTransform, width, title, id, isThereFilter }, index) => {
+            {columns.map(({ justifyContent = 'left', textTransform, width, title, id, isThereFilter, isSortable }, index) => {
               const filterOption = filterOptions?.find((option) => option.identifier === id)
               const options = filterOption?.options
 
@@ -69,12 +72,14 @@ const Table: React.FC<TableProps> = ({
                 <HeaderCell
                   key={index}
                   isThereFilter={isThereFilter}
+                  isSortable={isSortable}
                   width={loading ? '' : width}
                   justifyContent={justifyContent}
                   textTransform={textTransform}
                   options={options}
                   selectedOptions={selectedOptions}
                   onChangeFilterOptions={(options) => onChangeFilterOptions?.({ identifier: id, options })}
+                  onChangeSortingOptions={onChangeSortingOptions}
                 >
                   {title}
                 </HeaderCell>
