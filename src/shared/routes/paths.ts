@@ -91,5 +91,6 @@ export default {
   settings: {
     scheduldedNotifications: (urlIdentifier = `:urlIdentifier`) =>
       `/configuracion/${urlIdentifier}/notificationes-programadas`,
+    compareExcel: (urlIdentifier = `:urlIdentifier`) => `/configuracion/${urlIdentifier}/comparar-excels`,
   },
 }

@@ -8,7 +8,7 @@ import moment from 'moment'
 import Table from '@/ui/Table'
 import EmptyStateCell from '@/ui/Table/EmptyStateCell'
 import useModal from '@/hooks/useModal'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { AxiosResponse } from 'axios'
 import { useQuery } from 'react-query'
 import { KEY_JUDICIAL_URL_BINNACLE_CODE_CACHE } from './utils/judicial-binnacle.cache'
@@ -20,6 +20,8 @@ import notification from '@/ui/notification'
 import EmptyState from '@/ui/EmptyState'
 import { judicialBinnacleColumns } from './utils/columns'
 import { JudicialBinDefendantProceduralActionType } from '@/types/judicial/judicial-bin-defendant-procedural-action.type'
+import { useFiltersContext } from '@/contexts/FiltersProvider'
+import { useLocation } from 'react-router-dom'
 
 type JudicialBinnacleTableProps = {
   judicialFileCaseId?: number
@@ -29,6 +31,13 @@ type JudicialBinnacleTableProps = {
 const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode }: JudicialBinnacleTableProps) => {
   const [idEdit, setIdEdit] = useState<number>(0)
   const [idDeletedComment, setIdDeletedComment] = useState<number>(0)
+  const location = useLocation()
+  const currentPath = location.pathname
+  const {
+    sorting: { getSortingOptions, setSortingOptions },
+  } = useFiltersContext()
+
+  const sortingOptions = getSortingOptions(currentPath)?.opts ?? { sortBy: '', order: 'ASC' }
 
   const {
     visible: visibleModalJudicialBinProceduralStage,
@@ -60,8 +69,12 @@ const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode }: JudicialBinna
     setIdDeletedComment(0)
     hideDeleteJudicialBinProceduralStage()
   }
+  
+  const onChangeSortingOptions = (sortBy: string, order: 'ASC' | 'DESC') => {
+    setSortingOptions({ url: currentPath, opts: { sortBy, order } })
+  }
 
-  const { data, isLoading } = useQuery<
+  const { data, isLoading, refetch } = useQuery<
     AxiosResponse<
       Array<
         JudicialBinnacleType & {
@@ -75,7 +88,7 @@ const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode }: JudicialBinna
   >(
     [KEY_JUDICIAL_URL_BINNACLE_CODE_CACHE, judicialFileCaseId],
     async () => {
-      return await getBinnacleByFileCase(judicialFileCaseId ?? 0)
+      return await getBinnacleByFileCase(judicialFileCaseId ?? 0, sortingOptions)
     },
     {
       onError: (error: any) => {
@@ -89,6 +102,11 @@ const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode }: JudicialBinna
 
   const binnacles = data?.data ?? []
 
+  useEffect(() => {
+    refetch()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sortingOptions.order])
+
   return (
     <Container width="100%" height="calc(100% - 80px)" padding="0px 20px 0px 20px">
       <Table
@@ -96,6 +114,7 @@ const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode }: JudicialBinna
         columns={judicialBinnacleColumns}
         loading={isLoading}
         isArrayEmpty={!binnacles.length}
+        onChangeSortingOptions={onChangeSortingOptions}
         emptyState={
           <EmptyStateCell colSpan={judicialBinnacleColumns.length}>
             <EmptyState title="No hay recursos disponibles" description="No se encontraron bitacoras registradas" />

@@ -53,11 +53,13 @@ const JudicialFileCasesTable = () => {
   const {
     filterOptions: { getSelectedFilters, setSelectedFilters },
     filterSearch: { getSearchFilters, setSearchFilters },
+    sorting: { getSortingOptions, setSortingOptions },
     clearAllFilters,
   } = useFiltersContext()
 
   const [fileCaseId, setFileCaseId] = useState<number>(0)
-
+  
+  const sortingOptions = getSortingOptions(currentPath)?.opts ?? { sortBy: '', order: 'ASC' }
   const selectedFilterOptions = getSelectedFilters(currentPath)?.filters ?? []
   const opts = getSearchFilters(currentPath)?.opts ?? { filter: '', limit: 50, page: 1 }
 
@@ -82,6 +84,10 @@ const JudicialFileCasesTable = () => {
       })
       setSelectedFilters({ url: currentPath, filters: selectedFiltersUpdated })
     }
+  }
+
+  const onChangeSortingOptions = (sortBy: string, order: 'ASC' | 'DESC') => {
+    setSortingOptions({ url: currentPath, opts: { sortBy, order } })
   }
 
   const hasAccessToTheButton = useMemo(() => {
@@ -158,6 +164,7 @@ const JudicialFileCasesTable = () => {
         opts.page,
         opts.limit,
         opts.filter,
+        sortingOptions,
         JSON.stringify(courts),
         JSON.stringify(proceduralWays),
         JSON.stringify(subjects),
@@ -186,6 +193,10 @@ const JudicialFileCasesTable = () => {
     refetch()
   }, [opts.filter.length, opts.page])
 
+  useEffect(() => {
+    refetch()
+  }, [sortingOptions.order])
+
   return (
     <Container width="100%" height="calc(100% - 112px)" padding="20px">
       <Pagination count={quantity} opts={opts} setOptsFilter={setSearchFilters} url={currentPath} />
@@ -200,6 +211,7 @@ const JudicialFileCasesTable = () => {
         columns={judicialCaseFileColumns}
         selectedFilterOptions={selectedFilterOptions}
         onChangeFilterOptions={onChangeFilterOptions}
+        onChangeSortingOptions = { onChangeSortingOptions }
         loading={isLoading || isLoadingProceduralWay || isLoadingSubject || isLoadingCourts}
         isArrayEmpty={!judicialFileCases.length}
         emptyState={
