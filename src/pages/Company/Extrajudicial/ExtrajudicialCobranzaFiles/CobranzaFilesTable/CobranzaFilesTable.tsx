@@ -92,13 +92,7 @@ const CobranzaFilesTable = ({ clientId, clientCode = 0, clientCustomerHasBankId 
   const { data, isLoading, refetch } = useQuery<AxiosResponse<Array<FileType>, Error>>(
     [KEY_COBRANZA_URL_FILES_CODE_CACHE, clientId],
     async () => {
-      return await getFiles(
-        clientId ?? 0, 
-        Number(selectedBank.idCHB), 
-        opts.page, 
-        opts.limit, 
-        opts.filter
-      )
+      return await getFiles(clientId ?? 0, Number(selectedBank.idCHB), opts.page, opts.limit, opts.filter)
     },
     {
       onError: (error: any) => {
@@ -110,18 +104,17 @@ const CobranzaFilesTable = ({ clientId, clientCode = 0, clientCustomerHasBankId 
     }
   )
 
-  useEffect(()=>{
+  useEffect(() => {
     refetch()
     // eslint-disable-next-line
-  },[opts.filter])
-
+  }, [opts.filter])
 
   const files = data?.data ?? []
 
   return (
     <Container width="100%" height="calc(100% - 80px)" padding="10px 20px">
       <Table
-        top="190px"
+        top="200px"
         columns={filesColumns}
         loading={isLoading}
         isArrayEmpty={!files.length}

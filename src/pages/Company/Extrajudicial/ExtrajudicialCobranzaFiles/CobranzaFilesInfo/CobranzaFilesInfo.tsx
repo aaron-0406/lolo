@@ -22,12 +22,12 @@ type CobranzaFilesInfoProps = {
 const CobranzaFilesInfo = ({ name, clientId }: CobranzaFilesInfoProps) => {
   const code = useParams().code ?? ''
   const location = useLocation()
-  const currentPath = location.pathname; 
+  const currentPath = location.pathname
   const {
     client: { customer },
   } = useLoloContext()
   const {
-    filterSearch: {getSearchFilters, setSearchFilters},
+    filterSearch: { getSearchFilters, setSearchFilters },
   } = useFiltersContext()
   const greaterThanTabletL = useMediaQuery(device.tabletL)
   const { visible: visibleModalAdd, showModal: showModalAdd, hideModal: hideModalAdd } = useModal()
@@ -70,11 +70,16 @@ const CobranzaFilesInfo = ({ name, clientId }: CobranzaFilesInfoProps) => {
       padding="20px 20px 0 20px"
     >
       <Container display="flex" flexDirection="column" gap="15px" width="100%">
-        <Container display="flex" width="100%" alignItems="center" justifyContent="space-between" flexDirection={greaterThanTabletL ? 'row' : 'column'}>
+        <Container
+          display="flex"
+          width="100%"
+          alignItems="center"
+          justifyContent="space-between"
+          flexDirection={greaterThanTabletL ? 'row' : 'column'}
+        >
           <Breadcrumbs routes={routers} />
           <TextField
             width="100%"
-            label="Búsqueda de documentos"
             onChange={onChangeSearch}
             placeholder="Buscar con nombre del documento"
             value={searchFilter.filter}
