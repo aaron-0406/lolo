@@ -1,48 +1,51 @@
-import Button from "@/ui/Button"
-import Container from "@/ui/Container"
-import DragAndDropFile from "@/ui/DragAndDropFile"
-import Text from "@/ui/Text"
-import Img from "@/ui/Img"
+import Button from '@/ui/Button'
+import Container from '@/ui/Container'
+import DragAndDropFile from '@/ui/DragAndDropFile'
+import Text from '@/ui/Text'
+import Img from '@/ui/Img'
 
 import pdfIcon from '@/assets/icons/pdf.png'
 import wordIcon from '@/assets/icons/word-doc.png'
 import fileIcon from '@/assets/icons/file.png'
-import excelIcon from '@/assets/icons/excel.png' 
+import excelIcon from '@/assets/icons/excel.png'
 
+import { ReactNode } from 'react'
 
-import { ReactNode } from "react"
+import styled, { css } from 'styled-components'
+import { useFormContext } from 'react-hook-form'
+import { useMutation } from 'react-query'
+import { AxiosError, AxiosResponse } from 'axios'
+import { CustomErrorResponse } from 'types/customErrorResponse'
+import { compareExcelsFiles } from '@/services/config/compare-excels.service'
+import useModal from '@/hooks/useModal'
+import AssignUsersToSendReportModal from '../Modals/AssignUsersToSendReportModal'
+import { useLoloContext } from '@/contexts/LoloProvider'
+import { CompareResponse } from '@/types/config/compare-excels.type'
 
-import styled, { css } from "styled-components"
-import { useFormContext } from "react-hook-form"
-import { useMutation } from "react-query"
-import { AxiosError, AxiosResponse } from "axios"
-import { CustomErrorResponse } from "types/customErrorResponse"
-import { compareExcelsFiles } from "@/services/config/compare-excels.service"
-import useModal from "@/hooks/useModal"
-import AssignUsersToSendReportModal from "../Modals/AssignUsersToSendReportModal"
-import { useLoloContext } from "@/contexts/LoloProvider"
-import { CompareResponse } from "@/types/config/compare-excels.type"
-
-import { DOMAIN } from "shared/utils/constant/api"
+import { DOMAIN } from 'shared/utils/constant/api'
 
 const CompareExcelInfo = () => {
-  const { hideModal: hideAssingUsersModal, showModal: showAssingUsersModal, visible: visibleAssingUsersModal } = useModal()
+  const {
+    hideModal: hideAssingUsersModal,
+    showModal: showAssingUsersModal,
+    visible: visibleAssingUsersModal,
+  } = useModal()
   const { setValue, watch } = useFormContext<{
     prevFile: File | undefined
     newFile: File | undefined
     resultFile: CompareResponse
-    }>()
-  
-    const {
-      bank: {
-        selectedBank: { idCHB: chb },
-      }
-    } = useLoloContext() 
+  }>()
+
+  const {
+    bank: {
+      selectedBank: { idCHB: chb },
+    },
+  } = useLoloContext()
 
   const getIconFile = (name: string): ReactNode => {
     if (name.endsWith('.docx') || name.endsWith('.doc')) return <Img width="30px" placeholderImage="" src={wordIcon} />
     if (name.endsWith('.pdf')) return <Img width="30px" placeholderImage="" src={pdfIcon} />
-    if (name.endsWith('.xlsx')) return <Img width="30px" placeholderImage="" src={excelIcon} /> 
+    if (name.endsWith('.xlsx')) return <Img width="30px" placeholderImage="" src={excelIcon} />
     return <Img width="30px" placeholderImage="type-file" src={fileIcon} />
   }
 
@@ -61,7 +64,7 @@ const CompareExcelInfo = () => {
   }
 
   const { mutate: sendExcelFiles } = useMutation<
-    AxiosResponse<CompareResponse>, 
+    AxiosResponse<CompareResponse>,
     AxiosError<CustomErrorResponse>,
     { prevFile: File; newFile: File }
   >(
@@ -78,7 +81,7 @@ const CompareExcelInfo = () => {
     }
   )
   const onSendExcelFiles = () => {
-    if (watch('prevFile') && watch('newFile')){ 
+    if (watch('prevFile') && watch('newFile')) {
       sendExcelFiles({ prevFile: watch('prevFile')!, newFile: watch('newFile')! })
     }
   }
@@ -354,7 +357,6 @@ const StyledComponent = styled(Container)`
     }
 
   `}
-` 
+`
 
 export default CompareExcelInfo
-
