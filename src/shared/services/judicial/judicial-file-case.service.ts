@@ -38,6 +38,10 @@ export const getFileCasesByCHB = async (
   return await axiosClient.get(`${url}/chb/${id}?${filters}page=${page}&limit=${limit}`)
 }
 
+export const createQrCode = async (numberCase: number, chb: number) => {
+  return await axiosClient.post(`${url}/qr-code/${numberCase}/${chb}`)
+}
+
 export const createFileCase = async (
   fileCase: Omit<JudicialCaseFileType, 'id' | 'numberCaseFile'>,
   customerId: string
@@ -65,7 +69,10 @@ export const updateFileCase = async (id: number, fileCase: Omit<JudicialCaseFile
   return await axiosClient.patch(`${url}/${id}`, fileCase)
 }
 
-export const updateFileCaseProcessStatus = async (id: number, processStatus: Omit<JudicialCasefileProcessStatusType,'id'>) => {
+export const updateFileCaseProcessStatus = async (
+  id: number,
+  processStatus: Omit<JudicialCasefileProcessStatusType, 'id'>
+) => {
   return await axiosClient.patch(`${url}/${id}/process-status`, processStatus)
 }
 

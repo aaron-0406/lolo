@@ -20,6 +20,8 @@ import { LinkType } from '@/ui/Breadcrumbs/Breadcrumbs.type'
 import paths from 'shared/routes/paths'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import { ClientType } from '@/types/extrajudicial/client.type'
+import useModal from '@/hooks/useModal'
+import FileCaseQrModal from './Modals/QrModal/FileCaseQrModal'
 
 type FileCaseActionsProps = {
   setLoadingGlobal: (state: boolean) => void
@@ -28,6 +30,7 @@ type FileCaseActionsProps = {
 
 const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase }: FileCaseActionsProps) => {
   const queryClient = useQueryClient()
+  const { hideModal: hideQrModal, showModal: showQrModal, visible: visibleQrModal } = useModal()
   const {
     client: { customer },
     bank: { selectedBank },
@@ -54,6 +57,8 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase }: FileCaseActions
       judicialProceduralWay: { proceduralWay: string; customerHasBankId: string }
     }
   >()
+
+  const caseFileId = getValues('id')
 
   const { isLoading: loadingCreateFileCase, mutate: createFileCaseMutate } = useMutation<
     AxiosResponse<JudicialFileCaseTableRow>,
@@ -147,6 +152,7 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase }: FileCaseActions
         setValue('judicialCourt', data.data?.judicialCourt)
         setValue('judicialSubject', data.data?.judicialSubject)
         setValue('judicialProceduralWay', data.data?.judicialProceduralWay)
+        setValue('qrCode', data.data?.qrCode ?? undefined)
 
         //TODO: Work here
         setOwnerFileCase(data.data?.client)
@@ -215,6 +221,16 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase }: FileCaseActions
       <Container width="fit-content" display="flex" justifyContent="space-between" alignItems="center" gap="10px">
         <Button
           width="130px"
+          label={greaterThanDesktopS && 'QR'}
+          shape={greaterThanDesktopS ? 'default' : 'round'}
+          size={greaterThanTabletS ? 'default' : 'small'}
+          trailingIcon="ri-qr-code-line"
+          messageTooltip="Ver código QR"
+          onClick={showQrModal}
+          disabled={!caseFileId}
+        />
+        <Button
+          width="130px"
           label={greaterThanDesktopS && 'Guardar'}
           shape={greaterThanDesktopS ? 'default' : 'round'}
           size={greaterThanTabletS ? 'default' : 'small'}
@@ -225,6 +241,8 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase }: FileCaseActions
           messageTooltip="Guardar cambios"
         />
       </Container>
+
+      {visibleQrModal ? <FileCaseQrModal isVisible={visibleQrModal} onClose={hideQrModal} /> : null}
     </Container>
   )
 }
