@@ -16,8 +16,10 @@ export const postCreateFile = async (
     headers: { 'Content-Type': 'multipart/form-data' },
   })
 }
-export const getFiles = async (id: number) => {
-  return await axiosClient.get(`${url}/${id}`)
+export const getFiles = async (id: number, chb: number, page: number, limit: number, filter?: string) => {
+  let filters = ''
+  filters += filter !== '' && filter !== undefined ? `filter=${filter}&` : ''
+  return await axiosClient.get(`${url}/${id}/chb/${chb}?${filters}page=${page}&limit=${limit}`)
 }
 
 export const editFile = async (data: { originalName: string; tagId: number }, id: number) => {
