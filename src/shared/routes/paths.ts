@@ -92,5 +92,9 @@ export default {
     scheduldedNotifications: (urlIdentifier = `:urlIdentifier`) =>
       `/configuracion/${urlIdentifier}/notificationes-programadas`,
     compareExcel: (urlIdentifier = `:urlIdentifier`) => `/configuracion/${urlIdentifier}/comparar-excels`,
+    department: (urlIdentifier = `:urlIdentifier`) => `/configuracion/${urlIdentifier}/departamentos`,
+    district: (urlIdentifier = `:urlIdentifier`) => `/configuracion/${urlIdentifier}/distritos`,
+    province: (urlIdentifier = `:urlIdentifier`) => `/configuracion/${urlIdentifier}/provincias`,
+    
   },
 }

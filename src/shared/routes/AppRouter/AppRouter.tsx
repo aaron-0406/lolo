@@ -71,6 +71,10 @@ import JudicialFileCaseRelatedProcessList from 'pages/Company/Judicial/JudicialF
 
 import ScheduledNotifications from 'pages/Company/Settings/ScheduledNotifications/SheduledNotifications'
 import CompareExcel from 'pages/Company/Settings/CompareExcel'
+import Department from 'pages/Company/Settings/Department'
+import District from 'pages/Company/Settings/District'
+import Province from 'pages/Company/Settings/Province'
+
 const AppRouter = () => {
   return (
     <AppSwitch>
@@ -144,6 +148,9 @@ const AppRouter = () => {
         {/* SETTINGS */}
         <Route path={paths.settings.scheduldedNotifications()} element={<ScheduledNotifications />} />
         <Route path={paths.settings.compareExcel()} element={<CompareExcel />} />
+        <Route path={paths.settings.department()} element={<Department />} />
+        <Route path={paths.settings.district()} element={<District />} />
+        <Route path={paths.settings.province()} element={<Province />} />
       </Route>
 
       <Route path="*" element={<NotFound />} />
