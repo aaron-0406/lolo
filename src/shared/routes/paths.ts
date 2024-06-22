@@ -87,6 +87,10 @@ export default {
     sedes: (urlIdentifier = ':urlIdentifier') => `/judicial/${urlIdentifier}/sedes`,
     relatedProcess: (urlIdentifier = ':urlIdentifier', code = ':code') =>
       `/judicial/${urlIdentifier}/expediente/${code}/procesos-conexos`,
+    useOfProperty: (urlIdentifier = ':urlIdentifier') => `/judicial/${urlIdentifier}/uso-del-bien`,
+    registrationArea: (urlIdentifier = ':urlIdentifier') => `/judicial/${urlIdentifier}/zona-registral`, 
+    registerOffice: (urlIdentifier = ':urlIdentifier') => `/judicial/${urlIdentifier}/oficina-registral`,
+    notary: (urlIdentifier = `:urlIdentifier`) => `/judicial/${urlIdentifier}/notaria`,
   },
   settings: {
     scheduldedNotifications: (urlIdentifier = `:urlIdentifier`) =>
@@ -95,6 +99,5 @@ export default {
     department: (urlIdentifier = `:urlIdentifier`) => `/configuracion/${urlIdentifier}/departamentos`,
     district: (urlIdentifier = `:urlIdentifier`) => `/configuracion/${urlIdentifier}/distritos`,
     province: (urlIdentifier = `:urlIdentifier`) => `/configuracion/${urlIdentifier}/provincias`,
-    
   },
 }

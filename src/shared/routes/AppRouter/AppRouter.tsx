@@ -74,6 +74,10 @@ import CompareExcel from 'pages/Company/Settings/CompareExcel'
 import Department from 'pages/Company/Settings/Department'
 import District from 'pages/Company/Settings/District'
 import Province from 'pages/Company/Settings/Province'
+import JudicialUseOfProperty from 'pages/Company/Judicial/JudicialUseOfProperty'
+import JudicialRegistrationArea from 'pages/Company/Judicial/JudicialRegistrationArea'
+import JudicialRegisterOffice from 'pages/Company/Judicial/JudicialRegisterOffice'
+import JudicialNotary from 'pages/Company/Judicial/JudcialNotary/JudicialNotary'
 
 const AppRouter = () => {
   return (
@@ -144,6 +148,10 @@ const AppRouter = () => {
         <Route path={paths.judicial.sedes()} element={<JudicialSede />} />
         <Route path={paths.judicial.relatedProcess()} element={<JudicialFileCaseRelatedProcessList />} />
         <Route path={paths.judicial.detallesExpedienteRelatedProcess()} element={<JudicialFileCaseRelatedProcess />} />
+        <Route path={paths.judicial.useOfProperty()} element={<JudicialUseOfProperty />} />
+        <Route path={paths.judicial.registrationArea()} element={<JudicialRegistrationArea />} />
+        <Route path={paths.judicial.registerOffice()} element={<JudicialRegisterOffice />} />
+        <Route path={paths.judicial.notary()} element={<JudicialNotary />} />
 
         {/* SETTINGS */}
         <Route path={paths.settings.scheduldedNotifications()} element={<ScheduledNotifications />} />
