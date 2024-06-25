@@ -63,6 +63,10 @@ export default {
       code = ':code',
       relatedProcessCode = ':relatedProcessCode'
     ) => `/judicial/${urlIdentifier}/expediente/${code}/procesos-conexos/${relatedProcessCode}`,
+
+    detailCollateral: (urlIdentifier = ':urlIdentifier', code = ':code', collateralCode = ':collateralCode') =>
+      `/judicial/${urlIdentifier}/expediente/${code}/garantia/${collateralCode}`,
+
     productosDemandados: (urlIdentifier = ':urlIdentifier', code = ':code') =>
       `/judicial/${urlIdentifier}/expedientes/${code}/productos-demandados`,
     processStatus: (urlIdentifier = ':urlIdentifier', code = ':code') =>
@@ -88,9 +92,11 @@ export default {
     relatedProcess: (urlIdentifier = ':urlIdentifier', code = ':code') =>
       `/judicial/${urlIdentifier}/expediente/${code}/procesos-conexos`,
     useOfProperty: (urlIdentifier = ':urlIdentifier') => `/judicial/${urlIdentifier}/uso-del-bien`,
-    registrationArea: (urlIdentifier = ':urlIdentifier') => `/judicial/${urlIdentifier}/zona-registral`, 
+    registrationArea: (urlIdentifier = ':urlIdentifier') => `/judicial/${urlIdentifier}/zona-registral`,
     registerOffice: (urlIdentifier = ':urlIdentifier') => `/judicial/${urlIdentifier}/oficina-registral`,
     notary: (urlIdentifier = `:urlIdentifier`) => `/judicial/${urlIdentifier}/notaria`,
+    collateral: (urlIdentifier = `:urlIdentifier`, code = `:code`) =>
+      `/judicial/${urlIdentifier}/expediente/${code}/garantia`,
   },
   settings: {
     scheduldedNotifications: (urlIdentifier = `:urlIdentifier`) =>

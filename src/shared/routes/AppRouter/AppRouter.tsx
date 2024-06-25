@@ -78,6 +78,8 @@ import JudicialUseOfProperty from 'pages/Company/Judicial/JudicialUseOfProperty'
 import JudicialRegistrationArea from 'pages/Company/Judicial/JudicialRegistrationArea'
 import JudicialRegisterOffice from 'pages/Company/Judicial/JudicialRegisterOffice'
 import JudicialNotary from 'pages/Company/Judicial/JudcialNotary/JudicialNotary'
+import JudicialCollateral from 'pages/Company/Judicial/JudicialCollateral/JudicialCollateral'
+import JudicialCollateralList from 'pages/Company/Judicial/JudicialCollateralList'
 
 const AppRouter = () => {
   return (
@@ -152,6 +154,8 @@ const AppRouter = () => {
         <Route path={paths.judicial.registrationArea()} element={<JudicialRegistrationArea />} />
         <Route path={paths.judicial.registerOffice()} element={<JudicialRegisterOffice />} />
         <Route path={paths.judicial.notary()} element={<JudicialNotary />} />
+        <Route path={paths.judicial.collateral()} element={<JudicialCollateralList />} /> 
+        <Route path={paths.judicial.detailCollateral()} element={<JudicialCollateral />} /> 
 
         {/* SETTINGS */}
         <Route path={paths.settings.scheduldedNotifications()} element={<ScheduledNotifications />} />
