@@ -1,1 +1,1 @@
-export { default } from './DeleteExpedienteModal'
+export { default } from './DeleteCollateralModal'

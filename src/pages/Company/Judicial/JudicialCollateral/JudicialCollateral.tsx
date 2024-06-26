@@ -33,9 +33,8 @@ const JudicialCollateral = () => {
       },
     }
   )
-
   const [loading, setLoading] = useState<boolean>(false)
-  const collateralId = data?.data.id
+  const caseFileId = data?.data.id
 
   const defaultValuesFileCase = {
     id: 0,
@@ -70,7 +69,7 @@ const JudicialCollateral = () => {
       <Container width="100%" height="100%" display='flex' flexDirection='column'>
         <FileCaseActions
           setLoadingGlobal={setLoading}
-          collateralId={collateralId}
+          caseFileId={caseFileId}
         />
         <JudicialCollateralInfo  
           loading = {loading}

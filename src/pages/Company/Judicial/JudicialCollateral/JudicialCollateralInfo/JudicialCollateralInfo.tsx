@@ -32,6 +32,7 @@ import { getJudicialNotaryByCHB } from '@/services/judicial/judicial-notary.serv
 import { KEY_JUDICIAL_REGISTER_OFFICE_CACHE } from '../../JudicialRegisterOffice/JudicialRegisterOfficeTable/utils/judicial-register-office.cache';
 import { JudicialRegisterOfficeType } from '@/types/judicial/judicial-register-office.type'
 import { getJudicialRegisterOfficeByCHB } from '@/services/judicial/judicial-register-office.service'
+import moment from 'moment'
 
 
 type JudicialCollateralInfoProps = {
@@ -39,11 +40,17 @@ type JudicialCollateralInfoProps = {
 }
 
 const JudicialCollateralInfo = ({loading}: JudicialCollateralInfoProps) => {
-  const {
-    getValues,
-    setValue,  
-    control, 
-  } = useFormContext<JudicialCollateralType>()
+  const { getValues, setValue, control } = useFormContext<
+    JudicialCollateralType & {
+      useOfProperty: { id: number; name: string }
+      registrationArea: { id: number; name: string }
+      registerOffice: { id: number; name: string }
+      notary: { id: number; name: string }
+      department: { id: number; name: string }
+      province: { id: number; name: string }
+      district: { id: number; name: string }
+    }
+  >()
   const {
     bank: {
       selectedBank: { idCHB: chb },
@@ -54,7 +61,6 @@ const JudicialCollateralInfo = ({loading}: JudicialCollateralInfoProps) => {
   const [ departmentId, setDepartmentId ] = useState<number>(collateralData.departmentId)
   const [ provinceId, setProvinceId ] = useState<number>(collateralData.provinceId)
 
-  
   const { data: departmentsData } = useQuery<AxiosResponse<Array<DepartmentType>>>(
     ['KEY_DEPARTMENTS_CACHE'],
     async () => {
@@ -65,16 +71,16 @@ const JudicialCollateralInfo = ({loading}: JudicialCollateralInfoProps) => {
   const {data: provincesData, refetch: refetchProvinces} = useQuery<AxiosResponse<Array<DepartmentType>>>(
     ['KEY_PROVINCES_CACHE'],
     async () => {
-      const departmentId = getValues('departmentId')
-      return await getProvincesByDepartment(departmentId)
+      const id = getValues('departmentId') ?? departmentId
+      return await getProvincesByDepartment(id)
     }
   )
 
   const { data: districtsData, refetch: refetchDistricts } = useQuery<AxiosResponse<Array<DistrictType>>>(
     ['KEY_DISTRICTS_CACHE'],
     async () => {
-      const provinceId = getValues('provinceId')
-      return await getDistrictsByProvince(provinceId)
+      const id = getValues('provinceId') ??  provinceId
+      return await getDistrictsByProvince(id)
     }
   )
 
@@ -115,6 +121,16 @@ const JudicialCollateralInfo = ({loading}: JudicialCollateralInfoProps) => {
     if (provinceId) refetchDistricts()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [provinceId])
+
+  useEffect(()=>{
+    if (collateralData.departmentId) {
+      setDepartmentId(collateralData.departmentId)
+    }
+    if (collateralData.provinceId) {
+      setProvinceId(collateralData.provinceId)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[collateralData.provinceId, collateralData.departmentId])
 
   const departmentsOptions: Array<SelectItemType> = departmentsData?.data?.map((department) => ({
     key: String(department.id),
@@ -239,7 +255,7 @@ const JudicialCollateralInfo = ({loading}: JudicialCollateralInfoProps) => {
                 selectedDate={field.value}
                 placeholder="Ingrese la fecha:"
                 dateFormat="DD-MM-YYYY"
-                value={field.value}
+                value={field.value ?? moment(new Date()).format('DD-MM-YYYY')}
                 getDate={(e) => {
                   setValue('dateOfPublicDeed', e)
                 }}
@@ -276,7 +292,7 @@ const JudicialCollateralInfo = ({loading}: JudicialCollateralInfoProps) => {
                 <Select
                   required
                   label="Provincia"
-                  placeholder="Seleccione una provincia"
+                  placeholder={collateralData.provinceId ? collateralData.province?.name : 'Seleccione una provincia'}
                   width="100%"
                   value={String(field.value)}
                   options={provincesOptions}
@@ -297,7 +313,7 @@ const JudicialCollateralInfo = ({loading}: JudicialCollateralInfoProps) => {
                 <Select
                   required
                   label="Distrito"
-                  placeholder="Seleccione un distrito"
+                  placeholder={collateralData.districtId ? collateralData.district?.name : 'Seleccione un distrito'}
                   width="100%"
                   value={String(field.value)}
                   options={districtsOptions}
@@ -346,9 +362,8 @@ const JudicialCollateralInfo = ({loading}: JudicialCollateralInfoProps) => {
               )}
             />
           </Container>
-            
-          <Container width="100%" display="flex" flexDirection={greaterThanTabletL ? 'row' : 'column'} gap="20px"> 
 
+          <Container width="100%" display="flex" flexDirection={greaterThanTabletL ? 'row' : 'column'} gap="20px">
             <Controller
               name="useOfPropertyId"
               control={control}

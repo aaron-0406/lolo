@@ -1,4 +1,3 @@
-import { deleteFileCase } from '@/services/judicial/judicial-file-case-related-process.service'
 import Button from '@/ui/Button'
 import Container from '@/ui/Container'
 import Modal from '@/ui/Modal'
@@ -7,51 +6,54 @@ import { AxiosError, AxiosResponse } from 'axios'
 import { FC } from 'react'
 import { useMutation, useQueryClient } from 'react-query'
 import { CustomErrorResponse } from 'types/customErrorResponse'
-import judicialFileCaseRelatedProcessCache from '../utils/file-cases-related-Process.cache'
+import judicialCollateralCache from '../utils/judicial-collateral.cache'
+import { deleteJudicialCollateral } from '@/services/judicial/judicial-collateral.service'
+import { useLoloContext } from '@/contexts/LoloProvider'
 
-type DeleteExpedienteModalProps = {
+type DeleteCollateralModalProps = {
   visible: boolean
   onClose: () => void
-  idFileCase?: number
-  caseFileRelatedProcessId: number
+  id?: number
 }
 
-const DeleteExpedienteModal: FC<DeleteExpedienteModalProps> = ({
+const DeleteCollateralModal: FC<DeleteCollateralModalProps> = ({
   visible,
-  idFileCase = 0,
-  caseFileRelatedProcessId = 0,
+  id = 0,
   onClose,
 }) => {
   const queryClient = useQueryClient()
 
   const {
-    actions: { deleteFileCaseRelatedProcessCache },
+    bank: { selectedBank: { idCHB: chb } },
+  } = useLoloContext()
+  const {
+    actions: { deleteCollateralCache },
     onMutateCache,
     onSettledCache,
     onErrorCache,
-  } = judicialFileCaseRelatedProcessCache(queryClient)
+  } = judicialCollateralCache(queryClient)
 
-  const { isLoading: loadingDeleteUser, mutate: deleteUserMutate } = useMutation<
+  const { isLoading: loadingDeleteUser, mutate: deleteCollateralMutate } = useMutation<
     AxiosResponse<{ id: string }>,
     AxiosError<CustomErrorResponse>
   >(
     async () => {
-      return await deleteFileCase(idFileCase)
+      return await deleteJudicialCollateral(id)
     },
     {
       onSuccess: (result) => {
-        deleteFileCaseRelatedProcessCache(result.data.id, caseFileRelatedProcessId ? caseFileRelatedProcessId : 0)
+        deleteCollateralCache(result.data.id, Number(chb))
         notification({ type: 'success', message: 'Expediente eliminado' })
         onClose()
       },
       onMutate: () => {
-        return onMutateCache(caseFileRelatedProcessId ? caseFileRelatedProcessId : 0)
+        return onMutateCache(id ? id : 0) 
       },
       onSettled: () => {
-        onSettledCache(caseFileRelatedProcessId ? caseFileRelatedProcessId : 0)
+        onSettledCache(id ? id : 0)
       },
       onError: (error, _, context: any) => {
-        onErrorCache(context, caseFileRelatedProcessId ? caseFileRelatedProcessId : 0)
+        onErrorCache(context, id ? id : 0)
         notification({
           type: 'error',
           message: error.response?.data.message,
@@ -61,11 +63,10 @@ const DeleteExpedienteModal: FC<DeleteExpedienteModalProps> = ({
     }
   )
 
-  const deleteUsers = () => {
-    if (idFileCase !== 0) {
-      deleteUserMutate()
-    }
+  const onDeleteCollateral = () => {
+    if (id !== 0) deleteCollateralMutate()
   }
+  
   return (
     <Modal
       visible={visible}
@@ -76,7 +77,7 @@ const DeleteExpedienteModal: FC<DeleteExpedienteModalProps> = ({
       size="small"
       footer={
         <Container width="100%" justifyContent="space-around" display="flex" alignItems="center">
-          {<Button onClick={deleteUsers} loading={loadingDeleteUser} display="danger" size="default" label="ACEPTAR" />}
+          {<Button onClick={onDeleteCollateral} loading={loadingDeleteUser} display="danger" size="default" label="ACEPTAR" />}
           {<Button onClick={onClose} size="default" label="CANCELAR" />}
         </Container>
       }
@@ -84,4 +85,4 @@ const DeleteExpedienteModal: FC<DeleteExpedienteModalProps> = ({
   )
 }
 
-export default DeleteExpedienteModal
+export default DeleteCollateralModal
