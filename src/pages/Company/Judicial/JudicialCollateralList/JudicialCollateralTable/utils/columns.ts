@@ -2,38 +2,44 @@ import { ColumProps } from '@/ui/Table/Table'
 
 export const judicialCollateralColumns: ColumProps[] = [
   {
+    id: 'judicialCollateral.datatable.header.id',
+    title: 'ID',
+    width: '10%',
+    justifyContent: 'center',
+  },
+  {
     id: 'judicialCollateral.datatable.header.kindOfProperty',
-    title: 'Tipo de bien',
+    title: 'TIPO DE BIEN',
     width: '10%',
     justifyContent: 'center',
   },
   {
     id: 'judicialCollateral.datatable.header.numberOfCollateral',
-    title: 'Número de garantía',
+    title: 'NÚMERO DE GARANTÍA',
     width: '10%',
     justifyContent: 'left',    
   },
   {
     id: 'judicialCollateral.datatable.header.propertyAddress',
-    title: 'Dirección de la propiedad',
+    title: 'DIRECCIÓN DEL BIEN',
     width: '10%',
     justifyContent: 'left',
   },
   {
     id: 'judicialCollateral.datatable.header.propertyFeatures',
-    title: 'Características del bien',
+    title: 'CARACTERÍSTICAS DEL BIEN',
     width: '10%',
     justifyContent: 'left',
   },
   {
     id: 'judicialCollateral.datatable.header.landArea',
-    title: 'Área de terreno',
+    title: 'ÁREA DE TERRENO',
     width: '10%',
     justifyContent: 'left',
   },
   {
     id: 'judicialCollateral.datatable.header.constructionArea',
-    title: 'Área de construcción',
+    title: 'ÁREA DE CONSTRUCCIÓN',
     width: '10%',
     justifyContent: 'left',
   },
@@ -45,13 +51,13 @@ export const judicialCollateralColumns: ColumProps[] = [
   },
   {
     id: 'judicialCollateral.datatable.header.dateOfPublicDeed',
-    title: 'Fecha de escritura pública',
+    title: 'FECHA DE ESCRITURA PÚBLICA',
     width: '10%',
     justifyContent: 'left',
   },
   {
     id: 'judicialCollateral.datatable.header.registrationSeat',
-    title: 'Asiento de inscripción',
+    title: 'ASIENTO DE INSCRIPCIÓN',
     width: '10%',
     justifyContent: 'left',
   },

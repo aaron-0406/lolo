@@ -22,6 +22,8 @@ import notification from '@/ui/notification'
 import moment from 'moment'
 import { useEffect } from 'react'
 import judicialCollateralCache from '../../JudicialCollateralList/JudicialCollateralTable/utils/judicial-collateral.cache'
+import useModal from '@/hooks/useModal'
+import AssignCollateralModal from './Modals/AssignCollateralModal'
 
 type JudicialCollateralProps = {
   setLoadingGlobal: (state: boolean) => void
@@ -36,9 +38,11 @@ const JudicialCollateral = ({ setLoadingGlobal, caseFileId }: JudicialCollateral
   const navigate = useNavigate()
   const codeParams = useParams().code ?? ''
   const collateralCode = useParams().collateralCode ?? ''
+  const { hideModal: hideAssignCollateralModal, showModal: showAssignCollateralModal, visible: visibleAssignCollateralModal } = useModal()
   const {
     getValues, 
     setValue,
+    formState : {isValid}, 
     watch
   } = useFormContext<JudicialCollateralType & {
     useOfProperty: { id: number; name: string }
@@ -203,6 +207,10 @@ const JudicialCollateral = ({ setLoadingGlobal, caseFileId }: JudicialCollateral
   )
 
   const onCreateCollateral = () => {
+    if (!isValid) return notification({
+      type: 'warning',
+      message: 'Por favor complete los campos requeridos',
+    })
     createJudicialCollateralMutate(); 
   }
 
@@ -254,16 +262,35 @@ const JudicialCollateral = ({ setLoadingGlobal, caseFileId }: JudicialCollateral
       <Container width="fit-content" display="flex" justifyContent="space-between" alignItems="center" gap="10px">
         <Button
           width="130px"
+          label={greaterThanDesktopS && 'Asignar'}
+          shape={greaterThanDesktopS ? 'default' : 'round'}
+          size={greaterThanTabletS ? 'default' : 'small'}
+          trailingIcon="ri-arrow-left-right-line"
+          onClick={showAssignCollateralModal}
+          loading={loadingCreateCollateral || loadingUpdateCollateral}
+          permission={'P13-01-06-01-01'}
+          disabled={watch().id === 0}
+          messageTooltip="Asignar garantía"
+        />
+        <Button
+          width="130px"
           label={greaterThanDesktopS && 'Guardar'}
           shape={greaterThanDesktopS ? 'default' : 'round'}
           size={greaterThanTabletS ? 'default' : 'small'}
           trailingIcon="ri-save-3-line"
-          onClick={watch().id !== 0 ? onUpadateCollateral : onCreateCollateral} 
+          onClick={watch().id !== 0 ? onUpadateCollateral : onCreateCollateral}
           loading={loadingCreateCollateral || loadingUpdateCollateral}
           permission={watch().id !== 0 ? 'P13-01-06-03' : 'P13-01-06-02'}
           messageTooltip="Guardar cambios"
         />
       </Container>
+      {visibleAssignCollateralModal ? (
+        <AssignCollateralModal
+          visible={visibleAssignCollateralModal}
+          onClose={hideAssignCollateralModal}
+          collateralId={watch().id}
+        />
+      ) : null}
     </Container>
   )
 }
