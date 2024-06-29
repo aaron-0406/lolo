@@ -26,24 +26,6 @@ export const judicialCollateralColumns: ColumProps[] = [
     justifyContent: 'left',
   },
   {
-    id: 'judicialCollateral.datatable.header.propertyFeatures',
-    title: 'CARACTERÍSTICAS DEL BIEN',
-    width: '10%',
-    justifyContent: 'left',
-  },
-  {
-    id: 'judicialCollateral.datatable.header.landArea',
-    title: 'ÁREA DE TERRENO',
-    width: '10%',
-    justifyContent: 'left',
-  },
-  {
-    id: 'judicialCollateral.datatable.header.constructionArea',
-    title: 'ÁREA DE CONSTRUCCIÓN',
-    width: '10%',
-    justifyContent: 'left',
-  },
-  {
     id: 'judicialCollateral.datatable.header.electronicRecord',
     title: 'Registro electrónico',
     width: '10%',

@@ -19,6 +19,7 @@ import { KEY_JUDICIAL_COLLATERAL_CACHE } from './utils/judicial-collateral.cache
 import useModal from '@/hooks/useModal';
 import DeleteCollateralModal from './DeleteCollareralModal';
 import { useEffect, useState } from 'react';
+import Text from '@/ui/Text';
 
 type JudicialCollateralListaTableProps = {
   id: number
@@ -95,16 +96,28 @@ const JudicialCollateralListTable = ({ id }: JudicialCollateralListaTableProps) 
         {Array.isArray(collaterals) && collaterals.length
           ? collaterals.map((collateral: JudicialCollateralType, index: number) => (
               <tr key={collateral?.id} onClick={() => onClickRow(collateral?.id.toString())}>
-                <BodyCell textAlign='center'>{index + 1}</BodyCell>
-                <BodyCell textAlign='center'>{collateral?.kindOfProperty}</BodyCell>
-                <BodyCell textAlign='center'>{collateral?.numberOfCollateral}</BodyCell>
-                <BodyCell textAlign='center'>{collateral?.propertyAddress}</BodyCell>
-                <BodyCell textAlign='center'>{collateral?.propertyFeatures}</BodyCell>
-                <BodyCell textAlign='center'>{collateral?.landArea}</BodyCell>
-                <BodyCell textAlign='center'>{collateral?.constructionArea}</BodyCell>
-                <BodyCell textAlign='center'>{collateral?.electronicRecord}</BodyCell>
-                <BodyCell textAlign='center'>{`${moment(collateral?.dateOfPublicDeed).format('DD-MM-YYYY') || ''}`}</BodyCell>
-                <BodyCell textAlign='center'>{collateral?.registrationSeat}</BodyCell>
+                <BodyCell textAlign="center">{index + 1}</BodyCell>
+                <BodyCell textAlign="center">{collateral?.kindOfProperty}</BodyCell>
+                <BodyCell textAlign="center">{collateral?.numberOfCollateral}</BodyCell>
+                <BodyCell textAlign="left">
+                  <Container
+                    margin="20px 0"
+                    minWidth="300px"
+                    maxHeight="130px"
+                    whiteSpace="normal"
+                    wordBreak="break-all"
+                    overFlowY="auto"
+                  >
+                    <Text.Body size="m" weight="regular">
+                      {collateral?.propertyAddress || '-'}
+                    </Text.Body>
+                  </Container>
+                </BodyCell>
+                <BodyCell textAlign="center">{collateral?.electronicRecord}</BodyCell>
+                <BodyCell textAlign="center">{`${
+                  moment(collateral?.dateOfPublicDeed).format('DD-MM-YYYY') || ''
+                }`}</BodyCell>
+                <BodyCell textAlign="center">{collateral?.registrationSeat}</BodyCell>
                 <BodyCell textAlign="center">
                   {
                     <Container display="flex" gap="15px" justifyContent="space-around">

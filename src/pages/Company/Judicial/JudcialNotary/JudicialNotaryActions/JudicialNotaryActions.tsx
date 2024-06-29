@@ -1,6 +1,6 @@
 import useModal from "@/hooks/useModal"
 
-import UseOfPropertyModal from "../Modals/NotaryModal"
+import NotaryModal from "../Modals/NotaryModal"
 import Container from "@/ui/Container"
 import Text from "@/ui/Text"
 import Button from "@/ui/Button"
@@ -28,7 +28,7 @@ const JudicalNotaryActions = () => {
         onClick={showModal}
         disabled={!chb}
       />
-      {hideModal ? <UseOfPropertyModal isOpen={visible} onClose={hideModal} /> : null}
+      {hideModal ? <NotaryModal isOpen={visible} onClose={hideModal} /> : null}
     </Container>
   )
 }

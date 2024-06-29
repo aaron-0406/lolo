@@ -1,1 +1,1 @@
-export { default } from './JudicialNotary' 
+export { default } from './JudicialCollateralChargesEncumbrancesTypeLoad' 

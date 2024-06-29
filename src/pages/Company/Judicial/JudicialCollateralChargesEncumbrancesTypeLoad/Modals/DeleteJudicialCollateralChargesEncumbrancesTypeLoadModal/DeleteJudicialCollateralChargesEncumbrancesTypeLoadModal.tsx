@@ -4,18 +4,18 @@ import Container from '@/ui/Container'
 import Modal from '@/ui/Modal'
 import notification from '@/ui/notification'
 import Button from '@/ui/Button'
-import judicialNotaryCache from '../../JudicialNotaryTable/utils/judicial-notary.cache'
+import JudicialEncumbrancesChargesTypeLoadCache from '../../JudicialCollateralChargesEncumbrancesTypeLoadTable/utils/judicial-collateral-charges-encumbrances-type-load.cache'
 import { CustomErrorResponse } from 'types/customErrorResponse'
 import { useLoloContext } from '@/contexts/LoloProvider'
-import { deleteJudicialNotary } from '@/services/judicial/judicial-notary.service'
+import { deleteJudicialCollateralChargesEncumbrancesTypeLoad } from '@/services/judicial/judicial-collateral-charges-encumbrances-type-load.service'
 
-type DeleteNotaryModalProps = {
+type DeleteJudicialCollateralChargesEncumbrancesTypeLoadModalProps = {
   isOpen: boolean
   onClose: () => void
   id?: number
 }
 
-const DeleteNotaryModal = ({ isOpen, id = 0, onClose }: DeleteNotaryModalProps) => {
+const DeleteJudicialCollateralChargesEncumbrancesTypeLoadModal = ({ isOpen, id = 0, onClose }: DeleteJudicialCollateralChargesEncumbrancesTypeLoadModalProps) => {
   const {
     bank: {
       selectedBank: { idCHB: chb },
@@ -27,23 +27,23 @@ const DeleteNotaryModal = ({ isOpen, id = 0, onClose }: DeleteNotaryModalProps) 
   const queryClient = useQueryClient()
 
   const {
-    actions: { deleteNotaryCache },
+    actions: {  deleteChargesEncumbrancesTypeLoadCache },
     onMutateCache,
     onSettledCache,
     onErrorCache,
-  } = judicialNotaryCache(queryClient)
+  } = JudicialEncumbrancesChargesTypeLoadCache(queryClient)
 
-  const { isLoading: loadingDeleteNotary, mutate: deleteNotaryMutate } = useMutation<
+  const { isLoading: loadingDeleteJudicialCollateralChargesEncumbrancesTypeLoad, mutate: deleteJudicialCollateralChargesEncumbrancesTypeLoadMutate } = useMutation<
     AxiosResponse<{ id: string }>,
     AxiosError<CustomErrorResponse>
   >(
     async () => {
-      return await deleteJudicialNotary(id)
+      return await deleteJudicialCollateralChargesEncumbrancesTypeLoad(id)
     },
     {
       onSuccess: () => {
-        deleteNotaryCache(String(id), chbNumber)
-        notification({ type: 'success', message: 'Notaria eliminada' })
+        deleteChargesEncumbrancesTypeLoadCache(String(id), chbNumber)
+        notification({ type: 'success', message: 'Tipo de carga y gravámenes eliminado' })
         onClose()
       },
       onMutate: () => {
@@ -62,9 +62,9 @@ const DeleteNotaryModal = ({ isOpen, id = 0, onClose }: DeleteNotaryModalProps) 
       },
     }
   )
-  const handleDeleteNotary = () => {
+  const handleDeleteJudicialCollateralChargesEncumbrancesTypeLoad = () => {
     if (id !== 0) {
-      deleteNotaryMutate()
+      deleteJudicialCollateralChargesEncumbrancesTypeLoadMutate()
     }
   }
 
@@ -73,15 +73,15 @@ const DeleteNotaryModal = ({ isOpen, id = 0, onClose }: DeleteNotaryModalProps) 
       visible={isOpen}
       onClose={onClose}
       id="modal-delete"
-      title="¿Desea eliminar la notaria?"
+      title="¿Desea eliminar el tipo de carga y gravámenes?"
       contentOverflowY="auto"
       size="small"
       footer={
         <Container width="100%" justifyContent="space-around" display="flex" alignItems="center">
           {
             <Button
-              onClick={handleDeleteNotary}
-              loading={loadingDeleteNotary}
+              onClick={handleDeleteJudicialCollateralChargesEncumbrancesTypeLoad}
+              loading={loadingDeleteJudicialCollateralChargesEncumbrancesTypeLoad}
               display="danger"
               size="default"
               label="ACEPTAR"
@@ -95,4 +95,4 @@ const DeleteNotaryModal = ({ isOpen, id = 0, onClose }: DeleteNotaryModalProps) 
   )
 }
 
-export default DeleteNotaryModal
+export default DeleteJudicialCollateralChargesEncumbrancesTypeLoadModal

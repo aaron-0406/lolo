@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { JudicialCaseFileType } from '@/types/judicial/judicial-case-file.type'
 import { JudicialCollateralResolver } from './JudicialCollateralResolver.yup'
 import FileCaseActions from './JudicialCollateralActions'
 import { useLoloContext } from '@/contexts/LoloProvider'
@@ -12,6 +11,8 @@ import { AxiosResponse } from 'axios'
 import notification from '@/ui/notification'
 import Container from '@/ui/Container'
 import JudicialCollateralInfo from './JudicialCollateralInfo'
+import JudicialCollateralModals from './JudicialCollateralInfo/JudicialCollateralModals'
+import { JudicialCollateralType } from '@/types/judicial/judicial-collateral.type'
 
 const JudicialCollateral = () => {
   const {
@@ -36,7 +37,7 @@ const JudicialCollateral = () => {
   const [loading, setLoading] = useState<boolean>(false)
   const caseFileId = data?.data.id
 
-  const defaultValuesFileCase = {
+  const defaultValuesCollateral = {
     id: 0,
     kindOfProperty: '',
     propertyAddress: '',
@@ -58,22 +59,18 @@ const JudicialCollateral = () => {
     notaryId: 0,
   }
 
-  const formMethods = useForm<JudicialCaseFileType>({
+  const formMethods = useForm<JudicialCollateralType>({
     resolver: JudicialCollateralResolver,
     mode: 'all',
-    defaultValues: defaultValuesFileCase,
+    defaultValues: defaultValuesCollateral,
   })
 
   return (
     <FormProvider {...formMethods}>
-      <Container width="100%" height="100%" display='flex' flexDirection='column'>
-        <FileCaseActions
-          setLoadingGlobal={setLoading}
-          caseFileId={caseFileId}
-        />
-        <JudicialCollateralInfo  
-          loading = {loading}
-        />
+      <Container width="100%" height="Calc(100% - 50px)" display="flex" flexDirection="column">
+        <FileCaseActions setLoadingGlobal={setLoading} caseFileId={caseFileId} />
+        <JudicialCollateralInfo loading={loading} />
+        <JudicialCollateralModals />
       </Container>
     </FormProvider>
   )

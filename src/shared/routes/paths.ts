@@ -97,6 +97,10 @@ export default {
     notary: (urlIdentifier = `:urlIdentifier`) => `/judicial/${urlIdentifier}/notaria`,
     collateral: (urlIdentifier = `:urlIdentifier`, code = `:code`) =>
       `/judicial/${urlIdentifier}/expediente/${code}/garantia`,
+    typeChargesEncumbrances: (urlIdentifier = `:urlIdentifier`) =>
+      `/judicial/${urlIdentifier}/tipos-cargas-y-gravamenes`,
+    chargesEncumbrances: (urlIdentifier = `:urlIdentifier`, code = `:code`, collateralCode = `:collateralCode`) =>
+      `/judicial/${urlIdentifier}/expediente/${code}/garantia/${collateralCode}/cargas-y-gravamenes`,
   },
   settings: {
     scheduldedNotifications: (urlIdentifier = `:urlIdentifier`) =>

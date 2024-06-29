@@ -25,10 +25,11 @@ const FileCasesCollateralActions: React.FC<JudicialFileCasesCollateralActionsPro
     client: { customer },
   } = useLoloContext()
 
+  
   const handleClickCaseFileCollateral = () => {
     navigate(`${paths.judicial.detailCollateral(customer.urlIdentifier, codeParams, '00000000')}`)
   }
-
+  
   const greaterThanTabletS = useMediaQuery(device.tabletS)
 
   const routers: LinkType[] = [
@@ -41,7 +42,7 @@ const FileCasesCollateralActions: React.FC<JudicialFileCasesCollateralActionsPro
       name: codeParams,
     },
     {
-      link: '',
+      link: paths.judicial.collateral(customer.urlIdentifier, codeParams),
       name: 'Garantías',
     },
   ]
@@ -52,9 +53,9 @@ const FileCasesCollateralActions: React.FC<JudicialFileCasesCollateralActionsPro
       display="flex"
       flexDirection="column"
       justifyContent="space-between"
-      alignItems="center"
-      padding="20px 20px 0 20px"
-      gap="20px"
+      alignItems={ greaterThanTabletS ? 'center' : 'flex-start'}
+      padding="10px 20px 10px 20px"
+      gap="10px"
     >
       <Container display="flex" flexDirection="column" gap="10px">
         <Breadcrumbs routes={routers} />

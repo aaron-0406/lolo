@@ -80,6 +80,8 @@ import JudicialRegisterOffice from 'pages/Company/Judicial/JudicialRegisterOffic
 import JudicialNotary from 'pages/Company/Judicial/JudcialNotary/JudicialNotary'
 import JudicialCollateral from 'pages/Company/Judicial/JudicialCollateral/JudicialCollateral'
 import JudicialCollateralList from 'pages/Company/Judicial/JudicialCollateralList'
+import JudicialCollateralChargesEncumbrancesTypeLoad from 'pages/Company/Judicial/JudicialCollateralChargesEncumbrancesTypeLoad'
+import JudicialCollateralChargesEncumbrances from 'pages/Company/Judicial/JudicialCollateralChargesEncumbrances'
 
 const AppRouter = () => {
   return (
@@ -156,6 +158,8 @@ const AppRouter = () => {
         <Route path={paths.judicial.notary()} element={<JudicialNotary />} />
         <Route path={paths.judicial.collateral()} element={<JudicialCollateralList />} /> 
         <Route path={paths.judicial.detailCollateral()} element={<JudicialCollateral />} /> 
+        <Route path={paths.judicial.typeChargesEncumbrances()} element={<JudicialCollateralChargesEncumbrancesTypeLoad />} /> 
+        <Route path={paths.judicial.chargesEncumbrances()} element={<JudicialCollateralChargesEncumbrances />} />  
 
         {/* SETTINGS */}
         <Route path={paths.settings.scheduldedNotifications()} element={<ScheduledNotifications />} />
