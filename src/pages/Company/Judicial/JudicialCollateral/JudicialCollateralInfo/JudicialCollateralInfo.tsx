@@ -39,6 +39,11 @@ type JudicialCollateralInfoProps = {
   loading: boolean
 }
 
+const kindOfProperty = {
+  MUEBLE: 'MUEBLE',
+  INMUEBLE: 'INMUEBLE',
+}
+
 const JudicialCollateralInfo = ({loading}: JudicialCollateralInfoProps) => {
   const { getValues, setValue, control } = useFormContext<
     JudicialCollateralType & {
@@ -132,6 +137,16 @@ const JudicialCollateralInfo = ({loading}: JudicialCollateralInfoProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   },[collateralData.provinceId, collateralData.departmentId])
 
+  const kindOfPropertyOptions: Array<SelectItemType> = [
+    {
+      key: kindOfProperty.MUEBLE,
+      label: 'MUEBLE',
+    },
+    {
+      key: kindOfProperty.INMUEBLE,
+      label: 'INMUEBLE',
+    },
+  ]
   const departmentsOptions: Array<SelectItemType> = departmentsData?.data?.map((department) => ({
     key: String(department.id),
     label: department.name,
@@ -180,20 +195,22 @@ const JudicialCollateralInfo = ({loading}: JudicialCollateralInfoProps) => {
       <Container width="100%" display="flex" flexDirection={greaterThanTabletL ? 'row' : 'column'} gap="20px">
         <Container width="100%" display="flex" flexDirection="column" gap="15px">
           <Controller
-            name="kindOfProperty"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                value={field.value}
-                onChange={field.onChange}
-                width="100%"
-                label="Tipo de bien"
-                placeholder="Código de Garantía"
-                disabled={loading}
-                required
-              />
-            )}
-          />
+              name="kindOfProperty"
+              control={control}
+              render={({ field }) => (
+                <Select
+                  required
+                  label="Tipo de bien"
+                  placeholder="Seleccione un tipo de bien"
+                  width="100%"
+                  value={String(field.value)}
+                  options={kindOfPropertyOptions}
+                  onChange={(key) => {
+                    setValue('kindOfProperty', key)
+                  }}
+                />
+              )}
+            />
 
           <Controller
             name="electronicRecord"

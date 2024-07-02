@@ -28,7 +28,6 @@ export const editJudicialCollateral = async (
   id:string, 
   JudicialCollateral: Omit<JudicialCollateralType, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'>
 ) => {
-  console.log(JudicialCollateral)
   return await axiosClient.patch(`${url}/${id}`, JudicialCollateral)
 }
 

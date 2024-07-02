@@ -1,34 +1,28 @@
 import useModal from "@/hooks/useModal"
 
-import NotaryModal from "../Modals/JudicialChargesEncumbrancesModal"
+import NotaryModal from "../Modals/CollateralFilesModal"
 import Container from "@/ui/Container"
+import Text from "@/ui/Text"
 import Button from "@/ui/Button"
 
 import { useLoloContext } from "@/contexts/LoloProvider"
-import { useParams } from "react-router-dom"
-
 import { LinkType } from "@/ui/Breadcrumbs/Breadcrumbs.type"
 import paths from "shared/routes/paths"
+import { useParams } from "react-router-dom"
 import Breadcrumbs from "@/ui/Breadcrumbs"
-import { device } from "@/breakpoints/responsive"
-import { useMediaQuery } from "@/hooks/useMediaQuery"
 
-
-const JudicalNotaryActions = () => {
+const JudicialCollateralFileActions = () => {
   const { hideModal, showModal, visible } = useModal()
   const { 
     bank: {
       selectedBank: { idCHB: chb },
     },
     client: { customer },
-  } = useLoloContext()
+   } = useLoloContext()
+   const code = useParams().code ?? ''
+   const collateralCode = useParams().collateralCode ?? ''
 
-  const code = useParams().code ?? ''
-  const collateralCode = useParams().collateralCode ?? ''
-
-  const greaterThanTabletL = useMediaQuery(device.tabletL)
-
-  const routers: LinkType[] = [
+   const routers: LinkType[] = [
     {
       link: paths.judicial.expedientes(customer.urlIdentifier),
       name: 'Expedientes',
@@ -47,24 +41,22 @@ const JudicalNotaryActions = () => {
     },
     {
       link: '#',
-      name: 'Cargas y gravámenes',
+      name: 'Archivos',
     }
   ]
-
   return (
     <Container
       display="flex"
       justifyContent="space-between"
-      flexDirection={ greaterThanTabletL ? 'row' : 'column'}
-      alignItems={ greaterThanTabletL ? 'center' : 'flex-start'}
+      alignItems="center"
       height="fit-content"
       width="100%"
-      padding="20px 20px 10px 10px"
+      padding="20px"
     >
       <Breadcrumbs routes={routers} />
       <Button
-        permission="P13-01-06-01-02-01"
-        messageTooltip="Agregar Carga y Gravamen"
+        permission="P13-01-06-01-03-01"
+        messageTooltip="Agregar Archivos"
         shape="round"
         size="small"
         leadingIcon="ri-add-line"
@@ -76,4 +68,4 @@ const JudicalNotaryActions = () => {
   )
 }
 
-export default JudicalNotaryActions
+export default JudicialCollateralFileActions 
