@@ -6,6 +6,7 @@ import { useLoloContext } from '@/contexts/LoloProvider'
 import Modal from '@/ui/Modal'
 import Button from '@/ui/Button'
 import Container from '@/ui/Container'
+import notification from '@/ui/notification'
 
 import { JudicialUseOfPropertyType } from '@/types/judicial/judicial-use-of-property.type'
 import { JudicialUseOfPropertyResolver } from './UseOfPropertyModal.yup'
@@ -16,7 +17,6 @@ import { CustomErrorResponse } from 'types/customErrorResponse'
 import { createJudicialUseOfProperty, editJudicialUseOfProperty, getJudicialUseOfPropertyById } from '@/services/judicial/judicial-use-of-property.service'
 
 import judicialUseOfPropertyCache, { KEY_JUDICIAL_USE_OF_PROPERTY_CACHE } from '../../JudicialUseOfPropertyTable/utils/judicial-use-of-property.cache'
-import notification from '@/ui/notification'
 
 type Props = {  
   id?: number
@@ -61,17 +61,23 @@ const UseOfPropertyModal = ( { isOpen, onClose, id }: Props ) => {
   } = judicialUseOfPropertyCache(queryClient)
   
   const { refetch: refetchJudicialUseOfProperty } = useQuery<AxiosResponse<JudicialUseOfPropertyType>>(
-    [`${KEY_JUDICIAL_USE_OF_PROPERTY_CACHE}-GET-BY-ID`, chb],
+    [`${KEY_JUDICIAL_USE_OF_PROPERTY_CACHE}-GET-BY-ID`, id],
     async () => {
       return await getJudicialUseOfPropertyById(id ?? 0)
     },
     {
+      enabled: false,
       onSuccess: (data) => {
         setValue('id', data.data.id)
         setValue('name', data.data.name)
         setValue('customerHasBankId', data.data.customerHasBankId)
       },
-      enabled: false,
+      onError: (error:any) => {
+        notification({
+          type: 'error',
+          message: error.response?.data.message,
+        })
+      },
     }
   )
 

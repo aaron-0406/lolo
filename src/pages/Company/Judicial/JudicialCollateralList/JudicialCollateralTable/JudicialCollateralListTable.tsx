@@ -30,9 +30,6 @@ const JudicialCollateralListTable = ({ id }: JudicialCollateralListaTableProps) 
     client: {
       customer: { urlIdentifier },
     }, 
-    bank: {
-      selectedBank: { idCHB: chb },
-    },
   } = useLoloContext(); 
   const [ collateralId, setCollateralId ] = useState<number>(0)
   const { 
@@ -49,13 +46,12 @@ const JudicialCollateralListTable = ({ id }: JudicialCollateralListaTableProps) 
     navigate(`${paths.judicial.detailCollateral(urlIdentifier, code, id)}`)
   }
 
-  const { data, refetch } = useQuery<AxiosResponse<any, Error>>(
-    [KEY_JUDICIAL_COLLATERAL_CACHE, parseInt(chb?.length ? chb : '0')],
+  const { data } = useQuery<AxiosResponse<any, Error>>(
+    [ KEY_JUDICIAL_COLLATERAL_CACHE, id ],
     async () => {
       return await getJudicialCollateralByCaseFileId(id)
     },
     {
-      enabled: false, 
       onError: (error: any) => {
         notification({
           type: 'info',
@@ -64,12 +60,7 @@ const JudicialCollateralListTable = ({ id }: JudicialCollateralListaTableProps) 
       },
     }
   )
-
-  useEffect(() => {
-    if (id) refetch()
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id])
-
+  
   const collaterals = data?.data ?? []
   
   return (

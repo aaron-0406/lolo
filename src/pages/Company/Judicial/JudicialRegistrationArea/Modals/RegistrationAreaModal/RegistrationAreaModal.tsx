@@ -61,7 +61,7 @@ const RegistrationAreaModal = ( { isOpen, onClose, id }: Props ) => {
   } = judicialRegistrationAreaCache(queryClient)
   
   const { refetch: refetchJudicialRegistrationArea } = useQuery<AxiosResponse<JudicialRegistrationAreaType>>(
-    [`${KEY_JUDICIAL_REGISTRATION_AREA_CACHE}-GET-BY-ID`, chb],
+    [`${KEY_JUDICIAL_REGISTRATION_AREA_CACHE}-GET-BY-ID`, id],
     async () => {
       return await getJudicialRegistrationAreaById(id ?? 0)
     },
@@ -72,6 +72,12 @@ const RegistrationAreaModal = ( { isOpen, onClose, id }: Props ) => {
         setValue('customerHasBankId', data.data.customerHasBankId)
       },
       enabled: false,
+      onError: (error:any) => {
+        notification({
+          type: 'error',
+          message: error.response?.data.message,
+        })
+      },
     }
   )
 

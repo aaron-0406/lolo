@@ -8,10 +8,6 @@ export const getJudicialCollateralById = async (id: string) => {
   return await axiosClient.get(`${url}/${id}`)
 }
 
-export const getJudicialCollateralByCHB = async (chb: number) => {
-  return await axiosClient.get(`${url}/chb/${chb}`)
-}
-
 export const getJudicialCollateralByCaseFileId = async (caseFileId: number) => {
   return await axiosClient.get(`${url}/all/${caseFileId}`)
 }

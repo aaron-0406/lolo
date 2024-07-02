@@ -10,7 +10,7 @@ import Button from "@/ui/Button"
 import notification from "@/ui/notification"
 import BodyCell from "@/ui/Table/BodyCell"
 
-import { AxiosResponse } from "axios"
+import { AxiosError, AxiosResponse } from "axios"
 import { useQuery } from "react-query"
 import { JudicialNotaryColumns } from "./utils/columns"
 import moment from "moment"
@@ -52,7 +52,7 @@ const JudicialNotaryTable = () => {
       onError: (error: any) => {
         notification({
           type: 'error',
-          message: error.response?.data.message ?? 'Error al obtener las notarias.',
+          message: error.response.data.message,
         })
       },
     }

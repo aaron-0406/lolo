@@ -61,7 +61,6 @@ const ChargesEncumbrancesModal = ( { isOpen, onClose, id }: Props ) => {
     setValue,
     getValues,
     reset,
-    formState: { isValid },
   } = formMethods
 
   const { 
@@ -74,7 +73,7 @@ const ChargesEncumbrancesModal = ( { isOpen, onClose, id }: Props ) => {
   } = chargesEncumbrancesCache(queryClient)
   
   const { refetch: refetchJudicialChargesEncumbrances } = useQuery<AxiosResponse<JudicialCollateralChargesEncumbrancesType>>(
-    [`${KEY_JUDICIAL_CHARGES_ENCUMBRANCES_CACHE}-GET-BY-ID`, chb],
+    [`${KEY_JUDICIAL_CHARGES_ENCUMBRANCES_CACHE}-GET-BY-ID`, id],
     async () => {
       return await getJudicialCollateralChargesEncumbrancesById(id ?? 0)
     },
@@ -91,6 +90,12 @@ const ChargesEncumbrancesModal = ( { isOpen, onClose, id }: Props ) => {
         setValue('registrationSeat', data.data.registrationSeat)
       },
       enabled: false,
+      onError: (error:any) => {
+        notification({
+          type: 'error',
+          message: error.response?.data.message,
+        })
+      },
     }
   )
 

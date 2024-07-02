@@ -61,7 +61,7 @@ const RegisterOffice = ( { isOpen, onClose, id }: Props ) => {
   } = registerOfficeCache(queryClient)
   
   const { refetch: refetchJudicialRegisterOffice } = useQuery<AxiosResponse<JudicialRegisterOfficeType>>(
-    [`${KEY_JUDICIAL_REGISTER_OFFICE_CACHE}-GET-BY-ID`, chb],
+    [`${KEY_JUDICIAL_REGISTER_OFFICE_CACHE}-GET-BY-ID`, id],
     async () => {
       return await getJudicialRegisterOfficeById(id ?? 0)
     },
@@ -71,7 +71,12 @@ const RegisterOffice = ( { isOpen, onClose, id }: Props ) => {
         setValue('name', data.data.name)
         setValue('customerHasBankId', data.data.customerHasBankId)
       },
-      enabled: false,
+      onError: (error:any) => {
+        notification({
+          type: 'error',
+          message: error.response?.data.message,
+        })
+      },
     }
   )
 
