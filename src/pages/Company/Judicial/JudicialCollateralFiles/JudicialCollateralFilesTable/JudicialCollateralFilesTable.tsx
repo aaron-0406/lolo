@@ -1,5 +1,5 @@
 import { useLoloContext } from "@/contexts/LoloProvider"
-import { useState } from "react"
+import { ReactNode, useState } from "react"
 import useModal from "@/hooks/useModal"
 
 import Container from "@/ui/Container"
@@ -23,6 +23,11 @@ import { getJudicialCollateralFiles } from "@/services/judicial/judicial-collate
 import DeleteCollateralFilesModal from "../Modals/DeleteCollateralFilesModal"
 import { useParams } from "react-router-dom"
 import JudicialFileViewerModal from "./Modals/JudicialFileViewerModal"
+import Img from "@/ui/Img"
+
+import pdfIcon from '@/assets/icons/pdf.png'
+import wordIcon from '@/assets/icons/word-doc.png'
+import fileIcon from '@/assets/icons/file.png'
 
 const JudicialCollateralFilesTable = () => {
   const {
@@ -59,6 +64,13 @@ const JudicialCollateralFilesTable = () => {
       },
     }
   )
+
+  const getIconFile = (name: string): ReactNode => {
+    if (name.endsWith('.docx') || name.endsWith('.doc')) return <Img width="30px" placeholderImage="" src={wordIcon} />
+    if (name.endsWith('.pdf')) return <Img width="30px" placeholderImage="" src={pdfIcon} />
+    return <Img width="30px" placeholderImage="type-file" src={fileIcon} />
+  }
+
 
   const onOpenModalCollateralFiles = ( file: JudicialCollateralFilesType ) => {
     setJudicialCollateralFile(file)
@@ -106,34 +118,36 @@ const JudicialCollateralFilesTable = () => {
       >
         {Array.isArray(judicialCollateralFiles) ? judicialCollateralFiles.map((CollateralFiles, index) => {
           return (
-            <tr key={CollateralFiles.id}>
+            <tr key={CollateralFiles.id} className="styled-data-table-row">
               <BodyCell textAlign="center">{`${index + 1}`}</BodyCell>
+              <BodyCell textAlign="center">{getIconFile(CollateralFiles.originalName)}</BodyCell>
               <BodyCell textAlign="center">{CollateralFiles.originalName}</BodyCell>
-              <BodyCell textAlign="center">{`${moment(CollateralFiles.createdAt).format('DD-MM-YYYY') || ''}`}</BodyCell>
+              <BodyCell textAlign="center">{`${
+                moment(CollateralFiles.createdAt).format('DD-MM-YYYY') || ''
+              }`}</BodyCell>
               <BodyCell textAlign="center">
                 <Container display="flex" gap="10px" height="100%" justifyContent="center" alignItems="center">
-
-                <Button
-                  onClick={() => {
-                    onOpenModalCollateralFiles(CollateralFiles)
-                  }}
-                  messageTooltip="Editar notaria"
-                  shape="round"
-                  size="small"
-                  leadingIcon="ri-eye-line"
-                  permission="P13-01-06-01-03-03"
-                />
-                <Button
-                  onClick={() => {
-                    onOpenDeleteModalCollateralFiles(CollateralFiles.id)
-                  }}
-                  messageTooltip="Eliminar notaria"
-                  shape="round"
-                  size="small"
-                  leadingIcon="ri-delete-bin-line"
-                  permission="P13-01-06-01-03-04"
-                  display="danger"
-                />
+                  <Button
+                    onClick={() => {
+                      onOpenModalCollateralFiles(CollateralFiles)
+                    }}
+                    messageTooltip="Editar notaria"
+                    shape="round"
+                    size="small"
+                    leadingIcon="ri-eye-line"
+                    permission="P13-01-06-01-03-03"
+                  />
+                  <Button
+                    onClick={() => {
+                      onOpenDeleteModalCollateralFiles(CollateralFiles.id)
+                    }}
+                    messageTooltip="Eliminar notaria"
+                    shape="round"
+                    size="small"
+                    leadingIcon="ri-delete-bin-line"
+                    permission="P13-01-06-01-03-04"
+                    display="danger"
+                  />
                 </Container>
               </BodyCell>
             </tr>

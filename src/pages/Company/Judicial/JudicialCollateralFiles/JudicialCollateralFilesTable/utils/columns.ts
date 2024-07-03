@@ -4,7 +4,13 @@ export const JudicialCollateralFilesColumns: ColumProps[] = [
   {
     id: 'judicialNotary.datatable.header.id',
     title: 'ID',
-    width: '20%',
+    width: '5%',
+    justifyContent: 'center',
+  },
+  {
+    id: 'judicialNotary.datatable.header.type',
+    title: 'TIPO',
+    width: '5%',
     justifyContent: 'center',
   },
   {
