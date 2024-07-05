@@ -61,7 +61,7 @@ const JudicialFileCasesTable = () => {
   
   const sortingOptions = getSortingOptions(currentPath)?.opts ?? { sortBy: '', order: 'ASC' }
   const selectedFilterOptions = getSelectedFilters(currentPath)?.filters ?? []
-  const opts = getSearchFilters(currentPath)?.opts ?? { filter: '', limit: 50, page: 1 }
+  const opts = getSearchFilters(currentPath)?.opts ?? { filter: '', limit: 20, page: 1 }
 
   const onClickRow = (code: string) => {
     navigate(`${paths.judicial.detallesExpediente(urlIdentifier, code)}`)
@@ -191,7 +191,7 @@ const JudicialFileCasesTable = () => {
 
   useEffect(() => {
     refetch()
-  }, [opts.filter.length, opts.page])
+  }, [opts.filter.length, opts.page, opts.limit])
 
   useEffect(() => {
     refetch()

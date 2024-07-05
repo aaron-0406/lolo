@@ -53,11 +53,10 @@ const Pagination: FC<PaginationProps> = (props) => {
             <Select
               value={String(opts.limit)}
               options={[
-                { key: '25', label: '25' },
+                { key: '5', label: '5' },
+                { key: '10', label: '10' },
+                { key: '20', label: '20' },
                 { key: '50', label: '50' },
-                { key: '100', label: '100' },
-                { key: '150', label: '150' },
-                { key: '200', label: '200' },
               ]}
               onChange={handleChangeLimit}
             />

@@ -6,7 +6,7 @@ const API = axiosClient.getUri()
 const url = `${API}/cobranza/client`
 
 export const getAllClientsByCHB = async (
-  chb: string,
+  chb: number,
   page: number,
   limit: number,
   filter?: string,

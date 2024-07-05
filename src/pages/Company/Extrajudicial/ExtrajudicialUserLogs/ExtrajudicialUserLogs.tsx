@@ -5,7 +5,7 @@ import UserLogsTable from './UserLogsTable'
 import { Opts } from '@/ui/Pagination/interfaces'
 
 const ExtrajudicialUserLogs = () => {
-  const [opts, setOpts] = useState<Opts>({ filter: '', limit: 50, page: 1 })
+  const [opts, setOpts] = useState<Opts>({ filter: '', limit: 20, page: 1 })
 
   return (
     <Container width="100%" height="calc(100% - 50px)" display="flex" flexDirection="column">

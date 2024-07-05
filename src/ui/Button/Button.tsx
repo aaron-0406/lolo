@@ -1,4 +1,4 @@
-import { useMemo, type ButtonHTMLAttributes } from 'react'
+import { memo, useMemo, type ButtonHTMLAttributes } from 'react'
 import { Tooltip } from 'react-tooltip'
 import type { IRegular } from 'styled-components'
 import styled, { css, useTheme } from 'styled-components'
@@ -106,7 +106,7 @@ const Button: React.FC<ButtonProps> = (props) => {
   )
 }
 
-export default Button
+export default memo(Button);
 
 const getButtonSize = (size?: ButtonSizeType, icon?: boolean) => {
   switch (size) {

@@ -132,6 +132,7 @@ const UserLogsTable: FC<UserLogsTableProps> = ({ opts, setOpts }) => {
 
   const findAddressByNameMemoized = useMemo(() => {
     return (ip: string) => findAddressByIP(ip)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ipAddresses.length, findAddressByIP])
 
   const onChangeFilterOptions = (filterOption: FilterOptionsProps) => {
@@ -156,11 +157,13 @@ const UserLogsTable: FC<UserLogsTableProps> = ({ opts, setOpts }) => {
 
   useEffect(() => {
     refetch()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getSelectedFilters(currentPath)?.filters])
 
   useEffect(() => {
     refetch()
-  }, [opts.page])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [opts.page, opts.limit])
 
   return (
     <Container width="100%" height="calc(100% - 112px)" padding="20px">
