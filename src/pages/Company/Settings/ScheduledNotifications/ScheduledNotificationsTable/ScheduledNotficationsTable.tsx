@@ -117,7 +117,7 @@ const ScheduleNotificationsTable = () => {
   }
 
   const scheduleNotificitions = Notifications?.data ?? []
-
+  
   return (
     <Container width="100%" height="calc(100% - 80px)" padding="20px">
       <Table

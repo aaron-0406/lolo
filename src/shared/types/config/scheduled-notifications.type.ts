@@ -7,6 +7,7 @@ export type ScheduledNotificationsType = {
   customerHasBankId: number;
   logicKey:string;
   state:boolean;
+  daysToNotify: string[];
   createdAt: Date;
   updatedAt: Date;
   deletedAt: Date;
