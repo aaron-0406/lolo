@@ -15,6 +15,7 @@ const JudicialChargesEncumbrancesSchema: yup.SchemaOf<
   range: yup.number().required(),
   judicialCollateralIdJudicialCollateral: yup.number().required(),
   customerHasBankId: yup.number().required(),
+  appraisalDate: yup.string().required(),
 })
 
 export const JudicialChargesEncumbrancesResolver = yupResolver(JudicialChargesEncumbrancesSchema)
