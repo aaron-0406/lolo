@@ -65,7 +65,7 @@ const JudicialCollateralChargesEncumbrancesTypeLoadModal  = ( { isOpen, onClose,
   } = judicialCollateralChargesEncumbrancesTypeLoadCache(queryClient)
   
   const { refetch: refetchJudicialChargesEncumbrancesTypeLoad } = useQuery<AxiosResponse<JudicialCollateralChargesEncumbrancesTypeLoadType>>(
-    [`${KEY_JUDICIAL_COLLATERAL_CHARGES_ENCUMBRANCES_TYPE_LOAD_CACHE}-GET-BY-ID`, chb],
+    [`${KEY_JUDICIAL_COLLATERAL_CHARGES_ENCUMBRANCES_TYPE_LOAD_CACHE}-GET-BY-ID`, id],
     async () => {
       return await getJudicialCollateralChargesEncumbrancesTypeLoadById(id ?? 0)
     },
