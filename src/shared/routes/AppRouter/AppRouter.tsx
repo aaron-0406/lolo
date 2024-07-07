@@ -71,6 +71,18 @@ import JudicialFileCaseRelatedProcessList from 'pages/Company/Judicial/JudicialF
 
 import ScheduledNotifications from 'pages/Company/Settings/ScheduledNotifications/SheduledNotifications'
 import CompareExcel from 'pages/Company/Settings/CompareExcel'
+import Department from 'pages/Company/Settings/Department'
+import District from 'pages/Company/Settings/District'
+import Province from 'pages/Company/Settings/Province'
+import JudicialUseOfProperty from 'pages/Company/Judicial/JudicialUseOfProperty'
+import JudicialRegistrationArea from 'pages/Company/Judicial/JudicialRegistrationArea'
+import JudicialRegisterOffice from 'pages/Company/Judicial/JudicialRegisterOffice'
+import JudicialNotary from 'pages/Company/Judicial/JudcialNotary/JudicialNotary'
+import JudicialCollateral from 'pages/Company/Judicial/JudicialCollateral/JudicialCollateral'
+import JudicialCollateralList from 'pages/Company/Judicial/JudicialCollateralList'
+import JudicialCollateralChargesEncumbrancesTypeLoad from 'pages/Company/Judicial/JudicialCollateralChargesEncumbrancesTypeLoad'
+import JudicialCollateralChargesEncumbrances from 'pages/Company/Judicial/JudicialCollateralChargesEncumbrances'
+
 const AppRouter = () => {
   return (
     <AppSwitch>
@@ -140,10 +152,21 @@ const AppRouter = () => {
         <Route path={paths.judicial.sedes()} element={<JudicialSede />} />
         <Route path={paths.judicial.relatedProcess()} element={<JudicialFileCaseRelatedProcessList />} />
         <Route path={paths.judicial.detallesExpedienteRelatedProcess()} element={<JudicialFileCaseRelatedProcess />} />
+        <Route path={paths.judicial.useOfProperty()} element={<JudicialUseOfProperty />} />
+        <Route path={paths.judicial.registrationArea()} element={<JudicialRegistrationArea />} />
+        <Route path={paths.judicial.registerOffice()} element={<JudicialRegisterOffice />} />
+        <Route path={paths.judicial.notary()} element={<JudicialNotary />} />
+        <Route path={paths.judicial.collateral()} element={<JudicialCollateralList />} /> 
+        <Route path={paths.judicial.detailCollateral()} element={<JudicialCollateral />} /> 
+        <Route path={paths.judicial.typeChargesEncumbrances()} element={<JudicialCollateralChargesEncumbrancesTypeLoad />} /> 
+        <Route path={paths.judicial.chargesEncumbrances()} element={<JudicialCollateralChargesEncumbrances />} />  
 
         {/* SETTINGS */}
         <Route path={paths.settings.scheduldedNotifications()} element={<ScheduledNotifications />} />
         <Route path={paths.settings.compareExcel()} element={<CompareExcel />} />
+        <Route path={paths.settings.department()} element={<Department />} />
+        <Route path={paths.settings.district()} element={<District />} />
+        <Route path={paths.settings.province()} element={<Province />} />
       </Route>
 
       <Route path="*" element={<NotFound />} />
