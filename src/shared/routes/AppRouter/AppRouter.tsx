@@ -82,6 +82,7 @@ import JudicialCollateral from 'pages/Company/Judicial/JudicialCollateral/Judici
 import JudicialCollateralList from 'pages/Company/Judicial/JudicialCollateralList'
 import JudicialCollateralChargesEncumbrancesTypeLoad from 'pages/Company/Judicial/JudicialCollateralChargesEncumbrancesTypeLoad'
 import JudicialCollateralChargesEncumbrances from 'pages/Company/Judicial/JudicialCollateralChargesEncumbrances'
+import JudicialCollateralFiles from 'pages/Company/Judicial/JudicialCollateralFiles'
 
 const AppRouter = () => {
   return (
@@ -160,7 +161,7 @@ const AppRouter = () => {
         <Route path={paths.judicial.detailCollateral()} element={<JudicialCollateral />} /> 
         <Route path={paths.judicial.typeChargesEncumbrances()} element={<JudicialCollateralChargesEncumbrancesTypeLoad />} /> 
         <Route path={paths.judicial.chargesEncumbrances()} element={<JudicialCollateralChargesEncumbrances />} />  
-
+        <Route path={paths.judicial.collateralFiles()} element={<JudicialCollateralFiles />} />
         {/* SETTINGS */}
         <Route path={paths.settings.scheduldedNotifications()} element={<ScheduledNotifications />} />
         <Route path={paths.settings.compareExcel()} element={<CompareExcel />} />

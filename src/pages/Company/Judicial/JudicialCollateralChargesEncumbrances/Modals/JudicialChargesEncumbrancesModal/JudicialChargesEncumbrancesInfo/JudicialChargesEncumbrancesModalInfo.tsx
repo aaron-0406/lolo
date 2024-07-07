@@ -71,7 +71,15 @@ const JudicialChargesEncumbrancesTypeLoadModalInfo = () => {
       justifyContent="center"
       padding="10px"
     >
-      <Container display="flex" flexDirection="column" gap="20px" width="100%" justifyContent="start" padding="0px 20px" alignItems="start">
+      <Container
+        display="flex"
+        flexDirection="column"
+        gap="20px"
+        width="100%"
+        justifyContent="start"
+        padding="0px 20px"
+        alignItems="start"
+      >
         <Controller
           name="registrationSeat"
           control={control}
@@ -121,7 +129,7 @@ const JudicialChargesEncumbrancesTypeLoadModalInfo = () => {
           control={control}
           render={({ field }) => (
             <TextField
-              label="Monto Demandado S/:"
+              label="Monto de afectación S/:"
               width="100%"
               helperText={errors.amountOfImpactSoles?.message}
               value={field.value}
@@ -140,7 +148,7 @@ const JudicialChargesEncumbrancesTypeLoadModalInfo = () => {
           control={control}
           render={({ field }) => (
             <TextField
-              label="Monto Demandado US$:"
+              label="Monto de afectación US$:"
               width="100%"
               helperText={errors.amountOfImpactDollars?.message}
               value={field.value}
@@ -173,7 +181,31 @@ const JudicialChargesEncumbrancesTypeLoadModalInfo = () => {
           )}
         />
       </Container>
-      <Container display="flex" flexDirection="column" gap="20px" width="100%" justifyContent="start" padding="0px 20px">
+      <Container
+        display="flex"
+        flexDirection="column"
+        gap="20px"
+        width="100%"
+        justifyContent="start"
+        padding="0px 20px"
+      >
+        <Controller
+          name="appraisalDate"
+          control={control}
+          render={({ field }) => (
+            <DatePicker
+              labelWidth="10rem"
+              label="Fecha de Tasación:"
+              selectedDate={moment(field.value).format('DD-MM-YYYY')}
+              placeholder="Ingrese la fecha:"
+              dateFormat="DD-MM-YYYY"
+              value={field.value ?? moment(new Date()).format('DD-MM-YYYY')}
+              getDate={(e) => {
+                field.onChange(e)
+              }}
+            />
+          )}
+        />
         <Controller
           name="descriptionOfLoad"
           control={control}

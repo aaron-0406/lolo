@@ -54,6 +54,7 @@ const ChargesEncumbrancesModal = ( { isOpen, onClose, id }: Props ) => {
       registrationDate: moment(new Date()).format('DD-MM-YYYY'),
       range: 0,
       registrationSeat: "",
+      appraisalDate:"", 
     },
   })
 
@@ -88,6 +89,7 @@ const ChargesEncumbrancesModal = ( { isOpen, onClose, id }: Props ) => {
         setValue('registrationDate', moment(data.data.registrationDate.split('T')[0]).format('DD-MM-YYYY'))
         setValue('range', data.data.range)
         setValue('registrationSeat', data.data.registrationSeat)
+        setValue("appraisalDate", moment(data.data.appraisalDate.split('T')[0]).format('DD-MM-YYYY'))
       },
       enabled: false,
       onError: (error:any) => {
@@ -104,11 +106,12 @@ const ChargesEncumbrancesModal = ( { isOpen, onClose, id }: Props ) => {
     AxiosError<CustomErrorResponse>
   >(
     async () => {
-      const {id,registrationDate ,...restClient} = getValues()
+      const { id, registrationDate, appraisalDate, ...restClient } = getValues()
       return createJudicialCollateralChargesEncumbrances({
         ...restClient,
         judicialCollateralIdJudicialCollateral: Number(collateralCode),
         registrationDate: moment(registrationDate, 'DD-MM-YYYY').toDate().toISOString(),
+        appraisalDate: moment(appraisalDate, 'DD-MM-YYYY').toDate().toISOString(),
       })
     },
     {
@@ -140,10 +143,11 @@ const ChargesEncumbrancesModal = ( { isOpen, onClose, id }: Props ) => {
   >(
     async () => {
       const judicialChargesEncumbrances = getValues()
-      const { id, ...restClient } = judicialChargesEncumbrances
+      const { id, registrationDate, appraisalDate, ...restClient } = judicialChargesEncumbrances
       return editJudicialCollateralChargesEncumbrances(id, {
         ...restClient,
-        registrationDate: moment(restClient.registrationDate, 'DD-MM-YYYY').toDate().toISOString(),
+        registrationDate: moment(registrationDate, 'DD-MM-YYYY').toDate().toISOString(),
+        appraisalDate: moment(appraisalDate, 'DD-MM-YYYY').toDate().toISOString(),
       })
     },
     {

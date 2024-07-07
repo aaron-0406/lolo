@@ -7,6 +7,7 @@ export type JudicialCollateralChargesEncumbrancesType = {
   descriptionOfLoad: string;
   registrationSeat: string;
   registrationDate: string;
+  appraisalDate: string;
   range: number;
   createdAt: Date;
   updatedAt: Date;

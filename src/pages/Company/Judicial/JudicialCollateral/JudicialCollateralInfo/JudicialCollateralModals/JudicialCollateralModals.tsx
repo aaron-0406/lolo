@@ -28,6 +28,9 @@ const JudicialCollateralModals = () => {
     navigate(`${paths.judicial.chargesEncumbrances(urlIdentifier, codeParams, collateralCode)}`)
   }
 
+  const onClickFiles = () => {
+    navigate(`${paths.judicial.collateralFiles(urlIdentifier, codeParams, collateralCode)}`)
+  }
   return (
     <Container
       width="100%"
@@ -47,14 +50,14 @@ const JudicialCollateralModals = () => {
         onClick={onClickChargesEncumbrances}
         trailingIcon="ri-folder-shield-2-fill"
       />
-      {/* <Button
+      <Button
         label="Archivos"
         permission="P13-01-06-01-03"
         size={greaterThanTabletS ? 'default' : 'small'}
         disabled={!clientId}
-        onClick={onClickChargesEncumbrances}
+        onClick={onClickFiles}
         trailingIcon="ri-file-4-line"
-      /> */}
+      />
     </Container>
   )
 }
