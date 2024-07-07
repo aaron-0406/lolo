@@ -1,7 +1,6 @@
-import { yupResolver } from "@hookform/resolvers/yup";
-import yup from "../../../../../../../shared/yupLocale";
-import { JudicialCaseFileHasCollateralType } from "@/types/judicial/judicial-case-file-has-collateral.type";
-import { JudicialCaseFileType } from "@/types/judicial/judicial-case-file.type";
+import { yupResolver } from '@hookform/resolvers/yup'
+import yup from '../../../../../../../shared/yupLocale'
+import { JudicialCaseFileType } from '@/types/judicial/judicial-case-file.type'
 
 export type AssignCollateralModalType = {
   judicialCaseFileWithCollateral: Array<
@@ -48,8 +47,8 @@ const AssignCollateralModalSchema: yup.SchemaOf<AssignCollateralModalType> = yup
         id: yup.number().required(),
         name: yup.string().required(),
       }),
-    }),
+    })
   ),
-});
+})
 
-export const ModalScheduleNotificationsResolver = yupResolver(AssignCollateralModalSchema);
+export const ModalScheduleNotificationsResolver = yupResolver(AssignCollateralModalSchema)

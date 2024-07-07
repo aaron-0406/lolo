@@ -1,28 +1,27 @@
-import useModal from "@/hooks/useModal"
+import useModal from '@/hooks/useModal'
 
-import NotaryModal from "../Modals/CollateralFilesModal"
-import Container from "@/ui/Container"
-import Text from "@/ui/Text"
-import Button from "@/ui/Button"
+import NotaryModal from '../Modals/CollateralFilesModal'
+import Container from '@/ui/Container'
+import Button from '@/ui/Button'
 
-import { useLoloContext } from "@/contexts/LoloProvider"
-import { LinkType } from "@/ui/Breadcrumbs/Breadcrumbs.type"
-import paths from "shared/routes/paths"
-import { useParams } from "react-router-dom"
-import Breadcrumbs from "@/ui/Breadcrumbs"
+import { useLoloContext } from '@/contexts/LoloProvider'
+import { LinkType } from '@/ui/Breadcrumbs/Breadcrumbs.type'
+import paths from 'shared/routes/paths'
+import { useParams } from 'react-router-dom'
+import Breadcrumbs from '@/ui/Breadcrumbs'
 
 const JudicialCollateralFileActions = () => {
   const { hideModal, showModal, visible } = useModal()
-  const { 
+  const {
     bank: {
       selectedBank: { idCHB: chb },
     },
     client: { customer },
-   } = useLoloContext()
-   const code = useParams().code ?? ''
-   const collateralCode = useParams().collateralCode ?? ''
+  } = useLoloContext()
+  const code = useParams().code ?? ''
+  const collateralCode = useParams().collateralCode ?? ''
 
-   const routers: LinkType[] = [
+  const routers: LinkType[] = [
     {
       link: paths.judicial.expedientes(customer.urlIdentifier),
       name: 'Expedientes',
@@ -42,8 +41,9 @@ const JudicialCollateralFileActions = () => {
     {
       link: '#',
       name: 'Archivos',
-    }
+    },
   ]
+
   return (
     <Container
       display="flex"
@@ -68,4 +68,4 @@ const JudicialCollateralFileActions = () => {
   )
 }
 
-export default JudicialCollateralFileActions 
+export default JudicialCollateralFileActions

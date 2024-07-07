@@ -2,24 +2,24 @@ import { judicialCollateralColumns } from './utils/columns'
 
 import Table from '@/ui/Table'
 import { useQuery } from 'react-query'
-import { useLoloContext } from '../../../../../shared/contexts/LoloProvider';
-import { AxiosResponse } from 'axios';
-import notification from '@/ui/notification';
-import { getJudicialCollateralByCaseFileId } from '@/services/judicial/judicial-collateral.service';
-import Container from '@/ui/Container';
-import EmptyStateCell from '@/ui/Table/EmptyStateCell';
-import EmptyState from '@/ui/EmptyState';
-import BodyCell from '@/ui/Table/BodyCell';
-import { JudicialCollateralType } from '@/types/judicial/judicial-collateral.type';
-import moment from 'moment';
-import Button from '@/ui/Button';
-import { useNavigate, useParams } from 'react-router-dom';
-import paths from 'shared/routes/paths';
-import { KEY_JUDICIAL_COLLATERAL_CACHE } from './utils/judicial-collateral.cache';
-import useModal from '@/hooks/useModal';
-import DeleteCollateralModal from './DeleteCollareralModal';
-import { useEffect, useState } from 'react';
-import Text from '@/ui/Text';
+import { useLoloContext } from '../../../../../shared/contexts/LoloProvider'
+import { AxiosResponse } from 'axios'
+import notification from '@/ui/notification'
+import { getJudicialCollateralByCaseFileId } from '@/services/judicial/judicial-collateral.service'
+import Container from '@/ui/Container'
+import EmptyStateCell from '@/ui/Table/EmptyStateCell'
+import EmptyState from '@/ui/EmptyState'
+import BodyCell from '@/ui/Table/BodyCell'
+import { JudicialCollateralType } from '@/types/judicial/judicial-collateral.type'
+import moment from 'moment'
+import Button from '@/ui/Button'
+import { useNavigate, useParams } from 'react-router-dom'
+import paths from 'shared/routes/paths'
+import { KEY_JUDICIAL_COLLATERAL_CACHE } from './utils/judicial-collateral.cache'
+import useModal from '@/hooks/useModal'
+import DeleteCollateralModal from './DeleteCollareralModal'
+import { useState } from 'react'
+import Text from '@/ui/Text'
 
 type JudicialCollateralListaTableProps = {
   id: number
@@ -29,10 +29,10 @@ const JudicialCollateralListTable = ({ id }: JudicialCollateralListaTableProps) 
   const {
     client: {
       customer: { urlIdentifier },
-    }, 
-  } = useLoloContext(); 
-  const [ collateralId, setCollateralId ] = useState<number>(0)
-  const { 
+    },
+  } = useLoloContext()
+  const [collateralId, setCollateralId] = useState<number>(0)
+  const {
     hideModal: hideDeleteCollateralModal,
     showModal: showDeleteCollateralModal,
     visible: visibleDeleteCollateralModal,
@@ -40,14 +40,14 @@ const JudicialCollateralListTable = ({ id }: JudicialCollateralListaTableProps) 
 
   const code = useParams().code ?? ''
 
-  const navigate = useNavigate(); 
+  const navigate = useNavigate()
 
   const onClickRow = (id: string) => {
     navigate(`${paths.judicial.detailCollateral(urlIdentifier, code, id)}`)
   }
 
   const { data } = useQuery<AxiosResponse<any, Error>>(
-    [ KEY_JUDICIAL_COLLATERAL_CACHE, id ],
+    [KEY_JUDICIAL_COLLATERAL_CACHE, id],
     async () => {
       return await getJudicialCollateralByCaseFileId(id)
     },
@@ -60,9 +60,9 @@ const JudicialCollateralListTable = ({ id }: JudicialCollateralListaTableProps) 
       },
     }
   )
-  
+
   const collaterals = data?.data ?? []
-  
+
   return (
     <Container width="100%" height="100%" padding="0px 20px 0px 20px">
       <Table
