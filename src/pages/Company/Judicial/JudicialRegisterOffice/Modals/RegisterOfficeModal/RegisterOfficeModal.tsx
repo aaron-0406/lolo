@@ -12,20 +12,26 @@ import { JudicialRegisterOfficeResolver } from './RegisterOfficeModal.yup'
 
 import { AxiosError, AxiosResponse } from 'axios'
 import { CustomErrorResponse } from 'types/customErrorResponse'
-import { createJudicialRegisterOffice, editJudicialRegisterOffice, getJudicialRegisterOfficeById } from '@/services/judicial/judicial-register-office.service'
+import {
+  createJudicialRegisterOffice,
+  editJudicialRegisterOffice,
+  getJudicialRegisterOfficeById,
+} from '@/services/judicial/judicial-register-office.service'
 
-import registerOfficeCache, { KEY_JUDICIAL_REGISTER_OFFICE_CACHE } from '../../JudicialRegisterOfficeTable/utils/judicial-register-office.cache'
+import registerOfficeCache, {
+  KEY_JUDICIAL_REGISTER_OFFICE_CACHE,
+} from '../../JudicialRegisterOfficeTable/utils/judicial-register-office.cache'
 import notification from '@/ui/notification'
 import RegisterOfficeModalInfo from './RegisterOfficeModalInfo'
 
-type Props = {  
+type Props = {
   id?: number
   isOpen: boolean
   onClose: () => void
 }
 
-const RegisterOffice = ( { isOpen, onClose, id }: Props ) => {
-  const queryClient = useQueryClient() 
+const RegisterOffice = ({ isOpen, onClose, id }: Props) => {
+  const queryClient = useQueryClient()
   const {
     bank: {
       selectedBank: { idCHB: chb },
@@ -39,7 +45,7 @@ const RegisterOffice = ( { isOpen, onClose, id }: Props ) => {
     mode: 'all',
     defaultValues: {
       id: 0,
-      name: "",
+      name: '',
       customerHasBankId: 0,
     },
   })
@@ -51,15 +57,13 @@ const RegisterOffice = ( { isOpen, onClose, id }: Props ) => {
     formState: { isValid },
   } = formMethods
 
-  const { 
-    actions: {
-      editRegisterOfficeCache, createRegisterOfficeCache
-    }, 
+  const {
+    actions: { editRegisterOfficeCache, createRegisterOfficeCache },
     onMutateCache,
     onSettledCache,
     onErrorCache,
   } = registerOfficeCache(queryClient)
-  
+
   const { refetch: refetchJudicialRegisterOffice } = useQuery<AxiosResponse<JudicialRegisterOfficeType>>(
     [`${KEY_JUDICIAL_REGISTER_OFFICE_CACHE}-GET-BY-ID`, id],
     async () => {
@@ -71,7 +75,7 @@ const RegisterOffice = ( { isOpen, onClose, id }: Props ) => {
         setValue('name', data.data.name)
         setValue('customerHasBankId', data.data.customerHasBankId)
       },
-      onError: (error:any) => {
+      onError: (error: any) => {
         notification({
           type: 'error',
           message: error.response?.data.message,
@@ -85,8 +89,8 @@ const RegisterOffice = ( { isOpen, onClose, id }: Props ) => {
     AxiosError<CustomErrorResponse>
   >(
     async () => {
-      const {id, ...restClient} = getValues()
-      return createJudicialRegisterOffice({...restClient, customerHasBankId: chbNumber})
+      const { id, ...restClient } = getValues()
+      return createJudicialRegisterOffice({ ...restClient, customerHasBankId: chbNumber })
     },
     {
       onSuccess: (data) => {
@@ -97,9 +101,9 @@ const RegisterOffice = ( { isOpen, onClose, id }: Props ) => {
       onMutate: () => {
         return onMutateCache(chbNumber)
       },
-      onSettled:() => {
+      onSettled: () => {
         onSettledCache(chbNumber)
-      }, 
+      },
       onError: (error, _, context: any) => {
         onErrorCache(context, chbNumber)
         notification({
@@ -118,7 +122,7 @@ const RegisterOffice = ( { isOpen, onClose, id }: Props ) => {
     async () => {
       const judicialRegisterOffice = getValues()
       const { id, ...restClient } = judicialRegisterOffice
-      return editJudicialRegisterOffice(id, { ...restClient, customerHasBankId: chbNumber }) 
+      return editJudicialRegisterOffice(id, { ...restClient, customerHasBankId: chbNumber })
     },
     {
       onSuccess: (data) => {
@@ -129,9 +133,9 @@ const RegisterOffice = ( { isOpen, onClose, id }: Props ) => {
       onMutate: () => {
         return onMutateCache(chbNumber)
       },
-      onSettled:() => {
+      onSettled: () => {
         onSettledCache(chbNumber)
-      }, 
+      },
       onError: (error, _, context: any) => {
         onErrorCache(context, chbNumber)
         notification({
@@ -157,8 +161,10 @@ const RegisterOffice = ( { isOpen, onClose, id }: Props ) => {
   }
 
   useEffect(() => {
-    if (id) refetchJudicialRegisterOffice()
-      // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (!!id) {
+      refetchJudicialRegisterOffice()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id])
 
   return (
@@ -187,7 +193,7 @@ const RegisterOffice = ( { isOpen, onClose, id }: Props ) => {
         <RegisterOfficeModalInfo />
       </Modal>
     </FormProvider>
-  ) 
+  )
 }
 
 export default RegisterOffice
