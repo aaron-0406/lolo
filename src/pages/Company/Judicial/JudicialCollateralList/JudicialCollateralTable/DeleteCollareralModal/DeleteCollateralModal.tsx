@@ -8,24 +8,17 @@ import { useMutation, useQueryClient } from 'react-query'
 import { CustomErrorResponse } from 'types/customErrorResponse'
 import judicialCollateralCache from '../utils/judicial-collateral.cache'
 import { deleteJudicialCollateral } from '@/services/judicial/judicial-collateral.service'
-import { useLoloContext } from '@/contexts/LoloProvider'
 
 type DeleteCollateralModalProps = {
   visible: boolean
   onClose: () => void
   id?: number
+  caseFileId?: number
 }
 
-const DeleteCollateralModal: FC<DeleteCollateralModalProps> = ({
-  visible,
-  id = 0,
-  onClose,
-}) => {
+const DeleteCollateralModal: FC<DeleteCollateralModalProps> = ({ visible, id = 0, caseFileId = 0, onClose }) => {
   const queryClient = useQueryClient()
 
-  const {
-    bank: { selectedBank: { idCHB: chb } },
-  } = useLoloContext()
   const {
     actions: { deleteCollateralCache },
     onMutateCache,
@@ -42,18 +35,18 @@ const DeleteCollateralModal: FC<DeleteCollateralModalProps> = ({
     },
     {
       onSuccess: (result) => {
-        deleteCollateralCache(result.data.id, Number(chb))
+        deleteCollateralCache(result.data.id, caseFileId)
         notification({ type: 'success', message: 'Expediente eliminado' })
         onClose()
       },
       onMutate: () => {
-        return onMutateCache(id ? id : 0) 
+        return onMutateCache(caseFileId)
       },
       onSettled: () => {
-        onSettledCache(id ? id : 0)
+        onSettledCache(caseFileId)
       },
       onError: (error, _, context: any) => {
-        onErrorCache(context, id ? id : 0)
+        onErrorCache(context, caseFileId)
         notification({
           type: 'error',
           message: error.response?.data.message,
@@ -66,7 +59,7 @@ const DeleteCollateralModal: FC<DeleteCollateralModalProps> = ({
   const onDeleteCollateral = () => {
     if (id !== 0) deleteCollateralMutate()
   }
-  
+
   return (
     <Modal
       visible={visible}
@@ -77,7 +70,15 @@ const DeleteCollateralModal: FC<DeleteCollateralModalProps> = ({
       size="small"
       footer={
         <Container width="100%" justifyContent="space-around" display="flex" alignItems="center">
-          {<Button onClick={onDeleteCollateral} loading={loadingDeleteUser} display="danger" size="default" label="ACEPTAR" />}
+          {
+            <Button
+              onClick={onDeleteCollateral}
+              loading={loadingDeleteUser}
+              display="danger"
+              size="default"
+              label="ACEPTAR"
+            />
+          }
           {<Button onClick={onClose} size="default" label="CANCELAR" />}
         </Container>
       }

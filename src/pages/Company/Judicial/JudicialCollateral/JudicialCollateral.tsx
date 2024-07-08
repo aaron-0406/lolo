@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { JudicialCollateralResolver } from './JudicialCollateralResolver.yup'
-import FileCaseActions from './JudicialCollateralActions'
+import JudicialCollateralActions from './JudicialCollateralActions'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import { useParams } from 'react-router-dom'
 import { useQuery } from 'react-query'
@@ -16,7 +16,9 @@ import { JudicialCollateralType } from '@/types/judicial/judicial-collateral.typ
 
 const JudicialCollateral = () => {
   const {
-    bank: { selectedBank: { idCHB: chb } },
+    bank: {
+      selectedBank: { idCHB: chb },
+    },
   } = useLoloContext()
 
   const codeParams = useParams().code ?? ''
@@ -68,7 +70,7 @@ const JudicialCollateral = () => {
   return (
     <FormProvider {...formMethods}>
       <Container width="100%" height="Calc(100% - 50px)" display="flex" flexDirection="column">
-        <FileCaseActions setLoadingGlobal={setLoading} caseFileId={caseFileId} />
+        <JudicialCollateralActions setLoadingGlobal={setLoading} caseFileId={caseFileId} />
         <JudicialCollateralInfo loading={loading} />
         <JudicialCollateralModals />
       </Container>

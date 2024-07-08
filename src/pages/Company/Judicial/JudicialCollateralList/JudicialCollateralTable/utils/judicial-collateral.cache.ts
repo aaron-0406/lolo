@@ -7,69 +7,61 @@ export const KEY_JUDICIAL_COLLATERAL_CACHE = 'key-judicial-collateral-cache'
 type QueryDataType = AxiosResponse<JudicialCollateralType[]> | undefined
 
 const judicialCollateralCache = (queryClient: QueryClient) => {
-  const createJudicialCollateralCache = (data: JudicialCollateralType, chb: number) => {
-    queryClient.setQueryData<QueryDataType>(
-      [KEY_JUDICIAL_COLLATERAL_CACHE, chb],
-      (old) => {
-        if(old) return {...old, data: [...old?.data, data]}
-      }
-    )
+  const createJudicialCollateralCache = (data: JudicialCollateralType, caseFileId: number) => {
+    queryClient.setQueryData<QueryDataType>([KEY_JUDICIAL_COLLATERAL_CACHE, caseFileId], (old) => {
+      if (old) return { ...old, data: [...old?.data, data] }
+    })
   }
 
-  const editCollateralCache = (data: JudicialCollateralType,  chb: number) => {
-    queryClient.setQueryData<QueryDataType>(
-      [KEY_JUDICIAL_COLLATERAL_CACHE, chb],
-      (old) => {
-        if(old) {
-          const dataUpdated = old.data.map((Collateral: JudicialCollateralType) => {
-            if (Collateral.id === data.id) {
-              return data
-            }
-
-            return Collateral
-          })
-
-          return { ...old, data: dataUpdated }
-        }
-      }
-    )
-  }
-
-  const deleteCollateralCache = (id: string, chb: number) => {
-    queryClient.setQueryData<QueryDataType>([KEY_JUDICIAL_COLLATERAL_CACHE, chb], (old) => {
+  const editCollateralCache = (data: JudicialCollateralType, caseFileId: number) => {
+    queryClient.setQueryData<QueryDataType>([KEY_JUDICIAL_COLLATERAL_CACHE, caseFileId], (old) => {
       if (old) {
-        const dataUpdated = old.data.filter(
-          (collateral: JudicialCollateralType) => collateral.id !== parseInt(id) 
-        )
+        const dataUpdated = old.data.map((Collateral: JudicialCollateralType) => {
+          if (Collateral.id === data.id) {
+            return data
+          }
+
+          return Collateral
+        })
+
         return { ...old, data: dataUpdated }
       }
     })
   }
 
-  const onRefetchQueryCache = async (chb: number) => {
-    await queryClient.refetchQueries([KEY_JUDICIAL_COLLATERAL_CACHE, chb])
+  const deleteCollateralCache = (id: string, caseFileId: number) => {
+    queryClient.setQueryData<QueryDataType>([KEY_JUDICIAL_COLLATERAL_CACHE, caseFileId], (old) => {
+      if (old) {
+        const dataUpdated = old.data.filter((collateral: JudicialCollateralType) => collateral.id !== parseInt(id))
+        return { ...old, data: dataUpdated }
+      }
+    })
   }
 
-  const onMutateCache = async (chb: number) => {
-    const old = queryClient.getQueryData([KEY_JUDICIAL_COLLATERAL_CACHE, chb])
+  const onRefetchQueryCache = async (caseFileId: number) => {
+    await queryClient.refetchQueries([KEY_JUDICIAL_COLLATERAL_CACHE, caseFileId])
+  }
+
+  const onMutateCache = async (caseFileId: number) => {
+    const old = queryClient.getQueryData([KEY_JUDICIAL_COLLATERAL_CACHE, caseFileId])
     if (!old) {
-      await queryClient.prefetchQuery([KEY_JUDICIAL_COLLATERAL_CACHE, chb])
+      await queryClient.prefetchQuery([KEY_JUDICIAL_COLLATERAL_CACHE, caseFileId])
     }
 
     return { old }
   }
 
-  const onSettledCache = (chb: number) => {
-    queryClient.cancelQueries([KEY_JUDICIAL_COLLATERAL_CACHE, chb])
+  const onSettledCache = (caseFileId: number) => {
+    queryClient.cancelQueries([KEY_JUDICIAL_COLLATERAL_CACHE, caseFileId])
   }
 
-  const onErrorCache = (context: { old: QueryDataType }, chb: number) => {
-    queryClient.setQueryData([KEY_JUDICIAL_COLLATERAL_CACHE, chb], context.old)
+  const onErrorCache = (context: { old: QueryDataType }, caseFileId: number) => {
+    queryClient.setQueryData([KEY_JUDICIAL_COLLATERAL_CACHE, caseFileId], context.old)
   }
 
   return {
     actions: {
-      createJudicialCollateralCache, 
+      createJudicialCollateralCache,
       editCollateralCache,
       deleteCollateralCache,
     },

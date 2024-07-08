@@ -17,7 +17,11 @@ import { useNavigate } from 'react-router-dom'
 
 import { CustomErrorResponse } from 'types/customErrorResponse'
 import { JudicialCollateralType } from '@/types/judicial/judicial-collateral.type'
-import { createJudicialCollateral, editJudicialCollateral, getJudicialCollateralById } from '@/services/judicial/judicial-collateral.service'
+import {
+  createJudicialCollateral,
+  editJudicialCollateral,
+  getJudicialCollateralById,
+} from '@/services/judicial/judicial-collateral.service'
 import notification from '@/ui/notification'
 import moment from 'moment'
 import { useEffect } from 'react'
@@ -38,21 +42,27 @@ const JudicialCollateral = ({ setLoadingGlobal, caseFileId }: JudicialCollateral
   const navigate = useNavigate()
   const codeParams = useParams().code ?? ''
   const collateralCode = useParams().collateralCode ?? ''
-  const { hideModal: hideAssignCollateralModal, showModal: showAssignCollateralModal, visible: visibleAssignCollateralModal } = useModal()
   const {
-    getValues, 
+    hideModal: hideAssignCollateralModal,
+    showModal: showAssignCollateralModal,
+    visible: visibleAssignCollateralModal,
+  } = useModal()
+  const {
+    getValues,
     setValue,
-    formState : {isValid}, 
-    watch
-  } = useFormContext<JudicialCollateralType & {
-    useOfProperty: { id: number; name: string }
-    registrationArea: { id: number; name: string }
-    registerOffice: { id: number; name: string }
-    notary: { id: number; name: string }
-    department: { id: number; name: string }
-    province: { id: number; name: string }
-    district: { id: number; name: string }
-  }>()
+    formState: { isValid },
+    watch,
+  } = useFormContext<
+    JudicialCollateralType & {
+      useOfProperty: { id: number; name: string }
+      registrationArea: { id: number; name: string }
+      registerOffice: { id: number; name: string }
+      notary: { id: number; name: string }
+      department: { id: number; name: string }
+      province: { id: number; name: string }
+      district: { id: number; name: string }
+    }
+  >()
 
   const queryClient = useQueryClient()
 
@@ -63,8 +73,8 @@ const JudicialCollateral = ({ setLoadingGlobal, caseFileId }: JudicialCollateral
     onErrorCache,
   } = judicialCollateralCache(queryClient)
 
-  const chb = selectedBank.idCHB.length ? parseInt(selectedBank.idCHB) : 0  
-  
+  const chb = selectedBank.idCHB.length ? parseInt(selectedBank.idCHB) : 0
+
   const greaterThanDesktopS = useMediaQuery(device.desktopS)
   const greaterThanTabletS = useMediaQuery(device.tabletS)
 
@@ -83,11 +93,11 @@ const JudicialCollateral = ({ setLoadingGlobal, caseFileId }: JudicialCollateral
           customerHasBankId: chb,
         },
         caseFileId
-      ) 
+      )
     },
     {
       onSuccess: (data) => {
-        createJudicialCollateralCache(data.data, chb)
+        createJudicialCollateralCache(data.data, caseFileId)
         setValue('id', data.data.id)
         notification({
           type: 'success',
@@ -96,10 +106,10 @@ const JudicialCollateral = ({ setLoadingGlobal, caseFileId }: JudicialCollateral
         navigate(paths.judicial.detailCollateral(customer.urlIdentifier, codeParams, data.data.id.toString()))
       },
       onMutate: () => {
-        return onMutateCache(chb)
+        return onMutateCache(caseFileId)
       },
       onSettled: () => {
-        onSettledCache(chb)
+        onSettledCache(caseFileId)
       },
       onError: (error, _, context: any) => {
         onErrorCache(context, selectedBank.idCHB?.length ? parseInt(selectedBank.idCHB) : 0)
@@ -115,60 +125,59 @@ const JudicialCollateral = ({ setLoadingGlobal, caseFileId }: JudicialCollateral
   const { isLoading: loadingUpdateCollateral, mutate: updateJudicialCollateralMutate } = useMutation<
     AxiosResponse<JudicialCollateralType>,
     AxiosError<CustomErrorResponse>
-  >(async () => {
-    const {
-      id,
-      dateOfPublicDeed,
-      useOfProperty,
-      registrationArea,
-      registerOffice,
-      notary,
-      department,
-      province,
-      district,
-      ...restCollateralValues
-    } = getValues()
-    return await editJudicialCollateral(
-      collateralCode, 
-      {
+  >(
+    async () => {
+      const {
+        id,
+        dateOfPublicDeed,
+        useOfProperty,
+        registrationArea,
+        registerOffice,
+        notary,
+        department,
+        province,
+        district,
+        ...restCollateralValues
+      } = getValues()
+      return await editJudicialCollateral(collateralCode, {
         ...restCollateralValues,
         dateOfPublicDeed: moment(dateOfPublicDeed, 'DD-MM-YYYY').toDate().toISOString(),
         customerHasBankId: chb,
+      })
+    },
+    {
+      onSuccess: (data) => {
+        editCollateralCache(data.data, caseFileId)
+        setValue('id', data.data.id)
+        notification({
+          type: 'success',
+          message: 'Garantía actualizada correctamente',
+        })
+        navigate(paths.judicial.detailCollateral(customer.urlIdentifier, codeParams, data.data.id.toString()))
       },
-    )
-  },
-  {
-    onSuccess: (data) => {
-      editCollateralCache(data.data, chb)
-      setValue('id', data.data.id)
-      notification({
-        type: 'success',
-        message: 'Garantía actualizada correctamente',
-      })
-      navigate(paths.judicial.detailCollateral(customer.urlIdentifier, codeParams, data.data.id.toString()))
-    },
-    onMutate: () => {
-      return onMutateCache(chb)
-    },
-    onSettled: () => {
-      onSettledCache(chb)
-    },
-    onError: (error, _, context: any) => {
-      onErrorCache(context, selectedBank.idCHB?.length ? parseInt(selectedBank.idCHB) : 0)
-      notification({
-        type: 'error',
-        message: error.response?.data.message,
-        list: error.response?.data.errors?.map((error) => error.message),
-      })
-    },
-  })
+      onMutate: () => {
+        return onMutateCache(caseFileId)
+      },
+      onSettled: () => {
+        onSettledCache(caseFileId)
+      },
+      onError: (error, _, context: any) => {
+        onErrorCache(context, selectedBank.idCHB?.length ? parseInt(selectedBank.idCHB) : 0)
+        notification({
+          type: 'error',
+          message: error.response?.data.message,
+          list: error.response?.data.errors?.map((error) => error.message),
+        })
+      },
+    }
+  )
 
   const { refetch } = useQuery<AxiosResponse<any, Error>>(
     ['get-collateral-by-code', collateralCode ?? ''],
     async () => {
-      return await getJudicialCollateralById(collateralCode ?? '') 
+      return await getJudicialCollateralById(collateralCode ?? '')
     },
-    { 
+    {
       enabled: false,
       onSuccess: (data) => {
         setValue('id', data.data.id)
@@ -207,18 +216,18 @@ const JudicialCollateral = ({ setLoadingGlobal, caseFileId }: JudicialCollateral
   )
 
   const onCreateCollateral = () => {
-    if (!isValid) return notification({
-      type: 'warning',
-      message: 'Por favor complete los campos requeridos',
-    })
-    createJudicialCollateralMutate(); 
+    if (!isValid)
+      return notification({
+        type: 'warning',
+        message: 'Por favor complete los campos requeridos',
+      })
+    createJudicialCollateralMutate()
   }
 
   const onUpadateCollateral = () => {
-    updateJudicialCollateralMutate();
+    updateJudicialCollateralMutate()
   }
 
-  
   const routers: LinkType[] = [
     {
       link: paths.judicial.expedientes(customer.urlIdentifier),
@@ -245,7 +254,6 @@ const JudicialCollateral = ({ setLoadingGlobal, caseFileId }: JudicialCollateral
     }
     // eslint-disable-next-line
   }, [collateralCode])
-
 
   return (
     <Container

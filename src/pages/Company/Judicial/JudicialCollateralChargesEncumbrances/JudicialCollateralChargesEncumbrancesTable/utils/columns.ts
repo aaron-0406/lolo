@@ -21,7 +21,7 @@ export const JudicialCollateralChargesEncumbrancesColumns: ColumProps[] = [
   },
   {
     id: 'judicialCollateralChargesEncumbrances.datatable.header.registrationDate',
-    title: 'FECHA DE REGISTRO',
+    title: 'FECHA DE DEMANDA',
     width: '30%',
     justifyContent: 'center',
   },

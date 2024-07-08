@@ -31,6 +31,7 @@ const JudicialCollateralListTable = ({ id }: JudicialCollateralListaTableProps) 
       customer: { urlIdentifier },
     },
   } = useLoloContext()
+
   const [collateralId, setCollateralId] = useState<number>(0)
   const {
     hideModal: hideDeleteCollateralModal,
@@ -137,6 +138,7 @@ const JudicialCollateralListTable = ({ id }: JudicialCollateralListaTableProps) 
           onClose={hideDeleteCollateralModal}
           visible={visibleDeleteCollateralModal}
           id={collateralId}
+          caseFileId={id}
         />
       ) : null}
     </Container>

@@ -17,7 +17,7 @@ export const judicialCollateralColumns: ColumProps[] = [
     id: 'judicialCollateral.datatable.header.numberOfCollateral',
     title: 'NÚMERO DE GARANTÍA',
     width: '10%',
-    justifyContent: 'left',    
+    justifyContent: 'left',
   },
   {
     id: 'judicialCollateral.datatable.header.propertyAddress',
@@ -27,7 +27,7 @@ export const judicialCollateralColumns: ColumProps[] = [
   },
   {
     id: 'judicialCollateral.datatable.header.electronicRecord',
-    title: 'Registro electrónico',
+    title: 'REGISTRO ELECTRÓNICO',
     width: '10%',
     justifyContent: 'left',
   },

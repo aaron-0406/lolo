@@ -34,11 +34,11 @@ const JudicialCollateralList = () => {
   )
 
   const clientName = data?.data.client.name
-  const caseFileId = data?.data.id
+  const caseFileId = data?.data.id ?? 0
   return (
     <Container width="100%" height="calc(100% - 50px)" display="flex" flexDirection="column">
       <FileCasesRelatedProcessActions clientName={clientName} />
-      <JudicialCollateralListTable  id = { caseFileId }/>
+      <JudicialCollateralListTable id={caseFileId} />
     </Container>
   )
 }

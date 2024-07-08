@@ -21,7 +21,7 @@ import { DistrictType } from '@/types/config/district.type'
 import { getDistrictsByProvince } from '@/services/config/district.service'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import { JudicialUseOfPropertyType } from '@/types/judicial/judicial-use-of-property.type'
-import { KEY_JUDICIAL_USE_OF_PROPERTY_CACHE } from '../../JudicialUseOfProperty/JudicialUseOfPropertyTable/utils/judicial-use-of-property.cache';
+import { KEY_JUDICIAL_USE_OF_PROPERTY_CACHE } from '../../JudicialUseOfProperty/JudicialUseOfPropertyTable/utils/judicial-use-of-property.cache'
 import { getJudicialUseOfPropertyByCHB } from '@/services/judicial/judicial-use-of-property.service'
 import { JudicialRegistrationAreaType } from '@/types/judicial/judicial-registration-area.type'
 import { KEY_JUDICIAL_REGISTRATION_AREA_CACHE } from '../../JudicialRegistrationArea/JudicialRegistrationAreaTable/utils/judicial-registration-area.cache'
@@ -29,11 +29,10 @@ import { getJudicialRegistrationAreaByCHB } from '@/services/judicial/judicial-r
 import { JudicialNotaryType } from '@/types/judicial/judicial-notary.type'
 import { KEY_JUDICIAL_NOTARY_CACHE } from '../../JudcialNotary/JudicialNotaryTable/utils/judicial-notary.cache'
 import { getJudicialNotaryByCHB } from '@/services/judicial/judicial-notary.service'
-import { KEY_JUDICIAL_REGISTER_OFFICE_CACHE } from '../../JudicialRegisterOffice/JudicialRegisterOfficeTable/utils/judicial-register-office.cache';
+import { KEY_JUDICIAL_REGISTER_OFFICE_CACHE } from '../../JudicialRegisterOffice/JudicialRegisterOfficeTable/utils/judicial-register-office.cache'
 import { JudicialRegisterOfficeType } from '@/types/judicial/judicial-register-office.type'
 import { getJudicialRegisterOfficeByCHB } from '@/services/judicial/judicial-register-office.service'
 import moment from 'moment'
-
 
 type JudicialCollateralInfoProps = {
   loading: boolean
@@ -44,7 +43,7 @@ const kindOfProperty = {
   INMUEBLE: 'INMUEBLE',
 }
 
-const JudicialCollateralInfo = ({loading}: JudicialCollateralInfoProps) => {
+const JudicialCollateralInfo = ({ loading }: JudicialCollateralInfoProps) => {
   const { getValues, setValue, control } = useFormContext<
     JudicialCollateralType & {
       useOfProperty: { id: number; name: string }
@@ -63,8 +62,8 @@ const JudicialCollateralInfo = ({loading}: JudicialCollateralInfoProps) => {
   } = useLoloContext()
   const greaterThanTabletL = useMediaQuery(device.tabletL)
   const collateralData = getValues()
-  const [ departmentId, setDepartmentId ] = useState<number>(collateralData.departmentId)
-  const [ provinceId, setProvinceId ] = useState<number>(collateralData.provinceId)
+  const [departmentId, setDepartmentId] = useState<number>(collateralData.departmentId)
+  const [provinceId, setProvinceId] = useState<number>(collateralData.provinceId)
 
   const { data: departmentsData } = useQuery<AxiosResponse<Array<DepartmentType>>>(
     ['KEY_DEPARTMENTS_CACHE'],
@@ -73,7 +72,7 @@ const JudicialCollateralInfo = ({loading}: JudicialCollateralInfoProps) => {
     }
   )
 
-  const {data: provincesData, refetch: refetchProvinces} = useQuery<AxiosResponse<Array<DepartmentType>>>(
+  const { data: provincesData, refetch: refetchProvinces } = useQuery<AxiosResponse<Array<DepartmentType>>>(
     ['KEY_PROVINCES_CACHE'],
     async () => {
       const id = getValues('departmentId') ?? departmentId
@@ -84,19 +83,19 @@ const JudicialCollateralInfo = ({loading}: JudicialCollateralInfoProps) => {
   const { data: districtsData, refetch: refetchDistricts } = useQuery<AxiosResponse<Array<DistrictType>>>(
     ['KEY_DISTRICTS_CACHE'],
     async () => {
-      const id = getValues('provinceId') ??  provinceId
+      const id = getValues('provinceId') ?? provinceId
       return await getDistrictsByProvince(id)
     }
   )
 
-  const { data:useOfPropertyData } = useQuery<AxiosResponse<Array<JudicialUseOfPropertyType>>>(
+  const { data: useOfPropertyData } = useQuery<AxiosResponse<Array<JudicialUseOfPropertyType>>>(
     [KEY_JUDICIAL_USE_OF_PROPERTY_CACHE, parseInt(chb.length ? chb : '0')],
     async () => {
       return await getJudicialUseOfPropertyByCHB(parseInt(chb.length ? chb : '0'))
     }
-  ) 
+  )
 
-  const { data: registrationAreaData} = useQuery<AxiosResponse<Array<JudicialRegistrationAreaType>>>(
+  const { data: registrationAreaData } = useQuery<AxiosResponse<Array<JudicialRegistrationAreaType>>>(
     [KEY_JUDICIAL_REGISTRATION_AREA_CACHE, parseInt(chb.length ? chb : '0')],
     async () => {
       return await getJudicialRegistrationAreaByCHB(parseInt(chb.length ? chb : '0'))
@@ -117,17 +116,17 @@ const JudicialCollateralInfo = ({loading}: JudicialCollateralInfoProps) => {
     }
   )
 
-  useEffect(()=>{
+  useEffect(() => {
     if (departmentId) refetchProvinces()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [departmentId])
 
-  useEffect(()=>{
+  useEffect(() => {
     if (provinceId) refetchDistricts()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [provinceId])
 
-  useEffect(()=>{
+  useEffect(() => {
     if (collateralData.departmentId) {
       setDepartmentId(collateralData.departmentId)
     }
@@ -135,7 +134,7 @@ const JudicialCollateralInfo = ({loading}: JudicialCollateralInfoProps) => {
       setProvinceId(collateralData.provinceId)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[collateralData.provinceId, collateralData.departmentId])
+  }, [collateralData.provinceId, collateralData.departmentId])
 
   const kindOfPropertyOptions: Array<SelectItemType> = [
     {
@@ -147,40 +146,47 @@ const JudicialCollateralInfo = ({loading}: JudicialCollateralInfoProps) => {
       label: 'INMUEBLE',
     },
   ]
-  const departmentsOptions: Array<SelectItemType> = departmentsData?.data?.map((department) => ({
-    key: String(department.id),
-    label: department.name,
-  })) ?? [];
+  const departmentsOptions: Array<SelectItemType> =
+    departmentsData?.data?.map((department) => ({
+      key: String(department.id),
+      label: department.name,
+    })) ?? []
 
-  const provincesOptions: Array<SelectItemType> = provincesData?.data?.map((province) => ({
-    key: String(province.id),
-    label: province.name,
-  })) ?? []
+  const provincesOptions: Array<SelectItemType> =
+    provincesData?.data?.map((province) => ({
+      key: String(province.id),
+      label: province.name,
+    })) ?? []
 
-  const districtsOptions: Array<SelectItemType> = districtsData?.data?.map((district) => ({
-    key: String(district.id),
-    label: district.name,
-  })) ?? []
+  const districtsOptions: Array<SelectItemType> =
+    districtsData?.data?.map((district) => ({
+      key: String(district.id),
+      label: district.name,
+    })) ?? []
 
-  const useOfPropertyOptions: Array<SelectItemType> = useOfPropertyData?.data?.map((useOfProperty) => ({
-    key: String(useOfProperty.id),
-    label: useOfProperty.name,
-  })) ?? []
+  const useOfPropertyOptions: Array<SelectItemType> =
+    useOfPropertyData?.data?.map((useOfProperty) => ({
+      key: String(useOfProperty.id),
+      label: useOfProperty.name,
+    })) ?? []
 
-  const registrationAreaOptions: Array<SelectItemType> = registrationAreaData?.data?.map((registrationArea) => ({
-    key: String(registrationArea.id),
-    label: registrationArea.name,
-  })) ?? []
+  const registrationAreaOptions: Array<SelectItemType> =
+    registrationAreaData?.data?.map((registrationArea) => ({
+      key: String(registrationArea.id),
+      label: registrationArea.name,
+    })) ?? []
 
-  const registerOfficeOptions: Array<SelectItemType> = registerOfficeData?.data?.map((registerOffice) => ({
-    key: String(registerOffice.id),
-    label: registerOffice.name,
-  })) ?? []
+  const registerOfficeOptions: Array<SelectItemType> =
+    registerOfficeData?.data?.map((registerOffice) => ({
+      key: String(registerOffice.id),
+      label: registerOffice.name,
+    })) ?? []
 
-  const notaryOptions: Array<SelectItemType> = notaryData?.data?.map((notary) => ({
-    key: String(notary.id),
-    label: notary.name,
-  })) ?? []
+  const notaryOptions: Array<SelectItemType> =
+    notaryData?.data?.map((notary) => ({
+      key: String(notary.id),
+      label: notary.name,
+    })) ?? []
 
   return (
     <StyledContainer
@@ -188,29 +194,29 @@ const JudicialCollateralInfo = ({loading}: JudicialCollateralInfoProps) => {
       height="calc(100% - 40px)"
       display="flex"
       flexDirection="column"
-      padding="0px 40px"
+      padding="40px"
       gap="20px"
       overFlowY="auto"
     >
       <Container width="100%" display="flex" flexDirection={greaterThanTabletL ? 'row' : 'column'} gap="20px">
         <Container width="100%" display="flex" flexDirection="column" gap="15px">
           <Controller
-              name="kindOfProperty"
-              control={control}
-              render={({ field }) => (
-                <Select
-                  required
-                  label="Tipo de bien"
-                  placeholder="Seleccione un tipo de bien"
-                  width="100%"
-                  value={String(field.value)}
-                  options={kindOfPropertyOptions}
-                  onChange={(key) => {
-                    setValue('kindOfProperty', key)
-                  }}
-                />
-              )}
-            />
+            name="kindOfProperty"
+            control={control}
+            render={({ field }) => (
+              <Select
+                required
+                label="Tipo de bien"
+                placeholder="Seleccione un tipo de bien"
+                width="100%"
+                value={String(field.value)}
+                options={kindOfPropertyOptions}
+                onChange={(key) => {
+                  setValue('kindOfProperty', key)
+                }}
+              />
+            )}
+          />
 
           <Controller
             name="electronicRecord"
