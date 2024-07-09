@@ -302,7 +302,7 @@ const JudicialCollateral = ({ setLoadingGlobal, caseFileId, clientName }: Judici
           />
         </Container>
       </Container>
-      <Container padding="10px" width="fit-content" margin="0px 0px 0px 10px" backgroundColor="#eff0f6ff">
+      <Container padding="10px" width="fit-content" margin="0" backgroundColor="#eff0f6ff">
         <Text.Body size="m" weight="bold">
           {clientName ?? '-'}
         </Text.Body>

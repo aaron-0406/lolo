@@ -72,9 +72,21 @@ const JudicialCollateralInfo = ({ loading }: JudicialCollateralInfoProps) => {
   const [departmentId, setDepartmentId] = useState<number>(collateralData.departmentId)
   const [provinceId, setProvinceId] = useState<number>(collateralData.provinceId)
 
-  const { hideModal: hideModalRegistrationArea, showModal: showModalRegistrationArea, visible: visibleRegistrationArea } = useModal()
-  const { hideModal: hideModalRegisterOffice, showModal: showModalRegisterOffice, visible: visibleRegisterOffice } = useModal()
-  const { hideModal: hideModalUseOfProperty, showModal: showModalUseOfProperty, visible: visibleUseOfProperty } = useModal()
+  const {
+    hideModal: hideModalRegistrationArea,
+    showModal: showModalRegistrationArea,
+    visible: visibleRegistrationArea,
+  } = useModal()
+  const {
+    hideModal: hideModalRegisterOffice,
+    showModal: showModalRegisterOffice,
+    visible: visibleRegisterOffice,
+  } = useModal()
+  const {
+    hideModal: hideModalUseOfProperty,
+    showModal: showModalUseOfProperty,
+    visible: visibleUseOfProperty,
+  } = useModal()
   const { hideModal: hideModalNotary, showModal: showModalNotary, visible: visibleNotary } = useModal()
 
   const { data: departmentsData } = useQuery<AxiosResponse<Array<DepartmentType>>>(
@@ -206,7 +218,7 @@ const JudicialCollateralInfo = ({ loading }: JudicialCollateralInfoProps) => {
       height="calc(100% - 40px)"
       display="flex"
       flexDirection="column"
-      padding="10px 40px 0px 40px"
+      padding="20px"
       gap="20px"
       overFlowY="auto"
     >
