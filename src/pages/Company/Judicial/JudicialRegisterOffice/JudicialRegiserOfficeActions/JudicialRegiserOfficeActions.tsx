@@ -1,6 +1,6 @@
 import useModal from "@/hooks/useModal"
 
-import UseOfPropertyModal from "../Modals/RegisterOfficeModal"
+import RegisterOfficeModal from "../Modals/RegisterOfficeModal"
 import Container from "@/ui/Container"
 import Text from "@/ui/Text"
 import Button from "@/ui/Button"
@@ -28,7 +28,7 @@ const JudicalRegistrationArea = () => {
         onClick={showModal}
         disabled={!chb}
       />
-      {hideModal ? <UseOfPropertyModal isOpen={visible} onClose={hideModal} /> : null}
+      {visible ? <RegisterOfficeModal isOpen={visible} onClose={hideModal} /> : null}
     </Container>
   )
 }

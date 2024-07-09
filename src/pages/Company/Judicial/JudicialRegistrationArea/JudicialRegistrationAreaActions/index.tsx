@@ -1,1 +1,1 @@
-export { default } from './JudicialUseOfPropertyActions'
+export { default } from './JudicialRegistrationAreaActions'

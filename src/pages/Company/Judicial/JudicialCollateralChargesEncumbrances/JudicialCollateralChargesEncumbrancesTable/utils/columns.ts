@@ -26,6 +26,12 @@ export const JudicialCollateralChargesEncumbrancesColumns: ColumProps[] = [
     justifyContent: 'center',
   },
   {
+    id: 'judicialCollateralChargesEncumbrances.datatable.header.appraisalDate',
+    title: 'FECHA DE TASACIÓN',
+    width: '30%',
+    justifyContent: 'center',
+  },
+  {
     id: 'judicialCollateralChargesEncumbrances.datatable.header.createdAt',
     title: 'FECHA DE CREACIÓN',
     width: '30%',

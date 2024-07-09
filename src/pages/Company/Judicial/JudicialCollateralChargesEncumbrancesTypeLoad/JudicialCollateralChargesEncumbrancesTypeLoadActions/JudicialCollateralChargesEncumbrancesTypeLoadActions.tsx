@@ -28,7 +28,7 @@ const JudicialCollateralChargesEncumbrancesTypeLoadActions = () => {
         onClick={showModal}
         disabled={!chb}
       />
-      {hideModal ? <JudicialCollateralChargesEncumbrancesTypeLoadModal isOpen={visible} onClose={hideModal} /> : null}
+      {visible ? <JudicialCollateralChargesEncumbrancesTypeLoadModal isOpen={visible} onClose={hideModal} /> : null}
     </Container>
   )
 }

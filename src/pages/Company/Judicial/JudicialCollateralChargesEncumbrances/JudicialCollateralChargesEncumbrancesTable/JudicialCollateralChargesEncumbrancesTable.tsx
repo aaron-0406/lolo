@@ -121,6 +121,9 @@ const JudicialChargesEncumbrancesTable = () => {
                     moment(ChargesEncumbrances.registrationDate).format('DD-MM-YYYY') || ''
                   }`}</BodyCell>
                   <BodyCell textAlign="center">{`${
+                    moment(ChargesEncumbrances.appraisalDate).format('DD-MM-YYYY') || ''
+                  }`}</BodyCell>
+                  <BodyCell textAlign="center">{`${
                     moment(ChargesEncumbrances.createdAt).format('DD-MM-YYYY') || ''
                   }`}</BodyCell>
                   <BodyCell textAlign="center">

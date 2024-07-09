@@ -168,7 +168,7 @@ const UseOfPropertyModal = ( { isOpen, onClose, id }: Props ) => {
         id="use-of-property-modal"
         visible={isOpen}
         onClose={onClose}
-        title={id ? 'Editar uso de propiedad' : 'Nuevo uso de propiedad'}
+        title={id ? 'Editar uso del bien' : 'Nuevo uso del bien'}
         contentOverflowY="auto"
         size="small"
         footer={

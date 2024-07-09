@@ -22,7 +22,7 @@ const UseOfPropertyModalInfo = () => {
         control={control}
         render={({ field }) => (
           <TextField
-            label="Uso de propiedad"
+            label="Uso del bien"
             width="100%"
             value={field.value}
             onChange={field.onChange}

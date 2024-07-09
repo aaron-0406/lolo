@@ -1,6 +1,6 @@
 import useModal from "@/hooks/useModal"
 
-import NotaryModal from "../Modals/JudicialChargesEncumbrancesModal"
+import JudicialChargesEncumbrancesModal from "../Modals/JudicialChargesEncumbrancesModal"
 import Container from "@/ui/Container"
 import Button from "@/ui/Button"
 
@@ -12,9 +12,13 @@ import paths from "shared/routes/paths"
 import Breadcrumbs from "@/ui/Breadcrumbs"
 import { device } from "@/breakpoints/responsive"
 import { useMediaQuery } from "@/hooks/useMediaQuery"
+import Text from "@/ui/Text"
 
+type JudicalNotaryActionsProps = {
+  clientName: string
+}
 
-const JudicalNotaryActions = () => {
+const JudicalNotaryActions = ({ clientName } : JudicalNotaryActionsProps) => {
   const { hideModal, showModal, visible } = useModal()
   const { 
     bank: {
@@ -26,7 +30,7 @@ const JudicalNotaryActions = () => {
   const code = useParams().code ?? ''
   const collateralCode = useParams().collateralCode ?? ''
 
-  const greaterThanTabletL = useMediaQuery(device.tabletL)
+  const greaterThanDesktopS = useMediaQuery(device.desktopS)
 
   const routers: LinkType[] = [
     {
@@ -55,23 +59,37 @@ const JudicalNotaryActions = () => {
     <Container
       display="flex"
       justifyContent="space-between"
-      flexDirection={ greaterThanTabletL ? 'row' : 'column'}
-      alignItems={ greaterThanTabletL ? 'center' : 'flex-start'}
+      flexDirection={'column'}
+      alignItems={'flex-start'}
       height="fit-content"
       width="100%"
-      padding="20px 20px 10px 10px"
+      padding="20px 20px 0px 10px"
     >
-      <Breadcrumbs routes={routers} />
-      <Button
-        permission="P13-01-06-01-02-01"
-        messageTooltip="Agregar Carga y Gravamen"
-        shape="round"
-        size="small"
-        leadingIcon="ri-add-line"
-        onClick={showModal}
-        disabled={!chb}
-      />
-      {hideModal ? <NotaryModal isOpen={visible} onClose={hideModal} /> : null}
+      <Container
+        width="100%"
+        display="flex"
+        justifyContent="space-between"
+        alignItems={greaterThanDesktopS ? 'center' : 'start'}
+        gap="20px"
+        flexDirection={greaterThanDesktopS ? 'row' : 'column'}
+      >
+        <Breadcrumbs routes={routers} />
+        <Button
+          permission="P13-01-06-01-02-01"
+          messageTooltip="Agregar Carga y Gravamen"
+          shape="round"
+          size="small"
+          leadingIcon="ri-add-line"
+          onClick={showModal}
+          disabled={!chb}
+        />
+      </Container>
+      <Container padding="10px" width="fit-content" margin="0px 0px 0px 10px" backgroundColor="#eff0f6ff">
+        <Text.Body size="m" weight="bold">
+          {clientName ?? '-'}
+        </Text.Body>
+      </Container>
+      {visible ? <JudicialChargesEncumbrancesModal isOpen={visible} onClose={hideModal} /> : null}
     </Container>
   )
 }

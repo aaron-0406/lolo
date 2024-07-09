@@ -15,18 +15,18 @@ const JudicialUseOfPropertyActions = () => {
   return (
     <Container display="flex" justifyContent="space-between" alignItems="center" height="fit-content" width="100%" padding="20px">
       <Text.Body size="m" weight="bold" className="label__text">
-        USO DE LA PROPIEDAD
+        USO DEL BIEN
       </Text.Body>
       <Button
         permission="P38-01"
-        messageTooltip="Agregar uso de propiedad"
+        messageTooltip="Agregar uso del bien"
         shape="round"
         size="small"
         leadingIcon="ri-add-line"
         onClick={showModal}
         disabled={!chb}
       />
-      {hideModal ? <UseOfPropertyModal isOpen={visible} onClose={hideModal} /> : null}
+      {visible ? <UseOfPropertyModal isOpen={visible} onClose={hideModal} /> : null}
     </Container>
   )
 }

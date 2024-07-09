@@ -28,13 +28,15 @@ import { useEffect } from 'react'
 import judicialCollateralCache from '../../JudicialCollateralList/JudicialCollateralTable/utils/judicial-collateral.cache'
 import useModal from '@/hooks/useModal'
 import AssignCollateralModal from './Modals/AssignCollateralModal'
+import Text from '@/ui/Text'
 
 type JudicialCollateralProps = {
   setLoadingGlobal: (state: boolean) => void
   caseFileId: number
+  clientName: string
 }
 
-const JudicialCollateral = ({ setLoadingGlobal, caseFileId }: JudicialCollateralProps) => {
+const JudicialCollateral = ({ setLoadingGlobal, caseFileId, clientName }: JudicialCollateralProps) => {
   const {
     client: { customer },
     bank: { selectedBank },
@@ -260,38 +262,52 @@ const JudicialCollateral = ({ setLoadingGlobal, caseFileId }: JudicialCollateral
       width="100%"
       display="flex"
       justifyContent="space-between"
-      alignItems={greaterThanDesktopS ? 'center' : 'start'}
-      gap="20px"
-      padding={greaterThanDesktopS ? '20px' : '0px'}
-      flexDirection={greaterThanDesktopS ? 'row' : 'column'}
+      alignItems="start"
+      gap="10px"
+      padding="10px 20px 10px 20px"
+      flexDirection="column"
     >
-      <Breadcrumbs routes={routers} />
-
-      <Container width="fit-content" display="flex" justifyContent="space-between" alignItems="center" gap="10px">
-        <Button
-          width="130px"
-          label={greaterThanDesktopS && 'Asignar'}
-          shape={greaterThanDesktopS ? 'default' : 'round'}
-          size={greaterThanTabletS ? 'default' : 'small'}
-          trailingIcon="ri-arrow-left-right-line"
-          onClick={showAssignCollateralModal}
-          loading={loadingCreateCollateral || loadingUpdateCollateral}
-          permission={'P13-01-06-01-01'}
-          disabled={watch().id === 0}
-          messageTooltip="Asignar garantía"
-        />
-        <Button
-          width="130px"
-          label={greaterThanDesktopS && 'Guardar'}
-          shape={greaterThanDesktopS ? 'default' : 'round'}
-          size={greaterThanTabletS ? 'default' : 'small'}
-          trailingIcon="ri-save-3-line"
-          onClick={watch().id !== 0 ? onUpadateCollateral : onCreateCollateral}
-          loading={loadingCreateCollateral || loadingUpdateCollateral}
-          permission={watch().id !== 0 ? 'P13-01-06-03' : 'P13-01-06-02'}
-          messageTooltip="Guardar cambios"
-        />
+      <Container
+        width="100%"
+        display="flex"
+        justifyContent="space-between"
+        alignItems={greaterThanDesktopS ? 'center' : 'start'}
+        gap="20px"
+        flexDirection={greaterThanDesktopS ? 'row' : 'column'}
+      >
+        <Breadcrumbs routes={routers} />
+        <Container width="fit-content" display="flex" justifyContent="space-between" alignItems="center" gap="10px">
+          <Button
+            width="130px"
+            label={greaterThanDesktopS && 'Asignar'}
+            shape={greaterThanDesktopS ? 'default' : 'round'}
+            size={greaterThanTabletS ? 'default' : 'small'}
+            trailingIcon="ri-arrow-left-right-line"
+            onClick={showAssignCollateralModal}
+            loading={loadingCreateCollateral || loadingUpdateCollateral}
+            permission={'P13-01-06-01-01'}
+            disabled={watch().id === 0}
+            messageTooltip="Asignar garantía"
+          />
+          <Button
+            width="130px"
+            label={greaterThanDesktopS && 'Guardar'}
+            shape={greaterThanDesktopS ? 'default' : 'round'}
+            size={greaterThanTabletS ? 'default' : 'small'}
+            trailingIcon="ri-save-3-line"
+            onClick={watch().id !== 0 ? onUpadateCollateral : onCreateCollateral}
+            loading={loadingCreateCollateral || loadingUpdateCollateral}
+            permission={watch().id !== 0 ? 'P13-01-06-03' : 'P13-01-06-02'}
+            messageTooltip="Guardar cambios"
+          />
+        </Container>
       </Container>
+      <Container padding="10px" width="fit-content" margin="0" backgroundColor="#eff0f6ff">
+        <Text.Body size="m" weight="bold">
+          {clientName ?? '-'}
+        </Text.Body>
+      </Container>
+
       {visibleAssignCollateralModal ? (
         <AssignCollateralModal
           visible={visibleAssignCollateralModal}
