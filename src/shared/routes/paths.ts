@@ -63,6 +63,10 @@ export default {
       code = ':code',
       relatedProcessCode = ':relatedProcessCode'
     ) => `/judicial/${urlIdentifier}/expediente/${code}/procesos-conexos/${relatedProcessCode}`,
+
+    detailCollateral: (urlIdentifier = ':urlIdentifier', code = ':code', collateralCode = ':collateralCode') =>
+      `/judicial/${urlIdentifier}/expediente/${code}/garantia/${collateralCode}`,
+
     productosDemandados: (urlIdentifier = ':urlIdentifier', code = ':code') =>
       `/judicial/${urlIdentifier}/expedientes/${code}/productos-demandados`,
     processStatus: (urlIdentifier = ':urlIdentifier', code = ':code') =>
@@ -87,10 +91,25 @@ export default {
     sedes: (urlIdentifier = ':urlIdentifier') => `/judicial/${urlIdentifier}/sedes`,
     relatedProcess: (urlIdentifier = ':urlIdentifier', code = ':code') =>
       `/judicial/${urlIdentifier}/expediente/${code}/procesos-conexos`,
+    useOfProperty: (urlIdentifier = ':urlIdentifier') => `/judicial/${urlIdentifier}/uso-del-bien`,
+    registrationArea: (urlIdentifier = ':urlIdentifier') => `/judicial/${urlIdentifier}/zona-registral`,
+    registerOffice: (urlIdentifier = ':urlIdentifier') => `/judicial/${urlIdentifier}/oficina-registral`,
+    notary: (urlIdentifier = `:urlIdentifier`) => `/judicial/${urlIdentifier}/notaria`,
+    collateral: (urlIdentifier = `:urlIdentifier`, code = `:code`) =>
+      `/judicial/${urlIdentifier}/expediente/${code}/garantia`,
+    typeChargesEncumbrances: (urlIdentifier = `:urlIdentifier`) =>
+      `/judicial/${urlIdentifier}/tipos-cargas-y-gravamenes`,
+    chargesEncumbrances: (urlIdentifier = `:urlIdentifier`, code = `:code`, collateralCode = `:collateralCode`) =>
+      `/judicial/${urlIdentifier}/expediente/${code}/garantia/${collateralCode}/cargas-y-gravamenes`,
+    collateralFiles: (urlIdentifier = `:urlIdentifier`, code = `:code`, collateralCode = `:collateralCode`) =>
+      `/judicial/${urlIdentifier}/expediente/${code}/garantia/${collateralCode}/archivos`,
   },
   settings: {
     scheduldedNotifications: (urlIdentifier = `:urlIdentifier`) =>
       `/configuracion/${urlIdentifier}/notificationes-programadas`,
     compareExcel: (urlIdentifier = `:urlIdentifier`) => `/configuracion/${urlIdentifier}/comparar-excels`,
+    department: (urlIdentifier = `:urlIdentifier`) => `/configuracion/${urlIdentifier}/departamentos`,
+    district: (urlIdentifier = `:urlIdentifier`) => `/configuracion/${urlIdentifier}/distritos`,
+    province: (urlIdentifier = `:urlIdentifier`) => `/configuracion/${urlIdentifier}/provincias`,
   },
 }
