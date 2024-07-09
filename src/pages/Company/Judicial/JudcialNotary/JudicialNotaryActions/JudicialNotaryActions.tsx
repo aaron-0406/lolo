@@ -28,7 +28,7 @@ const JudicalNotaryActions = () => {
         onClick={showModal}
         disabled={!chb}
       />
-      {hideModal ? <NotaryModal isOpen={visible} onClose={hideModal} /> : null}
+      {visible ? <NotaryModal isOpen={visible} onClose={hideModal} /> : null}
     </Container>
   )
 }

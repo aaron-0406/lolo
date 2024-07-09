@@ -108,8 +108,8 @@ const ChargesEncumbrancesModal = ({ isOpen, onClose, id }: Props) => {
         return createJudicialCollateralChargesEncumbrances({
           ...restClient,
           judicialCollateralIdJudicialCollateral: Number(collateralCode),
-          registrationDate: moment(registrationDate, 'DD-MM-YYYY').toDate().toISOString(),
-          appraisalDate: moment(appraisalDate, 'DD-MM-YYYY').toDate().toISOString(),
+          registrationDate: moment(registrationDate, 'DD-MM-YYYY').toDate().toString(),
+          appraisalDate: moment(appraisalDate, 'DD-MM-YYYY').toDate().toString(),
         })
       },
       {

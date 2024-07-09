@@ -18,6 +18,9 @@ import moment from "moment"
 
 import { useMediaQuery } from "@/hooks/useMediaQuery"
 import { device } from "@/breakpoints/responsive"
+import Button from "@/ui/Button"
+import useModal from "@/hooks/useModal"
+import JudicialCollateralChargesEncumbrancesTypeLoadModal from "pages/Company/Judicial/JudicialCollateralChargesEncumbrancesTypeLoad/Modals/JudicialCollateralChargesEncumbrancesTypeLoadModal"
 
 const JudicialChargesEncumbrancesTypeLoadModalInfo = () => {
   const {
@@ -31,6 +34,8 @@ const JudicialChargesEncumbrancesTypeLoadModalInfo = () => {
       selectedBank: { idCHB: chb },
     },
   } = useLoloContext()
+
+  const { hideModal: hideModalAddChargesEncumbrancesTypeLoad, showModal: showModalAddChargesEncumbrancesTypeLoad, visible: visibleAddChargesEncumbrancesTypeLoad } = useModal()
 
   useEffect(()=> {
     return reset()
@@ -90,6 +95,7 @@ const JudicialChargesEncumbrancesTypeLoadModalInfo = () => {
               value={field.value}
               onChange={field.onChange}
               hasError={!!errors.registrationSeat}
+              helperText={errors.registrationSeat?.message}
             />
           )}
         />
@@ -103,6 +109,7 @@ const JudicialChargesEncumbrancesTypeLoadModalInfo = () => {
               value={field.value}
               onChange={field.onChange}
               hasError={!!errors.range}
+              helperText={errors.range?.message}
             />
           )}
         />
@@ -110,17 +117,35 @@ const JudicialChargesEncumbrancesTypeLoadModalInfo = () => {
           name="typeOfLoadId"
           control={control}
           render={({ field }) => (
-            <Select
-              required
-              label="Tipo de cargas y gravámenes"
-              placeholder={'Seleccione un tipo de cargas y gravámenes'}
+            <Container
+              display="flex"
+              flexDirection="row"
+              gap="10px"
+              flexWrap="nowrap"
               width="100%"
-              value={String(field.value)}
-              options={chargesTypeOptions}
-              onChange={(key) => {
-                field.onChange(parseInt(key))
-              }}
-            />
+              alignItems="flex-end"
+            >
+              <Select
+                required
+                label="Tipo de cargas y gravámenes"
+                placeholder={'Seleccione un tipo de cargas y gravámenes'}
+                width="100%"
+                value={String(field.value)}
+                options={chargesTypeOptions}
+                onChange={(key) => {
+                  field.onChange(parseInt(key))
+                }}
+              />
+              <Button
+                permission="P41-01"
+                messageTooltip="Agregar Tipo de carga y gravámenes"
+                shape="round"
+                size="small"
+                leadingIcon="ri-add-line"
+                onClick={showModalAddChargesEncumbrancesTypeLoad}
+                disabled={!chb}
+              />
+            </Container>
           )}
         />
 
@@ -131,7 +156,6 @@ const JudicialChargesEncumbrancesTypeLoadModalInfo = () => {
             <TextField
               label="Monto de afectación S/:"
               width="100%"
-              helperText={errors.amountOfImpactSoles?.message}
               value={field.value}
               type="currency"
               onValueChange={(_, __, values) => {
@@ -140,6 +164,7 @@ const JudicialChargesEncumbrancesTypeLoadModalInfo = () => {
               decimalScale={3}
               decimalsLimit={3}
               hasError={!!errors.amountOfImpactSoles}
+              helperText={errors.amountOfImpactSoles?.message}
             />
           )}
         />
@@ -150,7 +175,6 @@ const JudicialChargesEncumbrancesTypeLoadModalInfo = () => {
             <TextField
               label="Monto de afectación US$:"
               width="100%"
-              helperText={errors.amountOfImpactDollars?.message}
               value={field.value}
               type="currency"
               onValueChange={(_, __, values) => {
@@ -160,9 +184,19 @@ const JudicialChargesEncumbrancesTypeLoadModalInfo = () => {
               decimalScale={3}
               decimalsLimit={3}
               hasError={!!errors.amountOfImpactDollars}
+              helperText={errors.amountOfImpactDollars?.message}
             />
           )}
         />
+      </Container>
+      <Container
+        display="flex"
+        flexDirection="column"
+        gap="5px"
+        width="100%"
+        justifyContent="start"
+        padding="0px 20px"
+      >
         <Controller
           name="registrationDate"
           control={control}
@@ -180,15 +214,6 @@ const JudicialChargesEncumbrancesTypeLoadModalInfo = () => {
             />
           )}
         />
-      </Container>
-      <Container
-        display="flex"
-        flexDirection="column"
-        gap="20px"
-        width="100%"
-        justifyContent="start"
-        padding="0px 20px"
-      >
         <Controller
           name="appraisalDate"
           control={control}
@@ -222,6 +247,12 @@ const JudicialChargesEncumbrancesTypeLoadModalInfo = () => {
           )}
         />
       </Container>
+      {visibleAddChargesEncumbrancesTypeLoad ? (
+        <JudicialCollateralChargesEncumbrancesTypeLoadModal
+          isOpen={visibleAddChargesEncumbrancesTypeLoad}
+          onClose={hideModalAddChargesEncumbrancesTypeLoad}
+        />
+      ) : null}
     </Container>
   )
 }

@@ -32,7 +32,13 @@ import { getJudicialNotaryByCHB } from '@/services/judicial/judicial-notary.serv
 import { KEY_JUDICIAL_REGISTER_OFFICE_CACHE } from '../../JudicialRegisterOffice/JudicialRegisterOfficeTable/utils/judicial-register-office.cache'
 import { JudicialRegisterOfficeType } from '@/types/judicial/judicial-register-office.type'
 import { getJudicialRegisterOfficeByCHB } from '@/services/judicial/judicial-register-office.service'
+import RegistrationAreaModal from '../../JudicialRegistrationArea/Modals/RegistrationAreaModal'
 import moment from 'moment'
+import Button from '@/ui/Button'
+import useModal from '@/hooks/useModal'
+import RegisterOfficeModal from '../../JudicialRegisterOffice/Modals/RegisterOfficeModal'
+import UseOfPropertyModal from '../../JudicialUseOfProperty/Modals/UseOfPropertyModal'
+import NotaryModal from '../../JudcialNotary/Modals/NotaryModal'
 
 type JudicialCollateralInfoProps = {
   loading: boolean
@@ -61,9 +67,15 @@ const JudicialCollateralInfo = ({ loading }: JudicialCollateralInfoProps) => {
     },
   } = useLoloContext()
   const greaterThanTabletL = useMediaQuery(device.tabletL)
+  const greaterThanDesktopS = useMediaQuery(device.desktopL)
   const collateralData = getValues()
   const [departmentId, setDepartmentId] = useState<number>(collateralData.departmentId)
   const [provinceId, setProvinceId] = useState<number>(collateralData.provinceId)
+
+  const { hideModal: hideModalRegistrationArea, showModal: showModalRegistrationArea, visible: visibleRegistrationArea } = useModal()
+  const { hideModal: hideModalRegisterOffice, showModal: showModalRegisterOffice, visible: visibleRegisterOffice } = useModal()
+  const { hideModal: hideModalUseOfProperty, showModal: showModalUseOfProperty, visible: visibleUseOfProperty } = useModal()
+  const { hideModal: hideModalNotary, showModal: showModalNotary, visible: visibleNotary } = useModal()
 
   const { data: departmentsData } = useQuery<AxiosResponse<Array<DepartmentType>>>(
     ['KEY_DEPARTMENTS_CACHE'],
@@ -194,11 +206,11 @@ const JudicialCollateralInfo = ({ loading }: JudicialCollateralInfoProps) => {
       height="calc(100% - 40px)"
       display="flex"
       flexDirection="column"
-      padding="40px"
+      padding="10px 40px 0px 40px"
       gap="20px"
       overFlowY="auto"
     >
-      <Container width="100%" display="flex" flexDirection={greaterThanTabletL ? 'row' : 'column'} gap="20px">
+      <Container width="100%" display="flex" flexDirection={greaterThanDesktopS ? 'row' : 'column'} gap="20px">
         <Container width="100%" display="flex" flexDirection="column" gap="15px">
           <Controller
             name="kindOfProperty"
@@ -294,7 +306,9 @@ const JudicialCollateralInfo = ({ loading }: JudicialCollateralInfoProps) => {
                 <Select
                   required
                   label="Departamento"
-                  placeholder="Seleccione un departamento"
+                  placeholder={
+                    collateralData.departmentId ? collateralData.department?.name : 'Seleccione un departamento'
+                  }
                   width="100%"
                   value={String(field.value)}
                   options={departmentsOptions}
@@ -354,34 +368,78 @@ const JudicialCollateralInfo = ({ loading }: JudicialCollateralInfoProps) => {
               name="registrationAreaId"
               control={control}
               render={({ field }) => (
-                <Select
-                  required
-                  label="Zona registral"
-                  placeholder="Seleccione una zona registral"
+                <Container
+                  display="flex"
+                  flexDirection="row"
+                  gap="10px"
+                  flexWrap="nowrap"
                   width="100%"
-                  value={String(field.value)}
-                  options={registrationAreaOptions}
-                  onChange={(key) => {
-                    field.onChange(parseInt(key))
-                  }}
-                />
+                  alignItems="flex-end"
+                >
+                  <Select
+                    required
+                    label="Zona registral"
+                    placeholder={
+                      collateralData.registrationAreaId
+                        ? collateralData.registrationArea?.name
+                        : 'Seleccione una zona registral'
+                    }
+                    width="100%"
+                    value={String(field.value)}
+                    options={registrationAreaOptions}
+                    onChange={(key) => {
+                      field.onChange(parseInt(key))
+                    }}
+                  />
+                  <Button
+                    permission="P39-01"
+                    messageTooltip="Agregar zona registral"
+                    shape="round"
+                    size="small"
+                    leadingIcon="ri-add-line"
+                    onClick={showModalRegistrationArea}
+                    disabled={!chb}
+                  />
+                </Container>
               )}
             />
             <Controller
               name="registerOfficeId"
               control={control}
               render={({ field }) => (
-                <Select
-                  required
-                  label="Oficina registral"
-                  placeholder="Seleccione una oficina registral"
+                <Container
+                  display="flex"
+                  flexDirection="row"
+                  gap="10px"
+                  flexWrap="nowrap"
                   width="100%"
-                  value={String(field.value)}
-                  options={registerOfficeOptions}
-                  onChange={(key) => {
-                    field.onChange(parseInt(key))
-                  }}
-                />
+                  alignItems="flex-end"
+                >
+                  <Select
+                    required
+                    label="Oficina registral"
+                    placeholder={
+                      collateralData.registerOfficeId
+                        ? collateralData.registerOffice?.name
+                        : 'Seleccione una oficina registral'
+                    }
+                    width="100%"
+                    value={String(field.value)}
+                    options={registerOfficeOptions}
+                    onChange={(key) => {
+                      field.onChange(parseInt(key))
+                    }}
+                  />
+                  <Button
+                    permission="P40-01"
+                    messageTooltip="Agregar Oficina Registral"
+                    shape="round"
+                    size="small"
+                    leadingIcon="ri-add-line"
+                    onClick={showModalRegisterOffice}
+                    disabled={!chb}
+                  />
+                </Container>
               )}
             />
           </Container>
@@ -391,18 +449,38 @@ const JudicialCollateralInfo = ({ loading }: JudicialCollateralInfoProps) => {
               name="useOfPropertyId"
               control={control}
               render={({ field }) => (
-                <Select
-                  required
-                  label="Uso del bien"
-                  placeholder="Seleccione un uso del bien"
+                <Container
+                  display="flex"
+                  flexDirection="row"
+                  gap="10px"
+                  flexWrap="nowrap"
                   width="100%"
-                  value={String(field.value)}
-                  options={useOfPropertyOptions}
-                  onChange={(key) => {
-                    field.onChange(parseInt(key))
-                  }}
-                  disabled={!chb}
-                />
+                  alignItems="flex-end"
+                >
+                  <Select
+                    required
+                    label="Uso del bien"
+                    placeholder={
+                      collateralData.useOfPropertyId ? collateralData.useOfProperty?.name : 'Seleccione un uso del bien'
+                    }
+                    width="100%"
+                    value={String(field.value)}
+                    options={useOfPropertyOptions}
+                    onChange={(key) => {
+                      field.onChange(parseInt(key))
+                    }}
+                    disabled={!chb}
+                  />
+                  <Button
+                    permission="P38-01"
+                    messageTooltip="Agregar uso del bien"
+                    shape="round"
+                    size="small"
+                    leadingIcon="ri-add-line"
+                    onClick={showModalUseOfProperty}
+                    disabled={!chb}
+                  />
+                </Container>
               )}
             />
 
@@ -410,17 +488,36 @@ const JudicialCollateralInfo = ({ loading }: JudicialCollateralInfoProps) => {
               name="notaryId"
               control={control}
               render={({ field }) => (
-                <Select
-                  required
-                  label="Notaria"
-                  placeholder="Seleccione una notaria"
+                <Container
+                  display="flex"
+                  flexDirection="row"
+                  gap="10px"
+                  flexWrap="nowrap"
                   width="100%"
-                  value={String(field.value)}
-                  options={notaryOptions}
-                  onChange={(key) => {
-                    field.onChange(parseInt(key))
-                  }}
-                />
+                  alignItems="flex-end"
+                >
+                  <Select
+                    required
+                    label="Notaria"
+                    placeholder={collateralData.notaryId ? collateralData.notary?.name : 'Seleccione una notaria'}
+                    width="100%"
+                    value={String(field.value)}
+                    options={notaryOptions}
+                    onChange={(key) => {
+                      field.onChange(parseInt(key))
+                    }}
+                  />
+
+                  <Button
+                    permission="P41-01"
+                    messageTooltip="Agregar Notaria"
+                    shape="round"
+                    size="small"
+                    leadingIcon="ri-add-line"
+                    onClick={showModalNotary}
+                    disabled={!chb}
+                  />
+                </Container>
               )}
             />
           </Container>
@@ -496,6 +593,20 @@ const JudicialCollateralInfo = ({ loading }: JudicialCollateralInfoProps) => {
           />
         </Container>
       </Container>
+
+      {visibleRegistrationArea ? (
+        <RegistrationAreaModal isOpen={visibleRegistrationArea} onClose={hideModalRegistrationArea} />
+      ) : null}
+
+      {visibleRegisterOffice ? (
+        <RegisterOfficeModal isOpen={visibleRegisterOffice} onClose={hideModalRegisterOffice} />
+      ) : null}
+
+      {visibleUseOfProperty ? (
+        <UseOfPropertyModal isOpen={visibleUseOfProperty} onClose={hideModalUseOfProperty} />
+      ) : null}
+
+      {visibleNotary ? <NotaryModal isOpen={visibleNotary} onClose={hideModalNotary} /> : null}
     </StyledContainer>
   )
 }

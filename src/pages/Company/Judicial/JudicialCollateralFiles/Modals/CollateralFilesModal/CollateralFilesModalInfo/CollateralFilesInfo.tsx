@@ -63,29 +63,31 @@ const CollateralFilesModalInfo = () => {
           onAddFile(e[0])
         }}
       />
-      {Array.isArray(watch('filesDnD'))
-        ? watch('filesDnD').map((file, index) => (
-            <Container className="file__element" key={index}>
-              <Container className="file__element--icon">{getIconFile(file?.name ?? '')}</Container>
-              <Container className="file__element--resume">
-                <Text.Body size="m" weight="regular" color="Primary5">
-                  {file?.name}
-                </Text.Body>
-                <Text.Body size="m" weight="regular" color="Primary5">
-                  {formatFileSize(file?.size ?? 0)}
-                </Text.Body>
+      <Container width="100%" overFlowY="auto" gap="5px" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
+        {Array.isArray(watch('filesDnD'))
+          ? watch('filesDnD').map((file, index) => (
+              <Container className="file__element" key={index}>
+                <Container className="file__element--icon">{getIconFile(file?.name ?? '')}</Container>
+                <Container className="file__element--resume">
+                  <StyledFileName data-tooltip-content={file.name} width="100%">
+                    {file?.name}
+                  </StyledFileName>
+                  <Text.Body size="m" weight="regular" color="Primary5">
+                    {formatFileSize(file?.size ?? 0)}
+                  </Text.Body>
+                </Container>
+                <Container className="file__element--button">
+                  <Button
+                    leadingIcon="ri-close-line"
+                    hierarchy="tertiary"
+                    shape="round"
+                    onClick={() => onRemoveFile(file)}
+                  />
+                </Container>
               </Container>
-              <Container className="file__element--button">
-                <Button
-                  leadingIcon="ri-close-line"
-                  hierarchy="tertiary"
-                  shape="round"
-                  onClick={() => onRemoveFile(file)}
-                />
-              </Container>
-            </Container>
-          ))
-        : null}
+            ))
+          : null}
+      </Container>
     </StyledComponent>
   )
 }
@@ -98,23 +100,23 @@ const StyledComponent = styled(Container)`
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: start;
-    align-items: center;
     padding-top: 10px;
+    align-items: center;
+    padding-bottom: 10px;
+    gap:10px;
 
       .file__element{
-        padding: 10px;
-        padding-left: 10px;
-        width: 100%;
-        height: 100%;
-        min-height: 105px;
-        display: flex;
-        align-items: center;
-        flex-direction: row;
-        padding-left: 10px;
-        background:${theme.colors.Neutral0};
-        border-radius: 12px;
+        width: 90%;
+        padding: 10px 10px 10px 10px;
+        border: 2px solid #e9e8ed;
+        background-color: #F9FAFE;
+        height: 80px;
         gap: 10px;
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: center;
+        border-radius: 4px;
+        justify-content: space-between;
 
         .file__element--resume{
           flex: 1;
@@ -130,4 +132,11 @@ const StyledComponent = styled(Container)`
   
     }
   `}
+`
+
+const StyledFileName = styled(Container)`
+  max-width: 200px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 `

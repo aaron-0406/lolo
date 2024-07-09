@@ -70,6 +70,7 @@ const RegisterOffice = ({ isOpen, onClose, id }: Props) => {
       return await getJudicialRegisterOfficeById(id ?? 0)
     },
     {
+      enabled: !!id,
       onSuccess: (data) => {
         setValue('id', data.data.id)
         setValue('name', data.data.name)
@@ -161,7 +162,7 @@ const RegisterOffice = ({ isOpen, onClose, id }: Props) => {
   }
 
   useEffect(() => {
-    if (!!id) {
+    if (id) {
       refetchJudicialRegisterOffice()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -170,7 +171,7 @@ const RegisterOffice = ({ isOpen, onClose, id }: Props) => {
   return (
     <FormProvider {...formMethods}>
       <Modal
-        id="use-of-property-modal"
+        id="register-office-modal"
         visible={isOpen}
         onClose={onClose}
         title={id ? 'Editar Oficina Registral' : 'Nueva Oficina Registral'}

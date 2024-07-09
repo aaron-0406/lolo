@@ -1,5 +1,5 @@
 import Container from '@/ui/Container'
-import FileCasesRelatedProcessActions from './JudicialCollateralListActions'
+import JudicialCollateralListActions from './JudicialCollateralListActions'
 import JudicialCollateralListTable from './JudicialCollateralTable'
 
 import { AxiosResponse } from 'axios'
@@ -37,7 +37,7 @@ const JudicialCollateralList = () => {
   const caseFileId = data?.data.id ?? 0
   return (
     <Container width="100%" height="calc(100% - 50px)" display="flex" flexDirection="column">
-      <FileCasesRelatedProcessActions clientName={clientName} />
+      <JudicialCollateralListActions clientName={clientName} />
       <JudicialCollateralListTable id={caseFileId} />
     </Container>
   )

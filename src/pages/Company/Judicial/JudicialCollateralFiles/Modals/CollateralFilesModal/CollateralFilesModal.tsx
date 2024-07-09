@@ -141,8 +141,10 @@ const CollateralFiles = ( { isOpen, onClose, id }: Props ) => {
         onClose={onClose}
         title={id ? 'Editar Archivo' : 'Agregar Archivo'}
         contentOverflowY="auto"
-        size="small"
-        minHeight="430px"
+        size="medium"
+        minHeight="370px"
+        
+        
         footer={
           <Container display="flex" justifyContent="flex-end" width="100%" gap="4px">
             <Button

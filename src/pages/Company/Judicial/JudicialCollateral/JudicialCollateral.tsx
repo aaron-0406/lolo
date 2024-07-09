@@ -38,6 +38,7 @@ const JudicialCollateral = () => {
   )
   const [loading, setLoading] = useState<boolean>(false)
   const caseFileId = data?.data.id
+  const clientName = data?.data.client.name
 
   const defaultValuesCollateral = {
     id: 0,
@@ -70,7 +71,7 @@ const JudicialCollateral = () => {
   return (
     <FormProvider {...formMethods}>
       <Container width="100%" height="Calc(100% - 50px)" display="flex" flexDirection="column">
-        <JudicialCollateralActions setLoadingGlobal={setLoading} caseFileId={caseFileId} />
+        <JudicialCollateralActions clientName={clientName} setLoadingGlobal={setLoading} caseFileId={caseFileId} />
         <JudicialCollateralInfo loading={loading} />
         <JudicialCollateralModals />
       </Container>
