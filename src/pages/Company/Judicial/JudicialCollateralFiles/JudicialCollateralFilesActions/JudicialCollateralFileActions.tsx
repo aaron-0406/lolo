@@ -29,6 +29,7 @@ const JudicialCollateralFileActions = ({ clientName } : JudicalNotaryActionsProp
   const collateralCode = useParams().collateralCode ?? ''
 
   const greaterThanDesktopS = useMediaQuery(device.desktopS)
+  const greaterThanTabletS = useMediaQuery(device.tabletS)
 
   const routers: LinkType[] = [
     {
@@ -55,23 +56,36 @@ const JudicialCollateralFileActions = ({ clientName } : JudicalNotaryActionsProp
 
   return (
     <Container
+      width="100%"
       display="flex"
       justifyContent="space-between"
+      alignItems="start"
+      gap="10px"
+      padding="10px 20px 10px 20px"
       flexDirection="column"
-      alignItems="flex-start"
-      height="fit-content"
-      width="100%"
-      padding="20px 20px 0px 10px"
     >
+      <Breadcrumbs routes={routers} />
       <Container
         width="100%"
         display="flex"
         justifyContent="space-between"
         alignItems={greaterThanDesktopS ? 'center' : 'start'}
         gap="20px"
-        flexDirection={greaterThanDesktopS ? 'row' : 'column'}
+        flexDirection="row"
       >
-        <Breadcrumbs routes={routers} />
+        <Container
+          padding="10px"
+          width="100%"
+          maxWidth={greaterThanTabletS ? '500px' : '250px'}
+          textOverflow="ellipsis"
+          whiteSpace="nowrap"
+          overFlowX="hidden"
+          backgroundColor="#eff0f6ff"
+        >
+          <Text.Body size="m" weight="bold">
+            {clientName ?? '-'}
+          </Text.Body>
+        </Container>
         <Button
           permission="P13-01-06-01-03-01"
           messageTooltip="Agregar Archivos"
@@ -81,12 +95,6 @@ const JudicialCollateralFileActions = ({ clientName } : JudicalNotaryActionsProp
           onClick={showModal}
           disabled={!chb}
         />
-      </Container>
-
-      <Container padding="10px" width="fit-content" margin="0px 0px 0px 10px" backgroundColor="#eff0f6ff">
-        <Text.Body size="m" weight="bold">
-          {clientName ?? '-'}
-        </Text.Body>
       </Container>
 
       {visible ? <CollateralFilesModal isOpen={visible} onClose={hideModal} /> : null}

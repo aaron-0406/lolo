@@ -28,6 +28,7 @@ import Img from '@/ui/Img'
 import pdfIcon from '@/assets/icons/pdf.png'
 import wordIcon from '@/assets/icons/word-doc.png'
 import fileIcon from '@/assets/icons/file.png'
+import Text from '@/ui/Text'
 
 const JudicialCollateralFilesTable = () => {
   const {
@@ -94,7 +95,7 @@ const JudicialCollateralFilesTable = () => {
   const judicialCollateralFiles = data?.data ?? []
 
   return (
-    <Container width="100%" height="calc(100% - 112px)" padding="20px">
+    <Container width="100%" height="calc(100% - 112px)" padding="0px 20px 20px 20px">
       <Table
         top="260px"
         columns={JudicialCollateralFilesColumns}
@@ -123,7 +124,22 @@ const JudicialCollateralFilesTable = () => {
                 <tr key={CollateralFiles.id} className="styled-data-table-row">
                   <BodyCell textAlign="center">{`${index + 1}`}</BodyCell>
                   <BodyCell textAlign="center">{getIconFile(CollateralFiles.originalName)}</BodyCell>
-                  <BodyCell textAlign="center">{CollateralFiles.originalName}</BodyCell>
+                  <BodyCell textAlign="center">
+                    <Container
+                      padding="10px"
+                      width="100%"
+                      maxWidth="300px"
+                      textOverflow="ellipsis"
+                      whiteSpace="nowrap"
+                      overFlowX="hidden"
+                      data-tooltip-content={CollateralFiles.originalName}
+                      data-tooltip-id="cell-tooltip"
+                    >
+                      <Text.Body size="m" weight="regular">
+                        {CollateralFiles.originalName || '-'}
+                      </Text.Body>
+                    </Container>
+                  </BodyCell>
                   <BodyCell textAlign="center">{`${
                     moment(CollateralFiles.createdAt).format('DD-MM-YYYY') || ''
                   }`}</BodyCell>

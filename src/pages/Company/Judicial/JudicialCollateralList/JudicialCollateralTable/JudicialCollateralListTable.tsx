@@ -109,7 +109,22 @@ const JudicialCollateralListTable = ({ id }: JudicialCollateralListaTableProps) 
                 <BodyCell textAlign="center">{`${
                   moment(collateral?.dateOfPublicDeed).format('DD-MM-YYYY') || ''
                 }`}</BodyCell>
-                <BodyCell textAlign="center">{collateral?.registrationSeat}</BodyCell>
+                <BodyCell textAlign="center">
+                  <Container
+                    padding="10px"
+                    width="100%"
+                    maxWidth="300px"
+                    textOverflow="ellipsis"
+                    whiteSpace="nowrap"
+                    overFlowX="hidden"
+                    data-tooltip-content={collateral?.registrationSeat}
+                    data-tooltip-id="cell-tooltip"
+                  >
+                    <Text.Body size="m" weight="regular">
+                      {collateral?.registrationSeat || '-'}
+                    </Text.Body>
+                  </Container>
+                </BodyCell>
                 <BodyCell textAlign="center">
                   {
                     <Container display="flex" gap="15px" justifyContent="space-around">

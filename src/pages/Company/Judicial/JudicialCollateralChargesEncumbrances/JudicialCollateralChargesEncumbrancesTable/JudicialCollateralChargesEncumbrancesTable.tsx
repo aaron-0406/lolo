@@ -24,6 +24,8 @@ import ChargesEncumbrancesModal from "../Modals/JudicialChargesEncumbrancesModal
 import DeleteChargesEncumbrances from "../Modals/DeleteJudicialCollateralChargesEncumbrancesModal"
 import { useParams } from "react-router-dom"
 import Text from "@/ui/Text"
+import { useMediaQuery } from "@/hooks/useMediaQuery"
+import { device } from "@/breakpoints/responsive"
 
 const JudicialChargesEncumbrancesTable = () => {
   const {
@@ -33,6 +35,7 @@ const JudicialChargesEncumbrancesTable = () => {
   } = useLoloContext()  
 
   const collateralCode = useParams().collateralCode ?? '' 
+  const greaterThanTabletS = useMediaQuery(device.tabletS)
   
   const [ idChargesEncumbrances, setIdChargesEncumbrances ] = useState<number | undefined>(undefined)
 
@@ -74,7 +77,7 @@ const JudicialChargesEncumbrancesTable = () => {
   const judicialChargesEncumbrances = data?.data ?? []
   
   return (
-    <Container width="100%" height="calc(100% - 112px)" padding="20px">
+    <Container width="100%" height="calc(100% - 112px)" padding="0px 20px 20px 20px">
       <Table
         top="260px"
         columns={JudicialCollateralChargesEncumbrancesColumns}
@@ -116,7 +119,22 @@ const JudicialChargesEncumbrancesTable = () => {
                       </Text.Body>
                     </Container>
                   </BodyCell>
-                  <BodyCell textAlign="center">{ChargesEncumbrances.registrationSeat}</BodyCell>
+                  <BodyCell textAlign="center">
+                    <Container
+                      padding="10px"
+                      width="100%"
+                      maxWidth='300px'
+                      textOverflow="ellipsis"
+                      whiteSpace="nowrap"
+                      overFlowX="hidden"
+                      data-tooltip-content={ChargesEncumbrances.registrationSeat}
+                      data-tooltip-id="cell-tooltip"
+                    >
+                      <Text.Body size="m" weight="regular">
+                        {ChargesEncumbrances.registrationSeat}
+                      </Text.Body>
+                    </Container>
+                  </BodyCell>
                   <BodyCell textAlign="center">{`${
                     moment(ChargesEncumbrances.registrationDate).format('DD-MM-YYYY') || ''
                   }`}</BodyCell>
