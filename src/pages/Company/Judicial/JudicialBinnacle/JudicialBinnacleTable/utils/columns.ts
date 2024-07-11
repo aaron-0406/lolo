@@ -26,6 +26,12 @@ export const judicialBinnacleColumns: ColumProps[] = [
     justifyContent: 'center',
   },
   {
+    id: 'binnacle.datatable.header.count-documents',
+    title: 'DOCUMENTO(S) ADJUNTO(S)',
+    width: '20%',
+    justifyContent: 'center',
+  },
+  {
     id: 'binnacle.datatable.header.date',
     title: 'FECHA',
     width: '20%',
