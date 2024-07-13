@@ -1,5 +1,5 @@
 import { JudicialBinDefendantProceduralActionType } from '@/types/judicial/judicial-bin-defendant-procedural-action.type'
-import axiosClient from '../../utils/api/clientAxios'
+import axiosClient from '../../utils/api/clientAxios'   
 
 const API = axiosClient.getUri()
 

@@ -64,6 +64,7 @@ const AssingScheduledNotificationsModal = ({
       hourTimeToNotify: new Date().toString(),
       customerHasBankId: parseInt(chb) ?? 0,
       logicKey: '',
+      daysToNotify: [] as Array<string>,
       state: false,
     },
     scheduledNotificationsUsers: [] as Array<
@@ -98,6 +99,8 @@ const AssingScheduledNotificationsModal = ({
       return await createScheduledNotification({
         ...scheduledNotification,
         hourTimeToNotify: formatDate,
+        daysToNotify: scheduledNotification.daysToNotify.filter((day) => day !== ''),
+
       })
     },
     {
@@ -128,6 +131,7 @@ const AssingScheduledNotificationsModal = ({
         logicKey: getScheduledNotification?.logicKey ?? '',
         nameNotification: getScheduledNotification?.nameNotification ?? '',
         state: getScheduledNotification?.state ?? false,
+        daysToNotify: getScheduledNotification?.daysToNotify.filter((day) => day !== ''),
       })
     },
     {
@@ -178,7 +182,12 @@ const AssingScheduledNotificationsModal = ({
       setValue('scheduledNotification.frequencyToNotify', scheduledNotification.frequencyToNotify)
       setValue('scheduledNotification.hourTimeToNotify', convertISOToTime(scheduledNotification.hourTimeToNotify))
       setValue('scheduledNotification.state', scheduledNotification.state)
+      setValue(
+        'scheduledNotification.daysToNotify',
+        scheduledNotification.daysToNotify?.filter((day) => day !== '') ?? ([] as Array<string>)
+      )
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [scheduledNotification])
 
   const onCreateNotification = () => {

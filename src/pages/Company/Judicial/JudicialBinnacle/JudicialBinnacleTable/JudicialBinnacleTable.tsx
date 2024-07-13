@@ -22,6 +22,8 @@ import { judicialBinnacleColumns } from './utils/columns'
 import { JudicialBinDefendantProceduralActionType } from '@/types/judicial/judicial-bin-defendant-procedural-action.type'
 import { useFiltersContext } from '@/contexts/FiltersProvider'
 import { useLocation } from 'react-router-dom'
+import { JudicialBinFileType } from '@/types/judicial/judicial-bin-file.type'
+import Icon from '@/ui/Icon'
 
 type JudicialBinnacleTableProps = {
   judicialFileCaseId?: number
@@ -81,6 +83,7 @@ const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode }: JudicialBinna
           binnacleType: JudicialBinTypeBinnacleType
           judicialBinProceduralStage: JudicialBinProceduralStageType
           judicialBinDefendantProceduralAction: JudicialBinDefendantProceduralActionType
+          judicialBinFiles: JudicialBinFileType[]
         }
       >,
       Error
@@ -101,7 +104,6 @@ const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode }: JudicialBinna
   )
 
   const binnacles = data?.data ?? []
-
   useEffect(() => {
     refetch()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -133,6 +135,7 @@ const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode }: JudicialBinna
                 binnacleType: JudicialBinTypeBinnacleType
                 judicialBinProceduralStage: JudicialBinProceduralStageType
                 judicialBinDefendantProceduralAction: JudicialBinDefendantProceduralActionType
+                judicialBinFiles: JudicialBinFileType[]
               },
               key
             ) => {
@@ -152,7 +155,7 @@ const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode }: JudicialBinna
                     </Container>
                   </BodyCell>
                   <BodyCell textAlign="left">
-                  <Container
+                    <Container
                       margin="20px 0"
                       minWidth="300px"
                       maxHeight="130px"
@@ -161,11 +164,25 @@ const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode }: JudicialBinna
                       overFlowY="auto"
                     >
                       <Text.Body size="m" weight="regular">
-                          {record?.lastPerformed || '-'}
+                        {record?.lastPerformed || '-'}
                       </Text.Body>
-                    </Container> 
+                    </Container>
                   </BodyCell>
                   <BodyCell textAlign="center">{record?.judicialBinProceduralStage?.proceduralStage || '-'}</BodyCell>
+                  <BodyCell textAlign="center">
+                    {record.judicialBinFiles.length ? (
+                      <Container display="flex" gap="10px" justifyContent="center" alignItems="center">
+                        <Text.Body size="l" weight="regular">
+                          {record.judicialBinFiles.length ?? '-'}
+                        </Text.Body>
+                        <Icon remixClass="ri-file-text-line" color="Neutral6" />
+                      </Container>
+                    ) : (
+                      <Text.Body size="m" weight="regular">
+                        No hay archivos
+                      </Text.Body>
+                    )}
+                  </BodyCell>
                   <BodyCell textAlign="center">{moment(record.date.split('T')[0]).format('DD-MM-YYYY') || ''}</BodyCell>
                   <BodyCell textAlign="center">
                     {
