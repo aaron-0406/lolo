@@ -5,7 +5,7 @@ import Container from '@/ui/Container'
 import { Opts } from '@/ui/Pagination/interfaces'
 
 const ExtrajudicialdUsers = () => {
-  const [opts, setOpts] = useState<Opts>({ filter: '', limit: 50, page: 1 })
+  const [opts, setOpts] = useState<Opts>({ filter: '', limit: 20, page: 1 })
 
   return (
     <Container

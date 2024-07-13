@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useMemo, useState } from 'react'
+import { Dispatch, memo, useEffect, useMemo, useState } from 'react'
 import { useQuery } from 'react-query'
 import { useLocation, useNavigate } from 'react-router-dom'
 import moment from 'moment'
@@ -20,7 +20,7 @@ import { FilterOptionsProps } from '@/ui/Table/Table'
 import { FuncionarioType } from '@/types/extrajudicial/funcionario.type'
 import { CustomerUserType } from '@/types/dash/customer-user.type'
 import { CityType } from '@/types/dash/city.type'
-import Button from '@/ui/Button'
+// import Button from '@/ui/Button'
 import useModal from '@/hooks/useModal'
 import DeleteClientModal from './DeleteClientModal'
 import Text from '@/ui/Text'
@@ -35,8 +35,15 @@ import { KEY_EXT_COBRANZA_NEGOCIACIONES_CACHE } from '../../ExtrajudicialNegotia
 import { useFiltersContext } from '@/contexts/FiltersProvider'
 import { CustomErrorResponse } from 'types/customErrorResponse'
 import EmptyState from '@/ui/EmptyState'
+import { Opts } from '@/ui/Pagination/interfaces'
+import Button from '@/ui/Button'
 
-const CustomersTable = () => {
+type Props = {
+  opts: Opts
+  setOpts: Dispatch<Opts>
+}
+
+const CustomersTable = ({ opts, setOpts}: Props) => {
   const location = useLocation()
   const currentPath = location.pathname
 
@@ -54,7 +61,6 @@ const CustomersTable = () => {
 
   const {
     filterOptions: { getSelectedFilters, setSelectedFilters },
-    filterSearch: { getSearchFilters, setSearchFilters },
     clearAllFilters
   } = useFiltersContext()
 
@@ -70,7 +76,7 @@ const CustomersTable = () => {
     hideModal: hideModalTransferClient,
   } = useModal()
 
-  const opts = getSearchFilters(currentPath)?.opts ?? { filter: '', limit: 50, page: 1 }
+  // const opts = getSearchFilters(currentPath)?.opts ?? { filter: '', limit: 50, page: 1 }
 
   const handleClickDeleteClient = (code: string) => {
     setCodeClient(code)
@@ -162,7 +168,7 @@ const CustomersTable = () => {
       const cities = getIDsByIdentifier('customers.datatable.header.city', selectedFilterOptions)
 
       return await getAllClientsByCHB(
-        chb,
+        Number(chb),
         opts.page,
         opts.limit,
         opts.filter,
@@ -185,18 +191,19 @@ const CustomersTable = () => {
 
   const customers = data?.data.clients ?? []
   const quantity = data?.data.quantity
-
+ 
   useEffect(() => {
     refetch()
   }, [getSelectedFilters(currentPath)?.filters])
 
   useEffect(() => {
     refetch()
-  }, [opts.filter.length, opts.page])
+  }, [opts.page, opts.limit])
+
 
   return (
     <Container width="100%" height="calc(100% - 112px)" padding="20px">
-      <Pagination count={quantity} opts={opts} setOptsFilter={setSearchFilters} url={currentPath} />
+      <Pagination count={quantity} opts={opts} setOpts={setOpts} url={currentPath} />
       <Table
         top="260px"
         columns={customersColumns}
@@ -235,7 +242,7 @@ const CustomersTable = () => {
             ) => {
               const showMessageAboutClientTransferred =
                 !record.chbTransferred || record.chbTransferred == parseInt(chb?.length ? chb : '0')
-
+          
               return (
                 <tr
                   className={
@@ -269,34 +276,32 @@ const CustomersTable = () => {
                       <BodyCell>{`${record.city.name.toUpperCase() || ''}`}</BodyCell>
                       <BodyCell textAlign="center">{`${moment(record.createdAt).format('DD-MM-YYYY') || ''}`}</BodyCell>
                       <BodyCell textAlign="center">
-                        {
-                          <Container display="flex" gap="15px" justifyContent="space-around">
-                            <Button
-                              width="125px"
-                              shape="round"
-                              trailingIcon="ri-arrow-left-right-fill"
-                              onClick={(event) => {
-                                event.stopPropagation()
-                                handleClickTransferClient(record.code)
-                              }}
-                              permission="P02-06"
-                              messageTooltip="Transferir cliente a otro banco"
-                            />
-
-                            <Button
-                              width="125px"
-                              shape="round"
-                              display="danger"
-                              trailingIcon="ri-delete-bin-line"
-                              onClick={(event) => {
-                                event.stopPropagation()
-                                handleClickDeleteClient(record.code)
-                              }}
-                              permission="P02-05"
-                              messageTooltip="Eliminar cliente"
-                            />
-                          </Container>
-                        }
+                        <Container width="100%" display='flex' justifyContent='space-between'>
+                          <Button
+                            width="125px"
+                            shape="round"
+                            trailingIcon="ri-arrow-left-right-fill"
+                            onClick={(event) => {
+                              event.stopPropagation()
+                              handleClickTransferClient(record.code)
+                            }}
+                            permission="P02-06"
+                            messageTooltip="Transferir cliente a otro banco"
+                          />
+                          <Button
+                            key={record.id}
+                            width="125px"
+                            shape="round"
+                            display="danger"
+                            trailingIcon="ri-delete-bin-line"
+                            onClick={(event) => {
+                              event.stopPropagation()
+                              handleClickDeleteClient(record.code)
+                            }}
+                            permission="P02-05"
+                            messageTooltip="Eliminar cliente"
+                          />
+                        </Container>
                       </BodyCell>
                     </>
                   ) : (
@@ -319,15 +324,23 @@ const CustomersTable = () => {
           )}
       </Table>
       <Tooltip place="right" id="cell-tooltip" />
-
-      <DeleteClientModal visible={visibleDeleteClient} onClose={hideDeleteClient} code={codeClient} />
-      <TransferClientModal
-        visible={visibleModalTransferClient}
-        onClose={hideModalTransferClient}
-        code={codeTransferClient}
-      />
+      {
+        visibleDeleteClient ? (
+          <DeleteClientModal visible={visibleDeleteClient} onClose={hideDeleteClient} code={codeClient} />
+        ) : null
+      }
+      {
+        visibleModalTransferClient ? (
+          <TransferClientModal
+            visible={visibleModalTransferClient}
+            onClose={hideModalTransferClient}
+            code={codeTransferClient}
+          />
+        ) : null
+      }
     </Container>
   )
 }
 
-export default CustomersTable
+export default memo(CustomersTable)
+
