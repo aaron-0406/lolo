@@ -13,7 +13,7 @@ import judicialFileCaseCache, {
   JudicialFileCaseTableRow,
 } from '../../JudicialFileCasesList/JudicialFileCasesTable/utils/file-cases.cache'
 import { useNavigate, useParams } from 'react-router-dom'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import moment from 'moment'
 import Breadcrumbs from '@/ui/Breadcrumbs'
 import { LinkType } from '@/ui/Breadcrumbs/Breadcrumbs.type'
@@ -22,13 +22,20 @@ import { useLoloContext } from '@/contexts/LoloProvider'
 import { ClientType } from '@/types/extrajudicial/client.type'
 import useModal from '@/hooks/useModal'
 import FileCaseQrModal from './Modals/QrModal/FileCaseQrModal'
+import ChangeCaseFileModal from './Modals/ChangeCaseFileModal'
 
 type FileCaseActionsProps = {
   setLoadingGlobal: (state: boolean) => void
   setOwnerFileCase: (value: ClientType & { customerUser: { id: number; name: string } }) => void
 }
 
+type CaseFileToChange = {
+  numberCaseFile: string
+  chbOfCaseFile: number
+}
+
 const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase }: FileCaseActionsProps) => {
+  const [caseFileToChange, setCaseFileToChange] = useState<CaseFileToChange | null>(null)
   const queryClient = useQueryClient()
   const { hideModal: hideQrModal, showModal: showQrModal, visible: visibleQrModal } = useModal()
   const {
@@ -39,7 +46,7 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase }: FileCaseActions
   const chb = selectedBank.idCHB.length ? parseInt(selectedBank.idCHB) : 0
 
   const navigate = useNavigate()
-
+  const { hideModal:hideChangeCaseFileModal, showModal: showChangeCaseFileModal, visible: visibleChangeCaseFileModal } = useModal()
   const {
     actions: { createFileCaseCache, editFileCaseCache },
     onMutateCache,
@@ -131,31 +138,39 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase }: FileCaseActions
     {
       enabled: false,
       onSuccess: (data) => {
-        setValue('id', data.data.id)
-        setValue('numberCaseFile', data.data.numberCaseFile)
-        setValue('judgmentNumber', data.data?.judgmentNumber ?? 0)
-        setValue('secretary', data.data?.secretary ?? '')
-        setValue('amountDemandedSoles', data.data?.amountDemandedSoles ?? 0)
-        setValue('amountDemandedDollars', data.data?.amountDemandedDollars ?? 0)
-        setValue('cautionaryCode', data.data?.cautionaryCode ?? '')
-        setValue('errandCode', data.data?.errandCode ?? '')
-        setValue('judicialSedeId', data.data.judicialSedeId ?? undefined)
-        setValue('judge', data.data?.judge ?? '')
-        setValue('demandDate', moment(data.data.demandDate.split('T')[0]).format('DD-MM-YYYY'))
-        setValue('clientId', data.data.clientId)
-        setValue('cityId', data.data.cityId)
-        setValue('customerUserId', data.data.customerUserId)
-        setValue('judicialCourtId', data.data.judicialCourtId)
-        setValue('judicialSubjectId', data.data.judicialSubjectId)
-        setValue('judicialProceduralWayId', data.data.judicialProceduralWayId)
-        setValue('customerHasBankId', data.data.customerHasBankId)
-        setValue('judicialCourt', data.data?.judicialCourt)
-        setValue('judicialSubject', data.data?.judicialSubject)
-        setValue('judicialProceduralWay', data.data?.judicialProceduralWay)
-        setValue('qrCode', data.data?.qrCode ?? undefined)
-
-        //TODO: Work here
-        setOwnerFileCase(data.data?.client)
+        if(data.data.customerHasBankId !== chb){
+          setCaseFileToChange({
+            numberCaseFile: data.data.numberCaseFile,
+            chbOfCaseFile: data.data.customerHasBankId,
+          })
+          showChangeCaseFileModal()
+        }else {
+          setValue('id', data.data.id)
+          setValue('numberCaseFile', data.data.numberCaseFile)
+          setValue('judgmentNumber', data.data?.judgmentNumber ?? 0)
+          setValue('secretary', data.data?.secretary ?? '')
+          setValue('amountDemandedSoles', data.data?.amountDemandedSoles ?? 0)
+          setValue('amountDemandedDollars', data.data?.amountDemandedDollars ?? 0)
+          setValue('cautionaryCode', data.data?.cautionaryCode ?? '')
+          setValue('errandCode', data.data?.errandCode ?? '')
+          setValue('judicialSedeId', data.data.judicialSedeId ?? undefined)
+          setValue('judge', data.data?.judge ?? '')
+          setValue('demandDate', moment(data.data.demandDate.split('T')[0]).format('DD-MM-YYYY'))
+          setValue('clientId', data.data.clientId)
+          setValue('cityId', data.data.cityId)
+          setValue('customerUserId', data.data.customerUserId)
+          setValue('judicialCourtId', data.data.judicialCourtId)
+          setValue('judicialSubjectId', data.data.judicialSubjectId)
+          setValue('judicialProceduralWayId', data.data.judicialProceduralWayId)
+          setValue('customerHasBankId', data.data.customerHasBankId)
+          setValue('judicialCourt', data.data?.judicialCourt)
+          setValue('judicialSubject', data.data?.judicialSubject)
+          setValue('judicialProceduralWay', data.data?.judicialProceduralWay)
+          setValue('qrCode', data.data?.qrCode ?? undefined)
+  
+          //TODO: Work here
+          setOwnerFileCase(data.data?.client)
+        }
       },
       onError: (error: any) => {
         notification({
@@ -243,6 +258,15 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase }: FileCaseActions
       </Container>
 
       {visibleQrModal ? <FileCaseQrModal isVisible={visibleQrModal} onClose={hideQrModal} /> : null}
+      {visibleChangeCaseFileModal ? (
+        <ChangeCaseFileModal
+          onClose={hideChangeCaseFileModal}
+          refetch={refetch}
+          isVisible={visibleChangeCaseFileModal}
+          numberCaseFile={caseFileToChange?.numberCaseFile}
+          chbOfCaseFile={caseFileToChange?.chbOfCaseFile}
+        />
+      ) : null}
     </Container>
   )
 }
