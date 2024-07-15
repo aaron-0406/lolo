@@ -7,8 +7,10 @@ export const getJudicialCollateralFilesById = async (chb:number, collateralId:nu
   return await axiosClient.get(`${url}/${chb}/${collateralId}/${id}`)
 }
 
-export const getJudicialCollateralFiles = async (collateralId: number, chb: number) => {
-  return await axiosClient.get(`${url}/${chb}/${collateralId}`)
+export const getJudicialCollateralFiles = async (collateralId: number, chb: number, filter?: string) => {
+  let filters = ''
+  filters += filter !== '' && filter !== undefined ? `filter=${filter}&` : ''
+  return await axiosClient.get(`${url}/${chb}/${collateralId}?${filters}`)
 }
 
 export const createJudicialCollateralFiles = async (
