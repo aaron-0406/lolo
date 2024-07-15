@@ -35,14 +35,24 @@ import { KEY_EXT_COBRANZA_NEGOCIACIONES_CACHE } from '../../ExtrajudicialNegotia
 import { useFiltersContext } from '@/contexts/FiltersProvider'
 import { CustomErrorResponse } from 'types/customErrorResponse'
 import EmptyState from '@/ui/EmptyState'
+import RedirectToTransferClientModal from '../Modals/RedirectToTransferClientModal'
+
+type ClientTransfered = {
+  idTrasnferedBank: number;
+  idTransferedClient: string;
+}
 
 const CustomersTable = () => {
   const location = useLocation()
   const currentPath = location.pathname
+  const [clientTransfered, setClientTransfered] = useState<ClientTransfered>({
+    idTrasnferedBank: 0,
+    idTransferedClient: '',
+  })
 
   const {
     client: {
-      customer: { urlIdentifier },
+      customer: { urlIdentifier, customerBanks },
     },
     bank: {
       selectedBank: { idCHB: chb },
@@ -69,6 +79,7 @@ const CustomersTable = () => {
     showModal: showModalTransferClient,
     hideModal: hideModalTransferClient,
   } = useModal()
+  const { visible: visibleRedirectToTransferClient, showModal: showRedirectToTransferClient, hideModal: hideRedirectToTransferClient } = useModal()
 
   const opts = getSearchFilters(currentPath)?.opts ?? { filter: '', limit: 50, page: 1 }
 
@@ -183,8 +194,20 @@ const CustomersTable = () => {
     }
   )
 
+  const getBankName = (id: number) => {
+    const bank = customerBanks.find((customerBank) => customerBank.id === Number(id))
+    return bank?.name ?? id
+  }
+  const onOpenClientTransferModal = (code: string, idBank: number) => {
+    setClientTransfered({
+      idTrasnferedBank: idBank,
+      idTransferedClient: code,
+    })
+    showRedirectToTransferClient()
+  }
+
   const customers = data?.data.clients ?? []
-  const quantity = data?.data.quantity
+  const quantity = data?.data.quantity 
 
   useEffect(() => {
     refetch()
@@ -211,14 +234,14 @@ const CustomersTable = () => {
         loading={isLoading || isLoadingNegotiations || isLoadingFuncionarios}
         isArrayEmpty={!customers.length}
         emptyState={
-            <EmptyStateCell colSpan={customersColumns.length}>
-              <EmptyState
-                title="Recurso no encontrado"
-                description="No se encontraron los datos solicitados. Por favor, intente con otros filtros."
-                buttonLabel="Limpiar filtros"
-                buttonAction={clearAllFilters}
-              />
-            </EmptyStateCell>
+          <EmptyStateCell colSpan={customersColumns.length}>
+            <EmptyState
+              title="Recurso no encontrado"
+              description="No se encontraron los datos solicitados. Por favor, intente con otros filtros."
+              buttonLabel="Limpiar filtros"
+              buttonAction={clearAllFilters}
+            />
+          </EmptyStateCell>
         }
         emptyFirstState={
           <EmptyStateCell colSpan={customersColumns.length}>
@@ -264,6 +287,7 @@ const CustomersTable = () => {
                   {showMessageAboutClientTransferred ? (
                     <>
                       <BodyCell>{`${record.negotiation.name.toUpperCase() || ''}`}</BodyCell>
+                      <BodyCell>{`${'-'}`}</BodyCell>
                       <BodyCell>{`${record.funcionario.name.toUpperCase() || ''}`}</BodyCell>
                       <BodyCell>{`${record.customerUser.name.toUpperCase() || ''}`}</BodyCell>
                       <BodyCell>{`${record.city.name.toUpperCase() || ''}`}</BodyCell>
@@ -306,11 +330,23 @@ const CustomersTable = () => {
                           Cliente Transferido
                         </Text.Body>
                       </BodyCell>
+                      <BodyCell>{`${getBankName(record.chbTransferred ?? 0) ?? ''}`}</BodyCell>
                       <BodyCell>-</BodyCell>
                       <BodyCell>-</BodyCell>
                       <BodyCell>-</BodyCell>
                       <BodyCell>-</BodyCell>
-                      <BodyCell>-</BodyCell>
+                      <BodyCell>
+                        <Button
+                          width="125px"
+                          shape="round"
+                          trailingIcon="ri-profile-fill"
+                          onClick={(event) => {
+                            event.stopPropagation()
+                            onOpenClientTransferModal(record.code, record.chbTransferred ?? 0)
+                          }}
+                          messageTooltip="ver cliente en el banco"
+                        />
+                      </BodyCell>
                     </>
                   )}
                 </tr>
@@ -320,12 +356,24 @@ const CustomersTable = () => {
       </Table>
       <Tooltip place="right" id="cell-tooltip" />
 
-      <DeleteClientModal visible={visibleDeleteClient} onClose={hideDeleteClient} code={codeClient} />
-      <TransferClientModal
-        visible={visibleModalTransferClient}
-        onClose={hideModalTransferClient}
-        code={codeTransferClient}
-      />
+      {visibleDeleteClient ? (
+        <DeleteClientModal visible={visibleDeleteClient} onClose={hideDeleteClient} code={codeClient} />
+      ) : null}
+      {visibleModalTransferClient ? (
+        <TransferClientModal
+          visible={visibleModalTransferClient}
+          onClose={hideModalTransferClient}
+          code={codeTransferClient}
+        />
+      ) : null}
+      {visibleRedirectToTransferClient ? (
+        <RedirectToTransferClientModal
+          visible={visibleRedirectToTransferClient}
+          onClose={hideRedirectToTransferClient}
+          idBank={clientTransfered.idTrasnferedBank}
+          clientCode={clientTransfered.idTransferedClient}
+        />
+      ) : null}
     </Container>
   )
 }
