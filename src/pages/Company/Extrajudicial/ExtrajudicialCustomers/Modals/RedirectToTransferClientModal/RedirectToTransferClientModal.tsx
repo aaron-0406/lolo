@@ -1,15 +1,15 @@
-import { useFiltersContext } from '@/contexts/FiltersProvider';
-import { useLoloContext } from '@/contexts/LoloProvider';
-import Button from '@/ui/Button';
-import Container from '@/ui/Container';
+import { useFiltersContext } from '@/contexts/FiltersProvider'
+import { useLoloContext } from '@/contexts/LoloProvider'
+import Button from '@/ui/Button'
+import Container from '@/ui/Container'
 import Modal from '@/ui/Modal'
-import Text from '@/ui/Text';
-import { useNavigate } from 'react-router-dom';
-import paths from 'shared/routes/paths';
+import Text from '@/ui/Text'
+import { useNavigate } from 'react-router-dom'
+import paths from 'shared/routes/paths'
 
 type Props = {
-  clientCode: string;
-  idBank: number;
+  clientCode: string
+  idBank: number
   visible: boolean
   onClose: () => void
 }
@@ -17,15 +17,11 @@ type Props = {
 const RedirectToTransferClientModal = ({ visible, onClose, idBank, clientCode }: Props) => {
   const navigate = useNavigate()
   const {
-    bank: {
-      setSelectedBank
-    },
+    bank: { setSelectedBank },
     client: { customer },
   } = useLoloContext()
 
-  const {
-    clearAllFilters,
-  } = useFiltersContext()
+  const { clearAllFilters } = useFiltersContext()
 
   const onChangeBank = (key: string) => {
     clearAllFilters()
@@ -43,6 +39,7 @@ const RedirectToTransferClientModal = ({ visible, onClose, idBank, clientCode }:
     navigate(`${paths.cobranza.cobranza(customer.urlIdentifier, clientCode)}`)
     onClose()
   }
+
   return (
     <Modal
       id="redirect-to-transfer-client-modal"
@@ -50,9 +47,9 @@ const RedirectToTransferClientModal = ({ visible, onClose, idBank, clientCode }:
       onClose={onClose}
       clickOutsideToClose={onClose}
       title="Redirecionar al cliente"
-      size='small'
+      size="small"
       footer={
-        <Container width="100%" display='flex' justifyContent='flex-end'>
+        <Container width="100%" display="flex" justifyContent="flex-end">
           <Button
             label="Redirecionar"
             onClick={onRedirectToTransferClient}
@@ -63,11 +60,11 @@ const RedirectToTransferClientModal = ({ visible, onClose, idBank, clientCode }:
         </Container>
       }
     >
-      <Container padding="10px" display='flex' flexDirection='column' gap="10px">
-        <Text.Body size="m" weight='regular'>
+      <Container padding="10px" display="flex" flexDirection="column" gap="10px">
+        <Text.Body size="m" weight="regular">
           Este cliente se encuentra en otro banco.
         </Text.Body>
-        <Text.Body size="m" weight='regular'>
+        <Text.Body size="m" weight="regular">
           ¿Desea redireccionar al banco de este cliente?
         </Text.Body>
       </Container>

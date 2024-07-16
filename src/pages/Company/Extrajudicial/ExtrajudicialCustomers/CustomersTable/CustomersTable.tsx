@@ -38,8 +38,8 @@ import EmptyState from '@/ui/EmptyState'
 import RedirectToTransferClientModal from '../Modals/RedirectToTransferClientModal'
 
 type ClientTransfered = {
-  idTrasnferedBank: number;
-  idTransferedClient: string;
+  idTrasnferedBank: number
+  idTransferedClient: string
 }
 
 const CustomersTable = () => {
@@ -65,7 +65,7 @@ const CustomersTable = () => {
   const {
     filterOptions: { getSelectedFilters, setSelectedFilters },
     filterSearch: { getSearchFilters, setSearchFilters },
-    clearAllFilters
+    clearAllFilters,
   } = useFiltersContext()
 
   const navigate = useNavigate()
@@ -79,7 +79,11 @@ const CustomersTable = () => {
     showModal: showModalTransferClient,
     hideModal: hideModalTransferClient,
   } = useModal()
-  const { visible: visibleRedirectToTransferClient, showModal: showRedirectToTransferClient, hideModal: hideRedirectToTransferClient } = useModal()
+  const {
+    visible: visibleRedirectToTransferClient,
+    showModal: showRedirectToTransferClient,
+    hideModal: hideRedirectToTransferClient,
+  } = useModal()
 
   const opts = getSearchFilters(currentPath)?.opts ?? { filter: '', limit: 50, page: 1 }
 
@@ -207,7 +211,7 @@ const CustomersTable = () => {
   }
 
   const customers = data?.data.clients ?? []
-  const quantity = data?.data.quantity 
+  const quantity = data?.data.quantity
 
   useEffect(() => {
     refetch()
@@ -330,7 +334,11 @@ const CustomersTable = () => {
                           Cliente Transferido
                         </Text.Body>
                       </BodyCell>
-                      <BodyCell>{`${getBankName(record.chbTransferred ?? 0) ?? ''}`}</BodyCell>
+                      <BodyCell textAlign="center">
+                        <Text.Body size="m" weight="bold">
+                          {`${getBankName(record.chbTransferred ?? 0) ?? ''}`}
+                        </Text.Body>
+                      </BodyCell>
                       <BodyCell>-</BodyCell>
                       <BodyCell>-</BodyCell>
                       <BodyCell>-</BodyCell>
@@ -344,7 +352,7 @@ const CustomersTable = () => {
                             event.stopPropagation()
                             onOpenClientTransferModal(record.code, record.chbTransferred ?? 0)
                           }}
-                          messageTooltip="ver cliente en el banco"
+                          messageTooltip="Ver cliente en el banco"
                         />
                       </BodyCell>
                     </>
