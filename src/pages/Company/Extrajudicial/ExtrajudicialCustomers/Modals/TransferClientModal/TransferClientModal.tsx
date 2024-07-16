@@ -14,8 +14,8 @@ import companyCustomersCache from '../../CustomersTable/utils/company-customers.
 
 type TransferClientModalProps = {
   visible: boolean
-  onClose: () => void
   code: string
+  onClose: () => void
 }
 
 const TransferClientModal = ({ visible, onClose, code }: TransferClientModalProps) => {

@@ -30,6 +30,8 @@ import notification from '@/ui/notification'
 import { CustomErrorResponse } from 'types/customErrorResponse'
 import Text from '@/ui/Text'
 import EmptyState from '@/ui/EmptyState'
+import { getSedeByCHB } from '@/services/judicial/judicial-sede.service'
+import { KEY_JUDICIAL_SEDE_CACHE } from '../../JudicialSede/SedeTable/utils/judicial-sede.cache'
 
 const JudicialFileCasesTable = () => {
   const navigate = useNavigate()
@@ -137,6 +139,20 @@ const JudicialFileCasesTable = () => {
     }
   })
 
+  const { data: dataSede, isLoading: isLoadingSede } = useQuery(
+    [KEY_JUDICIAL_SEDE_CACHE, parseInt(chb?.length ? chb : '0')],
+    async () => {
+      return await getSedeByCHB(parseInt(chb.length ? chb : '0'))
+    }
+  )
+
+  const optionsSede = dataSede?.data?.map((sede: { id: number; sede: string }) => {
+    return {
+      key: sede.id,
+      label: sede.sede,
+    }
+  })
+
   const optionsUsers = users.map((user) => {
     return {
       key: user.id,
@@ -157,6 +173,7 @@ const JudicialFileCasesTable = () => {
       const subjects = getIDsByIdentifier('casesFiles.datatable.header.subject', selectedFilterOptions)
       const users = getIDsByIdentifier('casesFiles.datatable.header.user', selectedFilterOptions)
       const proceduralWays = getIDsByIdentifier('casesFiles.datatable.header.proceduralWay', selectedFilterOptions)
+      const sedes = getIDsByIdentifier('casesFiles.datatable.header.sede', selectedFilterOptions)
 
       //TODO: Add users
       return await getFileCasesByCHB(
@@ -168,7 +185,8 @@ const JudicialFileCasesTable = () => {
         JSON.stringify(courts),
         JSON.stringify(proceduralWays),
         JSON.stringify(subjects),
-        JSON.stringify(users)
+        JSON.stringify(users),
+        JSON.stringify(sedes)
       )
     },
     {
@@ -206,13 +224,14 @@ const JudicialFileCasesTable = () => {
           { identifier: 'casesFiles.datatable.header.subject', options: optionsSubjects },
           { identifier: 'casesFiles.datatable.header.proceduralWay', options: optionsProceduralWay },
           { identifier: 'casesFiles.datatable.header.user', options: optionsUsers },
+          { identifier: 'casesFiles.datatable.header.sede', options: optionsSede },
         ]}
         top="250px"
         columns={judicialCaseFileColumns}
         selectedFilterOptions={selectedFilterOptions}
         onChangeFilterOptions={onChangeFilterOptions}
         onChangeSortingOptions = { onChangeSortingOptions }
-        loading={isLoading || isLoadingProceduralWay || isLoadingSubject || isLoadingCourts}
+        loading={isLoading || isLoadingProceduralWay || isLoadingSubject || isLoadingCourts || isLoadingSede}
         isArrayEmpty={!judicialFileCases.length}
         emptyState={
           <EmptyStateCell colSpan={judicialCaseFileColumns.length}>
