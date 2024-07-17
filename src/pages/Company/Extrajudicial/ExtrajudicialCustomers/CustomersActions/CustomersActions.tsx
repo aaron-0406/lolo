@@ -64,7 +64,7 @@ const CustomersActions = () => {
   }
 
   return (
-    <StyledContainer width="100%" display="flex" flexDirection="column" alignItems="center" padding="20px" gap="20px">
+    <StyledContainer width="100%" display="flex" flexDirection="column" alignItems="center" padding="20px 20px 0px 20px" gap="20px">
       <Container className="actions__select" width="100%">
         <Select
           width="100%"
@@ -74,7 +74,7 @@ const CustomersActions = () => {
           onChange={onChangeBank}
         />
       </Container>
-      <Container className="actions__textfield" width="100%" display="flex" alignItems="center" gap="10px">
+      <Container className="actions__textfield" width="100%" display="flex" alignItems="end" gap="10px">
         <TextField
           onChange={onChangeSearch}
           width="100%"
