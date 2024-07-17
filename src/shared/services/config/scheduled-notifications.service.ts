@@ -12,7 +12,7 @@ export const getScheduledNotificationByChb = async (chb: number) => {
 export const createScheduledNotification = async (
   ScheduledNotification: Omit<ScheduledNotificationsType, 'id' | 'createdAt' | 'deletedAt' | 'updatedAt'>
 ) => {
-  return await axiosClient.post(`${url}/`, ScheduledNotification)
+  return await axiosClient.post(`${url}/`, {...ScheduledNotification, daysToNotify: JSON.stringify(ScheduledNotification.daysToNotify)})
 }
 
 export const updateScheduledNotification = async (
@@ -22,7 +22,7 @@ export const updateScheduledNotification = async (
     'id' | 'customerHasBankId' | 'createdAt' | 'deletedAt' | 'updatedAt'
   >
 ) => {
-  return await axiosClient.put(`${url}/${id}`, ScheduledNotification)
+  return await axiosClient.put(`${url}/${id}`, {...ScheduledNotification, daysToNotify: JSON.stringify(ScheduledNotification.daysToNotify)})
 }
 
 export const deleteScheduledNotification = async (id: number) => {

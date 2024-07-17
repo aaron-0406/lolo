@@ -14,8 +14,8 @@ import companyCustomersCache from '../../CustomersTable/utils/company-customers.
 
 type TransferClientModalProps = {
   visible: boolean
-  onClose: () => void
   code: string
+  onClose: () => void
 }
 
 const TransferClientModal = ({ visible, onClose, code }: TransferClientModalProps) => {
@@ -41,7 +41,7 @@ const TransferClientModal = ({ visible, onClose, code }: TransferClientModalProp
     .filter((bank) => bank.id !== (!!idBank ? parseInt(idBank) : 0))
     .map((bank) => {
       return {
-        key: String(bank.id),
+        key: String(bank.CUSTOMER_HAS_BANK.id),
         label: bank.name,
       }
     })

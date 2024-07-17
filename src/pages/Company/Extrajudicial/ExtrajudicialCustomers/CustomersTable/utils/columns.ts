@@ -21,6 +21,12 @@ export const customersColumns: ColumProps[] = [
     isThereFilter: true,
   },
   {
+    id: 'customers.datatable.header.transferTo',
+    title: 'TRANSFERIDO A',
+    width: '30%',
+    justifyContent: 'space-between',
+  },
+  {
     id: 'customers.datatable.header.funcionario',
     title: 'FUNCIONARIO',
     width: '30%',

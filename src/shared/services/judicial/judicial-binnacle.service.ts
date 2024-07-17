@@ -5,8 +5,13 @@ const API = axiosClient.getUri()
 
 const url = `${API}/judicial/binnacle`
 
-export const getBinnacleByFileCase = async (fileCase: number) => {
-  return await axiosClient.get(`${url}/file-case/${fileCase}`)
+export const getBinnacleByFileCase = async (fileCase: number, sortingOptions:{
+  sortBy: string
+  order: 'ASC' | 'DESC'
+}) => {
+  let filters = ''
+  filters += !!sortingOptions ? `sortBy=${sortingOptions.sortBy}&order=${sortingOptions.order}&` : ''
+  return await axiosClient.get(`${url}/file-case/${fileCase}?${filters}`)
 }
 
 export const getBinnacleById = async (id: number) => {

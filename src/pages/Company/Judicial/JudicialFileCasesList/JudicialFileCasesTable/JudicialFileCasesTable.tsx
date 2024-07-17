@@ -34,6 +34,8 @@ import Checkbox from '@/ui/Checkbox'
 import FloatingContainer from '@/ui/FloatingContainer'
 import type { FloatingContainerButtonsType } from '@/ui/FloatingContainer/interfaces'
 import { JudicialCaseFileType } from '@/types/judicial/judicial-case-file.type'
+import { getSedeByCHB } from '@/services/judicial/judicial-sede.service'
+import { KEY_JUDICIAL_SEDE_CACHE } from '../../JudicialSede/SedeTable/utils/judicial-sede.cache'
 
 const JudicialFileCasesTable = () => {
   const navigate = useNavigate()
@@ -57,12 +59,14 @@ const JudicialFileCasesTable = () => {
   const {
     filterOptions: { getSelectedFilters, setSelectedFilters },
     filterSearch: { getSearchFilters, setSearchFilters },
+    sorting: { getSortingOptions, setSortingOptions },
     clearAllFilters,
   } = useFiltersContext()
 
   const [fileCaseId, setFileCaseId] = useState<number>(0)
   const [caseFileSelected, setCaseFileSelected] = useState<Array<JudicialCaseFileType>>([])
 
+  const sortingOptions = getSortingOptions(currentPath)?.opts ?? { sortBy: '', order: 'ASC' }
   const selectedFilterOptions = getSelectedFilters(currentPath)?.filters ?? []
   const opts = getSearchFilters(currentPath)?.opts ?? { filter: '', limit: 50, page: 1 }
 
@@ -87,6 +91,10 @@ const JudicialFileCasesTable = () => {
       })
       setSelectedFilters({ url: currentPath, filters: selectedFiltersUpdated })
     }
+  }
+
+  const onChangeSortingOptions = (sortBy: string, order: 'ASC' | 'DESC') => {
+    setSortingOptions({ url: currentPath, opts: { sortBy, order } })
   }
 
   const hasAccessToTheButton = useMemo(() => {
@@ -136,6 +144,20 @@ const JudicialFileCasesTable = () => {
     }
   })
 
+  const { data: dataSede, isLoading: isLoadingSede } = useQuery(
+    [KEY_JUDICIAL_SEDE_CACHE, parseInt(chb?.length ? chb : '0')],
+    async () => {
+      return await getSedeByCHB(parseInt(chb.length ? chb : '0'))
+    }
+  )
+
+  const optionsSede = dataSede?.data?.map((sede: { id: number; sede: string }) => {
+    return {
+      key: sede.id,
+      label: sede.sede,
+    }
+  })
+
   const optionsUsers = users.map((user) => {
     return {
       key: user.id,
@@ -156,6 +178,7 @@ const JudicialFileCasesTable = () => {
       const subjects = getIDsByIdentifier('casesFiles.datatable.header.subject', selectedFilterOptions)
       const users = getIDsByIdentifier('casesFiles.datatable.header.user', selectedFilterOptions)
       const proceduralWays = getIDsByIdentifier('casesFiles.datatable.header.proceduralWay', selectedFilterOptions)
+      const sedes = getIDsByIdentifier('casesFiles.datatable.header.sede', selectedFilterOptions)
 
       //TODO: Add users
       return await getFileCasesByCHB(
@@ -163,10 +186,12 @@ const JudicialFileCasesTable = () => {
         opts.page,
         opts.limit,
         opts.filter,
+        sortingOptions,
         JSON.stringify(courts),
         JSON.stringify(proceduralWays),
         JSON.stringify(subjects),
-        JSON.stringify(users)
+        JSON.stringify(users),
+        JSON.stringify(sedes)
       )
     },
     {
@@ -226,6 +251,10 @@ const JudicialFileCasesTable = () => {
     refetch()
   }, [opts.filter.length, opts.page])
 
+  useEffect(() => {
+    refetch()
+  }, [sortingOptions.order])
+
   return (
     <Container width="100%" height="calc(100% - 112px)" padding="20px">
       <Pagination count={quantity} opts={opts} setOptsFilter={setSearchFilters} url={currentPath} />
@@ -235,12 +264,14 @@ const JudicialFileCasesTable = () => {
           { identifier: 'casesFiles.datatable.header.subject', options: optionsSubjects },
           { identifier: 'casesFiles.datatable.header.proceduralWay', options: optionsProceduralWay },
           { identifier: 'casesFiles.datatable.header.user', options: optionsUsers },
+          { identifier: 'casesFiles.datatable.header.sede', options: optionsSede },
         ]}
         top="250px"
         columns={judicialCaseFileColumns}
         selectedFilterOptions={selectedFilterOptions}
         onChangeFilterOptions={onChangeFilterOptions}
-        loading={isLoading || isLoadingProceduralWay || isLoadingSubject || isLoadingCourts}
+        onChangeSortingOptions={onChangeSortingOptions}
+        loading={isLoading || isLoadingProceduralWay || isLoadingSubject || isLoadingCourts || isLoadingSede}
         isArrayEmpty={!judicialFileCases.length}
         emptyState={
           <EmptyStateCell colSpan={judicialCaseFileColumns.length}>
