@@ -29,11 +29,13 @@ type TableProps = {
   selectedFilterOptions?: Array<FilterOptionsProps>
   onChangeFilterOptions?: (filterOption: FilterOptionsProps) => void
   onChangeSortingOptions?: (sortBy: string, order: 'ASC' | 'DESC') => void
+  onChangeCheckBoxAll?: (state: boolean) => void
   loading?: boolean
   error?: boolean | undefined
   leftSpace?: number
   rightSpace?: number
   isArrayEmpty?: boolean
+  isCheckboxChecked?: boolean
   emptyState?: React.ReactNode
   emptyFirstState?: React.ReactNode
   children?: React.ReactNode
@@ -45,6 +47,7 @@ const Table: React.FC<TableProps> = ({
   selectedFilterOptions,
   onChangeFilterOptions,
   onChangeSortingOptions, 
+  onChangeCheckBoxAll,
   loading,
   error,
   children,
@@ -54,6 +57,7 @@ const Table: React.FC<TableProps> = ({
   emptyState,
   emptyFirstState,
   isArrayEmpty = false,
+  isCheckboxChecked = false,
 }) => {
   const hasFilter = selectedFilterOptions?.length && selectedFilterOptions?.some((filter) => filter.options.length)
   return (
@@ -78,6 +82,7 @@ const Table: React.FC<TableProps> = ({
                   textTransform={textTransform}
                   options={options}
                   selectedOptions={selectedOptions}
+                  onChangeCheckBoxAll={onChangeCheckBoxAll}
                   onChangeFilterOptions={(options) => onChangeFilterOptions?.({ identifier: id, options })}
                   onChangeSortingOptions={onChangeSortingOptions}
                 >
@@ -88,28 +93,34 @@ const Table: React.FC<TableProps> = ({
           </tr>
         </thead>
         <tbody className="table-body">
-          {!!loading ? columns.map((_, index) => <tr key = {index}>
-            {
-              columns.map((column, index)=> (
-                <td key={index} >
-                  <Container width="100%" height="100%" display='flex' justifyContent='center' alignItems='center'>
-                    <Skeleton
-                      width={
-                        column.width
-                        ? parseInt(column.width.replace('%', '')) * (window.innerWidth / 100) 
-                          : 170
-                      }
-                      height={40}
-                      className="skeleton"
-                      baseColor="#f0f0f0"
-                      highlightColor="#e6e6e6"
-                    />
-                  </Container>
-                </td>
+          {!!loading
+            ? columns.map((_, index) => (
+                <tr key={index}>
+                  {columns.map((column, index) => (
+                    <td key={index}>
+                      <Container width="100%" height="100%" display="flex" justifyContent="center" alignItems="center">
+                        <Skeleton
+                          width={
+                            column.width ? parseInt(column.width.replace('%', '')) * (window.innerWidth / 100) : 170
+                          }
+                          height={40}
+                          className="skeleton"
+                          baseColor="#f0f0f0"
+                          highlightColor="#e6e6e6"
+                        />
+                      </Container>
+                    </td>
+                  ))}
+                </tr>
               ))
-            }
-          </tr>) : null}
+            : null}
           {!error && !loading && children}
+
+          {!!isCheckboxChecked ? (
+            <tr>
+              <td></td>
+            </tr>
+          ) : null}
           {!!error && !loading && (
             <tr className="row-error">
               <td colSpan={columns.length}>
@@ -160,10 +171,10 @@ const StyledOrderTable = styled.table`
       background: ${theme.colors['Neutral2']};
     }
 
-    .skeleton{
+    .skeleton {
       gap: 10px;
     }
-    .table-body{
+    .table-body {
       width: 100%;
       height: 100%;
     }
