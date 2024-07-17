@@ -4,10 +4,10 @@ import type CSS from 'csstype'
 import Text from '@/ui/Text'
 import Container from '@/ui/Container'
 import Icon from '@/ui/Icon'
-import Checkbox from '@/ui/Checkbox'
 import DropdownList from '@/ui/DropdownList'
 import { SelectItem } from '@/ui/Select/interfaces'
 import ClickOutSideComponent from '@/hooks/useClickOutside'
+import Checkbox from '@/ui/Checkbox'
 
 type HeaderCellProps = {
   width?: string
@@ -16,9 +16,11 @@ type HeaderCellProps = {
   children: React.ReactNode
   isThereFilter?: boolean
   onChangeCheckBoxAll?: (state: boolean) => void
+  isSortable?: boolean
   options?: Array<SelectItem<any, any>>
   selectedOptions?: Array<SelectItem<any, any>>
   onChangeFilterOptions?: (options: Array<SelectItem<any, any>>) => void
+  onChangeSortingOptions?: (sortBy: string, order: 'ASC' | 'DESC') => void
 }
 
 const HeaderCell: React.FC<HeaderCellProps> = ({
@@ -28,11 +30,15 @@ const HeaderCell: React.FC<HeaderCellProps> = ({
   width,
   isThereFilter = false,
   onChangeCheckBoxAll,
+  isSortable = false,
   options,
   selectedOptions,
   onChangeFilterOptions,
+  onChangeSortingOptions,
 }) => {
   const [toggleSelect, setToggleSelect] = useState<boolean>(false)
+  const [sortOrder, setSortOrder] = useState<'ASC' | 'DESC'>('ASC')
+
   const selectedFilterOptions = selectedOptions ?? []
 
   const onSelectToogle = () => {
@@ -52,6 +58,14 @@ const HeaderCell: React.FC<HeaderCellProps> = ({
     } else {
       const filterOptions = selectedFilterOptions.filter((filterOption) => filterOption.key !== option.key)
       onChangeFilterOptions?.(filterOptions)
+    }
+  }
+
+  const onSortItems = () => {
+    if (isSortable) {
+      const newOrder = sortOrder === 'ASC' ? 'DESC' : 'ASC'
+      setSortOrder(newOrder)
+      onChangeSortingOptions?.(children as string, newOrder)
     }
   }
 
@@ -105,6 +119,11 @@ const HeaderCell: React.FC<HeaderCellProps> = ({
               <Icon size={20} remixClass="ri-filter-2-line" color="Neutral6" />
             </Container>
           )}
+          {isSortable ? (
+            <Container margin="0 0 0 10px" width="60px" height="24px" className="arrow__icon" onClick={onSortItems}>
+              <Icon size={20} remixClass="ri-arrow-up-down-line" color="Neutral6" className="arrow__icon" />
+            </Container>
+          ) : null}
         </Container>
 
         {toggleSelect && (
@@ -141,7 +160,7 @@ const StyledTh = styled.th<HeaderCellProps>`
       }
     `}
 
-    ${!!textTransform &&
+      ${!!textTransform &&
     css`
       text-transform: ${textTransform};
     `}

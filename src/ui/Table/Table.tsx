@@ -14,6 +14,7 @@ export type ColumProps = {
   justifyContent?: CSS.Property.JustifyContent
   textTransform?: CSS.Property.TextTransform
   isThereFilter?: boolean
+  isSortable?: boolean
 }
 
 export type FilterOptionsProps = {
@@ -27,6 +28,7 @@ type TableProps = {
   filterOptions?: Array<FilterOptionsProps>
   selectedFilterOptions?: Array<FilterOptionsProps>
   onChangeFilterOptions?: (filterOption: FilterOptionsProps) => void
+  onChangeSortingOptions?: (sortBy: string, order: 'ASC' | 'DESC') => void
   onChangeCheckBoxAll?: (state: boolean) => void
   loading?: boolean
   error?: boolean | undefined
@@ -44,6 +46,7 @@ const Table: React.FC<TableProps> = ({
   filterOptions,
   selectedFilterOptions,
   onChangeFilterOptions,
+  onChangeSortingOptions,
   onChangeCheckBoxAll,
   loading,
   error,
@@ -62,29 +65,33 @@ const Table: React.FC<TableProps> = ({
       <StyledOrderTable>
         <thead className="table-header">
           <tr>
-            {columns.map(({ justifyContent = 'left', textTransform, width, title, id, isThereFilter }, index) => {
-              const filterOption = filterOptions?.find((option) => option.identifier === id)
-              const options = filterOption?.options
+            {columns.map(
+              ({ justifyContent = 'left', textTransform, width, title, id, isThereFilter, isSortable }, index) => {
+                const filterOption = filterOptions?.find((option) => option.identifier === id)
+                const options = filterOption?.options
 
-              const selectedOption = selectedFilterOptions?.find((option) => option.identifier === id)
-              const selectedOptions = selectedOption?.options
+                const selectedOption = selectedFilterOptions?.find((option) => option.identifier === id)
+                const selectedOptions = selectedOption?.options
 
-              return (
-                <HeaderCell
-                  key={index}
-                  isThereFilter={isThereFilter}
-                  width={loading ? '' : width}
-                  justifyContent={justifyContent}
-                  textTransform={textTransform}
-                  options={options}
-                  selectedOptions={selectedOptions}
-                  onChangeCheckBoxAll={onChangeCheckBoxAll}
-                  onChangeFilterOptions={(options) => onChangeFilterOptions?.({ identifier: id, options })}
-                >
-                  {title}
-                </HeaderCell>
-              )
-            })}
+                return (
+                  <HeaderCell
+                    key={index}
+                    isThereFilter={isThereFilter}
+                    isSortable={isSortable}
+                    width={loading ? '' : width}
+                    justifyContent={justifyContent}
+                    textTransform={textTransform}
+                    options={options}
+                    selectedOptions={selectedOptions}
+                    onChangeCheckBoxAll={onChangeCheckBoxAll}
+                    onChangeFilterOptions={(options) => onChangeFilterOptions?.({ identifier: id, options })}
+                    onChangeSortingOptions={onChangeSortingOptions}
+                  >
+                    {title}
+                  </HeaderCell>
+                )
+              }
+            )}
           </tr>
         </thead>
         <tbody className="table-body">
@@ -116,6 +123,7 @@ const Table: React.FC<TableProps> = ({
               <td></td>
             </tr>
           ) : null}
+
           {!!error && !loading && (
             <tr className="row-error">
               <td colSpan={columns.length}>
@@ -123,7 +131,9 @@ const Table: React.FC<TableProps> = ({
               </td>
             </tr>
           )}
+
           {hasFilter && isArrayEmpty && !loading ? emptyState : null}
+
           {!hasFilter && isArrayEmpty && !loading ? emptyFirstState : null}
         </tbody>
       </StyledOrderTable>

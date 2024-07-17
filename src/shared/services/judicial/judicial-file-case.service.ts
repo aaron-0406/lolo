@@ -23,10 +23,15 @@ export const getFileCasesByCHB = async (
   page: number,
   limit: number,
   filter?: string,
+  sorting?: {
+    sortBy: string
+    order: 'ASC' | 'DESC'
+  },
   courts?: string,
   proceduralWays?: string,
   subjects?: string,
-  users?: string
+  users?: string,
+  sedes?: string
 ) => {
   let filters = ''
   filters += filter !== '' && filter !== undefined ? `filter=${filter}&` : ''
@@ -34,8 +39,14 @@ export const getFileCasesByCHB = async (
   filters += !!proceduralWays?.length ? `proceduralWays=${proceduralWays}&` : 'proceduralWays=[]&'
   filters += !!users?.length ? `users=${users}&` : 'users=[]&'
   filters += !!subjects?.length ? `subjects=${subjects}&` : 'subjects=[]&'
+  filters += !!sedes?.length ? `sedes=${sedes}&` : 'sedes=[]&'
+  filters += !!sorting ? `sortBy=${sorting.sortBy}&order=${sorting.order}&` : ''
 
   return await axiosClient.get(`${url}/chb/${id}?${filters}page=${page}&limit=${limit}`)
+}
+
+export const createQrCode = async (numberCase: number, chb: number) => {
+  return await axiosClient.post(`${url}/qr-code/${numberCase}/${chb}`)
 }
 
 export const createFileCase = async (
@@ -65,7 +76,10 @@ export const updateFileCase = async (id: number, fileCase: Omit<JudicialCaseFile
   return await axiosClient.patch(`${url}/${id}`, fileCase)
 }
 
-export const updateFileCaseProcessStatus = async (id: number, processStatus: Omit<JudicialCasefileProcessStatusType,'id'>) => {
+export const updateFileCaseProcessStatus = async (
+  id: number,
+  processStatus: Omit<JudicialCasefileProcessStatusType, 'id'>
+) => {
   return await axiosClient.patch(`${url}/${id}/process-status`, processStatus)
 }
 

@@ -6,7 +6,7 @@ const regexPatternNumberFileCase = /^\d{5}-\d{4}-\d{1,4}-\d{4}-[A-Z]{2}-[A-Z]{2}
 const JudicialFileCaseSchema: yup.SchemaOf<
   Omit<
     JudicialCaseFileType,
-    'id' | 'createdAt' | 'processComment' | 'processStatus' | 'processReasonId' | 'idJudicialCaseFileRelated' | 'bankId'
+    'id' | 'createdAt' | 'processComment' | 'processStatus' | 'processReasonId' | 'idJudicialCaseFileRelated' | 'bankId' | 'qrCode'
   >
 > = yup.object().shape({
   numberCaseFile: yup.string().required().matches(regexPatternNumberFileCase, {

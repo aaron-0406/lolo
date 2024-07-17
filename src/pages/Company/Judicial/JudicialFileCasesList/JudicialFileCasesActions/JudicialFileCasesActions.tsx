@@ -1,5 +1,6 @@
 import { useFiltersContext } from '@/contexts/FiltersProvider'
 import { useLoloContext } from '@/contexts/LoloProvider'
+import useModal from '@/hooks/useModal'
 import Button from '@/ui/Button'
 import Container from '@/ui/Container'
 import Select from '@/ui/Select'
@@ -8,12 +9,17 @@ import TextField from '@/ui/fields/TextField'
 import { useLocation, useNavigate } from 'react-router-dom'
 import paths from 'shared/routes/paths'
 import styled, { css } from 'styled-components'
+import JudicialCaseFilesScanQrModal from './Modals/JudicialCaseFilesScanQrModal'
 
 const JudicialFileCasesActions = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const currentPath = location.pathname
-
+  const {
+    hideModal: hideScanQrModal,
+    showModal: showScanQrModal,
+    visible: isVisebleScanQrModal,
+  } = useModal()
   const {
     client: { customer },
     bank: { selectedBank, setSelectedBank },
@@ -64,7 +70,7 @@ const JudicialFileCasesActions = () => {
           onChange={onChangeBank}
         />
       </Container>
-      <Container className="actions__textfield" width="100%" display="flex" alignItems="center" gap="10px">
+      <Container className="actions__textfield" width="100%" display="flex" alignItems="end" gap="10px">
         <TextField
           onChange={onChangeSearch}
           width="100%"
@@ -76,6 +82,15 @@ const JudicialFileCasesActions = () => {
         <Button
           width="100px"
           shape="round"
+          trailingIcon="ri-qr-code-line"
+          permission="P13-01"
+          messageTooltip="Escanea código QR"
+          disabled={!selectedBank.idBank}
+          onClick={showScanQrModal}
+        />
+        <Button
+          width="100px"
+          shape="round"
           trailingIcon="ri-add-fill"
           onClick={handleClickCaseFile}
           disabled={!selectedBank.idBank}
@@ -83,6 +98,9 @@ const JudicialFileCasesActions = () => {
           messageTooltip="Agregar expediente"
         />
       </Container>
+      {isVisebleScanQrModal ? (
+        <JudicialCaseFilesScanQrModal isVisible={isVisebleScanQrModal} onClose={hideScanQrModal} />
+      ) : null}
     </StyledContainer>
   )
 }

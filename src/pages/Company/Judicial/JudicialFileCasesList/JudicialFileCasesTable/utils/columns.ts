@@ -18,6 +18,7 @@ export const judicialCaseFileColumns: ColumProps[] = [
     title: 'CLIENTE',
     width: '10%',
     justifyContent: 'left',
+    isSortable: true,
   },
   {
     id: 'casesFiles.datatable.header.processStatus',
@@ -47,10 +48,11 @@ export const judicialCaseFileColumns: ColumProps[] = [
     isThereFilter: true,
   },
   {
-    id: 'casesFiles.datatable.header.judicialSedeId',
+    id: 'casesFiles.datatable.header.sede',
     title: 'SEDE JUDICIAL',
     width: '10%',
     justifyContent: 'left',
+    isThereFilter: true,
   },
   {
     id: 'casesFiles.datatable.header.proceduralWay',
