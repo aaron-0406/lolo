@@ -13,8 +13,9 @@ import Button from "@/ui/Button"
 import { useNavigate, useParams } from "react-router-dom"
 import { useLoloContext } from "@/contexts/LoloProvider"
 import paths from "shared/routes/paths"
-import DeleteCollateralAuctionRoundModal from "../../JudicialCollateralAuctionRoundList/Modals/DeleteCollateralAuctionRoundModal"
 import useModal from "@/hooks/useModal"
+import { KEY_JUDICIAL_FILE_CASE_AUCTION_ROUND_LIST_CACHE } from "./utils/judicial-file-case-auction-round-list-table.cache"
+import DeleteCaseFileAuctionRoundModal from "../Modals/DeleteCollateralAuctionRoundModal/DeleteCollateralAuctionRoundModal"
 
 type JudicialFileCaseAuctionRoundListTableProps = {
   caseFileId: number
@@ -23,19 +24,18 @@ type JudicialFileCaseAuctionRoundListTableProps = {
 const JudicialFileCaseAuctionRoundListTable = ( { caseFileId } : JudicialFileCaseAuctionRoundListTableProps ) => {
   const navigate = useNavigate()
   const codeParams = useParams().code ?? ''
-  const collateralCode = useParams().collateralCode ?? ''
-  const [auctionRoundId, setAuctionRoundId] = useState<number>(0)
+  const [auctionRound, setAuctionRound] = useState<{id: number, collateralId: number}>({id: 0, collateralId: 0})
   const {
     hideModal: hideDeleteCollateralAuctionRoundModal,
     showModal: showDeleteCollateralAuctionRoundModal,
     visible: visibleDeleteCollateralAuctionRoundModal,
   } = useModal()
-
   const {
     client: { customer },
+    
   } = useLoloContext()
   const { data, refetch } = useQuery<AxiosResponse<any, Error>>(
-    ['get-all-judicial-auctions-round-by-case-file-id', caseFileId],
+    [KEY_JUDICIAL_FILE_CASE_AUCTION_ROUND_LIST_CACHE, caseFileId],
     async () => {
       return await getAllJudicialAuctionsRoundByCaseFileId(caseFileId)
     },
@@ -57,9 +57,9 @@ const JudicialFileCaseAuctionRoundListTable = ( { caseFileId } : JudicialFileCas
     // eslint-disable-next-line
   }, [caseFileId])
 
-  // const onClickRow = (id: number) => {
-  //   navigate(paths.judicial.collateralAuction(customer.urlIdentifier, codeParams, collateralCode, id.toString()))
-  // }
+  const onClickRow = (id: number, collateralId: number) => {
+    navigate(paths.judicial.collateralAuction(customer.urlIdentifier, codeParams, collateralId.toString(), id.toString()))
+  }
 
   return (
     <Container width="100%" height="100%" padding="0px 20px 0px 20px">
@@ -81,13 +81,13 @@ const JudicialFileCaseAuctionRoundListTable = ( { caseFileId } : JudicialFileCas
         {Array.isArray(data?.data) && data?.data.length
           ? data?.data.map((auction: any, index: number) => (
               <tr key={index} 
-              // onClick={() => onClickRow(auction.id)}
+              onClick={() => onClickRow(auction.id, auction.judicialCollateralIdJudicialCollateral)}
               >
                 <BodyCell textAlign="center">{index + 1}</BodyCell>
                 <BodyCell textAlign="center">{auction?.appraisalExperts}</BodyCell>
                 <BodyCell textAlign="center">{auction?.auctionType}</BodyCell>
                 <BodyCell textAlign="center">{auction?.auctionerName}</BodyCell>
-                {/* <BodyCell textAlign="center">
+                <BodyCell textAlign="center">
                   {
                     <Container display="flex" gap="15px" justifyContent="space-around">
                       <Button
@@ -97,7 +97,10 @@ const JudicialFileCaseAuctionRoundListTable = ( { caseFileId } : JudicialFileCas
                         trailingIcon="ri-delete-bin-line"
                         onClick={(event) => {
                           event.stopPropagation()
-                          setAuctionRoundId(auction?.id)
+                          setAuctionRound({
+                            id: auction?.id,
+                            collateralId: Number(auction.judicialCollateralIdJudicialCollateral)
+                          })
                           showDeleteCollateralAuctionRoundModal()
                         }}
                         permission="P13-01-06-01-04-04"
@@ -105,16 +108,18 @@ const JudicialFileCaseAuctionRoundListTable = ( { caseFileId } : JudicialFileCas
                       />
                     </Container>
                   }
-                </BodyCell> */}
+                </BodyCell>
               </tr>
             ))
           : null}
       </Table>
       {visibleDeleteCollateralAuctionRoundModal ? (
-        <DeleteCollateralAuctionRoundModal
+        <DeleteCaseFileAuctionRoundModal
           isOpen={visibleDeleteCollateralAuctionRoundModal}
           onClose={hideDeleteCollateralAuctionRoundModal}
-          id={auctionRoundId}
+          id={auctionRound.id}
+          collateralId={auctionRound.collateralId}
+          caseFileId={caseFileId}
         />
       ) : null}
     </Container>

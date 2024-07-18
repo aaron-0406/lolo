@@ -6,16 +6,16 @@ import { AxiosError, AxiosResponse } from 'axios'
 import { useMutation, useQueryClient } from 'react-query'
 import { CustomErrorResponse } from '../../../../../../types/customErrorResponse';
 import notification from '@/ui/notification'
-import { deleteJudicialCollateralAuctionRound } from '@/services/judicial/judicial-collateral-auction-round.service'
-import { useParams } from 'react-router-dom'
-import JudicialCollateralAuctionRound from '../../JudicialCollateralAuctionRoundListTable/utils/judicial-collateral-auction-round-list.cache'
-type DeleteCollateralAuctionRoundModalProps = {
+import { deleteJudicialCollateralAuctionRound } from '@/services/judicial/judicial-collateral-auction-round.service' 
+import JudicialCaseFileAuctionRound from '../../JudicialFileCaseAuctionRoundListTable/utils/judicial-file-case-auction-round-list-table.cache'
+type DeleteCaseFileAuctionRoundModalProps = {
   isOpen: boolean
   onClose: () => void
   id?: number
+  collateralId?: number
+  caseFileId: number
 }
-const DeleteCollateralAuctionRoundModal = ({ isOpen, onClose, id }: DeleteCollateralAuctionRoundModalProps) => {
-  const collateralCode = useParams().collateralCode ?? ''
+const DeleteCaseFileAuctionRoundModal = ({ isOpen, onClose, id, collateralId, caseFileId }: DeleteCaseFileAuctionRoundModalProps) => {
   const {  
     bank: {
       selectedBank: { idCHB: chb },
@@ -23,33 +23,33 @@ const DeleteCollateralAuctionRoundModal = ({ isOpen, onClose, id }: DeleteCollat
   } = useLoloContext()
   const queryClient = useQueryClient()
   const {
-    actions: { deleteCollateralAuctionRoundListCache },
+    actions: { deleteFileCaseAuctionRoundListCache },
     onMutateCache,
     onSettledCache,
     onErrorCache,
-  } = JudicialCollateralAuctionRound(queryClient)
+  } = JudicialCaseFileAuctionRound(queryClient)
 
-  const { isLoading: loadingDeleteCollateralAuctionRound, mutate: deleteCollateralAuctionRoundMutate } = useMutation<
+  const { isLoading: loadingDeleteCaseFileAuctionRound, mutate: deleteCaseFileAuctionRoundMutate } = useMutation<
     AxiosResponse<{ id: string }>,
     AxiosError<CustomErrorResponse>
     >(
       async () => {
-        return await deleteJudicialCollateralAuctionRound(Number(chb), Number(collateralCode), id ?? 0)
+        return await deleteJudicialCollateralAuctionRound(Number(chb), Number(collateralId), id ?? 0)
       },
       {
         onSuccess: () => {
-          deleteCollateralAuctionRoundListCache(String(id), Number(collateralCode))
+          deleteFileCaseAuctionRoundListCache(String(id), Number(caseFileId))
           notification({ type: 'success', message: 'Rueda de remate eliminada' })
           onClose()
         },
         onMutate: () => {
-          return onMutateCache( Number(collateralCode))
+          return onMutateCache( caseFileId ?? 0)
         },
         onSettled: () => {
-          onSettledCache(Number(collateralCode))
+          onSettledCache( caseFileId ?? 0)
         },
         onError: (error, _, context: any) => {
-          onErrorCache(context, Number(collateralCode))
+          onErrorCache(context, caseFileId ?? 0)
           notification({
             type: 'error',
             message: error.response?.data.message,
@@ -58,9 +58,9 @@ const DeleteCollateralAuctionRoundModal = ({ isOpen, onClose, id }: DeleteCollat
         },
       }
     )
-  const handleDeleteCollateralAuctionRound = () => {
+  const handleDeleteCaseFileAuctionRound = () => {
     if (id !== 0) {
-      deleteCollateralAuctionRoundMutate()
+      deleteCaseFileAuctionRoundMutate()
     }
   }
     
@@ -68,7 +68,7 @@ const DeleteCollateralAuctionRoundModal = ({ isOpen, onClose, id }: DeleteCollat
     <Modal
       visible={isOpen}
       onClose={onClose}
-      id="delete-collateral-auction-round-modal"
+      id="delete-CaseFile-auction-round-modal"
       title="¿Desea eliminar la ronda de remate?"
       contentOverflowY='auto'
       size='small'
@@ -76,8 +76,8 @@ const DeleteCollateralAuctionRoundModal = ({ isOpen, onClose, id }: DeleteCollat
         <Container width="100%" justifyContent="space-around" display="flex" alignItems="center">
           {
             <Button
-              onClick={handleDeleteCollateralAuctionRound}
-              loading={loadingDeleteCollateralAuctionRound}
+              onClick={handleDeleteCaseFileAuctionRound}
+              loading={loadingDeleteCaseFileAuctionRound}
               display="danger"
               size="default"
               label="ACEPTAR"
@@ -92,4 +92,4 @@ const DeleteCollateralAuctionRoundModal = ({ isOpen, onClose, id }: DeleteCollat
   )
 }
 
-export default DeleteCollateralAuctionRoundModal
+export default DeleteCaseFileAuctionRoundModal

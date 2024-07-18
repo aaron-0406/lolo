@@ -25,10 +25,10 @@ export const judicialFileCaseAuctionRoundListColumns: ColumProps[] = [
     width: '20%',
     justifyContent: 'center'
   }, 
-  // {
-  //   id: 'judicialFileCaseAuctionList.datatable.header.actions',
-  //   title: 'ACCIONES',
-  //   width: '10%',
-  //   justifyContent: 'center'
-  // }
+  {
+    id: 'judicialFileCaseAuctionList.datatable.header.actions',
+    title: 'ACCIONES',
+    width: '10%',
+    justifyContent: 'center'
+  }
 ]

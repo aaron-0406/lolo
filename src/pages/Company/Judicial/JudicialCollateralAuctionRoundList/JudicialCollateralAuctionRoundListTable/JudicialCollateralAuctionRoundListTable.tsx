@@ -18,6 +18,7 @@ import useModal from '@/hooks/useModal'
 import { useState } from 'react'
 import DeleteCollateralAuctionRoundModal from '../Modals/DeleteCollateralAuctionRoundModal'
 
+
 const JudicialCollateralAuctionRoundListTable = () => {
   const navigate = useNavigate()
   const collateralCode = useParams().collateralCode ?? ''
