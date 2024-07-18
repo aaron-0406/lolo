@@ -14,13 +14,15 @@ export const getFileCaseRelatedProcessByCaseFileId = async (
   courts?: string,
   proceduralWays?: string,
   subjects?: string,
-  users?: string
+  users?: string,
+  responsibles?: string
 ) => {
   let filters = ''
   filters += filter !== '' && filter !== undefined ? `filter=${filter}&` : ''
   filters += !!courts?.length ? `courts=${courts}&` : 'courts=[]&'
   filters += !!proceduralWays?.length ? `proceduralWays=${proceduralWays}&` : 'proceduralWays=[]&'
   filters += !!users?.length ? `users=${users}&` : 'users=[]&'
+  filters += !!responsibles?.length ? `responsibles=${responsibles}&` : 'responsibles=[]&'
   filters += !!subjects?.length ? `subjects=${subjects}&` : 'subjects=[]&'
   return await axiosClient.get(`${url}/case-file/${caseFileId}?${filters}page=${page}&limit=${limit}`)
 }

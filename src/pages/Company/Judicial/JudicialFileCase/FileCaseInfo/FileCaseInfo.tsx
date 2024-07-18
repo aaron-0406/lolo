@@ -434,8 +434,8 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
               onValueChange={(_, __, values) => {
                 field.onChange(values?.value)
               }}
-              decimalScale={3}
-              decimalsLimit={3}
+              decimalScale={2}
+              decimalsLimit={2}
               hasError={!!errors.amountDemandedSoles}
               disabled={!clientId}
             />
@@ -455,8 +455,8 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
               onValueChange={(_, __, values) => {
                 field.onChange(values?.value)
               }}
-              decimalScale={3}
-              decimalsLimit={3}
+              decimalScale={2}
+              decimalsLimit={2}
               hasError={!!errors.amountDemandedDollars}
               disabled={!clientId}
             />
@@ -482,6 +482,26 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
           )}
         />
         <Controller
+          name="responsibleUserId"
+          control={control}
+          render={({ field }) => (
+            <Select
+              label="Responsable:"
+              width="100%"
+              placeholder={ watch().responsibleUserId ? '' : 'No asignado'}
+              value={String(field.value)}
+              options={optionsUsers}
+              onChange={(key) => {
+                field.onChange(parseInt(key))
+              }}
+              hasError={!!errors.customerUserId}
+              disabled={!clientId}
+            />
+          )}
+        />
+      </div>
+      <Container className="fields-wrapper-container-t">
+        <Controller
           name="errandCode"
           control={control}
           render={({ field }) => (
@@ -496,8 +516,6 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
             />
           )}
         />
-      </div>
-      <div className="fields-wrapper-container-t">
         <Controller
           name="demandDate"
           control={control}
@@ -515,6 +533,8 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
             />
           )}
         />
+      </Container>
+      <Container className="fields-wrapper-container-t">
         <Controller
           name="cityId"
           control={control}
@@ -531,8 +551,6 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
             />
           )}
         />
-      </div>
-      <div className="fields-wrapper-container-t">
         <Controller
           name="judgmentNumber"
           control={control}
@@ -548,7 +566,7 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
             />
           )}
         />
-      </div>
+      </Container>
 
       <FileCasesRelatedModal
         onClose={() => {

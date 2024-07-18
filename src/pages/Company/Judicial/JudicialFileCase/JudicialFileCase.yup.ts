@@ -27,6 +27,7 @@ const JudicialFileCaseSchema: yup.SchemaOf<
   cityId: yup.number().required().min(1),
   clientId: yup.number().required().min(1),
   customerUserId: yup.number().required().min(1),
+  responsibleUserId: yup.number().optional(),
   customerHasBankId: yup.number().required().min(1),
 })
 

@@ -31,6 +31,7 @@ export const getFileCasesByCHB = async (
   proceduralWays?: string,
   subjects?: string,
   users?: string,
+  responsibles?: string,
   sedes?: string
 ) => {
   let filters = ''
@@ -38,6 +39,7 @@ export const getFileCasesByCHB = async (
   filters += !!courts?.length ? `courts=${courts}&` : 'courts=[]&'
   filters += !!proceduralWays?.length ? `proceduralWays=${proceduralWays}&` : 'proceduralWays=[]&'
   filters += !!users?.length ? `users=${users}&` : 'users=[]&'
+  filters += !!responsibles?.length ? `responsibles=${responsibles}&` : 'responsibles=[]&'
   filters += !!subjects?.length ? `subjects=${subjects}&` : 'subjects=[]&'
   filters += !!sedes?.length ? `sedes=${sedes}&` : 'sedes=[]&'
   filters += !!sorting ? `sortBy=${sorting.sortBy}&order=${sorting.order}&` : ''

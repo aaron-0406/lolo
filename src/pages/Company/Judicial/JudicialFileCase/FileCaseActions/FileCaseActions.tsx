@@ -145,6 +145,7 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase }: FileCaseActions
         setValue('clientId', data.data.clientId)
         setValue('cityId', data.data.cityId)
         setValue('customerUserId', data.data.customerUserId)
+        setValue('responsibleUserId', data.data.responsibleUser ? data.data.responsibleUser.id : 0)
         setValue('judicialCourtId', data.data.judicialCourtId)
         setValue('judicialSubjectId', data.data.judicialSubjectId)
         setValue('judicialProceduralWayId', data.data.judicialProceduralWayId)

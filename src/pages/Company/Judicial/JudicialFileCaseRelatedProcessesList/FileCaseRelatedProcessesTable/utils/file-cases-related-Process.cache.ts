@@ -23,6 +23,8 @@ export type JudicialFileCaseTableRow = JudicialCaseFileType & {
   judicialSede: JudicialSedeType
 } & {
   client: ClientType
+} & {
+  responsibleUser: CustomerUserType 
 }
 
 type QueryDataType = AxiosResponse<{ caseFiles: JudicialFileCaseTableRow[]; quantity: number }> | undefined
