@@ -44,7 +44,7 @@ export const judicialCollateralColumns: ColumProps[] = [
     justifyContent: 'left',
   },
   {
-    id: 'judicialCollateral.datatable.header.l',
+    id: 'judicialCollateral.datatable.header.actions',
     title: 'ACCIONES',
     width: '10%',
     justifyContent: 'center',

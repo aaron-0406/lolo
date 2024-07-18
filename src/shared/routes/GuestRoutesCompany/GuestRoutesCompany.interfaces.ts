@@ -3,5 +3,6 @@ export type GuestParamsType = {
   code: string
   relatedProcessCode:string
   collateralCode: string
+  auctionCode: string
   id: string
 }
