@@ -20,6 +20,7 @@ const ModalScheduleNotificationsSchema: yup.SchemaOf<ModalScheduleNotificationsT
     customerHasBankId: yup.number().required(),
     logicKey: yup.string().required(),
     state: yup.boolean().required(),
+    daysToNotify: yup.array().of(yup.string().required()),
   }),
   scheduledNotificationsUsers: yup.array().of(
     yup.object().shape({

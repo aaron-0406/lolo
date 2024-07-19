@@ -13,9 +13,10 @@ type DeleteClientModalProps = {
   visible: boolean
   onClose: () => void
   code: string
+  archived: boolean
 }
 
-const DeleteClientModal = ({ visible, onClose, code }: DeleteClientModalProps) => {
+const DeleteClientModal = ({ visible, onClose, code, archived }: DeleteClientModalProps) => {
   const queryClient = useQueryClient()
   const {
     client: { customer },
@@ -35,18 +36,22 @@ const DeleteClientModal = ({ visible, onClose, code }: DeleteClientModalProps) =
     },
     {
       onSuccess: (data) => {
-        deleteCobranzaCustomerCache(data.data?.id, selectedBank.idCHB?.length ? parseInt(selectedBank.idCHB) : 0)
+        deleteCobranzaCustomerCache(
+          data.data?.id,
+          selectedBank.idCHB?.length ? parseInt(selectedBank.idCHB) : 0,
+          archived
+        )
         notification({ type: 'success', message: 'Cliente eliminado' })
         onClose()
       },
       onMutate: () => {
-        return onMutateCache(selectedBank.idCHB?.length ? parseInt(selectedBank.idCHB) : 0)
+        return onMutateCache(selectedBank.idCHB?.length ? parseInt(selectedBank.idCHB) : 0, archived)
       },
       onSettled: () => {
-        onSettledCache(selectedBank.idCHB?.length ? parseInt(selectedBank.idCHB) : 0)
+        onSettledCache(selectedBank.idCHB?.length ? parseInt(selectedBank.idCHB) : 0, archived)
       },
       onError: (error, _, context: any) => {
-        onErrorCache(context, selectedBank.idCHB?.length ? parseInt(selectedBank.idCHB) : 0)
+        onErrorCache(context, selectedBank.idCHB?.length ? parseInt(selectedBank.idCHB) : 0, archived)
         notification({
           type: 'error',
           message: error.response?.data.message,

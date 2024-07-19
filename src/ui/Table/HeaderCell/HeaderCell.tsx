@@ -7,6 +7,7 @@ import Icon from '@/ui/Icon'
 import DropdownList from '@/ui/DropdownList'
 import { SelectItem } from '@/ui/Select/interfaces'
 import ClickOutSideComponent from '@/hooks/useClickOutside'
+import Checkbox from '@/ui/Checkbox'
 
 type HeaderCellProps = {
   width?: string
@@ -14,9 +15,12 @@ type HeaderCellProps = {
   textTransform?: CSS.Property.TextTransform
   children: React.ReactNode
   isThereFilter?: boolean
+  onChangeCheckBoxAll?: (state: boolean) => void
+  isSortable?: boolean
   options?: Array<SelectItem<any, any>>
   selectedOptions?: Array<SelectItem<any, any>>
   onChangeFilterOptions?: (options: Array<SelectItem<any, any>>) => void
+  onChangeSortingOptions?: (sortBy: string, order: 'ASC' | 'DESC') => void
 }
 
 const HeaderCell: React.FC<HeaderCellProps> = ({
@@ -25,11 +29,16 @@ const HeaderCell: React.FC<HeaderCellProps> = ({
   justifyContent,
   width,
   isThereFilter = false,
+  onChangeCheckBoxAll,
+  isSortable = false,
   options,
   selectedOptions,
   onChangeFilterOptions,
+  onChangeSortingOptions,
 }) => {
   const [toggleSelect, setToggleSelect] = useState<boolean>(false)
+  const [sortOrder, setSortOrder] = useState<'ASC' | 'DESC'>('ASC')
+
   const selectedFilterOptions = selectedOptions ?? []
 
   const onSelectToogle = () => {
@@ -52,6 +61,14 @@ const HeaderCell: React.FC<HeaderCellProps> = ({
     }
   }
 
+  const onSortItems = () => {
+    if (isSortable) {
+      const newOrder = sortOrder === 'ASC' ? 'DESC' : 'ASC'
+      setSortOrder(newOrder)
+      onChangeSortingOptions?.(children as string, newOrder)
+    }
+  }
+
   return (
     <StyledTh width={width} isThereFilter={isThereFilter} textTransform={textTransform} onClick={onSelectToogle}>
       <ClickOutSideComponent className="main-container" callback={() => setToggleSelect(false)}>
@@ -65,9 +82,19 @@ const HeaderCell: React.FC<HeaderCellProps> = ({
           alignItems="center"
           backgroundColor={toggleSelect ? '#d9dbe9ff' : ''}
         >
-          <Text.Body size="m" weight="bold" ellipsis>
-            {children}
-          </Text.Body>
+          {children !== 'checkbox' ? (
+            <Text.Body size="m" weight="bold" ellipsis>
+              {children}
+            </Text.Body>
+          ) : (
+            <Checkbox
+              className="headercell-check-box"
+              width="100%"
+              onChange={(event) => {
+                onChangeCheckBoxAll?.(event.currentTarget.checked)
+              }}
+            />
+          )}
 
           {isThereFilter && (
             <Container
@@ -92,6 +119,11 @@ const HeaderCell: React.FC<HeaderCellProps> = ({
               <Icon size={20} remixClass="ri-filter-2-line" color="Neutral6" />
             </Container>
           )}
+          {isSortable ? (
+            <Container margin="0 0 0 10px" width="60px" height="24px" className="arrow__icon" onClick={onSortItems}>
+              <Icon size={20} remixClass="ri-arrow-up-down-line" color="Neutral6" className="arrow__icon" />
+            </Container>
+          ) : null}
         </Container>
 
         {toggleSelect && (
@@ -112,6 +144,10 @@ export default HeaderCell
 
 const StyledTh = styled.th<HeaderCellProps>`
   ${({ width, textTransform, isThereFilter }) => css`
+    .headercell-check-box {
+      padding: 0;
+    }
+
     ${!!width &&
     css`
       width: ${width};
@@ -124,7 +160,7 @@ const StyledTh = styled.th<HeaderCellProps>`
       }
     `}
 
-    ${!!textTransform &&
+      ${!!textTransform &&
     css`
       text-transform: ${textTransform};
     `}

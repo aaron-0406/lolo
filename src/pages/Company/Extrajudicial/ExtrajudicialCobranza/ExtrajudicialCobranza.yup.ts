@@ -24,6 +24,7 @@ const ExtrajudicialCobranzaSchema: yup.SchemaOf<Omit<ClientType, 'id' | 'created
   customerUserId: yup.number().required().min(1),
   customerHasBankId: yup.number().required().min(1),
   memoAssignmentDate: yup.string().optional(),
+  isArchived: yup.boolean().optional(),
 })
 
 const ExtrajudicialCobranzaCommentSchema: yup.SchemaOf<Omit<CommentType, 'id' | 'hour'>> = yup.object().shape({
