@@ -184,7 +184,7 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase, caseFileRelatedPr
     }
   )
 
-  const { refetch:refetchFileCase } =  useQuery<AxiosResponse<any, Error>>(
+  const { refetch: refetchFileCase } = useQuery<AxiosResponse<any, Error>>(
     ['get-file-case-by-code', codeParams ?? ''],
     async () => {
       return await getFileCaseByNumberFile(codeParams ?? '', chb)
@@ -192,6 +192,7 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase, caseFileRelatedPr
     {
       enabled: false,
       onSuccess: (data) => {
+        setValue('clientId', data.data?.client?.id)
         setOwnerFileCase(data.data?.client)
       },
       onError: (error: any) => {
@@ -255,9 +256,8 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase, caseFileRelatedPr
     if (!!relatedProcessCodeParams.length && relatedProcessCodeParams !== '000000000') {
       refetch()
       setLoadingGlobal(false)
-      }
-      else{
-        refetchFileCase()
+    } else {
+      refetchFileCase()
     }
     // eslint-disable-next-line
   }, [relatedProcessCodeParams])
@@ -272,7 +272,7 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase, caseFileRelatedPr
       padding={greaterThanDesktopS ? '0px 0px 0px 20px' : '0px'}
       flexDirection={greaterThanDesktopS ? 'row' : 'column'}
     >
-      <Container width="100%" display='flex' justifyContent='space-between' alignItems='center' gap='20px'>
+      <Container width="100%" display="flex" justifyContent="space-between" alignItems="center" gap="20px">
         <Breadcrumbs routes={routers} />
         <Button
           width="130px"
@@ -300,7 +300,6 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase, caseFileRelatedPr
         />
       </Container>
       {visibleQrModal ? <RelatedProcessQrModal isVisible={visibleQrModal} onClose={hideQrModal} /> : null}
-
     </Container>
   )
 }
