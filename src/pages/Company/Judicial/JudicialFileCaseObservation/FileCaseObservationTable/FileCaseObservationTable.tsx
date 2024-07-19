@@ -18,6 +18,8 @@ import { judicialObservationColumns } from './utils/columns'
 import RemoveJudicialObservationModal from '../Modals/RemoveObservationModal'
 import JudicialObservationModal from '../Modals/ObservationModal'
 import EmptyState from '@/ui/EmptyState'
+import Text from '@/ui/Text'
+import Icon from '@/ui/Icon'
 
 type JudicialObservationTableProps = {
   judicialFileCaseId?: number
@@ -113,10 +115,6 @@ const JudicialObservationTable = ({ judicialFileCaseId, clientCode }: JudicialOb
               },
               key
             ) => {
-              let documentos = ''
-              record.judicialObsFile.forEach((obsFiles) => {
-                documentos = documentos + obsFiles.originalName + ' | '
-              })
               return (
                 <tr className="styled-data-table-row" key={record.id}>
                   <BodyCell textAlign="center">{key + 1 || ''}</BodyCell>
@@ -145,7 +143,18 @@ const JudicialObservationTable = ({ judicialFileCaseId, clientCode }: JudicialOb
                       wordBreak="break-all"
                       overFlowY="auto"
                     >
-                      {documentos}
+                      {record.judicialObsFile.length ? (
+                        <Container display="flex" gap="10px" justifyContent="center" alignItems="center">
+                          <Text.Body size="l" weight="regular">
+                            {record.judicialObsFile.length ?? '-'}
+                          </Text.Body>
+                          <Icon remixClass="ri-file-text-line" color="Neutral6" />
+                        </Container>
+                      ) : (
+                        <Text.Body size="m" weight="regular">
+                          No hay archivos
+                        </Text.Body>
+                      )}
                     </Container>
                   </BodyCell>
                   <BodyCell textAlign="center">

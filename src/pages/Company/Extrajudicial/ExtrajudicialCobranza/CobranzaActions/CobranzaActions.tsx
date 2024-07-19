@@ -49,6 +49,8 @@ const CobranzaActions = ({ setLoadingGlobal }: CobranzaActionsProps) => {
     }
   >()
 
+  const { isArchived } = getValues()
+
   const { refetch } = useQuery(
     'query-get-client-by-code',
     async () => {
@@ -72,6 +74,7 @@ const CobranzaActions = ({ setLoadingGlobal }: CobranzaActionsProps) => {
         setValue('customerHasBankId', data.data.customerHasBankId)
         setValue('funcionario', data.data?.funcionario)
         setValue('negotiation', data.data?.negotiation)
+        setValue('isArchived', data.data?.isArchived)
         data.data?.memoAssignmentDate &&
           setValue('memoAssignmentDate', moment(data.data?.memoAssignmentDate).format('DD-MM-YYYY'), {
             shouldValidate: true,
@@ -123,13 +126,13 @@ const CobranzaActions = ({ setLoadingGlobal }: CobranzaActionsProps) => {
         navigate(`${paths.cobranza.cobranza(customer.urlIdentifier, getValues().code)}`)
       },
       onMutate: () => {
-        return onMutateCache(selectedBank.idCHB?.length ? parseInt(selectedBank.idCHB) : 0)
+        return onMutateCache(selectedBank.idCHB?.length ? parseInt(selectedBank.idCHB) : 0, isArchived ?? false)
       },
       onSettled: () => {
-        onSettledCache(selectedBank.idCHB?.length ? parseInt(selectedBank.idCHB) : 0)
+        onSettledCache(selectedBank.idCHB?.length ? parseInt(selectedBank.idCHB) : 0, isArchived ?? false)
       },
       onError: (error, _, context: any) => {
-        onErrorCache(context, selectedBank.idCHB?.length ? parseInt(selectedBank.idCHB) : 0)
+        onErrorCache(context, selectedBank.idCHB?.length ? parseInt(selectedBank.idCHB) : 0, isArchived ?? false)
         notification({
           type: 'error',
           message: error.response?.data.message,

@@ -1,5 +1,5 @@
 import { useLoloContext } from '@/contexts/LoloProvider'
-import { ReactNode, useState } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import useModal from '@/hooks/useModal'
 
 import Container from '@/ui/Container'
@@ -21,7 +21,7 @@ import { JudicialCollateralFilesType } from '@/types/judicial/judicial-collatera
 import { getJudicialCollateralFiles } from '@/services/judicial/judicial-collateral-files.service'
 
 import DeleteCollateralFilesModal from '../Modals/DeleteCollateralFilesModal'
-import { useParams } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import JudicialFileViewerModal from './Modals/JudicialFileViewerModal'
 import Img from '@/ui/Img'
 
@@ -29,13 +29,21 @@ import pdfIcon from '@/assets/icons/pdf.png'
 import wordIcon from '@/assets/icons/word-doc.png'
 import fileIcon from '@/assets/icons/file.png'
 import Text from '@/ui/Text'
+import { useFiltersContext } from '@/contexts/FiltersProvider'
 
 const JudicialCollateralFilesTable = () => {
+  const location = useLocation()
+  
+  const currentPath = location.pathname
   const {
     bank: {
       selectedBank: { idCHB: chb },
     },
   } = useLoloContext()
+  const {
+    filterSearch: { getSearchFilters },
+  } = useFiltersContext(); 
+  const opts = getSearchFilters(currentPath)?.opts ?? { filter: '', limit: 50, page: 1 }
 
   const [idCollateralFile, setIdCollateralFile] = useState<number | undefined>(undefined)
   const [judicialCollateralFile, setJudicialCollateralFile] = useState<JudicialCollateralFilesType | undefined>(
@@ -53,10 +61,11 @@ const JudicialCollateralFilesTable = () => {
     hideModal: hideModalDeleteCollateralFiles,
   } = useModal()
 
-  const { isLoading, data } = useQuery<AxiosResponse<Array<JudicialCollateralFilesType>, Error>>(
+  const {refetch, isLoading, data } = useQuery<AxiosResponse<Array<JudicialCollateralFilesType>, Error>>(
     [KEY_JUDICIAL_COLLATERAL_FILES_CACHE, Number(collateralId), parseInt(chb.length ? chb : '0')],
     async () => {
-      return await getJudicialCollateralFiles(Number(collateralId), parseInt(chb.length ? chb : '0'))
+      return await getJudicialCollateralFiles(
+        Number(collateralId), parseInt(chb.length ? chb : '0'), opts.filter)
     },
     {
       onError: (error: any) => {
@@ -91,6 +100,11 @@ const JudicialCollateralFilesTable = () => {
     hideModalCollateralFiles()
     setJudicialCollateralFile(undefined)
   }
+
+  useEffect(() => {
+    refetch()
+    // eslint-disable-next-line
+  }, [getSearchFilters(currentPath)?.opts.filter])
 
   const judicialCollateralFiles = data?.data ?? []
 

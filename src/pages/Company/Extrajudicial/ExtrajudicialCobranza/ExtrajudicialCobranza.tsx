@@ -21,6 +21,7 @@ const ExtrajudicialCobranza = () => {
       funcionarioId: 0,
       customerUserId: 0,
       customerHasBankId: 0,
+      isArchived: false,
     },
   })
 

@@ -7,24 +7,33 @@ import Button from '@/ui/Button'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import { LinkType } from '@/ui/Breadcrumbs/Breadcrumbs.type'
 import paths from 'shared/routes/paths'
-import { useParams } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import Breadcrumbs from '@/ui/Breadcrumbs'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { device } from '@/breakpoints/responsive'
 import Text from '@/ui/Text'
+import { useFiltersContext } from '@/contexts/FiltersProvider'
+import TextField from '@/ui/fields/TextField'
 
 type JudicalNotaryActionsProps = {
   clientName: string
 }
 
-const JudicialCollateralFileActions = ({ clientName } : JudicalNotaryActionsProps) => {
+const JudicialCollateralFileActions = ({ clientName }: JudicalNotaryActionsProps) => {
   const { hideModal, showModal, visible } = useModal()
+  const location = useLocation()
+  const currentPath = location.pathname
   const {
     bank: {
       selectedBank: { idCHB: chb },
     },
     client: { customer },
   } = useLoloContext()
+  const {
+    filterSearch: { getSearchFilters, setSearchFilters },
+  } = useFiltersContext()
+
+  const searchFilter = getSearchFilters(currentPath)?.opts ?? { filter: '', limit: 50, page: 1 }
   const code = useParams().code ?? ''
   const collateralCode = useParams().collateralCode ?? ''
 
@@ -53,6 +62,11 @@ const JudicialCollateralFileActions = ({ clientName } : JudicalNotaryActionsProp
       name: 'Archivos',
     },
   ]
+
+  const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target
+    setSearchFilters({ url: currentPath, opts: { ...searchFilter, filter: value } })
+  }
 
   return (
     <Container
@@ -86,6 +100,14 @@ const JudicialCollateralFileActions = ({ clientName } : JudicalNotaryActionsProp
             {clientName ?? '-'}
           </Text.Body>
         </Container>
+        <Breadcrumbs routes={routers} />
+        <TextField
+          onChange={onChangeSearch}
+          width="100%"
+          placeholder="Buscar con nombre del archivo"
+          value={searchFilter.filter}
+          clearInput
+        />
         <Button
           permission="P13-01-06-01-03-01"
           messageTooltip="Agregar Archivos"
