@@ -213,9 +213,7 @@ const JudicialFileCasesTable = () => {
   const judicialFileCases = data?.data?.caseFiles ?? []
   const quantity = data?.data?.quantity ?? 0
 
-  const funt = () => {
-    console.log('acción')
-  }
+  const funt = () => {}
 
   const buttons: FloatingContainerButtonsType[] = [
     {
@@ -321,6 +319,11 @@ const JudicialFileCasesTable = () => {
                 {isTransferred ? (
                   <tr className="styled-data-table-row disable-table">
                     <BodyCell textAlign="center">
+                      <Text.Body size="m" weight="bold">
+                        -
+                      </Text.Body>
+                    </BodyCell>
+                    <BodyCell textAlign="center">
                       <Text.Body size="m" weight="bold" color="Primary5">
                         Expediente Transferido
                       </Text.Body>
@@ -389,26 +392,26 @@ const JudicialFileCasesTable = () => {
                     }}
                   >
                     <BodyCell textAlign="left">
-                  {
-                    <Container
-                      display="flex"
-                      justifyContent="end"
-                      alignItems="center"
-                      onClick={(event) => {
-                        event.stopPropagation()
-                      }}
-                    >
-                      <Checkbox
-                        className="file-case-check-box"
-                        width="100%"
-                        onChange={(event) => {
-                          onChangeCheckBox(event.currentTarget.checked, record)
-                        }}
-                      />
-                    </Container>
-                  }
-                </BodyCell>
-                <BodyCell textAlign="center">{`${record?.numberCaseFile || ''}`}</BodyCell>
+                      {
+                        <Container
+                          display="flex"
+                          justifyContent="end"
+                          alignItems="center"
+                          onClick={(event) => {
+                            event.stopPropagation()
+                          }}
+                        >
+                          <Checkbox
+                            className="file-case-check-box"
+                            width="100%"
+                            onChange={(event) => {
+                              onChangeCheckBox(event.currentTarget.checked, record)
+                            }}
+                          />
+                        </Container>
+                      }
+                    </BodyCell>
+                    <BodyCell textAlign="center">{`${record?.numberCaseFile || ''}`}</BodyCell>
                     <BodyCell textAlign="left">
                       <Container
                         data-tooltip-id="cell-tooltip"
