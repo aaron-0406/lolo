@@ -23,6 +23,8 @@ import paths from 'shared/routes/paths'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import { ClientType } from '@/types/extrajudicial/client.type'
 import judicialFileCaseRelatedProcessCache from '../../JudicialFileCaseRelatedProcessesList/FileCaseRelatedProcessesTable/utils/file-cases-related-Process.cache'
+import useModal from '@/hooks/useModal'
+import RelatedProcessQrModal from './Modals/RelatedProcessQrModal'
 
 type FileCaseActionsProps = {
   setLoadingGlobal: (state: boolean) => void
@@ -32,6 +34,7 @@ type FileCaseActionsProps = {
 
 const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase, caseFileRelatedProcessId }: FileCaseActionsProps) => {
   const queryClient = useQueryClient()
+  const { hideModal: hideQrModal, showModal: showQrModal, visible: visibleQrModal } = useModal()
   const {
     client: { customer },
     bank: { selectedBank },
@@ -60,6 +63,8 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase, caseFileRelatedPr
       judicialProceduralWay: { proceduralWay: string; customerHasBankId: string }
     }
   >()
+
+  const relatedProcessId = getValues('id')
 
   const { isLoading: loadingCreateFileCase, mutate: createFileCaseRelatedProcessMutate } = useMutation<
     AxiosResponse<JudicialFileCaseTableRow>,
@@ -160,8 +165,12 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase, caseFileRelatedPr
         setValue('judicialProceduralWay', data.data?.judicialProceduralWay)
         setValue('idJudicialCaseFileRelated', data.data?.idJudicialCaseFileRelated)
         setValue('bankId', data.data.bankId)
+        setValue('qrCode', data.data?.qrCode ?? undefined)
 
         setOwnerFileCase(data.data?.client)
+
+        if (data.data?.idJudicialCaseFileRelated) return
+        navigate(`${paths.judicial.detallesExpediente(customer.urlIdentifier, data.data.numberCaseFile)}`)
       },
       onError: (error: any) => {
         notification({
@@ -169,6 +178,28 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase, caseFileRelatedPr
           message: error.response.data.message,
         })
 
+        reset()
+        setLoadingGlobal(false)
+      },
+    }
+  )
+
+  const { refetch: refetchFileCase } = useQuery<AxiosResponse<any, Error>>(
+    ['get-file-case-by-code', codeParams ?? ''],
+    async () => {
+      return await getFileCaseByNumberFile(codeParams ?? '', chb)
+    },
+    {
+      enabled: false,
+      onSuccess: (data) => {
+        setValue('clientId', data.data?.client?.id)
+        setOwnerFileCase(data.data?.client)
+      },
+      onError: (error: any) => {
+        notification({
+          type: 'info',
+          message: error.response.data.message,
+        })
         reset()
         setLoadingGlobal(false)
       },
@@ -223,8 +254,10 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase, caseFileRelatedPr
 
   useEffect(() => {
     if (!!relatedProcessCodeParams.length && relatedProcessCodeParams !== '000000000') {
-      setLoadingGlobal(false)
       refetch()
+      setLoadingGlobal(false)
+    } else {
+      refetchFileCase()
     }
     // eslint-disable-next-line
   }, [relatedProcessCodeParams])
@@ -239,7 +272,19 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase, caseFileRelatedPr
       padding={greaterThanDesktopS ? '0px 0px 0px 20px' : '0px'}
       flexDirection={greaterThanDesktopS ? 'row' : 'column'}
     >
-      <Breadcrumbs routes={routers} />
+      <Container width="100%" display="flex" justifyContent="space-between" alignItems="center" gap="20px">
+        <Breadcrumbs routes={routers} />
+        <Button
+          width="130px"
+          label={greaterThanDesktopS && 'QR'}
+          shape={greaterThanDesktopS ? 'default' : 'round'}
+          size={greaterThanTabletS ? 'default' : 'small'}
+          trailingIcon="ri-qr-code-line"
+          messageTooltip="Ver código QR"
+          onClick={showQrModal}
+          disabled={!relatedProcessId}
+        />
+      </Container>
 
       <Container width="fit-content" display="flex" justifyContent="space-between" alignItems="center" gap="10px">
         <Button
@@ -254,6 +299,7 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase, caseFileRelatedPr
           messageTooltip="Guardar cambios"
         />
       </Container>
+      {visibleQrModal ? <RelatedProcessQrModal isVisible={visibleQrModal} onClose={hideQrModal} /> : null}
     </Container>
   )
 }
