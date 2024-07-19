@@ -1,11 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useMemo, useState } from 'react'
-import { useQuery } from 'react-query'
+import { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react'
+import { useMutation, useQuery } from 'react-query'
 import { useLocation, useNavigate } from 'react-router-dom'
 import moment from 'moment'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import paths from '../../../../../shared/routes/paths'
-import { getAllClientsByCHB } from '@/services/extrajudicial/client.service'
+import { getAllClientsByCHB, updateClients } from '@/services/extrajudicial/client.service'
 import { getAllFuncionariosByCHB } from '@/services/extrajudicial/funcionario.service'
 import { getAllNegociacionesByCHB } from '@/services/extrajudicial/negotiation.service'
 import { ClientType } from '@/types/extrajudicial/client.type'
@@ -35,14 +35,38 @@ import { KEY_EXT_COBRANZA_NEGOCIACIONES_CACHE } from '../../ExtrajudicialNegotia
 import { useFiltersContext } from '@/contexts/FiltersProvider'
 import { CustomErrorResponse } from 'types/customErrorResponse'
 import EmptyState from '@/ui/EmptyState'
+import Checkbox from '@/ui/Checkbox'
+import FloatingContainer from '@/ui/FloatingContainer'
+import { FloatingContainerButtonsType } from '@/ui/FloatingContainer/interfaces'
+import ArchiveClientModal from './ArchiveClientModal'
+import RedirectToTransferClientModal from '../Modals/RedirectToTransferClientModal'
 
-const CustomersTable = () => {
+type ClientTransfered = {
+  idTrasnferedBank: number
+  idTransferedClient: string
+}
+
+const CustomersTable = ({
+  archived,
+  setArchived,
+  selectedCustomers,
+  setSelectedCustomers,
+}: {
+  archived: boolean
+  setArchived: Dispatch<SetStateAction<boolean>>
+  selectedCustomers: ClientType[]
+  setSelectedCustomers: Dispatch<SetStateAction<ClientType[]>>
+}) => {
   const location = useLocation()
   const currentPath = location.pathname
+  const [clientTransfered, setClientTransfered] = useState<ClientTransfered>({
+    idTrasnferedBank: 0,
+    idTransferedClient: '',
+  })
 
   const {
     client: {
-      customer: { urlIdentifier },
+      customer: { urlIdentifier, customerBanks },
     },
     bank: {
       selectedBank: { idCHB: chb },
@@ -55,7 +79,7 @@ const CustomersTable = () => {
   const {
     filterOptions: { getSelectedFilters, setSelectedFilters },
     filterSearch: { getSearchFilters, setSearchFilters },
-    clearAllFilters
+    clearAllFilters,
   } = useFiltersContext()
 
   const navigate = useNavigate()
@@ -64,10 +88,16 @@ const CustomersTable = () => {
   const [codeTransferClient, setCodeTransferClient] = useState<string>('')
 
   const { visible: visibleDeleteClient, showModal: showDeleteClient, hideModal: hideDeleteClient } = useModal()
+  const { visible: visibleArchiveClient, showModal: showArchiveClient, hideModal: hideArchiveClient } = useModal()
   const {
     visible: visibleModalTransferClient,
     showModal: showModalTransferClient,
     hideModal: hideModalTransferClient,
+  } = useModal()
+  const {
+    visible: visibleRedirectToTransferClient,
+    showModal: showRedirectToTransferClient,
+    hideModal: hideRedirectToTransferClient,
   } = useModal()
 
   const opts = getSearchFilters(currentPath)?.opts ?? { filter: '', limit: 50, page: 1 }
@@ -80,6 +110,41 @@ const CustomersTable = () => {
   const handleClickTransferClient = (code: string) => {
     setCodeTransferClient(code)
     showModalTransferClient()
+  }
+
+  const onChangeCheckBox = (state: boolean, client: ClientType) => {
+    let arr = selectedCustomers
+
+    if (state) {
+      setSelectedCustomers([...arr, client])
+    } else {
+      arr = arr.filter((cf) => cf !== client)
+      setSelectedCustomers(arr)
+    }
+  }
+
+  const onChangeCheckBoxAll = (state: boolean) => {
+    if (state) {
+      setSelectedCustomers(customers)
+      const checkboxes = document.querySelectorAll<HTMLInputElement>('.customer-check-box')
+      checkboxes.forEach((checkbox) => {
+        checkbox.checked = true
+      })
+    } else {
+      setSelectedCustomers([])
+      const checkboxes = document.querySelectorAll<HTMLInputElement>('.customer-check-box')
+      checkboxes.forEach((checkbox) => {
+        checkbox.checked = false
+      })
+    }
+  }
+
+  const onCloseFloatingContainer = () => {
+    setSelectedCustomers([])
+    const checkboxes = document.querySelectorAll<HTMLInputElement>('.customer-check-box')
+    checkboxes.forEach((checkbox) => {
+      checkbox.checked = false
+    })
   }
 
   const selectedFilterOptions = getSelectedFilters(currentPath)?.filters ?? []
@@ -154,7 +219,7 @@ const CustomersTable = () => {
   })
 
   const { data, isLoading, refetch } = useQuery<AxiosResponse<any>, AxiosError<CustomErrorResponse>>(
-    [KEY_COBRANZA_URL_CUSTOMER_CODE_CACHE, parseInt(chb?.length ? chb : '0')],
+    [`${KEY_COBRANZA_URL_CUSTOMER_CODE_CACHE}-${archived}`, parseInt(chb?.length ? chb : '0')],
     async () => {
       const negotiations = getIDsByIdentifier('customers.datatable.header.negotiation', selectedFilterOptions)
       const funcionarios = getIDsByIdentifier('customers.datatable.header.funcionario', selectedFilterOptions)
@@ -163,6 +228,7 @@ const CustomersTable = () => {
 
       return await getAllClientsByCHB(
         chb,
+        archived,
         opts.page,
         opts.limit,
         opts.filter,
@@ -183,6 +249,71 @@ const CustomersTable = () => {
     }
   )
 
+  const { mutate: updateClientsmutate } = useMutation<AxiosResponse<ClientType[]>, AxiosError<CustomErrorResponse>>(
+    async () => {
+      const clients: ClientType[] = selectedCustomers.map((client) => ({
+        id: client.id,
+        code: client.code,
+        name: client.name,
+        negotiationId: client.negotiationId,
+        funcionarioId: client.funcionarioId,
+        customerUserId: client.customerUserId,
+        cityId: client.cityId,
+        createdAt: client.createdAt,
+        customerHasBankId: client.customerHasBankId,
+        isArchived: !archived,
+      }))
+      return await updateClients(clients, chb)
+    },
+    {
+      onSuccess: (data) => {
+        setSelectedCustomers([])
+        refetch()
+        notification({ type: 'success', message: 'Clientes actualizados' })
+      },
+      onError: (error) => {
+        notification({
+          type: 'error',
+          message: error.response?.data.message,
+          list: error.response?.data?.errors?.map((error) => error.message),
+        })
+      },
+    }
+  )
+
+  const onUpdateClients = async () => {
+    updateClientsmutate()
+    hideArchiveClient()
+  }
+
+  const onOpenArchiveClientModal = () => {
+    if (!selectedCustomers.length) {
+      notification({
+        type: 'info',
+        message: 'No se ha seleccionado ningún cliente',
+      })
+    } else showArchiveClient()
+  }
+
+  const buttons: FloatingContainerButtonsType[] = [
+    {
+      onClick: onOpenArchiveClientModal,
+      label: archived ? 'Desarchivar' : 'Archivar',
+    },
+  ]
+
+  const getBankName = (id: number) => {
+    const bank = customerBanks.find((customerBank) => customerBank.id === Number(id))
+    return bank?.name ?? id
+  }
+  const onOpenClientTransferModal = (code: string, idBank: number) => {
+    setClientTransfered({
+      idTrasnferedBank: idBank,
+      idTransferedClient: code,
+    })
+    showRedirectToTransferClient()
+  }
+
   const customers = data?.data.clients ?? []
   const quantity = data?.data.quantity
 
@@ -195,10 +326,10 @@ const CustomersTable = () => {
   }, [opts.filter.length, opts.page])
 
   return (
-    <Container width="100%" height="calc(100% - 112px)" padding="20px">
+    <Container width="100%" height="calc(100% - 200px)" padding="10px 20px">
       <Pagination count={quantity} opts={opts} setOptsFilter={setSearchFilters} url={currentPath} />
       <Table
-        top="260px"
+        top="230px"
         columns={customersColumns}
         filterOptions={[
           { identifier: 'customers.datatable.header.negotiation', options: optionsNegotiations },
@@ -210,15 +341,17 @@ const CustomersTable = () => {
         onChangeFilterOptions={onChangeFilterOptions}
         loading={isLoading || isLoadingNegotiations || isLoadingFuncionarios}
         isArrayEmpty={!customers.length}
+        isCheckboxChecked={!!selectedCustomers.length}
+        onChangeCheckBoxAll={onChangeCheckBoxAll}
         emptyState={
-            <EmptyStateCell colSpan={customersColumns.length}>
-              <EmptyState
-                title="Recurso no encontrado"
-                description="No se encontraron los datos solicitados. Por favor, intente con otros filtros."
-                buttonLabel="Limpiar filtros"
-                buttonAction={clearAllFilters}
-              />
-            </EmptyStateCell>
+          <EmptyStateCell colSpan={customersColumns.length}>
+            <EmptyState
+              title="Recurso no encontrado"
+              description="No se encontraron los datos solicitados. Por favor, intente con otros filtros."
+              buttonLabel="Limpiar filtros"
+              buttonAction={clearAllFilters}
+            />
+          </EmptyStateCell>
         }
         emptyFirstState={
           <EmptyStateCell colSpan={customersColumns.length}>
@@ -235,17 +368,42 @@ const CustomersTable = () => {
             ) => {
               const showMessageAboutClientTransferred =
                 !record.chbTransferred || record.chbTransferred == parseInt(chb?.length ? chb : '0')
+              const cfs = selectedCustomers.find((cs) => cs.id === record.id)
 
               return (
                 <tr
                   className={
-                    showMessageAboutClientTransferred ? 'styled-data-table-row' : 'styled-data-table-row disable-table'
+                    showMessageAboutClientTransferred
+                      ? cfs
+                        ? 'styled-data-table-row select-table'
+                        : 'styled-data-table-row'
+                      : 'styled-data-table-row disable-table'
                   }
                   key={record.id}
                   onClick={() => {
                     hasAccessToTheButton && showMessageAboutClientTransferred && onClickRow(record.code)
                   }}
                 >
+                  <BodyCell textAlign="left">
+                    {
+                      <Container
+                        display="flex"
+                        justifyContent="end"
+                        alignItems="center"
+                        onClick={(event) => {
+                          event.stopPropagation()
+                        }}
+                      >
+                        <Checkbox
+                          className="customer-check-box"
+                          width="100%"
+                          onChange={(event) => {
+                            onChangeCheckBox(event.currentTarget.checked, record)
+                          }}
+                        />
+                      </Container>
+                    }
+                  </BodyCell>
                   <BodyCell textAlign="center">{`${record.code || ''}`}</BodyCell>
                   <BodyCell textAlign="left">
                     <Container
@@ -264,6 +422,7 @@ const CustomersTable = () => {
                   {showMessageAboutClientTransferred ? (
                     <>
                       <BodyCell>{`${record.negotiation.name.toUpperCase() || ''}`}</BodyCell>
+                      <BodyCell>{`${'-'}`}</BodyCell>
                       <BodyCell>{`${record.funcionario.name.toUpperCase() || ''}`}</BodyCell>
                       <BodyCell>{`${record.customerUser.name.toUpperCase() || ''}`}</BodyCell>
                       <BodyCell>{`${record.city.name.toUpperCase() || ''}`}</BodyCell>
@@ -306,11 +465,27 @@ const CustomersTable = () => {
                           Cliente Transferido
                         </Text.Body>
                       </BodyCell>
+                      <BodyCell textAlign="center">
+                        <Text.Body size="m" weight="bold">
+                          {`${getBankName(record.chbTransferred ?? 0) ?? ''}`}
+                        </Text.Body>
+                      </BodyCell>
                       <BodyCell>-</BodyCell>
                       <BodyCell>-</BodyCell>
                       <BodyCell>-</BodyCell>
                       <BodyCell>-</BodyCell>
-                      <BodyCell>-</BodyCell>
+                      <BodyCell>
+                        <Button
+                          width="125px"
+                          shape="round"
+                          trailingIcon="ri-profile-fill"
+                          onClick={(event) => {
+                            event.stopPropagation()
+                            onOpenClientTransferModal(record.code, record.chbTransferred ?? 0)
+                          }}
+                          messageTooltip="Ver cliente en el banco"
+                        />
+                      </BodyCell>
                     </>
                   )}
                 </tr>
@@ -320,12 +495,49 @@ const CustomersTable = () => {
       </Table>
       <Tooltip place="right" id="cell-tooltip" />
 
-      <DeleteClientModal visible={visibleDeleteClient} onClose={hideDeleteClient} code={codeClient} />
-      <TransferClientModal
-        visible={visibleModalTransferClient}
-        onClose={hideModalTransferClient}
-        code={codeTransferClient}
-      />
+      {selectedCustomers.length ? (
+        <FloatingContainer
+          numberItems={selectedCustomers.length}
+          buttons={buttons}
+          onClose={onCloseFloatingContainer}
+        />
+      ) : null}
+
+      {visibleArchiveClient ? (
+        <ArchiveClientModal
+          isVisible={visibleArchiveClient}
+          onClose={hideArchiveClient}
+          onArchiveClients={onUpdateClients}
+          archived={archived}
+        />
+      ) : null}
+
+      {visibleDeleteClient ? (
+        <DeleteClientModal
+          visible={visibleDeleteClient}
+          onClose={hideDeleteClient}
+          code={codeClient}
+          archived={archived}
+        />
+      ) : null}
+
+      {visibleModalTransferClient ? (
+        <TransferClientModal
+          visible={visibleModalTransferClient}
+          onClose={hideModalTransferClient}
+          code={codeTransferClient}
+          archived={archived}
+        />
+      ) : null}
+
+      {visibleRedirectToTransferClient ? (
+        <RedirectToTransferClientModal
+          visible={visibleRedirectToTransferClient}
+          onClose={hideRedirectToTransferClient}
+          idBank={clientTransfered.idTrasnferedBank}
+          clientCode={clientTransfered.idTransferedClient}
+        />
+      ) : null}
     </Container>
   )
 }

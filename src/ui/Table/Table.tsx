@@ -14,6 +14,7 @@ export type ColumProps = {
   justifyContent?: CSS.Property.JustifyContent
   textTransform?: CSS.Property.TextTransform
   isThereFilter?: boolean
+  isSortable?: boolean
 }
 
 export type FilterOptionsProps = {
@@ -27,11 +28,14 @@ type TableProps = {
   filterOptions?: Array<FilterOptionsProps>
   selectedFilterOptions?: Array<FilterOptionsProps>
   onChangeFilterOptions?: (filterOption: FilterOptionsProps) => void
+  onChangeSortingOptions?: (sortBy: string, order: 'ASC' | 'DESC') => void
+  onChangeCheckBoxAll?: (state: boolean) => void
   loading?: boolean
   error?: boolean | undefined
   leftSpace?: number
   rightSpace?: number
   isArrayEmpty?: boolean
+  isCheckboxChecked?: boolean
   emptyState?: React.ReactNode
   emptyFirstState?: React.ReactNode
   children?: React.ReactNode
@@ -42,6 +46,8 @@ const Table: React.FC<TableProps> = ({
   filterOptions,
   selectedFilterOptions,
   onChangeFilterOptions,
+  onChangeSortingOptions,
+  onChangeCheckBoxAll,
   loading,
   error,
   children,
@@ -51,6 +57,7 @@ const Table: React.FC<TableProps> = ({
   emptyState,
   emptyFirstState,
   isArrayEmpty = false,
+  isCheckboxChecked = false,
 }) => {
   const hasFilter = selectedFilterOptions?.length && selectedFilterOptions?.some((filter) => filter.options.length)
   return (
@@ -58,53 +65,65 @@ const Table: React.FC<TableProps> = ({
       <StyledOrderTable>
         <thead className="table-header">
           <tr>
-            {columns.map(({ justifyContent = 'left', textTransform, width, title, id, isThereFilter }, index) => {
-              const filterOption = filterOptions?.find((option) => option.identifier === id)
-              const options = filterOption?.options
+            {columns.map(
+              ({ justifyContent = 'left', textTransform, width, title, id, isThereFilter, isSortable }, index) => {
+                const filterOption = filterOptions?.find((option) => option.identifier === id)
+                const options = filterOption?.options
 
-              const selectedOption = selectedFilterOptions?.find((option) => option.identifier === id)
-              const selectedOptions = selectedOption?.options
+                const selectedOption = selectedFilterOptions?.find((option) => option.identifier === id)
+                const selectedOptions = selectedOption?.options
 
-              return (
-                <HeaderCell
-                  key={index}
-                  isThereFilter={isThereFilter}
-                  width={loading ? '' : width}
-                  justifyContent={justifyContent}
-                  textTransform={textTransform}
-                  options={options}
-                  selectedOptions={selectedOptions}
-                  onChangeFilterOptions={(options) => onChangeFilterOptions?.({ identifier: id, options })}
-                >
-                  {title}
-                </HeaderCell>
-              )
-            })}
+                return (
+                  <HeaderCell
+                    key={index}
+                    isThereFilter={isThereFilter}
+                    isSortable={isSortable}
+                    width={loading ? '' : width}
+                    justifyContent={justifyContent}
+                    textTransform={textTransform}
+                    options={options}
+                    selectedOptions={selectedOptions}
+                    onChangeCheckBoxAll={onChangeCheckBoxAll}
+                    onChangeFilterOptions={(options) => onChangeFilterOptions?.({ identifier: id, options })}
+                    onChangeSortingOptions={onChangeSortingOptions}
+                  >
+                    {title}
+                  </HeaderCell>
+                )
+              }
+            )}
           </tr>
         </thead>
         <tbody className="table-body">
-          {!!loading ? columns.map((_, index) => <tr key = {index}>
-            {
-              columns.map((column, index)=> (
-                <td key={index} >
-                  <Container width="100%" height="100%" display='flex' justifyContent='center' alignItems='center'>
-                    <Skeleton
-                      width={
-                        column.width
-                        ? parseInt(column.width.replace('%', '')) * (window.innerWidth / 100) 
-                          : 170
-                      }
-                      height={40}
-                      className="skeleton"
-                      baseColor="#f0f0f0"
-                      highlightColor="#e6e6e6"
-                    />
-                  </Container>
-                </td>
+          {!!loading
+            ? columns.map((_, index) => (
+                <tr key={index}>
+                  {columns.map((column, index) => (
+                    <td key={index}>
+                      <Container width="100%" height="100%" display="flex" justifyContent="center" alignItems="center">
+                        <Skeleton
+                          width={
+                            column.width ? parseInt(column.width.replace('%', '')) * (window.innerWidth / 100) : 170
+                          }
+                          height={40}
+                          className="skeleton"
+                          baseColor="#f0f0f0"
+                          highlightColor="#e6e6e6"
+                        />
+                      </Container>
+                    </td>
+                  ))}
+                </tr>
               ))
-            }
-          </tr>) : null}
+            : null}
           {!error && !loading && children}
+
+          {!!isCheckboxChecked ? (
+            <tr>
+              <td></td>
+            </tr>
+          ) : null}
+
           {!!error && !loading && (
             <tr className="row-error">
               <td colSpan={columns.length}>
@@ -112,7 +131,9 @@ const Table: React.FC<TableProps> = ({
               </td>
             </tr>
           )}
+
           {hasFilter && isArrayEmpty && !loading ? emptyState : null}
+
           {!hasFilter && isArrayEmpty && !loading ? emptyFirstState : null}
         </tbody>
       </StyledOrderTable>
@@ -155,10 +176,10 @@ const StyledOrderTable = styled.table`
       background: ${theme.colors['Neutral2']};
     }
 
-    .skeleton{
+    .skeleton {
       gap: 10px;
     }
-    .table-body{
+    .table-body {
       width: 100%;
       height: 100%;
     }

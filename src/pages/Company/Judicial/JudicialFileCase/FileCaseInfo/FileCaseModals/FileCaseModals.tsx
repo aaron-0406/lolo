@@ -45,6 +45,9 @@ const FileCaseModals = ({ numberCaseFile }: FileCaseModalsProps) => {
   const onClickRelatedProcess = () => {
     navigate(`${paths.judicial.relatedProcess(urlIdentifier, codeParams)}`)
   }
+  const onClickCollateral = () => {
+    navigate(`${paths.judicial.collateral(urlIdentifier, codeParams)}`)
+  }
 
   return (
     <Container width="100%" height="100%" display="flex" flexDirection="row" gap="10px">
@@ -95,6 +98,15 @@ const FileCaseModals = ({ numberCaseFile }: FileCaseModalsProps) => {
         onClick={onClickRelatedProcess}
         permission="P13-01-05"
       />
+      <Button
+        label="Garantías"
+        trailingIcon="ri-red-packet-line"
+        size={greaterThanTabletS ? 'default' : 'small'}
+        disabled={!clientId}
+        onClick={onClickCollateral}
+        permission="P13-01-06"
+      />
+      
     </Container>
   )
 }

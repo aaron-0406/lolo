@@ -1,7 +1,7 @@
 import useModal from '@/hooks/useModal'
 import { FileType } from '@/types/extrajudicial/file.type'
 import { AxiosResponse } from 'axios'
-import { ReactNode, useState } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import { KEY_COBRANZA_URL_FILES_CODE_CACHE } from './utils/company-files.cache'
 import notification from '@/ui/notification'
@@ -23,6 +23,9 @@ import CobranzaFilesSeeModal from '../Modals/CobranzaFilesSeeModal'
 import Tag from '@/ui/Tag'
 import CobranzaFilesEditModal from '../Modals/CobranzaFilesEditModal'
 import EmptyState from '@/ui/EmptyState'
+import { useFiltersContext } from '@/contexts/FiltersProvider'
+import { useLocation } from 'react-router-dom'
+import { useLoloContext } from '@/contexts/LoloProvider'
 
 type CobranzaFilesTableProps = {
   clientId?: number
@@ -31,6 +34,8 @@ type CobranzaFilesTableProps = {
 }
 
 const CobranzaFilesTable = ({ clientId, clientCode = 0, clientCustomerHasBankId }: CobranzaFilesTableProps) => {
+  const location = useLocation()
+  const currentPath = location.pathname
   const [idDeletedFile, setIdDeletedFile] = useState<number>(0)
   const [idSeeFile, setIdSeeFile] = useState<number>(0)
   const [idEditFile, setIdEditFile] = useState<number>(0)
@@ -38,6 +43,15 @@ const CobranzaFilesTable = ({ clientId, clientCode = 0, clientCustomerHasBankId 
   const { visible: visibleEditFile, showModal: showEditFile, hideModal: hideEditFile } = useModal()
   const { visible: visibleDeleteFile, showModal: showDeleteFile, hideModal: hideDeleteFile } = useModal()
   const { visible: visibleModalFile, showModal: showModalFile, hideModal: hideModalFile } = useModal()
+
+  const {
+    filterSearch: { getSearchFilters },
+  } = useFiltersContext()
+
+  const {
+    bank: { selectedBank },
+  } = useLoloContext()
+  const opts = getSearchFilters(currentPath)?.opts ?? { filter: '', limit: 50, page: 1 }
 
   const handleClickDelete = (id: number) => {
     setIdDeletedFile(id)
@@ -75,10 +89,10 @@ const CobranzaFilesTable = ({ clientId, clientCode = 0, clientCustomerHasBankId 
     return <Img width="30px" placeholderImage="type-file" src={fileIcon} />
   }
 
-  const { data, isLoading } = useQuery<AxiosResponse<Array<FileType>, Error>>(
+  const { data, isLoading, refetch } = useQuery<AxiosResponse<Array<FileType>, Error>>(
     [KEY_COBRANZA_URL_FILES_CODE_CACHE, clientId],
     async () => {
-      return await getFiles(clientId ?? 0)
+      return await getFiles(clientId ?? 0, Number(selectedBank.idCHB), opts.page, opts.limit, opts.filter)
     },
     {
       onError: (error: any) => {
@@ -90,12 +104,17 @@ const CobranzaFilesTable = ({ clientId, clientCode = 0, clientCustomerHasBankId 
     }
   )
 
+  useEffect(() => {
+    refetch()
+    // eslint-disable-next-line
+  }, [opts.filter])
+
   const files = data?.data ?? []
 
   return (
     <Container width="100%" height="calc(100% - 80px)" padding="10px 20px">
       <Table
-        top="190px"
+        top="200px"
         columns={filesColumns}
         loading={isLoading}
         isArrayEmpty={!files.length}

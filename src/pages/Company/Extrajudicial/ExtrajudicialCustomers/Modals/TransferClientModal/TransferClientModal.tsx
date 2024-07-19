@@ -14,11 +14,12 @@ import companyCustomersCache from '../../CustomersTable/utils/company-customers.
 
 type TransferClientModalProps = {
   visible: boolean
-  onClose: () => void
   code: string
+  archived: boolean
+  onClose: () => void
 }
 
-const TransferClientModal = ({ visible, onClose, code }: TransferClientModalProps) => {
+const TransferClientModal = ({ visible, onClose, code, archived }: TransferClientModalProps) => {
   const queryClient = useQueryClient()
 
   const {
@@ -59,18 +60,19 @@ const TransferClientModal = ({ visible, onClose, code }: TransferClientModalProp
           id: result.data.id,
           chb: idCHB?.length ? parseInt(idCHB) : 0,
           chbTransferred: result.data.chbTransferred,
+          archived,
         })
         notification({ type: 'success', message: 'Cliente Transferido' })
         onClose()
       },
       onMutate: () => {
-        return onMutateCache(idCHB?.length ? parseInt(idCHB) : 0)
+        return onMutateCache(idCHB?.length ? parseInt(idCHB) : 0, archived)
       },
       onSettled: () => {
-        onSettledCache(idCHB?.length ? parseInt(idCHB) : 0)
+        onSettledCache(idCHB?.length ? parseInt(idCHB) : 0, archived)
       },
       onError: (error, _, context: any) => {
-        onErrorCache(context, idCHB?.length ? parseInt(idCHB) : 0)
+        onErrorCache(context, idCHB?.length ? parseInt(idCHB) : 0, archived)
         notification({
           type: 'error',
           message: error.response?.data.message,

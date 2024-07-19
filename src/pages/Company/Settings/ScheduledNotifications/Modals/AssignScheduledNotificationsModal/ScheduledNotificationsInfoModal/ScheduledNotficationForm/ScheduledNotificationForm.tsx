@@ -7,6 +7,7 @@ import Label from '@/ui/Label'
 import Switch from '@/ui/Switch'
 import { Controller, useFormContext } from 'react-hook-form'
 import styled from 'styled-components'
+import DayPicker from '@/ui/DayPicker'
 
 const ScheduledNotificationForm = () => {
   const {
@@ -73,6 +74,12 @@ const ScheduledNotificationForm = () => {
             <Input className="input-time" type="time" value={field.value} onChange={field.onChange} />
           </Container>
         )}
+      />
+
+      <Controller
+        name="scheduledNotification.daysToNotify"
+        control={control}
+        render={({ field }) => <DayPicker label="Se repite el:" value={field.value} onChange={field.onChange} />}
       />
 
       <Controller
