@@ -75,12 +75,21 @@ const UserLogsTable: FC<UserLogsTableProps> = ({ opts, setOpts }) => {
           return option.key
         })
 
+      const initialDate =
+        selectedFilterOptions.find((filterOption) => filterOption.identifier === 'user.logs.filter.initialDate')
+          ?.options[0] ?? ''
+      const finalDate =
+        selectedFilterOptions.find((filterOption) => filterOption.identifier === 'user.logs.filter.finalDate')
+          ?.options[0] ?? ''
+        
       return await getAllUserFilterLogsByCustomerId(
         opts.page,
         opts.limit,
         customerId,
         JSON.stringify(entities),
-        JSON.stringify(users)
+        JSON.stringify(users),
+        JSON.stringify(initialDate),
+        JSON.stringify(finalDate)
       )
     },
     {
@@ -163,7 +172,7 @@ const UserLogsTable: FC<UserLogsTableProps> = ({ opts, setOpts }) => {
   }, [opts.page])
 
   return (
-    <Container width="100%" height="calc(100% - 112px)" padding="20px">
+    <Container width="100%" maxHeight="calc(100% - 140px)" padding="0px 20px">
       <Pagination count={userLogsCount} opts={opts} setOpts={setOpts} />
       <Table
         top="200px"
