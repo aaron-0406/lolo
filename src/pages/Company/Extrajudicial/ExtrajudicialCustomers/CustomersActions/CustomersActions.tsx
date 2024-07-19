@@ -13,7 +13,13 @@ import ModalManagementExcel from './ModalManagementExcel/ModalManagementExcel'
 import paths from 'shared/routes/paths'
 import { useFiltersContext } from '@/contexts/FiltersProvider'
 
-const CustomersActions = () => {
+const CustomersActions = ({
+  archived,
+  onChangeArchivedState,
+}: {
+  archived: boolean
+  onChangeArchivedState: () => void
+}) => {
   const location = useLocation()
   const currentPath = location.pathname
 
@@ -64,7 +70,14 @@ const CustomersActions = () => {
   }
 
   return (
-    <StyledContainer width="100%" display="flex" flexDirection="column" alignItems="center" padding="20px 20px 0px 20px" gap="20px">
+    <StyledContainer
+      width="100%"
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      padding="20px 20px 0px 20px"
+      gap="20px"
+    >
       <Container className="actions__select" width="100%">
         <Select
           width="100%"
@@ -83,6 +96,24 @@ const CustomersActions = () => {
           value={searchFilter.filter}
           clearInput
         />
+
+        {!archived ? (
+          <Button
+            disabled={!selectedBank.idBank}
+            size="small"
+            label="Ver clientes archivados"
+            trailingIcon="ri-archive-line"
+            onClick={onChangeArchivedState}
+          />
+        ) : (
+          <Button
+            disabled={!selectedBank.idBank}
+            size="small"
+            label="Ver clientes activos"
+            trailingIcon="ri-user-fill"
+            onClick={onChangeArchivedState}
+          />
+        )}
 
         <Button
           className="btn-excel"

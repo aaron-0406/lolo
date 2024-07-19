@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useMemo, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react'
 import { useMutation, useQuery } from 'react-query'
 import { useLocation, useNavigate } from 'react-router-dom'
 import moment from 'moment'
@@ -46,7 +46,17 @@ type ClientTransfered = {
   idTransferedClient: string
 }
 
-const CustomersTable = () => {
+const CustomersTable = ({
+  archived,
+  setArchived,
+  selectedCustomers,
+  setSelectedCustomers,
+}: {
+  archived: boolean
+  setArchived: Dispatch<SetStateAction<boolean>>
+  selectedCustomers: ClientType[]
+  setSelectedCustomers: Dispatch<SetStateAction<ClientType[]>>
+}) => {
   const location = useLocation()
   const currentPath = location.pathname
   const [clientTransfered, setClientTransfered] = useState<ClientTransfered>({
@@ -76,8 +86,6 @@ const CustomersTable = () => {
 
   const [codeClient, setCodeClient] = useState<string>('')
   const [codeTransferClient, setCodeTransferClient] = useState<string>('')
-  const [selectedCustomers, setSelectedCustomers] = useState<ClientType[]>([])
-  const [archived, setArchived] = useState<boolean>(false)
 
   const { visible: visibleDeleteClient, showModal: showDeleteClient, hideModal: hideDeleteClient } = useModal()
   const { visible: visibleArchiveClient, showModal: showArchiveClient, hideModal: hideArchiveClient } = useModal()
@@ -137,11 +145,6 @@ const CustomersTable = () => {
     checkboxes.forEach((checkbox) => {
       checkbox.checked = false
     })
-  }
-
-  const onChangeArchivedState = () => {
-    setArchived(!archived)
-    setSelectedCustomers([])
   }
 
   const selectedFilterOptions = getSelectedFilters(currentPath)?.filters ?? []
@@ -216,7 +219,7 @@ const CustomersTable = () => {
   })
 
   const { data, isLoading, refetch } = useQuery<AxiosResponse<any>, AxiosError<CustomErrorResponse>>(
-    [KEY_COBRANZA_URL_CUSTOMER_CODE_CACHE, parseInt(chb?.length ? chb : '0')],
+    [`${KEY_COBRANZA_URL_CUSTOMER_CODE_CACHE}-${archived}`, parseInt(chb?.length ? chb : '0')],
     async () => {
       const negotiations = getIDsByIdentifier('customers.datatable.header.negotiation', selectedFilterOptions)
       const funcionarios = getIDsByIdentifier('customers.datatable.header.funcionario', selectedFilterOptions)
@@ -320,40 +323,10 @@ const CustomersTable = () => {
 
   useEffect(() => {
     refetch()
-  }, [archived])
-
-  useEffect(() => {
-    refetch()
   }, [opts.filter.length, opts.page])
 
   return (
     <Container width="100%" height="calc(100% - 200px)" padding="10px 20px">
-      <Container
-        width="100%"
-        height="auto"
-        display="flex"
-        justifyContent="end"
-        alignItems="center"
-        padding="0px 0px 10px 0px"
-      >
-        {!archived ? (
-          <Button
-            disabled={!chb}
-            size="small"
-            label="Ver clientes archivados"
-            trailingIcon="ri-archive-line"
-            onClick={onChangeArchivedState}
-          />
-        ) : (
-          <Button
-            disabled={!chb}
-            size="small"
-            label="Ver clientes activos"
-            trailingIcon="ri-user-fill"
-            onClick={onChangeArchivedState}
-          />
-        )}
-      </Container>
       <Pagination count={quantity} opts={opts} setOptsFilter={setSearchFilters} url={currentPath} />
       <Table
         top="260px"
@@ -368,6 +341,7 @@ const CustomersTable = () => {
         onChangeFilterOptions={onChangeFilterOptions}
         loading={isLoading || isLoadingNegotiations || isLoadingFuncionarios}
         isArrayEmpty={!customers.length}
+        isCheckboxChecked={!!selectedCustomers.length}
         onChangeCheckBoxAll={onChangeCheckBoxAll}
         emptyState={
           <EmptyStateCell colSpan={customersColumns.length}>
@@ -534,7 +508,12 @@ const CustomersTable = () => {
       ) : null}
 
       {visibleDeleteClient ? (
-        <DeleteClientModal visible={visibleDeleteClient} onClose={hideDeleteClient} code={codeClient} />
+        <DeleteClientModal
+          visible={visibleDeleteClient}
+          onClose={hideDeleteClient}
+          code={codeClient}
+          archived={archived}
+        />
       ) : null}
 
       {visibleModalTransferClient ? (
@@ -542,6 +521,7 @@ const CustomersTable = () => {
           visible={visibleModalTransferClient}
           onClose={hideModalTransferClient}
           code={codeTransferClient}
+          archived={archived}
         />
       ) : null}
 
