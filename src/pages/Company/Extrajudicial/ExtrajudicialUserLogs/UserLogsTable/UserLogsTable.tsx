@@ -81,7 +81,7 @@ const UserLogsTable: FC<UserLogsTableProps> = ({ opts, setOpts }) => {
       const finalDate =
         selectedFilterOptions.find((filterOption) => filterOption.identifier === 'user.logs.filter.finalDate')
           ?.options[0] ?? ''
-        
+
       return await getAllUserFilterLogsByCustomerId(
         opts.page,
         opts.limit,
@@ -175,7 +175,7 @@ const UserLogsTable: FC<UserLogsTableProps> = ({ opts, setOpts }) => {
     <Container width="100%" maxHeight="calc(100% - 140px)" padding="0px 20px">
       <Pagination count={userLogsCount} opts={opts} setOpts={setOpts} />
       <Table
-        top="200px"
+        top="230px"
         columns={userLogsColumns}
         filterOptions={[
           { identifier: 'user.logs.datatable.header.user', options: userOptions },
