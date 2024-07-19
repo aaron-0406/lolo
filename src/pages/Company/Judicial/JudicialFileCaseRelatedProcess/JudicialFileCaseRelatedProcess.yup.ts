@@ -27,6 +27,7 @@ const JudicialFileCaseSchema: yup.SchemaOf<Omit<JudicialCaseFileType, 'id' | 'cr
   processStatus: yup.string().optional(),
   processReasonId: yup.number().optional(),
   idJudicialCaseFileRelated: yup.number().optional(),
+  chbTransferred: yup.number().optional(),
   bankId: yup.number().optional(),
 })
 

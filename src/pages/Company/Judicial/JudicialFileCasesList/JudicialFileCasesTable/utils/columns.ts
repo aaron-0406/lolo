@@ -15,6 +15,12 @@ export const judicialCaseFileColumns: ColumProps[] = [
     isSortable: true,
   },
   {
+    id: 'casesFiles.datatable.header.tranferredTo',
+    title: 'TRANSFERIDO A',
+    width: '10%',
+    justifyContent: 'left',
+  },
+  {
     id: 'casesFiles.datatable.header.processStatus',
     title: 'ESTADO PROCESAL',
     width: '10%',
