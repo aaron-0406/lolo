@@ -1,7 +1,7 @@
-import Button from "@/ui/Button"
-import Container from "@/ui/Container"
-import Modal from "@/ui/Modal"
-import Text from "@/ui/Text"
+import Button from '@/ui/Button'
+import Container from '@/ui/Container'
+import Modal from '@/ui/Modal'
+import Text from '@/ui/Text'
 
 type Props = {
   isVisible: boolean
@@ -24,12 +24,21 @@ const AchiveClientModal = ({ isVisible, onClose, onArchiveClients, archived }: P
         </Container>
       }
     >
-      <Container width="100%" height="50px" display="flex" justify-content="center" alignItems="center" flexDirection="column" textAlign="center">
-        <Text.Body size="m" weight="bold" >
-          {!archived
-            ? '¿Está seguro de que desea archivar los clientes seleccionados?'
-            : '¿Está seguro de que desea desarchivar los clientes seleccionados?'}
-        </Text.Body>
+      <Container
+        width="100%"
+        height="100px"
+        display="flex"
+        justify-content="center"
+        alignItems="center"
+        textAlign="center"
+      >
+        <div>
+          <Text.Body size="m" weight="bold">
+            {!archived
+              ? '¿Está seguro de que desea archivar los clientes seleccionados?'
+              : '¿Está seguro de que desea desarchivar los clientes seleccionados?'}
+          </Text.Body>
+        </div>
       </Container>
     </Modal>
   )

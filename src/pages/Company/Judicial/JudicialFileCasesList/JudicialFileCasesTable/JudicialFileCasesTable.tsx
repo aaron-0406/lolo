@@ -215,12 +215,11 @@ const JudicialFileCasesTable = () => {
   const buttons: FloatingContainerButtonsType[] = [
     {
       onClick: funt,
-      label: 'Aceptar',
+      label: 'ARCHIVAR',
     },
     {
       onClick: funt,
-      label: 'Eliminar',
-      type: 'danger',
+      label: 'ASIGNAR',
     },
   ]
 
@@ -272,7 +271,7 @@ const JudicialFileCasesTable = () => {
   }, [sortingOptions.order])
 
   return (
-    <Container width="100%" height="calc(100% - 112px)" padding="20px">
+    <Container width="100%" height="calc(100% - 112px)" padding="10px 20px">
       <Pagination count={quantity} opts={opts} setOptsFilter={setSearchFilters} url={currentPath} />
       <Table
         filterOptions={[
@@ -282,7 +281,7 @@ const JudicialFileCasesTable = () => {
           { identifier: 'casesFiles.datatable.header.user', options: optionsUsers },
           { identifier: 'casesFiles.datatable.header.sede', options: optionsSede },
         ]}
-        top="250px"
+        top="230px"
         columns={judicialCaseFileColumns}
         selectedFilterOptions={selectedFilterOptions}
         onChangeFilterOptions={onChangeFilterOptions}

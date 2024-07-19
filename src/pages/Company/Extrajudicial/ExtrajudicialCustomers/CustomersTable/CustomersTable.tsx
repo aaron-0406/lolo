@@ -329,7 +329,7 @@ const CustomersTable = ({
     <Container width="100%" height="calc(100% - 200px)" padding="10px 20px">
       <Pagination count={quantity} opts={opts} setOptsFilter={setSearchFilters} url={currentPath} />
       <Table
-        top="260px"
+        top="230px"
         columns={customersColumns}
         filterOptions={[
           { identifier: 'customers.datatable.header.negotiation', options: optionsNegotiations },
@@ -368,11 +368,16 @@ const CustomersTable = ({
             ) => {
               const showMessageAboutClientTransferred =
                 !record.chbTransferred || record.chbTransferred == parseInt(chb?.length ? chb : '0')
+              const cfs = selectedCustomers.find((cs) => cs.id === record.id)
 
               return (
                 <tr
                   className={
-                    showMessageAboutClientTransferred ? 'styled-data-table-row ' : 'styled-data-table-row disable-table'
+                    showMessageAboutClientTransferred
+                      ? cfs
+                        ? 'styled-data-table-row select-table'
+                        : 'styled-data-table-row'
+                      : 'styled-data-table-row disable-table'
                   }
                   key={record.id}
                   onClick={() => {

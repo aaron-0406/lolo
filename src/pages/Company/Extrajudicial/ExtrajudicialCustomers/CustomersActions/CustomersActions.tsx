@@ -101,7 +101,7 @@ const CustomersActions = ({
           <Button
             disabled={!selectedBank.idBank}
             size="small"
-            label="Ver clientes archivados"
+            label="Archivados"
             trailingIcon="ri-archive-line"
             onClick={onChangeArchivedState}
           />
@@ -109,7 +109,7 @@ const CustomersActions = ({
           <Button
             disabled={!selectedBank.idBank}
             size="small"
-            label="Ver clientes activos"
+            label="Clientes"
             trailingIcon="ri-user-fill"
             onClick={onChangeArchivedState}
           />

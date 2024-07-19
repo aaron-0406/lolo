@@ -14,7 +14,7 @@ const ExtrajudicialCustomers = () => {
   }
 
   return (
-    <Container width="100%" height="100%" display="flex" flexDirection="column">
+    <Container width="100%" height="calc(100% - 50px)" display="flex" flexDirection="column">
       <CustomersActions archived={archived} onChangeArchivedState={onChangeArchivedState} />
       <CustomersTable
         archived={archived}
