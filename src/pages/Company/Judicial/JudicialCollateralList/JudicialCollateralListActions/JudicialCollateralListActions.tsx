@@ -1,6 +1,5 @@
 import React from 'react'
 import paths from 'shared/routes/paths'
-import styled, { css } from 'styled-components'
 
 import { LinkType } from '@/ui/Breadcrumbs/Breadcrumbs.type'
 import { device } from '@/breakpoints/responsive'
@@ -25,11 +24,10 @@ const FileCasesCollateralActions: React.FC<JudicialFileCasesCollateralActionsPro
     client: { customer },
   } = useLoloContext()
 
-  
   const handleClickCaseFileCollateral = () => {
     navigate(`${paths.judicial.detailCollateral(customer.urlIdentifier, codeParams, '00000000')}`)
   }
-  
+
   const greaterThanTabletS = useMediaQuery(device.tabletS)
   const greaterThanDesktopS = useMediaQuery(device.desktopS)
 
