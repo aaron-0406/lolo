@@ -1,41 +1,38 @@
-import { CustomerUserType } from "@/types/dash/customer-user.type"
-import Container from "@/ui/Container"
-import Table from "@/ui/Table"
-import { usersColumns } from "./utils/columns" 
-import BodyCell from "@/ui/Table/BodyCell"
-import Checkbox from "@/ui/Checkbox"
-import { useFormContext } from "react-hook-form"
-import { CompareExcelsUserType } from "@/types/config/compare-excels.type"
-import { useEffect, useState } from "react"
+import { CustomerUserType } from '@/types/dash/customer-user.type'
+import Container from '@/ui/Container'
+import Table from '@/ui/Table'
+import { usersColumns } from './utils/columns'
+import BodyCell from '@/ui/Table/BodyCell'
+import Checkbox from '@/ui/Checkbox'
+import { useFormContext } from 'react-hook-form'
+import { CompareExcelsUserType } from '@/types/config/compare-excels.type'
+import { useEffect, useState } from 'react'
 
 type UsersToSendReportTableProps = {
   users: CustomerUserType[]
   isLoading: boolean
 }
 
-const UsersToSendReportTable = ({users, isLoading}: UsersToSendReportTableProps) => {
-  
-  const { getValues, setValue } = useFormContext<{users: CompareExcelsUserType[] }>()
-  const data = getValues('users')
-  const [ usersList, setUsersList ] = useState<CompareExcelsUserType[]>([])
+const UsersToSendReportTable = ({ users, isLoading }: UsersToSendReportTableProps) => {
+  const { setValue } = useFormContext<{ users: CompareExcelsUserType[] }>()
+  const [usersList, setUsersList] = useState<CompareExcelsUserType[]>([])
   const onSetUserToSendReport = (idUser: number) => {
     const isAssigned = usersList.some((user: CompareExcelsUserType) => user.id === idUser)
-    if(!isAssigned){
-      const data = users.find((user: CustomerUserType) => user.id === idUser) as CompareExcelsUserType;
-      const newAssignedArray = [...usersList, {
-        id: data?.id,
-        name: data?.name,
-        lastName: data?.lastName,
-        email: data?.email,
-        state: data?.state
-      }]
+    if (!isAssigned) {
+      const data = users.find((user: CustomerUserType) => user.id === idUser) as CompareExcelsUserType
+      const newAssignedArray = [
+        ...usersList,
+        {
+          id: data?.id,
+          name: data?.name,
+          lastName: data?.lastName,
+          email: data?.email,
+          state: data?.state,
+        },
+      ]
       setUsersList(newAssignedArray)
-    }
-    else{
-      const newDeallocatedArray = usersList.filter(
-        (user: CompareExcelsUserType) =>
-          user.id !== idUser
-      )
+    } else {
+      const newDeallocatedArray = usersList.filter((user: CompareExcelsUserType) => user.id !== idUser)
       setUsersList(newDeallocatedArray)
     }
   }
@@ -43,8 +40,8 @@ const UsersToSendReportTable = ({users, isLoading}: UsersToSendReportTableProps)
   useEffect(() => {
     setValue('users', usersList)
     // eslint-disable-next-line
-  }, [usersList]) 
-  
+  }, [usersList])
+
   return (
     <Container width="100%" height="100%">
       <Table columns={usersColumns} loading={isLoading}>
