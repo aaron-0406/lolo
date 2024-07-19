@@ -111,7 +111,7 @@ const JudicialCollateralFilesTable = () => {
   return (
     <Container width="100%" height="calc(100% - 112px)" padding="0px 20px 20px 20px">
       <Table
-        top="260px"
+        top="190px"
         columns={JudicialCollateralFilesColumns}
         loading={isLoading}
         isArrayEmpty={!judicialCollateralFiles.length}

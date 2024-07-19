@@ -67,7 +67,7 @@ const JudicialCollateralListTable = ({ id }: JudicialCollateralListaTableProps) 
   return (
     <Container width="100%" height="100%" padding="0px 20px 0px 20px">
       <Table
-        top="240px"
+        top="190px"
         columns={judicialCollateralColumns}
         isArrayEmpty={!collaterals.length}
         emptyState={

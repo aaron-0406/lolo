@@ -1,43 +1,40 @@
-import { useLoloContext } from "@/contexts/LoloProvider"
-import { useState } from "react"
-import useModal from "@/hooks/useModal"
+import { useLoloContext } from '@/contexts/LoloProvider'
+import { useState } from 'react'
+import useModal from '@/hooks/useModal'
 
-import Container from "@/ui/Container"
-import Table from "@/ui/Table"
-import EmptyStateCell from "@/ui/Table/EmptyStateCell"
-import EmptyState from "@/ui/EmptyState"
-import Button from "@/ui/Button"
-import notification from "@/ui/notification"
-import BodyCell from "@/ui/Table/BodyCell"
+import Container from '@/ui/Container'
+import Table from '@/ui/Table'
+import EmptyStateCell from '@/ui/Table/EmptyStateCell'
+import EmptyState from '@/ui/EmptyState'
+import Button from '@/ui/Button'
+import notification from '@/ui/notification'
+import BodyCell from '@/ui/Table/BodyCell'
 
-import { AxiosResponse } from "axios"
-import { useQuery } from "react-query"
-import { JudicialCollateralChargesEncumbrancesColumns } from "./utils/columns"
-import moment from "moment"
-import { KEY_JUDICIAL_CHARGES_ENCUMBRANCES_CACHE } from "./utils/judicial-charges-encumbrances.cache"
+import { AxiosResponse } from 'axios'
+import { useQuery } from 'react-query'
+import { JudicialCollateralChargesEncumbrancesColumns } from './utils/columns'
+import moment from 'moment'
+import { KEY_JUDICIAL_CHARGES_ENCUMBRANCES_CACHE } from './utils/judicial-charges-encumbrances.cache'
 
-import { JudicialCollateralChargesEncumbrancesType } from "@/types/judicial/judicial-collateral-charges-encumbrances.type"
+import { JudicialCollateralChargesEncumbrancesType } from '@/types/judicial/judicial-collateral-charges-encumbrances.type'
 
-import { getJudicialCollateralChargesEncumbrancesByCollateral } from "@/services/judicial/judicial-collateral-charges-encumbrances.service"
+import { getJudicialCollateralChargesEncumbrancesByCollateral } from '@/services/judicial/judicial-collateral-charges-encumbrances.service'
 
-import ChargesEncumbrancesModal from "../Modals/JudicialChargesEncumbrancesModal"
-import DeleteChargesEncumbrances from "../Modals/DeleteJudicialCollateralChargesEncumbrancesModal"
-import { useParams } from "react-router-dom"
-import Text from "@/ui/Text"
-import { useMediaQuery } from "@/hooks/useMediaQuery"
-import { device } from "@/breakpoints/responsive"
+import ChargesEncumbrancesModal from '../Modals/JudicialChargesEncumbrancesModal'
+import DeleteChargesEncumbrances from '../Modals/DeleteJudicialCollateralChargesEncumbrancesModal'
+import { useParams } from 'react-router-dom'
+import Text from '@/ui/Text'
 
 const JudicialChargesEncumbrancesTable = () => {
   const {
     bank: {
       selectedBank: { idCHB: chb },
     },
-  } = useLoloContext()  
+  } = useLoloContext()
 
-  const collateralCode = useParams().collateralCode ?? '' 
-  const greaterThanTabletS = useMediaQuery(device.tabletS)
-  
-  const [ idChargesEncumbrances, setIdChargesEncumbrances ] = useState<number | undefined>(undefined)
+  const collateralCode = useParams().collateralCode ?? ''
+
+  const [idChargesEncumbrances, setIdChargesEncumbrances] = useState<number | undefined>(undefined)
 
   const {
     visible: visibleModalChargesEncumbrances,
@@ -69,17 +66,17 @@ const JudicialChargesEncumbrancesTable = () => {
     setIdChargesEncumbrances(id)
     showModalChargesEncumbrances()
   }
-  const onOpenDeleteModalChargesEncumbrances = (id: number) => { 
+  const onOpenDeleteModalChargesEncumbrances = (id: number) => {
     setIdChargesEncumbrances(id)
     showModalDeleteChargesEncumbrances()
   }
 
   const judicialChargesEncumbrances = data?.data ?? []
-  
+
   return (
     <Container width="100%" height="calc(100% - 112px)" padding="0px 20px 20px 20px">
       <Table
-        top="260px"
+        top="190px"
         columns={JudicialCollateralChargesEncumbrancesColumns}
         loading={isLoading}
         isArrayEmpty={!judicialChargesEncumbrances.length}
@@ -123,7 +120,7 @@ const JudicialChargesEncumbrancesTable = () => {
                     <Container
                       padding="10px"
                       width="100%"
-                      maxWidth='300px'
+                      maxWidth="300px"
                       textOverflow="ellipsis"
                       whiteSpace="nowrap"
                       overFlowX="hidden"
@@ -175,10 +172,20 @@ const JudicialChargesEncumbrancesTable = () => {
           : null}
       </Table>
 
-      {visibleModalChargesEncumbrances ? <ChargesEncumbrancesModal id={idChargesEncumbrances} isOpen={visibleModalChargesEncumbrances} onClose={hideModalChargesEncumbrances} /> : null}
+      {visibleModalChargesEncumbrances ? (
+        <ChargesEncumbrancesModal
+          id={idChargesEncumbrances}
+          isOpen={visibleModalChargesEncumbrances}
+          onClose={hideModalChargesEncumbrances}
+        />
+      ) : null}
 
       {visibleModalDeleteChargesEncumbrances ? (
-        <DeleteChargesEncumbrances id={idChargesEncumbrances ?? 0} isOpen={visibleModalDeleteChargesEncumbrances} onClose={hideModalDeleteChargesEncumbrances} />
+        <DeleteChargesEncumbrances
+          id={idChargesEncumbrances ?? 0}
+          isOpen={visibleModalDeleteChargesEncumbrances}
+          onClose={hideModalDeleteChargesEncumbrances}
+        />
       ) : null}
     </Container>
   )

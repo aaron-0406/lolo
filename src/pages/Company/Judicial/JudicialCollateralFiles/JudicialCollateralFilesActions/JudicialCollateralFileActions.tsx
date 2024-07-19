@@ -100,7 +100,6 @@ const JudicialCollateralFileActions = ({ clientName }: JudicalNotaryActionsProps
             {clientName ?? '-'}
           </Text.Body>
         </Container>
-        <Breadcrumbs routes={routers} />
         <TextField
           onChange={onChangeSearch}
           width="100%"
