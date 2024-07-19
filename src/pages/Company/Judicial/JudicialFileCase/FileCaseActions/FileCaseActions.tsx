@@ -46,7 +46,11 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase }: FileCaseActions
   const chb = selectedBank.idCHB.length ? parseInt(selectedBank.idCHB) : 0
 
   const navigate = useNavigate()
-  const { hideModal:hideChangeCaseFileModal, showModal: showChangeCaseFileModal, visible: visibleChangeCaseFileModal } = useModal()
+  const {
+    hideModal: hideChangeCaseFileModal,
+    showModal: showChangeCaseFileModal,
+    visible: visibleChangeCaseFileModal,
+  } = useModal()
   const {
     actions: { createFileCaseCache, editFileCaseCache },
     onMutateCache,
@@ -138,13 +142,13 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase }: FileCaseActions
     {
       enabled: false,
       onSuccess: (data) => {
-        if(data.data.customerHasBankId !== chb){
+        if (data.data.customerHasBankId !== chb) {
           setCaseFileToChange({
             numberCaseFile: data.data.numberCaseFile,
             chbOfCaseFile: data.data.customerHasBankId,
           })
           showChangeCaseFileModal()
-        }else {
+        } else {
           setValue('id', data.data.id)
           setValue('numberCaseFile', data.data.numberCaseFile)
           setValue('judgmentNumber', data.data?.judgmentNumber ?? 0)
@@ -167,9 +171,17 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase }: FileCaseActions
           setValue('judicialSubject', data.data?.judicialSubject)
           setValue('judicialProceduralWay', data.data?.judicialProceduralWay)
           setValue('qrCode', data.data?.qrCode ?? undefined)
-  
+
           //TODO: Work here
           setOwnerFileCase(data.data?.client)
+          if (!data.data?.idJudicialCaseFileRelated) return
+          navigate(
+            `${paths.judicial.detallesExpedienteRelatedProcess(
+              customer.urlIdentifier,
+              data.data.relatedJudicialCaseFile.numberCaseFile,
+              data.data.numberCaseFile
+            )}`
+          )
         }
       },
       onError: (error: any) => {

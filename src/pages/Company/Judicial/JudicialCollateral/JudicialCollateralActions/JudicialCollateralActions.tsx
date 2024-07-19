@@ -65,7 +65,6 @@ const JudicialCollateral = ({ setLoadingGlobal, caseFileId, clientName }: Judici
       district: { id: number; name: string }
     }
   >()
-
   const queryClient = useQueryClient()
 
   const {
@@ -267,15 +266,28 @@ const JudicialCollateral = ({ setLoadingGlobal, caseFileId, clientName }: Judici
       padding="10px 20px 10px 20px"
       flexDirection="column"
     >
+      <Breadcrumbs routes={routers} />
       <Container
         width="100%"
         display="flex"
         justifyContent="space-between"
         alignItems={greaterThanDesktopS ? 'center' : 'start'}
         gap="20px"
-        flexDirection={greaterThanDesktopS ? 'row' : 'column'}
+        flexDirection='row'
       >
-        <Breadcrumbs routes={routers} />
+        <Container
+          padding="10px"
+          width="100%"
+          maxWidth={greaterThanTabletS ? '500px' : '250px'}
+          textOverflow="ellipsis"
+          whiteSpace="nowrap"
+          overFlowX='hidden'
+          backgroundColor="#eff0f6ff"
+        >
+          <Text.Body size="m" weight="bold">
+            {clientName ?? '-'}
+          </Text.Body>
+        </Container>
         <Container width="fit-content" display="flex" justifyContent="space-between" alignItems="center" gap="10px">
           <Button
             width="130px"
@@ -301,11 +313,6 @@ const JudicialCollateral = ({ setLoadingGlobal, caseFileId, clientName }: Judici
             messageTooltip="Guardar cambios"
           />
         </Container>
-      </Container>
-      <Container padding="10px" width="fit-content" margin="0" backgroundColor="#eff0f6ff">
-        <Text.Body size="m" weight="bold">
-          {clientName ?? '-'}
-        </Text.Body>
       </Container>
 
       {visibleAssignCollateralModal ? (

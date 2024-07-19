@@ -1,6 +1,5 @@
 import React from 'react'
 import paths from 'shared/routes/paths'
-import styled, { css } from 'styled-components'
 
 import { LinkType } from '@/ui/Breadcrumbs/Breadcrumbs.type'
 import { device } from '@/breakpoints/responsive'
@@ -25,12 +24,12 @@ const FileCasesCollateralActions: React.FC<JudicialFileCasesCollateralActionsPro
     client: { customer },
   } = useLoloContext()
 
-  
   const handleClickCaseFileCollateral = () => {
     navigate(`${paths.judicial.detailCollateral(customer.urlIdentifier, codeParams, '00000000')}`)
   }
-  
+
   const greaterThanTabletS = useMediaQuery(device.tabletS)
+  const greaterThanDesktopS = useMediaQuery(device.desktopS)
 
   const routers: LinkType[] = [
     {
@@ -48,25 +47,38 @@ const FileCasesCollateralActions: React.FC<JudicialFileCasesCollateralActionsPro
   ]
 
   return (
-    <StyledContainer
+    <Container
       width="100%"
       display="flex"
-      flexDirection="column"
       justifyContent="space-between"
-      alignItems={ greaterThanTabletS ? 'center' : 'flex-start'}
-      padding="10px 20px 10px 20px"
+      alignItems="start"
       gap="10px"
+      padding="10px 20px 10px 20px"
+      flexDirection="column"
     >
-      <Container display="flex" flexDirection="column" gap="10px">
-        <Breadcrumbs routes={routers} />
-        <Container padding="10px" width="100%" margin="0px 0px 10px 0px" backgroundColor="#eff0f6ff">
+      <Breadcrumbs routes={routers} />
+
+      <Container
+        width="100%"
+        display="flex"
+        justifyContent="space-between"
+        alignItems={greaterThanDesktopS ? 'center' : 'start'}
+        gap="20px"
+        flexDirection="row"
+      >
+        <Container
+          padding="10px"
+          width="100%"
+          maxWidth={greaterThanTabletS ? '500px' : '250px'}
+          textOverflow="ellipsis"
+          whiteSpace="nowrap"
+          overFlowX="hidden"
+          backgroundColor="#eff0f6ff"
+        >
           <Text.Body size="m" weight="bold">
             {clientName ?? '-'}
           </Text.Body>
         </Container>
-      </Container>
-
-      <Container width="fit-content" display="flex" justifyContent="space-between" alignItems="center" gap="10px">
         <Button
           width="130px"
           shape={'round'}
@@ -77,44 +89,8 @@ const FileCasesCollateralActions: React.FC<JudicialFileCasesCollateralActionsPro
           messageTooltip="Agregar una garantía"
         />
       </Container>
-    </StyledContainer>
+    </Container>
   )
 }
 
 export default FileCasesCollateralActions
-
-const StyledContainer = styled(Container)`
-  ${({ theme }) => css`
-    .btn-excel {
-      background-color: ${theme.colors.Success5};
-      border: none;
-    }
-    @media ${theme.device.tabletS} {
-      flex-direction: row;
-
-      .actions__textfield .actions_select {
-        width: 50%;
-      }
-    }
-
-    @media ${theme.device.tabletL} {
-      .actions__textfield {
-        width: 60%;
-      }
-
-      .actions__select {
-        width: 40%;
-      }
-    }
-
-    @media ${theme.device.desktopS} {
-      .actions__textfield {
-        width: 70%;
-      }
-
-      .actions__select {
-        width: 30%;
-      }
-    }
-  `}
-`
