@@ -14,6 +14,13 @@ export const judicialCaseFileColumns: ColumProps[] = [
     justifyContent: 'center',
   },
   {
+    id: 'casesFiles.datatable.header.impulseStatus',
+    title: 'ESTADO DE ACTIVIDAD',
+    width: '10%',
+    justifyContent: 'center',
+    isThereFilter: true,
+  },
+  {
     id: 'casesFiles.datatable.header.client',
     title: 'CLIENTE',
     width: '10%',

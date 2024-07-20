@@ -36,6 +36,7 @@ import type { FloatingContainerButtonsType } from '@/ui/FloatingContainer/interf
 import { JudicialCaseFileType } from '@/types/judicial/judicial-case-file.type'
 import { getSedeByCHB } from '@/services/judicial/judicial-sede.service'
 import { KEY_JUDICIAL_SEDE_CACHE } from '../../JudicialSede/SedeTable/utils/judicial-sede.cache'
+import TrafficLight from '@/ui/TrafficLight'
 
 const JudicialFileCasesTable = () => {
   const navigate = useNavigate()
@@ -165,6 +166,13 @@ const JudicialFileCasesTable = () => {
     }
   })
 
+  const impulseStatus = [
+    { key: 1, label: '🟢 A tiempo' },
+    { key: 2, label: '🟡 Anticipado' },
+    { key: 3, label: '🔴 Atrasado' },
+    { key: 0, label: 'Sin estado' },
+  ];
+
   const { refetch, data, isLoading } = useQuery<
     AxiosResponse<{
       caseFiles: Array<JudicialFileCaseTableRow>
@@ -179,6 +187,7 @@ const JudicialFileCasesTable = () => {
       const users = getIDsByIdentifier('casesFiles.datatable.header.user', selectedFilterOptions)
       const proceduralWays = getIDsByIdentifier('casesFiles.datatable.header.proceduralWay', selectedFilterOptions)
       const sedes = getIDsByIdentifier('casesFiles.datatable.header.sede', selectedFilterOptions)
+      const impulse = getIDsByIdentifier('casesFiles.datatable.header.impulseStatus', selectedFilterOptions)
 
       //TODO: Add users
       return await getFileCasesByCHB(
@@ -191,7 +200,8 @@ const JudicialFileCasesTable = () => {
         JSON.stringify(proceduralWays),
         JSON.stringify(subjects),
         JSON.stringify(users),
-        JSON.stringify(sedes)
+        JSON.stringify(sedes),
+        JSON.stringify(impulse)
       )
     },
     {
@@ -280,6 +290,7 @@ const JudicialFileCasesTable = () => {
           { identifier: 'casesFiles.datatable.header.proceduralWay', options: optionsProceduralWay },
           { identifier: 'casesFiles.datatable.header.user', options: optionsUsers },
           { identifier: 'casesFiles.datatable.header.sede', options: optionsSede },
+          { identifier: 'casesFiles.datatable.header.impulseStatus', options: impulseStatus },
         ]}
         top="230px"
         columns={judicialCaseFileColumns}
@@ -339,6 +350,9 @@ const JudicialFileCasesTable = () => {
                   }
                 </BodyCell>
                 <BodyCell textAlign="center">{`${record?.numberCaseFile || ''}`}</BodyCell>
+                <BodyCell textAlign="center">
+                  { Number(record.impulseStatus) !== 0 ? <TrafficLight status = {record?.impulseStatus}/> : ' - ' }
+                </BodyCell>
                 <BodyCell textAlign="left">
                   <Container
                     data-tooltip-id="cell-tooltip"
