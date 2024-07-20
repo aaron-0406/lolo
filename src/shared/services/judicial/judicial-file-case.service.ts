@@ -31,7 +31,8 @@ export const getFileCasesByCHB = async (
   proceduralWays?: string,
   subjects?: string,
   users?: string,
-  sedes?: string
+  sedes?: string, 
+  impulse?: string
 ) => {
   let filters = ''
   filters += filter !== '' && filter !== undefined ? `filter=${filter}&` : ''
@@ -40,6 +41,7 @@ export const getFileCasesByCHB = async (
   filters += !!users?.length ? `users=${users}&` : 'users=[]&'
   filters += !!subjects?.length ? `subjects=${subjects}&` : 'subjects=[]&'
   filters += !!sedes?.length ? `sedes=${sedes}&` : 'sedes=[]&'
+  filters += !!impulse?.length ? `impulse=${impulse}&` : 'impulse=[]&'
   filters += !!sorting ? `sortBy=${sorting.sortBy}&order=${sorting.order}&` : ''
 
   return await axiosClient.get(`${url}/chb/${id}?${filters}page=${page}&limit=${limit}`)
