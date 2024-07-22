@@ -9,17 +9,13 @@ import TextField from '@/ui/fields/TextField'
 import { useLocation, useNavigate } from 'react-router-dom'
 import paths from 'shared/routes/paths'
 import styled, { css } from 'styled-components'
-import JudicialCaseFilesScanQrModal from './Modals/JudicialCaseFilesScanQrModal'
+import JudicialCaseFilesScanQrModal from './Modals/JudicialCaseFilesScanQrModal/JudicialCaseFilesScanQrModal'
 
 const JudicialFileCasesActions = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const currentPath = location.pathname
-  const {
-    hideModal: hideScanQrModal,
-    showModal: showScanQrModal,
-    visible: isVisebleScanQrModal,
-  } = useModal()
+  const { hideModal: hideScanQrModal, showModal: showScanQrModal, visible: isVisebleScanQrModal } = useModal()
   const {
     client: { customer },
     bank: { selectedBank, setSelectedBank },
@@ -60,7 +56,14 @@ const JudicialFileCasesActions = () => {
   }
 
   return (
-    <StyledContainer width="100%" display="flex" flexDirection="column" alignItems="center" padding="20px" gap="20px">
+    <StyledContainer
+      width="100%"
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      padding="20px 20px 0 20px"
+      gap="20px"
+    >
       <Container className="actions__select" width="100%">
         <Select
           width="100%"

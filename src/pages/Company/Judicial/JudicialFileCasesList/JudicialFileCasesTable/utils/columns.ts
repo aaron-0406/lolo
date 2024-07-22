@@ -2,6 +2,12 @@ import { ColumProps } from '@/ui/Table/Table'
 
 export const judicialCaseFileColumns: ColumProps[] = [
   {
+    id: 'casesFiles.datatable.header.select',
+    title: 'checkbox',
+    width: '10%',
+    justifyContent: 'center',
+  },
+  {
     id: 'casesFiles.datatable.header.numberCaseFile',
     title: 'Nº EXPEDIENTE',
     width: '10%',

@@ -13,10 +13,14 @@ export const getAllUserFilterLogsByCustomerId = async (
   limit: number,
   customerId: number,
   actions?: string,
-  users?: string
+  users?: string,
+  initialDate?: string,
+  finalDate?: string
 ) => {
   let filters = ''
   filters += !!actions?.length ? `actions=${actions}&` : 'actions=[]&'
   filters += !!users?.length ? `users=${users}&` : 'users=[]&'
+  filters += !!initialDate?.length ? `initialDate=${initialDate}&` : ''
+  filters += !!finalDate?.length ? `finalDate=${finalDate}&` : ''
   return await axiosClient.get(`${url}/filter/${customerId}?${filters}page=${page}&limit=${limit}`)
 }

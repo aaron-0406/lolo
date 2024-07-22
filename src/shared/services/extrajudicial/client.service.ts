@@ -7,13 +7,14 @@ const url = `${API}/cobranza/client`
 
 export const getAllClientsByCHB = async (
   chb: string,
+  archived: boolean,
   page: number,
   limit: number,
   filter?: string,
   negotiations?: string,
   funcionarios?: string,
   users?: string,
-  cities?: string
+  cities?: string,
 ) => {
   let filters = ''
   filters += filter !== '' && filter !== undefined ? `filter=${filter}&` : ''
@@ -22,7 +23,7 @@ export const getAllClientsByCHB = async (
   filters += !!users?.length ? `users=${users}&` : 'users=[]&'
   filters += !!cities?.length ? `cities=${cities}&` : 'cities=[]&'
 
-  return await axiosClient.get(`${url}/${chb}?${filters}page=${page}&limit=${limit}`)
+  return await axiosClient.get(`${url}/${chb}?${filters}page=${page}&limit=${limit}&archived=${archived}`)
 }
 
 export const getClientByCode = async (code: string, chb: string) => {
@@ -42,6 +43,10 @@ export const saveClient = async (
   idCustomer: number
 ) => {
   return await axiosClient.post(`${url}/${idCustomer}`, client)
+}
+
+export const updateClients = async (clients: ClientType[], chb: string) => {
+  return await axiosClient.patch(`${url}/${chb}`, {clients: clients})
 }
 
 export const tranferClientToAnotherBank = async (code: string, chb: string, chbTransferred: string) => {

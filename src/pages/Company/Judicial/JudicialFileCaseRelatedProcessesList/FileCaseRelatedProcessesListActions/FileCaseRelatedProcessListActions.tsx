@@ -13,6 +13,8 @@ import Container from '@/ui/Container'
 import Breadcrumbs from '@/ui/Breadcrumbs'
 import Button from '@/ui/Button'
 import Text from '@/ui/Text'
+import RelatedProcessQrModal from './Modals/RelatedProcessScanQrModal/RelatedProcessSchanQrModal'
+import useModal from '@/hooks/useModal'
 
 type JudicialFileCasesActionsProps = {
   clientName: string
@@ -22,7 +24,13 @@ const FileCasesRelatedProcessActions: React.FC<JudicialFileCasesActionsProps> = 
   const navigate = useNavigate()
   const codeParams = useParams().code ?? ''
   const {
+    hideModal: hideScanQrModal,
+    showModal: showScanQrModal,
+    visible: isVisebleScanQrModal,
+  } = useModal()
+  const {
     client: { customer },
+    bank: { selectedBank },
   } = useLoloContext()
 
   const handleClickCaseFileRelatedProcess = () => {
@@ -56,26 +64,46 @@ const FileCasesRelatedProcessActions: React.FC<JudicialFileCasesActionsProps> = 
       padding="20px 20px 0 20px"
       gap="20px"
     >
-      <Container display="flex" flexDirection="column" gap="10px">
+      <Container display="flex" flexDirection="column" gap="10px" width="100%">
         <Breadcrumbs routes={routers} />
-        <Container padding="10px" width="100%" margin="0px 0px 10px 0px" backgroundColor="#eff0f6ff">
-          <Text.Body size="m" weight="bold">
-            {clientName ?? '-'}
-          </Text.Body>
+        <Container
+          display="flex"
+          flexDirection="row"
+          margin="0px 0px 10px 0px"
+          width="100%"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <Container padding="10px" width="fit-content" backgroundColor="#eff0f6ff">
+            <Text.Body size="m" weight="bold">
+              {clientName ?? '-'}
+            </Text.Body>
+          </Container>
+          <Container width="fit-content" display="flex" justifyContent="space-between" alignItems="center" gap="10px">
+            <Button
+              width="100px"
+              shape="round"
+              trailingIcon="ri-qr-code-line"
+              permission="P13-01"
+              messageTooltip="Escanea código QR"
+              disabled={!selectedBank.idBank}
+              onClick={showScanQrModal}
+            />
+            <Button
+              width="130px"
+              shape={'round'}
+              size={greaterThanTabletS ? 'default' : 'small'}
+              trailingIcon="ri-add-fill"
+              onClick={handleClickCaseFileRelatedProcess}
+              permission="P13-01-05-01"
+              messageTooltip="Agregar proceso conexo"
+            />
+          </Container>
         </Container>
       </Container>
-
-      <Container width="fit-content" display="flex" justifyContent="space-between" alignItems="center" gap="10px">
-        <Button
-          width="130px"
-          shape={'round'}
-          size={greaterThanTabletS ? 'default' : 'small'}
-          trailingIcon="ri-add-fill"
-          onClick={handleClickCaseFileRelatedProcess}
-          permission="P13-01-05-01"
-          messageTooltip="Agregar proceso conexo"
-        />
-      </Container>
+      {isVisebleScanQrModal ? (
+        <RelatedProcessQrModal isVisible={isVisebleScanQrModal} onClose={hideScanQrModal} />
+      ) : null}
     </StyledContainer>
   )
 }
