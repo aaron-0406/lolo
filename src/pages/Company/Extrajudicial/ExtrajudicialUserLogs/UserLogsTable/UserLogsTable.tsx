@@ -56,7 +56,7 @@ const UserLogsTable: FC<UserLogsTableProps> = ({ opts, setOpts }) => {
 
   const [userLogs, setUserLogs] = useState([])
   const [userLogsCount, setUserLogsCount] = useState<number>(0)
-  const [ userLogId, setUserLogId ] = useState<number | undefined>(undefined)
+  const [userLogId, setUserLogId] = useState<number | undefined>(undefined)
 
   const [isLoading, setIsLoading] = useState(false)
   const { showModal, hideModal, visible } = useModal()
@@ -186,7 +186,6 @@ const UserLogsTable: FC<UserLogsTableProps> = ({ opts, setOpts }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [opts.page])
 
-
   return (
     <Container width="100%" maxHeight="calc(100% - 140px)" padding="0px 20px">
       <Pagination count={userLogsCount} opts={opts} setOpts={setOpts} />
@@ -228,11 +227,10 @@ const UserLogsTable: FC<UserLogsTableProps> = ({ opts, setOpts }) => {
                 }`}</BodyCell>
                 <BodyCell textAlign="center">
                   <Button
-                    label={greaterThanTableS && 'Resumen'}
-                    shape={greaterThanTableS ? 'default' : 'default'}
+                    shape="round"
                     trailingIcon="ri-file-text-line"
-                    data-tooltip-content={'Resumen'}
                     onClick={() => onClickUserLog(record.id)}
+                    messageTooltip="Resumen de cambios"
                   />
                 </BodyCell>
                 <BodyCell textAlign="center">{moment(record.createAt).format('DD-MM-YYYY') || ''}</BodyCell>
@@ -244,7 +242,9 @@ const UserLogsTable: FC<UserLogsTableProps> = ({ opts, setOpts }) => {
             )
           })}
       </Table>
-      {visible ? <UserLogsResumeModal userLogId={userLogId} userLogs={userLogs} onClose={hideModal} visible={visible} /> : null }
+      {visible ? (
+        <UserLogsResumeModal userLogId={userLogId} userLogs={userLogs} onClose={hideModal} visible={visible} />
+      ) : null}
     </Container>
   )
 }

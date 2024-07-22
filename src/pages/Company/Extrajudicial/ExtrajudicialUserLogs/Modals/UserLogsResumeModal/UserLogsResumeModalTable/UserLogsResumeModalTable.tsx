@@ -7,10 +7,10 @@ import Container from '@/ui/Container'
 import EmptyState from '@/ui/EmptyState'
 
 type UserLogsResumeModalTableProps = {
-  changes: Change[]; 
+  changes: Change[]
 }
 
-const UserLogsResumeModalTable = ( { changes } : UserLogsResumeModalTableProps ) => {
+const UserLogsResumeModalTable = ({ changes }: UserLogsResumeModalTableProps) => {
   return (
     <Container width="100%" height="calc(100% - 112px)" padding="10px 0px 0px 0px">
       <Table
@@ -21,14 +21,20 @@ const UserLogsResumeModalTable = ( { changes } : UserLogsResumeModalTableProps )
         {changes.map((change, index) => (
           <tr key={index}>
             <BodyCell>{change.key ?? '-'}</BodyCell>
-            <BodyCell textAlign='center'>
-              {Array.isArray(change.oldValue) ? showArrayChanges(change.oldValue) : JSON.stringify(change.oldValue) ?? '-'}
+            <BodyCell textAlign="center">
+              {Array.isArray(change.oldValue)
+                ? showArrayChanges(change.oldValue)
+                : JSON.stringify(change.oldValue) ?? '-'}
             </BodyCell>
-            <BodyCell textAlign='center'>
-              {Array.isArray(change.newValue) ? showArrayChanges(change.newValue) : JSON.stringify(change.newValue) ?? '-'}
+            <BodyCell textAlign="center">
+              {Array.isArray(change.newValue)
+                ? showArrayChanges(change.newValue)
+                : JSON.stringify(change.newValue) ?? '-'}
             </BodyCell>
-            <BodyCell textAlign='center'>
-              {Array.isArray(change.withoutChanges) ? showArrayChanges(change.withoutChanges) : JSON.stringify(change.withoutChanges) ?? '-'}
+            <BodyCell textAlign="center">
+              {Array.isArray(change.withoutChanges)
+                ? showArrayChanges(change.withoutChanges)
+                : JSON.stringify(change.withoutChanges) ?? '-'}
             </BodyCell>
           </tr>
         ))}
@@ -40,9 +46,13 @@ const UserLogsResumeModalTable = ( { changes } : UserLogsResumeModalTableProps )
 export default UserLogsResumeModalTable
 
 const showArrayChanges = (data: any[]) => {
-    return <Container width="100%" display="flex" flexDirection="column" padding="10px 0px 0px 0px">
-        {data.map((change, index) => (
-            <Container width="100%" display='flex' justifyContent='start'>{JSON.stringify(change) ?? '-'}</Container>
-        ))}
+  return (
+    <Container width="100%" display="flex" flexDirection="column" padding="10px 0px 0px 0px">
+      {data.map((change, index) => (
+        <Container key={index} width="100%" display="flex" justifyContent="start">
+          {JSON.stringify(change) ?? '-'}
+        </Container>
+      ))}
     </Container>
+  )
 }
