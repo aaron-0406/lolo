@@ -65,6 +65,7 @@ const JudicialFileCasesTable = () => {
 
   const [fileCaseId, setFileCaseId] = useState<number>(0)
   const [caseFileSelected, setCaseFileSelected] = useState<Array<JudicialCaseFileType>>([])
+  const [isSelectedAll, setIsSelectedAll] = useState<boolean>(false)
 
   const sortingOptions = getSortingOptions(currentPath)?.opts ?? { sortBy: '', order: 'ASC' }
   const selectedFilterOptions = getSelectedFilters(currentPath)?.filters ?? []
@@ -235,15 +236,18 @@ const JudicialFileCasesTable = () => {
   }
 
   const onChangeCheckBoxAll = (state: boolean) => {
+    const headerCheckbox = document.querySelector<HTMLInputElement>('.headercell-check-box')
+    const checkboxes = document.querySelectorAll<HTMLInputElement>('.file-case-check-box')
     if (state) {
+      setIsSelectedAll(true)
       setCaseFileSelected(judicialFileCases)
-      const checkboxes = document.querySelectorAll<HTMLInputElement>('.file-case-check-box')
+      if (headerCheckbox) headerCheckbox.checked = true
       checkboxes.forEach((checkbox) => {
         checkbox.checked = true
       })
     } else {
       setCaseFileSelected([])
-      const checkboxes = document.querySelectorAll<HTMLInputElement>('.file-case-check-box')
+      if (headerCheckbox) headerCheckbox.checked = false
       checkboxes.forEach((checkbox) => {
         checkbox.checked = false
       })
@@ -251,11 +255,7 @@ const JudicialFileCasesTable = () => {
   }
 
   const onCloseFloatingContainer = () => {
-    setCaseFileSelected([])
-    const checkboxes = document.querySelectorAll<HTMLInputElement>('.file-case-check-box')
-    checkboxes.forEach((checkbox) => {
-      checkbox.checked = false
-    })
+    onChangeCheckBoxAll(false) 
   }
 
   useEffect(() => {
@@ -269,6 +269,12 @@ const JudicialFileCasesTable = () => {
   useEffect(() => {
     refetch()
   }, [sortingOptions.order])
+
+  useEffect(()=>{
+    const headerCheckbox = document.querySelector<HTMLInputElement>('.headercell-check-box')
+    if (headerCheckbox) headerCheckbox.checked = false
+    onCloseFloatingContainer()
+  },[chb])
 
   return (
     <Container width="100%" height="calc(100% - 112px)" padding="10px 20px">
@@ -319,7 +325,6 @@ const JudicialFileCasesTable = () => {
                 }}
               >
                 <BodyCell textAlign="left">
-                  {
                     <Container
                       display="flex"
                       justifyContent="end"
@@ -336,7 +341,6 @@ const JudicialFileCasesTable = () => {
                         }}
                       />
                     </Container>
-                  }
                 </BodyCell>
                 <BodyCell textAlign="center">{`${record?.numberCaseFile || ''}`}</BodyCell>
                 <BodyCell textAlign="left">

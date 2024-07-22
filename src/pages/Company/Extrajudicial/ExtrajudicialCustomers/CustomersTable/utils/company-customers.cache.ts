@@ -63,6 +63,36 @@ const companyCustomersCache = (queryClient: QueryClient) => {
     })
   }
 
+  const archivedCobranzaCustomerCache = (customers: ClientType[], chb: number) => {
+    const cacheKeyNotArchived = `${KEY_COBRANZA_URL_CUSTOMER_CODE_CACHE}-${false}`;
+    const cacheKeyArchived = `${KEY_COBRANZA_URL_CUSTOMER_CODE_CACHE}-${true}`;
+  
+    customers.forEach((customer) => {
+      const { id, isArchived } = customer;
+      
+      if (isArchived) {
+        queryClient.setQueryData<QueryDataType>([cacheKeyNotArchived, chb], (old) => {
+          if (old) {
+            const updatedClients = old.data.clients.filter((c: ClientType) => c.id !== Number(id));
+            return { ...old, data: { ...old.data, clients: updatedClients } };
+          }
+          return old;
+        });
+      }
+  
+      if (!isArchived) {
+        queryClient.setQueryData<QueryDataType>([cacheKeyArchived, chb], (old) => {
+          if (old) {
+            const updatedClients = old.data.clients.filter((c: ClientType) => c.id !== Number(id));
+            return { ...old, data: { ...old.data, clients: updatedClients } };
+          }
+          return old;
+        });
+      }
+    });
+  };
+  
+
   const deleteCobranzaCustomerCache = (clientId: number, customerHasBankId: number, archived: boolean) => {
     queryClient.setQueryData<QueryDataType>(
       [`${KEY_COBRANZA_URL_CUSTOMER_CODE_CACHE}-${archived}`, customerHasBankId],
@@ -101,6 +131,7 @@ const companyCustomersCache = (queryClient: QueryClient) => {
       createCobranzaCustomerCache,
       editCobranzaCustomerCache,
       transferClientCobranzaCustomerCache,
+      archivedCobranzaCustomerCache, 
       deleteCobranzaCustomerCache,
     },
     onRefetchQueryCache,
