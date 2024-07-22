@@ -156,6 +156,8 @@ const FileCaseActions = ({ setLoadingGlobal, setOwnerFileCase }: FileCaseActions
 
         //TODO: Work here
         setOwnerFileCase(data.data?.client)
+        if (!data.data?.idJudicialCaseFileRelated) return
+        navigate(`${paths.judicial.detallesExpedienteRelatedProcess(customer.urlIdentifier, data.data.relatedJudicialCaseFile.numberCaseFile, data.data.numberCaseFile)}`)  
       },
       onError: (error: any) => {
         notification({
