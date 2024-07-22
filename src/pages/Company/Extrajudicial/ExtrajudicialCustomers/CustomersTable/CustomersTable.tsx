@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react'
-import { useMutation, useQuery } from 'react-query'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { useLocation, useNavigate } from 'react-router-dom'
 import moment from 'moment'
 import { useLoloContext } from '@/contexts/LoloProvider'
@@ -27,7 +27,7 @@ import Text from '@/ui/Text'
 import { Tooltip } from 'react-tooltip'
 import TransferClientModal from '../Modals/TransferClientModal'
 import notification from '@/ui/notification'
-import { KEY_COBRANZA_URL_CUSTOMER_CODE_CACHE } from './utils/company-customers.cache'
+import companyCustomersCache, { KEY_COBRANZA_URL_CUSTOMER_CODE_CACHE } from './utils/company-customers.cache'
 import { AxiosError, AxiosResponse } from 'axios'
 import { getIDsByIdentifier } from './utils/methods'
 import { KEY_EXT_COBRANZA_FUNCIONARIOS_CACHE } from '../../ExtrajudicialFuncionarios/FuncionariosTable/utils/ext-funcionarios.cache'
@@ -86,6 +86,7 @@ const CustomersTable = ({
 
   const [codeClient, setCodeClient] = useState<string>('')
   const [codeTransferClient, setCodeTransferClient] = useState<string>('')
+  const [ isSelectedAll, setIsSelectedAll ] = useState<boolean>(false)
 
   const { visible: visibleDeleteClient, showModal: showDeleteClient, hideModal: hideDeleteClient } = useModal()
   const { visible: visibleArchiveClient, showModal: showArchiveClient, hideModal: hideArchiveClient } = useModal()
@@ -101,6 +102,10 @@ const CustomersTable = ({
   } = useModal()
 
   const opts = getSearchFilters(currentPath)?.opts ?? { filter: '', limit: 50, page: 1 }
+
+  const queryClient = useQueryClient()
+
+  const { actions: { archivedCobranzaCustomerCache } } = companyCustomersCache(queryClient)
 
   const handleClickDeleteClient = (code: string) => {
     setCodeClient(code)
@@ -124,15 +129,26 @@ const CustomersTable = ({
   }
 
   const onChangeCheckBoxAll = (state: boolean) => {
+    const headerCheckbox = document.querySelector<HTMLInputElement>('.headercell-check-box')
+    const checkboxes = document.querySelectorAll<HTMLInputElement>('.customer-check-box')
     if (state) {
-      setSelectedCustomers(customers)
-      const checkboxes = document.querySelectorAll<HTMLInputElement>('.customer-check-box')
+      setIsSelectedAll(true)
+      const enableCustomers = customers.filter(
+        (
+          record: ClientType & { negotiation: NegotiationType } & { funcionario: FuncionarioType } & {
+            customerUser: CustomerUserType
+          } & { city: CityType }
+        ) => !record.chbTransferred || record.chbTransferred === parseInt(chb?.length ? chb : '0')
+      )
+      setSelectedCustomers(enableCustomers)
+      if (headerCheckbox) headerCheckbox.checked = true
       checkboxes.forEach((checkbox) => {
         checkbox.checked = true
       })
     } else {
+      setIsSelectedAll(false)
       setSelectedCustomers([])
-      const checkboxes = document.querySelectorAll<HTMLInputElement>('.customer-check-box')
+      if (headerCheckbox) headerCheckbox.checked = false
       checkboxes.forEach((checkbox) => {
         checkbox.checked = false
       })
@@ -140,11 +156,7 @@ const CustomersTable = ({
   }
 
   const onCloseFloatingContainer = () => {
-    setSelectedCustomers([])
-    const checkboxes = document.querySelectorAll<HTMLInputElement>('.customer-check-box')
-    checkboxes.forEach((checkbox) => {
-      checkbox.checked = false
-    })
+    onChangeCheckBoxAll(false)
   }
 
   const selectedFilterOptions = getSelectedFilters(currentPath)?.filters ?? []
@@ -268,7 +280,11 @@ const CustomersTable = ({
     {
       onSuccess: (data) => {
         setSelectedCustomers([])
-        refetch()
+        archivedCobranzaCustomerCache(data.data, parseInt(chb?.length ? chb : '0'))
+        if (isSelectedAll) {
+          refetch()
+          setIsSelectedAll(false)
+        }
         notification({ type: 'success', message: 'Clientes actualizados' })
       },
       onError: (error) => {
@@ -325,6 +341,12 @@ const CustomersTable = ({
     refetch()
   }, [opts.filter.length, opts.page])
 
+  useEffect(()=>{
+    const headerCheckbox = document.querySelector<HTMLInputElement>('.headercell-check-box')
+    if (headerCheckbox) headerCheckbox.checked = false
+    onCloseFloatingContainer()
+  },[chb, archived, customers])
+
   return (
     <Container width="100%" height="calc(100% - 200px)" padding="10px 20px">
       <Pagination count={quantity} opts={opts} setOptsFilter={setSearchFilters} url={currentPath} />
@@ -367,7 +389,7 @@ const CustomersTable = ({
               } & { city: CityType }
             ) => {
               const showMessageAboutClientTransferred =
-                !record.chbTransferred || record.chbTransferred == parseInt(chb?.length ? chb : '0')
+                !record.chbTransferred || record.chbTransferred === parseInt(chb?.length ? chb : '0')
               const cfs = selectedCustomers.find((cs) => cs.id === record.id)
 
               return (
@@ -385,7 +407,7 @@ const CustomersTable = ({
                   }}
                 >
                   <BodyCell textAlign="left">
-                    {
+                    {showMessageAboutClientTransferred ? (
                       <Container
                         display="flex"
                         justifyContent="end"
@@ -402,7 +424,10 @@ const CustomersTable = ({
                           }}
                         />
                       </Container>
-                    }
+                    ) : (
+                      <Text.Body size="m" weight="regular">
+                      </Text.Body>
+                    )}
                   </BodyCell>
                   <BodyCell textAlign="center">{`${record.code || ''}`}</BodyCell>
                   <BodyCell textAlign="left">
