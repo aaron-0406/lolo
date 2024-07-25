@@ -58,7 +58,7 @@ const ActionsSearch: FC<ActionsSearchProps> = ({ opts, setOpts }) => {
         <Label label="Buscar:" />
       </Container>
       <Container width="calc(100% - 60px)" display="flex" justifyContent="space-between" margin="0 20px 0 0">
-        <TextField onChange={onChangeSearch} width="100%" placeholder="Buscar cliente por nombre" />
+        <TextField onChange={onChangeSearch} width="100%" placeholder="Buscar acción por nombre" />
       </Container>
 
       <Button

@@ -93,7 +93,7 @@ const JudicialBinnacleInfo = ({ judicialFileCaseId, clientCode, clientName }: Ju
           shape="round"
           trailingIcon="ri-add-fill"
           permission="P02-02-01-01"
-          messageTooltip="Agregar comentario"
+          messageTooltip="Agregar bitacora"
         />
 
         {judicialFileCaseId && (

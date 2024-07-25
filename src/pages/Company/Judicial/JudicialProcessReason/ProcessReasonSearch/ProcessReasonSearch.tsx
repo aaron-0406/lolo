@@ -50,7 +50,7 @@ const ProcessReasonSearch = ({ opts, setOpts }: ProcessReasonSearchProps) => {
         <Label label="Buscar:" />
       </Container>
       <Container width="calc(100% - 60px)" display="flex" justifyContent="space-between" margin="0 20px 0 0">
-        <TextField onChange={onChangeSearch} width="100%" placeholder="Buscar materia por nombre" />
+        <TextField onChange={onChangeSearch} width="100%" placeholder="Buscar motivo por nombre" />
       </Container>
 
       <Button
