@@ -21,8 +21,11 @@ const RolesActions = () => {
         size="small"
         permission="P11-01"
       />
-
-      <RolesModal visible={visibleModalAdd} onClose={hideModalAdd} />
+      {
+        visibleModalAdd ? (
+          <RolesModal visible={visibleModalAdd} onClose={hideModalAdd} />
+        ) : null
+      }  
     </Container>
   )
 }

@@ -203,7 +203,7 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts }) => {
                         handleClickEditUser(record.id)
                       }}
                       shape="round"
-                      messageTooltip='Editar usuario'
+                      messageTooltip="Editar usuario"
                       size="small"
                       leadingIcon="ri-pencil-fill"
                       permission="P10-02"
@@ -225,7 +225,7 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts }) => {
                       }}
                       shape="round"
                       size="small"
-                      messageTooltip='Eliminar usuario'
+                      messageTooltip="Eliminar usuario"
                       leadingIcon="ri-delete-bin-line"
                       permission="P10-03"
                       display="danger"
@@ -250,9 +250,10 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts }) => {
           })}
       </Table>
 
-      <UsersModal visible={visibleModalUser} onClose={onCloseUser} idUser={idUser} isEdit />
-
-      <DeleteUsersModal visible={visibleDeleteUser} onClose={onCloseDeleteUser} idUser={idDeletedUser} />
+      {visibleModalUser ? <UsersModal visible={visibleModalUser} onClose={onCloseUser} idUser={idUser} isEdit /> : null}
+      {visibleDeleteUser ? (
+        <DeleteUsersModal visible={visibleDeleteUser} onClose={onCloseDeleteUser} idUser={idDeletedUser} />
+      ) : null}
     </Container>
   )
 }
