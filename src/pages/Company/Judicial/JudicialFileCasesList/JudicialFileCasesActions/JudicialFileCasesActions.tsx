@@ -78,7 +78,7 @@ const JudicialFileCasesActions = () => {
           onChange={onChangeSearch}
           width="100%"
           label="Buscar expediente:"
-          placeholder="Buscar con nombre del cliente"
+          placeholder="Buscar expediente por cliente, por número de expediente y por secretario"
           value={searchFilter.filter}
           clearInput
         />
