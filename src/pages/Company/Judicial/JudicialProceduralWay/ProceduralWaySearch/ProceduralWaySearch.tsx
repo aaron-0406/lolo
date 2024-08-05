@@ -50,7 +50,7 @@ const ProceduralWaySearch = ({ opts, setOpts }: ProceduralWaySearchProps) => {
         <Label label="Buscar:" />
       </Container>
       <Container width="calc(100% - 60px)" display="flex" justifyContent="space-between" margin="0 20px 0 0">
-        <TextField onChange={onChangeSearch} width="100%" placeholder="Buscar juzgado por nombre" />
+        <TextField onChange={onChangeSearch} width="100%" placeholder="Buscar via procedimental por nombre" />
       </Container>
 
       <Button
