@@ -1,0 +1,30 @@
+export type JudicialCollateralAuctionRoundType = {
+  id: number;
+  judicialCollateralIdJudicialCollateral:number;
+  customerHasBankId:number;
+  appraisalDate?:string;
+  expertReportDate?:string;
+  encumbranceAmountSoles?:number;
+  encumbranceAmountDollars?:number;
+  conventionalValueSoles?:number;
+  conventionalValueDollars?:number;
+  marketValueSoles?:number;
+  marketValueDollars?:number;
+  realizationValueSoles?:number;
+  realizationValueDollars?:number;
+  auctionValueSoles?:number;
+  auctionValueDollars?:number;
+  firstCallSoles?:number;
+  firstCallDollars?:number;
+  secondCallSoles?:number;
+  secondCallDollars?:number;
+  thirdCallSoles?:number;
+  thirdCallDollars?:number;
+  auctionRound:number;
+  appraisalExperts:string;
+  auctionType:string;
+  auctionerName:string;
+  createdAt:Date;
+  updatedAt:Date;
+  deletedAt:Date;
+}

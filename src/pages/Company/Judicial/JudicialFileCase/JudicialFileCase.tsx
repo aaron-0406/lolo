@@ -34,6 +34,7 @@ const JudicialFileCase = () => {
     clientId: 0,
     cityId: 0,
     customerUserId: 0,
+    responsibleUserId: 0,
     judicialCourtId: 0,
     judicialSubjectId: 0,
     judicialProceduralWayId: 0,

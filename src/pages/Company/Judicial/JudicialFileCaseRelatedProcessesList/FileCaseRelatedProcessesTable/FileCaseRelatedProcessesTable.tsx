@@ -146,6 +146,18 @@ const JudicialFileCasesTable = ({ caseFileId }: JudicialFileCasesTableProps) => 
     }
   })
 
+  let optionsResponsibles = users.map((user) => {
+    return {
+      key: user.id,
+      label: user.name,
+    }
+  })
+
+  optionsResponsibles.push({
+    key: 0,
+    label: 'No asignado',
+  })
+
   const {
     refetch: RelatedProcessRefetch,
     data: RelatedProcessData,
@@ -162,6 +174,7 @@ const JudicialFileCasesTable = ({ caseFileId }: JudicialFileCasesTableProps) => 
       const courts = getIDsByIdentifier('casesFiles.datatable.header.court', selectedFilterOptions)
       const subjects = getIDsByIdentifier('casesFiles.datatable.header.subject', selectedFilterOptions)
       const users = getIDsByIdentifier('casesFiles.datatable.header.user', selectedFilterOptions)
+      const responsibles = getIDsByIdentifier('casesFiles.datatable.header.responsible', selectedFilterOptions)
       const proceduralWays = getIDsByIdentifier('casesFiles.datatable.header.proceduralWay', selectedFilterOptions)
       //TODO: Add users
       return await getFileCaseRelatedProcessByCaseFileId(
@@ -172,7 +185,8 @@ const JudicialFileCasesTable = ({ caseFileId }: JudicialFileCasesTableProps) => 
         JSON.stringify(courts),
         JSON.stringify(proceduralWays),
         JSON.stringify(subjects),
-        JSON.stringify(users)
+        JSON.stringify(users), 
+        JSON.stringify(responsibles)
       )
     },
     {
@@ -206,6 +220,7 @@ const JudicialFileCasesTable = ({ caseFileId }: JudicialFileCasesTableProps) => 
           { identifier: 'casesFiles.datatable.header.subject', options: optionsSubjects },
           { identifier: 'casesFiles.datatable.header.proceduralWay', options: optionsProceduralWay },
           { identifier: 'casesFiles.datatable.header.user', options: optionsUsers },
+          { identifier: 'casesFiles.datatable.header.responsible', options: optionsResponsibles },
         ]}
         top="240px"
         columns={judicialCaseFileColumns}
@@ -257,6 +272,7 @@ const JudicialFileCasesTable = ({ caseFileId }: JudicialFileCasesTableProps) => 
                 <BodyCell textAlign="left">{`${record?.judicialCourt?.court || ''}`}</BodyCell>
                 <BodyCell textAlign="left">{`${record?.judicialSubject?.subject || ''}`}</BodyCell>
                 <BodyCell textAlign="left">{`${record?.customerUser?.name || ''}`}</BodyCell>
+                <BodyCell textAlign="left">{`${record?.responsibleUser?.name ?? '-'}`}</BodyCell>
                 <BodyCell textAlign="left">{`${record?.judicialSede?.sede || ''}`}</BodyCell>
                 <BodyCell textAlign="left">{`${record?.judicialProceduralWay?.proceduralWay || ''}`}</BodyCell>
                 <BodyCell textAlign="center">

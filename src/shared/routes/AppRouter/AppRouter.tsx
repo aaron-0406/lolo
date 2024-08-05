@@ -83,6 +83,9 @@ import JudicialCollateralList from 'pages/Company/Judicial/JudicialCollateralLis
 import JudicialCollateralChargesEncumbrancesTypeLoad from 'pages/Company/Judicial/JudicialCollateralChargesEncumbrancesTypeLoad'
 import JudicialCollateralChargesEncumbrances from 'pages/Company/Judicial/JudicialCollateralChargesEncumbrances'
 import JudicialCollateralFiles from 'pages/Company/Judicial/JudicialCollateralFiles'
+import JudicialCollateralAuctionList from 'pages/Company/Judicial/JudicialCollateralAuctionRoundList'
+import JudicialCollateralAuctionRound from 'pages/Company/Judicial/JudicialCollateralAuctionRound'
+import JudicialFileCaseAuctionRoundList from 'pages/Company/Judicial/JudicialFileCaseAuctionRoundList'
 
 const AppRouter = () => {
   return (
@@ -162,6 +165,9 @@ const AppRouter = () => {
         <Route path={paths.judicial.typeChargesEncumbrances()} element={<JudicialCollateralChargesEncumbrancesTypeLoad />} /> 
         <Route path={paths.judicial.chargesEncumbrances()} element={<JudicialCollateralChargesEncumbrances />} />  
         <Route path={paths.judicial.collateralFiles()} element={<JudicialCollateralFiles />} />
+        <Route path={paths.judicial.collateralAuction()} element={<JudicialCollateralAuctionRound />} />
+        <Route path={paths.judicial.collateralAuctionList()} element={<JudicialCollateralAuctionList />} />
+        <Route path={paths.judicial.caseFileAuctionList()} element={<JudicialFileCaseAuctionRoundList />} />
         {/* SETTINGS */}
         <Route path={paths.settings.scheduldedNotifications()} element={<ScheduledNotifications />} />
         <Route path={paths.settings.compareExcel()} element={<CompareExcel />} />

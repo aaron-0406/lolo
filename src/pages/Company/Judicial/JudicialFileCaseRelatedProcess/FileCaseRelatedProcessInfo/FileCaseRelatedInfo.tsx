@@ -328,6 +328,8 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
               onChange={field.onChange}
               hasError={!!errors.amountDemandedSoles}
               disabled={!clientId}
+              decimalScale={2}
+              decimalsLimit={2}
             />
           )}
         />
@@ -343,6 +345,8 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
               onChange={field.onChange}
               hasError={!!errors.amountDemandedDollars}
               disabled={!clientId}
+              decimalScale={2}
+              decimalsLimit={2}
             />
           )}
         />
@@ -366,16 +370,19 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
           )}
         />
         <Controller
-          name="errandCode"
+          name="responsibleUserId"
           control={control}
           render={({ field }) => (
-            <TextField
-              label="Codemandado:"
+            <Select
+              label="Responsable:"
               width="100%"
-              value={field.value}
-              helperText={errors.errandCode?.message}
-              onChange={field.onChange}
-              hasError={!!errors.errandCode}
+              placeholder={watch().responsibleUserId ? '' : 'No asignado'}
+              value={String(field.value)}
+              options={optionsUsers}
+              onChange={(key) => {
+                field.onChange(parseInt(key))
+              }}
+              hasError={!!errors.customerUserId}
               disabled={!clientId}
             />
           )}
@@ -400,6 +407,40 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
           )}
         />
         <Controller
+          name="errandCode"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              label="Codemandado:"
+              width="100%"
+              value={field.value}
+              helperText={errors.errandCode?.message}
+              onChange={field.onChange}
+              hasError={!!errors.errandCode}
+              disabled={!clientId}
+            />
+          )}
+        />
+      </Container>
+      <Container className="fields-wrapper-container-t">
+        <Controller
+          control={control}
+          name="bankId"
+          render={({ field }) => (
+            <Select
+              label="Banco"
+              width="100%"
+              value={String(field.value)}
+              options={optionsStates}
+              onChange={(key) => {
+                field.onChange(parseInt(key))
+              }}
+              hasError={!!errors.bankId}
+              disabled={!clientId}
+            />
+          )}
+        />
+        <Controller
           name="cityId"
           control={control}
           render={({ field }) => (
@@ -416,42 +457,21 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
           )}
         />
       </Container>
-      <Container className="fields-wrapper-container-t">
-        <Container width="100%">
-          <Controller
-            control={control}
-            name="bankId"
-            render={({ field }) => (
-              <Select
-                label="Banco"
-                width="100%"
-                value={String(field.value)}
-                options={optionsStates}
-                onChange={(key) => {
-                  field.onChange(parseInt(key))
-                }}
-                hasError={!!errors.bankId}
-                disabled={!clientId}
-              />
-            )}
+      <Controller
+        name="judgmentNumber"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            width="100%"
+            label="Nº de Juicio:"
+            value={field.value}
+            onChange={field.onChange}
+            helperText={errors.judgmentNumber?.message}
+            hasError={!!errors.judgmentNumber}
+            disabled={!clientId}
           />
-        </Container>
-        <Controller
-          name="judgmentNumber"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              width="100%"
-              label="Nº de Juicio:"
-              value={field.value}
-              onChange={field.onChange}
-              helperText={errors.judgmentNumber?.message}
-              hasError={!!errors.judgmentNumber}
-              disabled={!clientId}
-            />
-          )}
-        />
-      </Container>
+        )}
+      />
 
       <FileCasesRelatedModal
         onClose={() => {

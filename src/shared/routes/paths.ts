@@ -73,7 +73,8 @@ export default {
       `/judicial/${urlIdentifier}/expediente/${code}/estatus-proceso`,
     bitacora: (urlIdentifier = ':urlIdentifier', code = ':code') =>
       `/judicial/${urlIdentifier}/expediente/${code}/bitacora`,
-
+    caseFileAuctionList: (urlIdentifier = ':urlIdentifier', code = ':code') =>
+      `/judicial/${urlIdentifier}/expediente/${code}/rondas-de-remate`,
     bitacoraProcesoConexo: (
       urlIdentifier = ':urlIdentifier',
       code = ':code',
@@ -103,6 +104,12 @@ export default {
       `/judicial/${urlIdentifier}/expediente/${code}/garantia/${collateralCode}/cargas-y-gravamenes`,
     collateralFiles: (urlIdentifier = `:urlIdentifier`, code = `:code`, collateralCode = `:collateralCode`) =>
       `/judicial/${urlIdentifier}/expediente/${code}/garantia/${collateralCode}/archivos`,
+    auctionList: (urlIdentifier = `:urlIdentifier`, code = `:code`) =>
+      `/judicial/${urlIdentifier}/expediente/${code}/rondas-de-remates`,
+    collateralAuctionList: (urlIdentifier = `:urlIdentifier`, code = `:code`, collateralCode = `:collateralCode`) =>
+      `/judicial/${urlIdentifier}/expediente/${code}/garantia/${collateralCode}/rondas-de-remate`,
+    collateralAuction:( urlIdentifier = `:urlIdentifier`, code = `:code`, collateralCode = `:collateralCode`, auctionCode = `:auctionCode`) =>
+      `/judicial/${urlIdentifier}/expediente/${code}/garantia/${collateralCode}/rondas-de-remate/${auctionCode}`,
   },
   settings: {
     scheduldedNotifications: (urlIdentifier = `:urlIdentifier`) =>
