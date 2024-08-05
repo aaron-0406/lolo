@@ -378,6 +378,7 @@ const JudicialFileCasesTable = () => {
                 <BodyCell textAlign="left">{`${record?.judicialSubject?.subject || ''}`}</BodyCell>
                 <BodyCell textAlign="left">{`${record?.customerUser?.name || ''}`}</BodyCell>
                 <BodyCell textAlign="left">{`${record?.responsibleUser?.name ?? '-'}`}</BodyCell>
+                <BodyCell textAlign="left">{`${record?.secretary || ''}`}</BodyCell>
                 <BodyCell textAlign="left">{`${record?.judicialSede?.sede || ''}`}</BodyCell>
                 <BodyCell textAlign="left">{`${record?.judicialProceduralWay?.proceduralWay || ''}`}</BodyCell>
                 <BodyCell textAlign="center">
