@@ -50,7 +50,7 @@ export const updateClients = async (clients: ClientType[], chb: string) => {
 }
 
 export const tranferClientToAnotherBank = async (code: string, chb: string, chbTransferred: string) => {
-  return await axiosClient.post(`${url}/transfer-client-to-another-bank/${chb}`, { code, chbTransferred })
+  return await axiosClient.patch(`${url}/transfer-client-to-another-bank/${chb}`, { code, chbTransferred })
 }
 
 export const deleteClient = async (code: string, chb: number, idCustomer: number) => {

@@ -1,10 +1,10 @@
 import Table from '@/ui/Table'
-import React from 'react'
 import { userLogsResumeModalColumns } from './utils/columns'
 import { Change } from '../UserLogsResumeModal'
 import BodyCell from '@/ui/Table/BodyCell'
 import Container from '@/ui/Container'
 import EmptyState from '@/ui/EmptyState'
+import { formatString } from './utils/user-log.util'
 
 type UserLogsResumeModalTableProps = {
   changes: Change[]
@@ -20,7 +20,7 @@ const UserLogsResumeModalTable = ({ changes }: UserLogsResumeModalTableProps) =>
       >
         {changes.map((change, index) => (
           <tr key={index}>
-            <BodyCell>{change.key ?? '-'}</BodyCell>
+            <BodyCell>{formatString(change.key ?? "") ?? '-'}</BodyCell>
             <BodyCell textAlign="center">
               {Array.isArray(change.oldValue)
                 ? showArrayChanges(change.oldValue)

@@ -325,7 +325,12 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
               width="100%"
               helperText={errors.amountDemandedSoles?.message}
               value={field.value}
-              onChange={field.onChange}
+              decimalScale={2}
+              decimalsLimit={2}
+              type="currency"
+              onValueChange={(_, __, values) => {
+                field.onChange(values?.value)
+              }}
               hasError={!!errors.amountDemandedSoles}
               disabled={!clientId}
               decimalScale={2}
@@ -342,7 +347,12 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
               width="100%"
               value={field.value}
               helperText={errors.amountDemandedDollars?.message}
-              onChange={field.onChange}
+              onValueChange={(_, __, values) => {
+                field.onChange(values?.value)
+              }}
+              type="currency"
+              decimalScale={2}
+              decimalsLimit={2}
               hasError={!!errors.amountDemandedDollars}
               disabled={!clientId}
               decimalScale={2}

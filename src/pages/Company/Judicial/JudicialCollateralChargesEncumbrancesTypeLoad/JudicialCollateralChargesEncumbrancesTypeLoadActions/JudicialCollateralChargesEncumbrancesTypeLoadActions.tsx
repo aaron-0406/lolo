@@ -17,7 +17,7 @@ const JudicialCollateralChargesEncumbrancesTypeLoadActions = () => {
   return (
     <Container display="flex" justifyContent="space-between" alignItems="center" height="fit-content" width="100%" padding="20px">
       <Text.Body size="m" weight="bold" className="label__text">
-        Tipos de cargas y gravámenes
+        TIPOS DE CARGAS Y GRAVÁMENES
       </Text.Body>
       <Button
         permission="P41-01"

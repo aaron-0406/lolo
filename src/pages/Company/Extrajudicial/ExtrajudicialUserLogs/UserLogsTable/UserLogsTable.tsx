@@ -26,8 +26,6 @@ import EmptyState from '@/ui/EmptyState'
 import Button from '@/ui/Button'
 import useModal from '@/hooks/useModal'
 import UserLogsResumeModal from '../Modals/UserLogsResumeModal'
-import { useMediaQuery } from '@/hooks/useMediaQuery'
-import { device } from '@/breakpoints/responsive'
 
 type UserLogsTableProps = {
   opts: Opts
@@ -52,7 +50,6 @@ const UserLogsTable: FC<UserLogsTableProps> = ({ opts, setOpts }) => {
 
   const location = useLocation()
   const currentPath = location.pathname
-  const greaterThanTableS = useMediaQuery(device.tabletS)
 
   const [userLogs, setUserLogs] = useState([])
   const [userLogsCount, setUserLogsCount] = useState<number>(0)
