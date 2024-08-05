@@ -442,6 +442,7 @@ const JudicialCollateralAuctionRoundInfo = () => {
           name="auctionType"
           render={({ field }) => (
             <Select
+              required
               label="Tipo de colección:"
               placeholder="Seleccione un tipo de colección"
               width="100%"
@@ -462,6 +463,7 @@ const JudicialCollateralAuctionRoundInfo = () => {
           name="appraisalExperts"
           render={({ field }) => (
             <TextAreaField
+              required
               label="Peritos tasadores"
               width="100%"
               value={field.value}
@@ -477,6 +479,7 @@ const JudicialCollateralAuctionRoundInfo = () => {
           name="auctionerName"
           render={({ field }) => (
             <TextField
+              required
               id="auctionerName"
               label="Nombre del martillero"
               placeholder="Nombre del martillero"
