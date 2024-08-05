@@ -8,29 +8,11 @@ export const userLogsColumns: ColumProps[] = [
     justifyContent: 'center',
   },
   {
-    id: 'user.logs.datatable.header.code.action',
-    title: 'CÓDIGO DE ACCIÓN',
-    width: '15%',
-    justifyContent: 'center',
-  },
-  {
     id: 'user.logs.datatable.header.action',
     title: 'ACCIÓN',
     width: '30%',
     justifyContent: 'center',
-    isThereFilter: true,  
-  },
-  {
-    id: 'user.logs.datatable.header.entity',
-    title: 'ENTIDAD',
-    width: '20%',
-    justifyContent: 'center',
-  },
-  {
-    id: 'user.logs.datatable.header.entity.id',
-    title: 'ID DE ENTIDAD',
-    width: '10%',
-    justifyContent: 'center',
+    isThereFilter: true,
   },
   {
     id: 'user.logs.datatable.header.user',
@@ -38,6 +20,12 @@ export const userLogsColumns: ColumProps[] = [
     width: '30%',
     justifyContent: 'center',
     isThereFilter: true,
+  },
+  {
+    id: 'user.logs.datatable.header.sumary',
+    title: 'RESUMEN',
+    width: '5%',
+    justifyContent: 'center',
   },
   {
     id: 'user.logs.datatable.header.date',

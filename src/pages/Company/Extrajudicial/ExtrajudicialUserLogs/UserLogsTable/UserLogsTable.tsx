@@ -23,6 +23,11 @@ import { useLocation } from 'react-router-dom'
 import { KEY_EXT_USUARIOS_CACHE } from '../../ExtrajudicialUsers/UsersTable/utils/ext-usuarios.cache'
 import { getAllUsersByID } from '@/services/dash/customer-user.service'
 import EmptyState from '@/ui/EmptyState'
+import Button from '@/ui/Button'
+import useModal from '@/hooks/useModal'
+import UserLogsResumeModal from '../Modals/UserLogsResumeModal'
+import { useMediaQuery } from '@/hooks/useMediaQuery'
+import { device } from '@/breakpoints/responsive'
 
 type UserLogsTableProps = {
   opts: Opts
@@ -47,17 +52,24 @@ const UserLogsTable: FC<UserLogsTableProps> = ({ opts, setOpts }) => {
 
   const location = useLocation()
   const currentPath = location.pathname
+  const greaterThanTableS = useMediaQuery(device.tabletS)
 
   const [userLogs, setUserLogs] = useState([])
   const [userLogsCount, setUserLogsCount] = useState<number>(0)
+  const [userLogId, setUserLogId] = useState<number | undefined>(undefined)
 
   const [isLoading, setIsLoading] = useState(false)
-
+  const { showModal, hideModal, visible } = useModal()
   const getPermission = (code: string) => {
     return permissions?.find((permission) => permission.code === code)
   }
 
   const selectedFilterOptions = getSelectedFilters(currentPath)?.filters ?? []
+
+  const onClickUserLog = (id: number) => {
+    setUserLogId(id)
+    showModal()
+  }
 
   const { refetch } = useQuery(
     ['key-ext-user-logs-cache', customerId],
@@ -141,6 +153,7 @@ const UserLogsTable: FC<UserLogsTableProps> = ({ opts, setOpts }) => {
 
   const findAddressByNameMemoized = useMemo(() => {
     return (ip: string) => findAddressByIP(ip)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ipAddresses.length, findAddressByIP])
 
   const onChangeFilterOptions = (filterOption: FilterOptionsProps) => {
@@ -165,10 +178,12 @@ const UserLogsTable: FC<UserLogsTableProps> = ({ opts, setOpts }) => {
 
   useEffect(() => {
     refetch()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getSelectedFilters(currentPath)?.filters])
 
   useEffect(() => {
     refetch()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [opts.page])
 
   return (
@@ -206,13 +221,18 @@ const UserLogsTable: FC<UserLogsTableProps> = ({ opts, setOpts }) => {
             return (
               <tr className="styled-data-table-row" key={record.id}>
                 <BodyCell textAlign="center">{`${key + 1 || ''}`}</BodyCell>
-                <BodyCell textAlign="center">{`${record.codeAction || '-'}`}</BodyCell>
                 <BodyCell textAlign="center">{`${getPermission(record.codeAction)?.name || '-'}`}</BodyCell>
-                <BodyCell textAlign="center">{`${record.entity || '-'}`}</BodyCell>
-                <BodyCell textAlign="center">{`${record.entityId || '-'}`}</BodyCell>
                 <BodyCell textAlign="center">{`${record.customerUser?.name || '-'} ${
                   record.customerUser?.lastName || '-'
                 }`}</BodyCell>
+                <BodyCell textAlign="center">
+                  <Button
+                    shape="round"
+                    trailingIcon="ri-file-text-line"
+                    onClick={() => onClickUserLog(record.id)}
+                    messageTooltip="Resumen de cambios"
+                  />
+                </BodyCell>
                 <BodyCell textAlign="center">{moment(record.createAt).format('DD-MM-YYYY') || ''}</BodyCell>
                 <BodyCell textAlign="center">{moment(record.createAt).format('HH:mm:ss') || ''}</BodyCell>
                 <BodyCell textAlign="center">{`${
@@ -222,6 +242,9 @@ const UserLogsTable: FC<UserLogsTableProps> = ({ opts, setOpts }) => {
             )
           })}
       </Table>
+      {visible ? (
+        <UserLogsResumeModal userLogId={userLogId} userLogs={userLogs} onClose={hideModal} visible={visible} />
+      ) : null}
     </Container>
   )
 }

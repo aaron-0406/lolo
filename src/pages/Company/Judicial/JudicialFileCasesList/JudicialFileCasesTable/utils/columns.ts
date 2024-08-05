@@ -54,6 +54,19 @@ export const judicialCaseFileColumns: ColumProps[] = [
     isThereFilter: true,
   },
   {
+    id: 'casesFiles.datatable.header.responsible',
+    title: 'RESPONSABLE',
+    width: '10%',
+    justifyContent: 'left',
+    isThereFilter: true,
+  },
+  {
+    id: 'casesFiles.datatable.header.secretary',
+    title: 'SECRETARIO',
+    width: '10%',
+    justifyContent: 'left',
+  }, 
+  {
     id: 'casesFiles.datatable.header.sede',
     title: 'SEDE JUDICIAL',
     width: '10%',

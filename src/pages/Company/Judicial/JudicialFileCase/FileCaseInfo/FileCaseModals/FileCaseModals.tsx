@@ -48,6 +48,9 @@ const FileCaseModals = ({ numberCaseFile }: FileCaseModalsProps) => {
   const onClickCollateral = () => {
     navigate(`${paths.judicial.collateral(urlIdentifier, codeParams)}`)
   }
+  const onClickAuction = () => {
+    navigate(`${paths.judicial.caseFileAuctionList(urlIdentifier, codeParams)}`)
+  }
 
   return (
     <Container width="100%" height="100%" display="flex" flexDirection="row" gap="10px">
@@ -106,7 +109,14 @@ const FileCaseModals = ({ numberCaseFile }: FileCaseModalsProps) => {
         onClick={onClickCollateral}
         permission="P13-01-06"
       />
-      
+      <Button
+        label="Rondas de remate"
+        trailingIcon="ri-auction-fill"
+        size={greaterThanTabletS ? 'default' : 'small'}
+        disabled={!clientId}
+        onClick={onClickAuction}
+        permission="P13-01-06-01-04"
+      />
     </Container>
   )
 }

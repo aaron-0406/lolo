@@ -165,6 +165,18 @@ const JudicialFileCasesTable = () => {
     }
   })
 
+  let optionsResponsibles = users.map((user) => {
+    return {
+      key: user.id,
+      label: user.name,
+    }
+  })
+
+  optionsResponsibles.push({
+    key: 0,
+    label: 'No asignado',
+  })
+
   const { refetch, data, isLoading } = useQuery<
     AxiosResponse<{
       caseFiles: Array<JudicialFileCaseTableRow>
@@ -178,6 +190,7 @@ const JudicialFileCasesTable = () => {
       const subjects = getIDsByIdentifier('casesFiles.datatable.header.subject', selectedFilterOptions)
       const users = getIDsByIdentifier('casesFiles.datatable.header.user', selectedFilterOptions)
       const proceduralWays = getIDsByIdentifier('casesFiles.datatable.header.proceduralWay', selectedFilterOptions)
+      const responsibles = getIDsByIdentifier('casesFiles.datatable.header.responsible', selectedFilterOptions)
       const sedes = getIDsByIdentifier('casesFiles.datatable.header.sede', selectedFilterOptions)
 
       //TODO: Add users
@@ -191,7 +204,9 @@ const JudicialFileCasesTable = () => {
         JSON.stringify(proceduralWays),
         JSON.stringify(subjects),
         JSON.stringify(users),
+        JSON.stringify(responsibles),
         JSON.stringify(sedes)
+      
       )
     },
     {
@@ -281,6 +296,7 @@ const JudicialFileCasesTable = () => {
           { identifier: 'casesFiles.datatable.header.court', options: optionsCourts },
           { identifier: 'casesFiles.datatable.header.subject', options: optionsSubjects },
           { identifier: 'casesFiles.datatable.header.proceduralWay', options: optionsProceduralWay },
+          { identifier: 'casesFiles.datatable.header.responsible', options: optionsResponsibles },
           { identifier: 'casesFiles.datatable.header.user', options: optionsUsers },
           { identifier: 'casesFiles.datatable.header.sede', options: optionsSede },
         ]}
@@ -313,7 +329,8 @@ const JudicialFileCasesTable = () => {
           judicialFileCases.map((record: JudicialFileCaseTableRow, key) => {
             const cfs = caseFileSelected.find((cs) => cs.numberCaseFile === record.numberCaseFile)
 
-            const isTransferred = (Number(chb) !== Number(record.chbTransferred)) && !!record.chbTransferred
+            const isTransferred = (Number(chb) !== Number(record.chbTransferred)) && record.chbTransferred !== null 
+
             return (
               <>
                 {isTransferred ? (
@@ -351,6 +368,16 @@ const JudicialFileCasesTable = () => {
                       <Text.Body size="m" weight="bold" color="Primary5">{`${
                         record?.processStatus?.toUpperCase() || '-'
                       }`}</Text.Body>
+                    </BodyCell>
+                    <BodyCell textAlign="start">
+                      <Text.Body size="m" weight="bold">
+                        -
+                      </Text.Body>
+                    </BodyCell>
+                    <BodyCell textAlign="start">
+                      <Text.Body size="m" weight="bold">
+                        -
+                      </Text.Body>
                     </BodyCell>
                     <BodyCell textAlign="start">
                       <Text.Body size="m" weight="bold">
@@ -439,7 +466,9 @@ const JudicialFileCasesTable = () => {
                     <BodyCell textAlign="left">{`${record?.judicialCourt?.court || ''}`}</BodyCell>
                     <BodyCell textAlign="left">{`${record?.judicialSubject?.subject || ''}`}</BodyCell>
                     <BodyCell textAlign="left">{`${record?.customerUser?.name || ''}`}</BodyCell>
-                    <BodyCell textAlign="left">{`${record?.judicialSede?.sede || ''}`}</BodyCell>
+                    <BodyCell textAlign="left">{`${record?.responsibleUser?.name ?? '-'}`}</BodyCell>
+                <BodyCell textAlign="left">{`${record?.secretary || ''}`}</BodyCell>
+                <BodyCell textAlign="left">{`${record?.judicialSede?.sede || ''}`}</BodyCell>
                     <BodyCell textAlign="left">{`${record?.judicialProceduralWay?.proceduralWay || ''}`}</BodyCell>
                     <BodyCell textAlign="center">
                       {

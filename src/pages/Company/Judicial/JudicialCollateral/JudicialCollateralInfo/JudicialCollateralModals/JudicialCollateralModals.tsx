@@ -31,6 +31,11 @@ const JudicialCollateralModals = () => {
   const onClickFiles = () => {
     navigate(`${paths.judicial.collateralFiles(urlIdentifier, codeParams, collateralCode)}`)
   }
+
+  const onClickAuction = () => {
+    navigate(`${paths.judicial.collateralAuctionList(urlIdentifier, codeParams, collateralCode)}`)
+  }
+
   return (
     <Container
       width="100%"
@@ -57,6 +62,14 @@ const JudicialCollateralModals = () => {
         disabled={!clientId}
         onClick={onClickFiles}
         trailingIcon="ri-file-4-line"
+      />
+      <Button
+        label="Rondas de remates"
+        permission="P13-01-06-01-04"
+        size={greaterThanTabletS ? 'default' : 'small'}
+        disabled={!clientId}
+        onClick={onClickAuction}
+        trailingIcon="ri-auction-fill"
       />
     </Container>
   )
