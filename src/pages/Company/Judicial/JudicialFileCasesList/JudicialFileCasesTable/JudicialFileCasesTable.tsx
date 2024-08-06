@@ -46,7 +46,7 @@ const JudicialFileCasesTable = () => {
 
   const {
     client: {
-      customer: { urlIdentifier },
+      customer: { urlIdentifier, customerBanks },
     },
     bank: {
       selectedBank: { idCHB: chb },
@@ -220,12 +220,15 @@ const JudicialFileCasesTable = () => {
     }
   )
 
+  const getBankName = (id: number) => {
+    const bank = customerBanks.find((customerBank) => customerBank.id === Number(id))
+    return bank?.name ?? id
+  }
+
   const judicialFileCases = data?.data?.caseFiles ?? []
   const quantity = data?.data?.quantity ?? 0
 
-  const funt = () => {
-    console.log('acción')
-  }
+  const funt = () => {}
 
   const buttons: FloatingContainerButtonsType[] = [
     {
@@ -326,81 +329,169 @@ const JudicialFileCasesTable = () => {
           judicialFileCases.map((record: JudicialFileCaseTableRow, key) => {
             const cfs = caseFileSelected.find((cs) => cs.numberCaseFile === record.numberCaseFile)
 
+            const isTransferred = (Number(chb) !== Number(record.chbTransferred)) && record.chbTransferred !== null 
+
             return (
-              <tr
-                className={cfs ? 'styled-data-table-row select-table' : 'styled-data-table-row'}
-                key={key}
-                onClick={() => {
-                  hasAccessToTheButton && onClickRow(record.numberCaseFile)
-                }}
-              >
-                <BodyCell textAlign="left">
-                  {
-                    <Container
-                      display="flex"
-                      justifyContent="end"
-                      alignItems="center"
-                      onClick={(event) => {
-                        event.stopPropagation()
-                      }}
-                    >
-                      <Checkbox
-                        className="file-case-check-box"
-                        width="100%"
-                        onChange={(event) => {
-                          onChangeCheckBox(event.currentTarget.checked, record)
-                        }}
-                      />
-                    </Container>
-                  }
-                </BodyCell>
-                <BodyCell textAlign="center">{`${record?.numberCaseFile || ''}`}</BodyCell>
-                <BodyCell textAlign="left">
-                  <Container
-                    data-tooltip-id="cell-tooltip"
-                    data-tooltip-content={record?.client?.name.length >= 25 ? record?.client?.name : ''}
-                    width="17vw"
-                    whiteSpace="nowrap"
-                    overFlowX="hidden"
-                    textOverflow="ellipsis"
+              <>
+                {isTransferred ? (
+                  <tr className="styled-data-table-row disable-table">
+                    <BodyCell textAlign="center">
+                      <Text.Body size="m" weight="bold">
+                        -
+                      </Text.Body>
+                    </BodyCell>
+                    <BodyCell textAlign="center">
+                      <Text.Body size="m" weight="bold" color="Primary5">
+                        Expediente Transferido
+                      </Text.Body>
+                    </BodyCell>
+                    <BodyCell textAlign="left">
+                      <Container
+                        data-tooltip-id="cell-tooltip"
+                        data-tooltip-content={record?.client?.name.length >= 25 ? record?.client?.name : ''}
+                        width="17vw"
+                        whiteSpace="nowrap"
+                        overFlowX="hidden"
+                        textOverflow="ellipsis"
+                      >
+                        <Text.Body size="m" weight="regular">
+                          {record?.client?.name || '-'}
+                        </Text.Body>
+                      </Container>
+                    </BodyCell>
+                    <BodyCell textAlign="center">
+                      <Text.Body size="m" weight="bold">
+                        {getBankName(record?.chbTransferred ?? 0)}
+                      </Text.Body>
+                    </BodyCell>
+                    <BodyCell textAlign="center">
+                      <Text.Body size="m" weight="bold" color="Primary5">{`${
+                        record?.processStatus?.toUpperCase() || '-'
+                      }`}</Text.Body>
+                    </BodyCell>
+                    <BodyCell textAlign="start">
+                      <Text.Body size="m" weight="bold">
+                        -
+                      </Text.Body>
+                    </BodyCell>
+                    <BodyCell textAlign="start">
+                      <Text.Body size="m" weight="bold">
+                        -
+                      </Text.Body>
+                    </BodyCell>
+                    <BodyCell textAlign="start">
+                      <Text.Body size="m" weight="bold">
+                        -
+                      </Text.Body>
+                    </BodyCell>
+                    <BodyCell textAlign="start">
+                      <Text.Body size="m" weight="bold">
+                        -
+                      </Text.Body>
+                    </BodyCell>
+                    <BodyCell textAlign="start">
+                      <Text.Body size="m" weight="bold">
+                        -
+                      </Text.Body>
+                    </BodyCell>
+                    <BodyCell textAlign="start">
+                      <Text.Body size="m" weight="bold">
+                        -
+                      </Text.Body>
+                    </BodyCell>
+                    <BodyCell textAlign="start">
+                      <Text.Body size="m" weight="bold">
+                        -
+                      </Text.Body>
+                    </BodyCell>
+                    <BodyCell textAlign="start">
+                      <Text.Body size="m" weight="bold">
+                        -
+                      </Text.Body>
+                    </BodyCell>
+                  </tr>
+                ) : (
+                  <tr
+                    className={cfs ? 'styled-data-table-row select-table' : 'styled-data-table-row'}
+                    key={key}
+                    onClick={() => {
+                      hasAccessToTheButton && onClickRow(record.numberCaseFile)
+                    }}
                   >
-                    <Text.Body size="m" weight="regular">
-                      {record?.client?.name || '-'}
-                    </Text.Body>
-                  </Container>
-                </BodyCell>
-                <BodyCell textAlign="center">
-                  <Text.Body size="m" weight="bold" color="Primary5">{`${
-                    record?.processStatus?.toUpperCase() || '-'
-                  }`}</Text.Body>
-                </BodyCell>
-                <BodyCell textAlign="left">{`${record?.judicialCourt?.court || ''}`}</BodyCell>
-                <BodyCell textAlign="left">{`${record?.judicialSubject?.subject || ''}`}</BodyCell>
-                <BodyCell textAlign="left">{`${record?.customerUser?.name || ''}`}</BodyCell>
-                <BodyCell textAlign="left">{`${record?.responsibleUser?.name ?? '-'}`}</BodyCell>
+                    <BodyCell textAlign="left">
+                      {
+                        <Container
+                          display="flex"
+                          justifyContent="end"
+                          alignItems="center"
+                          onClick={(event) => {
+                            event.stopPropagation()
+                          }}
+                        >
+                          <Checkbox
+                            className="file-case-check-box"
+                            width="100%"
+                            onChange={(event) => {
+                              onChangeCheckBox(event.currentTarget.checked, record)
+                            }}
+                          />
+                        </Container>
+                      }
+                    </BodyCell>
+                    <BodyCell textAlign="center">{`${record?.numberCaseFile || ''}`}</BodyCell>
+                    <BodyCell textAlign="left">
+                      <Container
+                        data-tooltip-id="cell-tooltip"
+                        data-tooltip-content={record?.client?.name.length >= 25 ? record?.client?.name : ''}
+                        width="17vw"
+                        whiteSpace="nowrap"
+                        overFlowX="hidden"
+                        textOverflow="ellipsis"
+                      >
+                        <Text.Body size="m" weight="regular">
+                          {record?.client?.name || '-'}
+                        </Text.Body>
+                      </Container>
+                    </BodyCell>
+                    <BodyCell textAlign="center">
+                      <Text.Body size="m" weight="bold">
+                        -
+                      </Text.Body>
+                    </BodyCell>
+                    <BodyCell textAlign="center">
+                      <Text.Body size="m" weight="bold" color="Primary5">{`${
+                        record?.processStatus?.toUpperCase() || '-'
+                      }`}</Text.Body>
+                    </BodyCell>
+                    <BodyCell textAlign="left">{`${record?.judicialCourt?.court || ''}`}</BodyCell>
+                    <BodyCell textAlign="left">{`${record?.judicialSubject?.subject || ''}`}</BodyCell>
+                    <BodyCell textAlign="left">{`${record?.customerUser?.name || ''}`}</BodyCell>
+                    <BodyCell textAlign="left">{`${record?.responsibleUser?.name ?? '-'}`}</BodyCell>
                 <BodyCell textAlign="left">{`${record?.secretary || ''}`}</BodyCell>
                 <BodyCell textAlign="left">{`${record?.judicialSede?.sede || ''}`}</BodyCell>
-                <BodyCell textAlign="left">{`${record?.judicialProceduralWay?.proceduralWay || ''}`}</BodyCell>
-                <BodyCell textAlign="center">
-                  {
-                    <Container display="flex" gap="15px" justifyContent="space-around">
-                      <Button
-                        width="125px"
-                        shape="round"
-                        display="danger"
-                        trailingIcon="ri-delete-bin-line"
-                        onClick={(event) => {
-                          event.stopPropagation()
-                          setFileCaseId(record.id)
-                          showDeleteFileCase()
-                        }}
-                        permission="P13-04"
-                        messageTooltip="Eliminar expediente"
-                      />
-                    </Container>
-                  }
-                </BodyCell>
-              </tr>
+                    <BodyCell textAlign="left">{`${record?.judicialProceduralWay?.proceduralWay || ''}`}</BodyCell>
+                    <BodyCell textAlign="center">
+                      {
+                        <Container display="flex" gap="15px" justifyContent="space-around">
+                          <Button
+                            width="125px"
+                            shape="round"
+                            display="danger"
+                            trailingIcon="ri-delete-bin-line"
+                            onClick={(event) => {
+                              event.stopPropagation()
+                              setFileCaseId(record.id)
+                              showDeleteFileCase()
+                            }}
+                            permission="P13-04"
+                            messageTooltip="Eliminar expediente"
+                          />
+                        </Container>
+                      }
+                    </BodyCell>
+                  </tr>
+                )}
+              </>
             )
           })}
       </Table>

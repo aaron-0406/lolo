@@ -333,8 +333,6 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
               }}
               hasError={!!errors.amountDemandedSoles}
               disabled={!clientId}
-              decimalScale={2}
-              decimalsLimit={2}
             />
           )}
         />
@@ -355,8 +353,6 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
               decimalsLimit={2}
               hasError={!!errors.amountDemandedDollars}
               disabled={!clientId}
-              decimalScale={2}
-              decimalsLimit={2}
             />
           )}
         />

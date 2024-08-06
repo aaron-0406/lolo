@@ -43,6 +43,7 @@ const AssignCollateralModalSchema: yup.SchemaOf<AssignCollateralModalType> = yup
       customerUserId: yup.number().required().min(1),
       customerHasBankId: yup.number().required().min(1),
       hasCollateral: yup.boolean().required(),
+      chbTransferred: yup.number().optional(),
       responsibleUserId: yup.number().optional(),
       client: yup.object().shape({
         id: yup.number().required(),
