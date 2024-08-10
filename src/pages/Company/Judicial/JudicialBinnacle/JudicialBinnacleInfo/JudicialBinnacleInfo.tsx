@@ -1,111 +1,77 @@
-import Breadcrumbs from '@/ui/Breadcrumbs'
 import Button from '@/ui/Button'
-import Container from '@/ui/Container'
-import JudicialBinnacleModal from '../Modals/JudicialBinnacleModal'
-import paths from 'shared/routes/paths'
-import { LinkType } from '@/ui/Breadcrumbs/Breadcrumbs.type'
-import { useLoloContext } from '@/contexts/LoloProvider'
-import { useParams } from 'react-router-dom'
-import useModal from '@/hooks/useModal'
-import Text from '@/ui/Text'
+import Container, { StyledContainer } from '@/ui/Container/Container'
+import TextField from '@/ui/fields/TextField'
+import Select from '@/ui/Select'
+import { Controller, useFormContext } from 'react-hook-form'
 
-type JudicialBinnacleInfoProps = {
-  judicialFileCaseId: number
-  clientCode: string
-  clientName: string
-}
-
-const JudicialBinnacleInfo = ({ judicialFileCaseId, clientCode, clientName }: JudicialBinnacleInfoProps) => {
-  const code = useParams().code ?? ''
-  const relatedProcessCodeParams = useParams().relatedProcessCode ?? ''
-
-  const {
-    client: { customer },
-  } = useLoloContext()
-
-  const { visible: visibleModalAdd, showModal: showModalAdd, hideModal: hideModalAdd } = useModal()
-  const onShowModal = () => {
-    showModalAdd()
-  }
-  const onCloseModal = () => {
-    hideModalAdd()
-  }
-
-  const routersFileCase: LinkType[] = [
-    {
-      link: paths.judicial.expedientes(customer.urlIdentifier),
-      name: 'Expedientes',
-    },
-    {
-      link: paths.judicial.detallesExpediente(customer.urlIdentifier, code),
-      name: code,
-    },
-    {
-      link: paths.judicial.bitacora(customer.urlIdentifier, code),
-      name: 'Bitacora',
-    },
-  ]
-
-  const routersFileCaseRelatedProcess: LinkType[] = [
-    {
-      link: paths.judicial.expedientes(customer.urlIdentifier),
-      name: 'Expedientes',
-    },
-    {
-      link: paths.judicial.detallesExpediente(customer.urlIdentifier, code),
-      name: code,
-    },
-    {
-      link: paths.judicial.relatedProcess(customer.urlIdentifier, code),
-      name: 'Procesos Conexos',
-    },
-    {
-      link: paths.judicial.detallesExpedienteRelatedProcess(customer.urlIdentifier, code, relatedProcessCodeParams),
-      name: relatedProcessCodeParams,
-    },
-    {
-      link: paths.judicial.bitacora(customer.urlIdentifier, code),
-      name: 'Bitacora',
-    },
-  ]
-
+const JudicialBinnacleInfo = () => {
+  const { control, formState: { errors } } = useFormContext()
   return (
-    <Container
+    <StyledContainer
       width="100%"
+      height="calc(100% - 40px)"
       display="flex"
-      justifyContent="space-between"
-      alignItems="center"
-      padding="20px 20px 0 20px"
+      flexDirection="column"
+      padding="20px"
+      gap="20px"
+      overFlowY="auto"
     >
-      <Container display="flex" flexDirection="column" gap="10px">
-        <Breadcrumbs routes={relatedProcessCodeParams ? routersFileCaseRelatedProcess : routersFileCase} />
-        <Container padding="10px" width="100%" margin="0px 0px 10px 0px" backgroundColor="#eff0f6ff">
-          <Text.Body size="m" weight="bold">
-            {clientName ?? '-'}
-          </Text.Body>
-        </Container>
-      </Container>
-
-      <Container>
-        <Button
-          onClick={onShowModal}
-          width="100px"
-          shape="round"
-          trailingIcon="ri-add-fill"
-          permission="P02-02-01-01"
-          messageTooltip="Agregar bitacora"
-        />
-
-        {judicialFileCaseId && (
-          <JudicialBinnacleModal
-            clientCode={clientCode}
-            visible={visibleModalAdd}
-            onClose={onCloseModal}
-            judicialFileCaseId={judicialFileCaseId}
+      <Controller
+        name="date"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            value={field.value}
+            onChange={field.onChange}
+            width="100%"
+            label="Fecha"
+            placeholder="Fecha"
+            required
           />
         )}
-      </Container>
-    </Container>
+      />
+      <Controller
+        name="judicialBinProceduralStageId"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            value={field.value}
+            onChange={field.onChange}
+            width="100%"
+            label="Último Actuado"
+            placeholder="Último Actuado"
+            required
+          />
+        )}
+      />
+      <Controller
+        name="binnacleTypeId"
+        control={control}
+        render={({ field }) => (
+          <Container display="flex" flexDirection="row" gap="10px" flexWrap="nowrap" width="100%" alignItems="flex-end">
+            <Select
+              width="100%"
+              label="Tipo:"
+              value={String(field.value)}
+              // options={optionsBinType}
+              onChange={(key) => {
+                field.onChange(key)
+              }}
+              hasError={!!errors.binnacleTypeId}
+            />
+
+            <Button
+              shape="round"
+              leadingIcon="ri-add-fill"
+              size="small"
+              // onClick={onShowModalTypeBinnacle}
+              // disabled={!idCHB}
+              permission="P25-01"
+            />
+          </Container>
+        )}
+      />
+    </StyledContainer>
   )
 }
 

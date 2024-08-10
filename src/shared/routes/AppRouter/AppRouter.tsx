@@ -62,6 +62,7 @@ import ProtectedRoutes from '../ProtectedRoutes'
 import ProtectedRoutesCompany from '../ProtectedRoutesCompany'
 
 import paths from '../paths'
+import JudicialBinnacleList from 'pages/Company/Judicial/JudicialBinnacleList'
 import JudicialBinnacle from 'pages/Company/Judicial/JudicialBinnacle'
 import JudicialBinTypeBinnacle from 'pages/Company/Judicial/JudicialBinTypeBinnacle'
 import JudicialBinProceduralStage from 'pages/Company/Judicial/JudicialBinProceduralStage'
@@ -86,6 +87,7 @@ import JudicialCollateralFiles from 'pages/Company/Judicial/JudicialCollateralFi
 import JudicialCollateralAuctionList from 'pages/Company/Judicial/JudicialCollateralAuctionRoundList'
 import JudicialCollateralAuctionRound from 'pages/Company/Judicial/JudicialCollateralAuctionRound'
 import JudicialFileCaseAuctionRoundList from 'pages/Company/Judicial/JudicialFileCaseAuctionRoundList'
+
 
 const AppRouter = () => {
   return (
@@ -146,8 +148,9 @@ const AppRouter = () => {
         <Route path={paths.judicial.detallesExpediente()} element={<JudicialFileCase />} />
         <Route path={paths.judicial.productosDemandados()} element={<JudicialFileCaseDemandedProducts />} />
         <Route path={paths.judicial.processStatus()} element={<JudicialFileCaseProcessStatus />} />
-        <Route path={paths.judicial.bitacora()} element={<JudicialBinnacle />} />
-        <Route path={paths.judicial.bitacoraProcesoConexo()} element={<JudicialBinnacle />} />
+        <Route path={paths.judicial.bitacora()} element={<JudicialBinnacleList />} />
+        <Route path={paths.judicial.bitacoraDetalles()} element={<JudicialBinnacle />} />
+        <Route path={paths.judicial.bitacoraProcesoConexo()} element={<JudicialBinnacleList />} />
         <Route path={paths.judicial.bitacoraTipo()} element={<JudicialBinTypeBinnacle />} />
         <Route path={paths.judicial.bitacoraProceduralStage()} element={<JudicialBinProceduralStage />} />
         <Route path={paths.judicial.observacionTipo()} element={<JudicialObsType />} />

@@ -73,6 +73,8 @@ export default {
       `/judicial/${urlIdentifier}/expediente/${code}/estatus-proceso`,
     bitacora: (urlIdentifier = ':urlIdentifier', code = ':code') =>
       `/judicial/${urlIdentifier}/expediente/${code}/bitacora`,
+    bitacoraDetalles: (urlIdentifier = ':urlIdentifier', code = ':code', binnacleCode = ':binnacleCode') =>
+      `/judicial/${urlIdentifier}/expediente/${code}/bitacora/${binnacleCode}`,
     caseFileAuctionList: (urlIdentifier = ':urlIdentifier', code = ':code') =>
       `/judicial/${urlIdentifier}/expediente/${code}/rondas-de-remate`,
     bitacoraProcesoConexo: (
