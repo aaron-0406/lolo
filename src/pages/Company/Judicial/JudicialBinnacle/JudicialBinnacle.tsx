@@ -26,13 +26,6 @@ const JudicialBinnacle = () => {
     async () => {
       return await getFileCaseByNumberFile(codeParams ?? '', Number(idCHB))
     }, 
-    {
-      onSuccess: (data) => {
-        if (!!codeParams.length && codeParams !== '000000000') {
-          formMethods.setValue('judicialFileCaseId', data.data.id)
-        }
-      }
-    }
   )
 
   const formMethods = useForm<
@@ -55,10 +48,14 @@ const JudicialBinnacle = () => {
   },
 })
 
+const judicialFileCaseId = data?.data.id
+const clientCode = data?.data.client.code
+const clientName = data?.data.client.name
+
   return (
     <FormProvider {...formMethods}>
       <Container width="100%" height="Calc(100% - 50px)" display="flex" flexDirection="column">
-        <JudicialBinnacleActions />
+        <JudicialBinnacleActions judicialFileCaseId={judicialFileCaseId} clientCode={clientCode} clientName={clientName} />
         <JudicialBinnacleInfo />
       </Container>
     </FormProvider>

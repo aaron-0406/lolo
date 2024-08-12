@@ -21,9 +21,11 @@ import EmptyState from '@/ui/EmptyState'
 import { judicialBinnacleColumns } from './utils/columns'
 import { JudicialBinDefendantProceduralActionType } from '@/types/judicial/judicial-bin-defendant-procedural-action.type'
 import { useFiltersContext } from '@/contexts/FiltersProvider'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { JudicialBinFileType } from '@/types/judicial/judicial-bin-file.type'
 import Icon from '@/ui/Icon'
+import paths from 'shared/routes/paths'
+import { useLoloContext } from '../../../../../shared/contexts/LoloProvider';
 
 type JudicialBinnacleTableProps = {
   judicialFileCaseId?: number
@@ -34,7 +36,13 @@ const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode }: JudicialBinna
   const [idEdit, setIdEdit] = useState<number>(0)
   const [idDeletedComment, setIdDeletedComment] = useState<number>(0)
   const location = useLocation()
+  const code = useParams().code ?? ''
+  const {
+    client: { customer },
+  } = useLoloContext()
   const currentPath = location.pathname
+  const navigatee = useNavigate()
+
   const {
     sorting: { getSortingOptions, setSortingOptions },
   } = useFiltersContext()
@@ -52,9 +60,13 @@ const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode }: JudicialBinna
     hideModal: hideDeleteJudicialBinProceduralStage,
   } = useModal()
 
+  // const handleClickEdit = (id: number) => {
+  //   setIdEdit(id)
+  //   showModalJudicialBinProceduralStage()
+  // }
+
   const handleClickEdit = (id: number) => {
-    setIdEdit(id)
-    showModalJudicialBinProceduralStage()
+    navigatee(paths.judicial.bitacoraDetalles(customer.urlIdentifier, code, id.toString()))
   }
 
   const onCloseModalEdit = () => {
