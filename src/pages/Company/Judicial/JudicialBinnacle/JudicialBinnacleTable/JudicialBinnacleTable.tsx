@@ -180,6 +180,7 @@ const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode, amountDemanded 
                     </Container>
                   </BodyCell>
                   <BodyCell textAlign="center">{record?.judicialBinProceduralStage?.proceduralStage || '-'}</BodyCell>
+                  <BodyCell textAlign="center">{record?.totalTariff || '-'}</BodyCell>
                   <BodyCell textAlign="center">
                     {record.judicialBinFiles.length ? (
                       <Container display="flex" gap="10px" justifyContent="center" alignItems="center">
