@@ -24,13 +24,15 @@ import { useFiltersContext } from '@/contexts/FiltersProvider'
 import { useLocation } from 'react-router-dom'
 import { JudicialBinFileType } from '@/types/judicial/judicial-bin-file.type'
 import Icon from '@/ui/Icon'
+import JudicialBinnacleTariffModal from '../Modals/JudicialBinnacleTariffModal'
 
 type JudicialBinnacleTableProps = {
   judicialFileCaseId?: number
   clientCode: string
+  amountDemanded?: string
 }
 
-const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode }: JudicialBinnacleTableProps) => {
+const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode, amountDemanded }: JudicialBinnacleTableProps) => {
   const [idEdit, setIdEdit] = useState<number>(0)
   const [idDeletedComment, setIdDeletedComment] = useState<number>(0)
   const location = useLocation()
@@ -51,10 +53,19 @@ const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode }: JudicialBinna
     showModal: showDeleteJudicialBinProceduralStage,
     hideModal: hideDeleteJudicialBinProceduralStage,
   } = useModal()
+  const {
+    visible: visibleModalJudicialBinTariff,
+    showModal: showModalJudicialBinTariff,
+    hideModal: hideModalJudicialBinTariff,
+  } = useModal()
 
   const handleClickEdit = (id: number) => {
     setIdEdit(id)
     showModalJudicialBinProceduralStage()
+  }
+
+  const handleClickTariff = (id: number) => {
+    showModalJudicialBinTariff()
   }
 
   const onCloseModalEdit = () => {
@@ -199,6 +210,16 @@ const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode }: JudicialBinna
                           permission="P02-02-01-02"
                         />
                         <Button
+                          messageTooltip="Ver cuadro de tarifas"
+                          shape="round"
+                          size="small"
+                          leadingIcon="ri-table-fill"
+                          onClick={(event) => {
+                            event.stopPropagation()
+                            handleClickTariff(record.id)
+                          }}
+                        />
+                        <Button
                           onClick={() => {
                             handleClickDelete(record.id)
                           }}
@@ -217,22 +238,33 @@ const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode }: JudicialBinna
             }
           )}
       </Table>
+      {visibleModalJudicialBinProceduralStage ? (
+        <JudicialBinnacleModal
+          clientCode={clientCode}
+          visible={visibleModalJudicialBinProceduralStage}
+          onClose={onCloseModalEdit}
+          idBinnacle={idEdit}
+          isEdit
+          judicialFileCaseId={judicialFileCaseId}
+        />
+      ) : null}
+      {visibleDeleteJudicialBinProceduralStage ? (
+        <DeleteJudicialBinnacleModal
+          visible={visibleDeleteJudicialBinProceduralStage}
+          onClose={onCloseModalDelete}
+          idBinnacle={idDeletedComment}
+          judicialFileCaseId={judicialFileCaseId}
+          clientCode={clientCode}
+        />
+      ) : null}
+      {visibleModalJudicialBinTariff ? (
+        <JudicialBinnacleTariffModal
+          amountDemanded={amountDemanded}
+          visible={visibleModalJudicialBinTariff}
+          onClose={hideModalJudicialBinTariff}
+        />
+      ) : null}
 
-      <JudicialBinnacleModal
-        clientCode={clientCode}
-        visible={visibleModalJudicialBinProceduralStage}
-        onClose={onCloseModalEdit}
-        idBinnacle={idEdit}
-        isEdit
-        judicialFileCaseId={judicialFileCaseId}
-      />
-      <DeleteJudicialBinnacleModal
-        visible={visibleDeleteJudicialBinProceduralStage}
-        onClose={onCloseModalDelete}
-        idBinnacle={idDeletedComment}
-        judicialFileCaseId={judicialFileCaseId}
-        clientCode={clientCode}
-      />
     </Container>
   )
 }

@@ -39,6 +39,8 @@ const JudicialBinnacle = () => {
   const judicialFileCaseId = data?.data.id
   const clientCode = data?.data.client.code
   const clientName = data?.data.client.name
+  const amountDemanded = data?.data?.amountDemandedSoles
+
 
   return (
     <Container
@@ -49,7 +51,7 @@ const JudicialBinnacle = () => {
       justifyContent="space-between"
     >
       <JudicialBinnacleInfo judicialFileCaseId={judicialFileCaseId} clientCode={clientCode} clientName={clientName} />
-      <JudicialBinnacleTable judicialFileCaseId={judicialFileCaseId} clientCode={clientCode} />
+      <JudicialBinnacleTable judicialFileCaseId={judicialFileCaseId} clientCode={clientCode}  amountDemanded={amountDemanded} />
     </Container>
   )
 }

@@ -8,6 +8,7 @@ import DropdownList from '@/ui/DropdownList'
 import { SelectItem } from '@/ui/Select/interfaces'
 import ClickOutSideComponent from '@/hooks/useClickOutside'
 import Checkbox from '@/ui/Checkbox'
+import { Tooltip } from 'react-tooltip'
 
 type HeaderCellProps = {
   width?: string
@@ -17,6 +18,7 @@ type HeaderCellProps = {
   isThereFilter?: boolean
   onChangeCheckBoxAll?: (state: boolean) => void
   isSortable?: boolean
+  tooltipMessage?: string
   options?: Array<SelectItem<any, any>>
   selectedOptions?: Array<SelectItem<any, any>>
   onChangeFilterOptions?: (options: Array<SelectItem<any, any>>) => void
@@ -25,6 +27,7 @@ type HeaderCellProps = {
 
 const HeaderCell: React.FC<HeaderCellProps> = ({
   children,
+  tooltipMessage,
   textTransform,
   justifyContent,
   width,
@@ -83,9 +86,12 @@ const HeaderCell: React.FC<HeaderCellProps> = ({
           backgroundColor={toggleSelect ? '#d9dbe9ff' : ''}
         >
           {children !== 'checkbox' ? (
-            <Text.Body size="m" weight="bold" ellipsis>
-              {children}
-            </Text.Body>
+            <Container>
+              <Text.Body size="m" weight="bold" ellipsis data-tooltip-id="header-tooltip" data-tooltip-content={tooltipMessage}>
+                {children}
+              </Text.Body>
+              {!!tooltipMessage && <Tooltip place="bottom-end" id="header-tooltip" />}
+            </Container>
           ) : (
             <Checkbox
               className="headercell-check-box"
