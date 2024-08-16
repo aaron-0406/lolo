@@ -215,7 +215,7 @@ const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode, amountDemanded,
                         />
                         <Button
                           onClick={() => {
-                            handleClickTariffResume(record.tariffHistory)
+                            handleClickTariffResume(record?.tariffHistory ?? '')
                           }}
                           messageTooltip="Ver resumen de cuadro de tarifas"
                           shape="round"
