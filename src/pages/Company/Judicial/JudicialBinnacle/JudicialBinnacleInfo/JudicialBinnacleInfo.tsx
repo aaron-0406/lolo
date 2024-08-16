@@ -105,7 +105,7 @@ const JudicialBinnacleInfo = ({ judicialFileCaseId, clientCode, clientName, binn
 
       <Container display='flex' gap="20px" alignItems='center' justifyContent='space-between'>
         <Text.Body size="m" weight="bold" >
-          Total: {totalTariff ?? '0.00'}
+          Total: S/. {totalTariff ?? '0.00'}
         </Text.Body>
         <Button
           onClick={onShowModal}
