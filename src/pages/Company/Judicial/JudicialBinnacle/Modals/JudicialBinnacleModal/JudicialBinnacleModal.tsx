@@ -68,6 +68,8 @@ const JudicialBinnacleModal = ({
       judicialBinProceduralStageId: 0,
       judicialFileCaseId: Number(judicialFileCaseId),
       lastPerformed: '',
+      totalTariff: 0,
+      tariffHistory: '',
       judicialBinFiles: [],
       filesDnD: [],
     },
@@ -163,6 +165,8 @@ const JudicialBinnacleModal = ({
           setValue('lastPerformed', data.lastPerformed, { shouldValidate: true })
           setValue('judicialFileCaseId', data.judicialFileCaseId, { shouldValidate: true })
           setValue('judicialBinFiles', data.judicialBinFiles, { shouldValidate: true })
+          setValue('totalTariff', data.totalTariff, { shouldValidate: true })
+          setValue('tariffHistory', data.tariffHistory, { shouldValidate: true })
         } else {
           reset()
         }

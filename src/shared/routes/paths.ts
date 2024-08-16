@@ -118,5 +118,6 @@ export default {
     department: (urlIdentifier = `:urlIdentifier`) => `/configuracion/${urlIdentifier}/departamentos`,
     district: (urlIdentifier = `:urlIdentifier`) => `/configuracion/${urlIdentifier}/distritos`,
     province: (urlIdentifier = `:urlIdentifier`) => `/configuracion/${urlIdentifier}/provincias`,
+    tariff: (urlIdentifier = `:urlIdentifier`) => `/configuracion/${urlIdentifier}/cuadro-aranceles`,
   },
 }
