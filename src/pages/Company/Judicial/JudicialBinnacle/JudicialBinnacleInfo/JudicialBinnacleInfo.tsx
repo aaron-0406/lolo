@@ -8,17 +8,32 @@ import { useLoloContext } from '@/contexts/LoloProvider'
 import { useParams } from 'react-router-dom'
 import useModal from '@/hooks/useModal'
 import Text from '@/ui/Text'
+import { JudicialBinnacleType } from '@/types/judicial/judicial-binnacle.type'
+import { JudicialBinTypeBinnacleType } from '@/types/judicial/judicial-bin-type-binnacle.type'
+import { JudicialBinProceduralStageType } from '@/types/judicial/judicial-bin-procedural-stage.type'
+import { JudicialBinDefendantProceduralActionType } from '@/types/judicial/judicial-bin-defendant-procedural-action.type'
+import { JudicialBinFileType } from '@/types/judicial/judicial-bin-file.type'
 
 type JudicialBinnacleInfoProps = {
   judicialFileCaseId: number
   clientCode: string
   clientName: string
+  binnacles: Array<
+    JudicialBinnacleType & {
+      binnacleType: JudicialBinTypeBinnacleType
+      judicialBinProceduralStage: JudicialBinProceduralStageType
+      judicialBinDefendantProceduralAction: JudicialBinDefendantProceduralActionType
+      judicialBinFiles: JudicialBinFileType[]
+    }
+  >
+  isLoading: boolean
 }
 
-const JudicialBinnacleInfo = ({ judicialFileCaseId, clientCode, clientName }: JudicialBinnacleInfoProps) => {
+
+
+const JudicialBinnacleInfo = ({ judicialFileCaseId, clientCode, clientName, binnacles, isLoading }: JudicialBinnacleInfoProps) => {
   const code = useParams().code ?? ''
   const relatedProcessCodeParams = useParams().relatedProcessCode ?? ''
-
   const {
     client: { customer },
   } = useLoloContext()
@@ -30,6 +45,8 @@ const JudicialBinnacleInfo = ({ judicialFileCaseId, clientCode, clientName }: Ju
   const onCloseModal = () => {
     hideModalAdd()
   }
+
+  const totalTariff = binnacles?.reduce((acc, cur) => acc + Number(cur.totalTariff), 0)
 
   const routersFileCase: LinkType[] = [
     {
@@ -86,7 +103,10 @@ const JudicialBinnacleInfo = ({ judicialFileCaseId, clientCode, clientName }: Ju
         </Container>
       </Container>
 
-      <Container>
+      <Container display='flex' gap="20px" alignItems='center' justifyContent='space-between'>
+        <Text.Body size="m" weight="bold" >
+          Total: S/. {totalTariff ?? '0.00'}
+        </Text.Body>
         <Button
           onClick={onShowModal}
           width="100px"

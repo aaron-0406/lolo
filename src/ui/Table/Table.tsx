@@ -11,6 +11,7 @@ export type ColumProps = {
   id: string
   title: React.ReactNode
   width?: string
+  tooltipMessage?: string
   justifyContent?: CSS.Property.JustifyContent
   textTransform?: CSS.Property.TextTransform
   isThereFilter?: boolean
@@ -66,7 +67,7 @@ const Table: React.FC<TableProps> = ({
         <thead className="table-header">
           <tr>
             {columns.map(
-              ({ justifyContent = 'left', textTransform, width, title, id, isThereFilter, isSortable }, index) => {
+              ({ justifyContent = 'left', textTransform, width, title, id, isThereFilter, isSortable, tooltipMessage }, index) => {
                 const filterOption = filterOptions?.find((option) => option.identifier === id)
                 const options = filterOption?.options
 
@@ -76,6 +77,7 @@ const Table: React.FC<TableProps> = ({
                 return (
                   <HeaderCell
                     key={index}
+                    tooltipMessage={tooltipMessage}
                     isThereFilter={isThereFilter}
                     isSortable={isSortable}
                     width={loading ? '' : width}

@@ -8,15 +8,10 @@ import moment from 'moment'
 import Table from '@/ui/Table'
 import EmptyStateCell from '@/ui/Table/EmptyStateCell'
 import useModal from '@/hooks/useModal'
-import { useEffect, useState } from 'react'
-import { AxiosResponse } from 'axios'
-import { useQuery } from 'react-query'
-import { KEY_JUDICIAL_URL_BINNACLE_CODE_CACHE } from './utils/judicial-binnacle.cache'
+import { useState } from 'react'
 import { JudicialBinnacleType } from '@/types/judicial/judicial-binnacle.type'
 import { JudicialBinTypeBinnacleType } from '@/types/judicial/judicial-bin-type-binnacle.type'
 import { JudicialBinProceduralStageType } from '@/types/judicial/judicial-bin-procedural-stage.type'
-import { getBinnacleByFileCase } from '@/services/judicial/judicial-binnacle.service'
-import notification from '@/ui/notification'
 import EmptyState from '@/ui/EmptyState'
 import { judicialBinnacleColumns } from './utils/columns'
 import { JudicialBinDefendantProceduralActionType } from '@/types/judicial/judicial-bin-defendant-procedural-action.type'
@@ -24,22 +19,33 @@ import { useFiltersContext } from '@/contexts/FiltersProvider'
 import { useLocation } from 'react-router-dom'
 import { JudicialBinFileType } from '@/types/judicial/judicial-bin-file.type'
 import Icon from '@/ui/Icon'
+import JudicialBinnacleTariffModal from '../Modals/JudicialBinnacleTariffModal'
+import JudicialBinnacelTariffResumeModal from '../Modals/JudicialBinnacelTariffResumeModal'
 
 type JudicialBinnacleTableProps = {
   judicialFileCaseId?: number
   clientCode: string
+  amountDemanded?: string
+  binnacles: Array<
+    JudicialBinnacleType & {
+      binnacleType: JudicialBinTypeBinnacleType
+      judicialBinProceduralStage: JudicialBinProceduralStageType
+      judicialBinDefendantProceduralAction: JudicialBinDefendantProceduralActionType
+      judicialBinFiles: JudicialBinFileType[]
+    }
+  >
+  isLoading: boolean
 }
 
-const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode }: JudicialBinnacleTableProps) => {
-  const [idEdit, setIdEdit] = useState<number>(0)
-  const [idDeletedComment, setIdDeletedComment] = useState<number>(0)
+const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode, amountDemanded, binnacles, isLoading }: JudicialBinnacleTableProps) => {
+  const [ selectedBinnacle, setSelectedBinnacle ] = useState<number>(0)
+  const [tariffHistory, setTariffHistory] = useState<string>('')
   const location = useLocation()
   const currentPath = location.pathname
   const {
-    sorting: { getSortingOptions, setSortingOptions },
+    sorting: { setSortingOptions },
   } = useFiltersContext()
 
-  const sortingOptions = getSortingOptions(currentPath)?.opts ?? { sortBy: '', order: 'ASC' }
 
   const {
     visible: visibleModalJudicialBinProceduralStage,
@@ -51,24 +57,34 @@ const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode }: JudicialBinna
     showModal: showDeleteJudicialBinProceduralStage,
     hideModal: hideDeleteJudicialBinProceduralStage,
   } = useModal()
+  const {
+    visible: visibleModalJudicialBinTariff,
+    showModal: showModalJudicialBinTariff,
+    hideModal: hideModalJudicialBinTariff,
+  } = useModal()
+  const {
+    visible: visibleModalJudicialBinnacelTariffResume,
+    showModal: showModalJudicialBinnacelTariffResume,
+    hideModal: hideModalJudicialBinnacelTariffResume,
+  } = useModal()
 
   const handleClickEdit = (id: number) => {
-    setIdEdit(id)
+    setSelectedBinnacle(id)
     showModalJudicialBinProceduralStage()
   }
 
   const onCloseModalEdit = () => {
-    setIdEdit(0)
+    setSelectedBinnacle(0)
     hideModalJudicialBinProceduralStage()
   }
 
   const handleClickDelete = (id: number) => {
-    setIdDeletedComment(id)
+    setSelectedBinnacle(id)
     showDeleteJudicialBinProceduralStage()
   }
 
   const onCloseModalDelete = () => {
-    setIdDeletedComment(0)
+    setSelectedBinnacle(0)
     hideDeleteJudicialBinProceduralStage()
   }
   
@@ -76,38 +92,26 @@ const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode }: JudicialBinna
     setSortingOptions({ url: currentPath, opts: { sortBy, order } })
   }
 
-  const { data, isLoading, refetch } = useQuery<
-    AxiosResponse<
-      Array<
-        JudicialBinnacleType & {
-          binnacleType: JudicialBinTypeBinnacleType
-          judicialBinProceduralStage: JudicialBinProceduralStageType
-          judicialBinDefendantProceduralAction: JudicialBinDefendantProceduralActionType
-          judicialBinFiles: JudicialBinFileType[]
-        }
-      >,
-      Error
-    >
-  >(
-    [KEY_JUDICIAL_URL_BINNACLE_CODE_CACHE, judicialFileCaseId],
-    async () => {
-      return await getBinnacleByFileCase(judicialFileCaseId ?? 0, sortingOptions)
-    },
-    {
-      onError: (error: any) => {
-        notification({
-          type: 'error',
-          message: error.response.data.message,
-        })
-      },
-    }
-  )
+  const handleClickTariff = (id: number) => {
+    setSelectedBinnacle(id)
+    showModalJudicialBinTariff()
+  }
 
-  const binnacles = data?.data ?? []
-  useEffect(() => {
-    refetch()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sortingOptions.order])
+  const onCloseModalTariff = () => {
+    setSelectedBinnacle(0)
+    hideModalJudicialBinTariff()
+  }
+
+  const handleClickTariffResume = (tariffHistory: string) => {
+    setTariffHistory(tariffHistory)
+    showModalJudicialBinnacelTariffResume()
+  }
+  const onCloseModalTariffResume = () => {
+    setTariffHistory('')
+    hideModalJudicialBinnacelTariffResume()
+  }
+
+
 
   return (
     <Container width="100%" height="calc(100% - 80px)" padding="0px 20px 0px 20px">
@@ -169,6 +173,7 @@ const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode }: JudicialBinna
                     </Container>
                   </BodyCell>
                   <BodyCell textAlign="center">{record?.judicialBinProceduralStage?.proceduralStage || '-'}</BodyCell>
+                  <BodyCell textAlign="center">S/. {record?.totalTariff || '0.00'}</BodyCell>
                   <BodyCell textAlign="center">
                     {record.judicialBinFiles.length ? (
                       <Container display="flex" gap="10px" justifyContent="center" alignItems="center">
@@ -199,6 +204,25 @@ const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode }: JudicialBinna
                           permission="P02-02-01-02"
                         />
                         <Button
+                          messageTooltip="Ver cuadro de tarifas"
+                          shape="round"
+                          size="small"
+                          leadingIcon="ri-table-fill"
+                          onClick={(event) => {
+                            event.stopPropagation()
+                            handleClickTariff(record.id)
+                          }}
+                        />
+                        <Button
+                          onClick={() => {
+                            handleClickTariffResume(record.tariffHistory)
+                          }}
+                          messageTooltip="Ver resumen de cuadro de tarifas"
+                          shape="round"
+                          size="small"
+                          leadingIcon="ri-file-text-line"
+                        />
+                        <Button
                           onClick={() => {
                             handleClickDelete(record.id)
                           }}
@@ -217,22 +241,43 @@ const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode }: JudicialBinna
             }
           )}
       </Table>
+      {visibleModalJudicialBinProceduralStage ? (
+        <JudicialBinnacleModal
+          clientCode={clientCode}
+          visible={visibleModalJudicialBinProceduralStage}
+          onClose={onCloseModalEdit}
+          idBinnacle={selectedBinnacle}
+          isEdit
+          judicialFileCaseId={judicialFileCaseId}
+        />
+      ) : null}
+      {visibleDeleteJudicialBinProceduralStage ? (
+        <DeleteJudicialBinnacleModal
+          visible={visibleDeleteJudicialBinProceduralStage}
+          onClose={onCloseModalDelete}
+          idBinnacle={selectedBinnacle}
+          judicialFileCaseId={judicialFileCaseId}
+          clientCode={clientCode}
+        />
+      ) : null}
+      {visibleModalJudicialBinTariff ? (
+        <JudicialBinnacleTariffModal
+        clientCode={clientCode}
+        JudicialFileCaseId={judicialFileCaseId}
+        amountDemanded={amountDemanded}
+        visible={visibleModalJudicialBinTariff}
+        onClose={onCloseModalTariff}
+          idBinnacle={selectedBinnacle}
+        />
+      ) : null}
+      {visibleModalJudicialBinnacelTariffResume ? (
+        <JudicialBinnacelTariffResumeModal
+          visible={visibleModalJudicialBinnacelTariffResume}
+          onClose={onCloseModalTariffResume}
+          tariffHistory={tariffHistory}
+        />
+      ) : null}
 
-      <JudicialBinnacleModal
-        clientCode={clientCode}
-        visible={visibleModalJudicialBinProceduralStage}
-        onClose={onCloseModalEdit}
-        idBinnacle={idEdit}
-        isEdit
-        judicialFileCaseId={judicialFileCaseId}
-      />
-      <DeleteJudicialBinnacleModal
-        visible={visibleDeleteJudicialBinProceduralStage}
-        onClose={onCloseModalDelete}
-        idBinnacle={idDeletedComment}
-        judicialFileCaseId={judicialFileCaseId}
-        clientCode={clientCode}
-      />
     </Container>
   )
 }
