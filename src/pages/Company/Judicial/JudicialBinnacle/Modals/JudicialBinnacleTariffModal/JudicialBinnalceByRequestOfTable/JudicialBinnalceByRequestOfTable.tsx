@@ -50,7 +50,7 @@ const JudicialBinnalceByRequestOfTable = ({ RequestOfColumns, RequestOfData, onS
                     overFlowY="auto"
                   >
                     <Text.Body size="m" weight="regular">
-                      {interval?.value || '-'}
+                      S/. {interval?.value || '-'}
                     </Text.Body>
                   </Container>
                 </BodyCell>

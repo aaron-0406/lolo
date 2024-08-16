@@ -8,15 +8,10 @@ import moment from 'moment'
 import Table from '@/ui/Table'
 import EmptyStateCell from '@/ui/Table/EmptyStateCell'
 import useModal from '@/hooks/useModal'
-import { useEffect, useState } from 'react'
-import { AxiosResponse } from 'axios'
-import { useQuery } from 'react-query'
-import { KEY_JUDICIAL_URL_BINNACLE_CODE_CACHE } from './utils/judicial-binnacle.cache'
+import { useState } from 'react'
 import { JudicialBinnacleType } from '@/types/judicial/judicial-binnacle.type'
 import { JudicialBinTypeBinnacleType } from '@/types/judicial/judicial-bin-type-binnacle.type'
 import { JudicialBinProceduralStageType } from '@/types/judicial/judicial-bin-procedural-stage.type'
-import { getBinnacleByFileCase } from '@/services/judicial/judicial-binnacle.service'
-import notification from '@/ui/notification'
 import EmptyState from '@/ui/EmptyState'
 import { judicialBinnacleColumns } from './utils/columns'
 import { JudicialBinDefendantProceduralActionType } from '@/types/judicial/judicial-bin-defendant-procedural-action.type'
@@ -31,18 +26,26 @@ type JudicialBinnacleTableProps = {
   judicialFileCaseId?: number
   clientCode: string
   amountDemanded?: string
+  binnacles: Array<
+    JudicialBinnacleType & {
+      binnacleType: JudicialBinTypeBinnacleType
+      judicialBinProceduralStage: JudicialBinProceduralStageType
+      judicialBinDefendantProceduralAction: JudicialBinDefendantProceduralActionType
+      judicialBinFiles: JudicialBinFileType[]
+    }
+  >
+  isLoading: boolean
 }
 
-const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode, amountDemanded }: JudicialBinnacleTableProps) => {
+const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode, amountDemanded, binnacles, isLoading }: JudicialBinnacleTableProps) => {
   const [ selectedBinnacle, setSelectedBinnacle ] = useState<number>(0)
   const [tariffHistory, setTariffHistory] = useState<string>('')
   const location = useLocation()
   const currentPath = location.pathname
   const {
-    sorting: { getSortingOptions, setSortingOptions },
+    sorting: { setSortingOptions },
   } = useFiltersContext()
 
-  const sortingOptions = getSortingOptions(currentPath)?.opts ?? { sortBy: '', order: 'ASC' }
 
   const {
     visible: visibleModalJudicialBinProceduralStage,
@@ -108,38 +111,7 @@ const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode, amountDemanded 
     hideModalJudicialBinnacelTariffResume()
   }
 
-  const { data, isLoading, refetch } = useQuery<
-    AxiosResponse<
-      Array<
-        JudicialBinnacleType & {
-          binnacleType: JudicialBinTypeBinnacleType
-          judicialBinProceduralStage: JudicialBinProceduralStageType
-          judicialBinDefendantProceduralAction: JudicialBinDefendantProceduralActionType
-          judicialBinFiles: JudicialBinFileType[]
-        }
-      >,
-      Error
-    >
-  >(
-    [KEY_JUDICIAL_URL_BINNACLE_CODE_CACHE, judicialFileCaseId],
-    async () => {
-      return await getBinnacleByFileCase(judicialFileCaseId ?? 0, sortingOptions)
-    },
-    {
-      onError: (error: any) => {
-        notification({
-          type: 'error',
-          message: error.response.data.message,
-        })
-      },
-    }
-  )
 
-  const binnacles = data?.data ?? []
-  useEffect(() => {
-    refetch()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sortingOptions.order])
 
   return (
     <Container width="100%" height="calc(100% - 80px)" padding="0px 20px 0px 20px">
@@ -201,7 +173,7 @@ const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode, amountDemanded 
                     </Container>
                   </BodyCell>
                   <BodyCell textAlign="center">{record?.judicialBinProceduralStage?.proceduralStage || '-'}</BodyCell>
-                  <BodyCell textAlign="center">{record?.totalTariff || '-'}</BodyCell>
+                  <BodyCell textAlign="center">S/. {record?.totalTariff || '0.00'}</BodyCell>
                   <BodyCell textAlign="center">
                     {record.judicialBinFiles.length ? (
                       <Container display="flex" gap="10px" justifyContent="center" alignItems="center">

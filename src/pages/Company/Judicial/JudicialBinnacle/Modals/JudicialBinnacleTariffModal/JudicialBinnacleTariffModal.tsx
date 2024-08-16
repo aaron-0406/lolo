@@ -43,7 +43,7 @@ let contentiousProcesses: TariffType[] = []
 let RequestOf: TariffType[] = []
 
 
-const JudicialBinnacleTariffModal = ({ visible, onClose, amountDemanded, idBinnacle, clientCode, JudicialFileCaseId} : JudicialBinnacleTariffModalProps) => {
+const JudicialBinnacleTariffModal = ({ visible, onClose, amountDemanded, idBinnacle, JudicialFileCaseId} : JudicialBinnacleTariffModalProps) => {
 
   const [totlaTariff, setTotlaTariff] = useState<number>(0)
   const [tariffHistory, setTariffHistory] = useState<any[]>([])

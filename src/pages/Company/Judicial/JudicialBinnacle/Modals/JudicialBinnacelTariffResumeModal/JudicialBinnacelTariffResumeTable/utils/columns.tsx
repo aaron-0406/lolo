@@ -45,7 +45,7 @@ export const judicialBinnacleTariffResumeColumns: ColumProps[] = [
   },
   {
     id: 'binnacle.trariff.resume.datatable.intervalDescription',
-    title: 'DESCRIPCIÓN del INTERVALO',
+    title: 'DESCRIPCIÓN DEL INTERVALO',
     width: '10%',
     justifyContent: 'center',
     tooltipMessage: 'Descripción del intervalo',
