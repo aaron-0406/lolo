@@ -2,8 +2,8 @@ import { ColumProps } from "@/ui/Table/Table";
 
 export const judicialBinnacleContentiousProcessColumns: ColumProps[] = [
   {
-    id: 'casesFiles.datatable.header.select',
-    title: '',
+    id: 'casesFiles.datatable.header.id',
+    title: 'ID',
     width: '10%',
     justifyContent: 'center',
   },

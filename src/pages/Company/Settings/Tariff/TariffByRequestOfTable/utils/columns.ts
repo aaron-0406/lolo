@@ -1,9 +1,9 @@
 import { ColumProps } from "@/ui/Table/Table";
 
-export const judicialBinnacleContentiousProcessColumns: ColumProps[] = [
+export const judicialBinnacleRequestOfColumns: ColumProps[] = [
   {
-    id: 'casesFiles.datatable.header.select',
-    title: '',
+    id: 'casesFiles.datatable.header.id',
+    title: 'ID',
     width: '10%',
     justifyContent: 'center',
   },
@@ -15,9 +15,9 @@ export const judicialBinnacleContentiousProcessColumns: ColumProps[] = [
   },
   {
     id:'binnacle.datatable.header.name',
-    title:'PROCESOS CONTECIOSOS',
+    title:'POR SOLICITUD DE',
     width:'20%',
     justifyContent:'center',
-    tooltipMessage: 'Seleccionar todos los procesos contenciosos',
   }, 
+  
 ]

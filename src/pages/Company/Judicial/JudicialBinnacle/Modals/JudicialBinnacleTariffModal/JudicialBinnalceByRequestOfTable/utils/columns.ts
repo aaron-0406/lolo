@@ -3,7 +3,7 @@ import { ColumProps } from "@/ui/Table/Table";
 export const judicialBinnacleRequestOfColumns: ColumProps[] = [
   {
     id: 'casesFiles.datatable.header.select',
-    title: 'checkbox',
+    title: '',
     width: '10%',
     justifyContent: 'center',
   },

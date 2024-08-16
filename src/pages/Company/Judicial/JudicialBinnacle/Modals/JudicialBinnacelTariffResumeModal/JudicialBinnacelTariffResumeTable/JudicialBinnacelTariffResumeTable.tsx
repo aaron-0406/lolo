@@ -9,13 +9,20 @@ type JudicialBinnacleTariffResumeTableProps = {
 }
 
 const JudicialBinnacelTariffResumeTable = ({ tariffHistoryArray }: JudicialBinnacleTariffResumeTableProps) => {
-  const tariffHistory = JSON.parse(tariffHistoryArray)
+  const tariffHistory = tariffHistoryArray.length ? JSON.parse(tariffHistoryArray) : null
+  if (!tariffHistory) return (
+    <Container width="100%" height="100%" display="flex" justifyContent="center" alignItems="center">
+      <Text.Body size="l" weight="bold">
+        No hay datos disponibles
+      </Text.Body>
+    </Container>
+  )
   return (
     <Table columns={judicialBinnacleTariffResumeColumns}>
       {tariffHistory.map((record: any, index: number) => (
         <tr key={index}>
-          <BodyCell textAlign="center">{record.id}</BodyCell>
-          <BodyCell textAlign="center">{record.code}</BodyCell>
+          <BodyCell textAlign="center">{record.id ?? '-'}</BodyCell>
+          <BodyCell textAlign="center">{record.code ?? '-'}</BodyCell>
           <BodyCell textAlign="left">
             <Container
               margin="20px 0"
@@ -26,14 +33,14 @@ const JudicialBinnacelTariffResumeTable = ({ tariffHistoryArray }: JudicialBinna
               overFlowY="auto"
             >
               <Text.Body size="m" weight="regular">
-                {record?.description || '-'}
+                {record?.description ?? '-'}
               </Text.Body>
             </Container>
           </BodyCell>
-          <BodyCell textAlign="center">{record.tariffIntervalMatch.value}</BodyCell>
-          <BodyCell textAlign="center">{record.type}</BodyCell>
-          <BodyCell textAlign="center">{record.tariffIntervalMatch.tariffInterval.intervalDescription}</BodyCell>
-          <BodyCell textAlign="center">{record.tariffIntervalMatch.tariffInterval.interval}</BodyCell>
+          <BodyCell textAlign="center">{record.tariffIntervalMatch.value ?? '-'}</BodyCell>
+          <BodyCell textAlign="center">{record.type ?? '-'}</BodyCell>
+          <BodyCell textAlign="center">{record.tariffIntervalMatch.tariffInterval.intervalDescription ?? '-'}</BodyCell>
+          <BodyCell textAlign="center">{record.tariffIntervalMatch.tariffInterval.interval ?? '-'}</BodyCell>
         </tr>
       ))}
     </Table>
