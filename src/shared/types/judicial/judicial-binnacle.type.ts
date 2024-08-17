@@ -1,5 +1,7 @@
 export type JudicialBinnacleType = {
   id: number
+  totalTariff?:number; 
+  tariffHistory?: string
   judicialBinProceduralStageId: number
   lastPerformed: string
   binnacleTypeId: number

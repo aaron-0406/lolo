@@ -43,6 +43,8 @@ const JudicialBinnacle = () => {
     judicialBinProceduralStageId: 0,
     judicialFileCaseId: Number(data?.data.id),
     lastPerformed: '',
+    tariffHistory: '',
+    totalTariff: 0,
     judicialBinFiles: [],
     filesDnD: [],
   },
@@ -56,7 +58,9 @@ const clientName = data?.data.client.name
     <FormProvider {...formMethods}>
       <Container width="100%" height="Calc(100% - 50px)" display="flex" flexDirection="column">
         <JudicialBinnacleActions judicialFileCaseId={judicialFileCaseId} clientCode={clientCode} clientName={clientName} />
-        <JudicialBinnacleInfo />
+        <JudicialBinnacleInfo 
+          
+        />
       </Container>
     </FormProvider>
   )

@@ -87,6 +87,7 @@ import JudicialCollateralFiles from 'pages/Company/Judicial/JudicialCollateralFi
 import JudicialCollateralAuctionList from 'pages/Company/Judicial/JudicialCollateralAuctionRoundList'
 import JudicialCollateralAuctionRound from 'pages/Company/Judicial/JudicialCollateralAuctionRound'
 import JudicialFileCaseAuctionRoundList from 'pages/Company/Judicial/JudicialFileCaseAuctionRoundList'
+import Tariff from 'pages/Company/Settings/Tariff'
 
 
 const AppRouter = () => {
@@ -177,6 +178,7 @@ const AppRouter = () => {
         <Route path={paths.settings.department()} element={<Department />} />
         <Route path={paths.settings.district()} element={<District />} />
         <Route path={paths.settings.province()} element={<Province />} />
+        <Route path={paths.settings.tariff()} element={<Tariff />} />
       </Route>
 
       <Route path="*" element={<NotFound />} />

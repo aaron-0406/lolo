@@ -63,6 +63,8 @@ export const updateBinnacle = async (
   formData.append('binnacleTypeId', binnacle.binnacleTypeId + '')
   formData.append('date', binnacle.date)
   formData.append('judicialBinProceduralStageId', binnacle.judicialBinProceduralStageId + '')
+  formData.append('tariffHistory', binnacle.tariffHistory + '') 
+  formData.append('totalTariff', binnacle.totalTariff + '')
   binnacle.files.forEach((file) => {
     formData.append('file', file)
   })
@@ -71,6 +73,10 @@ export const updateBinnacle = async (
     headers: { 'Content-Type': 'multipart/form-data' },
   })
 }
+
+export const updateBinnacleTariff= async ( id: number, totalTariff: number, tariffHistory:string) => {
+  return await axiosClient.patch(`${url}/${id}/tariff`, { totalTariff, tariffHistory })
+} 
 
 export const deleteBinnacle = async (id: number) => {
   return await axiosClient.delete(`${url}/${id}`)

@@ -1,1 +1,1 @@
-export { default } from './JudicialBinnacle'
+export { default } from './JudicialBinnacleList'

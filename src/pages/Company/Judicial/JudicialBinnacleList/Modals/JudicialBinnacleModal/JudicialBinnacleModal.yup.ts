@@ -14,6 +14,8 @@ const ModalJudicialBinnacle: yup.SchemaOf<Omit<JudicialBinnacleType, 'id' | 'cre
     fojas: yup.number().required(),
     notificationType: yup.string().required(),
     userDescription: yup.string().required(),
+    totalTariff: yup.number().optional(),
+    tariffHistory: yup.string().optional(),
   })
 
 export const ModalJudicialBinnacleResolver = yupResolver(ModalJudicialBinnacle)

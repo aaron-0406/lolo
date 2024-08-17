@@ -73,6 +73,8 @@ const JudicialBinnacleInfo = () => {
           setValue('lastPerformed', data.lastPerformed, { shouldValidate: true })
           setValue('judicialFileCaseId', data.judicialFileCaseId, { shouldValidate: true })
           setValue('judicialBinFiles', data.judicialBinFiles, { shouldValidate: true })
+          setValue('tariffHistory', data.tariffHistory, { shouldValidate: true })
+          setValue('totalTariff', data.totalTariff, { shouldValidate: true })
         } else {
           reset()
         }
@@ -264,7 +266,7 @@ const JudicialBinnacleInfo = () => {
         />
 
       </Container>
-      
+
       {/** Files DND */}
 
       <Container
