@@ -88,6 +88,7 @@ import JudicialCollateralAuctionList from 'pages/Company/Judicial/JudicialCollat
 import JudicialCollateralAuctionRound from 'pages/Company/Judicial/JudicialCollateralAuctionRound'
 import JudicialFileCaseAuctionRoundList from 'pages/Company/Judicial/JudicialFileCaseAuctionRoundList'
 import Tariff from 'pages/Company/Settings/Tariff'
+import JudicialBinNotificationList from 'pages/Company/Judicial/JudicialBinNotificationList'
 
 
 const AppRouter = () => {
@@ -172,6 +173,7 @@ const AppRouter = () => {
         <Route path={paths.judicial.collateralAuction()} element={<JudicialCollateralAuctionRound />} />
         <Route path={paths.judicial.collateralAuctionList()} element={<JudicialCollateralAuctionList />} />
         <Route path={paths.judicial.caseFileAuctionList()} element={<JudicialFileCaseAuctionRoundList />} />
+        <Route path={paths.judicial.notifications()} element={<JudicialBinNotificationList />} />
         {/* SETTINGS */}
         <Route path={paths.settings.scheduldedNotifications()} element={<ScheduledNotifications />} />
         <Route path={paths.settings.compareExcel()} element={<CompareExcel />} />

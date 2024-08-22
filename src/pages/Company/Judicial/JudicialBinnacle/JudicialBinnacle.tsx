@@ -11,6 +11,7 @@ import { useParams } from 'react-router-dom'
 import { getFileCaseByNumberFile } from '@/services/judicial/judicial-file-case.service'
 import { AxiosResponse } from 'axios'
 import { useQuery } from 'react-query'
+import JudicialBinnacleModals from './JudicialBinnacleInfo/JudicialBinnacleModals'
 
 const JudicialBinnacle = () => {
   const {
@@ -57,10 +58,13 @@ const clientName = data?.data.client.name
   return (
     <FormProvider {...formMethods}>
       <Container width="100%" height="Calc(100% - 50px)" display="flex" flexDirection="column">
-        <JudicialBinnacleActions judicialFileCaseId={judicialFileCaseId} clientCode={clientCode} clientName={clientName} />
-        <JudicialBinnacleInfo 
-          
+        <JudicialBinnacleActions
+          judicialFileCaseId={judicialFileCaseId}
+          clientCode={clientCode}
+          clientName={clientName}
         />
+        <JudicialBinnacleInfo />
+        <JudicialBinnacleModals />
       </Container>
     </FormProvider>
   )
