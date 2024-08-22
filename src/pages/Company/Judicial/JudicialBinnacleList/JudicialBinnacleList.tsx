@@ -5,7 +5,7 @@ import { useQuery } from 'react-query'
 import { AxiosResponse } from 'axios'
 import { getFileCaseByNumberFile } from '@/services/judicial/judicial-file-case.service'
 import notification from '@/ui/notification'
-import JudicialBinnacleInfo from './JudicialBinnacleListActions'
+import JudicialBinnacleActions from './JudicialBinnacleListActions'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import { useFiltersContext } from '@/contexts/FiltersProvider'
 import { JudicialBinnacleType } from '@/types/judicial/judicial-binnacle.type'
@@ -97,7 +97,7 @@ useEffect(() => {
       flexDirection="column"
       justifyContent="space-between"
     >
-      <JudicialBinnacleInfo judicialFileCaseId={judicialFileCaseId} clientCode={clientCode} clientName={clientName} binnacles={binnaclesData} isLoading={isLoading} />
+      <JudicialBinnacleActions judicialFileCaseId={judicialFileCaseId} clientCode={clientCode} clientName={clientName} binnacles={binnaclesData} isLoading={isLoading} />
       <JudicialBinnacleTable judicialFileCaseId={judicialFileCaseId} clientCode={clientCode}  amountDemanded={amountDemanded} binnacles={binnaclesData} isLoading={isLoading} />
     </Container>
   )

@@ -200,6 +200,7 @@ const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode, amountDemanded,
                       </Text.Body>
                     )}
                   </BodyCell>
+                  <BodyCell textAlign="center">{record.createdBy ?? 'USER'}</BodyCell>
                   <BodyCell textAlign="center">{moment(record.date.split('T')[0]).format('DD-MM-YYYY') || ''}</BodyCell>
                   <BodyCell textAlign="center">
                     {

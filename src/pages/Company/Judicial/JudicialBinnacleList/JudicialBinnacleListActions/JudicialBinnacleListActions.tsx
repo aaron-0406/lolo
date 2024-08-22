@@ -1,20 +1,20 @@
 import Breadcrumbs from '@/ui/Breadcrumbs'
 import Button from '@/ui/Button'
 import Container from '@/ui/Container'
-import JudicialBinnacleModal from '../Modals/JudicialBinnacleModal'
 import paths from 'shared/routes/paths'
+import Text from '@/ui/Text'
+import { useNavigate } from 'react-router-dom'
 import { LinkType } from '@/ui/Breadcrumbs/Breadcrumbs.type'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import { useParams } from 'react-router-dom'
-import useModal from '@/hooks/useModal'
-import Text from '@/ui/Text'
 import { JudicialBinnacleType } from '@/types/judicial/judicial-binnacle.type'
 import { JudicialBinTypeBinnacleType } from '@/types/judicial/judicial-bin-type-binnacle.type'
 import { JudicialBinProceduralStageType } from '@/types/judicial/judicial-bin-procedural-stage.type'
 import { JudicialBinDefendantProceduralActionType } from '@/types/judicial/judicial-bin-defendant-procedural-action.type'
 import { JudicialBinFileType } from '@/types/judicial/judicial-bin-file.type'
 
-type JudicialBinnacleInfoProps = {
+
+type JudicialBinnacleActionsProps = {
   judicialFileCaseId: number
   clientCode: string
   clientName: string
@@ -29,24 +29,19 @@ type JudicialBinnacleInfoProps = {
   isLoading: boolean
 }
 
-
-
-const JudicialBinnacleInfo = ({ judicialFileCaseId, clientCode, clientName, binnacles, isLoading }: JudicialBinnacleInfoProps) => {
+const JudicialBinnacleActions = ({ clientName, binnacles }: JudicialBinnacleActionsProps) => {
+  const navigate = useNavigate()
   const code = useParams().code ?? ''
   const relatedProcessCodeParams = useParams().relatedProcessCode ?? ''
   const {
     client: { customer },
   } = useLoloContext()
 
-  const { visible: visibleModalAdd, showModal: showModalAdd, hideModal: hideModalAdd } = useModal()
-  const onShowModal = () => {
-    showModalAdd()
-  }
-  const onCloseModal = () => {
-    hideModalAdd()
-  }
+  const totalTariff = binnacles?.reduce((acc: number, cur: JudicialBinnacleType) => acc + Number(cur.totalTariff), 0)
 
-  const totalTariff = binnacles?.reduce((acc, cur) => acc + Number(cur.totalTariff), 0)
+  const onClickCreateBinnacle = () => {
+    navigate(paths.judicial.bitacoraDetalles(customer.urlIdentifier, code, "000000000")) 
+  }
 
   const routersFileCase: LinkType[] = [
     {
@@ -108,7 +103,7 @@ const JudicialBinnacleInfo = ({ judicialFileCaseId, clientCode, clientName, binn
           Total: S/. {totalTariff ?? '0.00'}
         </Text.Body>
         <Button
-          onClick={onShowModal}
+          onClick={onClickCreateBinnacle}
           width="100px"
           shape="round"
           trailingIcon="ri-add-fill"
@@ -116,17 +111,17 @@ const JudicialBinnacleInfo = ({ judicialFileCaseId, clientCode, clientName, binn
           messageTooltip="Agregar bitacora"
         />
 
-        {judicialFileCaseId && (
+        {/* {judicialFileCaseId && (
           <JudicialBinnacleModal
             clientCode={clientCode}
             visible={visibleModalAdd}
             onClose={onCloseModal}
             judicialFileCaseId={judicialFileCaseId}
           />
-        )}
+        )} */}
       </Container>
     </Container>
   )
 }
 
-export default JudicialBinnacleInfo
+export default JudicialBinnacleActions

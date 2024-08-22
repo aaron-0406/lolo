@@ -14,6 +14,7 @@ import { CustomErrorResponse } from 'types/customErrorResponse'
 import { createBinnacle, updateBinnacle } from '@/services/judicial/judicial-binnacle.service'
 import notification from '@/ui/notification'
 import { JudicialBinFileType } from '@/types/judicial/judicial-bin-file.type'
+import Text from '@/ui/Text'
 
 type JudicialBinnacleActionsProps = {
   judicialFileCaseId: number
@@ -21,7 +22,7 @@ type JudicialBinnacleActionsProps = {
   clientName: string
 }
 
-const JudicialBinnacleActions = ({ judicialFileCaseId, clientCode }: JudicialBinnacleActionsProps) => {
+const JudicialBinnacleActions = ({ judicialFileCaseId, clientCode, clientName }: JudicialBinnacleActionsProps) => {
   const code = useParams().code ?? ''
   const relatedProcessCodeParams = useParams().relatedProcessCode ?? ''
   const idBinnacle = useParams().binnacleCode ?? ''
@@ -177,7 +178,14 @@ const JudicialBinnacleActions = ({ judicialFileCaseId, clientCode }: JudicialBin
       alignItems="center"
       padding="20px 20px 0 20px"
     >
-      <Breadcrumbs routes={relatedProcessCodeParams ? routersRelatedProcess : routersCaseFile} />
+      <Container display="flex" flexDirection="column" gap="10px">
+        <Breadcrumbs routes={relatedProcessCodeParams ? routersRelatedProcess : routersCaseFile} />
+        <Container padding="10px" width="100%" margin="0px 0px 10px 0px" backgroundColor="#eff0f6ff">
+          <Text.Body size="m" weight="bold">
+            {clientName ?? '-'}
+          </Text.Body>
+        </Container>
+      </Container>
       <Container>
         <Button
           label="Guardar"

@@ -144,7 +144,7 @@ const JudicialBinnacleInfo = () => {
   }
 
   useEffect(() => {
-    if (!!idBinnacle) {
+    if (!!idBinnacle && idBinnacle !== '000000000') {
       refetchGetJudicialBinnacleById()
     }
   }, [idBinnacle, refetchGetJudicialBinnacleById])
