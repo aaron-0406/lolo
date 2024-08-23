@@ -9,10 +9,9 @@ type JudicialBinnacleContentiousProcessTableProps = {
   RequestOfColumns: ColumProps[]
   RequestOfData: any[]
   onSelectOption: (data: any) => void
-  tariffHistory: any[]
 }
 
-const JudicialBinnalceByRequestOfTable = ({ RequestOfColumns, RequestOfData, onSelectOption, tariffHistory }: JudicialBinnacleContentiousProcessTableProps) => {
+const JudicialBinnalceByRequestOfTable = ({ RequestOfColumns, RequestOfData, onSelectOption }: JudicialBinnacleContentiousProcessTableProps) => {
   return (
     <Table columns={RequestOfColumns} top="230px">
       {RequestOfData.map((record: any, key: number) => (
@@ -20,7 +19,6 @@ const JudicialBinnalceByRequestOfTable = ({ RequestOfColumns, RequestOfData, onS
           <BodyCell textAlign="center">
             <Checkbox
               onChange={() => onSelectOption(record)}
-              // selected={tariffHistory.some((tariff: any) => tariff?.id === record?.id)}
             />
           </BodyCell>
           <BodyCell textAlign="center">{record?.code || '-'}</BodyCell>

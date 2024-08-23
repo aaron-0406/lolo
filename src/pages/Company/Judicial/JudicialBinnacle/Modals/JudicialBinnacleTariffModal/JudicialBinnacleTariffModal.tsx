@@ -20,6 +20,7 @@ import { device } from '@/breakpoints/responsive'
 import { updateBinnacleTariff } from '@/services/judicial/judicial-binnacle.service'
 import { JudicialBinnacleType } from '@/types/judicial/judicial-binnacle.type'
 import { CustomErrorResponse } from 'types/customErrorResponse'
+import JudicialBinnacelByExhortProcessTable from './JudicialBinnacleByExhortProcess'
 
 type JudicialBinnacleTariffModalProps = {
   visible: boolean
@@ -33,8 +34,10 @@ type JudicialBinnacleTariffModalProps = {
 type TariffTypeResponse = {
   contentiousProcessesHeaders: any[]
   contentiousProcesses: any[]
+  byExhortProcessHeaders: TariffType[]
   requestOfHeaders: TariffType[]
   requestOf: TariffType[]
+  byExhortProcess: TariffType[]
 }
 
 let ContentiousProcessColumns: ColumProps[] = []
@@ -47,6 +50,8 @@ const JudicialBinnacleTariffModal = ({ visible, onClose, amountDemanded, idBinna
 
   const [totlaTariff, setTotlaTariff] = useState<number>(0)
   const [tariffHistory, setTariffHistory] = useState<any[]>([])
+  const [byExhortProcess, setByExhortProcess] = useState<TariffType[]>([])
+  const [byExhortProcessDefault, setByExhortProcessDefault] = useState<TariffType[]>([])
   const greaterThanTabletL = useMediaQuery(device.tabletL)
   const queryClient = useQueryClient()
 
@@ -57,14 +62,45 @@ const JudicialBinnacleTariffModal = ({ visible, onClose, amountDemanded, idBinna
     onErrorCache,
   } = judicialBinnacleCache(queryClient)
 
-  const { data: tariff } = useQuery<AxiosResponse<TariffTypeResponse>>(['GET_TARIFF'], async () => await getTariff())
+  const { data: tariff } = useQuery<AxiosResponse<TariffTypeResponse>>(['GET_TARIFF'], async () => await getTariff(), {
+    onSuccess: (result) => {
+      setByExhortProcessDefault(result?.data?.byExhortProcess ?? [])
+      setByExhortProcess(result?.data?.byExhortProcess.map((byExhortProcessData: any) => {
+        return {
+          ...byExhortProcessData,
+          tariffIntervalMatch: [
+            {
+              ...byExhortProcessData.tariffIntervalMatch[0],
+              value: '0',
+            },
+          ],
+        }
+      }) ?? [])
+      setTariffHistory((prev) => {
+        return [
+          ...prev,
+          ...result?.data?.byExhortProcess.map((item) => ({
+            ...item,
+            tariffIntervalMatch: {
+              ...item.tariffIntervalMatch[0],
+              value: '0',
+            }
+          })),
+        ]
+      })
+    }
+  })
 
   const { isLoading: loadingEditJudicialBinnacle, mutate: editJudicialBinnacle } = useMutation<
     AxiosResponse<JudicialBinnacleType & { judicialBinFiles: File[] }>,
     AxiosError<CustomErrorResponse>
   >(
     async () => {
-      return await updateBinnacleTariff(idBinnacle, totlaTariff ?? 0, JSON.stringify(tariffHistory ?? []))
+      return await updateBinnacleTariff(
+        idBinnacle,
+        totlaTariff ?? 0,
+        JSON.stringify(tariffHistory.filter((data) => data.tariffIntervalMatch.value !== '0') ?? [])
+      )
     },
     {
       onSuccess: (result) => {
@@ -141,6 +177,148 @@ const JudicialBinnacleTariffModal = ({ visible, onClose, amountDemanded, idBinna
       });
     }
   };
+
+  const onSelectByExhortProcess = (data: TariffType) => {
+    const defaultValue = Number(byExhortProcessDefault.find((item) => item.id === data.id)?.tariffIntervalMatch[0].value ?? 0);
+    const currentItem = byExhortProcess.find((item) => item.id === data.id);
+    const currentValue = Number(currentItem?.tariffIntervalMatch[0].value ?? 0);
+
+    const processTariffIntervalMatch = (
+      dataIntervalMatch: TariffIntervalMatchType,
+      multiplier: 1 | -1
+    ) => {
+      if (!dataIntervalMatch.tariffInterval.interval) return;
+  
+      if (multiplier === 1) {
+
+        setTariffHistory((prev) => [
+          ...prev,
+          {
+            ...data,
+            tariffIntervalMatch: dataIntervalMatch,
+          },
+        ]);
+  
+        setTotlaTariff((prev) => Number((prev + defaultValue).toFixed(2)));
+      } else {
+        if (Number(currentItem?.tariffIntervalMatch[0].value) > 0)
+          setTotlaTariff((prev) => Number((prev - currentValue).toFixed(2)));
+        const newByExhortProcessList = byExhortProcess.map((item: any) => {
+          if (item.id !== data.id) return item;
+          return {
+            ...item,
+            tariffIntervalMatch: [
+              {
+                ...item.tariffIntervalMatch[0],
+                value: String(defaultValue),
+              },
+            ],
+          };
+        });
+  
+        setByExhortProcess(newByExhortProcessList);
+  
+        setTariffHistory((prev) =>
+          prev.filter((item) => !(item.id === data.id))
+        );
+  
+      }
+    };
+  
+    if (tariffHistory.some((item) => item.id === data.id)) {
+      data.tariffIntervalMatch.forEach((dataIntervalMatch) => {
+        processTariffIntervalMatch(dataIntervalMatch, -1);
+      });
+    } else {
+      data.tariffIntervalMatch.forEach((dataIntervalMatch) => {
+        processTariffIntervalMatch(dataIntervalMatch, 1);
+      });
+    }
+  };
+  
+
+  const onChangeExhortProcess = (id: number, index: 1 | -1) => {
+    // Verifica si el item existe en tariffHistory antes de proceder
+    const tariffHistoryItem = tariffHistory.find((item) => item.id === id);
+    if (!tariffHistoryItem) return;
+  
+    const value = Number(
+      byExhortProcessDefault.find((item) => item.id === id)?.tariffIntervalMatch[0].value ?? 0
+    );
+
+    if (index === 1) {
+      const tariffIntervalMatchValue = Number(byExhortProcess.find((item) => item.id === id)?.tariffIntervalMatch[0].value ?? 0);
+      const newTariffIntervalMatchValue = tariffIntervalMatchValue + value;
+      // Actualiza el historial
+      const newHistoryList = tariffHistory.map((item: any) => {
+        if (item.id !== id) return item;
+        return {
+          ...item,
+          tariffIntervalMatch: {
+            ...item.tariffIntervalMatch,
+            value: String(newTariffIntervalMatchValue),
+          },
+        };
+      });
+  
+      // Actualiza la lista de exhortos
+      const newByExhortProcessList = byExhortProcess.map((item: any) => {
+        if (item.id !== id) return item;
+        return {
+          ...item,
+          tariffIntervalMatch: [
+            {
+              ...item.tariffIntervalMatch[0],
+              value: String(newTariffIntervalMatchValue),
+            },
+          ],
+        };
+      });
+  
+      // Actualiza el estado
+      setTotlaTariff((prev) => Number((prev + value).toFixed(2)));
+      setTariffHistory(newHistoryList);
+      setByExhortProcess(newByExhortProcessList);
+  
+    } else if (index === -1) {
+      const tariffIntervalMatchValue = Number(tariffHistoryItem.tariffIntervalMatch.value);
+      if (tariffIntervalMatchValue === 0) return;
+  
+      const newTariffIntervalMatchValue = tariffIntervalMatchValue - value;
+  
+      // Actualiza el historial
+      const newHistoryList = tariffHistory.map((item: any) => {
+        if (item.id !== id) return item;
+        return {
+          ...item,
+          tariffIntervalMatch: {
+            ...item.tariffIntervalMatch,
+            value: String(newTariffIntervalMatchValue),
+          },
+        };
+      });
+  
+      // Actualiza la lista de exhortos
+      const newByExhortProcessList = byExhortProcess.map((item: any) => {
+        if (item.id !== id) return item;
+        return {
+          ...item,
+          tariffIntervalMatch: [
+            {
+              ...item.tariffIntervalMatch[0],
+              value: String(newTariffIntervalMatchValue),
+            },
+          ],
+        };
+      });
+  
+      // Actualiza el estado
+      setTotlaTariff((prev) => Number((prev - value).toFixed(2)));
+      setTariffHistory(newHistoryList);
+      setByExhortProcess(newByExhortProcessList);
+    }
+  };
+  
 
   const handelEditTariff = () => {
     editJudicialBinnacle()
@@ -228,13 +406,16 @@ const JudicialBinnacleTariffModal = ({ visible, onClose, amountDemanded, idBinna
           ContentiousProcessColumns={ContentiousProcessColumns ?? []}
           ContentiousProcessData={contentiousProcesses ?? []}
           onSelectOption={onSelectOption}
-          tariffHistory={tariffHistory ?? []}
         />
         <JudicialBinnalceByRequestOfTable
           RequestOfColumns={RequestOfColumns}
           RequestOfData={RequestOf}
           onSelectOption={onSelectOption}
-          tariffHistory={tariffHistory ?? []}
+        />
+        <JudicialBinnacelByExhortProcessTable
+          byExhortProcessData={byExhortProcess ?? []}
+          onSelectExhortProcessOption={onSelectByExhortProcess}
+          onChange={onChangeExhortProcess}
         />
       </Container>
     </Modal>

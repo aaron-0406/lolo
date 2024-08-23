@@ -2,19 +2,19 @@ import { ColumProps } from "@/ui/Table/Table";
 
 export const judicialBinnacleRequestOfColumns: ColumProps[] = [
   {
-    id: 'casesFiles.datatable.header.select',
+    id: 'requestOf.datatable.header.select',
     title: '',
     width: '10%',
     justifyContent: 'center',
   },
   {
-    id:'binnacle.datatable.header.id',
+    id:'requestOf.datatable.header.id',
     title:'CÓDIGO',
     width:'10%',
     justifyContent:'center',
   },
   {
-    id:'binnacle.datatable.header.name',
+    id:'requestOf.datatable.header.name',
     title:'POR SOLICITUD DE',
     width:'20%',
     justifyContent:'center',
