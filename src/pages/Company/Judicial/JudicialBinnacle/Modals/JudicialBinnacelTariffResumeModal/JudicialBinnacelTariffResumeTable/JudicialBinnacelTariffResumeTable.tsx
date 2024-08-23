@@ -53,7 +53,7 @@ const JudicialBinnacelTariffResumeTable = ({ tariffHistoryArray }: JudicialBinna
                 </Text.Body>
               </Container>
             </BodyCell>
-            <BodyCell textAlign="center"> S/. {record.tariffIntervalMatch.value ?? '-'}</BodyCell>
+            <BodyCell textAlign="center"> S/. {Number(record.tariffIntervalMatch.value).toFixed(2) ?? '-'}</BodyCell>
             <BodyCell textAlign="center">{record.type ?? '-'}</BodyCell>
             <BodyCell textAlign="center">
               {record.tariffIntervalMatch.tariffInterval.intervalDescription ?? '-'}
