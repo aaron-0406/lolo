@@ -22,6 +22,7 @@ import { JudicialBinnacleType } from '@/types/judicial/judicial-binnacle.type'
 import { CustomErrorResponse } from 'types/customErrorResponse'
 import JudicialBinnacelByExhortProcessTable from './JudicialBinnacleByExhortProcessTable'
 import JudicialBinnacleCustomTariffTable from './JudicialBinnacleCustomTariffTable'
+import { CurrencyInputOnChangeValues } from 'react-currency-input-field'
 
 type JudicialBinnacleTariffModalProps = {
   visible: boolean
@@ -91,6 +92,7 @@ const JudicialBinnacleTariffModal = ({ visible, onClose, amountDemanded, idBinna
                 {
                   ...customTariffData.tariffIntervalMatch[0],
                   value: '0',
+                  counter: 0, 
                 },
               ],
             }
@@ -108,6 +110,7 @@ const JudicialBinnacleTariffModal = ({ visible, onClose, amountDemanded, idBinna
                 {
                   ...customTariffData.tariffIntervalMatch[0],
                   value: '0',
+                  counter: 0,
                 },
               ],
             }
@@ -366,8 +369,150 @@ const JudicialBinnacleTariffModal = ({ visible, onClose, amountDemanded, idBinna
     }
   };
 
-  const onChangeCustomTariff = (id: number, index: 1 | -1) => {
-    
+  const onChangeCounterCustomTariff = (id: number, index: 1 | -1) => {
+
+    const customTariffHistoryItem = tariffHistory.find((item) => item.id === id);
+    if (!customTariffHistoryItem) return;
+    const customTariffItem = customTariff.find((item) => item.id === id);
+    if (!customTariffItem) return;
+    const customTariffDefaultItem = customTariffDefault.find((item) => item.id === id);
+    if (!customTariffDefaultItem) return;
+
+    if (index === 1) {
+      const value = Number(customTariffDefaultItem.tariffIntervalMatch[0].value);
+      const tariffIntervalMatchValue = Number(customTariffItem.tariffIntervalMatch[0].value);
+      const newTariffIntervalMatchValue = tariffIntervalMatchValue + value;
+
+      const counterValue = customTariffItem.tariffIntervalMatch[0].counter! + 1 ;
+
+      const newHistoryList = tariffHistory.map((item: any) => {
+        if (item.id !== id) return item;
+        return {
+          ...item,
+          tariffIntervalMatch: {
+            ...item.tariffIntervalMatch,
+            value: String(newTariffIntervalMatchValue),
+          },
+        };
+      });
+
+      const newCustomTariffList = customTariff.map((item: any) => {
+        if (item.id !== id) return item;
+        return {
+          ...item,
+          tariffIntervalMatch: [
+            {
+              ...item.tariffIntervalMatch[0],
+              value: String(newTariffIntervalMatchValue),
+              counter: counterValue,
+            },
+          ],
+        };
+      });
+
+      setTotlaTariff((prev) => Number((prev + value).toFixed(2)));
+      setTariffHistory(newHistoryList);
+      setCustomTariff(newCustomTariffList);
+    } else {
+      const value = Number(customTariffDefaultItem.tariffIntervalMatch[0].value);
+      const tariffIntervalMatchValue = Number(customTariffItem.tariffIntervalMatch[0].value);
+      const newTariffIntervalMatchValue = tariffIntervalMatchValue - value;
+
+      const counterValue = customTariffItem.tariffIntervalMatch[0].counter! - 1 ;
+      if (counterValue < 0) return;
+
+      const newHistoryList = tariffHistory.map((item: any) => {
+        if (item.id !== id) return item;
+        return {
+          ...item,
+          tariffIntervalMatch: {
+            ...item.tariffIntervalMatch,
+            value: String(newTariffIntervalMatchValue),
+          },
+        };
+      });
+
+      const newCustomTariffList = customTariff.map((item: any) => {
+        if (item.id !== id) return item;
+        return {
+          ...item,
+          tariffIntervalMatch: [
+            {
+              ...item.tariffIntervalMatch[0],
+              value: String(newTariffIntervalMatchValue),
+              counter: counterValue,
+            },
+          ],
+        };
+      });
+
+      setTotlaTariff((prev) => Number((prev - value).toFixed(2)));
+      setTariffHistory(newHistoryList);
+      setCustomTariff(newCustomTariffList)
+    }
+
+    }
+
+  
+  const onChangeValuesCustomTariff = (name: string, id: number, value: string | CurrencyInputOnChangeValues) => {
+    if (name === 'description') {
+      const newCustomTariffList = customTariff.map((item: any) => {
+        if (item.id !== id) return item;
+        return {
+          ...item,
+          description: value,
+        };
+      });
+
+      const newCustomTariffListHistory = tariffHistory.map((item: any) => {
+        if (item.id !== id) return item;
+        return {
+          ...item,
+          description: value,
+        };
+      });
+
+      setTariffHistory(newCustomTariffListHistory)
+      setCustomTariff(newCustomTariffList);
+    }
+
+    if (name === 'cost') {
+      const inputValue = value;
+      if (typeof inputValue === 'string') return;  
+      const newCustomDefaultTariffList = customTariffDefault.map((item: any) => {
+        if (item.id !== id) return item;
+        return {
+          ...item,
+          tariffIntervalMatch: [
+            {
+              ...item.tariffIntervalMatch[0],
+              value: inputValue.value,
+            },
+          ],
+        };
+      });
+      const newCustomTariffList = customTariff.map((item: any) => {
+        if (item.id !== id) return item;
+        return {
+          ...item,
+          tariffIntervalMatch: [
+            {
+              ...item.tariffIntervalMatch[0],
+              value: "0",
+              counter: 0,  
+            },
+          ],
+        };
+      });
+      setCustomTariff(newCustomTariffList);
+      setCustomTariffDefault(newCustomDefaultTariffList);
+    }
+}
+
+  const getCustomTariffDefaultValue = (id: number): number | undefined => {
+    const customTariffDefaultItem = customTariffDefault.find((item) => item.id === id);
+    if (!customTariffDefaultItem) return;
+    return customTariffDefaultItem.tariffIntervalMatch[0].value ?? 0;
   }
 
   const onAddCustomTariff = () => {
@@ -392,6 +537,22 @@ const JudicialBinnacleTariffModal = ({ visible, onClose, amountDemanded, idBinna
         ],
       },
     ])
+
+    setCustomTariffDefault((prev) => [
+      ...prev,
+      {
+        code: newCustomTariffCode,
+        description: '',
+        id: lastCustomTariff.id + 1,
+        type: lastCustomTariffDefault.type,
+        tariffIntervalMatch: [
+          {
+            ...lastCustomTariffDefault.tariffIntervalMatch[0],
+          },
+        ],
+      },
+    ])
+
 
     setTariffHistory((prev) => [
       ...prev,
@@ -506,10 +667,12 @@ const JudicialBinnacleTariffModal = ({ visible, onClose, amountDemanded, idBinna
           byExhortProcessData={byExhortProcess ?? []}
           onChange={onChangeExhortProcess}
         />
-        <JudicialBinnacleCustomTariffTable 
+        <JudicialBinnacleCustomTariffTable
           customTariffData={customTariff ?? []}
-          onChange={onChangeCustomTariff}
+          onChangeCounterCustomTariff={onChangeCounterCustomTariff}
+          onChangeValuesCustomTariff = {onChangeValuesCustomTariff}
           onAddCustomTariff={onAddCustomTariff}
+          getCustomTariffDefaultValue={getCustomTariffDefaultValue}
         />
       </Container>
     </Modal>
