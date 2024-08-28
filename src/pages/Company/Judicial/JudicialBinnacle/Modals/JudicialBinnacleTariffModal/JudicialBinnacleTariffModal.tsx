@@ -20,7 +20,8 @@ import { device } from '@/breakpoints/responsive'
 import { updateBinnacleTariff } from '@/services/judicial/judicial-binnacle.service'
 import { JudicialBinnacleType } from '@/types/judicial/judicial-binnacle.type'
 import { CustomErrorResponse } from 'types/customErrorResponse'
-import JudicialBinnacelByExhortProcessTable from './JudicialBinnacleByExhortProcess'
+import JudicialBinnacelByExhortProcessTable from './JudicialBinnacleByExhortProcessTable'
+import JudicialBinnacleCustomTariffTable from './JudicialBinnacleCustomTariffTable'
 
 type JudicialBinnacleTariffModalProps = {
   visible: boolean
@@ -38,6 +39,7 @@ type TariffTypeResponse = {
   requestOfHeaders: TariffType[]
   requestOf: TariffType[]
   byExhortProcess: TariffType[]
+  customTariff: TariffType[]
 }
 
 let ContentiousProcessColumns: ColumProps[] = []
@@ -52,6 +54,8 @@ const JudicialBinnacleTariffModal = ({ visible, onClose, amountDemanded, idBinna
   const [tariffHistory, setTariffHistory] = useState<any[]>([])
   const [byExhortProcess, setByExhortProcess] = useState<TariffType[]>([])
   const [byExhortProcessDefault, setByExhortProcessDefault] = useState<TariffType[]>([])
+  const [customTariff, setCustomTariff] = useState<TariffType[]>([])
+  const [customTariffDefault, setCustomTariffDefault] = useState<TariffType[]>([])
   const greaterThanTabletL = useMediaQuery(device.tabletL)
   const queryClient = useQueryClient()
 
@@ -76,10 +80,52 @@ const JudicialBinnacleTariffModal = ({ visible, onClose, amountDemanded, idBinna
           ],
         }
       }) ?? [])
+
+      setCustomTariff((prev) => {
+        return [
+          ...prev,
+          ...result?.data?.customTariff.map((customTariffData: any) => {
+            return {
+              ...customTariffData,
+              tariffIntervalMatch: [
+                {
+                  ...customTariffData.tariffIntervalMatch[0],
+                  value: '0',
+                },
+              ],
+            }
+          }) ?? [],
+        ]
+      })
+      
+      setCustomTariffDefault((prev) => {
+        return [
+          ...prev,
+          ...result?.data?.customTariff.map((customTariffData: any) => {
+            return {
+              ...customTariffData,
+              tariffIntervalMatch: [
+                {
+                  ...customTariffData.tariffIntervalMatch[0],
+                  value: '0',
+                },
+              ],
+            }
+          }) ?? [],
+        ]
+      })
+
       setTariffHistory((prev) => {
         return [
           ...prev,
           ...result?.data?.byExhortProcess.map((item) => ({
+            ...item,
+            tariffIntervalMatch: {
+              ...item.tariffIntervalMatch[0],
+              value: '0',
+            }
+          })),
+          ...result?.data?.customTariff.map((item) => ({
             ...item,
             tariffIntervalMatch: {
               ...item.tariffIntervalMatch[0],
@@ -234,6 +280,7 @@ const JudicialBinnacleTariffModal = ({ visible, onClose, amountDemanded, idBinna
         processTariffIntervalMatch(dataIntervalMatch, 1);
       });
     }
+  
   };
   
 
@@ -318,6 +365,49 @@ const JudicialBinnacleTariffModal = ({ visible, onClose, amountDemanded, idBinna
       setByExhortProcess(newByExhortProcessList);
     }
   };
+
+  const onChangeCustomTariff = (id: number, index: 1 | -1) => {
+    
+  }
+
+  const onAddCustomTariff = () => {
+    const lastCustomTariffDefault = customTariffDefault[0];
+    const lastCustomTariff = customTariff[customTariff.length - 1];
+    const codeNumberLastCustomTariff = lastCustomTariff.code.split('-')[2];
+    const newCustomTariffCode =
+      Number(codeNumberLastCustomTariff) < 10
+        ? `TP-00004-0${Number(codeNumberLastCustomTariff) + 1}`
+        : `TP-00004-${Number(codeNumberLastCustomTariff) + 1}`
+    setCustomTariff((prev) => [
+      ...prev,
+      {
+        code: newCustomTariffCode,
+        description: '',
+        id: lastCustomTariff.id + 1,
+        type: lastCustomTariffDefault.type,
+        tariffIntervalMatch: [
+          {
+            ...lastCustomTariffDefault.tariffIntervalMatch[0],
+          },
+        ],
+      },
+    ])
+
+    setTariffHistory((prev) => [
+      ...prev,
+      {
+        code: newCustomTariffCode,
+        description: '',
+        id: lastCustomTariff.id + 1,
+        type: lastCustomTariffDefault.type,
+        tariffIntervalMatch: {
+          ...lastCustomTariffDefault.tariffIntervalMatch[0],
+        },
+      }
+     ]);
+
+
+  }
   
 
   const handelEditTariff = () => {
@@ -414,8 +504,12 @@ const JudicialBinnacleTariffModal = ({ visible, onClose, amountDemanded, idBinna
         />
         <JudicialBinnacelByExhortProcessTable
           byExhortProcessData={byExhortProcess ?? []}
-          onSelectExhortProcessOption={onSelectByExhortProcess}
           onChange={onChangeExhortProcess}
+        />
+        <JudicialBinnacleCustomTariffTable 
+          customTariffData={customTariff ?? []}
+          onChange={onChangeCustomTariff}
+          onAddCustomTariff={onAddCustomTariff}
         />
       </Container>
     </Modal>

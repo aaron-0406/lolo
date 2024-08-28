@@ -1,4 +1,3 @@
-import Checkbox from "@/ui/Checkbox"
 import Container from "@/ui/Container"
 import Table from "@/ui/Table"
 import BodyCell from "@/ui/Table/BodyCell"
@@ -7,17 +6,16 @@ import { judicialBinnacleByExhortProcessColumns } from './utils/columns'
 import { useState } from "react"
 import styled, { css } from 'styled-components'
 import Button from '@/ui/Button'
+import { TariffType } from "@/types/config/tariff.type"
 
 
 type JudicialBinnacelByExhortProcessTableProps = {
-  byExhortProcessData: any[]
-  onSelectExhortProcessOption: (data: any) => void
+  byExhortProcessData: TariffType[]
   onChange: (id: number, index: 1 | -1) => void
 }
 
 const JudicialBinnacelByExhortProcessTable = ({
   byExhortProcessData,
-  onSelectExhortProcessOption,
   onChange,
 }: JudicialBinnacelByExhortProcessTableProps) => {
   return (
