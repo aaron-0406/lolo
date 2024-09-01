@@ -23,6 +23,7 @@ import { CustomErrorResponse } from 'types/customErrorResponse'
 import JudicialBinnacelByExhortProcessTable from './JudicialBinnacleByExhortProcessTable'
 import JudicialBinnacleCustomTariffTable from './JudicialBinnacleCustomTariffTable'
 import { CurrencyInputOnChangeValues } from 'react-currency-input-field'
+import { useLoloContext } from '@/contexts/LoloProvider'
 
 type JudicialBinnacleTariffModalProps = {
   visible: boolean
@@ -67,7 +68,11 @@ const JudicialBinnacleTariffModal = ({ visible, onClose, amountDemanded, idBinna
     onErrorCache,
   } = judicialBinnacleCache(queryClient)
 
-  const { data: tariff } = useQuery<AxiosResponse<TariffTypeResponse>>(['GET_TARIFF'], async () => await getTariff(), {
+  const { 
+    bank: { selectedBank: { idCHB: chb }}
+  } = useLoloContext()
+
+  const { data: tariff } = useQuery<AxiosResponse<TariffTypeResponse>>(['GET_TARIFF'], async () => await getTariff(Number(chb)), {
     onSuccess: (result) => {
       setByExhortProcessDefault(result?.data?.byExhortProcess ?? [])
       setByExhortProcess(result?.data?.byExhortProcess.map((byExhortProcessData: any) => {
@@ -530,6 +535,7 @@ const JudicialBinnacleTariffModal = ({ visible, onClose, amountDemanded, idBinna
         description: '',
         id: lastCustomTariff.id + 1,
         type: lastCustomTariffDefault.type,
+        customerHasBankId: Number(chb),
         tariffIntervalMatch: [
           {
             ...lastCustomTariffDefault.tariffIntervalMatch[0],
@@ -545,6 +551,7 @@ const JudicialBinnacleTariffModal = ({ visible, onClose, amountDemanded, idBinna
         description: '',
         id: lastCustomTariff.id + 1,
         type: lastCustomTariffDefault.type,
+        customerHasBankId: Number(chb),
         tariffIntervalMatch: [
           {
             ...lastCustomTariffDefault.tariffIntervalMatch[0],
@@ -567,10 +574,8 @@ const JudicialBinnacleTariffModal = ({ visible, onClose, amountDemanded, idBinna
       }
      ]);
 
-
   }
   
-
   const handelEditTariff = () => {
     editJudicialBinnacle()
   }
