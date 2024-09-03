@@ -9,8 +9,8 @@ import Button from "@/ui/Button"
 import EmptyState from "@/ui/EmptyState"
 import EmptyStateCell from "@/ui/Table/EmptyStateCell"
 import useModal from "@/hooks/useModal"
-import TariffModal from "../Modals/TariffModal"
-import DeleteTariffModal from "../Modals/DeleteTariffModal"
+import TariffModal from "../Modals/TariffModal/TariffModal"
+import DeleteTariffModal from "../Modals/DeleteTariffModal/DeleteTariffModal"
 
 type TariffCustomTableProps = {
   customTariffData: TariffType[]
