@@ -200,6 +200,7 @@ const JudicialBinnacleModal = ({
   return (
     <FormProvider {...formMethods}>
       <Modal
+        zIndex={10}
         visible={visible}
         onClose={handleClickCloseModal}
         id="modal-binnacle"

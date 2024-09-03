@@ -167,6 +167,7 @@ const JudicialBinProceduralStageModal = ({
   return (
     <FormProvider {...formMethods}>
       <Modal
+        zIndex={20}
         visible={visible}
         onClose={handleClickCloseModal}
         id="modal-negociaciones"

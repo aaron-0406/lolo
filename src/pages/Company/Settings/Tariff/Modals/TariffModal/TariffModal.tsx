@@ -88,6 +88,7 @@ const TariffModal = ( { visible, onClose, tariff, type } : TariffModalProps) => 
         if (type === TariffModalType.customTariff) editTariffCache(result.data, Number(chb), 'customTariff')
         if (type === TariffModalType.byExhortProcess) editTariffCache(result.data, Number(chb), 'byExhortProcess')
         onClose()
+        tariff ? notification({ type: 'success', message: 'Arancel editado exitosamente' }) : notification({ type: 'success', message: 'Arancel creado exitosamente' })
       },
       onError: (error) => {
         notification({
@@ -125,6 +126,7 @@ const TariffModal = ( { visible, onClose, tariff, type } : TariffModalProps) => 
     <FormProvider {...formMethods}>
       <Modal
         id="tariff-modal"
+        zIndex={10}
         withPortal={true}
         title={tariff ? 'Editar tarifa' : 'Crear Tarifa'}
         visible={visible}

@@ -36,6 +36,7 @@ const DeleteTariffModal = ( { visible, onClose, tariff, type } : DeleteTariffMod
         if (type === TariffModalType.customTariff) deleteTariffCache(Number(result.data), Number(chb), 'customTariff')
         if (type === TariffModalType.byExhortProcess) deleteTariffCache(Number(result.data), Number(chb), 'byExhortProcess')
         onClose()
+        notification({ type: 'success', message: 'Arancel eliminado exitosamente' })
       },
       onError: (error) => {
         notification({
