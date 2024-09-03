@@ -21,12 +21,12 @@ export const judicialBinnacleCustomTariffColumns: ColumProps[] = [
   }, 
   {
     id:'customTariff.datatable.header.cost',
-    title:'COSTO PERSONALIZADO',
+    title:'COSTO',
     width:'20%',
     justifyContent:'center',
   },
   {
-    id:'customTariff.datatable.header.cost',
+    id:'customTariff.datatable.header.cumulativeCost',
     title:'COSTO ACUMULADO',
     width:'20%',
     justifyContent:'center',

@@ -86,7 +86,7 @@ RequestOfColumns =
           ContentiousProcessData={contentiousProcesses}
         />
         <TariffByRequestOfTable RequestOfColumns={RequestOfColumns} RequestOfData={RequestOf} />
-        <TariffByExhortProcessTable byExhortProcessData={byExhortProcess} />
+        <TariffByExhortProcessTable byExhortProcessData={byExhortProcess} type={TariffModalType.byExhortProcess} />
         <TariffCustomTableTable customTariffData={customTariff} type={TariffModalType.customTariff} />
       </Container>
     </Container>

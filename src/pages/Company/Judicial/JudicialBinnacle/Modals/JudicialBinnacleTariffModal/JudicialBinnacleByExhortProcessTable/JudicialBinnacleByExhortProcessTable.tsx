@@ -24,7 +24,10 @@ const JudicialBinnacelByExhortProcessTable = ({
         ? byExhortProcessData.map((record: any, key: number) => (
             <tr key={key}>
               <BodyCell textAlign="center">
-                <Text.Body size="m" weight="regular"> - </Text.Body>
+                <Text.Body size="m" weight="regular">
+                  {' '}
+                  -{' '}
+                </Text.Body>
               </BodyCell>
               <BodyCell textAlign="left">{record?.code ?? '-'}</BodyCell>
               <BodyCell textAlign="left">
@@ -44,7 +47,21 @@ const JudicialBinnacelByExhortProcessTable = ({
               <BodyCell textAlign="center">
                 <Container
                   margin="20px 0"
-                  minWidth="300px"
+                  minWidth="200px"
+                  maxHeight="130px"
+                  whiteSpace="normal"
+                  wordBreak="break-all"
+                  overFlowY="auto"
+                >
+                  <Text.Number size="m" weight="bold">
+                    {Number(record?.value ?? '0').toFixed(2)}
+                  </Text.Number>
+                </Container>
+              </BodyCell>
+              <BodyCell textAlign="center">
+                <Container
+                  margin="20px 0"
+                  minWidth="200px"
                   maxHeight="130px"
                   whiteSpace="normal"
                   wordBreak="break-all"

@@ -14,8 +14,11 @@ type TariffContentiousProcessTableProps = {
 
 const TariffContentiousProcessTable = ( { ContentiousProcessColumns, ContentiousProcessData } : TariffContentiousProcessTableProps) => {
   return (
-    <Container width="100%" height="fit-content" padding="20px">
-      <Table columns={ContentiousProcessColumns}
+    <Container width="100%" height="calc(100% - 200px)" padding="20px">
+      <Table
+        columns={ContentiousProcessColumns}
+        top="100px"
+        isArrayEmpty={!ContentiousProcessData.length}
         emptyState={
           <EmptyStateCell colSpan={ContentiousProcessColumns.length}>
             <EmptyState
@@ -26,14 +29,14 @@ const TariffContentiousProcessTable = ( { ContentiousProcessColumns, Contentious
         }
         emptyFirstState={
           <EmptyStateCell colSpan={ContentiousProcessColumns.length}>
-            <EmptyState title="Recurso no encontrado" description="Aún no se han registrado procesos de contenciosos" />
+            <EmptyState title="Recurso no encontrado" description="Aún no se han registrado procesos contenciosos" />
           </EmptyStateCell>
         }
       >
         {ContentiousProcessData.map((record: any, key: number) => (
           <tr key={key}>
             <BodyCell textAlign="center">{key + 1}</BodyCell>
-            <BodyCell textAlign="center">{record?.code ?? '-'}</BodyCell>
+            <BodyCell textAlign="center">{record?.code || '-'}</BodyCell>
             <BodyCell textAlign="left">
               <Container
                 margin="20px 0"
@@ -44,43 +47,28 @@ const TariffContentiousProcessTable = ( { ContentiousProcessColumns, Contentious
                 overFlowY="auto"
               >
                 <Text.Body size="m" weight="regular">
-                  {record?.description ?? '-'}
+                  {record?.description || '-'}
                 </Text.Body>
               </Container>
             </BodyCell>
-            {Array.isArray(record?.tariffIntervalMatch) && record?.tariffIntervalMatch.length ? (
-              record.tariffIntervalMatch.map((interval: any, index: number) => (
-                <BodyCell textAlign="center" key={index}>
-                  <Container
-                    margin="20px 0"
-                    minWidth="300px"
-                    maxHeight="130px"
-                    whiteSpace="normal"
-                    wordBreak="break-all"
-                    overFlowY="auto"
-                  >
-                    <Text.Body size="m" weight="regular">
-                    S/. {interval?.value ?? '-'}
-                    </Text.Body>
-                  </Container>
-                </BodyCell>
-              ))
-            ) : (
-              <BodyCell textAlign="center">
-                <Container
-                  margin="20px 0"
-                  minWidth="300px"
-                  maxHeight="130px"
-                  whiteSpace="normal"
-                  wordBreak="break-all"
-                  overFlowY="auto"
-                >
-                  <Text.Body size="m" weight="regular">
-                    {'-'}
-                  </Text.Body>
-                </Container>
-              </BodyCell>
-            )}
+            {Array.isArray(record?.tariffIntervalMatch)
+              ? record?.tariffIntervalMatch.map((interval: any, index: number) => (
+                  <BodyCell textAlign="center" key={index}>
+                    <Container
+                      margin="20px 0"
+                      minWidth="300px"
+                      maxHeight="130px"
+                      whiteSpace="normal"
+                      wordBreak="break-all"
+                      overFlowY="auto"
+                    >
+                      <Text.Body size="m" weight="regular">
+                        S/. {interval?.value || '-'}
+                      </Text.Body>
+                    </Container>
+                  </BodyCell>
+                ))
+              : null}
           </tr>
         ))}
       </Table>

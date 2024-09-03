@@ -27,6 +27,12 @@ export const judicialBinnacleByExhortProcessColumns: ColumProps[] = [
     justifyContent:'center',
   },
   {
+    id:'byExhortProcess.datatable.header.cumulativeCost',
+    title:'COSTO ACUMULADO',
+    width:'20%',
+    justifyContent:'center',
+  },
+  {
     id:'byExhortProcess.datatable.header.counter',
     title:'VECES SELECCIONADOS',
     width:'20%',

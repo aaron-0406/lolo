@@ -58,6 +58,7 @@ const TariffModal = ( { visible, onClose, tariff, type } : TariffModalProps) => 
       onSuccess: (result) => {
         try {          
           if (type === TariffModalType.customTariff) createTariffCache(result.data, Number(chb), 'customTariff')
+          if (type === TariffModalType.byExhortProcess) createTariffCache(result.data, Number(chb), 'byExhortProcess')
           onClose()
         } catch (error) {
           console.log(error)
@@ -85,6 +86,7 @@ const TariffModal = ( { visible, onClose, tariff, type } : TariffModalProps) => 
     {
       onSuccess: (result) => {
         if (type === TariffModalType.customTariff) editTariffCache(result.data, Number(chb), 'customTariff')
+        if (type === TariffModalType.byExhortProcess) editTariffCache(result.data, Number(chb), 'byExhortProcess')
         onClose()
       },
       onError: (error) => {

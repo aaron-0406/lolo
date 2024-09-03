@@ -107,11 +107,12 @@ const TariffCustomTable = ({
                 </BodyCell>
                 <BodyCell>
                   <Container display="flex" gap="10px" alignItems="center" justifyContent="center">
-                    <Button shape="round" trailingIcon="ri-edit-line" onClick={() => onEditTariffModal(record)} />
+                    <Button shape="round" trailingIcon="ri-edit-line" permission="P43-02" onClick={() => onEditTariffModal(record)} />
                     <Button
                       onClick={() => onOpentDeleteModal(record)}
                       messageTooltip="Eliminar tipo de dirección"
                       shape="round"
+                      permission="P43-03"
                       leadingIcon="ri-delete-bin-line"
                       display="danger"
                     />
@@ -124,6 +125,7 @@ const TariffCustomTable = ({
       <Container display="flex" justifyContent="center" alignItems="center" height="100px">
         <Button
           width="100%"
+          permission="P43-01"
           label="Agregar tarifa personalizada"
           trailingIcon="ri-add-line"
           onClick={onOpenTariffModal}

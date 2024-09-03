@@ -34,6 +34,7 @@ const DeleteTariffModal = ( { visible, onClose, tariff, type } : DeleteTariffMod
     {
       onSuccess: (result) => {
         if (type === TariffModalType.customTariff) deleteTariffCache(Number(result.data), Number(chb), 'customTariff')
+        if (type === TariffModalType.byExhortProcess) deleteTariffCache(Number(result.data), Number(chb), 'byExhortProcess')
         onClose()
       },
       onError: (error) => {

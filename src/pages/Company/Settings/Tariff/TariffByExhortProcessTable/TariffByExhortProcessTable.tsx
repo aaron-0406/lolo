@@ -7,15 +7,46 @@ import { TariffType } from "@/types/config/tariff.type"
 import Button from "@/ui/Button"
 import EmptyStateCell from "@/ui/Table/EmptyStateCell"
 import EmptyState from "@/ui/EmptyState"
+import TariffModal from "../Modals/TariffModal"
+import DeleteTariffModal from "../Modals/DeleteTariffModal"
+import { useState } from "react"
+import useModal from "@/hooks/useModal"
 
 
 type TariffByExhortProcessTableProps = {
   byExhortProcessData: TariffType[]
+  type: string
 }
 
 const TariffByExhortProcessTable = ({
   byExhortProcessData,
+  type
 }: TariffByExhortProcessTableProps) => {
+  const [ tariff, setTariff ] = useState<TariffType | undefined>(undefined)
+  const { visible: visibleTariffModal, showModal: showTariffModal, hideModal: hideTariffModal } = useModal()
+  const { visible: visibleDeleteModal, showModal: showDeleteModal, hideModal: hideDeleteModal } = useModal()
+  
+  const onCloseTariffModal = () => {
+    setTariff(undefined)
+    hideTariffModal()
+  }
+  const onEditTariffModal = ( tariff: TariffType) => {
+    setTariff(tariff)
+    showTariffModal()
+  }
+  const onOpenTariffModal = () => {
+    showTariffModal()
+  }
+
+  const onOpentDeleteModal = (tariff: TariffType) => {
+    setTariff(tariff)
+    showDeleteModal()
+  }
+
+  const onCloseDeleteModal = () => {
+    setTariff(undefined)
+    hideDeleteModal()
+  } 
   return (
     <Container width="100%" height="calc(100% - 200px)" padding="20px">
       <Table
@@ -70,21 +101,25 @@ const TariffByExhortProcessTable = ({
                     overFlowY="auto"
                   >
                     <Text.Number size="m" weight="bold">
-                      {Number(record?.tariffIntervalMatch[0].value ?? '0').toFixed(2)}
+                      {Array.isArray(record?.tariffIntervalMatch)
+                        ? Number(record?.tariffIntervalMatch[0]?.value || '0').toFixed(2)
+                        : '-'}
                     </Text.Number>
                   </Container>
                 </BodyCell>
                 <BodyCell textAlign="center">
                   <Container display="flex" gap="10px" alignItems="center" justifyContent="center">
-                    <Button shape="round" trailingIcon="ri-edit-line" onClick={() => console.log('Editar')} />
-                    <Button
-                      onClick={() => {}}
-                      messageTooltip="Eliminar tipo de dirección"
-                      shape="round"
-                      size="small"
-                      leadingIcon="ri-delete-bin-line"
-                      display="danger"
-                    />
+                    <Container display="flex" gap="10px" alignItems="center" justifyContent="center">
+                      <Button shape="round" trailingIcon="ri-edit-line" permission="P43-02" onClick={() => onEditTariffModal(record)} />
+                      <Button
+                        onClick={() => onOpentDeleteModal(record)}
+                        messageTooltip="Eliminar tipo de dirección"
+                        shape="round"
+                        permission="P43-03"
+                        leadingIcon="ri-delete-bin-line"
+                        display="danger"
+                      />
+                    </Container>
                   </Container>
                 </BodyCell>
               </tr>
@@ -94,11 +129,18 @@ const TariffByExhortProcessTable = ({
       <Container display="flex" justifyContent="center" alignItems="center" height="100px">
         <Button
           width="100%"
-          label="Agregar proceso de exhorto"
+          label="Agregar tarifa personalizada"
+          permission="P43-01"
           trailingIcon="ri-add-line"
-          // onClick={onAddCustomTariff}
+          onClick={onOpenTariffModal}
         />
       </Container>
+      {visibleTariffModal ? (
+        <TariffModal tariff={tariff} visible={visibleTariffModal} onClose={onCloseTariffModal} type={type} />
+      ) : null}
+      {visibleDeleteModal ? (
+        <DeleteTariffModal visible={visibleDeleteModal} onClose={onCloseDeleteModal} tariff={tariff} type={type} />
+      ) : null}
     </Container>
   )
 }
