@@ -1,29 +1,27 @@
-import Checkbox from "@/ui/Checkbox"
 import Container from "@/ui/Container"
 import Table from "@/ui/Table"
 import BodyCell from "@/ui/Table/BodyCell"
 import Text from "@/ui/Text"
-import { judicialBinnacleByExhortProcessColumns } from './utils/columns'
+import { judicialBinnacleCustomTariffColumns } from './utils/columns'
 import { useState } from "react"
 import styled, { css } from 'styled-components'
 import Button from '@/ui/Button'
+import { TariffType } from "@/types/config/tariff.type"
 
 
-type JudicialBinnacelByExhortProcessTableProps = {
-  byExhortProcessData: any[]
-  onSelectExhortProcessOption: (data: any) => void
+type JudicialBinnacleCustomTariffProcessTableProps = {
+  customTariffData: TariffType[]
   onChange: (id: number, index: 1 | -1) => void
 }
 
-const JudicialBinnacelByExhortProcessTable = ({
-  byExhortProcessData,
-  onSelectExhortProcessOption,
+const JudicialBinnacleCustomTariffProcessTable = ({
+  customTariffData,
   onChange,
-}: JudicialBinnacelByExhortProcessTableProps) => {
+}: JudicialBinnacleCustomTariffProcessTableProps) => {
   return (
-    <Table columns={judicialBinnacleByExhortProcessColumns} top="100px">
-      {byExhortProcessData.length
-        ? byExhortProcessData.map((record: any, key: number) => (
+    <Table columns={judicialBinnacleCustomTariffColumns} top="100px">
+      {customTariffData.length
+        ? customTariffData.map((record: any, key: number) => (
             <tr key={key}>
               <BodyCell textAlign="center">
                 <Text.Body size="m" weight="regular"> - </Text.Body>
@@ -46,7 +44,21 @@ const JudicialBinnacelByExhortProcessTable = ({
               <BodyCell textAlign="center">
                 <Container
                   margin="20px 0"
-                  minWidth="300px"
+                  minWidth="200px"
+                  maxHeight="130px"
+                  whiteSpace="normal"
+                  wordBreak="break-all"
+                  overFlowY="auto"
+                >
+                  <Text.Number size="m" weight="bold">
+                    {Number(record?.value ?? '0').toFixed(2)}
+                  </Text.Number>
+                </Container>
+              </BodyCell>
+              <BodyCell textAlign="center">
+                <Container
+                  margin="20px 0"
+                  minWidth="200px"
                   maxHeight="130px"
                   whiteSpace="normal"
                   wordBreak="break-all"
@@ -65,7 +77,7 @@ const JudicialBinnacelByExhortProcessTable = ({
   )
 }
 
-export default JudicialBinnacelByExhortProcessTable
+export default JudicialBinnacleCustomTariffProcessTable
 
 const ContainerCounter = ({ tariffIntervalMatch = [], record, onChange }: { tariffIntervalMatch: any[], record: any, onChange: (id: number, index: 1 | -1) => void }) => {
   const [counter, setCounter] = useState<number>(0)

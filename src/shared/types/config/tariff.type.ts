@@ -5,6 +5,8 @@ export type TariffType = {
   code: string;
   type: string;
   description: string;
+  value?: number;
+  customerHasBankId: number;
   tariffIntervalMatch: TariffIntervalMatchType[];
 }
 

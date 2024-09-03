@@ -27,8 +27,8 @@ export const judicialBinnacleByExhortProcessColumns: ColumProps[] = [
     justifyContent:'center',
   },
   {
-    id:'byExhortProcess.datatable.header.counter',
-    title:'VECES SELECCIONADOS',
+    id:'byExhortProcess.datatable.header.actions',
+    title:'ACCIONES',
     width:'20%',
     justifyContent:'center',
   }
