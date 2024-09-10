@@ -9,6 +9,7 @@ import Container from '@/ui/Container'
 
 export type ModalProps = {
   id: string
+  zIndex?: number
   title?: string
   visible?: boolean
   className?: string
@@ -26,6 +27,7 @@ export type ModalProps = {
 const Modal: React.FC<ModalProps> = (props) => {
   const {
     id,
+    zIndex,
     children,
     className,
     clickOutsideToClose,
@@ -48,6 +50,7 @@ const Modal: React.FC<ModalProps> = (props) => {
       {visible && (
         <StyledBackdrop
           id={id}
+          zIndex={zIndex}
           onClick={clickOutsideToClose}
           className={`modal-overlay ${className}`}
           display="flex"

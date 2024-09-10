@@ -9,14 +9,12 @@ type JudicialBinnacleContentiousProcessTableProps = {
   ContentiousProcessColumns: ColumProps[]
   ContentiousProcessData: any[]
   onSelectOption: (data: any) => void
-  tariffHistory: any[]
 }
 
 const JudicialBinnacleContentiousProcessTable = ({
   ContentiousProcessColumns,
   ContentiousProcessData,
   onSelectOption,
-  tariffHistory = [],
 }: JudicialBinnacleContentiousProcessTableProps) => {
   return (
     <Table columns={ContentiousProcessColumns} top="230px">
@@ -25,7 +23,6 @@ const JudicialBinnacleContentiousProcessTable = ({
           <BodyCell textAlign="center">
             <Checkbox
               onChange={() => onSelectOption(record)}
-              // selected={tariffHistory.some((tariff: any) => tariff?.id === record?.id)}
             />
           </BodyCell>
           <BodyCell textAlign="center">{record?.code ?? '-'}</BodyCell>

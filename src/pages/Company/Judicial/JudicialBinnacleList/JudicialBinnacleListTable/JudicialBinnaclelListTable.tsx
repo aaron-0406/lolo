@@ -185,7 +185,7 @@ const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode, amountDemanded,
                     </Container>
                   </BodyCell>
                   <BodyCell textAlign="center">{record?.judicialBinProceduralStage?.proceduralStage || '-'}</BodyCell>
-                  <BodyCell textAlign="center">S/. {record?.totalTariff || '0.00'}</BodyCell>
+                  <BodyCell textAlign="center">S/. {Number(record?.totalTariff ?? "0").toFixed(2) || '0.00'}</BodyCell>
                   <BodyCell textAlign="center">
                     {record.judicialBinFiles.length ? (
                       <Container display="flex" gap="10px" justifyContent="center" alignItems="center">
@@ -218,6 +218,7 @@ const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode, amountDemanded,
                         />
                         <Button
                           messageTooltip="Ver cuadro de tarifas"
+                          permission="P13-01-01-04"
                           shape="round"
                           size="small"
                           leadingIcon="ri-table-fill"
@@ -230,7 +231,8 @@ const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode, amountDemanded,
                           onClick={() => {
                             handleClickTariffResume(record?.tariffHistory ?? '')
                           }}
-                          messageTooltip="Ver resumen de cuadro de tarifas"
+                          permission="P13-01-01-05"
+                          messageTooltip="Ver tarifas asignadas"
                           shape="round"
                           size="small"
                           leadingIcon="ri-file-text-line"

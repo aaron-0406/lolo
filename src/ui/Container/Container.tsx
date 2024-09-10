@@ -32,6 +32,7 @@ export type ContainerProps = React.HTMLAttributes<HTMLDivElement> & {
   cursor?: CSS.Property.Cursor
   backgroundColor?: CSS.Property.BackgroundColor
   textOverflow?: CSS.Property.TextOverflow
+  zIndex?: CSS.Property.ZIndex
 }
 
 const Container: React.FC<ContainerProps> = (props) => {
@@ -74,6 +75,12 @@ export const StyledContainer = styled.div<ContainerProps>`
     !!display &&
     css`
       display: ${display};
+    `}
+
+  ${({ zIndex }) =>
+    !!zIndex &&
+    css`
+      z-index: ${zIndex};
     `}
 
   ${({ padding }) =>

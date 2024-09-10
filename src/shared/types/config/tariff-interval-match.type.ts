@@ -6,4 +6,5 @@ export type TariffIntervalMatchType = {
   intervalId: number;
   value: number;
   tariffInterval: TariffIntervalType;
+  counter?: number;
 }
