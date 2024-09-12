@@ -78,7 +78,7 @@ const JudicialBinnacleActions = ({ judicialFileCaseId, clientCode, clientName }:
   )
 
   const { isLoading: loadingEditJudicialBinnacle, mutate: editJudicialBinnacle } = useMutation<
-  AxiosResponse<JudicialBinnacleType>,
+  AxiosResponse<any>,
   AxiosError<CustomErrorResponse>
 >(
   async () => {
@@ -94,6 +94,7 @@ const JudicialBinnacleActions = ({ judicialFileCaseId, clientCode, clientName }:
     onSuccess: (result) => {
       editJudicialBinnacleCache(result.data)
       setValue('filesDnD', [])
+      setValue('judicialBinFiles', result.data.judicialBinFiles, { shouldValidate: true })
       notification({ type: 'success', message: 'Bitacora editada' })
     },
     onMutate: () => {
@@ -189,7 +190,7 @@ const JudicialBinnacleActions = ({ judicialFileCaseId, clientCode, clientName }:
       <Container>
         <Button
           label="Guardar"
-          loading={binnacleActionLoading}
+          loading={binnacleActionLoading || loadingEditJudicialBinnacle}
           onClick={binnacleAction}
           leadingIcon="ri-save-3-line"
           permission="P13-01-01-01"
