@@ -465,6 +465,92 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
       </div>
       <div className="fields-wrapper-container-t">
         <Controller
+          name="comercialValueSoles"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              label="Valor Comercial S/:"
+              width="100%"
+              helperText={errors.comercialValueSoles?.message}
+              value={field.value}
+              type="currency"
+              onValueChange={(_, __, values) => {
+                field.onChange(values?.value)
+              }}
+              decimalScale={2}
+              decimalsLimit={2}
+              hasError={!!errors.comercialValueSoles}
+              disabled={!clientId}
+            />
+          )}
+        />
+        <Controller
+          name="comercialValueDollars"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              label="Valor Comercial US$:"
+              width="100%"
+              helperText={errors.comercialValueDollars?.message}
+              value={field.value}
+              type="currency"
+              prefix="$"
+              onValueChange={(_, __, values) => {
+                field.onChange(values?.value)
+              }}
+              decimalScale={2}
+              decimalsLimit={2}
+              hasError={!!errors.comercialValueDollars}
+              disabled={!clientId}
+            />
+          )}
+        />
+      </div>
+      <div className="fields-wrapper-container-t">
+        <Controller
+          name="amountAffectionSoles"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              label="Monto Afectación S/:"
+              width="100%"
+              helperText={errors.amountAffectionSoles?.message}
+              value={field.value}
+              type="currency"
+              onValueChange={(_, __, values) => {
+                field.onChange(values?.value)
+              }}
+              decimalScale={2}
+              decimalsLimit={2}
+              hasError={!!errors.amountAffectionSoles}
+              disabled={!clientId}
+            />
+          )}
+        />
+        <Controller
+          name="amountAffectionDollars"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              label="Valor Comercial US$:"
+              width="100%"
+              helperText={errors.amountAffectionDollars?.message}
+              value={field.value}
+              type="currency"
+              prefix="$"
+              onValueChange={(_, __, values) => {
+                field.onChange(values?.value)
+              }}
+              decimalScale={2}
+              decimalsLimit={2}
+              hasError={!!errors.amountAffectionDollars}
+              disabled={!clientId}
+            />
+          )}
+        />
+      </div>
+      <div className="fields-wrapper-container-t">
+        <Controller
           name="customerUserId"
           control={control}
           render={({ field }) => (
