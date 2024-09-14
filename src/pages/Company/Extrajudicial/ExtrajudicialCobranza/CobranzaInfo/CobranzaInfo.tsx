@@ -83,7 +83,9 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
     }
   })
 
-  const optionsUsers: Array<SelectItemType> = users.map((user) => {
+  const lawyers = users.filter((user) => JSON.parse(user.subRoles)?.includes('GESTOR'))
+
+  const optionsManager: Array<SelectItemType> = lawyers.map((user) => {
     return {
       key: String(user.id),
       label: user.name,
@@ -209,7 +211,7 @@ const CobranzaInfo = ({ loading }: CobranzaInfoProps) => {
               label="Gestor:"
               width="100%"
               value={String(field.value)}
-              options={optionsUsers}
+              options={optionsManager}
               onChange={(key) => {
                 field.onChange(parseInt(key))
               }}

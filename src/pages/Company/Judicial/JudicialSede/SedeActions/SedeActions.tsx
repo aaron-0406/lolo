@@ -33,14 +33,14 @@ const SedeActions = () => {
     >
       <Container>
         <Text.Body size="m" weight="bold" className="label__text">
-          SEDE JUDICIAL
+          SEDE JUDICIAL - CIUDADES:
         </Text.Body>
       </Container>
 
       <Container>
         <Button
           onClick={onShowModal}
-          messageTooltip="Agregar Sede Judicial"
+          messageTooltip="Agregar Ciudad"
           leadingIcon="ri-add-fill"
           shape="round"
           disabled={!idCHB}

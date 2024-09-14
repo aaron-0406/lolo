@@ -67,7 +67,7 @@ const SedeModal = ({ visible, onClose, isEdit = false, idSede = 0 }: SedeModalPr
     {
       onSuccess: (result) => {
         createSedeCache(result.data)
-        notification({ type: 'success', message: 'Sede judicial creada' })
+        notification({ type: 'success', message: 'Ciudad creada' })
         handleClickCloseModal()
       },
       onMutate: () => {
@@ -98,7 +98,7 @@ const SedeModal = ({ visible, onClose, isEdit = false, idSede = 0 }: SedeModalPr
     {
       onSuccess: (result) => {
         editSedeCache(result.data)
-        notification({ type: 'success', message: 'Sede judicial editada' })
+        notification({ type: 'success', message: 'Ciudad editada' })
         handleClickCloseModal()
       },
       onMutate: () => {
@@ -161,7 +161,7 @@ const SedeModal = ({ visible, onClose, isEdit = false, idSede = 0 }: SedeModalPr
         visible={visible}
         onClose={handleClickCloseModal}
         id="modal-sede"
-        title={isEdit ? 'Editar sede judicial' : 'Agregar sede judicial'}
+        title={isEdit ? 'Editar ciudad' : 'Agregar ciudad'}
         contentOverflowY="auto"
         size="small"
         minHeight="140px"

@@ -1,4 +1,3 @@
-import { JudicialCaseFileType } from '@/types/judicial/judicial-case-file.type'
 import type { ButtonClassType } from '@/ui/Button/interfaces'
 
 export type FloatingContainerButtonsType = {

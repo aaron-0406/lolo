@@ -28,6 +28,8 @@ type JudicialBinnacleTableProps = {
   judicialFileCaseId?: number
   clientCode: string
   amountDemanded?: string
+  amountAffection?: string
+  comercialValue?: string
   binnacles: Array<
     JudicialBinnacleType & {
       binnacleType: JudicialBinTypeBinnacleType
@@ -39,7 +41,7 @@ type JudicialBinnacleTableProps = {
   isLoading: boolean
 }
 
-const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode, amountDemanded, binnacles, isLoading }: JudicialBinnacleTableProps) => {
+const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode, amountDemanded, binnacles, isLoading, amountAffection, comercialValue }: JudicialBinnacleTableProps) => {
   const [ selectedBinnacle, setSelectedBinnacle ] = useState<number>(0)
   const [tariffHistory, setTariffHistory] = useState<string>('')
   const location = useLocation()
@@ -280,6 +282,8 @@ const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode, amountDemanded,
         clientCode={clientCode}
         JudicialFileCaseId={judicialFileCaseId}
         amountDemanded={amountDemanded}
+        amountAffection={amountAffection}
+        comercialValue={comercialValue}
         visible={visibleModalJudicialBinTariff}
         onClose={onCloseModalTariff}
           idBinnacle={selectedBinnacle}

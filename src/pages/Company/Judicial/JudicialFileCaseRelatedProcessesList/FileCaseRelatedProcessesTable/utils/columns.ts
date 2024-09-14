@@ -43,7 +43,7 @@ export const judicialCaseFileColumns: ColumProps[] = [
   },
   {
     id: 'casesFiles.datatable.header.judicialVenue',
-    title: 'SEDE JUDICIAL',
+    title: 'CIUDAD',
     width: '10%',
     justifyContent: 'left',
   },
