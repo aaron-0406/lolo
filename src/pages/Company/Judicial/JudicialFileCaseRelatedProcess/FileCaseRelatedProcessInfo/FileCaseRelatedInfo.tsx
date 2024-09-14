@@ -426,7 +426,7 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
           control={control}
           render={({ field }) => (
             <TextField
-              label="Valor Comercial US$:"
+              label="Monto Afectación  US$:"
               width="100%"
               helperText={errors.amountAffectionDollars?.message}
               value={field.value}
