@@ -20,6 +20,7 @@ const UsersModal: yup.SchemaOf<
     .required(),
   state: yup.boolean().required(),
   roleId: yup.number().required(),
+  subRoles: yup.string().required(),
 })
 
 export const ModalUsersResolver = yupResolver(UsersModal)

@@ -87,6 +87,8 @@ useEffect(() => {
   const clientCode = data?.data.client.code
   const clientName = data?.data.client.name
   const amountDemanded = data?.data?.amountDemandedSoles
+  const amountAffection = data?.data?.amountAffectionSoles
+  const comercialValue = data?.data?.comercialValueSoles
   const binnaclesData = binnacles?.data ?? []
 
   return (
@@ -97,8 +99,22 @@ useEffect(() => {
       flexDirection="column"
       justifyContent="space-between"
     >
-      <JudicialBinnacleInfo judicialFileCaseId={judicialFileCaseId} clientCode={clientCode} clientName={clientName} binnacles={binnaclesData} isLoading={isLoading} />
-      <JudicialBinnacleTable judicialFileCaseId={judicialFileCaseId} clientCode={clientCode}  amountDemanded={amountDemanded} binnacles={binnaclesData} isLoading={isLoading} />
+      <JudicialBinnacleInfo
+        judicialFileCaseId={judicialFileCaseId}
+        clientCode={clientCode}
+        clientName={clientName}
+        binnacles={binnaclesData}
+        isLoading={isLoading}
+      />
+      <JudicialBinnacleTable
+        judicialFileCaseId={judicialFileCaseId}
+        clientCode={clientCode}
+        amountDemanded={amountDemanded}
+        amountAffection={amountAffection}
+        comercialValue={comercialValue}
+        binnacles={binnaclesData}
+        isLoading={isLoading}
+      />
     </Container>
   )
 }

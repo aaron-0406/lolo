@@ -40,6 +40,12 @@ export const usersColumns: ColumProps[] = [
     justifyContent: 'center',
   },
   {
+    id: 'users.datatable.header.priviligue',
+    title: 'SUB ROLES',
+    width: '20%',
+    justifyContent: 'center',
+  },
+  {
     id: 'users.datatable.header.state',
     title: 'ESTADO',
     width: '10%',

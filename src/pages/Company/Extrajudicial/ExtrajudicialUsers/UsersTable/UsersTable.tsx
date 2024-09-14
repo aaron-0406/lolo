@@ -20,6 +20,7 @@ import notification from '@/ui/notification'
 import { CustomErrorResponse } from 'types/customErrorResponse'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import EmptyState from '@/ui/EmptyState'
+import styled, { css } from 'styled-components'
 
 type UsersTableProps = {
   opts: Opts
@@ -194,6 +195,15 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts }) => {
                 <BodyCell>{`${record.dni || ''}`}</BodyCell>
                 <BodyCell>{`${record.email || ''}`}</BodyCell>
                 <BodyCell textAlign="center">{`${record.role?.name || ''}`}</BodyCell>
+                <BodyCell textAlign="center">
+                  <Container width="100%" display="flex" flexDirection="row" gap="10px" flexWrap="nowrap">
+                    {record.subRoles && Array.isArray(JSON.parse(record.subRoles))
+                      ? JSON.parse(record.subRoles).map((subRole: string, index: number) => {
+                          return <SubRolTag key={index} subRol={subRole} />
+                        })
+                      : ('')}
+                  </Container>
+                </BodyCell>
                 <BodyCell textAlign="center">{`${record.state ? 'activo' : 'inactivo'}`}</BodyCell>
                 <BodyCell textAlign="center">{`${moment(record.createdAt).format('DD-MM-YYYY') || ''}`}</BodyCell>
                 <BodyCell textAlign="center">
@@ -259,3 +269,34 @@ const UsersTable: FC<UsersTableProps> = ({ opts, setOpts }) => {
 }
 
 export default UsersTable
+
+const SubRolTag = ({subRol} : {subRol: string}) => {
+  return (
+    <StyledTag>
+      {subRol}
+    </StyledTag>
+  )
+}
+
+const StyledTag = styled(Container)`
+  ${({ theme }) => css`
+    flex-direction: row;
+    gap: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 200px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    padding: 5px;
+    background-color: ${theme.colors.Primary5};
+    color: ${theme.colors.Neutral1};
+    border-radius: 4px;
+    .tag__icon{
+      cursor: pointer;
+      color: ${theme.colors.Neutral1};
+      font-size: 20px;
+    }
+  `}
+`

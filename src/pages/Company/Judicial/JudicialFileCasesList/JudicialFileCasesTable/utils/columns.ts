@@ -68,7 +68,7 @@ export const judicialCaseFileColumns: ColumProps[] = [
   }, 
   {
     id: 'casesFiles.datatable.header.sede',
-    title: 'SEDE JUDICIAL',
+    title: 'CIUDAD',
     width: '10%',
     justifyContent: 'left',
     isThereFilter: true,

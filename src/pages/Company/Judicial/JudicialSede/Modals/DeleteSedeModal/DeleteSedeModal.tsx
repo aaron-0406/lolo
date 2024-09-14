@@ -43,7 +43,7 @@ const DeleteSedeModal = ({ visible, idSede = 0, onClose }: DeleteSedeModalProps)
     {
       onSuccess: () => {
         deleteSedeCache(String(idSede), chbNumber)
-        notification({ type: 'success', message: 'Sede judicial eliminada' })
+        notification({ type: 'success', message: 'Ciudad eliminada' })
         onClose()
       },
       onMutate: () => {
@@ -73,7 +73,7 @@ const DeleteSedeModal = ({ visible, idSede = 0, onClose }: DeleteSedeModalProps)
       visible={visible}
       onClose={onClose}
       id="modal-delete"
-      title="¿Desea eliminar la Sede Judicial?"
+      title="¿Desea eliminar la Ciudad?"
       contentOverflowY="auto"
       size="small"
       footer={

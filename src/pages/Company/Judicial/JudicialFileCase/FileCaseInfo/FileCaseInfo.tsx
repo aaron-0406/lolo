@@ -171,7 +171,18 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
     }
   })
 
-  const optionsUsers: Array<SelectItemType> = users.map((user) => {
+  const lawyers = users.filter((user) => JSON.parse(user.subRoles)?.includes('ABOGADO'))
+
+  const optionsLawyers: Array<SelectItemType> = lawyers.map((user) => {
+    return {
+      key: String(user.id),
+      label: user.name,
+    }
+  })
+
+  const responsables = users.filter((user) => JSON.parse(user.subRoles)?.includes('RESPONSABLE JUDICIAL'))
+
+  const optionsResponsables: Array<SelectItemType> = responsables.map((user) => {
     return {
       key: String(user.id),
       label: user.name,
@@ -289,7 +300,7 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
               alignItems="flex-end"
             >
               <Select
-                label="Sede Judicial:"
+                label="Ciudad:"
                 width="100%"
                 value={String(field.value)}
                 options={optionsSede}
@@ -465,6 +476,92 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
       </div>
       <div className="fields-wrapper-container-t">
         <Controller
+          name="comercialValueSoles"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              label="Valor Comercial S/:"
+              width="100%"
+              helperText={errors.comercialValueSoles?.message}
+              value={field.value}
+              type="currency"
+              onValueChange={(_, __, values) => {
+                field.onChange(values?.value)
+              }}
+              decimalScale={2}
+              decimalsLimit={2}
+              hasError={!!errors.comercialValueSoles}
+              disabled={!clientId}
+            />
+          )}
+        />
+        <Controller
+          name="comercialValueDollars"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              label="Valor Comercial US$:"
+              width="100%"
+              helperText={errors.comercialValueDollars?.message}
+              value={field.value}
+              type="currency"
+              prefix="$"
+              onValueChange={(_, __, values) => {
+                field.onChange(values?.value)
+              }}
+              decimalScale={2}
+              decimalsLimit={2}
+              hasError={!!errors.comercialValueDollars}
+              disabled={!clientId}
+            />
+          )}
+        />
+      </div>
+      <div className="fields-wrapper-container-t">
+        <Controller
+          name="amountAffectionSoles"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              label="Monto Afectación S/:"
+              width="100%"
+              helperText={errors.amountAffectionSoles?.message}
+              value={field.value}
+              type="currency"
+              onValueChange={(_, __, values) => {
+                field.onChange(values?.value)
+              }}
+              decimalScale={2}
+              decimalsLimit={2}
+              hasError={!!errors.amountAffectionSoles}
+              disabled={!clientId}
+            />
+          )}
+        />
+        <Controller
+          name="amountAffectionDollars"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              label="Valor Comercial US$:"
+              width="100%"
+              helperText={errors.amountAffectionDollars?.message}
+              value={field.value}
+              type="currency"
+              prefix="$"
+              onValueChange={(_, __, values) => {
+                field.onChange(values?.value)
+              }}
+              decimalScale={2}
+              decimalsLimit={2}
+              hasError={!!errors.amountAffectionDollars}
+              disabled={!clientId}
+            />
+          )}
+        />
+      </div>
+      <div className="fields-wrapper-container-t">
+        <Controller
           name="customerUserId"
           control={control}
           render={({ field }) => (
@@ -472,7 +569,7 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
               label="Abogado:"
               width="100%"
               value={String(field.value)}
-              options={optionsUsers}
+              options={optionsLawyers}
               onChange={(key) => {
                 field.onChange(parseInt(key))
               }}
@@ -490,7 +587,7 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
               width="100%"
               placeholder={ watch().responsibleUserId ? '' : 'No asignado'}
               value={String(field.value)}
-              options={optionsUsers}
+              options={optionsResponsables}
               onChange={(key) => {
                 field.onChange(parseInt(key))
               }}

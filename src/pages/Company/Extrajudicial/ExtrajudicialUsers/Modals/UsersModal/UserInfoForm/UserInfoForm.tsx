@@ -13,6 +13,14 @@ import { AxiosResponse } from 'axios'
 import { RoleType } from '@/types/dash/role.type'
 import { useLoloContext } from '@/contexts/LoloProvider'
 import { KEY_EXT_ROLES_CACHE } from '@/pages/extrajudicial/ExtrajudicialRoles/RolesTable/utils/ext-role.cache'
+import styled, { css } from 'styled-components'
+import Icon from '@/ui/Icon'
+
+const subRoles: Record<string, string> = {
+  RESPONSABLE_JUDICIAL: 'RESPONSABLE JUDICIAL',
+  ABOGADO: 'ABOGADO',
+  GESTOR: 'GESTOR',
+};
 
 const UserInfoForm = () => {
   const {
@@ -21,6 +29,8 @@ const UserInfoForm = () => {
 
   const {
     control,
+    getValues, 
+    setValue, 
     formState: { errors },
   } = useFormContext<CustomerUserType>()
 
@@ -39,10 +49,22 @@ const UserInfoForm = () => {
     }
   )
 
+  const onDeleteSubRole = (subRol: string) => {
+    const subRolesValues = JSON.parse(getValues('subRoles'))
+    const newSubRolesValues = subRolesValues.filter((subRole: string) => subRole !== subRol)
+    setValue('subRoles', JSON.stringify(newSubRolesValues), { shouldValidate: true })
+  }
+
   const roles = data?.data ?? []
   const optionsRoles: Array<SelectItemType> = roles.map((rol) => {
     return { key: String(rol.id), label: rol.name }
   })
+
+  const optionsSubRoles: Array<SelectItemType> = Object.keys(subRoles).map((key) => {
+    return { key: String(key), label: subRoles[key] }
+  })
+
+  const subRolesValues = JSON.parse(getValues('subRoles'))
 
   return (
     <>
@@ -121,6 +143,43 @@ const UserInfoForm = () => {
       </Container>
 
       <Container width="100%" display="flex" flexDirection="column" gap="10%">
+        <Container width="100%" display="flex" justifyContent="space-between" gap="10%">
+          <Label label="Sub Roles:" />
+          <Controller
+            name="subRoles"
+            control={control}
+            render={({ field }) => (
+              <Select
+                width="70%"
+                placeholder='Seleccione los sub roles'
+                value={String(field.value)}
+                options={optionsSubRoles}
+                onChange={(key) => {
+                  const currentSubRoles = JSON.parse(getValues('subRoles') || '[]');
+                  
+                  if (subRoles[key]) {
+                    currentSubRoles.push(subRoles[key]);
+                    const newData: Array<string> = Array.from(new Set(currentSubRoles));
+                    setValue('subRoles', JSON.stringify(newData), { shouldValidate: true });
+                  } else {
+                    console.error('Clave no válida:', key);
+                  }
+                }}
+                hasError={!!errors.roleId}
+              />
+            )}
+          />
+        </Container>
+        <Container width="!00%" display="flex" min-height="70px" alignItems='center' justifyContent="end" gap="10px" padding="2px">
+          {Array.isArray(subRolesValues) && subRolesValues.length
+            ? subRolesValues.map((subRole: string, index: number) => {
+                return <SubRolTag key={index} subRol={subRole} onDelete={onDeleteSubRole} />
+              })
+            : null}
+        </Container>
+      </Container>
+
+      <Container width="100%" display="flex" flexDirection="column" gap="10%">
         <Container width="100%" display="flex" gap="10%">
           <Label label="CONTRASEÑA: " />
           <Controller
@@ -146,3 +205,36 @@ const UserInfoForm = () => {
 }
 
 export default UserInfoForm
+
+const SubRolTag = ({subRol, onDelete} : {subRol: string, onDelete: (subRol: string) => void}) => {
+  return (
+    <StyledTag>
+      {subRol}
+      <Icon remixClass='ri-close-line' className='tag__icon' onClick={()=>onDelete(subRol)} />
+    </StyledTag>
+  )
+}
+
+const StyledTag = styled(Container)`
+  ${({ theme }) => css`
+    flex-direction: row;
+    gap: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    padding: 5px;
+    padding-left: 10px ;
+    background-color: ${theme.colors.Primary5};
+    color: ${theme.colors.Neutral1};
+    border-radius: 4px;
+    .tag__icon{
+      cursor: pointer;
+      color: ${theme.colors.Neutral1};
+      font-size: 20px;
+    }
+  `}
+`
+
