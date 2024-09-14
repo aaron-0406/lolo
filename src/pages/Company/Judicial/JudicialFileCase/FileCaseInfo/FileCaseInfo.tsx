@@ -171,6 +171,25 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
     }
   })
 
+  const lawyers = users.filter((user) => JSON.parse(user.subRoles)?.includes('ABOGADO'))
+
+  const optionsLawyers: Array<SelectItemType> = lawyers.map((user) => {
+    return {
+      key: String(user.id),
+      label: user.name,
+    }
+  })
+
+  const responsables = users.filter((user) => JSON.parse(user.subRoles)?.includes('RESPONSABLE'))
+
+  const optionsResponsables: Array<SelectItemType> = responsables.map((user) => {
+    return {
+      key: String(user.id),
+      label: user.name,
+    }
+  })
+
+
   const optionsUsers: Array<SelectItemType> = users.map((user) => {
     return {
       key: String(user.id),
@@ -289,7 +308,7 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
               alignItems="flex-end"
             >
               <Select
-                label="Sede Judicial:"
+                label="Ciudad:"
                 width="100%"
                 value={String(field.value)}
                 options={optionsSede}
@@ -558,7 +577,7 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
               label="Abogado:"
               width="100%"
               value={String(field.value)}
-              options={optionsUsers}
+              options={optionsLawyers}
               onChange={(key) => {
                 field.onChange(parseInt(key))
               }}
@@ -576,7 +595,7 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
               width="100%"
               placeholder={ watch().responsibleUserId ? '' : 'No asignado'}
               value={String(field.value)}
-              options={optionsUsers}
+              options={optionsResponsables}
               onChange={(key) => {
                 field.onChange(parseInt(key))
               }}

@@ -33,6 +33,7 @@ const defaultValuesCustomerUser: Omit<CustomerUserType, 'customerId' | 'createdA
   password: '',
   state: true,
   roleId: 0,
+  subRoles:'[]', 
 }
 
 const UsersModal = ({ visible, onClose, idUser = 0, isEdit = false }: UsersModalProps) => {
@@ -136,6 +137,7 @@ const UsersModal = ({ visible, onClose, idUser = 0, isEdit = false }: UsersModal
           setValue('password', data.password)
           setValue('roleId', data.roleId)
           setValue('id', data.id)
+          setValue('subRoles', data.subRoles ?? '[]')
         } else {
           reset(defaultValuesCustomerUser)
         }

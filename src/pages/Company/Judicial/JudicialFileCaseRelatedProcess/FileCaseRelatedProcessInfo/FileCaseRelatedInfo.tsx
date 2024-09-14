@@ -230,7 +230,7 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
           control={control}
           render={({ field }) => (
             <Select
-              label="Sede Judicial:"
+              label="Ciudad:"
               width="100%"
               value={String(field.value)}
               options={optionsSede}

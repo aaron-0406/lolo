@@ -15,7 +15,7 @@ const SedeInfoForm = () => {
         control={control}
         render={({ field }) => (
           <TextField
-            label="Sede Judicial"
+            label="Ciudad:"
             width="100%"
             value={field.value}
             onChange={field.onChange}

@@ -19,6 +19,7 @@ export type CustomerUserType = {
     idPermissionMain: string
     isDropdown: boolean
   }>
+  subRoles:string; 
   customerId: number
   roleId: number
   role: RoleType

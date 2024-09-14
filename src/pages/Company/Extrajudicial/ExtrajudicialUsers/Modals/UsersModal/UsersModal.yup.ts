@@ -27,6 +27,7 @@ const UsersModal: yup.SchemaOf<
     .matches(/^(?=.*[a-z])(?=.*[A-Z])/, 'Debe contener mínimo una letra minúscula y una mayúscula')
     .required(),
   state: yup.boolean().required(),
+  subRoles: yup.string().required(),
   roleId: yup.number().required(),
 })
 
