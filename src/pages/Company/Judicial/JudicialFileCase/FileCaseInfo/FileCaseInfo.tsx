@@ -180,17 +180,9 @@ const FileCaseInfo = ({ loading }: FileCaseInfoProps) => {
     }
   })
 
-  const responsables = users.filter((user) => JSON.parse(user.subRoles)?.includes('RESPONSABLE'))
+  const responsables = users.filter((user) => JSON.parse(user.subRoles)?.includes('RESPONSABLE JUDICIAL'))
 
   const optionsResponsables: Array<SelectItemType> = responsables.map((user) => {
-    return {
-      key: String(user.id),
-      label: user.name,
-    }
-  })
-
-
-  const optionsUsers: Array<SelectItemType> = users.map((user) => {
     return {
       key: String(user.id),
       label: user.name,

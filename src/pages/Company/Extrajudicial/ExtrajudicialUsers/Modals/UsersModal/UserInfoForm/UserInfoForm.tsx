@@ -17,10 +17,10 @@ import styled, { css } from 'styled-components'
 import Icon from '@/ui/Icon'
 
 const subRoles: Record<string, string> = {
-  RESPONSABLE: 'RESPONSABLE',
+  RESPONSABLE_JUDICIAL: 'RESPONSABLE JUDICIAL',
   ABOGADO: 'ABOGADO',
   GESTOR: 'GESTOR',
-}
+};
 
 const UserInfoForm = () => {
   const {
@@ -155,10 +155,15 @@ const UserInfoForm = () => {
                 value={String(field.value)}
                 options={optionsSubRoles}
                 onChange={(key) => {
-                  let subRoles = JSON.parse(getValues('subRoles'))
-                  subRoles.push(key)
-                  const newData: Array<string> = Array.from(new Set(subRoles))
-                  setValue('subRoles', JSON.stringify(newData), { shouldValidate: true })
+                  const currentSubRoles = JSON.parse(getValues('subRoles') || '[]');
+                  
+                  if (subRoles[key]) {
+                    currentSubRoles.push(subRoles[key]);
+                    const newData: Array<string> = Array.from(new Set(currentSubRoles));
+                    setValue('subRoles', JSON.stringify(newData), { shouldValidate: true });
+                  } else {
+                    console.error('Clave no válida:', key);
+                  }
                 }}
                 hasError={!!errors.roleId}
               />
@@ -217,7 +222,6 @@ const StyledTag = styled(Container)`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    max-width: 200px;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
