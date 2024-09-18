@@ -51,7 +51,7 @@ const kindOfProperty = {
 }
 
 const JudicialCollateralInfo = ({ loading }: JudicialCollateralInfoProps) => {
-  const { getValues, setValue, control } = useFormContext<
+  const { getValues, setValue, control, formState: { errors} } = useFormContext<
     JudicialCollateralType & {
       useOfProperty: { id: number; name: string }
       registrationArea: { id: number; name: string }
@@ -239,6 +239,8 @@ const JudicialCollateralInfo = ({ loading }: JudicialCollateralInfoProps) => {
                 onChange={(key) => {
                   setValue('kindOfProperty', key)
                 }}
+                hasError={!!errors.kindOfProperty}
+                helperText={errors.kindOfProperty?.message}
               />
             )}
           />
@@ -254,6 +256,8 @@ const JudicialCollateralInfo = ({ loading }: JudicialCollateralInfoProps) => {
                 label="Partida electrónica"
                 placeholder="Partida electrónica"
                 disabled={loading}
+                hasError={!!errors.electronicRecord}
+                helperText={errors.electronicRecord?.message} 
                 required
               />
             )}
@@ -270,6 +274,8 @@ const JudicialCollateralInfo = ({ loading }: JudicialCollateralInfoProps) => {
                 label="Asiento de inscripción"
                 placeholder="Asiento de inscripción"
                 disabled={loading}
+                hasError={!!errors.registrationSeat}
+                helperText={errors.registrationSeat?.message}
                 required
               />
             )}
@@ -280,13 +286,15 @@ const JudicialCollateralInfo = ({ loading }: JudicialCollateralInfoProps) => {
             control={control}
             render={({ field }) => (
               <TextField
-                type="number"
+                type="text"
                 value={field.value}
                 onChange={field.onChange}
                 width="100%"
                 label="Número de garantía"
                 placeholder="Agregar número de garantía"
                 disabled={loading}
+                hasError={!!errors.numberOfCollateral}
+                helperText={errors.numberOfCollateral?.message}
                 required
               />
             )}
@@ -303,6 +311,7 @@ const JudicialCollateralInfo = ({ loading }: JudicialCollateralInfoProps) => {
                 selectedDate={field.value}
                 placeholder="Ingrese la fecha:"
                 dateFormat="DD-MM-YYYY"
+                hasError={!!errors.dateOfPublicDeed}
                 value={field.value ?? moment(new Date()).format('DD-MM-YYYY')}
                 getDate={(e) => {
                   setValue('dateOfPublicDeed', e)
@@ -331,6 +340,8 @@ const JudicialCollateralInfo = ({ loading }: JudicialCollateralInfoProps) => {
                     setValue('districtId', 0)
                     field.onChange(parseInt(key))
                   }}
+                  hasError={!!errors.departmentId}
+                  helperText={errors.departmentId?.message}
                 />
               )}
             />
@@ -351,6 +362,8 @@ const JudicialCollateralInfo = ({ loading }: JudicialCollateralInfoProps) => {
                     setValue('districtId', 0)
                     field.onChange(parseInt(key))
                   }}
+                  hasError={!!errors.provinceId}
+                  helperText={errors.provinceId?.message}
                   disabled={!departmentId}
                 />
               )}
@@ -370,6 +383,8 @@ const JudicialCollateralInfo = ({ loading }: JudicialCollateralInfoProps) => {
                   onChange={(key) => {
                     field.onChange(parseInt(key))
                   }}
+                  hasError={!!errors.districtId}
+                  helperText={errors.districtId?.message}
                   disabled={!provinceId}
                 />
               )}
@@ -403,6 +418,8 @@ const JudicialCollateralInfo = ({ loading }: JudicialCollateralInfoProps) => {
                     onChange={(key) => {
                       field.onChange(parseInt(key))
                     }}
+                    hasError={!!errors.registrationAreaId}
+                    helperText={errors.registrationAreaId?.message}
                   />
                   <Button
                     permission="P39-01"
@@ -439,6 +456,8 @@ const JudicialCollateralInfo = ({ loading }: JudicialCollateralInfoProps) => {
                     width="100%"
                     value={String(field.value)}
                     options={registerOfficeOptions}
+                    hasError={!!errors.registerOfficeId}
+                    helperText={errors.registerOfficeId?.message}
                     onChange={(key) => {
                       field.onChange(parseInt(key))
                     }}
@@ -482,6 +501,8 @@ const JudicialCollateralInfo = ({ loading }: JudicialCollateralInfoProps) => {
                     onChange={(key) => {
                       field.onChange(parseInt(key))
                     }}
+                    hasError={!!errors.useOfPropertyId}
+                    helperText={errors.useOfPropertyId?.message}
                     disabled={!chb}
                   />
                   <Button
@@ -516,6 +537,8 @@ const JudicialCollateralInfo = ({ loading }: JudicialCollateralInfoProps) => {
                     width="100%"
                     value={String(field.value)}
                     options={notaryOptions}
+                    hasError={!!errors.notaryId}
+                    helperText={errors.notaryId?.message}
                     onChange={(key) => {
                       field.onChange(parseInt(key))
                     }}
@@ -549,6 +572,8 @@ const JudicialCollateralInfo = ({ loading }: JudicialCollateralInfoProps) => {
                 label="Dirección de la propiedad"
                 placeholder="Dirección de la propiedad"
                 disabled={loading}
+                helperText={errors.propertyAddress?.message}
+                hasError={!!errors.propertyAddress}
                 required
               />
             )}
@@ -566,6 +591,8 @@ const JudicialCollateralInfo = ({ loading }: JudicialCollateralInfoProps) => {
                 label="Características de la propiedad"
                 placeholder="Características de la propiedad"
                 disabled={loading}
+                hasError={!!errors.propertyFeatures}
+                helperText={errors.propertyFeatures?.message}
                 required
               />
             )}
@@ -583,6 +610,8 @@ const JudicialCollateralInfo = ({ loading }: JudicialCollateralInfoProps) => {
                 label="Área de terreno"
                 placeholder="Área de terreno"
                 disabled={loading}
+                hasError={!!errors.landArea}
+                helperText={errors.landArea?.message}
                 required
               />
             )}
@@ -600,6 +629,8 @@ const JudicialCollateralInfo = ({ loading }: JudicialCollateralInfoProps) => {
                 label="Área de construcción"
                 placeholder="Área de construcción"
                 disabled={loading}
+                hasError={!!errors.constructionArea}
+                helperText={errors.constructionArea?.message}
                 required
               />
             )}

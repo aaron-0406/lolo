@@ -13,6 +13,7 @@ import Container from '@/ui/Container'
 import JudicialCollateralInfo from './JudicialCollateralInfo'
 import JudicialCollateralModals from './JudicialCollateralInfo/JudicialCollateralModals'
 import { JudicialCollateralType } from '@/types/judicial/judicial-collateral.type'
+import moment from 'moment'
 
 const JudicialCollateral = () => {
   const {
@@ -48,8 +49,8 @@ const JudicialCollateral = () => {
     landArea: '',
     constructionArea: '',
     electronicRecord: '',
-    dateOfPublicDeed: '',
-    numberOfCollateral: 0,
+    dateOfPublicDeed: moment(new Date()).format('DD-MM-YYYY'),
+    numberOfCollateral: '',
     registrationSeat: '',
 
     customerHasBankId: parseInt(chb.length ? chb : '0'),
