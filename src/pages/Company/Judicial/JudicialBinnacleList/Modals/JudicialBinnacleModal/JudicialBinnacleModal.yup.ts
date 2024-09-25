@@ -10,6 +10,10 @@ const ModalJudicialBinnacle: yup.SchemaOf<Omit<JudicialBinnacleType, 'id' | 'cre
     lastPerformed: yup.string().required(),
     judicialBinProceduralStageId: yup.number().required(),
     judicialFileCaseId: yup.number().required(),
+    createdBy: yup.number().required(),
+    fojas: yup.number().required(),
+    notificationType: yup.string().required(),
+    userDescription: yup.string().required(),
     totalTariff: yup.number().optional(),
     tariffHistory: yup.string().optional(),
   })

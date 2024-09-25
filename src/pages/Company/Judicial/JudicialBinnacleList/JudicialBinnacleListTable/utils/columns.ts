@@ -38,6 +38,12 @@ export const judicialBinnacleColumns: ColumProps[] = [
     justifyContent: 'center',
   },
   {
+    id: 'binnacle.datatable.header.createdBy',
+    title: 'CREADO POR',
+    width: '20%',
+    justifyContent: 'center',
+  },
+  {
     id: 'binnacle.datatable.header.date',
     title: 'FECHA',
     width: '20%',

@@ -62,6 +62,7 @@ import ProtectedRoutes from '../ProtectedRoutes'
 import ProtectedRoutesCompany from '../ProtectedRoutesCompany'
 
 import paths from '../paths'
+import JudicialBinnacleList from 'pages/Company/Judicial/JudicialBinnacleList'
 import JudicialBinnacle from 'pages/Company/Judicial/JudicialBinnacle'
 import JudicialBinTypeBinnacle from 'pages/Company/Judicial/JudicialBinTypeBinnacle'
 import JudicialBinProceduralStage from 'pages/Company/Judicial/JudicialBinProceduralStage'
@@ -87,6 +88,8 @@ import JudicialCollateralAuctionList from 'pages/Company/Judicial/JudicialCollat
 import JudicialCollateralAuctionRound from 'pages/Company/Judicial/JudicialCollateralAuctionRound'
 import JudicialFileCaseAuctionRoundList from 'pages/Company/Judicial/JudicialFileCaseAuctionRoundList'
 import Tariff from 'pages/Company/Settings/Tariff'
+import JudicialBinNotificationList from 'pages/Company/Judicial/JudicialBinNotificationList'
+
 
 const AppRouter = () => {
   return (
@@ -147,8 +150,9 @@ const AppRouter = () => {
         <Route path={paths.judicial.detallesExpediente()} element={<JudicialFileCase />} />
         <Route path={paths.judicial.productosDemandados()} element={<JudicialFileCaseDemandedProducts />} />
         <Route path={paths.judicial.processStatus()} element={<JudicialFileCaseProcessStatus />} />
-        <Route path={paths.judicial.bitacora()} element={<JudicialBinnacle />} />
-        <Route path={paths.judicial.bitacoraProcesoConexo()} element={<JudicialBinnacle />} />
+        <Route path={paths.judicial.bitacora()} element={<JudicialBinnacleList />} />
+        <Route path={paths.judicial.bitacoraDetalles()} element={<JudicialBinnacle />} />
+        <Route path={paths.judicial.bitacoraProcesoConexo()} element={<JudicialBinnacleList />} />
         <Route path={paths.judicial.bitacoraTipo()} element={<JudicialBinTypeBinnacle />} />
         <Route path={paths.judicial.bitacoraProceduralStage()} element={<JudicialBinProceduralStage />} />
         <Route path={paths.judicial.observacionTipo()} element={<JudicialObsType />} />
@@ -169,6 +173,7 @@ const AppRouter = () => {
         <Route path={paths.judicial.collateralAuction()} element={<JudicialCollateralAuctionRound />} />
         <Route path={paths.judicial.collateralAuctionList()} element={<JudicialCollateralAuctionList />} />
         <Route path={paths.judicial.caseFileAuctionList()} element={<JudicialFileCaseAuctionRoundList />} />
+        <Route path={paths.judicial.notifications()} element={<JudicialBinNotificationList />} />
         {/* SETTINGS */}
         <Route path={paths.settings.scheduldedNotifications()} element={<ScheduledNotifications />} />
         <Route path={paths.settings.compareExcel()} element={<CompareExcel />} />

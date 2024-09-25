@@ -8,6 +8,10 @@ export type JudicialBinnacleType = {
   date: string
   judicialFileCaseId: number
   customerHasBankId: number
+  notificationType: string;
+  userDescription: string;
+  fojas: number;
+  createdBy: number;
   createdAt: Date
   updatedAt: Date
   deletedAt: Date

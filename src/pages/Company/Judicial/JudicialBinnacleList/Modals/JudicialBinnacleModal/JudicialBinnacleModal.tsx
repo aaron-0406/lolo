@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query'
-import judicialBinnacleCache from '../../JudicialBinnacleTable/utils/judicial-binnacle.cache'
+import judicialBinnacleCache from '../../JudicialBinnacleListTable/utils/judicial-binnacle.cache'
 import { FormProvider, useForm } from 'react-hook-form'
 import Modal from '@/ui/Modal'
 import Container from '@/ui/Container'

@@ -16,11 +16,13 @@ import EmptyState from '@/ui/EmptyState'
 import { judicialBinnacleColumns } from './utils/columns'
 import { JudicialBinDefendantProceduralActionType } from '@/types/judicial/judicial-bin-defendant-procedural-action.type'
 import { useFiltersContext } from '@/contexts/FiltersProvider'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { JudicialBinFileType } from '@/types/judicial/judicial-bin-file.type'
 import Icon from '@/ui/Icon'
-import JudicialBinnacleTariffModal from '../Modals/JudicialBinnacleTariffModal'
-import JudicialBinnacelTariffResumeModal from '../Modals/JudicialBinnacelTariffResumeModal'
+import paths from 'shared/routes/paths'
+import { useLoloContext } from '../../../../../shared/contexts/LoloProvider';
+import JudicialBinnacleTariffModal from '../../JudicialBinnacle/Modals/JudicialBinnacleTariffModal'
+import JudicialBinnacelTariffResumeModal from '../../JudicialBinnacle/Modals/JudicialBinnacelTariffResumeModal'
 
 type JudicialBinnacleTableProps = {
   judicialFileCaseId?: number
@@ -43,7 +45,13 @@ const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode, amountDemanded,
   const [ selectedBinnacle, setSelectedBinnacle ] = useState<number>(0)
   const [tariffHistory, setTariffHistory] = useState<string>('')
   const location = useLocation()
+  const code = useParams().code ?? ''
+  const {
+    client: { customer },
+  } = useLoloContext()
   const currentPath = location.pathname
+  const navigatee = useNavigate()
+
   const {
     sorting: { setSortingOptions },
   } = useFiltersContext()
@@ -70,9 +78,13 @@ const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode, amountDemanded,
     hideModal: hideModalJudicialBinnacelTariffResume,
   } = useModal()
 
+  // const handleClickEdit = (id: number) => {
+  //   setIdEdit(id)
+  //   showModalJudicialBinProceduralStage()
+  // }
+
   const handleClickEdit = (id: number) => {
-    setSelectedBinnacle(id)
-    showModalJudicialBinProceduralStage()
+    navigatee(paths.judicial.bitacoraDetalles(customer.urlIdentifier, code, id.toString()))
   }
 
   const onCloseModalEdit = () => {
@@ -190,6 +202,7 @@ const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode, amountDemanded,
                       </Text.Body>
                     )}
                   </BodyCell>
+                  <BodyCell textAlign="center">{record.createdBy ?? 'USER'}</BodyCell>
                   <BodyCell textAlign="center">{moment(record.date.split('T')[0]).format('DD-MM-YYYY') || ''}</BodyCell>
                   <BodyCell textAlign="center">
                     {

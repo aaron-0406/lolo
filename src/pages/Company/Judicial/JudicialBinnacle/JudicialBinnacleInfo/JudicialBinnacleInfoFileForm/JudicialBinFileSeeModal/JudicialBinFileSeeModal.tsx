@@ -3,7 +3,7 @@ import { getJudicialBinFileById } from '@/services/judicial/judicial-bin-file.se
 import { JudicialBinFileType } from '@/types/judicial/judicial-bin-file.type'
 import Container from '@/ui/Container'
 import Modal from '@/ui/Modal'
-import { KEY_JUDICIAL_URL_BINNACLE_CODE_CACHE } from 'pages/Company/Judicial/JudicialBinnacle/JudicialBinnacleTable/utils/judicial-binnacle.cache'
+import { KEY_JUDICIAL_URL_BINNACLE_CODE_CACHE } from 'pages/Company/Judicial/JudicialBinnacleList/JudicialBinnacleListTable/utils/judicial-binnacle.cache'
 import { useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import FileViewer from './FileViewer'

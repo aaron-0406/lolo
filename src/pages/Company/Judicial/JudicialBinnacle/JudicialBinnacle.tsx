@@ -1,121 +1,72 @@
 import Container from '@/ui/Container'
-import JudicialBinnacleTable from './JudicialBinnacleTable'
-import { useLocation, useParams } from 'react-router-dom'
-import { useQuery } from 'react-query'
-import { AxiosResponse } from 'axios'
-import { getFileCaseByNumberFile } from '@/services/judicial/judicial-file-case.service'
-import notification from '@/ui/notification'
+import JudicialBinnacleActions from './JudicialBinnacleActions'
 import JudicialBinnacleInfo from './JudicialBinnacleInfo'
-import { useLoloContext } from '@/contexts/LoloProvider'
-import { useFiltersContext } from '@/contexts/FiltersProvider'
 import { JudicialBinnacleType } from '@/types/judicial/judicial-binnacle.type'
-import { JudicialBinTypeBinnacleType } from '@/types/judicial/judicial-bin-type-binnacle.type'
-import { JudicialBinProceduralStageType } from '@/types/judicial/judicial-bin-procedural-stage.type'
-import { JudicialBinDefendantProceduralActionType } from '@/types/judicial/judicial-bin-defendant-procedural-action.type'
 import { JudicialBinFileType } from '@/types/judicial/judicial-bin-file.type'
-import { KEY_JUDICIAL_URL_BINNACLE_CODE_CACHE } from './JudicialBinnacleTable/utils/judicial-binnacle.cache'
-import { getBinnacleByFileCase } from '@/services/judicial/judicial-binnacle.service'
-import { useEffect } from 'react'
+import { FormProvider, useForm } from 'react-hook-form'
+import { JudicialBinnacleResolver } from './JudicialBinnacleResolver.yup'
+import moment from 'moment'
+import { useLoloContext } from '@/contexts/LoloProvider'
+import { useParams } from 'react-router-dom'
+import { getFileCaseByNumberFile } from '@/services/judicial/judicial-file-case.service'
+import { AxiosResponse } from 'axios'
+import { useQuery } from 'react-query'
+import JudicialBinnacleModals from './JudicialBinnacleInfo/JudicialBinnacleModals'
 
 const JudicialBinnacle = () => {
-  const codeParams = useParams().code ?? ''
-  const currentPath = useLocation().pathname
-  const relatedProcessCodeParams = useParams().relatedProcessCode ?? ''
   const {
     bank: {
       selectedBank: { idCHB },
     },
   } = useLoloContext()
 
-  const {
-    sorting: { getSortingOptions },
-  } = useFiltersContext()
-
-  const sortingOptions = getSortingOptions(currentPath)?.opts ?? { sortBy: '', order: 'ASC' }
+  const codeParams = useParams().code ?? ''
 
   const { data } = useQuery<AxiosResponse<any, Error>>(
-    ['get-file-case-by-code', relatedProcessCodeParams ? relatedProcessCodeParams : codeParams],
+    ['get-file-case-by-code', codeParams ?? ''],
     async () => {
-      return await getFileCaseByNumberFile(
-        relatedProcessCodeParams ? relatedProcessCodeParams : codeParams,
-        Number(idCHB)
-      )
-    },
-    {
-      onError: (error: any) => {
-        notification({
-          type: 'info',
-          message: error.response.data.message,
-        })
-      },
-    }
+      return await getFileCaseByNumberFile(codeParams ?? '', Number(idCHB))
+    }, 
   )
 
-  const { data:binnacles, isLoading, refetch } = useQuery<
-  AxiosResponse<
-    Array<
-      JudicialBinnacleType & {
-        binnacleType: JudicialBinTypeBinnacleType
-        judicialBinProceduralStage: JudicialBinProceduralStageType
-        judicialBinDefendantProceduralAction: JudicialBinDefendantProceduralActionType
-        judicialBinFiles: JudicialBinFileType[]
-      }
-    >,
-    Error
-  >
->(
-  [KEY_JUDICIAL_URL_BINNACLE_CODE_CACHE, data?.data.id ?? 0],
-  async () => {
-    return await getBinnacleByFileCase(judicialFileCaseId ?? 0, sortingOptions)
-  },
-  {
-    onError: (error: any) => {
-      notification({
-        type: 'error',
-        message: error.response.data.message,
-      })
-    },
+  const formMethods = useForm<
+  Omit<JudicialBinnacleType, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'> & {
+    judicialBinFiles: JudicialBinFileType[]
+    filesDnD: File[]
   }
-)
+>({
+  resolver: JudicialBinnacleResolver,
+  mode: 'all',
+  defaultValues: {
+    date: moment(new Date()).format('DD-MM-YYYY'),
+    binnacleTypeId: 0,
+    customerHasBankId: Number(idCHB),
+    judicialBinProceduralStageId: 0,
+    judicialFileCaseId: Number(data?.data.id),
+    lastPerformed: '',
+    tariffHistory: '',
+    totalTariff: 0,
+    judicialBinFiles: [],
+    filesDnD: [],
+  },
+})
 
-useEffect(() => {
-  refetch()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-}, [sortingOptions.order])
-
-  const judicialFileCaseId = data?.data.id
-  const clientCode = data?.data.client.code
-  const clientName = data?.data.client.name
-  const amountDemanded = data?.data?.amountDemandedSoles
-  const amountAffection = data?.data?.amountAffectionSoles
-  const comercialValue = data?.data?.comercialValueSoles
-  const binnaclesData = binnacles?.data ?? []
+const judicialFileCaseId = data?.data.id
+const clientCode = data?.data.client.code
+const clientName = data?.data.client.name
 
   return (
-    <Container
-      width="100%"
-      height="calc(100% - 50px)"
-      display="flex"
-      flexDirection="column"
-      justifyContent="space-between"
-    >
-      <JudicialBinnacleInfo
-        judicialFileCaseId={judicialFileCaseId}
-        clientCode={clientCode}
-        clientName={clientName}
-        binnacles={binnaclesData}
-        isLoading={isLoading}
-      />
-      <JudicialBinnacleTable
-        judicialFileCaseId={judicialFileCaseId}
-        clientCode={clientCode}
-        amountDemanded={amountDemanded}
-        amountAffection={amountAffection}
-        comercialValue={comercialValue}
-        binnacles={binnaclesData}
-        isLoading={isLoading}
-      />
-    </Container>
+    <FormProvider {...formMethods}>
+      <Container width="100%" height="Calc(100% - 50px)" display="flex" flexDirection="column">
+        <JudicialBinnacleActions
+          judicialFileCaseId={judicialFileCaseId}
+          clientCode={clientCode}
+          clientName={clientName}
+        />
+        <JudicialBinnacleInfo />
+        <JudicialBinnacleModals />
+      </Container>
+    </FormProvider>
   )
 }
 
