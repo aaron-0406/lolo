@@ -10,7 +10,7 @@ const JudicialCollateralSchema: yup.SchemaOf<Omit<JudicialCollateralType, 'id' |
   constructionArea: yup.string().required(),
   electronicRecord: yup.string().required(),
   dateOfPublicDeed: yup.string().required(),
-  numberOfCollateral: yup.number().required(),
+  numberOfCollateral: yup.string().required(),
   registrationSeat: yup.string().required(),
   customerHasBankId: yup.number().required(),
   departmentId: yup.number().required(),

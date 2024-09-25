@@ -52,7 +52,7 @@ const JudicialCollateral = ({ setLoadingGlobal, caseFileId, clientName }: Judici
   const {
     getValues,
     setValue,
-    formState: { isValid },
+    formState: { isValid, errors },
     watch,
   } = useFormContext<
     JudicialCollateralType & {
@@ -217,11 +217,6 @@ const JudicialCollateral = ({ setLoadingGlobal, caseFileId, clientName }: Judici
   )
 
   const onCreateCollateral = () => {
-    if (!isValid)
-      return notification({
-        type: 'warning',
-        message: 'Por favor complete los campos requeridos',
-      })
     createJudicialCollateralMutate()
   }
 
