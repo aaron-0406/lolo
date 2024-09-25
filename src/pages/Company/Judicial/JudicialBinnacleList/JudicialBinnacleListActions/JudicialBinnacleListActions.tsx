@@ -40,7 +40,11 @@ const JudicialBinnacleActions = ({ clientName, binnacles }: JudicialBinnacleActi
   const totalTariff = binnacles?.reduce((acc: number, cur: JudicialBinnacleType) => acc + Number(cur.totalTariff), 0)
 
   const onClickCreateBinnacle = () => {
-    navigate(paths.judicial.bitacoraDetalles(customer.urlIdentifier, code, "000000000")) 
+    if (relatedProcessCodeParams) {
+      navigate(paths.judicial.bitacoraDetallesRelatedProcess(customer.urlIdentifier, code, relatedProcessCodeParams, '000000000'))
+    } else {
+      navigate(paths.judicial.bitacoraDetalles(customer.urlIdentifier, code, '000000000'))
+    } 
   }
 
   const routersFileCase: LinkType[] = [
@@ -100,14 +104,14 @@ const JudicialBinnacleActions = ({ clientName, binnacles }: JudicialBinnacleActi
 
       <Container display='flex' gap="20px" alignItems='center' justifyContent='space-between'>
         <Text.Body size="m" weight="bold" >
-          Total: S/. {totalTariff ?? '0.00'}
+          Total: S/. {totalTariff.toFixed(2) ?? '0.00'}
         </Text.Body>
         <Button
           onClick={onClickCreateBinnacle}
           width="100px"
           shape="round"
           trailingIcon="ri-add-fill"
-          permission="P02-02-01-01"
+          permission={relatedProcessCodeParams ? "P13-01-05-01-01-01":"P02-02-01-01"}
           messageTooltip="Agregar bitacora"
         />
 

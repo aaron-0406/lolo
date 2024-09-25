@@ -46,11 +46,13 @@ const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode, amountDemanded,
   const [tariffHistory, setTariffHistory] = useState<string>('')
   const location = useLocation()
   const code = useParams().code ?? ''
+  const relatedProcessCodeParams = useParams().relatedProcessCode ?? ''
+
   const {
     client: { customer },
   } = useLoloContext()
   const currentPath = location.pathname
-  const navigatee = useNavigate()
+  const navigate = useNavigate()
 
   const {
     sorting: { setSortingOptions },
@@ -84,7 +86,11 @@ const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode, amountDemanded,
   // }
 
   const handleClickEdit = (id: number) => {
-    navigatee(paths.judicial.bitacoraDetalles(customer.urlIdentifier, code, id.toString()))
+    if (relatedProcessCodeParams) {
+      navigate(paths.judicial.bitacoraDetallesRelatedProcess(customer.urlIdentifier, code, relatedProcessCodeParams, id.toString()))
+    } else {
+      navigate(paths.judicial.bitacoraDetalles(customer.urlIdentifier, code, id.toString()))
+    }
   }
 
   const onCloseModalEdit = () => {
@@ -220,7 +226,7 @@ const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode, amountDemanded,
                         />
                         <Button
                           messageTooltip="Ver cuadro de tarifas"
-                          permission="P13-01-01-04"
+                          permission={ relatedProcessCodeParams ? "P13-01-05-01-01-04" : "P13-01-01-04"}
                           shape="round"
                           size="small"
                           leadingIcon="ri-table-fill"
@@ -233,7 +239,7 @@ const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode, amountDemanded,
                           onClick={() => {
                             handleClickTariffResume(record?.tariffHistory ?? '')
                           }}
-                          permission="P13-01-01-05"
+                          permission={ relatedProcessCodeParams ? "P13-01-05-01-01-05" : "P13-01-01-05"}
                           messageTooltip="Ver tarifas asignadas"
                           shape="round"
                           size="small"

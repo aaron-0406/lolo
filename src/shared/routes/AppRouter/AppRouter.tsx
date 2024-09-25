@@ -153,6 +153,7 @@ const AppRouter = () => {
         <Route path={paths.judicial.bitacora()} element={<JudicialBinnacleList />} />
         <Route path={paths.judicial.bitacoraDetalles()} element={<JudicialBinnacle />} />
         <Route path={paths.judicial.bitacoraProcesoConexo()} element={<JudicialBinnacleList />} />
+        <Route path={paths.judicial.bitacoraDetallesRelatedProcess()} element={<JudicialBinnacle />} />
         <Route path={paths.judicial.bitacoraTipo()} element={<JudicialBinTypeBinnacle />} />
         <Route path={paths.judicial.bitacoraProceduralStage()} element={<JudicialBinProceduralStage />} />
         <Route path={paths.judicial.observacionTipo()} element={<JudicialObsType />} />
@@ -173,6 +174,7 @@ const AppRouter = () => {
         <Route path={paths.judicial.collateralAuction()} element={<JudicialCollateralAuctionRound />} />
         <Route path={paths.judicial.collateralAuctionList()} element={<JudicialCollateralAuctionList />} />
         <Route path={paths.judicial.caseFileAuctionList()} element={<JudicialFileCaseAuctionRoundList />} />
+        <Route path={paths.judicial.notificationsRelatedProcess()} element={<JudicialBinNotificationList />} />
         <Route path={paths.judicial.notifications()} element={<JudicialBinNotificationList />} />
         {/* SETTINGS */}
         <Route path={paths.settings.scheduldedNotifications()} element={<ScheduledNotifications />} />

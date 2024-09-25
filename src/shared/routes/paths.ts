@@ -75,8 +75,12 @@ export default {
       `/judicial/${urlIdentifier}/expediente/${code}/bitacora`,
     bitacoraDetalles: (urlIdentifier = ':urlIdentifier', code = ':code', binnacleCode = ':binnacleCode') =>
       `/judicial/${urlIdentifier}/expediente/${code}/bitacora/${binnacleCode}`,
+    bitacoraDetallesRelatedProcess: (urlIdentifier = ':urlIdentifier', code = ':code', relatedProcessCode = ':relatedProcessCode', binnacleCode = ':binnacleCode') =>
+      `/judicial/${urlIdentifier}/expediente/${code}/procesos-conexos/${relatedProcessCode}/bitacora/${binnacleCode}`,
     notifications: (urlIdentifier = ':urlIdentifier', code = ':code', binnacleCode = ':binnacleCode') =>
       `/judicial/${urlIdentifier}/expediente/${code}/bitacora/${binnacleCode}/notificaciones`,
+    notificationsRelatedProcess: (urlIdentifier = ':urlIdentifier', code = ':code', relatedProcessCode = ':relatedProcessCode', binnacleCode = ':binnacleCode') =>
+      `/judicial/${urlIdentifier}/expediente/${code}/procesos-conexos/${relatedProcessCode}/bitacora/${binnacleCode}/notificaciones`,
     caseFileAuctionList: (urlIdentifier = ':urlIdentifier', code = ':code') =>
       `/judicial/${urlIdentifier}/expediente/${code}/rondas-de-remate`,
     bitacoraProcesoConexo: (

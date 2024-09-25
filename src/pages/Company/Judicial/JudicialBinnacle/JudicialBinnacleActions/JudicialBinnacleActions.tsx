@@ -54,15 +54,28 @@ const JudicialBinnacleActions = ({ judicialFileCaseId, clientCode, clientName }:
   >(
     async () => {
       const { ...restClient } = getValues()
-      return await createBinnacle({ ...restClient, files: watch('filesDnD') }, customerId, clientCode)
+      return await createBinnacle(
+        { ...restClient, files: watch('filesDnD'), judicialFileCaseId: Number(judicialFileCaseId) },
+        customerId,
+        clientCode
+      )
     },
     {
       onSuccess: (result) => {
         createJudicialBinnacleCache(result.data)
         notification({ type: 'success', message: 'Bitacora creado' })
-        navigate(`${paths.judicial.bitacoraDetalles(customerUrlIdentifier, code, String(result.data.id))}`)
         setValue('filesDnD', [])
         setValue('judicialBinFiles', result.data.judicialBinFiles, { shouldValidate: true })
+        relatedProcessCodeParams
+          ? navigate(
+              `${paths.judicial.bitacoraDetallesRelatedProcess(
+                customerUrlIdentifier,
+                code,
+                relatedProcessCodeParams,
+                String(result.data.id)
+              )}`
+            )
+          : navigate(`${paths.judicial.bitacoraDetalles(customerUrlIdentifier, code, String(result.data.id))}`)
       },
       onMutate: () => {
         return onMutateCache(judicialFileCaseId)
@@ -154,7 +167,7 @@ const JudicialBinnacleActions = ({ judicialFileCaseId, clientCode, clientName }:
       name: relatedProcessCodeParams,
     },
     {
-      link: paths.judicial.bitacora(customerUrlIdentifier, code),
+      link: paths.judicial.bitacoraProcesoConexo(customerUrlIdentifier, code, relatedProcessCodeParams),
       name: 'Bitacora',
     },
     {
@@ -170,8 +183,6 @@ const JudicialBinnacleActions = ({ judicialFileCaseId, clientCode, clientName }:
   const editBitacora = () => {
     editJudicialBinnacle()
   }
-
-  console.log(idBinnacle)
 
   const binnacleActionLoading = idBinnacle !== '000000000' ? loadingEditJudicialBinnacle : loadingCreateJudicialBinnacle
   const binnacleAction = idBinnacle !== '000000000' ? editBitacora : addBitacora

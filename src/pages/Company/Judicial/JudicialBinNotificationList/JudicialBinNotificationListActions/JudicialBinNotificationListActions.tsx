@@ -59,15 +59,15 @@ const JudicialBinNotificationListActions = ( { clientName } : JudicialBinNotific
       name: relatedProcessCodeParams,
     },
     {
-      link: paths.judicial.bitacora(customer.urlIdentifier, codeParams),
+      link: paths.judicial.bitacoraProcesoConexo(customer.urlIdentifier, codeParams, relatedProcessCodeParams),
       name: 'Bitacora',
     },
     {
-      link: paths.judicial.bitacoraDetalles(customer.urlIdentifier, codeParams, binnacleCode),
+      link: paths.judicial.bitacoraDetallesRelatedProcess(customer.urlIdentifier, codeParams, relatedProcessCodeParams, binnacleCode),
       name: binnacleCode,
     },
     {
-      link: paths.judicial.notifications(customer.urlIdentifier, codeParams, binnacleCode),
+      link: paths.judicial.notificationsRelatedProcess(customer.urlIdentifier, codeParams, relatedProcessCodeParams, binnacleCode),
       name: 'Notificaciones',
     }
   ]

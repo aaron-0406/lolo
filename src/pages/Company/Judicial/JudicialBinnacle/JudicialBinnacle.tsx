@@ -20,14 +20,21 @@ const JudicialBinnacle = () => {
     },
   } = useLoloContext()
 
-  const codeParams = useParams().code ?? ''
+  const codeParams = useParams().code
+  const relatedProcessCodeParams = useParams().relatedProcessCode
+
 
   const { data } = useQuery<AxiosResponse<any, Error>>(
-    ['get-file-case-by-code', codeParams ?? ''],
+    ['get-file-case-by-code', (relatedProcessCodeParams ? relatedProcessCodeParams : codeParams) ?? '', Number(idCHB)],
     async () => {
-      return await getFileCaseByNumberFile(codeParams ?? '', Number(idCHB))
-    }, 
+      return await getFileCaseByNumberFile(
+        (relatedProcessCodeParams ? relatedProcessCodeParams : codeParams) ?? '',
+        Number(idCHB)
+      )
+    }
   )
+
+  console.log(data)
 
   const formMethods = useForm<
   Omit<JudicialBinnacleType, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'> & {

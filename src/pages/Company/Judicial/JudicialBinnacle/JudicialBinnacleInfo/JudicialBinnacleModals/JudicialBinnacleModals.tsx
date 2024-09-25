@@ -8,6 +8,7 @@ import { device } from '@/breakpoints/responsive'
 
 const JudicialBinnacleModals = () => {
   const codeParams = useParams().code ?? ''
+  const relatedProcessCodeParams = useParams().relatedProcessCode ?? ''
   const binnacleCode = useParams().binnacleCode ?? ''
   const greaterThanTabletS = useMediaQuery(device.tabletS)
   const navigate = useNavigate()
@@ -18,7 +19,11 @@ const JudicialBinnacleModals = () => {
   } = useLoloContext() 
 
   const onClickNotifications = () => {
-    navigate(`${paths.judicial.notifications(urlIdentifier, codeParams, binnacleCode)}`)
+    if (relatedProcessCodeParams) {
+      navigate(`${paths.judicial.notificationsRelatedProcess(urlIdentifier, codeParams, relatedProcessCodeParams, binnacleCode)}`)
+    }else {
+      navigate(`${paths.judicial.notifications(urlIdentifier, codeParams, binnacleCode)}`)
+    }
   }
 
   return (
@@ -33,7 +38,7 @@ const JudicialBinnacleModals = () => {
       <Container width="100%" height="100%" display="flex" flexDirection="row" gap="10px">
       <Button
         label="Notificaciones"
-        permission="P13-01-04-01"
+        permission={relatedProcessCodeParams ? "P13-01-05-01-01-06-01" :"P13-01-04-01"}
         size={greaterThanTabletS ? 'default' : 'small'}
         onClick={onClickNotifications}
         trailingIcon="ri-notification-badge-fill"
