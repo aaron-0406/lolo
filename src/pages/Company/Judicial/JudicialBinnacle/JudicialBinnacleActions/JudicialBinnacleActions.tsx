@@ -4,7 +4,7 @@ import { LinkType } from '@/ui/Breadcrumbs/Breadcrumbs.type'
 import Button from '@/ui/Button'
 import Container from '@/ui/Container'
 import { useMutation, useQueryClient } from 'react-query'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import paths from 'shared/routes/paths'
 import judicialBinnacleCache from '../../JudicialBinnacleList/JudicialBinnacleListTable/utils/judicial-binnacle.cache'
 import { useFormContext } from 'react-hook-form'
@@ -24,6 +24,7 @@ type JudicialBinnacleActionsProps = {
 
 const JudicialBinnacleActions = ({ judicialFileCaseId, clientCode, clientName }: JudicialBinnacleActionsProps) => {
   const code = useParams().code ?? ''
+  const navigate = useNavigate()
   const relatedProcessCodeParams = useParams().relatedProcessCode ?? ''
   const idBinnacle = useParams().binnacleCode ?? ''
   const {
@@ -48,7 +49,7 @@ const JudicialBinnacleActions = ({ judicialFileCaseId, clientCode, clientName }:
   } = judicialBinnacleCache(queryCLient)
 
   const { isLoading: loadingCreateJudicialBinnacle, mutate: createJudicialBinnacle } = useMutation<
-    AxiosResponse<JudicialBinnacleType>,
+    AxiosResponse<any>,
     AxiosError<CustomErrorResponse>
   >(
     async () => {
@@ -59,6 +60,9 @@ const JudicialBinnacleActions = ({ judicialFileCaseId, clientCode, clientName }:
       onSuccess: (result) => {
         createJudicialBinnacleCache(result.data)
         notification({ type: 'success', message: 'Bitacora creado' })
+        navigate(`${paths.judicial.bitacoraDetalles(customerUrlIdentifier, code, String(result.data.id))}`)
+        setValue('filesDnD', [])
+        setValue('judicialBinFiles', result.data.judicialBinFiles, { shouldValidate: true })
       },
       onMutate: () => {
         return onMutateCache(judicialFileCaseId)
@@ -167,9 +171,10 @@ const JudicialBinnacleActions = ({ judicialFileCaseId, clientCode, clientName }:
     editJudicialBinnacle()
   }
 
-  const binnacleCondition = !idBinnacle || idBinnacle !== '00000000'
-  const binnacleActionLoading = binnacleCondition ? loadingCreateJudicialBinnacle : loadingEditJudicialBinnacle
-  const binnacleAction = binnacleCondition ? editBitacora : addBitacora
+  console.log(idBinnacle)
+
+  const binnacleActionLoading = idBinnacle !== '000000000' ? loadingEditJudicialBinnacle : loadingCreateJudicialBinnacle
+  const binnacleAction = idBinnacle !== '000000000' ? editBitacora : addBitacora
 
   return (
     <Container
