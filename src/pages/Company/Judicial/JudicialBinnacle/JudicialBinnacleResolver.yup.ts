@@ -10,12 +10,18 @@ const JudicialBinnacle: yup.SchemaOf<Omit<JudicialBinnacleType, 'id' | 'createdA
     lastPerformed: yup.string().required(),
     judicialBinProceduralStageId: yup.number().required(),
     judicialFileCaseId: yup.number().required(),
-    createdBy: yup.number().required(),
+    createdBy: yup.string().optional(),
     fojas: yup.number().required(),
     notificationType: yup.string().required(),
     userDescription: yup.string().required(),
-    tariffHistory: yup.string().optional(), 
     totalTariff: yup.number().optional(),
+    tariffHistory: yup.string().optional(),
+    resolutionDate: yup.string().optional(),
+    index: yup.number().optional(),
+    acto: yup.string().optional(),
+    folios: yup.number().optional(),
+    entryDate: yup.string().optional(),
+    provedioDate: yup.date().optional(),
   })
 
 export const JudicialBinnacleResolver = yupResolver(JudicialBinnacle)

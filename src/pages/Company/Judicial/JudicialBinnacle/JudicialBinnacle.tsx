@@ -34,8 +34,6 @@ const JudicialBinnacle = () => {
     }
   )
 
-  console.log(data)
-
   const formMethods = useForm<
   Omit<JudicialBinnacleType, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'> & {
     judicialBinFiles: JudicialBinFileType[]

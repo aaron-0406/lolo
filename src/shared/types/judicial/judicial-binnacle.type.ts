@@ -1,18 +1,27 @@
 export type JudicialBinnacleType = {
-  id: number
-  totalTariff?:number; 
-  tariffHistory?: string
-  judicialBinProceduralStageId: number
-  lastPerformed: string
-  binnacleTypeId: number
-  date: string
-  judicialFileCaseId: number
-  customerHasBankId: number
+  id: number;
+  judicialBinProceduralStageId: number;
+  lastPerformed: string;
+  binnacleTypeId: number;
+  date: string;
+  judicialFileCaseId: number;
+  customerHasBankId: number;
+
+  index?: number;
+  resolutionDate?: string;
+  entryDate?: string;
   notificationType: string;
+  acto?: string;
+  fojas?: number;
+  folios?: number;
+  provedioDate?: Date;
   userDescription: string;
-  fojas: number;
-  createdBy: number;
-  createdAt: Date
-  updatedAt: Date
-  deletedAt: Date
-}
+  createdBy?: string;
+
+  totalTariff?: number;
+  tariffHistory?: string;
+
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt: Date;
+};

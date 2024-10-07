@@ -193,7 +193,7 @@ const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode, amountDemanded,
                     </Container>
                   </BodyCell>
                   <BodyCell textAlign="center">{record?.judicialBinProceduralStage?.proceduralStage || '-'}</BodyCell>
-                  <BodyCell textAlign="center">S/. {Number(record?.totalTariff ?? "0").toFixed(2) || '0.00'}</BodyCell>
+                  <BodyCell textAlign="center">S/. {Number(record?.totalTariff ?? '0').toFixed(2) || '0.00'}</BodyCell>
                   <BodyCell textAlign="center">
                     {record.judicialBinFiles.length ? (
                       <Container display="flex" gap="10px" justifyContent="center" alignItems="center">
@@ -209,10 +209,16 @@ const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode, amountDemanded,
                     )}
                   </BodyCell>
                   <BodyCell textAlign="center">{record.createdBy ?? 'USER'}</BodyCell>
-                  <BodyCell textAlign="center">{moment(record.date.split('T')[0]).format('DD-MM-YYYY') || ''}</BodyCell>
+                  <BodyCell textAlign="center">
+                    {!record.createdBy
+                      ? moment(record.date.split('T')[0]).format('DD-MM-YYYY') ?? ''
+                      : record.binnacleType.typeBinnacle === 'RESOLUCION'
+                        ? moment(record.resolutionDate?.split('T')[0]).format('DD-MM-YYYY')
+                        : moment(record.entryDate?.split('T')[0]).format('DD-MM-YYYY') ?? ''}
+                  </BodyCell>
                   <BodyCell textAlign="center">
                     {
-                      <Container display="flex" gap="10px" justifyContent="space-around">
+                      <Container display="flex" gap="5px" justifyContent="start">
                         <Button
                           onClick={(event) => {
                             event.stopPropagation()
@@ -226,7 +232,7 @@ const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode, amountDemanded,
                         />
                         <Button
                           messageTooltip="Ver cuadro de tarifas"
-                          permission={ relatedProcessCodeParams ? "P13-01-05-01-01-04" : "P13-01-01-04"}
+                          permission={relatedProcessCodeParams ? 'P13-01-05-01-01-04' : 'P13-01-01-04'}
                           shape="round"
                           size="small"
                           leadingIcon="ri-table-fill"
@@ -239,23 +245,25 @@ const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode, amountDemanded,
                           onClick={() => {
                             handleClickTariffResume(record?.tariffHistory ?? '')
                           }}
-                          permission={ relatedProcessCodeParams ? "P13-01-05-01-01-05" : "P13-01-01-05"}
+                          permission={relatedProcessCodeParams ? 'P13-01-05-01-01-05' : 'P13-01-01-05'}
                           messageTooltip="Ver tarifas asignadas"
                           shape="round"
                           size="small"
                           leadingIcon="ri-file-text-line"
                         />
-                        <Button
-                          onClick={() => {
-                            handleClickDelete(record.id)
-                          }}
-                          messageTooltip="Eliminar comentario"
-                          shape="round"
-                          size="small"
-                          leadingIcon="ri-delete-bin-line"
-                          permission="P02-02-01-03"
-                          display="danger"
-                        />
+                        {!record.createdBy ? (
+                          <Button
+                            onClick={() => {
+                              handleClickDelete(record.id)
+                            }}
+                            messageTooltip="Eliminar comentario"
+                            shape="round"
+                            size="small"
+                            leadingIcon="ri-delete-bin-line"
+                            permission="P02-02-01-03"
+                            display="danger"
+                          />
+                        ) : null}
                       </Container>
                     }
                   </BodyCell>

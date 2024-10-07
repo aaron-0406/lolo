@@ -70,9 +70,9 @@ const NotificationDetailsModal = ( { visible, onClose, notification } : Notifica
                 Enviada a la Central de Notificación o Casilla Electrónica:
               </Text.Body>
               <Text.Body size="s" weight="bold">
-                {notification?.notificationPrint &&
-                moment(notification?.notificationPrint).format('DD/MM/YYYY') !== 'Invalid date'
-                  ? moment(notification?.notificationPrint).format('DD/MM/YYYY')
+                {notification?.sentCentral &&
+                moment(notification?.sentCentral).format('DD/MM/YYYY') !== 'Invalid date'
+                  ? moment(notification?.sentCentral).format('DD/MM/YYYY')
                   : ''}
               </Text.Body>
             </Container>

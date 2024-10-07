@@ -65,7 +65,7 @@ const JudicialBinNotificationListTable = () => {
                 <BodyCell textAlign="center">{`${record.notificationCode || '-'}`}</BodyCell>
                 <BodyCell textAlign="left">{`${record.addressee || '-'}`}</BodyCell>
                 <BodyCell textAlign="left">{`${record.attachments || '-'}`}</BodyCell>
-                <BodyCell textAlign="left">{moment(record.resolutionDate).format('DD-MM-YYYY') ?? '-'}</BodyCell>
+                <BodyCell textAlign="left">{moment(record.sentCentral).format('DD-MM-YYYY') ?? '-'}</BodyCell>
                 <BodyCell textAlign="left">{`${record.deliveryMethod || '-'}`}</BodyCell>
                 <BodyCell textAlign="center">
                   <Button

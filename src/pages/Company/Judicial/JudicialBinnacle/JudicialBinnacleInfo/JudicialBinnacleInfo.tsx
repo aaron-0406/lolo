@@ -25,10 +25,30 @@ import notification from '@/ui/notification'
 import { getFileCaseByNumberFile } from '@/services/judicial/judicial-file-case.service'
 import { getBinnacleById } from '@/services/judicial/judicial-binnacle.service'
 import moment from 'moment'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { JudicialBinFileType } from '@/types/judicial/judicial-bin-file.type'
+import { JudicialBinnacleType } from '@/types/judicial/judicial-binnacle.type'
 
 const JudicialBinnacleInfo = () => {
-  const { control, formState: { errors }, setValue, reset } = useFormContext()
+  const {
+    control,
+    formState: { errors },
+    setValue,
+    reset,
+    getValues,
+  } = useFormContext<
+    Omit<JudicialBinnacleType, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'> & {
+      judicialBinFiles: JudicialBinFileType[]
+      filesDnD: File[]
+    }
+  >()
+  const [ binnacleCreatedBy, setBinnacleCreatedBy ] = useState<{
+    createdBy: string | null
+    resolutionDate: string | null
+  }>({
+    createdBy: null,
+    resolutionDate: null,
+  })
   const greaterThanMobile = useMediaQuery(device.desktopL)
   const codeParams = useParams().code ?? ''
   const relatedProcessCodeParams = useParams().relatedProcessCode ?? ''
@@ -75,6 +95,12 @@ const JudicialBinnacleInfo = () => {
           setValue('judicialBinFiles', data.judicialBinFiles, { shouldValidate: true })
           setValue('tariffHistory', data.tariffHistory, { shouldValidate: true })
           setValue('totalTariff', data.totalTariff, { shouldValidate: true })
+          console.log("data.resolutionDate", data.resolutionDate)
+          console.log("data.entryDate", data.entryDate)
+          setValue('resolutionDate', data.resolutionDate ? moment(data.resolutionDate.split('T')[0]).format('DD-MM-YYYY') : undefined, { shouldValidate: true })
+          setValue('entryDate',  data.entryDate ? moment(data.entryDate.split('T')[0]).format('DD-MM-YYYY') : undefined, { shouldValidate: true })
+          setValue('createdBy', data.createdBy, { shouldValidate: true })
+
         } else {
           reset()
         }
@@ -151,7 +177,12 @@ const JudicialBinnacleInfo = () => {
 
   const judicialFileCaseId = caseFileData?.data.id
   const clientCode = caseFileData?.data.client.code
-
+  // const createdBy = getValues('createdBy')
+  // const resolutionDate = getValues('resolutionDate')
+  // const entryDate = getValues('entryDate')
+  // const date = getValues('date')
+  // console.log("entryDate", entryDate, "resolutionDate", resolutionDate, "createdBy", createdBy, "date", date) 
+  
   return (
     <Container
       width="100%"
@@ -164,22 +195,62 @@ const JudicialBinnacleInfo = () => {
     >
       <Container display="flex" flexDirection="column" width={greaterThanMobile ? '50%' : '100%'} gap="10px">
         <Controller
-          name="date"
+          name="resolutionDate"
           control={control}
-          render={({ field }) => (
+          render={({ field: resolutionDateField }) => {
+             if (!resolutionDateField.value) return <></>
+            return (
             <DatePicker
-              required
-              label="Fecha"
-              selectedDate={field.value}
+              label="Fecha de resolución"
+              selectedDate={resolutionDateField.value}
               placeholder="Ingrese la fecha:"
               dateFormat="DD-MM-YYYY"
-              value={field.value}
+              value={resolutionDateField.value ?? ''}
               getDate={(e) => {
-                setValue('date', e)
               }}
             />
-          )}
+          )}}
         />
+        <Controller
+          name="entryDate"
+          control={control}
+          render={({ field: entryDateField }) => {
+            if (!entryDateField.value) return <></>
+            return (
+              <DatePicker
+                label="Fecha de ingreso"
+                selectedDate={entryDateField.value}
+                placeholder="Ingrese la fecha:"
+                dateFormat="DD-MM-YYYY"
+                value={entryDateField.value ?? ''}
+                getDate={(e) => {
+                }}
+              />
+            )
+          }}
+        />
+        <Controller name="createdBy" render={({field})=>{
+          if (field.value) return <></>
+          return (
+            <Controller
+              name="date"
+              control={control}
+              render={({ field: dateField }) => (
+                <DatePicker
+                  required
+                  label="Fecha"
+                  selectedDate={dateField.value}
+                  placeholder="Ingrese la fecha:"
+                  dateFormat="DD-MM-YYYY"
+                  value={dateField.value}
+                  getDate={(e) => {
+                    setValue('date', e)
+                  }}
+                />
+              )}
+            />
+          )
+        }} />
         <Controller
           name="judicialBinProceduralStageId"
           control={control}
@@ -254,7 +325,7 @@ const JudicialBinnacleInfo = () => {
           render={({ field }) => (
             <TextAreaField
               rows={4}
-              width='100%'
+              width="100%"
               label="Último Actuado:"
               value={String(field.value)}
               onChange={(key) => {
@@ -264,21 +335,15 @@ const JudicialBinnacleInfo = () => {
             />
           )}
         />
-
       </Container>
 
       {/** Files DND */}
 
-      <Container
-        display="flex"
-        flexDirection="column"
-        width={greaterThanMobile ? '50%' : '100%'}
-        gap="10px"
-      >
+      <Container display="flex" flexDirection="column" width={greaterThanMobile ? '50%' : '100%'} gap="10px">
         <JudicialBinnacleInfoFileForm judicialFileCaseId={judicialFileCaseId} clientCode={clientCode} />
       </Container>
 
-      { /* Modals */}
+      {/* Modals */}
 
       {visibleModalAddProceduralStage ? (
         <JudicialBinProceduralStageModal
@@ -289,7 +354,6 @@ const JudicialBinnacleInfo = () => {
       {visibleModalAddTypeBinnacle ? (
         <JudicialBinTypeBinnacleModal visible={visibleModalAddTypeBinnacle} onClose={onCloseModalTypeBinnacle} />
       ) : null}
-
     </Container>
   )
 }
