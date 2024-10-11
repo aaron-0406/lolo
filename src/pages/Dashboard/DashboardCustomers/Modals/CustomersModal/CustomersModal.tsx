@@ -31,6 +31,7 @@ const defaultValuesCustomer: Omit<CustomerType, 'customerBanks' | 'createdAt'> =
   urlIdentifier: '',
   description: 'no description',
   state: true,
+  isScrapperActive: false, 
 }
 
 const CustomersModal = ({ visible, onClose, isEdit = false, url = '' }: CustomersModalProps) => {

@@ -27,3 +27,7 @@ export const editCustomerById = async (
 export const updateStateCustomer = async (id: number, state: boolean) => {
   return await axiosClient.put(`${url}/state/${id}`, { state })
 }
+
+export const updateStateScrapper = async (id: number, state: boolean) => {
+  return await axiosClient.put(`${url}/scrapper-state/${id}`, { state })
+}

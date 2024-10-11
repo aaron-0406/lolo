@@ -9,4 +9,5 @@ export type CustomerType = {
   state: boolean
   createdAt?: Date
   customerBanks: Array<BankType>
+  isScrapperActive: boolean;
 }

@@ -31,6 +31,12 @@ export const customersColumns: ColumProps[] = [
     justifyContent: 'center',
   },
   {
+    id: 'customers.datatable.header.scanCaseFiles',
+    title: 'SCRAPING',
+    width: '10%',
+    justifyContent: 'center',
+  },
+  {
     id: 'customers.datatable.header.editcliente',
     title: 'ACCIONES',
     width: '30%',

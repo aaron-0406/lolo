@@ -25,6 +25,7 @@ const initialCustomerState: CustomerType = {
   urlIdentifier: '',
   state: false,
   customerBanks: [],
+  isScrapperActive: false, 
 }
 
 const initialCustomerUserState: Omit<CustomerUserType, 'password'> = {

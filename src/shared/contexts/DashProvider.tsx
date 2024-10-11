@@ -28,6 +28,7 @@ const initialCustomerState: CustomerType = {
   urlIdentifier: '',
   state: false,
   customerBanks: [],
+  isScrapperActive: false,
 }
 
 export const DashContext = createContext<{

@@ -2,7 +2,7 @@ import { Dispatch, FC, useState, useEffect } from 'react'
 import moment from 'moment'
 import { AxiosError, AxiosResponse } from 'axios'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
-import { getCustomerAll, updateStateCustomer } from '@/services/dash/customer.service'
+import { getCustomerAll, updateStateCustomer, updateStateScrapper } from '@/services/dash/customer.service'
 import { CustomErrorResponse } from 'types/customErrorResponse'
 import { CustomerType } from '@/types/dash/customer.type'
 import Container from '@/ui/Container'
@@ -20,6 +20,7 @@ import { useDashContext } from '@/contexts/DashProvider'
 import notification from '@/ui/notification'
 import BankModal from '../Modals/BankModal'
 import dashCustomersCache, { KEY_DASH_CLIENTES_CACHE } from './utils/dash-clientes.cache'
+import Switch from '@/ui/Switch'
 
 type CustomersTableProps = {
   opts: Opts
@@ -64,6 +65,17 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
   const handleClickButtonState = (state: boolean, customerId: number) => {
     editStateCustomer({ customerId, state })
   }
+
+  const handleClickButtonScrapperState = (customerId: number) => {
+    const selectedCustomer = customers.find((customer) => customer.id === customerId)
+    console.log(customers)
+    console.log(selectedCustomer)
+
+    if(!selectedCustomer) return
+    console.log(selectedCustomer.isScrapperActive)
+    editScrapperStateCustomer({ customerId, state: selectedCustomer.isScrapperActive })
+  }
+
   const handleClickButtonBank = (customer: CustomerType) => {
     setSelectedCustomer(customer)
     showModalBank()
@@ -114,6 +126,39 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
       },
     }
   )
+
+  const { mutate: editScrapperStateCustomer } = useMutation<
+  AxiosResponse<CustomerType>,
+  AxiosError<CustomErrorResponse>,
+  { customerId: number; state: boolean }
+>(
+  async ({ customerId, state }) => {
+    return await updateStateScrapper(customerId, !state)
+  },
+  {
+    onSuccess: (result, { state }) => {
+      state
+        ? notification({ type: 'success', message: 'Scrapper desabilitado' })
+        : notification({ type: 'success', message: 'Scrapper habilitado' })
+
+      editCustomerCache(result.data)
+    },
+    onMutate: () => {
+      return onMutateCache()
+    },
+    onSettled: () => {
+      onSettledCache()
+    },
+    onError: (error, _, context: any) => {
+      onErrorCache(context)
+      notification({
+        type: 'error',
+        message: error.response?.data.message,
+        list: error.response?.data?.errors?.map((error) => error.message),
+      })
+    },
+  }
+)
 
   const { isLoading, refetch } = useQuery(
     KEY_DASH_CLIENTES_CACHE,
@@ -167,6 +212,13 @@ const CustomersTable: FC<CustomersTableProps> = ({ opts, setOpts }) => {
                 <BodyCell>{`${record.urlIdentifier || ''}`}</BodyCell>
                 <BodyCell textAlign="center">{`${record.state ? 'activo' : 'inactivo'}`}</BodyCell>
                 <BodyCell textAlign="center">{`${moment(record.createdAt).format('DD-MM-YYYY') || ''}`}</BodyCell>
+                <BodyCell textAlign="center">
+                  <Switch checked={record.isScrapperActive} onChange={() => {
+                    
+                    handleClickButtonScrapperState(record.id)
+                  }} 
+                  />
+                </BodyCell>
                 <BodyCell textAlign="center">
                   {
                     <Container display="flex" gap="15px" justifyContent="space-around">

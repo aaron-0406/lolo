@@ -21,6 +21,7 @@ const initialCustomerState: CustomerType = {
   urlIdentifier: '',
   state: false,
   customerBanks: [],
+  isScrapperActive: false, 
 }
 
 const ProtectedRoutesCompany: React.FC<ProtectedRoutesCompanyProps> = ({ pathname }) => {
