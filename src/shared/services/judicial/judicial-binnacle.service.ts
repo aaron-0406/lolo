@@ -1,9 +1,12 @@
 import { JudicialBinnacleType } from '@/types/judicial/judicial-binnacle.type'
 import axiosClient from '../../utils/api/clientAxios'
+import axiosClientScraping from '../../utils/api/clientAxiosScraping'
 
 const API = axiosClient.getUri()
+const API_SCRAPER = axiosClientScraping.getUri()
 
 const url = `${API}/judicial/binnacle`
+const scrapingUrl = `${API_SCRAPER}/judicial/binnacle`
 
 export const getBinnacleByFileCase = async (fileCase: number, sortingOptions:{
   sortBy: string
@@ -81,3 +84,7 @@ export const updateBinnacleTariff= async ( id: number, totalTariff: number, tari
 export const deleteBinnacle = async (id: number) => {
   return await axiosClient.delete(`${url}/${id}`)
 }
+
+export const updateBinnacleInformationByIdScraping = async (caseFileId: number, binnacleId: number) => {
+  return await axiosClientScraping.post(`${scrapingUrl}/${caseFileId}/${binnacleId}`)
+} 

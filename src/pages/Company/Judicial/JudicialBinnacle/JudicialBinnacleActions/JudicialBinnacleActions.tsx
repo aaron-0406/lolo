@@ -11,10 +11,11 @@ import { useFormContext } from 'react-hook-form'
 import { AxiosError, AxiosResponse } from 'axios'
 import { JudicialBinnacleType } from '@/types/judicial/judicial-binnacle.type'
 import { CustomErrorResponse } from 'types/customErrorResponse'
-import { createBinnacle, updateBinnacle } from '@/services/judicial/judicial-binnacle.service'
+import { createBinnacle, updateBinnacle, updateBinnacleInformationByIdScraping } from '@/services/judicial/judicial-binnacle.service'
 import notification from '@/ui/notification'
 import { JudicialBinFileType } from '@/types/judicial/judicial-bin-file.type'
 import Text from '@/ui/Text'
+import moment from 'moment'
 
 type JudicialBinnacleActionsProps = {
   judicialFileCaseId: number
@@ -130,7 +131,39 @@ const JudicialBinnacleActions = ({ judicialFileCaseId, clientCode, clientName }:
     },
   }
 )
-  const routersCaseFile: LinkType[] = [
+
+const {
+  isLoading: loadingUpdateBinnacleinformationByIdScraping,
+  mutate: updateAllBinnacleInformationByScrapingMutate,
+} = useMutation<AxiosResponse<any>, AxiosError<CustomErrorResponse>>(
+  async () => {
+    return await updateBinnacleInformationByIdScraping(judicialFileCaseId, Number(idBinnacle))
+  },
+  {
+    onSuccess: ({ data }) => {
+      setValue('binnacleTypeId', data.binnacleTypeId, { shouldValidate: true })
+      setValue('judicialBinProceduralStageId', data.judicialBinProceduralStageId, { shouldValidate: true })
+      setValue('customerHasBankId', data?.customerHasBankId, { shouldValidate: true })
+      setValue('date', moment(data.date.split('T')[0]).format('DD-MM-YYYY'), { shouldValidate: true })
+      setValue('lastPerformed', data.lastPerformed, { shouldValidate: true })
+      setValue('judicialFileCaseId', data.judicialFileCaseId, { shouldValidate: true })
+      setValue('judicialBinFiles', data.judicialBinFiles, { shouldValidate: true })
+      setValue('tariffHistory', data.tariffHistory, { shouldValidate: true })
+      setValue('totalTariff', data.totalTariff, { shouldValidate: true })
+      setValue(
+        'resolutionDate',
+        data.resolutionDate ? moment(data.resolutionDate.split('T')[0]).format('DD-MM-YYYY') : undefined,
+        { shouldValidate: true }
+      )
+      setValue('entryDate', data.entryDate ? moment(data.entryDate.split('T')[0]).format('DD-MM-YYYY') : undefined, {
+        shouldValidate: true,
+      })
+      setValue('createdBy', data.createdBy, { shouldValidate: true })
+    },
+  }
+)
+
+const routersCaseFile: LinkType[] = [
     {
       link: paths.judicial.expedientes(customerUrlIdentifier),
       name: 'Expedientes',
@@ -184,6 +217,10 @@ const JudicialBinnacleActions = ({ judicialFileCaseId, clientCode, clientName }:
     editJudicialBinnacle()
   }
 
+  const onUpdateAllBinnacleInformationByScraping = () => {
+    updateAllBinnacleInformationByScrapingMutate();
+  }
+
   const binnacleActionLoading = idBinnacle !== '000000000' ? loadingEditJudicialBinnacle : loadingCreateJudicialBinnacle
   const binnacleAction = idBinnacle !== '000000000' ? editBitacora : addBitacora
 
@@ -203,7 +240,17 @@ const JudicialBinnacleActions = ({ judicialFileCaseId, clientCode, clientName }:
           </Text.Body>
         </Container>
       </Container>
-      <Container>
+      <Container display="flex" flexDirection="row" gap={'10px'}>
+        {watch('createdBy') === 'BOT' ? (
+          <Button
+            loading={loadingUpdateBinnacleinformationByIdScraping}
+            onClick={onUpdateAllBinnacleInformationByScraping}
+            leadingIcon="ri-repeat-fill"
+            // permission="P13-01-01-01"
+            messageTooltip="Actualizar bitacora"
+            shape="round"
+          />
+        ) : null}
         <Button
           label="Guardar"
           loading={binnacleActionLoading || loadingEditJudicialBinnacle}

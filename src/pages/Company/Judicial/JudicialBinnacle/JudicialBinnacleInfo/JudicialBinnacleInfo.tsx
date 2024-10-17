@@ -95,8 +95,6 @@ const JudicialBinnacleInfo = () => {
           setValue('judicialBinFiles', data.judicialBinFiles, { shouldValidate: true })
           setValue('tariffHistory', data.tariffHistory, { shouldValidate: true })
           setValue('totalTariff', data.totalTariff, { shouldValidate: true })
-          console.log("data.resolutionDate", data.resolutionDate)
-          console.log("data.entryDate", data.entryDate)
           setValue('resolutionDate', data.resolutionDate ? moment(data.resolutionDate.split('T')[0]).format('DD-MM-YYYY') : undefined, { shouldValidate: true })
           setValue('entryDate',  data.entryDate ? moment(data.entryDate.split('T')[0]).format('DD-MM-YYYY') : undefined, { shouldValidate: true })
           setValue('createdBy', data.createdBy, { shouldValidate: true })
@@ -177,11 +175,6 @@ const JudicialBinnacleInfo = () => {
 
   const judicialFileCaseId = caseFileData?.data.id
   const clientCode = caseFileData?.data.client.code
-  // const createdBy = getValues('createdBy')
-  // const resolutionDate = getValues('resolutionDate')
-  // const entryDate = getValues('entryDate')
-  // const date = getValues('date')
-  // console.log("entryDate", entryDate, "resolutionDate", resolutionDate, "createdBy", createdBy, "date", date) 
   
   return (
     <Container
