@@ -159,6 +159,22 @@ const {
         shouldValidate: true,
       })
       setValue('createdBy', data.createdBy, { shouldValidate: true })
+
+      notification({ type: 'success', message: 'Bitácora actualizada con éxito' })
+    },
+    onMutate: () => {
+      return onMutateCache(judicialFileCaseId)
+    },
+    onSettled: () => {
+      onSettledCache(judicialFileCaseId)
+    },
+    onError: (error, _, context: any) => {
+      onErrorCache(context, judicialFileCaseId)
+      notification({
+        type: 'error',
+        message: error.response?.data.message,
+        list: error.response?.data?.errors?.map((error) => error.message),
+      })
     },
   }
 )

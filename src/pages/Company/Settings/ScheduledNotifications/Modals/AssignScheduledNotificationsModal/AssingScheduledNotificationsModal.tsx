@@ -216,7 +216,7 @@ const AssingScheduledNotificationsModal = ({
             <Button
               onClick={modalActions === 'add' ? onCreateNotification : onEditNotification}
               label="Guardar"
-              permission={'P29-02' || 'P29-04'}
+              permission={modalActions === 'add' ? 'P29-01' : 'P29-02'}
               trailingIcon="ri-save-line"
               messageTooltip="Guardar cambios"
               disabled={!chb}

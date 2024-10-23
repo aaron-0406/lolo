@@ -187,7 +187,7 @@ const ScheduleNotificationsTable = () => {
                           shape="round"
                           size="small"
                           leadingIcon="ri-pencil-fill"
-                          permission={'P29-02' || 'P29-04'}
+                          permission={'P29-02'}
                           display="default"
                         />
                         <Button
