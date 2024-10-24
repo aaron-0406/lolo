@@ -251,7 +251,7 @@ const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode, amountDemanded,
                           size="small"
                           leadingIcon="ri-file-text-line"
                         />
-                        {!record.createdBy ? (
+                        {/* {!record.createdBy ? (
                           <Button
                             onClick={() => {
                               handleClickDelete(record.id)
@@ -263,7 +263,18 @@ const JudicialBinnacleTable = ({ judicialFileCaseId, clientCode, amountDemanded,
                             permission="P02-02-01-03"
                             display="danger"
                           />
-                        ) : null}
+                        ) : null} */}
+                          <Button
+                            onClick={() => {
+                              handleClickDelete(record.id)
+                            }}
+                            messageTooltip="Eliminar comentario"
+                            shape="round"
+                            size="small"
+                            leadingIcon="ri-delete-bin-line"
+                            permission={record.createdBy ? "P13-01-01-07" : "P02-02-01-03"}
+                            display="danger"
+                          />
                       </Container>
                     }
                   </BodyCell>
